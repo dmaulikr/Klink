@@ -7,9 +7,15 @@
 //
 
 #import "Klink_V2AppDelegate.h"
+#import "RootViewController.h"
 
 @implementation Klink_V2AppDelegate
 
+@synthesize systemObjectModel = __systemObjectModel;
+
+@synthesize systemPersistentStoreCoordinator=__systemPersistentStoreCoordinator;
+
+@synthesize systemObjectContext=__systemObjectContext;
 
 @synthesize window=_window;
 
@@ -19,9 +25,18 @@
 
 @synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
 
+@synthesize navigationController=_navigationController;
+
+@synthesize wsEnumerationManager;
+
+@synthesize authnManager;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    self.authnManager = [AuthenticationManager getInstance];
+    self.wsEnumerationManager = [WS_EnumerationManager getInstance];
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -77,6 +92,8 @@
      Typically you should set up the Core Data stack here, usually by passing the managed object context to the first view controller.
      self.<#View controller#>.managedObjectContext = self.managedObjectContext;
     */
+    RootViewController *rootViewController = (RootViewController *)[self.navigationController topViewController];
+    rootViewController.managedObjectContext = self.managedObjectContext;
 }
 
 - (void)saveContext
@@ -130,9 +147,57 @@
     {
         return __managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Klink_V2" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Test_Project_2" withExtension:@"momd"];
     __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
     return __managedObjectModel;
+}
+- (NSManagedObjectModel *)systemObjectModel
+{
+    if (__systemObjectModel != nil)
+    {
+        return __systemObjectModel;
+    }
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"SystemDataModel" withExtension:@"momd"];
+    __systemObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+    return __systemObjectModel;
+}
+
+- (NSPersistentStoreCoordinator *)systemPersistentStoreCoordinator
+{
+    if (__systemPersistentStoreCoordinator != nil)
+    {
+        return __systemPersistentStoreCoordinator;
+    }
+    
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"System_Data.sqlite"];
+    
+    NSError *error = nil;
+    __systemPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self systemObjectModel]];
+    if (![__systemPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    {
+        
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }    
+    
+    return __systemPersistentStoreCoordinator;
+}
+
+
+- (NSManagedObjectContext *)systemObjectContext
+{
+    if (__systemObjectContext != nil)
+    {
+        return __systemObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self systemPersistentStoreCoordinator];
+    if (coordinator != nil)
+    {
+        __systemObjectContext = [[NSManagedObjectContext alloc] init];
+        [__systemObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    return __systemObjectContext;
 }
 
 /**
@@ -190,6 +255,19 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (NSString*) getImageCacheStorageDirectory {
+    NSString *path = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+                                                         NSCachesDirectory, NSUserDomainMask, YES);
+    if ([paths count])
+    {
+        NSString *bundleName =
+        [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+        path = [[paths objectAtIndex:0] stringByAppendingPathComponent:bundleName];
+    }
+    return path;
 }
 
 @end
