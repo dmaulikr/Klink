@@ -81,6 +81,7 @@
 		C5F808FF13C38556001E16F3 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FE13C38556001E16F3 /* libz.1.2.3.dylib */; };
 		C5F8091213C38892001E16F3 /* Test_Project_2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C5F8091013C38892001E16F3 /* Test_Project_2.xcdatamodeld */; };
 		C5F8091613C388D8001E16F3 /* SystemDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C5F8091413C388D8001E16F3 /* SystemDataModel.xcdatamodeld */; };
+		C5F8091913C43061001E16F3 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F8091813C43061001E16F3 /* RootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -221,6 +222,7 @@
 		C5F808FE13C38556001E16F3 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		C5F8091113C38892001E16F3 /* Test_Project_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Test_Project_2.xcdatamodel; sourceTree = "<group>"; };
 		C5F8091513C388D8001E16F3 /* SystemDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SystemDataModel.xcdatamodel; sourceTree = "<group>"; };
+		C5F8091813C43061001E16F3 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -554,6 +556,7 @@
 		C5F8091713C38D69001E16F3 /* BlazeStormer */ = {
 			isa = PBXGroup;
 			children = (
+				C5F8091813C43061001E16F3 /* RootViewController.xib */,
 				C5190A6D13C192690077EECA /* CameraViewController.h */,
 				C5190A6E13C192690077EECA /* CameraViewController.m */,
 				C5190A6F13C192690077EECA /* CameraViewController.xib */,
@@ -629,6 +632,7 @@
 				C5190AE613C1926C0077EECA /* PhotoNoteCell.xib in Resources */,
 				C5190AEE13C1926C0077EECA /* TitleView.xib in Resources */,
 				C5190AF013C1926C0077EECA /* TopicController.xib in Resources */,
+				C5F8091913C43061001E16F3 /* RootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
