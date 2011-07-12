@@ -16,8 +16,10 @@ extern NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT;
 extern NSString* const cacheName_ROOTVIEWCONTROLLER;
 extern int const pageSize_PHOTO;
 extern int const batchSize_CAPTION;
+extern int const batchSize_THEME;
 extern int const size_NUMLINKEDOBJECTSTOTRETURN;
 
 extern NSString* const cell_TEXTCAPTION;
 extern NSString* const cell_IMAGECAPTION;
 
+extern int const timeout_ENUMERATION;

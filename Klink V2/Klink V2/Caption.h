@@ -15,6 +15,7 @@
 @private
 }
 @property (nonatomic, retain) NSNumber * creatorid;
+@property (nonatomic, retain) NSString* creatorname;
 @property (nonatomic, retain) NSString * caption1;
 @property (nonatomic, retain) NSString* title;
 @property (nonatomic, retain) NSNumber * numberOfVotes;

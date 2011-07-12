@@ -46,6 +46,27 @@
     return newQuery;
 }
 
++(QueryOptions*)queryForPhotos {
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.referencingattribute=an_PHOTOID;
+    newQuery.referencingobjecttype =CAPTION;
+    newQuery.includelinkedobjects = YES;
+    newQuery.maxlinksreturnedperobject = size_NUMLINKEDOBJECTSTOTRETURN;
+    newQuery.sortAscending = YES;
+    newQuery.sortattribute=an_DATECREATED;
+    return newQuery;
 
+}
+
++(QueryOptions*)queryForThemes {
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.referencingattribute=an_THEMEID;
+    newQuery.referencingobjecttype = PHOTO;
+    newQuery.includelinkedobjects = YES;
+    newQuery.maxlinksreturnedperobject = size_NUMLINKEDOBJECTSTOTRETURN;
+    newQuery.sortAscending = NO;
+    newQuery.sortattribute = an_DATECREATED;
+    return newQuery;
+}
 
 @end

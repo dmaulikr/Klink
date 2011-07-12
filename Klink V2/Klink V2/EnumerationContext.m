@@ -39,6 +39,9 @@
 //    self.pageNumber = [[NSNumber alloc]initWithInt:0];
 //    self.numberOfResultsReturned = [[NSNumber alloc]initWithInt:0];
     self.pageSize = [NSNumber numberWithInt:pageSize_PHOTO];
+    self.isDone = [NSNumber numberWithBool:NO];
+    self.pageNumber = [NSNumber numberWithInt:0];
+    self.numberOfResultsReturned = [NSNumber numberWithInt:0];
     return self;
 }
 

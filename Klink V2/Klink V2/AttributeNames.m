@@ -37,7 +37,7 @@ NSString* const an_CREATORID = @"creatorid";
 NSString* const an_NUMBEROFVOTES=@"numberofvotes";
 NSString* const an_NUMBEROFCAPTIONS=@"numberofcaption";
 NSString* const an_NUMBEROFVIEWS=@"numberofviews";
-NSString* const an_LOCATIONDESCRIPTION=@"photodescription";
+NSString* const an_LOCATIONDESCRIPTION=@"description";
 NSString* const an_LATITUDE=@"latitude";
 NSString* const an_LONGITUDE=@"longitude";
 NSString* const an_DISPLAYNAME=@"displayname";
@@ -69,3 +69,9 @@ NSString* const an_TITLE=@"title";
 NSString* const an_ATTRIBUTENAME=@"attributename";
 NSString* const an_FILELOCATION=@"filelocation";
 NSString* const an_INDEXPATH=@"indexpath";
+
+NSString* const an_CREATORNAME = @"creatorname";
+NSString* const an_DESCRIPTION = @"descr";
+NSString* const an_HOMEIMAGEURL = @"home_image_url";
+
+NSString* const an_THEMEID= @"themeid";

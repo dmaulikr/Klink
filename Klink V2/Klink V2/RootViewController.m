@@ -310,8 +310,8 @@
     
     CustomCell *customCell = (CustomCell*)cell;
     
-    customCell.topicNameLabel.text = [[managedObject valueForKey:an_LOCATIONDESCRIPTION] description];
-    customCell.streamLabel.text = [[managedObject valueForKey:an_DATECREATED] description];
+    customCell.topicNameLabel.text = [[managedObject valueForKey:an_LOCATIONDESCRIPTION] descr];
+    customCell.streamLabel.text = [[managedObject valueForKey:an_DATECREATED] descr];
    
     
 }

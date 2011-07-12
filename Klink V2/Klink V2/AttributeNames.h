@@ -63,3 +63,7 @@ extern NSString* const an_DATEDELETED;
 extern NSString* const an_ATTRIBUTENAME;
 extern NSString* const an_FILELOCATION;
 extern NSString* const an_INDEXPATH;
+extern NSString* const an_CREATORNAME;
+extern NSString* const an_DESCRIPTION;
+extern NSString* const an_HOMEIMAGEURL;
+extern NSString* const an_THEMEID;

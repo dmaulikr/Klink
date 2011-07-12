@@ -27,6 +27,10 @@
 
 + (id) getObjectByID:(NSNumber*) identifier withObjectType:(NSString*)objectType;
 
++ (id) getObjectsByType:(NSString*)objectType sortBy:(NSString*)attributeName sortAscending:(BOOL)sortAscending;
+
++ (id) getNewestTheme;
+
 //+ (void) commitResource:(ServerManagedResource*)resource calledBy:(id)executingObject ;
 
 - (NSNumber*) getNextID;

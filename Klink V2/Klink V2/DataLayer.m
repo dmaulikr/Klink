@@ -92,27 +92,7 @@ static  DataLayer* sharedManager;
     return retVal;
 }
 
-//+ (void) saveAuthenticationContext:(AuthenticationContext*)context forUser:(NSNumber*)userID {
-//    NSString* activityName = @"DataLayer.saveAuthenticationContext";
-//    
-//    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    
-//    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;    
-//    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:tn_AUTHENTICATIONCONTEXT inManagedObjectContext:appContext];
-//    
-//    [appContext insertObject:context];
-//    
-//    NSError* error = nil;
-//    [appContext save:&error];
-//    
-//    if (error != nil) {
-//        //error occurred during save
-//        NSString* errorMessage = [NSString stringWithFormat:@"insert error: %@",[error description]];
-//        [BLLog e:activityName withMessage:errorMessage];
-//    }
-//    
-//
-//}
+
 
 + (void) deleteObjectByType:(NSString*)typeName withId:(NSNumber*)identifier {
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -197,29 +177,44 @@ static  DataLayer* sharedManager;
     }
     return nil;
 }
-//
-//+ (void) commitResource:(ServerManagedResource*)resource calledBy:(id)executingObject {
-//    NSString* activityName = @"DataLayer.commitResource:";
-//    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;
-//  
-//
-//    NSDate* currentDate = [NSDate date];
-//    
-//    if ([resource doesExistInStore]) {
-//        ServerManagedResource* existingObject = [DataLayer getObjectByID:resource.objectid withObjectType:resource.objecttype];
-//        [existingObject copyFrom:resource];
-//        existingObject.dateLastServerSync = currentDate;
-//        [existingObject commitChangesToDatabase:NO];
-//
-//    }
-//    else {
-//        resource.dateLastServerSync = currentDate;
-//        [appContext insertObject:resource];    
-//        [resource commitChangesToDatabase:NO];
-//
-//    }
-//    
-//}
+
+//Returns an array of objects of the specified type sorted according to the specified attribute
++ (id) getObjectsByType:(NSString*)objectType sortBy:(NSString*)attributeName sortAscending:(BOOL)sortAscending {
+    NSString* activityName = @"DataLayer.getObjectsByType:";
+    
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:objectType
+                                                         inManagedObjectContext:appContext];    
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:attributeName ascending:sortAscending];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    NSError* error = nil;
+    NSArray* results = [appContext executeFetchRequest:request error:&error];
+    
+    if (error != nil) {
+        [BLLog e:activityName withMessage:[error description]];
+    }
+    
+    [request release];
+    return results;
+
+}
+
+#pragma mark - Theme specific retrieval methods
++ (id) getNewestTheme {
+    NSArray* themes = [DataLayer getObjectsByType:tn_THEME sortBy:an_DATECREATED sortAscending:NO];
+    
+    if ([themes count] > 0) {
+        return [themes objectAtIndex:0];
+    }
+    else {
+        return nil;
+    }
+}
 
 @end

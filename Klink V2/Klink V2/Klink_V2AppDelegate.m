@@ -8,7 +8,9 @@
 
 #import "Klink_V2AppDelegate.h"
 #import "RootViewController.h"
-
+#import "SampleViewController.h"
+#import "SampleViewController2.h"
+#import "HomeScreenController.h"
 @implementation Klink_V2AppDelegate
 
 @synthesize systemObjectModel = __systemObjectModel;
@@ -37,6 +39,8 @@
     self.authnManager = [AuthenticationManager getInstance];
     self.wsEnumerationManager = [WS_EnumerationManager getInstance];
     self.window.rootViewController = self.navigationController;
+    
+    [self loginWithDummyAuthenticationContext];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -88,12 +92,17 @@
 
 - (void)awakeFromNib
 {
+    HomeScreenController* viewController = (HomeScreenController*)[self.navigationController topViewController];
+    viewController.managedObjectContext = self.managedObjectContext;
+    
+//    SampleViewController2* viewController = (SampleViewController2*)[self.navigationController topViewController];
+//    viewController.managedObjectContext = self.managedObjectContext;
     /*
      Typically you should set up the Core Data stack here, usually by passing the managed object context to the first view controller.
      self.<#View controller#>.managedObjectContext = self.managedObjectContext;
     */
-    RootViewController *rootViewController = (RootViewController *)[self.navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
+//    RootViewController *rootViewController = (RootViewController *)[self.navigationController topViewController];
+//    rootViewController.managedObjectContext = self.managedObjectContext;
 }
 
 - (void)saveContext
@@ -268,6 +277,24 @@
         path = [[paths objectAtIndex:0] stringByAppendingPathComponent:bundleName];
     }
     return path;
+}
+
+#pragma mark - Dummy login methods
+- (void) loginWithDummyAuthenticationContext {
+    AuthenticationManager* authenticationManager = [[AuthenticationManager getInstance]retain];
+    //Create dummy authentication context
+    NSMutableDictionary* authenticationContextDictionary = [[NSMutableDictionary alloc]init];
+    NSTimeInterval currentDateInSeconds = [[NSDate date] timeIntervalSince1970];
+    NSNumber *currentDate = [NSNumber numberWithDouble:currentDateInSeconds];
+    
+    [authenticationContextDictionary setObject:[NSNumber numberWithInt:1] forKey:an_USERID];
+    [authenticationContextDictionary setObject:[currentDate stringValue] forKey:an_EXPIRY_DATE];
+    [authenticationContextDictionary setObject:[NSString stringWithFormat:@"dicks"] forKey:an_TOKEN];
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:tn_AUTHENTICATIONCONTEXT inManagedObjectContext:self.managedObjectContext];
+    AuthenticationContext* context = [[[AuthenticationContext alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:nil]initFromDictionary:authenticationContextDictionary];
+    [authenticationManager loginUser:[NSNumber numberWithInt:1] withAuthenticationContext:context];
+    [context release];
 }
 
 @end

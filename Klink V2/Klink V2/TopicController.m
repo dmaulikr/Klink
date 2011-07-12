@@ -56,7 +56,7 @@
     
     if (self.topic != nil) {
         
-        self.navigationItem.title = self.topic.photodescription;
+        self.navigationItem.title = self.topic.descr;
 
         //set the title of the navigation controller
         NSArray *arr = [[NSBundle mainBundle] loadNibNamed:@"TitleView" owner:nil options:nil];
@@ -64,7 +64,7 @@
         self.navigationItem.titleView = titleView;
         [self updateNavigationItemTitle];
         
-        self.lbl_topicTitle.text = self.topic.photodescription;
+        self.lbl_topicTitle.text = self.topic.descr;
         
        
       
@@ -86,7 +86,7 @@
 - (void)updateNavigationItemTitle {
     TitleView *titleView = (TitleView*)self.navigationItem.titleView;
     if (titleView != nil) {
-        titleView.titleLabel.text = self.topic.photodescription;
+        titleView.titleLabel.text = self.topic.descr;
         titleView.subtitleLabel.text = [DateTimeHelper formatShortDate:self.topic.datecreated];
     }
 }
@@ -415,8 +415,8 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     //need to update the data in the database and server
     if (textField == self.lbl_topicTitle) {
-        if (![textField.text isEqual:self.topic.photodescription]) {
-            self.topic.photodescription = textField.text;
+        if (![textField.text isEqual:self.topic.descr]) {
+            self.topic.descr = textField.text;
             [self.topic commitChangesToDatabase:YES withPendingFlag:YES];
             [self updateNavigationItemTitle];
         }

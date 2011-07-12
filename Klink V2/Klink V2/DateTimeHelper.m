@@ -37,7 +37,7 @@
     return [date timeIntervalSince1970];
 }
 + (NSDate*) parseWebServiceDateString: (NSString*)dateString {
-    return [[NSDate alloc]init ];
+    return [[[NSDate alloc]init ]autorelease];
 }
 
 + (NSDate*) parseWebServiceDateDouble:(id)datePointer {

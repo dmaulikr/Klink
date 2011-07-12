@@ -113,7 +113,7 @@ NSString* const default_INPUT = @"Give me your thoughts";
 - (void)updateNavigationItemTitle {
     TitleView *titleView = (TitleView*)self.navigationItem.titleView;
     if (titleView != nil) {
-        titleView.titleLabel.text = self.topic.photodescription;
+        titleView.titleLabel.text = self.topic.descr;
         titleView.subtitleLabel.text = [DateTimeHelper formatShortDate:self.topic.datecreated];
     }
 }
@@ -166,7 +166,7 @@ NSString* const default_INPUT = @"Give me your thoughts";
         Photo *newTopic = [[Photo alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:appContext];
         [newTopic init];
         shouldCreateTopic = YES;
-        newTopic.photodescription = self.noteTitle.text;
+        newTopic.descr = self.noteTitle.text;
         newTopic.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
         self.topic = newTopic;
         [newTopic release];

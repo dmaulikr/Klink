@@ -16,7 +16,7 @@
 @interface Photo : ServerManagedResource <IWireSerializable> {
 @private
 }
-@property (nonatomic, retain) NSString * photodescription;
+@property (nonatomic, retain) NSString * descr;
 @property (nonatomic, retain) NSNumber * numberOfViews;
 @property (nonatomic, retain) NSNumber * numberOfCaptions;
 @property (nonatomic, retain) NSNumber * latitude;
@@ -24,6 +24,9 @@
 @property (nonatomic, retain) NSString * imageurl;
 @property (nonatomic, retain) NSString * thumbnailurl;
 @property (nonatomic, retain) NSNumber * creatorid;
+@property (nonatomic,retain) NSString* creatorname;
+@property (nonatomic, retain) NSNumber * themeid;
+@property (nonatomic, retain) NSNumber * numberofvotes;
 
 + (NSString*) getNewPhotoTitle;
 @end

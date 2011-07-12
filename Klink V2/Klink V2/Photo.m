@@ -10,7 +10,7 @@
 
 
 @implementation Photo
-@dynamic photodescription;
+@dynamic descr;
 @dynamic numberOfViews;
 @dynamic numberOfCaptions;
 @dynamic latitude;
@@ -18,6 +18,9 @@
 @dynamic thumbnailurl;
 @dynamic imageurl;
 @dynamic creatorid;
+@dynamic themeid;
+@dynamic creatorname;
+@dynamic numberofvotes;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
@@ -26,13 +29,29 @@
         self.numberOfViews = [jsonDictionary objectForKey:an_NUMBEROFVIEWS];                        
         self.creatorid = [jsonDictionary valueForKey:an_CREATORID];
         
-        if ([jsonDictionary objectForKey:an_LOCATIONDESCRIPTION] != [NSNull null]) {
-             self.photodescription = [jsonDictionary objectForKey:an_LOCATIONDESCRIPTION];
+        if ([jsonDictionary objectForKey:an_THEMEID] != [NSNull null]) {
+            self.themeid = [jsonDictionary objectForKey:an_THEMEID];
+        }
+        
+        
+        if ([jsonDictionary objectForKey:an_DESCRIPTION] != [NSNull null]) {
+             self.descr = [jsonDictionary objectForKey:an_DESCRIPTION];
         }
 
+        if ([jsonDictionary objectForKey:an_CREATORNAME] != [NSNull null]) {
+            self.creatorname = [jsonDictionary objectForKey:an_CREATORNAME];
+        }
+        
+        if ([jsonDictionary objectForKey:an_NUMBEROFVOTES] != [NSNull null]) {
+            self.numberofvotes = [jsonDictionary objectForKey:an_NUMBEROFVOTES];
+        }
         
         if ([jsonDictionary objectForKey:an_THUMBNAILURL] != [NSNull null]) {
             self.thumbnailurl = [jsonDictionary objectForKey:an_THUMBNAILURL];
+        }
+        
+        if ([jsonDictionary objectForKey:an_IMAGEURL] != [NSNull null]) {
+            self.imageurl = [jsonDictionary objectForKey:an_IMAGEURL];
         }
         
         
@@ -59,10 +78,13 @@
     self.numberOfCaptions = [newObject numberOfCaptions];
     self.numberOfViews= [newObject numberOfViews ];
     self.creatorid= [newObject creatorid ];
-    self.photodescription= [newObject photodescription ];
+    self.descr= [newObject descr ];
     self.thumbnailurl = [newObject thumbnailurl];
+    self.imageurl = [newObject imageurl];
     self.latitude = [newObject latitude];
     self.longitude = [newObject longitude];
+    self.themeid = [newObject themeid];
+    self.numberofvotes = [newObject numberofvotes];
 }
 
 
@@ -91,10 +113,11 @@
     [dictionary setValue:self.creatorid forKey:an_CREATORID];
     [dictionary setValue:self.numberOfCaptions forKey:an_NUMBEROFCAPTIONS];
     [dictionary setValue:self.numberOfViews forKey:an_NUMBEROFVIEWS];
-    [dictionary setValue:self.photodescription forKey:an_LOCATIONDESCRIPTION];
+    [dictionary setValue:self.descr forKey:an_DESCRIPTION];
     [dictionary setValue:self.imageurl forKey:an_IMAGEURL];
     [dictionary setValue:self.thumbnailurl forKey:an_THUMBNAILURL];
-    
+    [dictionary setValue:self.themeid forKey:an_THEMEID];
+    [dictionary setValue:self.numberofvotes forKey:an_NUMBEROFVOTES];
     return dictionary;    
 }
 

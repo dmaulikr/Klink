@@ -11,12 +11,12 @@
 #import "User.h"
 #import "Photo.h"
 #import "Caption.h"
+#import "Theme.h"
 
 @implementation ServerManagedResource
 @dynamic objectid;
 @dynamic datecreated;
 @dynamic isPending;
-@dynamic clientID;
 @dynamic dateModified;
 @dynamic objecttype;
 @dynamic dateLastServerSync;
@@ -28,10 +28,10 @@
     NSString* activityName = @"ServerManagedResource.initFromDictionary:";
     self.objectid = [jsonDictionary valueForKey:an_OBJECTID];
     
-    //extract system timestamp
-    NSDictionary* timestamp = [jsonDictionary valueForKey:an_SYSTIMESTAMP];
-    NSData *buffer = [timestamp objectForKey:@"Bytes"];
-    self.sys_timestamp =[NSKeyedArchiver archivedDataWithRootObject:buffer];
+//    //extract system timestamp
+//    NSDictionary* timestamp = [jsonDictionary valueForKey:an_SYSTIMESTAMP];
+//    NSData *buffer = [timestamp objectForKey:@"Bytes"];
+//    self.sys_timestamp =[NSKeyedArchiver archivedDataWithRootObject:buffer];
     self.sys_version = [jsonDictionary objectForKey:an_SYSVERSION];
     
     NSNumber* dateCreatedInSecondsSinceEpoch = [jsonDictionary valueForKey:an_DATECREATED];
@@ -100,6 +100,11 @@
         User* userObject = [[[[User alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:nil] initFromDictionary:jsonObject] autorelease];
         return userObject;
     }
+    else if ([objectType isEqualToString:tn_THEME]) {
+        Theme* themeObject =[[Theme alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:nil]; 
+        [[themeObject initFromDictionary:jsonObject] autorelease];
+        return themeObject;
+    }
     else {
         [BLLog e:activityName withMessage:@"Unrecognized object type, can not deserialize into client type"];
     }
@@ -133,7 +138,6 @@
 - (void) copyFrom:(id)newObject {
      self.datecreated = [newObject datecreated];
      self.isPending= [newObject isPending ];
-     self.clientID= [newObject clientID ];
      self.dateModified= [newObject dateModified ];
      self.sys_timestamp = [newObject sys_timestamp];
         self.sys_version = [newObject sys_version];

@@ -17,6 +17,7 @@
 @dynamic title;
 @dynamic imageurl;
 @dynamic thumbnailurl;
+@dynamic creatorname;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
@@ -30,6 +31,10 @@
         
         if ([jsonDictionary objectForKey:an_THUMBNAILURL] != [NSNull null]) {
             self.thumbnailurl = [jsonDictionary valueForKey:an_THUMBNAILURL];
+        }
+        
+        if ([jsonDictionary objectForKey:an_CREATORNAME] != [NSNull null]) {
+            self.creatorname = [jsonDictionary valueForKey:an_CREATORNAME];
         }
         
         

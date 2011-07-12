@@ -32,6 +32,8 @@
            withQueryOptions:(QueryOptions*)queryOptions
            onFinishNotify:(NSString*)notificationTarget;
 
+- (void) enumerateThemes:(NSNumber*)maximumNumberOfResults withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID;
+
 - (void) execute:(NSURL*)url onFinishSelector:(SEL)onfinishselector onFailSelector:(SEL)onfailselector withUserInfo:(NSDictionary*)userInfo;
 
 - (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext*)enumerationContext  onFinishNotify:notificationTarget;

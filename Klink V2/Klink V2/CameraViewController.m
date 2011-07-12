@@ -120,7 +120,7 @@ static UIImage* shrinkImage(UIImage *original, CGSize size);
 - (void)updateNavigationItemTitle {
     TitleView *titleView = (TitleView*)self.navigationItem.titleView;
     if (titleView != nil) {
-        titleView.titleLabel.text = self.topic.photodescription;
+        titleView.titleLabel.text = self.topic.descr;
         titleView.subtitleLabel.text = [DateTimeHelper formatShortDate:self.topic.datecreated];
     }
 }
@@ -212,7 +212,7 @@ static UIImage* shrinkImage(UIImage *original, CGSize size);
         [newTopic init];
         self.topic = newTopic;
         shouldCreateTopic = YES;
-        newTopic.photodescription = self.lbl_Title.text;
+        newTopic.descr = self.lbl_Title.text;
         newTopic.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
         
         

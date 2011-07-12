@@ -8,7 +8,7 @@
 
 #import "WS_EnumerationManager.h"
 #import "ServerManagedResource.h"
-
+#import "ApplicationSettings.h"
 @implementation WS_EnumerationManager
 @synthesize queryQueue;
 
@@ -70,6 +70,7 @@ static  WS_EnumerationManager* sharedManager;
     EnumerationContext *enumerationContext = [[EnumerationContext alloc]init];
     AuthenticationContext *authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     
+    
     enumerationContext.maximumNumberOfResults = maxResults;
     enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_PHOTO];
     
@@ -82,6 +83,12 @@ static  WS_EnumerationManager* sharedManager;
 
     }
     
+    
+}
+
+- (void) enumerateThemes:(NSNumber*)maximumNumberOfResults withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID {
+    
+    [self enumerateObjectsWithType:tn_THEME maximumNumberOfResults:maximumNumberOfResults withQueryOptions:queryOptions onFinishNotify:notificationID];
     
 }
 
@@ -191,6 +198,7 @@ static  WS_EnumerationManager* sharedManager;
     [request setUserInfo:userInfo];
     [request setDidFinishSelector:onfinishselector];
     [request setDidFailSelector:onfailselector];
+    [request setTimeOutSeconds:timeout_ENUMERATION];
     [self.queryQueue addOperation:request];
     
     NSString *message = [[NSString alloc] initWithFormat:@"submitted query at url: %@",url];

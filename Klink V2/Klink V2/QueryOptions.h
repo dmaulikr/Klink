@@ -29,5 +29,7 @@
 @property (nonatomic,retain) NSString* sortattribute;
 
 +(QueryOptions*)queryForTopics;
++(QueryOptions*)queryForPhotos;
++(QueryOptions*)queryForThemes;
 - (NSDictionary*)toDictionary;
 @end

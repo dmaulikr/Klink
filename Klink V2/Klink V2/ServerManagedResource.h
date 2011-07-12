@@ -20,7 +20,7 @@
 @class User;
 @class Caption;
 @class Photo;
-
+@class Theme;
 @interface ServerManagedResource : NSManagedObject <IWireSerializable> {
     
 @private
@@ -28,7 +28,6 @@
 @property (nonatomic, retain) NSNumber * objectid;
 @property (nonatomic, retain) NSDate * datecreated;
 @property (nonatomic, retain)  NSNumber* isPending;
-@property (nonatomic, retain) NSNumber * clientID;
 @property (nonatomic, retain) NSDate * dateModified;
 @property (nonatomic, retain) NSString* objecttype;
 @property (nonatomic, retain) NSDate* dateLastServerSync;
