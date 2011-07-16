@@ -9,7 +9,7 @@
 #import "HomeScreenController.h"
 #import "ThemeBrowserController.h"
 #import "ThemeBrowserViewController2.h"
-#import "InfinitePagingViewController.h"
+#import "InfinitePageViewer.h"
 @implementation HomeScreenController
 @synthesize managedObjectContext;
 @synthesize button1;
