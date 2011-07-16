@@ -12,6 +12,7 @@
 @protocol UIViewSliderDelegate <NSObject>
 @optional
 - (UIView*)viewSlider:(UIViewSlider *)viewSlider cellForRowAtIndex:(int)index;
+- (void)viewSlider:(UIViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd;
 @end
 
 
@@ -22,6 +23,8 @@
     int m_itemWidth;
     int m_itemSpacing;
     int m_numItemsToLoadOnScroll;
+    
+    int m_lastScrollIndex;
     NSMutableArray* m_viewList;
     NSFetchedResultsController *m_fetchedResultsController;
     
@@ -49,7 +52,7 @@
 @property int m_numItemsToLoadOnScroll;
 @property (nonatomic, retain) NSFetchedResultsController *m_fetchedResultsController;
 @property (nonatomic, retain) IBOutlet id<UIViewSliderDelegate> delegate;
-
+@property int m_lastScrollPosition;
 @end
 
 

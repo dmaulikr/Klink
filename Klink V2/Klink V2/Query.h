@@ -11,9 +11,11 @@
 #import "AttributeNames.h"
 #import "JSONKit.h"
 #import "QueryOptions.h"
+#import "QueryExpression.h"
 
 @interface Query : NSObject <IWireSerializable> {
     NSString* filterExpression;
+    NSArray* attributeExpressions;
     NSArray* objectIDs;
     NSString* filterobjecttype;
     QueryOptions* queryoptions;
@@ -22,9 +24,11 @@
 - (id)initWithIds:(NSArray*)ids;
 + (id) queryWithObjectType:(NSString*)objectType;
 + (id) queryWithIds:(NSArray*)ids;
++ (id) queryPhotosWithTheme:(NSNumber*)themeID;
 @property (nonatomic,retain) NSString* filterExpression;
 @property (nonatomic, copy)NSArray* objectIDs;
 @property (nonatomic, retain) NSString* filterobjecttype;
 @property (nonatomic,retain) QueryOptions* queryoptions;
+@property (nonatomic, retain) NSArray* attributeExpressions;
 
 @end

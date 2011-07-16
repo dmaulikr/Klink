@@ -1,41 +1,36 @@
 //
-//  ThemeBrowserController.m
+//  ThemeBrowserViewController2.m
 //  Klink V2
 //
-//  Created by Bobby Gill on 7/11/11.
+//  Created by Bobby Gill on 7/14/11.
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "ThemeBrowserController.h"
-#import "DataLayer.h"
-#import "NSStringGUIDCategory.h"
+#import "ThemeBrowserViewController2.h"
 #import "ImageManager.h"
+#import "TestSliderView.h"
 #import "Photo.h"
+#import "NSStringGUIDCategory.h"
+
 #define kPictureWidth 130
 #define kPictureSpacing 30
 #define kPictureHeight 100
-#import "TestSliderView.h"
 
-@implementation ThemeBrowserController
-@synthesize managedObjectContext;
+@implementation ThemeBrowserViewController2
+@synthesize pvs_slider;
 @synthesize theme;
-@synthesize imgv_themeHomeImage;
-@synthesize vs_themePhotoSlider;
-@synthesize ec_activeThemePhotoContext;
+@synthesize managedObjectContext;
 @synthesize fetchedResultsController = __fetchedResultsController;
 @synthesize frc_themes = __frc_themes;
+@synthesize lbl_theme;
+@synthesize ec_activeThemePhotoContext;
 @synthesize m_isThereAThemePhotoEnumerationAlreadyExecuting;
-@synthesize tv_ThemeID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        ec_activeThemePhotoContext = nil;
-        m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
-        //in the future we will store the contect in persistence and load it from there if we have it
-        
+      
     }
     return self;
 }
@@ -53,103 +48,65 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (BOOL) shouldUpdateFromWebService {
-    return NO;
-}
-
 - (void) registerNotification:(NSString*) notificationID  targetSelector:(SEL)targetSelector targetObject:(id) targetObject {
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:targetObject selector:targetSelector name:notificationID object:nil];
     
 }
 
-- (void) enumerateFromWebService {
+- (void) enumerateThemesFromWebService {
     WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
     QueryOptions* queryOptions = [QueryOptions queryForThemes];
     
     NSString* notificationID = [NSString GetGUID];
     [self registerNotification:notificationID targetSelector:@selector(onEnumerateThemesFinished:) targetObject:self];
-
-    [enumerationManager enumerateThemes:[NSNumber numberWithInt:batchSize_THEME] withQueryOptions:queryOptions onFinishNotify:notificationID];
-}
-
-#pragma mark - Enumeration Completion Handlers
-- (void)onEnumerateThemesFinished:(NSNotification*)notification {
     
-}
-
-- (void)onEnumeratePhotosForThemeFinished:(NSNotification*)notification {
-    NSString* activityName = @"ThemeBrowserController.onEnumeratePhotosForThemeFinished:";
-    NSDictionary *userInfo = [notification userInfo];
-    if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
-        EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
-        if ([returnedContext.isDone boolValue] == NO) {
-            //enumeration remains open
-            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
-            [BLLog v:activityName withMessage:message];
-            self.ec_activeThemePhotoContext = returnedContext;
-        }
-        else {
-            //enumeration is complete, set the context to nil
-            
-            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
-            [BLLog v:activityName withMessage:message];
-            [returnedContext release];
-            self.ec_activeThemePhotoContext = nil;
-            
-        }
- 
-    }
-    m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
+    [enumerationManager enumerateThemes:[NSNumber numberWithInt:batchSize_THEME] withQueryOptions:queryOptions onFinishNotify:notificationID];
 }
 
 #pragma mark - View Controller Theme Assignment
 - (void) assignTheme:(Theme*)themeObject {
     __fetchedResultsController = nil;
     self.theme = themeObject;    
-    self.tv_ThemeID.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
+    self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
     NSArray* photos = [self.fetchedResultsController fetchedObjects];
-    [vs_themePhotoSlider hasNumberOfElements:[photos count] itemWidth:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
+    [self.pvs_slider set:photos];
 }
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
-    
-    
+    NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
+    [self.pvs_slider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
     if (self.theme == nil) {
-        //no theme set for this browser to display, retrieve the latest theme from the DB
-        NSArray* themes = [self.frc_themes fetchedObjects];
+        NSArray* themes = self.frc_themes.fetchedObjects;
         if ([themes count] > 0) {
             [self assignTheme:[themes objectAtIndex:0]];
         }
-    }
-    else {
-        [self assignTheme:self.theme];
-    }
-    
-   
-    
-    if ([self shouldUpdateFromWebService]) {
-        //if yes, we should execute a refresh of theme objects from the web service
-        [self enumerateFromWebService];
-    }
- 
-    
-    
-    [imgv_themeHomeImage init];
-    [super viewDidLoad];
-    
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-    
-    if (self.theme != nil) {
-        //now we populate the ui contorls for the theme viewer
+        else {
+            //need to issue request to get themes from web service
+            NSString* message = [NSString stringWithFormat:@"No themes found in database, enumerating from the web service"];
+            [BLLog v:activityName withMessage:message];
+            
+            [self enumerateThemesFromWebService];
+        }
         
     }
-
-    [super viewDidAppear:animated];
+     
+//    NSArray* themes = self.frc_themes.fetchedObjects;
+//    if ([themes count]>0) {
+//        self.theme = [themes objectAtIndex:0];
+//        self.lbl_theme.text = [theme.objectid stringValue];
+//        
+//        NSArray* items = [self.fetchedResultsController fetchedObjects];
+//        [self.pvs_slider set:items];
+//    }
+//    else {
+//        
+//    }
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)viewDidUnload
@@ -254,15 +211,16 @@
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-   
+    
     if (controller == self.fetchedResultsController) {
         
         if (type == NSFetchedResultsChangeInsert) {
-            [vs_themePhotoSlider datasetItemAddedAt:[newIndexPath row]];
+            [pvs_slider item:anObject insertedAt:[newIndexPath row] ];
+          
             
         }
         else if (type == NSFetchedResultsChangeMove) {
-            [vs_themePhotoSlider datasetHasChangedAt:[newIndexPath row]];
+            [pvs_slider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
         }
     }
     else {
@@ -280,42 +238,36 @@
     UIImageView* v = [userInfo objectForKey:an_IMAGEVIEW];
     if (v != nil) {
         [v setImage:image];
-        [vs_themePhotoSlider setNeedsDisplay];
+        [pvs_slider setNeedsDisplay];
     }
     
 }
-
 
 #pragma mark - UIViewSliderDelegate 
 
 
 - (id) configureViewFor:(Photo*)photo atIndex:(int)index {
     ImageManager *imageManager = [ImageManager getInstance];
-   
+    
     
     //need to grab the photo, create the image view, and then return that sucker
-    int xCoordinateForImage = (index )* (kPictureWidth + kPictureSpacing);
+    int xCoordinateForImage = (kPictureWidth+kPictureSpacing)*index;
     
     CGRect rect = CGRectMake(xCoordinateForImage, 0, kPictureWidth, kPictureHeight);    
     UIImageView* imageView = [[[UIImageView alloc]initWithFrame:rect]autorelease];
-    UITextView* textView = [[[UITextView alloc]initWithFrame:rect]autorelease];
-    TestSliderView* testSliderView = [[TestSliderView alloc]initWithFrame:rect];
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-    [userInfo setObject:imageView forKey:an_IMAGEVIEW];
+    
+    
+    
+    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
     UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];   
     
-    textView.text = [NSString stringWithFormat:@"Date Created: %@",[DateTimeHelper formatDateForWebService:self.theme.datecreated]];
-    testSliderView.tv_DisplayName.text = photo.descr;
-    testSliderView.tv_DateCreated.text = [DateTimeHelper formatDateForWebService:photo.datecreated];
-    testSliderView.tv_Other = [photo.objectid stringValue];
-    
+       
     if (image != nil) {
         
         imageView.image = image;
-        
-        //        imageView.backgroundColor = [UIColor blackColor];
-        //        
+     
     }
     else {
         imageView.backgroundColor = [UIColor blackColor];
@@ -346,7 +298,7 @@
         
         //execute the enumeration only if there is not already one executing
         if (!m_isThereAThemePhotoEnumerationAlreadyExecuting) {
-
+            
             
             m_isThereAThemePhotoEnumerationAlreadyExecuting = YES;
             WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
@@ -364,5 +316,34 @@
     }
 }
 
+#pragma mark - Enumeration Completion Handlers
+- (void)onEnumerateThemesFinished:(NSNotification*)notification {
+    
+}
+
+- (void)onEnumeratePhotosForThemeFinished:(NSNotification*)notification {
+    NSString* activityName = @"ThemeBrowserController.onEnumeratePhotosForThemeFinished:";
+    NSDictionary *userInfo = [notification userInfo];
+    if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
+        EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
+        if ([returnedContext.isDone boolValue] == NO) {
+            //enumeration remains open
+            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
+            [BLLog v:activityName withMessage:message];
+            self.ec_activeThemePhotoContext = returnedContext;
+        }
+        else {
+            //enumeration is complete, set the context to nil
+            
+            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
+            [BLLog v:activityName withMessage:message];
+            [returnedContext release];
+            self.ec_activeThemePhotoContext = nil;
+            
+        }
+        
+    }
+    m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
+}
 
 @end

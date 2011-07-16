@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIViewSlider.h"
 
-#define kNumPicturesToLoad 5;
+#define kNumPicturesToLoad 3;
 
 @implementation UIViewSlider
 @synthesize sv_scrollView;
@@ -21,7 +21,7 @@
 @synthesize m_numItemsToLoadOnScroll;
 @synthesize m_fetchedResultsController;
 @synthesize delegate;
-
+@synthesize m_lastScrollPosition;
 
 #pragma mark - Initializers
 - (id)initWithFrame:(CGRect)frame
@@ -30,7 +30,7 @@
     if (self) {
         self.sv_scrollView = [[UIScrollView alloc]initWithFrame:frame];
         
-        
+        m_lastScrollPosition = 0;
         sv_scrollView.layer.borderColor = [UIColor redColor].CGColor;
         sv_scrollView.layer.borderWidth = 3.0f;
         sv_scrollView.delegate = self;
@@ -49,7 +49,11 @@
         sv_scrollView.layer.borderColor = [UIColor redColor].CGColor;
         sv_scrollView.layer.borderWidth = 3.0f;
         sv_scrollView.delegate = self;
-
+        sv_scrollView.pagingEnabled = YES;
+        sv_scrollView.bounces = YES;
+        
+        
+        m_lastScrollPosition = 0;
         [self addSubview:sv_scrollView];
         
     }
@@ -60,7 +64,7 @@
 //    if ((self = [super init])) {
 //       self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;  
 //    }
-    
+    self.m_lastScrollPosition = 0;
     self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
     return self;
 }
@@ -187,57 +191,65 @@
 - (void) render  {
    CGPoint position =  self.sv_scrollView.contentOffset;
     int index = position.x / (m_itemWidth + m_itemSpacing);
-    NSLog(@"Scroll Stopped at Index %@",[NSNumber numberWithInt:index]);
+//    NSLog(@"Scroll Stopped at Index %@",[NSNumber numberWithInt:index]);
     
-    int numberOfSlots = [m_viewList count];
-    int startIndex = index - m_numItemsToLoadOnScroll;
-    int endIndex = index + m_numItemsToLoadOnScroll;
-    
-    
-    if (endIndex > numberOfSlots) {
-        endIndex =numberOfSlots;
-    }
-    
-    if (startIndex < 0) {
-        startIndex = 0;
-    }
-    
-    for (int i = startIndex; i<endIndex; i++) {
-        if ([m_viewList objectAtIndex:i] != [NSNull null]) {
-            //if the slot is already filled with a view, remove it
-            UIView* v = [m_viewList objectAtIndex:i];
-            [v removeFromSuperview];            
-            [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+    if (index != self.m_lastScrollPosition) {
+        //we notify the delegate that the scroll position has changed, and pass the number of items remaining
+        //        int numberOfCellsRemaining = ([self.m_viewList count]-1) - index;
+        //        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
+        self.m_lastScrollPosition = index;
+        
+        
+        int numberOfSlots = [m_viewList count];
+        int startIndex = index - m_numItemsToLoadOnScroll;
+        int endIndex = index + m_numItemsToLoadOnScroll;
+        
+        
+        if (endIndex > numberOfSlots) {
+            endIndex =numberOfSlots;
         }
         
-        
-        //get the view to render the current cell from delegate
-        UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
-        
-        //now we need to add it to the slider and scroll view
-        [m_viewList replaceObjectAtIndex:i withObject:cellView];
-        [sv_scrollView addSubview:cellView];
-        
-               
-    }
-    
-    //now we need to manage our memory
-    //so we clear out any image views in the scroll view that are past the constant buffer amount
-    
-    for (int i = 0; i < startIndex; i++) {
-        if ([m_viewList objectAtIndex:i]!=[NSNull null]) {
-            UIView* v = [m_viewList objectAtIndex:i];
-            [v removeFromSuperview];
-            [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+        if (startIndex < 0) {
+            startIndex = 0;
         }
         
-    }
-    for (int i = endIndex; i < [m_viewList count] ; i++) {
-        if ([m_viewList objectAtIndex:i] != [NSNull null]) {
-            UIView* v = [m_viewList objectAtIndex:i];
-            [v removeFromSuperview];
-            [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+        for (int i = startIndex; i<endIndex; i++) {
+            if ([m_viewList objectAtIndex:i] != [NSNull null]) {
+                //if the slot is already filled with a view, remove it
+                UIView* v = [m_viewList objectAtIndex:i];
+                [v removeFromSuperview];            
+                [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+            }
+            
+            
+            //get the view to render the current cell from delegate
+            UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
+            
+            //now we need to add it to the slider and scroll view
+            [m_viewList replaceObjectAtIndex:i withObject:cellView];
+            [sv_scrollView addSubview:cellView];
+            
+            
         }
+        
+        //now we need to manage our memory
+//        //so we clear out any image views in the scroll view that are past the constant buffer amount
+//        
+//        for (int i = 0; i < startIndex; i++) {
+//            if ([m_viewList objectAtIndex:i]!=[NSNull null]) {
+//                UIView* v = [m_viewList objectAtIndex:i];
+//                [v removeFromSuperview];
+//                [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+//            }
+//            
+//        }
+//        for (int i = endIndex; i < [m_viewList count] ; i++) {
+//            if ([m_viewList objectAtIndex:i] != [NSNull null]) {
+//                UIView* v = [m_viewList objectAtIndex:i];
+//                [v removeFromSuperview];
+//                [m_viewList replaceObjectAtIndex:i withObject:[NSNull null]];
+//            }
+//        }
     }
 
 }
@@ -246,14 +258,7 @@
     [self render];
 }
 
-//
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-//    
-//    
-//    [self render];
-//
-//    
-//}
+
 
 - (void)dealloc
 {
