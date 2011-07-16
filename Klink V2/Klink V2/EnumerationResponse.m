@@ -25,6 +25,7 @@
         
         if ([jsonDictionary objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
             self.enumerationContext =[[EnumerationContext alloc]initFromDictionary:[jsonDictionary objectForKey:an_ENUMERATIONCONTEXT]];
+            
         }
         
         

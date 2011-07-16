@@ -9,6 +9,7 @@
 #import "WS_EnumerationManager.h"
 #import "ServerManagedResource.h"
 #import "ApplicationSettings.h"
+#import "Theme.h"
 @implementation WS_EnumerationManager
 @synthesize queryQueue;
 
@@ -91,7 +92,19 @@ static  WS_EnumerationManager* sharedManager;
     [self enumerateObjectsWithType:tn_THEME maximumNumberOfResults:maximumNumberOfResults withQueryOptions:queryOptions onFinishNotify:notificationID];
     
 }
-
+- (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage{
+    
+    NSString* activityName = @"WS_EnumerationManager.enumeratePhotosInTheme:";
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    if (authenticationContext != nil) {
+        Query* query = [Query queryPhotosWithTheme:theme.objectid];
+        query.queryoptions = queryOptions;
+        NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
+        [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
+    }
+}
 #pragma mark - Enumeration Result Handlers
 
 - (void) onEnumerateComplete:(ASIHTTPRequest*)request {
@@ -101,12 +114,13 @@ static  WS_EnumerationManager* sharedManager;
    
     
     EnumerationResponse* enumerationResponse = [[EnumerationResponse alloc]initFromDictionary:response];
-    
+    EnumerationContext* enumerationContext = [enumerationResponse.enumerationContext retain];
     if (enumerationResponse.didSucceed == [NSNumber numberWithBool:YES]) {
         
         NSString* message = [NSString stringWithFormat:@"enumeration succeeded, returned: %@",[request responseString]];
         [BLLog v:activityName withMessage:message];
-
+        NSDictionary* passedContext = [request userInfo];
+        BOOL shouldEnumerateSinglePage = [[passedContext objectForKey:an_SHOULDENUMERATESINGLEPAGE] boolValue];
         
         //process primary & secondary results
         for (int i = 0; i < [enumerationResponse.primaryResults count]; i++) {
@@ -118,15 +132,17 @@ static  WS_EnumerationManager* sharedManager;
         }
         
         //need to now re-execute for the next enumeration context
-        if (enumerationResponse.enumerationContext.isDone == [NSNumber numberWithBool:YES]) {
+        if (enumerationResponse.enumerationContext.isDone == [NSNumber numberWithBool:YES] ||
+            shouldEnumerateSinglePage) {
+            //enumeration is complete, or the user context specified says that only a single enumerations hould be executed
             NSString* notificationTarget = nil;
-            NSDictionary* passedContext = [request userInfo];
             
-            if ([passedContext objectForKey:@"onfinishnotify"] != [NSNull null]) {
-                notificationTarget = [passedContext objectForKey:@"onfinishnotify"];
-                
+            
+            if ([passedContext objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
+                notificationTarget = [passedContext objectForKey:an_ONFINISHNOTIFY];
+                NSDictionary* userInfo = [NSDictionary dictionaryWithObject:enumerationResponse.enumerationContext forKey:an_ENUMERATIONCONTEXT];
                 NSNotificationCenter *notifcationCenter = [NSNotificationCenter defaultCenter];
-                [notifcationCenter postNotificationName:notificationTarget object:self];
+                [notifcationCenter postNotificationName:notificationTarget object:self userInfo:userInfo];
             }
             
             
@@ -135,13 +151,13 @@ static  WS_EnumerationManager* sharedManager;
         }
         else {
             NSDictionary* passedContext = [request userInfo];
-            Query* query = [passedContext objectForKey:@"query"];
+            Query* query = [passedContext objectForKey:an_QUERY];
             EnumerationContext* newEnumerationContext = enumerationResponse.enumerationContext;
             AuthenticationContext* newAuthenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
             
             NSString* notificationTarget = nil;
-            if ([passedContext objectForKey:@"onfinishnotify"] != [NSNull null]) {
-                notificationTarget = [passedContext objectForKey:@"onfinishnotify"];
+            if ([passedContext objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
+                notificationTarget = [passedContext objectForKey:an_ONFINISHNOTIFY];
             }
 
             
@@ -174,19 +190,27 @@ static  WS_EnumerationManager* sharedManager;
 - (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext*)enumerationContext
     onFinishNotify:(id)notificationTarget{
        
-    if (enumerationContext.isDone != [NSNumber numberWithBool:YES]) {
-        NSMutableDictionary* passedContext = [NSMutableDictionary dictionaryWithObject:url forKey:@"URL"];
-        [passedContext setObject:query forKey:@"query"];
-        [passedContext setObject:enumerationContext forKey:@"enumerationcontext"];
-        
-        if (notificationTarget != nil) {
-            [passedContext setObject:notificationTarget forKey:@"onfinishnotify"];
-        }
+    [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationTarget shouldEnumerateSinglePage:NO];
+}
 
+
+- (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext *)enumerationContext onFinishNotify:(id)notificationTarget shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
+    if (enumerationContext.isDone != [NSNumber numberWithBool:YES]) {
         
-       [self execute:url onFinishSelector:@selector(onEnumerateComplete:) 
-      onFailSelector:@selector(onEnumerateFail:) withUserInfo:passedContext];
-   
+        //Construct the enumeration user info data structure which is passed through to the response handler
+        NSMutableDictionary* passedContext = [NSMutableDictionary dictionaryWithObject:url forKey:@"URL"];
+        [passedContext setObject:query forKey:an_QUERY];
+        [passedContext setObject:enumerationContext forKey:an_ENUMERATIONCONTEXT];
+        [passedContext setObject:[NSNumber numberWithBool:shouldEnumerateSinglePage] forKey:an_SHOULDENUMERATESINGLEPAGE];
+        if (notificationTarget != nil) {
+            [passedContext setObject:notificationTarget forKey:an_ONFINISHNOTIFY];
+        }
+        
+        
+        
+        [self execute:url onFinishSelector:@selector(onEnumerateComplete:) 
+       onFailSelector:@selector(onEnumerateFail:) withUserInfo:passedContext];
+        
     }
 }
 

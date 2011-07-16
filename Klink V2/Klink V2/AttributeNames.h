@@ -56,8 +56,8 @@ extern NSString* const an_INCLUDELINKEDOBJECTS;
 extern NSString* const an_REFERENCINGOBJECTTYPE;
 extern NSString* const an_MAXLINKSRETURNEDPEROBJECT;
 extern NSString* const an_QUERYOPTIONS;
-extern NSString* const an_SORTASCENDING;
-extern NSString* const an_SORTATTRIBUTE;
+extern NSString* const an_LINKED_RESULTS_SORTASCENDING;
+extern NSString* const an_LINKED_RESULTS_SORTATTRIBUTE;
 extern NSString* const an_TITLE;
 extern NSString* const an_DATEDELETED;
 extern NSString* const an_ATTRIBUTENAME;
@@ -67,3 +67,35 @@ extern NSString* const an_CREATORNAME;
 extern NSString* const an_DESCRIPTION;
 extern NSString* const an_HOMEIMAGEURL;
 extern NSString* const an_THEMEID;
+extern NSString* const an_IMAGEVIEW;
+extern NSString* const an_QUERY;
+extern NSString* const an_ONFINISHNOTIFY;
+extern NSString* const an_SHOULDENUMERATESINGLEPAGE;
+extern NSString* const an_ATTRIBUTEEXPRESSIONS;
+extern NSString* const an_ATTRIBUTE;
+extern NSString* const an_PRIMARY_RESULTS_SORTASCENDING;
+extern NSString* const an_PRIMARY_RESULTS_SORTATTRIBUTE;
+extern NSString* const an_OPCODE;
+extern NSString* const an_VALUE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

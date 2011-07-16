@@ -63,5 +63,14 @@
     return retVal;
 }
 
-
+#pragma mark - Static constructors for known scenarios
++ (EnumerationContext*) contextForPhotosInTheme:(Theme*)theme {
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize =[NSNumber numberWithInt:1];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];
+    
+    //TODO: we can intelligently guess the page we will need here in order to not make any repetitive calls
+    
+    return enumerationContext;
+}
 @end

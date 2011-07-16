@@ -27,6 +27,7 @@
 - (void) enumerateObjectsWithIds: (NSArray*)ids  
                 withQueryOptions:(QueryOptions*)queryOptions
                   onFinishNotify:(NSString*)notificationTarget;
+
 - (void) enumerateObjectsWithType:(NSString*)objectType 
            maximumNumberOfResults:(NSNumber*)maxResults 
            withQueryOptions:(QueryOptions*)queryOptions
@@ -34,11 +35,16 @@
 
 - (void) enumerateThemes:(NSNumber*)maximumNumberOfResults withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID;
 
+- (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
+
 - (void) execute:(NSURL*)url onFinishSelector:(SEL)onfinishselector onFailSelector:(SEL)onfailselector withUserInfo:(NSDictionary*)userInfo;
 
 - (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext*)enumerationContext  onFinishNotify:notificationTarget;
 
+- (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext *)enumerationContext onFinishNotify:(id)notificationTarget shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
+
 + (NSString*) getTypeName;
+
 + (WS_EnumerationManager*) getInstance;
 
 @end

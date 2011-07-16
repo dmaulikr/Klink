@@ -15,13 +15,13 @@
 static  ImageManager* sharedManager;  
 
 + (ImageManager*) getInstance {
-    NSString* activityName = @"ImageManager.getInstance:";
+//    NSString* activityName = @"ImageManager.getInstance:";
     @synchronized(self)
     {
         if (!sharedManager) {
             sharedManager = [[ImageManager alloc]init];
         } 
-        [BLLog v:activityName withMessage:@"completed initialization"];
+//        [BLLog v:activityName withMessage:@"completed initialization"];
         return sharedManager;
     }
 }
@@ -143,14 +143,14 @@ static  ImageManager* sharedManager;
     NSFileManager* fileManager = [NSFileManager defaultManager];
     
     if ([fileManager fileExistsAtPath:path]) {
-        NSString* message = [NSString stringWithFormat:@"Found image on local store %@ at file %@",url,path];
-        [BLLog v:activityName withMessage:message];
+//        NSString* message = [NSString stringWithFormat:@"Found image on local store %@ at file %@",url,path];
+//        [BLLog v:activityName withMessage:message];
         UIImage* retVal = [UIImage imageWithContentsOfFile:path];
         return retVal;
     }
     
-    NSString* message = [NSString stringWithFormat:@"Beginning download of %@ to file %@",url,path];
-    [BLLog v:activityName withMessage:message];
+//    NSString* message = [NSString stringWithFormat:@"Beginning download of %@ to file %@",url,path];
+//    [BLLog v:activityName withMessage:message];
     
     NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithCapacity:2];
     [requestUserInfo setValue:url forKey:@"url"];
@@ -158,6 +158,7 @@ static  ImageManager* sharedManager;
     [requestUserInfo setObject:callback forKey:@"callback"];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:urlObject];    
+    request.userInfo = requestUserInfo;
     request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
     request.delegate = self;
     request.downloadDestinationPath = path;

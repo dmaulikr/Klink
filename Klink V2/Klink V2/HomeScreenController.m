@@ -8,10 +8,13 @@
 
 #import "HomeScreenController.h"
 #import "ThemeBrowserController.h"
-
+#import "ThemeBrowserViewController2.h"
+#import "InfinitePagingViewController.h"
 @implementation HomeScreenController
 @synthesize managedObjectContext;
-
+@synthesize button1;
+@synthesize button2;
+@synthesize button3;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -57,11 +60,25 @@
 
 #pragma mark - Event Handlers
 - (IBAction)onButtonClicked:(id)sender {
-    ThemeBrowserController* themeBrowserController = [[ThemeBrowserController alloc]initWithNibName:@"ThemeBrowserController" bundle:nil];
     
-    themeBrowserController.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:themeBrowserController animated:YES];
-    [themeBrowserController release];
+    if (sender == button1) {
+        ThemeBrowserController* themeBrowserController = [[ThemeBrowserController alloc]initWithNibName:@"ThemeBrowserController" bundle:nil];
+        
+        themeBrowserController.managedObjectContext = self.managedObjectContext;
+        [self.navigationController pushViewController:themeBrowserController animated:YES];
+        [themeBrowserController release];
+    }
+    else if (sender == button2) {
+        ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
+        
+        themeBrowserController2.managedObjectContext = self.managedObjectContext;
+        [self.navigationController pushViewController:themeBrowserController2 animated:YES];
+        [themeBrowserController2 release];
+    }
+    else if (sender == button3) {
+        InfinitePagingViewController* c = [[InfinitePagingViewController alloc]initWithNibName:@"InfinitePagingViewController" bundle:nil];
+        [self.navigationController pushViewController:c animated:YES];
+    }
 }
 
 @end

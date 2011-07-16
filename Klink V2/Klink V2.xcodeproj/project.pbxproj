@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C511696A13CE98AB00EA1EF7 /* TestSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C511696913CE98AB00EA1EF7 /* TestSliderView.m */; };
+		C511696D13CE98BB00EA1EF7 /* TestSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C511696C13CE98BB00EA1EF7 /* TestSliderView.xib */; };
+		C511697013CF2CEB00EA1EF7 /* UIPagedViewSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C511696F13CF2CEB00EA1EF7 /* UIPagedViewSlider.m */; };
+		C511697413CF327700EA1EF7 /* ThemeBrowserViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = C511697213CF327700EA1EF7 /* ThemeBrowserViewController2.m */; };
+		C511697513CF327700EA1EF7 /* ThemeBrowserViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = C511697313CF327700EA1EF7 /* ThemeBrowserViewController2.xib */; };
+		C511698513CF478100EA1EF7 /* InfinitePagingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C511698013CF478100EA1EF7 /* InfinitePagingAppDelegate.m */; };
+		C511698613CF478100EA1EF7 /* InfinitePagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C511698213CF478100EA1EF7 /* InfinitePagingView.m */; };
+		C511698713CF478100EA1EF7 /* InfinitePagingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C511698413CF478100EA1EF7 /* InfinitePagingViewController.m */; };
+		C511698913CF4E9400EA1EF7 /* InfinitePagingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C511698813CF4E9400EA1EF7 /* InfinitePagingViewController.xib */; };
 		C5190A1F13C18C0C0077EECA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A1E13C18C0C0077EECA /* UIKit.framework */; };
 		C5190A2113C18C0C0077EECA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A2013C18C0C0077EECA /* Foundation.framework */; };
 		C5190A2313C18C0C0077EECA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A2213C18C0C0077EECA /* CoreGraphics.framework */; };
@@ -84,6 +93,7 @@
 		C561276213CB4B98005E5731 /* ThemeBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561276013CB4B98005E5731 /* ThemeBrowserController.xib */; };
 		C561276513CB56FA005E5731 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C561276413CB56FA005E5731 /* Theme.m */; };
 		C56A8DA013C78A1E00E527D6 /* UIViewSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */; };
+		C5BBF97D13CCF0CA00A23924 /* QueryExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BBF97C13CCF0CA00A23924 /* QueryExpression.m */; };
 		C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808F713C3851F001E16F3 /* CFNetwork.framework */; };
 		C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */; };
 		C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */; };
@@ -101,6 +111,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C511696813CE98AB00EA1EF7 /* TestSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSliderView.h; sourceTree = "<group>"; };
+		C511696913CE98AB00EA1EF7 /* TestSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSliderView.m; sourceTree = "<group>"; };
+		C511696C13CE98BB00EA1EF7 /* TestSliderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestSliderView.xib; sourceTree = "<group>"; };
+		C511696E13CF2CEB00EA1EF7 /* UIPagedViewSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider.h; sourceTree = "<group>"; };
+		C511696F13CF2CEB00EA1EF7 /* UIPagedViewSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider.m; sourceTree = "<group>"; };
+		C511697113CF327700EA1EF7 /* ThemeBrowserViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeBrowserViewController2.h; sourceTree = "<group>"; };
+		C511697213CF327700EA1EF7 /* ThemeBrowserViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeBrowserViewController2.m; sourceTree = "<group>"; };
+		C511697313CF327700EA1EF7 /* ThemeBrowserViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserViewController2.xib; sourceTree = "<group>"; };
+		C511697F13CF478100EA1EF7 /* InfinitePagingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfinitePagingAppDelegate.h; sourceTree = "<group>"; };
+		C511698013CF478100EA1EF7 /* InfinitePagingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfinitePagingAppDelegate.m; sourceTree = "<group>"; };
+		C511698113CF478100EA1EF7 /* InfinitePagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfinitePagingView.h; sourceTree = "<group>"; };
+		C511698213CF478100EA1EF7 /* InfinitePagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfinitePagingView.m; sourceTree = "<group>"; };
+		C511698313CF478100EA1EF7 /* InfinitePagingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfinitePagingViewController.h; sourceTree = "<group>"; };
+		C511698413CF478100EA1EF7 /* InfinitePagingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfinitePagingViewController.m; sourceTree = "<group>"; };
+		C511698813CF4E9400EA1EF7 /* InfinitePagingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfinitePagingViewController.xib; sourceTree = "<group>"; };
 		C5190A1A13C18C0C0077EECA /* Klink V2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Klink V2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5190A1E13C18C0C0077EECA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C5190A2013C18C0C0077EECA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -246,6 +271,8 @@
 		C561276413CB56FA005E5731 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		C56A8D9E13C78A1E00E527D6 /* UIViewSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSlider.h; sourceTree = "<group>"; };
 		C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewSlider.m; sourceTree = "<group>"; };
+		C5BBF97B13CCF0CA00A23924 /* QueryExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryExpression.h; sourceTree = "<group>"; };
+		C5BBF97C13CCF0CA00A23924 /* QueryExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryExpression.m; sourceTree = "<group>"; };
 		C5F808F713C3851F001E16F3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -285,6 +312,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C511697E13CF478100EA1EF7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C511698813CF4E9400EA1EF7 /* InfinitePagingViewController.xib */,
+				C511697F13CF478100EA1EF7 /* InfinitePagingAppDelegate.h */,
+				C511698013CF478100EA1EF7 /* InfinitePagingAppDelegate.m */,
+				C511698113CF478100EA1EF7 /* InfinitePagingView.h */,
+				C511698213CF478100EA1EF7 /* InfinitePagingView.m */,
+				C511698313CF478100EA1EF7 /* InfinitePagingViewController.h */,
+				C511698413CF478100EA1EF7 /* InfinitePagingViewController.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		C5190A0F13C18C0C0077EECA = {
 			isa = PBXGroup;
 			children = (
@@ -516,6 +557,8 @@
 				C5190A9B13C1926C0077EECA /* Query.m */,
 				C5190A9C13C1926C0077EECA /* QueryOptions.h */,
 				C5190A9D13C1926C0077EECA /* QueryOptions.m */,
+				C5BBF97B13CCF0CA00A23924 /* QueryExpression.h */,
+				C5BBF97C13CCF0CA00A23924 /* QueryExpression.m */,
 			);
 			name = Enumeration;
 			sourceTree = "<group>";
@@ -582,6 +625,7 @@
 		C5190B1213C196960077EECA /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				C511697E13CF478100EA1EF7 /* Classes */,
 				C5190A4813C192690077EECA /* ASIHttp */,
 				C5190B1413C196AD0077EECA /* JSONKit.h */,
 				C5190B1513C196AD0077EECA /* JSONKit.m */,
@@ -598,6 +642,9 @@
 				C561275E13CB4B98005E5731 /* ThemeBrowserController.h */,
 				C561275F13CB4B98005E5731 /* ThemeBrowserController.m */,
 				C561276013CB4B98005E5731 /* ThemeBrowserController.xib */,
+				C511697113CF327700EA1EF7 /* ThemeBrowserViewController2.h */,
+				C511697213CF327700EA1EF7 /* ThemeBrowserViewController2.m */,
+				C511697313CF327700EA1EF7 /* ThemeBrowserViewController2.xib */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -607,6 +654,11 @@
 			children = (
 				C56A8D9E13C78A1E00E527D6 /* UIViewSlider.h */,
 				C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */,
+				C511696813CE98AB00EA1EF7 /* TestSliderView.h */,
+				C511696913CE98AB00EA1EF7 /* TestSliderView.m */,
+				C511696C13CE98BB00EA1EF7 /* TestSliderView.xib */,
+				C511696E13CF2CEB00EA1EF7 /* UIPagedViewSlider.h */,
+				C511696F13CF2CEB00EA1EF7 /* UIPagedViewSlider.m */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -729,6 +781,9 @@
 				C561275313CA329A005E5731 /* SampleViewController2.xib in Resources */,
 				C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */,
 				C561276213CB4B98005E5731 /* ThemeBrowserController.xib in Resources */,
+				C511696D13CE98BB00EA1EF7 /* TestSliderView.xib in Resources */,
+				C511697513CF327700EA1EF7 /* ThemeBrowserViewController2.xib in Resources */,
+				C511698913CF4E9400EA1EF7 /* InfinitePagingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -803,6 +858,13 @@
 				C561275C13CB4B7F005E5731 /* HomeScreenController.m in Sources */,
 				C561276113CB4B98005E5731 /* ThemeBrowserController.m in Sources */,
 				C561276513CB56FA005E5731 /* Theme.m in Sources */,
+				C5BBF97D13CCF0CA00A23924 /* QueryExpression.m in Sources */,
+				C511696A13CE98AB00EA1EF7 /* TestSliderView.m in Sources */,
+				C511697013CF2CEB00EA1EF7 /* UIPagedViewSlider.m in Sources */,
+				C511697413CF327700EA1EF7 /* ThemeBrowserViewController2.m in Sources */,
+				C511698513CF478100EA1EF7 /* InfinitePagingAppDelegate.m in Sources */,
+				C511698613CF478100EA1EF7 /* InfinitePagingView.m in Sources */,
+				C511698713CF478100EA1EF7 /* InfinitePagingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -871,7 +933,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Klink V2/Klink V2-Prefix.pch";
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -885,7 +947,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Klink V2/Klink V2-Prefix.pch";
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
