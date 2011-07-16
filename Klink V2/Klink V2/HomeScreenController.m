@@ -9,7 +9,7 @@
 #import "HomeScreenController.h"
 #import "ThemeBrowserController.h"
 #import "ThemeBrowserViewController2.h"
-#import "InfinitePagingViewController.h"
+
 @implementation HomeScreenController
 @synthesize managedObjectContext;
 @synthesize button1;
@@ -76,8 +76,7 @@
         [themeBrowserController2 release];
     }
     else if (sender == button3) {
-        InfinitePagingViewController* c = [[InfinitePagingViewController alloc]initWithNibName:@"InfinitePagingViewController" bundle:nil];
-        [self.navigationController pushViewController:c animated:YES];
+       
     }
 }
 
