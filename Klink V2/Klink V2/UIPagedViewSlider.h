@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "UIViewSlider.h"
 
+@class UIPagedViewSlider;
+@protocol UIPagedViewSliderDelegate <NSObject>
+@optional
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index;
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd;
+@end
+
+
 @interface UIPagedViewSlider : UIView  <UIScrollViewDelegate>{
     UIScrollView* sv_slider;
     NSMutableArray* m_viewList;
@@ -18,7 +26,7 @@
     int m_itemWidth;
     int m_lastScrollPosition;
     int m_numItemsToLoadOnScroll;
-    id<UIViewSliderDelegate> delegate;
+    id<UIPagedViewSliderDelegate> delegate;
 }
 
 @property (nonatomic,retain) UIScrollView* sv_slider;
@@ -28,10 +36,9 @@
 @property int m_itemWidth;
 @property int m_lastScrollPosition;
 @property int m_numItemsToLoadOnScroll;
-@property (nonatomic,retain) IBOutlet id<UIViewSliderDelegate> delegate;
+@property (nonatomic,retain) IBOutlet id<UIPagedViewSliderDelegate> delegate;
 - (id) initWith:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing;
-- (void) set:(NSArray*)items;
-- (void) datasetItemAddedAt:(int)index;
+- (void) resetSliderWithItems:(NSArray*)items;
 - (void) item:(id)object insertedAt:(int)index;
 - (void) item:(id)object atIndex:(int)index movedTo:(int)newIndex;
 @end

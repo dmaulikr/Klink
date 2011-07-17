@@ -84,4 +84,12 @@
     return query;
     
 }
+
++ (Query*)queryThemes {
+    Query* query =  [[[Query alloc] init]autorelease];
+    query.filterobjecttype = tn_THEME;
+    
+    return query;
+}
+
 @end

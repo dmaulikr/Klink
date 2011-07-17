@@ -20,7 +20,7 @@ static  DataLayer* sharedManager;
         if (!sharedManager) {
             sharedManager = [[super allocWithZone:NULL]init];
         } 
-        [BLLog v:activityName withMessage:@"completed initialization"];
+//        [BLLog v:activityName withMessage:@"completed initialization"];
         return sharedManager;
     }
 }
@@ -85,8 +85,8 @@ static  DataLayer* sharedManager;
         retVal = [NSNumber numberWithLongLong:(nextID)];
     }
     
-    NSString* message = [NSString stringWithFormat:@"Generated new id of %@",retVal];
-    [BLLog v:activityName withMessage:message];
+//    NSString* message = [NSString stringWithFormat:@"Generated new id of %@",retVal];
+//    [BLLog v:activityName withMessage:message];
 
     self.lastIDGenerated = [retVal longLongValue];
     return retVal;
@@ -120,16 +120,16 @@ static  DataLayer* sharedManager;
     }
 }
 
-+ (id) getObjectByType:(NSString *)typeName withValueEqual:(NSString *)value forAttribute:(NSString *)attributeName {
-    NSString* activityName = @"DataLayer.getObjectByType:";
-    id retVal = nil;
++ (id) getObjectsByType:(NSString*)typeName withValueEqual:(NSString*)value forAttribute:(NSString*)attributeName {
+    NSString* activityName = @"DataLayer.getObjectsByType:";
+    NSArray* retVal = nil;
     
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *appContext = appDelegate.managedObjectContext;
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:appContext];
     
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
@@ -147,13 +147,25 @@ static  DataLayer* sharedManager;
         
     }
     else {
-        [BLLog v:activityName withMessage:@"found object with id"];
-        retVal = [results objectAtIndex:0];
+//        [BLLog v:activityName withMessage:@"found object with id"];
+        retVal = results;
     }
-    
-    return retVal;
-    
+    [request release];
+    return retVal; 
 }
+
++ (id) getObjectByType:(NSString *)typeName withValueEqual:(NSString *)value forAttribute:(NSString *)attributeName {
+    NSArray* results = [DataLayer getObjectsByType:typeName withValueEqual:value forAttribute:attributeName];
+    
+    if ([results count]>0) {
+        return [results objectAtIndex:0];
+    }
+    else {
+        return nil;
+    }
+}
+
+
 + (id) getObjectByID:(NSNumber*) identifier withObjectType:(NSString*)objectType {
     
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -204,6 +216,9 @@ static  DataLayer* sharedManager;
     return results;
 
 }
+
+
+                                                                                                        
 
 #pragma mark - Theme specific retrieval methods
 + (id) getNewestTheme {

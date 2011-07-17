@@ -92,6 +92,33 @@ static  WS_EnumerationManager* sharedManager;
     [self enumerateObjectsWithType:tn_THEME maximumNumberOfResults:maximumNumberOfResults withQueryOptions:queryOptions onFinishNotify:notificationID];
     
 }
+
+
+- (void) enumerateThemes: (NSNumber*)maximumNumberOfResults
+            withPageSize:(NSNumber*)pageSize
+        withQueryOptions:(QueryOptions*)queryOptions 
+          onFinishNotify:(NSString*)notificationID
+   useEnumerationContext:(EnumerationContext*)enumerationContext
+shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    if (enumerationContext == nil) {
+        enumerationContext = [[EnumerationContext alloc]init];
+        enumerationContext.pageSize = pageSize;
+        enumerationContext.maximumNumberOfResults = maximumNumberOfResults;
+        
+    }
+    
+    if (authenticationContext != nil) {
+        Query* query = [Query queryThemes];
+        query.queryoptions = queryOptions;
+        NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
+        [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
+    }
+}
+
+
 - (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage{
     
     NSString* activityName = @"WS_EnumerationManager.enumeratePhotosInTheme:";
@@ -131,13 +158,15 @@ static  WS_EnumerationManager* sharedManager;
             [ServerManagedResource refreshWithServerVersion:[enumerationResponse.secondaryResults objectAtIndex:i]];
         }
         
+        Query* query = [passedContext objectForKey:an_QUERY];        
+        EnumerationContext* newEnumerationContext = enumerationResponse.enumerationContext;
+        NSString* notificationTarget = nil;
+        
+        
         //need to now re-execute for the next enumeration context
         if (enumerationResponse.enumerationContext.isDone == [NSNumber numberWithBool:YES] ||
             shouldEnumerateSinglePage) {
             //enumeration is complete, or the user context specified says that only a single enumerations hould be executed
-            NSString* notificationTarget = nil;
-            
-            
             if ([passedContext objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
                 notificationTarget = [passedContext objectForKey:an_ONFINISHNOTIFY];
                 NSDictionary* userInfo = [NSDictionary dictionaryWithObject:enumerationResponse.enumerationContext forKey:an_ENUMERATIONCONTEXT];
@@ -150,9 +179,7 @@ static  WS_EnumerationManager* sharedManager;
                 [BLLog v:activityName withMessage:message];        
         }
         else {
-            NSDictionary* passedContext = [request userInfo];
-            Query* query = [passedContext objectForKey:an_QUERY];
-            EnumerationContext* newEnumerationContext = enumerationResponse.enumerationContext;
+           
             AuthenticationContext* newAuthenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
             
             NSString* notificationTarget = nil;
@@ -167,7 +194,16 @@ static  WS_EnumerationManager* sharedManager;
             
             [BLLog v:activityName withMessage:message];
             [self enumerate:newURL withQuery:query withEnumerationContext:newEnumerationContext onFinishNotify:notificationTarget];
+            
+
         }
+//TODO: memory leak        
+//        [query release];
+//        [newEnumerationContext release];
+//        
+//        if (notificationTarget != nil) {
+//            [notificationTarget release];
+//        }
     
     
     }
@@ -199,6 +235,9 @@ static  WS_EnumerationManager* sharedManager;
         
         //Construct the enumeration user info data structure which is passed through to the response handler
         NSMutableDictionary* passedContext = [NSMutableDictionary dictionaryWithObject:url forKey:@"URL"];
+        [query retain];
+        [enumerationContext retain];
+        [notificationTarget retain];
         [passedContext setObject:query forKey:an_QUERY];
         [passedContext setObject:enumerationContext forKey:an_ENUMERATIONCONTEXT];
         [passedContext setObject:[NSNumber numberWithBool:shouldEnumerateSinglePage] forKey:an_SHOULDENUMERATESINGLEPAGE];

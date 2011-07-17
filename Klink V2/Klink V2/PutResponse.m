@@ -13,7 +13,7 @@
 @synthesize modifiedResource;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
-    NSString* activityName = @"PutResponse.initFromDictionary:";
+//    NSString* activityName = @"PutResponse.initFromDictionary:";
     
     self = [super initFromDictionary:jsonDictionary]; 
     

@@ -7,7 +7,7 @@
 //
 
 #import "HomeScreenController.h"
-#import "ThemeBrowserController.h"
+
 #import "ThemeBrowserViewController2.h"
 
 @implementation HomeScreenController
@@ -62,11 +62,12 @@
 - (IBAction)onButtonClicked:(id)sender {
     
     if (sender == button1) {
-        ThemeBrowserController* themeBrowserController = [[ThemeBrowserController alloc]initWithNibName:@"ThemeBrowserController" bundle:nil];
+        ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
         
-        themeBrowserController.managedObjectContext = self.managedObjectContext;
-        [self.navigationController pushViewController:themeBrowserController animated:YES];
-        [themeBrowserController release];
+        themeBrowserController2.managedObjectContext = self.managedObjectContext;
+        [self.navigationController pushViewController:themeBrowserController2 animated:YES];
+        [themeBrowserController2 release];
+
     }
     else if (sender == button2) {
         ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];

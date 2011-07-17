@@ -14,17 +14,28 @@
 
 #define kPictureWidth 130
 #define kPictureSpacing 30
-#define kPictureHeight 100
+#define kPictureHeight 170
+
+#define kThemePictureWidth 320
+#define kThemePictureHeight 160
+#define kThemePictureSpacing 0
+
+#define kTextViewWidth 300
+#define kTextViewHeight 30
 
 @implementation ThemeBrowserViewController2
-@synthesize pvs_slider;
+@synthesize pvs_photoSlider;
+@synthesize pvs_themeSlider;
 @synthesize theme;
 @synthesize managedObjectContext;
-@synthesize fetchedResultsController = __fetchedResultsController;
+@synthesize frc_photosInCurrentTheme = __frc_photosInCurrentTheme;
 @synthesize frc_themes = __frc_themes;
 @synthesize lbl_theme;
 @synthesize ec_activeThemePhotoContext;
 @synthesize m_isThereAThemePhotoEnumerationAlreadyExecuting;
+@synthesize ec_activeThemeContext;
+@synthesize m_isThereAThemeEnumerationAlreadyExecuting;
+@synthesize m_outstandingPhotoEnumNotificationID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,33 +65,66 @@
     
 }
 
-- (void) enumerateThemesFromWebService {
-    WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
-    QueryOptions* queryOptions = [QueryOptions queryForThemes];
-    
-    NSString* notificationID = [NSString GetGUID];
-    [self registerNotification:notificationID targetSelector:@selector(onEnumerateThemesFinished:) targetObject:self];
-    
-    [enumerationManager enumerateThemes:[NSNumber numberWithInt:batchSize_THEME] withQueryOptions:queryOptions onFinishNotify:notificationID];
-}
+
 
 #pragma mark - View Controller Theme Assignment
 - (void) assignTheme:(Theme*)themeObject {
-    __fetchedResultsController = nil;
+    NSString* activityName = @"ThemeBrowserViewController2.assignTheme:";
+    __frc_photosInCurrentTheme = nil;
+    NSNumber* oldThemeID = self.theme.objectid;
+   
     self.theme = themeObject;    
     self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
-    NSArray* photos = [self.fetchedResultsController fetchedObjects];
-    [self.pvs_slider set:photos];
+    
+    NSString* message = [NSString stringWithFormat:@"Changing from ThemeID:%@ to ThemeID:%@",[oldThemeID stringValue],[themeObject.objectid stringValue]];
+    [BLLog v:activityName withMessage:message];
+    
+    NSArray* photos = [self.frc_photosInCurrentTheme fetchedObjects];
+    [self.pvs_photoSlider resetSliderWithItems:photos];
+    self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
+    self.m_outstandingPhotoEnumNotificationID = nil;
+    self.m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
 }
 
-#pragma mark - View lifecycle
 
+
+- (void) enumerateThemesFromWebService {
+    NSString* activityName = @"ThemeBrowserController.enumerateThemesFromWebService:";
+    if (ec_activeThemeContext == nil) {
+        //if we have a nil contect, that means we have yet to query for the photos in this theme directly
+        self.ec_activeThemeContext = [EnumerationContext contextForThemes];
+    }
+    
+    //execute the enumeration only if there is not already one executing
+    if (!m_isThereAThemeEnumerationAlreadyExecuting &&
+        ec_activeThemeContext.isDone!=[NSNumber numberWithBool:YES]) {
+        
+        m_isThereAThemeEnumerationAlreadyExecuting = YES;
+        WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
+        QueryOptions* queryOptions = [QueryOptions queryForThemes];
+        
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        NSString* notificationID = [NSString GetGUID];
+        [notificationCenter addObserver:self selector:@selector(onEnumerateThemesFinished:) name:notificationID object:nil];
+        
+        [enumerationManager enumerateThemes:[NSNumber numberWithInt:maxsize_THEMEDOWNLOAD] withPageSize:[NSNumber numberWithInt:pageSize_THEME] withQueryOptions:queryOptions onFinishNotify:notificationID useEnumerationContext:ec_activeThemeContext shouldEnumerateSinglePage:YES];
+        
+        
+        NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
+        [BLLog v:activityName withMessage:message];
+    }
+    
+}
+#pragma mark - View lifecycle
 - (void)viewDidLoad
 {
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
-    [self.pvs_slider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
+    [self.pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
+    [self.pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
+    
     if (self.theme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
+        [pvs_themeSlider resetSliderWithItems:themes];
         if ([themes count] > 0) {
             [self assignTheme:[themes objectAtIndex:0]];
         }
@@ -94,17 +138,7 @@
         
     }
      
-//    NSArray* themes = self.frc_themes.fetchedObjects;
-//    if ([themes count]>0) {
-//        self.theme = [themes objectAtIndex:0];
-//        self.lbl_theme.text = [theme.objectid stringValue];
-//        
-//        NSArray* items = [self.fetchedResultsController fetchedObjects];
-//        [self.pvs_slider set:items];
-//    }
-//    else {
-//        
-//    }
+
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -161,9 +195,9 @@
 
 
 //Returns a fetched controller delegate to populate the image slider for the current theme
-- (NSFetchedResultsController*) fetchedResultsController {
-    if (__fetchedResultsController != nil) {
-        return __fetchedResultsController;
+- (NSFetchedResultsController*) frc_photosInCurrentTheme {
+    if (__frc_photosInCurrentTheme != nil) {
+        return __frc_photosInCurrentTheme;
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -181,7 +215,7 @@
     NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     controller.delegate = self;
-    self.fetchedResultsController = controller;
+    self.frc_photosInCurrentTheme = controller;
     
     
     NSError* error = nil;
@@ -195,7 +229,7 @@
     [controller release];
     [fetchRequest release];
     
-    return __fetchedResultsController;
+    return __frc_photosInCurrentTheme;
     
 }
 
@@ -203,27 +237,31 @@
 -(void) frc_themes_didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath {
     
     if (type == NSFetchedResultsChangeInsert) {
+        [pvs_themeSlider item:anObject insertedAt:[newIndexPath row]];
         if (self.theme == nil) {
             //need to set the view controller's theme to theme
             [self assignTheme:anObject];
         }
     }
+    else if (type == NSFetchedResultsChangeMove) {
+        [pvs_themeSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+    }
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
-    if (controller == self.fetchedResultsController) {
+    if (controller == self.frc_photosInCurrentTheme) {
         
         if (type == NSFetchedResultsChangeInsert) {
-            [pvs_slider item:anObject insertedAt:[newIndexPath row] ];
+            [pvs_photoSlider item:anObject insertedAt:[newIndexPath row] ];
           
             
         }
         else if (type == NSFetchedResultsChangeMove) {
-            [pvs_slider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+            [pvs_photoSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
         }
     }
-    else {
+    else if (controller == self.frc_themes) {
         //its a new object in the theme controller
         [self frc_themes_didChangeObject:anObject
                              atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
@@ -238,7 +276,7 @@
     UIImageView* v = [userInfo objectForKey:an_IMAGEVIEW];
     if (v != nil) {
         [v setImage:image];
-        [pvs_slider setNeedsDisplay];
+        [pvs_photoSlider setNeedsDisplay];
     }
     
 }
@@ -276,18 +314,75 @@
     return imageView;
 }
 
-- (UIView*)viewSlider:(UIViewSlider *)viewSlider cellForRowAtIndex:(int)index {
+- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index {
+    ImageManager *imageManager = [ImageManager getInstance];
     
-    Photo* photo = [[self.fetchedResultsController fetchedObjects]objectAtIndex:index];
-    return [self configureViewFor:photo atIndex:index];
+    int xCoordinateForImage = (kThemePictureWidth+kThemePictureSpacing)*index;
+    CGRect rect = CGRectMake(xCoordinateForImage, 0, 320, kThemePictureHeight);
+    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:rect]autorelease];
     
+    int xCoordinateForText = 10;
+    int yCoordinateForText = 10;
+    
+    CGRect textViewFrame = CGRectMake(xCoordinateForText,yCoordinateForText,kTextViewWidth,kTextViewHeight);
+    UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
+    textView.text = theme.displayname;
+    [imageView addSubview:textView];
+    
+    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
+
+    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
+    
+    UIImage* image = [imageManager downloadImage:theme.homeimageurl withUserInfo:userInfo atCallback:self];   
+    
+    if (image != nil) {
+        imageView.image = image;
+    }
+    else {
+        imageView.backgroundColor =[UIColor blackColor];
+    }
+    return imageView;
     
 }
 
-//we will use this method to pre-fetch additional pictures for a particular theme as a user pulls on the listÔ
-- (void)viewSlider:(UIViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-    NSString* activityName = @"ThemeBrowserController.viewSlider.isAtIndex:";
-    //need to launch a new enumeration if the user gets within a certain threshold of the end scroll position
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index {
+    
+    if (viewSlider == pvs_photoSlider) {
+        //need cell for the photo slider
+        NSArray* photosInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+        if (index >= [photosInTheme count]) {
+            NSString* message = @"dicks";
+        }
+        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        return [self configureViewFor:photo atIndex:index];
+    }
+    else {
+        //need cell for the theme slider
+        Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
+        return [self configureViewForTheme:theme atIndex:index];
+    }
+    
+}
+
+
+
+-(void)themeSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+  
+    if (numberOfCellsToEnd < threshold_LOADMORETHEMES) {
+        //the current scroll position is below the threshold, thus we need to load more themes
+        [self enumerateThemesFromWebService];
+    }
+    
+    Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+    if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
+        //the theme scrolled to is not the same as the current one, time to switch themes
+        [self assignTheme:themeAtCurrentIndex];
+    }
+    
+}
+
+-(void)photoSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+    NSString* activityName = @"ThemeBrowserController.photoSliderIsAtIndex.isAtIndex:";
     if (numberOfCellsToEnd < threshold_LOADMOREPHOTOS) {
         //the current scroll position is below the threshold, thus we need to load more photos for this particular theme
         
@@ -296,8 +391,9 @@
             self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
         }
         
-        //execute the enumeration only if there is not already one executing
-        if (!m_isThereAThemePhotoEnumerationAlreadyExecuting) {
+        //execute the enumeration only if there is not already one executing and the current one is not done
+        if (!m_isThereAThemePhotoEnumerationAlreadyExecuting &&
+            ec_activeThemePhotoContext.isDone!=[NSNumber numberWithBool:YES]) {
             
             
             m_isThereAThemePhotoEnumerationAlreadyExecuting = YES;
@@ -305,45 +401,92 @@
             QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
             
             NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-            NSString* notificationID = [NSString GetGUID];
-            [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:notificationID object:nil];
+            m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
+            [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:m_outstandingPhotoEnumNotificationID object:nil];
             
-            [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:notificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];
+            [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:m_outstandingPhotoEnumNotificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];
             
             NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
             [BLLog v:activityName withMessage:message];
         }
     }
+
+}
+
+//we will use this method to pre-fetch additional pictures for a particular theme as a user pulls on the listÔ
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+    
+    //need to launch a new enumeration if the user gets within a certain threshold of the end scroll position
+    
+    if (viewSlider == pvs_photoSlider) {
+        [self photoSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
+    }
+    else {
+        [self themeSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
+    }
 }
 
 #pragma mark - Enumeration Completion Handlers
 - (void)onEnumerateThemesFinished:(NSNotification*)notification {
-    
-}
-
-- (void)onEnumeratePhotosForThemeFinished:(NSNotification*)notification {
-    NSString* activityName = @"ThemeBrowserController.onEnumeratePhotosForThemeFinished:";
+    NSString* activityName = @"ThemeBrowserController.onEnumerateThemesFinished:";
     NSDictionary *userInfo = [notification userInfo];
+    
+
+    
     if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
         EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
         if ([returnedContext.isDone boolValue] == NO) {
             //enumeration remains open
             NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
             [BLLog v:activityName withMessage:message];
-            self.ec_activeThemePhotoContext = returnedContext;
+           
         }
         else {
             //enumeration is complete, set the context to nil
             
             NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
             [BLLog v:activityName withMessage:message];
-            [returnedContext release];
-            self.ec_activeThemePhotoContext = nil;
+            
             
         }
+        self.ec_activeThemeContext = returnedContext;
         
     }
-    m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
+    m_isThereAThemeEnumerationAlreadyExecuting = NO;
+}
+
+- (void)onEnumeratePhotosForThemeFinished:(NSNotification*)notification {
+    NSString* activityName = @"ThemeBrowserController.onEnumeratePhotosForThemeFinished:";
+    NSDictionary *userInfo = [notification userInfo];
+    
+    //we need to check to ensure that the theme for which this enumeration was launched is still the currently active theme    
+    if ([notification.name isEqualToString:self.m_outstandingPhotoEnumNotificationID]) {
+        if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
+            EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
+            if ([returnedContext.isDone boolValue] == NO) {
+                //enumeration remains open
+                NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
+                [BLLog v:activityName withMessage:message];
+                
+            }
+            else {
+                //enumeration is complete, set the context to nil
+                
+                NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
+                [BLLog v:activityName withMessage:message];
+              
+                               
+            }
+            self.ec_activeThemePhotoContext = returnedContext;
+        }
+        
+        m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
+    }
+    else {
+        NSString* message = [NSString stringWithFormat:@"expired enumeration context returned, not persisting value"];
+        [BLLog v:activityName withMessage:message];
+        
+    }
 }
 
 @end

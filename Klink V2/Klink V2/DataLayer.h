@@ -29,6 +29,8 @@
 
 + (id) getObjectsByType:(NSString*)objectType sortBy:(NSString*)attributeName sortAscending:(BOOL)sortAscending;
 
++ (id) getObjectsByType:(NSString*)typeName withValueEqual:(NSString*)value forAttribute:(NSString*)attributeName;
+
 + (id) getNewestTheme;
 
 //+ (void) commitResource:(ServerManagedResource*)resource calledBy:(id)executingObject ;

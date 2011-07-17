@@ -73,7 +73,7 @@
     newQuery.referencingattribute=an_THEMEID;
     newQuery.referencingobjecttype = PHOTO;
     newQuery.includelinkedobjects = YES;
-    newQuery.maxlinksreturnedperobject = size_NUMLINKEDOBJECTSTOTRETURN;
+    newQuery.maxlinksreturnedperobject = pageSize_THEMELINKEDOBJECTS;
     newQuery.linked_results_sortAscending = NO;
     newQuery.linked_results_sortattribute = an_DATECREATED;
     newQuery.primary_results_sortascending = NO;
