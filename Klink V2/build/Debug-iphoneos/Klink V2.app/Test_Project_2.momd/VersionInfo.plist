@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSManagedObjectModel_CurrentVersionName</key>
+	<string>Test_Project_2</string>
+	<key>NSManagedObjectModel_VersionHashes</key>
+	<dict>
+		<key>Test_Project_2</key>
+		<dict>
+			<key>authenticationcontext</key>
+			<data>
+			UddBKUJHzMo2TDk55N8L2TCoBsVIV/tzlunNSJY7zKs=
+			</data>
+			<key>caption</key>
+			<data>
+			zgQBDsNxuthw4cI4x7TwG5DXDum+Swso6V16kKjO8Zs=
+			</data>
+			<key>photo</key>
+			<data>
+			bfTWo0PSwvDCKBnqOQ32rrvi0d0m7KC4ZIVUZROewZI=
+			</data>
+			<key>servermanagedresource</key>
+			<data>
+			S8tqcKt3/alfIDUWXCU1g6u3/bfuF1uPk+7Skui5fvs=
+			</data>
+			<key>theme</key>
+			<data>
+			8u/mijFPDLOBEnjC+oCLLa6eMVSSJyUCzsuvAJPVnfk=
+			</data>
+			<key>user</key>
+			<data>
+			bthdVJ1Bn/SpquVmgeS8yLOLu7niphPa/I4IGVupuBY=
+			</data>
+			<key>userstatistics</key>
+			<data>
+			EV0i9lmsS0+vwKZx6AnHBjYyhmaUW7h2MfZ5AMrPDE8=
+			</data>
+		</dict>
+	</dict>
+</dict>
+</plist>
