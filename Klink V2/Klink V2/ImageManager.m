@@ -133,7 +133,7 @@ static  ImageManager* sharedManager;
 }
 
 - (id)downloadImageFromURL:(NSString*) url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback {
-    NSString* activityName = @"ImageManager.downloadImageFromURL:";
+//    NSString* activityName = @"ImageManager.downloadImageFromURL:";
     NSURL *urlObject = [NSURL URLWithString:url];
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     

@@ -24,8 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         sv_slider = [[UIScrollView alloc]initWithFrame:frame];
-        sv_slider.layer.backgroundColor = [UIColor redColor].CGColor;
-        sv_slider.layer.borderWidth = 4.0f;
+        
         self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
         self.m_viewList = [[NSMutableArray alloc]init];
     }
@@ -35,10 +34,11 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         
-        CGRect rect = CGRectMake(0, 0, 320, 100);
+        CGRect rect = CGRectMake(0, 0, 320, 200);
         sv_slider = [[UIScrollView alloc]initWithFrame:rect];
-        sv_slider.layer.borderColor = [UIColor redColor].CGColor;
-        sv_slider.layer.borderWidth = 3.0f;
+        
+//        sv_slider = [[UIScrollView alloc]initWithCoder:aDecoder];
+
         sv_slider.delegate = self;
         sv_slider.pagingEnabled = YES;
         sv_slider.bounces = YES;
@@ -69,15 +69,18 @@
     return retVal;
 }
 
-- (void) set:(NSArray*)items {
+- (void) resetSliderWithItems:(NSArray*)items {
+    //Reset the slider and view array to be empty
+    [[self.sv_slider subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    self.sv_slider.contentOffset = CGPointMake(0, 0);
+    [m_viewList removeAllObjects];
+    
+    //enumerate through passed items and add to the view array and slider
     for (int i = 0; i < [items count];i++) {
-        UIView* cellView = [self.delegate viewSlider:nil cellForRowAtIndex:i];
+        UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
         [m_viewList insertObject:cellView atIndex:i];
         [self.sv_slider addSubview:cellView];
     }        
-    
-
-    
     self.sv_slider.contentSize = [self getContentSize];
 }
 
@@ -99,7 +102,7 @@
 
 
 - (void) item:(id)object insertedAt:(int)index {    
-    UIView* cellView = [self.delegate viewSlider:nil cellForRowAtIndex:index];    
+    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:index];    
     [m_viewList insertObject:cellView atIndex:index];        
     sv_slider.contentSize = [self getContentSize];
     [sv_slider addSubview:cellView];    
@@ -107,7 +110,7 @@
 
 - (void) item:(id)object atIndex:(int)index movedTo:(int)newIndex {
     [m_viewList replaceObjectAtIndex:index withObject:[NSNull null]];
-    UIView* cellView = [self.delegate viewSlider:nil cellForRowAtIndex:newIndex];
+    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:newIndex];
     UIView* oldCell = [m_viewList objectAtIndex:index];
     [oldCell removeFromSuperview];
 
@@ -135,7 +138,7 @@
     if (index != self.m_lastScrollPosition) {
         //we notify the delegate that the scroll position has changed, and pass the number of items remaining
         int numberOfCellsRemaining = ([self.m_viewList count]-1) - index;        
-        [self.delegate viewSlider:nil isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
+        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
         self.m_lastScrollPosition = index;
         
         
@@ -159,7 +162,7 @@
             }
             UIView* scrollViewCell = [[sv_slider subviews]objectAtIndex:i];
             
-            UIView* cellView = [self.delegate viewSlider:nil cellForRowAtIndex:i];
+            UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
             //put this into the list and remove
             [scrollViewCell addSubview:cellView];
             
@@ -177,7 +180,7 @@
     int index = position.x / (m_itemWidth + m_itemSpacing);
     if (index != self.m_lastScrollPosition) {
         int numberOfCellsRemaining = ([self.m_viewList count]-1) - index;        
-        [self.delegate viewSlider:nil isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
+        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
         self.m_lastScrollPosition = index;
 
     

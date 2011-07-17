@@ -25,6 +25,7 @@
 + (id) queryWithObjectType:(NSString*)objectType;
 + (id) queryWithIds:(NSArray*)ids;
 + (id) queryPhotosWithTheme:(NSNumber*)themeID;
++ (id) queryThemes;
 @property (nonatomic,retain) NSString* filterExpression;
 @property (nonatomic, copy)NSArray* objectIDs;
 @property (nonatomic, retain) NSString* filterobjecttype;

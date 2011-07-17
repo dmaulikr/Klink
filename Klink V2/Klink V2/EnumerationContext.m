@@ -7,8 +7,8 @@
 //
 
 #import "EnumerationContext.h"
-
-
+#import "DataLayer.h"
+#import "Theme.h";
 @implementation EnumerationContext
 @synthesize pageSize;
 @synthesize pageNumber;
@@ -34,10 +34,7 @@
 }
 
 - (id) init {
-//    self.isDone = [[NSNumber alloc]initWithInt:0];
-//    self.pageSize = [[NSNumber alloc]initWithInt:0];
-//    self.pageNumber = [[NSNumber alloc]initWithInt:0];
-//    self.numberOfResultsReturned = [[NSNumber alloc]initWithInt:0];
+
     self.pageSize = [NSNumber numberWithInt:pageSize_PHOTO];
     self.isDone = [NSNumber numberWithBool:NO];
     self.pageNumber = [NSNumber numberWithInt:0];
@@ -64,12 +61,31 @@
 }
 
 #pragma mark - Static constructors for known scenarios
-+ (EnumerationContext*) contextForPhotosInTheme:(Theme*)theme {
++ (EnumerationContext*) contextForPhotosInTheme:(Theme*)th {
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
-    enumerationContext.pageSize =[NSNumber numberWithInt:1];
+    enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_PHOTOSINTHEME];
     enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];
     
     //TODO: we can intelligently guess the page we will need here in order to not make any repetitive calls
+    NSArray* photosInTheme = [DataLayer getObjectsByType:PHOTO withValueEqual:[th.objectid stringValue]  forAttribute:an_THEMEID];
+    int count = [photosInTheme count];
+    
+    enumerationContext.pageNumber =[NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
+    
+    return enumerationContext;
+}
+
+//Returns an enumeration context to pull down the next theme if we run out in the main theme browser view controller
++ (EnumerationContext*) contextForThemes {
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_THEME];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_THEMEDOWNLOAD];
+    
+    //TODO: we can intelligently guess the page we will need here in order to not make any repetitive calls
+    NSArray* themes = [DataLayer getObjectsByType:tn_THEME sortBy:an_DATECREATED sortAscending:NO];
+    int count = [themes count];
+    
+    enumerationContext.pageNumber =[NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
     
     return enumerationContext;
 }

@@ -7,7 +7,7 @@
 //
 
 #import "Photo.h"
-
+#import "DataLayer.h"
 
 @implementation Photo
 @dynamic descr;
@@ -21,6 +21,7 @@
 @dynamic themeid;
 @dynamic creatorname;
 @dynamic numberofvotes;
+@synthesize topCaption = __topCaption;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
@@ -121,11 +122,23 @@
     return dictionary;    
 }
 
+- (Caption*)topCaption {
+    if (__topCaption != nil) {
+        return __topCaption;
+    }
+    
+    Caption* caption = [DataLayer getTopCaption:self.objectid];
+    __topCaption = caption;
+    return __topCaption;
+}
+
+
 + (NSString*) getNewPhotoTitle {
     NSDate* date = [NSDate date];
     NSString* formattedDateString = [DateTimeHelper formatShortDate:date];
     
     return [NSString stringWithFormat:@"New Topic (%@)",formattedDateString];
 }
+
 
 @end

@@ -12,8 +12,10 @@
 #import "IWireSerializable.h"
 #import "TypeNames.h"
 #import "AttributeNames.h"
+#import "Caption.h"
 
 @interface Photo : ServerManagedResource <IWireSerializable> {
+    Caption* topCaption;
 @private
 }
 @property (nonatomic, retain) NSString * descr;
@@ -27,6 +29,6 @@
 @property (nonatomic,retain) NSString* creatorname;
 @property (nonatomic, retain) NSNumber * themeid;
 @property (nonatomic, retain) NSNumber * numberofvotes;
-
+@property (nonatomic, retain) Caption  * topCaption;
 + (NSString*) getNewPhotoTitle;
 @end

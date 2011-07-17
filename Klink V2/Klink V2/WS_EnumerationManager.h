@@ -33,7 +33,12 @@
            withQueryOptions:(QueryOptions*)queryOptions
            onFinishNotify:(NSString*)notificationTarget;
 
-- (void) enumerateThemes:(NSNumber*)maximumNumberOfResults withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID;
+- (void) enumerateThemes: (NSNumber*)maximumNumberOfResults
+                          withPageSize:(NSNumber*)pageSize
+                          withQueryOptions:(QueryOptions*)queryOptions 
+                          onFinishNotify:(NSString*)notificationID
+                          useEnumerationContext:(EnumerationContext*)enumerationContext
+                          shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
 - (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 

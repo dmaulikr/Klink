@@ -29,5 +29,6 @@
 
 
 + (EnumerationContext*) contextForPhotosInTheme:(Theme*)theme;
++ (EnumerationContext*) contextForThemes;
 - (id) init;
 @end
