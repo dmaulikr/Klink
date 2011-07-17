@@ -217,7 +217,58 @@ static  DataLayer* sharedManager;
 
 }
 
++ (id) getObjectsByType:(NSString*)typeName withValueEqual:(NSString*)value forAttribute:(NSString*)attributeName sortBy:(NSString*)sortByAttribute sortAscending:(BOOL)sortAscending {
+    
+    NSString* activityName = @"DataLayer.getObjectsByType:";
+    NSArray* retVal = nil;
+    
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:appContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
+    [request setPredicate:predicate];
+    
+    NSSortDescriptor* sortDescription = [[NSSortDescriptor alloc]initWithKey:sortByAttribute ascending:sortAscending];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescription]];
+    
+    NSError* error = nil;
+    NSArray* results = [appContext executeFetchRequest:request error:&error];
+    
+    if (results == nil) {
+        [BLLog e:activityName withMessage:@"error fetching from core model"];
+        
+    }
+    else if ([results count] == 0) {
+        [BLLog v:activityName withMessage:@"no objects found with id"];
+        
+    }
+    else {
+        //        [BLLog v:activityName withMessage:@"found object with id"];
+        retVal = results;
+    }
+    [request release];
+    [sortDescription release];
+    return retVal; 
 
+}
+
+#pragma mark - Caption specific retrieval methods
++ (id) getTopCaption:(NSNumber*)photoID {
+    NSArray* captions = [DataLayer getObjectsByType:CAPTION withValueEqual:[photoID stringValue] forAttribute:an_PHOTOID sortBy:an_DATECREATED sortAscending:NO];
+    
+    if ([captions count] == 0) {
+        return nil;
+    }
+    else {
+        return [captions objectAtIndex:0];
+    }
+    
+}
                                                                                                         
 
 #pragma mark - Theme specific retrieval methods

@@ -24,8 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         sv_slider = [[UIScrollView alloc]initWithFrame:frame];
-        sv_slider.layer.backgroundColor = [UIColor redColor].CGColor;
-        sv_slider.layer.borderWidth = 4.0f;
+        
         self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
         self.m_viewList = [[NSMutableArray alloc]init];
     }
@@ -35,12 +34,11 @@
 - (id) initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         
-        CGRect rect = CGRectMake(0, 0, 320, 170);
+        CGRect rect = CGRectMake(0, 0, 320, 200);
         sv_slider = [[UIScrollView alloc]initWithFrame:rect];
         
 //        sv_slider = [[UIScrollView alloc]initWithCoder:aDecoder];
-        sv_slider.layer.borderColor = [UIColor redColor].CGColor;
-        sv_slider.layer.borderWidth = 3.0f;
+
         sv_slider.delegate = self;
         sv_slider.pagingEnabled = YES;
         sv_slider.bounces = YES;

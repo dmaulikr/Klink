@@ -83,11 +83,14 @@
 
 +(QueryOptions*)queryForPhotosInTheme {
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
-    newQuery.includelinkedobjects = NO;
+    newQuery.includelinkedobjects = YES;
     newQuery.primary_results_sortascending = NO;
     newQuery.primary_results_sortattribute = an_DATECREATED;
     newQuery.linked_results_sortAscending = NO;
-    newQuery.linked_results_sortattribute = nil;
+    newQuery.linked_results_sortattribute = an_DATECREATED;
+    newQuery.referencingattribute=an_PHOTOID;
+    newQuery.referencingobjecttype=CAPTION;
+    newQuery.maxlinksreturnedperobject=1;
     return newQuery;
     
 }

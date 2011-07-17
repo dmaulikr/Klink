@@ -31,7 +31,11 @@
 
 + (id) getObjectsByType:(NSString*)typeName withValueEqual:(NSString*)value forAttribute:(NSString*)attributeName;
 
++ (id) getObjectsByType:(NSString*)typeName withValueEqual:(NSString*)value forAttribute:(NSString*)attributeName sortBy:(NSString*)sortByAttribute sortAscending:(BOOL)sortAscending;
+
 + (id) getNewestTheme;
+
++ (id) getTopCaption:(NSNumber*)photoID;
 
 //+ (void) commitResource:(ServerManagedResource*)resource calledBy:(id)executingObject ;
 

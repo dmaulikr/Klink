@@ -11,18 +11,22 @@
 #import "TestSliderView.h"
 #import "Photo.h"
 #import "NSStringGUIDCategory.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kPictureWidth 130
-#define kPictureSpacing 30
-#define kPictureHeight 170
+#define kPictureSpacing 5
+#define kPictureHeight 120
 
 #define kThemePictureWidth 320
-#define kThemePictureHeight 160
+#define kThemePictureHeight 200
 #define kThemePictureSpacing 0
 
 #define kTextViewWidth 300
 #define kTextViewHeight 30
+#define kTextViewDescriptionHeight 70
 
+#define kCaptionTextViewHeight 10
+#define kCaptionTextViewWidth 120
 @implementation ThemeBrowserViewController2
 @synthesize pvs_photoSlider;
 @synthesize pvs_themeSlider;
@@ -41,7 +45,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-      
+        
     }
     return self;
 }
@@ -119,6 +123,10 @@
 - (void)viewDidLoad
 {
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
+    self.pvs_photoSlider.layer.borderWidth = 1.0f;
+    self.pvs_photoSlider.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pvs_themeSlider.layer.borderWidth = 1.0f;
+    self.pvs_themeSlider.layer.borderColor = [UIColor whiteColor].CGColor;
     [self.pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
     [self.pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
     
@@ -296,12 +304,26 @@
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
     
+    //Create the caption label for the current photo
+    Caption* topCaption = photo.topCaption;
     
+    if (topCaption != nil) {
+        int xCoordinateForCaption = 10;
+        int yCoordinateForCaption = kPictureHeight - kCaptionTextViewHeight;
+        CGRect captionFrame = CGRectMake(xCoordinateForCaption, yCoordinateForCaption, kCaptionTextViewWidth, kCaptionTextViewHeight);
+        UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
+        captionLabel.text = topCaption.caption1;
+        captionLabel.textColor = [UIColor whiteColor];
+        captionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+        captionLabel.numberOfLines = 0;
+        captionLabel.lineBreakMode = UILineBreakModeWordWrap;
+        
+        [imageView addSubview:captionLabel];
+        
+    }
     
     [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
-    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];   
-    
-       
+    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];  
     if (image != nil) {
         
         imageView.image = image;
@@ -323,11 +345,28 @@
     
     int xCoordinateForText = 10;
     int yCoordinateForText = 10;
+    int yCoordinateForDescription = kThemePictureHeight - kTextViewDescriptionHeight;
     
+    //The following adds the text label for the theme display name
     CGRect textViewFrame = CGRectMake(xCoordinateForText,yCoordinateForText,kTextViewWidth,kTextViewHeight);
     UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
+    textView.textColor = [UIColor whiteColor];
+    textView.numberOfLines = 0;
+    textView.lineBreakMode = UILineBreakModeWordWrap;
+    textView.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
     textView.text = theme.displayname;
     [imageView addSubview:textView];
+    
+    
+    //The following adds the text label for the theme description
+    CGRect textViewDescriptionFrame = CGRectMake(xCoordinateForText, yCoordinateForDescription, kTextViewWidth, kTextViewDescriptionHeight);
+    UILabel* textViewDescription = [[[UILabel alloc]initWithFrame:textViewDescriptionFrame]autorelease];
+    textViewDescription.textColor = [UIColor whiteColor];
+    textViewDescription.numberOfLines = 0;
+    textViewDescription.lineBreakMode = UILineBreakModeWordWrap;
+    textViewDescription.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+    textViewDescription.text = theme.descr;
+    [imageView addSubview:textViewDescription];
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
 
