@@ -9,7 +9,8 @@
 #import "HomeScreenController.h"
 #import "ThemeBrowserController.h"
 #import "ThemeBrowserViewController2.h"
-#import "InfinitePageViewer.h"
+#import "FullScreenPhotoController.h"
+
 @implementation HomeScreenController
 @synthesize managedObjectContext;
 @synthesize button1;
@@ -76,7 +77,7 @@
         [themeBrowserController2 release];
     }
     else if (sender == button3) {
-       
+
     }
 }
 

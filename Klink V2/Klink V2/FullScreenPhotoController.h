@@ -12,6 +12,11 @@
 #import "Caption.h"
 #import "User.h"
 
+#define kThumbnailWidthPortrait 66.67
+#define kThumbnailHeightPortrait 100
+#define kThumbnailWidthLandscape 150
+#define kThumbnailHeightLandscape 100
+
 
 @interface FullScreenPhotoController : UIViewController
         <UIImagePickerControllerDelegate, UINavigationControllerDelegate> {

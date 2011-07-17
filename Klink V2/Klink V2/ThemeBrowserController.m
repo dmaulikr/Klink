@@ -11,10 +11,10 @@
 #import "NSStringGUIDCategory.h"
 #import "ImageManager.h"
 #import "Photo.h"
+#import "TestSliderView.h"
 #define kPictureWidth 130
 #define kPictureSpacing 30
 #define kPictureHeight 100
-#import "TestSliderView.h"
 
 @implementation ThemeBrowserController
 @synthesize managedObjectContext;
