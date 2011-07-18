@@ -14,8 +14,8 @@
 
 @interface ThemeBrowserViewController2 : UIViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate> {
     
-    UIPagedViewSlider* pvs_photoSlider;
-    UIPagedViewSlider* pvs_themeSlider;
+//    UIPagedViewSlider* pvs_photoSlider;
+//    UIPagedViewSlider* pvs_themeSlider;
     UILabel* lbl_theme;
     Theme* theme;  
     EnumerationContext* ec_activeThemePhotoContext;
@@ -24,10 +24,14 @@
     BOOL m_isThereAThemeEnumerationAlreadyExecuting;
     
     NSString* m_outstandingPhotoEnumNotificationID;
+    
+    
+    UIView* v_landscape;
+    UIView* v_portrait;
 }
 
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider* pvs_photoSlider;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider* pvs_themeSlider;
+@property (nonatomic,retain)  UIPagedViewSlider* pvs_photoSlider;
+@property (nonatomic,retain) UIPagedViewSlider* pvs_themeSlider;
 @property (nonatomic,retain) Theme* theme;
 
 @property (nonatomic,retain) NSString* m_outstandingPhotoEnumNotificationID;
@@ -40,4 +44,12 @@
 @property BOOL m_isThereAThemeEnumerationAlreadyExecuting;
 @property (nonatomic, retain) EnumerationContext* ec_activeThemePhotoContext;
 @property (nonatomic, retain) EnumerationContext* ec_activeThemeContext;
+
+@property (nonatomic,retain) IBOutlet UIView* v_landscape;
+@property (nonatomic,retain) IBOutlet UIView* v_portrait;
+
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider* v_pvs_photoSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider* h_pvs_photoSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider *v_pvs_themeSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider *h_pvs_themeSlider;
 @end

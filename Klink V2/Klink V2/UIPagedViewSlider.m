@@ -8,6 +8,7 @@
 
 #import "UIPagedViewSlider.h"
 #import <QuartzCore/QuartzCore.h>
+
 #define kNumPicturesToLoad 3;
 @implementation UIPagedViewSlider
 @synthesize sv_slider;
@@ -33,16 +34,19 @@
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
+        int width = CGRectGetWidth(self.frame);
+        int height = CGRectGetHeight(self.frame);
         
-        CGRect rect = CGRectMake(0, 0, 320, 200);
-        sv_slider = [[UIScrollView alloc]initWithFrame:rect];
-        
-//        sv_slider = [[UIScrollView alloc]initWithCoder:aDecoder];
-
+        CGRect sliderFrame = CGRectMake(0, 0, width, height);
+        sv_slider = [[UIScrollView alloc]initWithFrame:sliderFrame];
         sv_slider.delegate = self;
         sv_slider.pagingEnabled = YES;
         sv_slider.bounces = YES;
         sv_slider.scrollEnabled = YES;
+        sv_slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        sv_slider.autoresizesSubviews = YES;
+        sv_slider.layer.borderColor = [UIColor redColor].CGColor;
+        sv_slider.layer.borderWidth = 4.4f;
         self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
         self.m_viewList = [[NSMutableArray alloc]init];
         [self addSubview:sv_slider];
@@ -58,6 +62,8 @@
     self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
     return self;
 }
+
+
 
 - (CGSize) getContentSize {
     int numberOfItems = [m_viewList count];
@@ -78,6 +84,7 @@
     //enumerate through passed items and add to the view array and slider
     for (int i = 0; i < [items count];i++) {
         UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
+        
         [m_viewList insertObject:cellView atIndex:i];
         [self.sv_slider addSubview:cellView];
     }        
@@ -130,51 +137,6 @@
 
 
 
-- (void) render  {
-    CGPoint position =  self.sv_slider.contentOffset;
-    int index = position.x / (m_itemWidth + m_itemSpacing);
-    //    NSLog(@"Scroll Stopped at Index %@",[NSNumber numberWithInt:index]);
-    
-    if (index != self.m_lastScrollPosition) {
-        //we notify the delegate that the scroll position has changed, and pass the number of items remaining
-        int numberOfCellsRemaining = ([self.m_viewList count]-1) - index;        
-        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
-        self.m_lastScrollPosition = index;
-        
-        
-        int numberOfSlots = [m_viewList count];
-        int startIndex = index - m_numItemsToLoadOnScroll;
-        int endIndex = index + m_numItemsToLoadOnScroll;
-        
-        
-        if (endIndex > numberOfSlots) {
-            endIndex =numberOfSlots;
-        }
-        
-        if (startIndex < 0) {
-            startIndex = 0;
-        }
-        
-        for (int i = startIndex; i<endIndex; i++) {
-            if ([m_viewList objectAtIndex:i] != [NSNull null]) {
-                UIView* previousView = [m_viewList objectAtIndex:i];
-                [previousView removeFromSuperview];
-            }
-            UIView* scrollViewCell = [[sv_slider subviews]objectAtIndex:i];
-            
-            UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
-            //put this into the list and remove
-            [scrollViewCell addSubview:cellView];
-            
-            [m_viewList replaceObjectAtIndex:i withObject:cellView];
-        }
-        
-    
-    }
-    
-}
-
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGPoint position =  self.sv_slider.contentOffset;
     int index = position.x / (m_itemWidth + m_itemSpacing);
@@ -186,6 +148,19 @@
     
     }
 
+}
+#pragma mark - Scroll Accessors/Settors
+- (void)setContentOffsetTo:(int)index {
+    int xCoordinate = (self.m_itemWidth+self.m_itemSpacing)*index;
+    CGPoint offset = CGPointMake(xCoordinate, 0);
+    self.sv_slider.contentOffset = offset;
+}
+- (int)getContentOffsetIndex {
+
+    
+    int index = self.sv_slider.contentOffset.x/(self.m_itemSpacing+self.m_itemWidth);
+    
+    return index;
 }
         
 

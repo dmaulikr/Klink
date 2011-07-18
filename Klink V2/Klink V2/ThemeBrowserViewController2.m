@@ -16,20 +16,33 @@
 #define kPictureWidth 130
 #define kPictureSpacing 5
 #define kPictureHeight 120
+#define kPictureWidth_landscape 130
+#define kPictureHeight_landscape 95
 
 #define kThemePictureWidth 320
 #define kThemePictureHeight 200
+#define kThemePictureWidth_landscape 480
+#define kThemePictureHeight_landscape 112
 #define kThemePictureSpacing 0
 
 #define kTextViewWidth 300
 #define kTextViewHeight 30
-#define kTextViewDescriptionHeight 70
+#define kTextViewWidth_landscape 300
+#define kTextViewHeight_landscape 30
+
+#define kTextViewDescriptionHeight 30
+#define kTextViewDescriptionWidth 300
+#define kTextViewDescriptionWidth_landscape 300
+#define kTextViewDescriptionHeight_landscape 30
 
 #define kCaptionTextViewHeight 10
 #define kCaptionTextViewWidth 120
+#define kCaptionTextViewHeight_landscape 10
+#define kCaptionTextViewWidth_landscape 120
+
 @implementation ThemeBrowserViewController2
-@synthesize pvs_photoSlider;
-@synthesize pvs_themeSlider;
+@synthesize pvs_photoSlider = __pvs_photoSlider;
+@synthesize pvs_themeSlider = __pvs_themeSlider;
 @synthesize theme;
 @synthesize managedObjectContext;
 @synthesize frc_photosInCurrentTheme = __frc_photosInCurrentTheme;
@@ -40,6 +53,12 @@
 @synthesize ec_activeThemeContext;
 @synthesize m_isThereAThemeEnumerationAlreadyExecuting;
 @synthesize m_outstandingPhotoEnumNotificationID;
+@synthesize v_portrait;
+@synthesize v_landscape;
+@synthesize v_pvs_photoSlider;
+@synthesize v_pvs_themeSlider;
+@synthesize h_pvs_photoSlider;
+@synthesize h_pvs_themeSlider;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,6 +89,27 @@
 }
 
 
+- (UIPagedViewSlider*) pvs_photoSlider {
+    if (self.view == v_portrait) {
+        //portrait mode
+        return self.v_pvs_photoSlider;
+    }
+    else {
+        //landscape
+        return self.h_pvs_photoSlider;
+    }
+}
+
+- (UIPagedViewSlider*) pvs_themeSlider {
+    if (self.view == v_portrait) {
+        //portrait mode
+        return self.v_pvs_themeSlider;
+    }
+    else {
+        //landscape
+        return self.h_pvs_themeSlider;
+    }
+}
 
 #pragma mark - View Controller Theme Assignment
 - (void) assignTheme:(Theme*)themeObject {
@@ -122,17 +162,37 @@
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
+  
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+     
+     
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
+        self.view = v_landscape;
+    }
+    else {
+        self.view = v_portrait;
+    }
+    
     self.pvs_photoSlider.layer.borderWidth = 1.0f;
     self.pvs_photoSlider.layer.borderColor = [UIColor whiteColor].CGColor;
     self.pvs_themeSlider.layer.borderWidth = 1.0f;
     self.pvs_themeSlider.layer.borderColor = [UIColor whiteColor].CGColor;
-    [self.pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
-    [self.pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
+    
+    [self.h_pvs_photoSlider initWith:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
+    [self.h_pvs_themeSlider initWith:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
+    
+    [self.v_pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
+    [self.v_pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
     
     if (self.theme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
-        [pvs_themeSlider resetSliderWithItems:themes];
+        [self.pvs_themeSlider resetSliderWithItems:themes];
         if ([themes count] > 0) {
             [self assignTheme:[themes objectAtIndex:0]];
         }
@@ -158,10 +218,55 @@
     // e.g. self.myOutlet = nil;
 }
 
+#pragma mark - Rotation Handlers
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+//
+//
+//}
+     
+-(void)didRotate:(NSNotification*)notification {
+    //need to switch out the ladscape and portrait views
+    //populate the sv_sliders as needed
+    UIDeviceOrientation toInterfaceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        //going to potrait
+        self.view = v_portrait;
+        int currentScrollIndex = [self.pvs_photoSlider getContentOffsetIndex];
+        
+        //need to recreate the view in the new orientation mode
+        NSArray* themes = [self.frc_themes fetchedObjects];
+        NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+        
+        [self.pvs_photoSlider resetSliderWithItems:picturesInTheme];
+        [self.pvs_themeSlider resetSliderWithItems:themes];        
+        [self.pvs_photoSlider setContentOffsetTo:currentScrollIndex];
+    }
+    else {
+        //going to landscape
+        self.view = v_landscape;        
+        int currentScrollIndex = [self.pvs_photoSlider getContentOffsetIndex];
+        
+        NSArray* themes = [self.frc_themes fetchedObjects];
+        NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+        
+        [self.pvs_photoSlider resetSliderWithItems:picturesInTheme];
+        [self.pvs_themeSlider resetSliderWithItems:themes];      
+        [self.pvs_photoSlider setContentOffsetTo:currentScrollIndex];
+
+    }
+
+}
+//
+//-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+//   
+//         [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+//}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 #pragma mark - UIViewSlider Fetched Results Controller
@@ -245,14 +350,14 @@
 -(void) frc_themes_didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath {
     
     if (type == NSFetchedResultsChangeInsert) {
-        [pvs_themeSlider item:anObject insertedAt:[newIndexPath row]];
+        [self.pvs_themeSlider item:anObject insertedAt:[newIndexPath row]];
         if (self.theme == nil) {
             //need to set the view controller's theme to theme
             [self assignTheme:anObject];
         }
     }
     else if (type == NSFetchedResultsChangeMove) {
-        [pvs_themeSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+        [self.pvs_themeSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
     }
 }
 
@@ -261,12 +366,12 @@
     if (controller == self.frc_photosInCurrentTheme) {
         
         if (type == NSFetchedResultsChangeInsert) {
-            [pvs_photoSlider item:anObject insertedAt:[newIndexPath row] ];
+            [self.pvs_photoSlider item:anObject insertedAt:[newIndexPath row] ];
           
             
         }
         else if (type == NSFetchedResultsChangeMove) {
-            [pvs_photoSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+            [self.pvs_photoSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
         }
     }
     else if (controller == self.frc_themes) {
@@ -284,23 +389,85 @@
     UIImageView* v = [userInfo objectForKey:an_IMAGEVIEW];
     if (v != nil) {
         [v setImage:image];
-        [pvs_photoSlider setNeedsDisplay];
+        [self.pvs_photoSlider setNeedsDisplay];
     }
     
 }
 
 #pragma mark - UIViewSliderDelegate 
+- (CGRect) getPhotoFrame:(int)index{
+    int xCoordinate = 0;
+    if (self.view == v_landscape) {
+        xCoordinate = index * (kPictureWidth_landscape + kPictureSpacing);
+        return CGRectMake(xCoordinate, 0, kPictureWidth_landscape, kPictureHeight_landscape); 
+    }
+    else {
+        xCoordinate = index * (kPictureWidth + kPictureSpacing);
+        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight); 
+    }
+}
 
+- (CGRect) getThemePhotoFrame:(int)index{
+    int xCoordinate = 0;
+    if (self.view == v_landscape) {
+        xCoordinate = index * (kThemePictureWidth_landscape + kThemePictureSpacing);
+        return CGRectMake(xCoordinate, 0, kThemePictureWidth_landscape, kThemePictureHeight_landscape); 
+    }
+    else {
+        xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
+        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight); 
+    }
+}
+
+- (CGRect) getCaptionFrame {
+    int xCoordinate = 10;
+    int yCoordinate = 0;
+    if (self.view == v_landscape) {
+        yCoordinate = kPictureHeight_landscape - kCaptionTextViewHeight;
+        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth_landscape, kCaptionTextViewHeight); 
+    }
+    else {
+        yCoordinate = kPictureHeight - kCaptionTextViewHeight_landscape;
+        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth, kCaptionTextViewHeight); 
+    }
+}
+
+- (CGRect) getThemeTitleFrame {
+    int xCoordinate = 10;
+    int yCoordinate = 0;
+    if (self.view == v_landscape) {
+        yCoordinate = 10;
+        return CGRectMake(xCoordinate, yCoordinate, kTextViewWidth_landscape, kTextViewHeight_landscape); 
+    }
+    else {
+        yCoordinate = 10;
+        return CGRectMake(xCoordinate, yCoordinate, kTextViewWidth, kTextViewHeight); 
+    }
+}
+
+- (CGRect) getThemeDescriptionFrame {
+    int xCoordinate = 10;
+    int yCoordinate = 0;
+    if (self.view == v_landscape) {
+        yCoordinate = kThemePictureHeight_landscape - kTextViewDescriptionHeight_landscape;
+        return CGRectMake(xCoordinate, yCoordinate, kTextViewDescriptionWidth_landscape, kTextViewDescriptionHeight_landscape); 
+    }
+    else {
+        yCoordinate = kThemePictureHeight - kTextViewDescriptionHeight;
+        return CGRectMake(xCoordinate, yCoordinate, kTextViewDescriptionWidth, kTextViewDescriptionHeight); 
+    }
+}
 
 - (id) configureViewFor:(Photo*)photo atIndex:(int)index {
     ImageManager *imageManager = [ImageManager getInstance];
     
     
     //need to grab the photo, create the image view, and then return that sucker
-    int xCoordinateForImage = (kPictureWidth+kPictureSpacing)*index;
+//    int xCoordinateForImage = (kPictureWidth+kPictureSpacing)*index;    
+//    CGRect rect = CGRectMake(xCoordinateForImage, 0, kPictureWidth, kPictureHeight);
     
-    CGRect rect = CGRectMake(xCoordinateForImage, 0, kPictureWidth, kPictureHeight);    
-    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:rect]autorelease];
+    CGRect photoImageViewFrame = [self getPhotoFrame:index];
+    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
     
@@ -308,16 +475,14 @@
     Caption* topCaption = photo.topCaption;
     
     if (topCaption != nil) {
-        int xCoordinateForCaption = 10;
-        int yCoordinateForCaption = kPictureHeight - kCaptionTextViewHeight;
-        CGRect captionFrame = CGRectMake(xCoordinateForCaption, yCoordinateForCaption, kCaptionTextViewWidth, kCaptionTextViewHeight);
+        CGRect captionFrame = [self getCaptionFrame];
         UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
         captionLabel.text = topCaption.caption1;
         captionLabel.textColor = [UIColor whiteColor];
         captionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
         captionLabel.numberOfLines = 0;
         captionLabel.lineBreakMode = UILineBreakModeWordWrap;
-        
+        captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [imageView addSubview:captionLabel];
         
     }
@@ -339,16 +504,12 @@
 - (id) configureViewForTheme:(Theme*)theme atIndex:(int)index {
     ImageManager *imageManager = [ImageManager getInstance];
     
-    int xCoordinateForImage = (kThemePictureWidth+kThemePictureSpacing)*index;
-    CGRect rect = CGRectMake(xCoordinateForImage, 0, 320, kThemePictureHeight);
-    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:rect]autorelease];
-    
-    int xCoordinateForText = 10;
-    int yCoordinateForText = 10;
-    int yCoordinateForDescription = kThemePictureHeight - kTextViewDescriptionHeight;
+    CGRect imageFrame = [self getThemePhotoFrame:index];
+    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
+
     
     //The following adds the text label for the theme display name
-    CGRect textViewFrame = CGRectMake(xCoordinateForText,yCoordinateForText,kTextViewWidth,kTextViewHeight);
+    CGRect textViewFrame = [self getThemeTitleFrame];
     UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
     textView.textColor = [UIColor whiteColor];
     textView.numberOfLines = 0;
@@ -359,13 +520,14 @@
     
     
     //The following adds the text label for the theme description
-    CGRect textViewDescriptionFrame = CGRectMake(xCoordinateForText, yCoordinateForDescription, kTextViewWidth, kTextViewDescriptionHeight);
+    CGRect textViewDescriptionFrame = [self getThemeDescriptionFrame];
     UILabel* textViewDescription = [[[UILabel alloc]initWithFrame:textViewDescriptionFrame]autorelease];
     textViewDescription.textColor = [UIColor whiteColor];
     textViewDescription.numberOfLines = 0;
     textViewDescription.lineBreakMode = UILineBreakModeWordWrap;
     textViewDescription.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
     textViewDescription.text = theme.descr;
+    textViewDescription.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [imageView addSubview:textViewDescription];
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
@@ -385,8 +547,8 @@
 }
 
 - (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index {
-    
-    if (viewSlider == pvs_photoSlider) {
+    UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
+    if (viewSlider == currentPhotoSlider) {
         //need cell for the photo slider
         NSArray* photosInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
         if (index >= [photosInTheme count]) {
@@ -457,7 +619,7 @@
     
     //need to launch a new enumeration if the user gets within a certain threshold of the end scroll position
     
-    if (viewSlider == pvs_photoSlider) {
+    if (viewSlider == self.pvs_photoSlider) {
         [self photoSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
     }
     else {

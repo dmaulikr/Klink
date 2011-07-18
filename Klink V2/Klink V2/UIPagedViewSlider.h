@@ -37,6 +37,9 @@
 @property int m_lastScrollPosition;
 @property int m_numItemsToLoadOnScroll;
 @property (nonatomic,retain) IBOutlet id<UIPagedViewSliderDelegate> delegate;
+
+- (void)setContentOffsetTo:(int)index;
+- (int)getContentOffsetIndex;
 - (id) initWith:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing;
 - (void) resetSliderWithItems:(NSArray*)items;
 - (void) item:(id)object insertedAt:(int)index;
