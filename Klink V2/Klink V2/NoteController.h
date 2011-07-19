@@ -30,6 +30,7 @@ typedef enum {
     UITextView *noteStream;
     UITextView *tv_Input;
     
+    UITextVie* tb_test;
     
     Caption* thought;
     Photo* topic;
