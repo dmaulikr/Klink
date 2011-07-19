@@ -12,14 +12,20 @@
 @implementation User
 @dynamic displayName;
 @dynamic thumbnailURL;
-
+@dynamic numberofviews;
+@dynamic rank;
+@dynamic numberofvotes;
+@dynamic numberofcaptions;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
     if (self != nil) {
         self.displayName = [jsonDictionary valueForKey:an_DISPLAYNAME];
         self.thumbnailURL = [jsonDictionary valueForKey:an_THUMBNAILURL];
-        
+        self.numberofviews = [jsonDictionary valueForKey:an_NUMBEROFVIEWS];
+        self.numberofcaptions = [jsonDictionary valueForKey:an_NUMBEROFCAPTIONS];
+        self.numberofvotes = [jsonDictionary valueForKey:an_NUMBEROFVOTES];
+        self.rank = [jsonDictionary valueForKey:an_RANK];
     }
     return self;
 }
@@ -33,7 +39,10 @@
     [super copyFrom:newObject];
     self.displayName = [newObject displayName];
     self.thumbnailURL= [newObject thumbnailURL ];
-
+    self.numberofvotes = [newObject numberofvotes];
+    self.numberofviews = [newObject numberofviews];
+    self.numberofcaptions = [newObject numberofcaptions];
+    self.rank = [newObject rank];
 }
 
 -  (id) getCreateNotificationName {
@@ -49,7 +58,10 @@
     
     [dictionary setObject:self.displayName forKey:an_DISPLAYNAME];
     [dictionary setObject:self.thumbnailURL forKey:an_THUMBNAILURL];
-    
+    [dictionary setObject:self.numberofcaptions forKey:an_NUMBEROFCAPTIONS];
+    [dictionary setObject:self.numberofviews forKey:an_NUMBEROFVIEWS];
+    [dictionary setObject:self.numberofvotes forKey:an_NUMBEROFVOTES];
+    [dictionary setObject:self.rank forKey:an_RANK];
     return dictionary;    
 }
 

@@ -72,6 +72,10 @@
 - (void)dealloc
 {
     [super dealloc];
+    [self.v_pvs_photoSlider release];
+    [self.h_pvs_photoSlider release];
+    [self.v_pvs_themeSlider release];
+    [self.h_pvs_themeSlider release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -219,11 +223,7 @@
 }
 
 #pragma mark - Rotation Handlers
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-//    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-//
-//
-//}
+
      
 -(void)didRotate:(NSNotification*)notification {
     //need to switch out the ladscape and portrait views
@@ -257,11 +257,6 @@
     }
 
 }
-//
-//-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-//   
-//         [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-//}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

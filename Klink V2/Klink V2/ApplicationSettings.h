@@ -36,3 +36,5 @@ extern int const threshold_LOADMORETHEMES;
 extern int const opcode_QUERYEQUALITY;
 
 extern int const pageSize_PHOTOSINTHEME;
+
+extern NSString* const facebook_APPID;

@@ -77,7 +77,7 @@ extern NSString* const an_PRIMARY_RESULTS_SORTASCENDING;
 extern NSString* const an_PRIMARY_RESULTS_SORTATTRIBUTE;
 extern NSString* const an_OPCODE;
 extern NSString* const an_VALUE;
-
+extern NSString* const an_RANK;
 
 
 

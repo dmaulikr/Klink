@@ -88,3 +88,5 @@ NSString* const an_ATTRIBUTE=@"attribute";
 NSString* const an_OPCODE = @"opcode";
 NSString* const an_VALUE = @"value";
 
+NSString* const an_RANK = @"rank";
+

@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "AuthenticationManager.h"
 #import "WS_EnumerationManager.h"
-
+#import "FBConnect.h"
 @class AuthenticationManager;
 @class WS_EnumerationManager;
 @interface Klink_V2AppDelegate : NSObject <UIApplicationDelegate> {
     AuthenticationManager* authnManager;
     WS_EnumerationManager* wsEnumerationManager;
+    Facebook *facebook;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -34,5 +35,5 @@
 - (NSString*) getImageCacheStorageDirectory;
 - (void) loginWithDummyAuthenticationContext;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-
+@property (nonatomic, retain) Facebook *facebook;
 @end

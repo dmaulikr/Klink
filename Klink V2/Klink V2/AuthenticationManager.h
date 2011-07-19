@@ -12,12 +12,14 @@
 #import "TypeNames.h"
 #import "DataLayer.h"
 #import "ApplicationSettings.h"
+#import "FBConnect.h"
 @class AuthenticationContext;
-@interface AuthenticationManager : NSObject {
+@interface AuthenticationManager : NSObject <FBSessionDelegate, FBRequestDelegate> {
  NSNumber* m_LoggedInUserID;
 }
 
 @property (nonatomic, retain) NSNumber* m_LoggedInUserID;
+@property (nonatomic, retain) Facebook* m_facebook;
 
 - (id) init;
 - (id) getAuthenticationContextForUser:(NSNumber*)userID;

@@ -11,7 +11,11 @@
 #import "SampleViewController.h"
 #import "SampleViewController2.h"
 #import "HomeScreenController.h"
+#import "ApplicationSettings.h"
+
 @implementation Klink_V2AppDelegate
+
+@synthesize facebook;
 
 @synthesize systemObjectModel = __systemObjectModel;
 
@@ -33,12 +37,21 @@
 
 @synthesize authnManager;
 
+
+#pragma mark - FBSession Delegate Handlers
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    
+    return [self.facebook handleOpenURL:url]; 
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     self.authnManager = [AuthenticationManager getInstance];
     self.wsEnumerationManager = [WS_EnumerationManager getInstance];
     self.window.rootViewController = self.navigationController;
+    
+    facebook = [[Facebook alloc] initWithAppId:facebook_APPID];
     
     [self loginWithDummyAuthenticationContext];
     [self.window makeKeyAndVisible];

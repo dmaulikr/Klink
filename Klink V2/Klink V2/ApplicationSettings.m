@@ -34,3 +34,5 @@ int const threshold_LOADMOREPHOTOS = 10;
 int const threshold_LOADMORETHEMES = 2;
 
 int const opcode_QUERYEQUALITY=1;
+
+NSString* const facebook_APPID=@"168077769927457";

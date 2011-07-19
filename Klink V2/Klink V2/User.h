@@ -17,5 +17,8 @@
 }
 @property (nonatomic, retain) NSString * displayName;
 @property (nonatomic, retain) NSString * thumbnailURL;
-
+@property (nonatomic, retain) NSNumber* numberofvotes;
+@property (nonatomic, retain) NSNumber* numberofviews;
+@property (nonatomic, retain) NSNumber* numberofcaptions;
+@property (nonatomic, retain) NSNumber* rank;
 @end

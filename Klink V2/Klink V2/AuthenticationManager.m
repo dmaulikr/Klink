@@ -11,8 +11,14 @@
 
 @implementation AuthenticationManager
 @synthesize m_LoggedInUserID;
+@synthesize m_facebook = __facebook;
 
 static  AuthenticationManager* sharedManager; 
+
+-(Facebook*)facebook {
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    return appDelegate.facebook;
+}
 
 #pragma mark - initializers
 - (id) init {
@@ -33,7 +39,39 @@ static  AuthenticationManager* sharedManager;
     return self;
 }
 
+#pragma mark - FBSessionDelegate
+- (void)fbDidLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[self.m_facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[self.m_facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
+    [self.m_facebook requestWithGraphPath:@"me" andDelegate:self];
+}
+#pragma mark -- FBRequestDelegate
+- (void)request:(FBRequest *)request didLoad:(id)result {
+    
+}
+
+- (void)request:(FBRequest *)request didFailWithError:(NSError *)error  {
+    NSString* activityName = @"AuthenticationManager:request:didFailWithError";
+    NSString* message = [NSString stringWithFormat:@"Facebook request failed with error: %@",[error description]];
+    [BLLog e:activityName withMessage:message];
+}
+
 #pragma mark - authenticators
+-(void) loginUser {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        self.m_facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        self.m_facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+    
+    if (![self.m_facebook isSessionValid]) {
+        [self.m_facebook authorize:nil delegate:self];
+    }
+}
 - (void)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
     NSString* activityName = @"AuthenticationManager.loginUser";
     NSString* stringUserID = [userID stringValue];
