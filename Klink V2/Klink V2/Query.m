@@ -7,7 +7,7 @@
 //
 
 #import "Query.h"
-
+#import "QueryExpression.h"
 @implementation Query
 @synthesize  objectIDs;
 @synthesize filterExpression;

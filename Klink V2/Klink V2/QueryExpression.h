@@ -6,7 +6,7 @@
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+
 #import "IWireSerializable.h"
 
 @interface QueryExpression : NSObject <IWireSerializable> {

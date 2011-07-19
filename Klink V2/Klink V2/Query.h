@@ -11,7 +11,7 @@
 #import "AttributeNames.h"
 #import "JSONKit.h"
 #import "QueryOptions.h"
-#import "QueryExpression.h"
+
 
 @interface Query : NSObject <IWireSerializable> {
     NSString* filterExpression;
