@@ -8,7 +8,6 @@
 
 #import "Query.h"
 
-
 @implementation Query
 @synthesize  objectIDs;
 @synthesize filterExpression;

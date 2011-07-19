@@ -9,6 +9,7 @@
 #import "HomeScreenController.h"
 
 #import "ThemeBrowserViewController2.h"
+#import "FullScreenPhotoController.h"
 
 @implementation HomeScreenController
 @synthesize managedObjectContext;
@@ -77,7 +78,7 @@
         [themeBrowserController2 release];
     }
     else if (sender == button3) {
-       
+
     }
 }
 
