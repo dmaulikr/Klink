@@ -823,7 +823,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     newPhoto.thumbnailurl = thumbnailPath;
     newPhoto.imageurl = fullscreenPath;   
     
-    [newPhoto commitChangesToDatabase:YES withPendingFlag:YES];
+    [newPhoto commitChangesToDatabase:NO withPendingFlag:YES];
     
     CGImageRelease(croppedThumbnailImage);
     
