@@ -80,6 +80,7 @@
     query.attributeExpressions = expressions;
     
     [queryExpression release];
+    [expressions release];
     return query;
     
 }
@@ -87,6 +88,24 @@
 + (Query*)queryThemes {
     Query* query =  [[[Query alloc] init]autorelease];
     query.filterobjecttype = tn_THEME;
+    
+    return query;
+}
+
++ (Query*)queryFeedsForUser : (NSNumber*)userID {
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterobjecttype = tn_FEED;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = an_USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userID stringValue];
+
+    NSArray* expressions = [NSArray arrayWithObject:queryExpression];
+    query.attributeExpressions = expressions;
+    
+    [queryExpression release];
+    [expressions release];
     
     return query;
 }

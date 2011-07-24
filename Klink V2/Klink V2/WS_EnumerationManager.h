@@ -40,6 +40,14 @@
                           useEnumerationContext:(EnumerationContext*)enumerationContext
                           shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
+- (void) enumerateFeeds: 
+        (NSNumber*)maximumNumberOfResults
+            withPageSize:(NSNumber*)pageSize
+        withQueryOptions:(QueryOptions*)queryOptions 
+          onFinishNotify:(NSString*)notificationID
+   useEnumerationContext:(EnumerationContext*)enumerationContext
+shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
+
 - (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
 - (void) execute:(NSURL*)url onFinishSelector:(SEL)onfinishselector onFailSelector:(SEL)onfailselector withUserInfo:(NSDictionary*)userInfo;

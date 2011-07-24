@@ -52,14 +52,14 @@ static  WS_EnumerationManager* sharedManager;
     
     
     
-    if (authenticationContext != nil) {
+  
         Query* query = [Query queryWithIds:ids];
         query.queryoptions = queryOptions;
 //        NSURL *url = [UrlManager getEnumerateURLForIDs:ids withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
         NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
         
         [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationTarget];
-    }
+    
     
     
 }
@@ -76,14 +76,13 @@ static  WS_EnumerationManager* sharedManager;
     enumerationContext.maximumNumberOfResults = maxResults;
     enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_PHOTO];
     
-    if (authenticationContext != nil) {
-        Query* query = [Query queryWithObjectType:objectType];
+            Query* query = [Query queryWithObjectType:objectType];
         query.queryoptions = queryOptions;
         NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
         
         [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationTarget];
 
-    }
+    
     
     
 }
@@ -93,6 +92,36 @@ static  WS_EnumerationManager* sharedManager;
     [self enumerateObjectsWithType:tn_THEME maximumNumberOfResults:maximumNumberOfResults withQueryOptions:queryOptions onFinishNotify:notificationID];
     
 }
+
+- (void) enumerateFeeds:
+           (NSNumber *)maximumNumberOfResults 
+           withPageSize:(NSNumber *)pageSize 
+            withQueryOptions:(QueryOptions *)queryOptions 
+            onFinishNotify:(NSString *)notificationID 
+            useEnumerationContext:(EnumerationContext *)enumerationContext 
+            shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
+    
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    if (enumerationContext == nil) {
+        enumerationContext = [[EnumerationContext alloc]init];
+        enumerationContext.pageSize = pageSize;
+        enumerationContext.maximumNumberOfResults = maximumNumberOfResults;
+        
+    }
+    
+    
+    if (authenticationContext != nil) {
+        //need to be authenticated to enumerate feeds for a user
+        
+        Query* query = [Query queryFeedsForUser:authenticationContext.userid];
+        query.queryoptions = queryOptions;
+        NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
+        [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
+    }
+}
+
 
 
 - (void) enumerateThemes: (NSNumber*)maximumNumberOfResults
@@ -111,12 +140,12 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
         
     }
     
-    if (authenticationContext != nil) {
+    
         Query* query = [Query queryThemes];
         query.queryoptions = queryOptions;
         NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
         [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
-    }
+
 }
 
 
