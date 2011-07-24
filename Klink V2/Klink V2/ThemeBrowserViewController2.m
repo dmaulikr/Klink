@@ -806,6 +806,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:appContext];
     Photo *newPhoto = [[Photo alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:appContext];
     [newPhoto init];
+    newPhoto.themeid = theme.objectid;
     newPhoto.descr = @"sample text";
     newPhoto.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
     
