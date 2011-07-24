@@ -95,4 +95,12 @@
     
 }
 
++(QueryOptions*)queryForFeedsForUser:(NSNumber *)userID {
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = an_DATECREATED;
+    
+    return newQuery;
+}
 @end

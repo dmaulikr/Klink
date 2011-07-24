@@ -7,7 +7,7 @@
 //
 
 #import "HomeScreenController.h"
-
+#import "NSStringGUIDCategory.h"
 #import "ThemeBrowserViewController2.h"
 #import "FullScreenPhotoController.h"
 
@@ -16,6 +16,7 @@
 @synthesize button1;
 @synthesize button2;
 @synthesize button3;
+@synthesize button4;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,6 +60,12 @@
     return YES;
 }
 
+
+-(void)onEnumerateFeedsComplete:(NSNotification*) notification {
+    NSString* activityName = @"HomeScreenController.onEnumerateFeedsComplete:";
+}
+
+
 #pragma mark - Event Handlers
 - (IBAction)onButtonClicked:(id)sender {
     
@@ -86,6 +93,22 @@
         //logoff
         AuthenticationManager* authManager = [AuthenticationManager getInstance];
         [authManager logoff];
+    }
+    else if (sender == button4) {
+        //enumerate feed
+        NSString* notificationID = [NSString GetGUID];
+        AuthenticationContext* context = [[AuthenticationManager getInstance]getAuthenticationContext];
+        
+        if (context != nil) {
+            WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
+            [enumerationManager enumerateFeeds:[NSNumber numberWithInt:100] 
+                                  withPageSize:[NSNumber numberWithInt:10] 
+                              withQueryOptions:[QueryOptions queryForFeedsForUser:context.userid] 
+                                onFinishNotify:notificationID 
+                         useEnumerationContext:nil 
+                     shouldEnumerateSinglePage:NO];
+        }
+        
     }
 }
 

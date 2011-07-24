@@ -13,10 +13,12 @@
     UIButton *button1;
     UIButton *button2;
     UIButton *button3;
+    UIButton *button4;
 }
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) IBOutlet UIButton *button1;
 @property (nonatomic, retain) IBOutlet UIButton *button2;
 @property (nonatomic, retain) IBOutlet UIButton *button3;
+@property (nonatomic, retain) IBOutlet UIButton *button4;
 - (IBAction)onButtonClicked:(id)sender;
 @end
