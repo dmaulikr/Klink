@@ -18,3 +18,8 @@ NSString* const param_OBJECT=@"object";
 NSString* const param_OBJECTIDS=@"objectids";
 NSString* const param_OBJECTTYPES=@"objecttypes";
 NSString* const param_ATTRIBUTENAME=@"attributename";
+NSString* const param_DISPLAYNAME=@"displayname";
+NSString* const param_FACEBOOKID=@"facebookid";
+NSString* const param_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
+NSString* const param_FACEBOOKACCESSTOKENEXPIRY=@"facebookaccesstokenexpirydate";
+

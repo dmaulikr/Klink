@@ -31,4 +31,6 @@
 + (NSURL*) getDeleteURL:(NSNumber*)objectid withObjectType:(NSString*)objectType withAuthenticationContext:(id)authenticationContext;
 
 + (NSURL*) getUploadAttachmentURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttributeName:(NSString*)attributeName withAuthenticationContext:(id)authenticationContext;
+
++ (NSURL*) getAuthenticationURL:(NSNumber*)facebookID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date;
 @end

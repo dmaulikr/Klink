@@ -90,3 +90,14 @@ NSString* const an_VALUE = @"value";
 
 NSString* const an_RANK = @"rank";
 
+NSString* const an_FACEBOOKTOKENEXPIRYDATE = @"facebooktokenexpirydate";
+NSString* const an_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
+NSString* const an_FACEBOOKUSERID=@"facebookuserid";
+
+NSString* const an_TWITTERTOKENEXPIRYDATE = @"twittertokenexpirydate";
+NSString* const an_TWITTERACCESSTOKEN=@"twitteraccesstoken";
+NSString* const an_TWITTERUSERID=@"twitteruserid";
+NSString* const an_ID=@"id";
+
+NSString* const an_AUTHENTICATIONCONTEXT=@"authenticationcontext";
+NSString* const an_NAME = @"name";

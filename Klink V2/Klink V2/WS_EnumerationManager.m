@@ -10,6 +10,7 @@
 #import "ServerManagedResource.h"
 #import "ApplicationSettings.h"
 #import "Theme.h"
+#import "GetAuthenticatorResponse.h"
 @implementation WS_EnumerationManager
 @synthesize queryQueue;
 
@@ -125,12 +126,11 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
     
     AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     
-    if (authenticationContext != nil) {
-        Query* query = [Query queryPhotosWithTheme:theme.objectid];
-        query.queryoptions = queryOptions;
-        NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
-        [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
-    }
+    Query* query = [Query queryPhotosWithTheme:theme.objectid];
+    query.queryoptions = queryOptions;
+    NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
+    [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
+    
 }
 #pragma mark - Enumeration Result Handlers
 
@@ -271,6 +271,59 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
 }
 
 
+#pragma mark - Authentication Mechanisms
+//will user Facebook access token to retrieve a valid session token for the currently logged-in user
+- (void) getAuthenticatorToken:(NSNumber*)facebookID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date onFinishNotify:(NSString*)notificationID {
+    
+    NSString* activityName = @"WS_EnumerationManager.getAuthenticatorToken:";
+    NSURL* url = [UrlManager getAuthenticationURL:facebookID withName:name withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date];
+    
+    NSMutableDictionary* passedContext = [[NSMutableDictionary alloc]init];
+    [passedContext setValue:notificationID forKey:an_ONFINISHNOTIFY];
+    
+    [self execute:url onFinishSelector:@selector(onGetAuthenticatorFinished:) onFailSelector:@selector(onGetAuthenticatorFailed:) withUserInfo:passedContext];
+    
+   
+    
+    
+}
+
+- (void) onGetAuthenticatorFinished:(ASIHTTPRequest*)request {
+    NSString* activityName = @"WS_EnumerationManager.onGetAuthenticatorFinished:";
+    
+    //need to pull the authenticator and send it to the authentication manager
+    NSString* jsonResponse = [request responseString];
+    NSDictionary* jsonDictionary = [jsonResponse objectFromJSONString];
+    
+    GetAuthenticatorResponse* getAuthenticatorResponse = [[GetAuthenticatorResponse alloc]initFromDictionary:jsonDictionary];
+    NSDictionary* userInfo = [request userInfo];
+    if ([getAuthenticatorResponse.didSucceed isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+        
+        NSString* notificationID = [userInfo valueForKey:an_ONFINISHNOTIFY];
+        
+        NSMutableDictionary* notificationUserInfo = [[NSMutableDictionary alloc]init];
+        [notificationUserInfo setValue:getAuthenticatorResponse.authenticationcontext forKey:an_AUTHENTICATIONCONTEXT];
+        
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfo];
+        
+        
+    }
+    else {
+    
+        NSString* message = [NSString stringWithFormat:@"request failed due to %@",getAuthenticatorResponse.errorMessage];
+        [BLLog e:activityName withMessage:message];
+    }
+    
+    [getAuthenticatorResponse release];
+    [userInfo release];
+    
+    
+}
+
+- (void) onGetAuthenticatorFailed:(ASIHTTPRequest*)request {
+    
+}
 
 //Receives the result of the enumeration request, parsees outbound enumeration context
 //and continues to pull until done.

@@ -11,4 +11,5 @@
 
 @interface NSString (NSStringGUIDCategory)
 + (NSString *)GetGUID;
+- (NSNumber*) numberValue;
 @end

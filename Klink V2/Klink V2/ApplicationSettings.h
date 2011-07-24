@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const stng_LASTLOGGEDINUSERID;
 extern NSString* const stng_BASEURL;
 extern NSString* const default_BASEURL;
 extern NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT;
@@ -38,3 +37,4 @@ extern int const opcode_QUERYEQUALITY;
 extern int const pageSize_PHOTOSINTHEME;
 
 extern NSString* const facebook_APPID;
+extern NSString* const sn_KEYCHAINSERVICENAME;

@@ -63,11 +63,16 @@
 - (IBAction)onButtonClicked:(id)sender {
     
     if (sender == button1) {
-        ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
+        AuthenticationManager* authManager = [AuthenticationManager getInstance];
+        if (![authManager getLoggedInUserID]) {
+            //need to login
+            [authManager authenticate];
+        }
+        else {
+            //user is already logged in
+            NSLog(@"No need to log in user, they already are logged in");
+        }
         
-        themeBrowserController2.managedObjectContext = self.managedObjectContext;
-        [self.navigationController pushViewController:themeBrowserController2 animated:YES];
-        [themeBrowserController2 release];
 
     }
     else if (sender == button2) {
@@ -78,7 +83,9 @@
         [themeBrowserController2 release];
     }
     else if (sender == button3) {
-
+        //logoff
+        AuthenticationManager* authManager = [AuthenticationManager getInstance];
+        [authManager logoff];
     }
 }
 

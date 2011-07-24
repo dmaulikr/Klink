@@ -16,6 +16,7 @@
 @class AuthenticationContext;
 @interface AuthenticationManager : NSObject <FBSessionDelegate, FBRequestDelegate> {
  NSNumber* m_LoggedInUserID;
+ Facebook* m_facebook;
 }
 
 @property (nonatomic, retain) NSNumber* m_LoggedInUserID;
@@ -26,6 +27,8 @@
 - (id) getAuthenticationContext;
 - (NSNumber*) getLoggedInUserID;
 - (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
+- (void) authenticate;
 + (NSString*) getTypeName;
 + (AuthenticationManager*) getInstance;
+- (void) logoff;
 @end

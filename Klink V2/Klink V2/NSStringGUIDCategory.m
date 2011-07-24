@@ -17,4 +17,12 @@
     CFRelease(theUUID);
     return [(NSString *)string autorelease];
 }
+
+- (NSNumber*) numberValue {
+    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    [f setNumberStyle:NSNumberFormatterNoStyle];
+    NSNumber * lastLoggedInUserID = [f numberFromString:self];
+    [f release];
+    return lastLoggedInUserID;
+}
 @end

@@ -15,3 +15,4 @@ extern NSString* const verb_CREATEOBJECT;
 extern NSString* const verb_ENUMERATE;
 extern NSString* const verb_DELETE;
 extern NSString* const verb_UPLOADATTACHMENT;
+extern NSString* const verb_GETAUTHENTICATOR;

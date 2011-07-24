@@ -17,3 +17,7 @@ extern NSString* const param_OBJECT;
 extern NSString* const param_OBJECTIDS;
 extern NSString* const param_OBJECTTYPES;
 extern NSString* const param_ATTRIBUTENAME;
+extern NSString* const param_DISPLAYNAME;
+extern NSString* const param_FACEBOOKID;
+extern NSString* const param_FACEBOOKACCESSTOKEN;
+extern NSString* const param_FACEBOOKACCESSTOKENEXPIRY;

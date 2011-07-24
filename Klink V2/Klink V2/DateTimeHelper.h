@@ -18,4 +18,5 @@
 + (NSDate*) parseWebServiceDateDouble:(id)datePointer;
 + (NSTimeInterval) convertDateToDouble:(NSDate*)date;
 + (NSString*) formatShortDate:(NSDate*)date;
+
 @end

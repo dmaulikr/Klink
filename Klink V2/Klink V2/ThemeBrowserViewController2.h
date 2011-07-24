@@ -52,4 +52,6 @@
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider* h_pvs_photoSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider *v_pvs_themeSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider *h_pvs_themeSlider;
+
+
 @end

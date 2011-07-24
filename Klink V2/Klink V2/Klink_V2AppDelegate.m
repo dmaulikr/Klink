@@ -46,12 +46,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    facebook = [[Facebook alloc] initWithAppId:facebook_APPID];
     // Override point for customization after application launch.
     self.authnManager = [AuthenticationManager getInstance];
     self.wsEnumerationManager = [WS_EnumerationManager getInstance];
     self.window.rootViewController = self.navigationController;
     
-    facebook = [[Facebook alloc] initWithAppId:facebook_APPID];
+    
     
     [self loginWithDummyAuthenticationContext];
     [self.window makeKeyAndVisible];
@@ -304,9 +305,10 @@
     [authenticationContextDictionary setObject:[currentDate stringValue] forKey:an_EXPIRY_DATE];
     [authenticationContextDictionary setObject:[NSString stringWithFormat:@"dicks"] forKey:an_TOKEN];
     
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:tn_AUTHENTICATIONCONTEXT inManagedObjectContext:self.managedObjectContext];
-    AuthenticationContext* context = [[[AuthenticationContext alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:nil]initFromDictionary:authenticationContextDictionary];
-    [authenticationManager loginUser:[NSNumber numberWithInt:1] withAuthenticationContext:context];
+
+    AuthenticationContext* context = [[AuthenticationContext alloc]initFromDictionary:authenticationContextDictionary];
+    
+    //[authenticationManager loginUser:[NSNumber numberWithInt:1] withAuthenticationContext:context];
     [context release];
 }
 

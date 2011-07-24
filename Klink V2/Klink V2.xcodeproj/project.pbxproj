@@ -107,6 +107,12 @@
 		C5BED8D113D52FC2007A1934 /* UIProfileBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED8C713D52FC2007A1934 /* UIProfileBar.m */; };
 		C5BED8D213D52FC2007A1934 /* UIProfileBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */; };
 		C5BED8D513D53188007A1934 /* QueryExpression2.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED8D413D53188007A1934 /* QueryExpression2.m */; };
+		C5CCDF9C13D99F9700ABE747 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */; };
+		C5CCDF9D13D99F9700ABE747 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */; };
+		C5CCDFEB13D9AC1000ABE747 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDFC913D9AC1000ABE747 /* SFHFKeychainUtils.m */; };
+		C5CCDFF113D9B67400ABE747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5CCDFF013D9B67300ABE747 /* Security.framework */; };
+		C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */; };
+		C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */; };
 		C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808F713C3851F001E16F3 /* CFNetwork.framework */; };
 		C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */; };
 		C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */; };
@@ -311,6 +317,16 @@
 		C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProfileBar.xib; sourceTree = "<group>"; };
 		C5BED8C913D52FC2007A1934 /* UIViewSliderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSliderDelegate.h; sourceTree = "<group>"; };
 		C5BED8D413D53188007A1934 /* QueryExpression2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryExpression2.m; sourceTree = "<group>"; };
+		C5CCDF9913D99F9600ABE747 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		C5CCDFC813D9AC1000ABE747 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		C5CCDFC913D9AC1000ABE747 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		C5CCDFF013D9B67300ABE747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C5CCDFFA13D9FA8C00ABE747 /* GetAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAuthenticatorResponse.h; sourceTree = "<group>"; };
+		C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAuthenticatorResponse.m; sourceTree = "<group>"; };
+		C5D8E09813DA4BFE00D88B00 /* NSDateCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; path = NSDateCategory.h; sourceTree = "<group>"; };
+		C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateCategory.m; sourceTree = "<group>"; };
 		C5F808F713C3851F001E16F3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -335,6 +351,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5CCDFF113D9B67400ABE747 /* Security.framework in Frameworks */,
 				C561275713CA4EB5005E5731 /* QuartzCore.framework in Frameworks */,
 				C5F808FF13C38556001E16F3 /* libz.1.2.3.dylib in Frameworks */,
 				C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */,
@@ -362,6 +379,7 @@
 		C5190A0F13C18C0C0077EECA = {
 			isa = PBXGroup;
 			children = (
+				C5CCDFF013D9B67300ABE747 /* Security.framework */,
 				C5190A2613C18C0C0077EECA /* Klink V2 */,
 				C561275613CA4EB5005E5731 /* QuartzCore.framework */,
 				C5F8092B13C4EA7B001E16F3 /* star.png */,
@@ -608,6 +626,8 @@
 				C5190A9913C1926B0077EECA /* PutResponse.m */,
 				C5190A9E13C1926C0077EECA /* Response.h */,
 				C5190A9F13C1926C0077EECA /* Response.m */,
+				C5CCDFFA13D9FA8C00ABE747 /* GetAuthenticatorResponse.h */,
+				C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -623,6 +643,8 @@
 				C5190AAD13C1926C0077EECA /* UIColorCategory.m */,
 				C5190AAE13C1926C0077EECA /* URLEncoding.h */,
 				C5190AAF13C1926C0077EECA /* URLEncoding.m */,
+				C5D8E09813DA4BFE00D88B00 /* NSDateCategory.h */,
+				C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -659,6 +681,7 @@
 		C5190B1213C196960077EECA /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				C5CCDF9F13D9AC1000ABE747 /* scifihifi-iphone */,
 				C5BED88B13D52F9D007A1934 /* src */,
 				C5190A4813C192690077EECA /* ASIHttp */,
 				C5190B1413C196AD0077EECA /* JSONKit.h */,
@@ -684,6 +707,9 @@
 				3DBF679F13CEB215005CE732 /* FullScreenPhotoController.h */,
 				3DBF67A013CEB215005CE732 /* FullScreenPhotoController.m */,
 				3DBF679C13CEB117005CE732 /* FullScreenPhotoController.xib */,
+				C5CCDF9913D99F9600ABE747 /* LoginViewController.h */,
+				C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */,
+				C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -740,6 +766,23 @@
 				C5BED8A713D52F9D007A1934 /* SBJsonWriter.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		C5CCDF9F13D9AC1000ABE747 /* scifihifi-iphone */ = {
+			isa = PBXGroup;
+			children = (
+				C5CCDFC713D9AC1000ABE747 /* security */,
+			);
+			path = "scifihifi-iphone";
+			sourceTree = "<group>";
+		};
+		C5CCDFC713D9AC1000ABE747 /* security */ = {
+			isa = PBXGroup;
+			children = (
+				C5CCDFC813D9AC1000ABE747 /* SFHFKeychainUtils.h */,
+				C5CCDFC913D9AC1000ABE747 /* SFHFKeychainUtils.m */,
+			);
+			path = security;
 			sourceTree = "<group>";
 		};
 		C5F8091713C38D69001E16F3 /* BlazeStormer */ = {
@@ -866,6 +909,7 @@
 				C5BED8CB13D52FC2007A1934 /* ProfileViewController.xib in Resources */,
 				C5BED8CE13D52FC2007A1934 /* ThemeBrowserViewController2.xib in Resources */,
 				C5BED8D213D52FC2007A1934 /* UIProfileBar.xib in Resources */,
+				C5CCDF9D13D99F9700ABE747 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +1001,10 @@
 				C5BED8D013D52FC2007A1934 /* UIPagedViewSlider.m in Sources */,
 				C5BED8D113D52FC2007A1934 /* UIProfileBar.m in Sources */,
 				C5BED8D513D53188007A1934 /* QueryExpression2.m in Sources */,
+				C5CCDF9C13D99F9700ABE747 /* LoginViewController.m in Sources */,
+				C5CCDFEB13D9AC1000ABE747 /* SFHFKeychainUtils.m in Sources */,
+				C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */,
+				C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

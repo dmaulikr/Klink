@@ -14,14 +14,30 @@
 #import "Klink_V2AppDelegate.h"
 #import "DateTimeHelper.h"
 
-@interface AuthenticationContext : NSManagedObject <IWireSerializable>{
+@interface AuthenticationContext : NSObject <IWireSerializable>{
+    NSNumber* m_userid;
+    NSDate* m_expiryDate;
+    NSString* m_token;
+    NSString* m_facebookAccessToken;
+    NSString* m_facebookUserID;
+    NSDate* m_facebookAccessTokenExpiryDate;
+    NSString* m_twitterAccessToken;
+    NSDate* m_twitterAccessTokenExpiryDate;
+    NSString* m_twitterUserID;
 @private
 }
 @property (nonatomic, retain) NSNumber * userid;
 @property (nonatomic, retain) NSDate * expiryDate;
 @property (nonatomic, retain) NSString * token;
+@property (nonatomic, retain) NSString* facebookAccessToken;
+@property (nonatomic, retain) NSDate* facebookAccessTokenExpiryDate;
+@property (nonatomic, retain) NSString* facebookUserID;
+@property (nonatomic, retain) NSString* twitterAccessToken;
+@property (nonatomic, retain) NSDate* twitterAccessTokenExpiryDate;
+@property (nonatomic, retain) NSString* twitterUserID;
 
 //- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context;
 - (void) copyFrom:(AuthenticationContext*)newContext;
+
 + (id)newInstance;
 @end

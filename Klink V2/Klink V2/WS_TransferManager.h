@@ -31,4 +31,6 @@
 - (void) createObjectInCloud:(NSNumber*) objectid withObjectType:(NSString*)objecttype withAttachmentFor:(NSString*)attributeName atFileLocation:(NSString*)path;
 - (void) deleteObjectInCloud:(NSNumber*)objectid withObjectType:(NSString*)objectType;
 - (void) uploadAttachementToCloud:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttributeName:(NSString*)attributeName atFileLocation:(NSString*)path;
+
+
 @end

@@ -597,7 +597,7 @@
             QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
             
             NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-            m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
+            self.m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
             [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:m_outstandingPhotoEnumNotificationID object:nil];
             
             [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:m_outstandingPhotoEnumNotificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];

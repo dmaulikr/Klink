@@ -8,7 +8,7 @@
 
 #import "ApplicationSettings.h"
 
-NSString* const stng_LASTLOGGEDINUSERID = @"lastloggedinuserid";
+
 NSString* const stng_BASEURL = @"baseurl";
 NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
 //NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
@@ -36,3 +36,4 @@ int const threshold_LOADMORETHEMES = 2;
 int const opcode_QUERYEQUALITY=1;
 
 NSString* const facebook_APPID=@"168077769927457";
+NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";

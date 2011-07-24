@@ -174,5 +174,26 @@
 
 }
 
++ (NSURL*) getAuthenticationURL:(NSNumber*)facebookID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date {
+    
+    NSString* verbName = verb_GETAUTHENTICATOR;
+    NSString* baseURL = [ApplicationSettingsManager getBaseURL];
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    double expiryDateInEpochSeconds = [date timeIntervalSince1970];
+    
+     NSString* facebookIDParamName = param_FACEBOOKID;
+     [parameters appendFormat:@"%@=%@",facebookIDParamName,[facebookID stringValue]];
+     NSString* displayNameParamName = param_DISPLAYNAME;
+     [parameters appendFormat:@"&%@=%@",displayNameParamName,name];
+     NSString* facebookAccessTokenParamName = param_FACEBOOKACCESSTOKEN;
+    [parameters appendFormat:@"&%@=%@",facebookAccessTokenParamName,facebookAccessToken];
+     NSString* facebookAccessTokenExpiryParamName = param_FACEBOOKACCESSTOKENEXPIRY;
+    [parameters appendFormat:@"&%@=%f",facebookAccessTokenExpiryParamName,expiryDateInEpochSeconds];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    return url;
+}
 
 @end

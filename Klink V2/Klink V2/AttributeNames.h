@@ -79,7 +79,17 @@ extern NSString* const an_OPCODE;
 extern NSString* const an_VALUE;
 extern NSString* const an_RANK;
 
+extern NSString* const an_FACEBOOKTOKENEXPIRYDATE;
+extern NSString* const an_FACEBOOKACCESSTOKEN;
+extern NSString* const an_FACEBOOKUSERID;
 
+extern NSString* const an_TWITTERTOKENEXPIRYDATE;
+extern NSString* const an_TWITTERACCESSTOKEN;
+extern NSString* const an_TWITTERUSERID;
+extern NSString* const an_ID;
+
+extern NSString* const an_AUTHENTICATIONCONTEXT;
+extern NSString* const an_NAME;
 
 
 

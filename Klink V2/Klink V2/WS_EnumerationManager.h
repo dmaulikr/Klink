@@ -48,6 +48,8 @@
 
 - (void) enumerate:(NSURL*)url withQuery:(Query*)query withEnumerationContext:(EnumerationContext *)enumerationContext onFinishNotify:(id)notificationTarget shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
+- (void) getAuthenticatorToken:(NSNumber*)userID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date onFinishNotify:(NSString*)notificationID;
+
 + (NSString*) getTypeName;
 
 + (WS_EnumerationManager*) getInstance;
