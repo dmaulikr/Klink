@@ -101,3 +101,9 @@ NSString* const an_ID=@"id";
 
 NSString* const an_AUTHENTICATIONCONTEXT=@"authenticationcontext";
 NSString* const an_NAME = @"name";
+
+ NSString* const an_TYPE = @"type";
+ NSString* const an_TARGETOBJECTTYPE=@"targetobjecttype";
+ NSString* const an_TARGETID=@"targetid";
+ NSString* const an_MESSAGE=@"message";
+NSString* const an_SEQUENCENUMBER=@"sequencenumber";

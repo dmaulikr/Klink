@@ -114,6 +114,7 @@
 		C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */; };
 		C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */; };
 		C5D8E0A413DBBFDE00D88B00 /* KlinkBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0A313DBBFDE00D88B00 /* KlinkBaseViewController.m */; };
+		C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AA13DC7D4900D88B00 /* Feed.m */; };
 		C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808F713C3851F001E16F3 /* CFNetwork.framework */; };
 		C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */; };
 		C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */; };
@@ -330,6 +331,8 @@
 		C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateCategory.m; sourceTree = "<group>"; };
 		C5D8E0A213DBBFDE00D88B00 /* KlinkBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KlinkBaseViewController.h; sourceTree = "<group>"; };
 		C5D8E0A313DBBFDE00D88B00 /* KlinkBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KlinkBaseViewController.m; sourceTree = "<group>"; };
+		C5D8E0A913DC7D4900D88B00 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
+		C5D8E0AA13DC7D4900D88B00 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
 		C5F808F713C3851F001E16F3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -475,6 +478,8 @@
 				C5190AB213C1926C0077EECA /* User.h */,
 				C561276313CB56F9005E5731 /* Theme.h */,
 				C561276413CB56FA005E5731 /* Theme.m */,
+				C5D8E0A913DC7D4900D88B00 /* Feed.h */,
+				C5D8E0AA13DC7D4900D88B00 /* Feed.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1019,6 +1024,7 @@
 				C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */,
 				C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */,
 				C5D8E0A413DBBFDE00D88B00 /* KlinkBaseViewController.m in Sources */,
+				C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

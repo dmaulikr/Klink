@@ -17,3 +17,4 @@ extern NSString* const tn_AUTHENTICATIONCONTEXT;
 extern NSString* const tn_ATTACHMENT;
 extern NSString* const tn_THEME;
 extern NSString* const tn_DELETEDOBJECT;
+extern NSString* const tn_FEED;
