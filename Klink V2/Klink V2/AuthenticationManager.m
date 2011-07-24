@@ -12,6 +12,7 @@
 #import "JSONKit.h"
 #import "NSStringGUIDCategory.h"
 #import "WS_TransferManager.h"
+#import "NotificationNames.h"
 @implementation AuthenticationManager
 @synthesize m_LoggedInUserID;
 @synthesize m_facebook;
@@ -158,6 +159,10 @@ static  AuthenticationManager* sharedManager;
         //upon startup
         [userDefaults setValue:[userID stringValue] forKey:an_USERID];
         [userDefaults synchronize];
+        
+        //now we emit the system wide notification to tell people the user has logged in
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter postNotificationName:n_USER_LOGGED_IN object:self];
     }
     
 }
@@ -180,6 +185,11 @@ static  AuthenticationManager* sharedManager;
         self.m_LoggedInUserID = 0;
         //at this point the user is logged off
         
+        
+        //we emit a system wide event to notify any listeners that the user has logged out
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter postNotificationName:n_USER_LOGGED_OUT object:self];
+        
         NSString* message = @"User logged off successfully"  ;
         [BLLog v:activityName withMessage:message];
     }
@@ -194,6 +204,16 @@ static  AuthenticationManager* sharedManager;
 
 - (NSNumber*) getLoggedInUserID {
     return self.m_LoggedInUserID;
+}
+
+- (BOOL) isUserLoggedIn {
+    if ([self.m_LoggedInUserID isEqualToNumber:[NSNumber numberWithInt:0]] ||
+        self.m_LoggedInUserID == nil) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
 }
 
 + (NSString*) getTypeName {

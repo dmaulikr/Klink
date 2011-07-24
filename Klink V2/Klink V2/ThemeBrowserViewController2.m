@@ -167,6 +167,7 @@
 - (void)viewDidLoad
 {
   
+    [super viewDidLoad];
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
@@ -178,6 +179,7 @@
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
         self.view = v_landscape;
+        
     }
     else {
         self.view = v_portrait;
@@ -211,7 +213,7 @@
     }
      
 
-    [super viewDidLoad];
+    
     // Do any additional setup after loading the view from its nib.
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "UIProfileBar.h"
-
+#import "NotificationNames.h"
 
 @implementation UIProfileBar
 @synthesize lbl_rank;
@@ -21,6 +21,11 @@
         UIView* profileBar = [bundle objectAtIndex:0];
         [self addSubview:profileBar];
                 
+        
+        //register for global events
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
     }
     return self;
 }
@@ -39,6 +44,15 @@
 - (void)dealloc
 {
     [super dealloc];
+}
+
+#pragma mark - System Event Handlers
+-(void)onUserLoggedIn:(NSNotification*)notification {
+    
+}
+
+-(void)onUserLoggedOut:(NSNotification*)notification {
+    
 }
 
 @end

@@ -18,3 +18,6 @@ extern NSString* const n_USER_UPDATE;
 extern NSString* const n_USERSTATISTICS_CREATE;
 extern NSString* const n_USERSTATISTICS_UPDATE;
 extern NSString* const n_IMAGEDOWNLOADED;
+
+extern NSString* const n_USER_LOGGED_IN;
+extern NSString* const n_USER_LOGGED_OUT;

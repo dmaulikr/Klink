@@ -10,9 +10,9 @@
 #import "UIPagedViewSlider.h"
 #import "Theme.h"
 #import "ImageDownloadProtocol.h"
+#import "KlinkBaseViewController.h"
 
-
-@interface ThemeBrowserViewController2 : UIViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate> {
+@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate> {
     
 //    UIPagedViewSlider* pvs_photoSlider;
 //    UIPagedViewSlider* pvs_themeSlider;
@@ -26,8 +26,7 @@
     NSString* m_outstandingPhotoEnumNotificationID;
     
     
-    UIView* v_landscape;
-    UIView* v_portrait;
+  
 }
 
 @property (nonatomic,retain)  UIPagedViewSlider* pvs_photoSlider;
@@ -45,8 +44,8 @@
 @property (nonatomic, retain) EnumerationContext* ec_activeThemePhotoContext;
 @property (nonatomic, retain) EnumerationContext* ec_activeThemeContext;
 
-@property (nonatomic,retain) IBOutlet UIView* v_landscape;
-@property (nonatomic,retain) IBOutlet UIView* v_portrait;
+//@property (nonatomic,retain) IBOutlet UIView* v_landscape;
+//@property (nonatomic,retain) IBOutlet UIView* v_portrait;
 
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider* v_pvs_photoSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider* h_pvs_photoSlider;

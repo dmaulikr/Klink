@@ -26,6 +26,7 @@
 - (id) getAuthenticationContextForUser:(NSNumber*)userID;
 - (id) getAuthenticationContext;
 - (NSNumber*) getLoggedInUserID;
+- (BOOL) isUserLoggedIn;
 - (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
 - (void) authenticate;
 + (NSString*) getTypeName;

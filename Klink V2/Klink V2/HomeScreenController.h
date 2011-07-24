@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KlinkBaseViewController.h"
 
-
-@interface HomeScreenController : UIViewController {
+@interface HomeScreenController : KlinkBaseViewController {
     UIButton *button1;
     UIButton *button2;
     UIButton *button3;

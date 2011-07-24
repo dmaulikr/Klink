@@ -18,3 +18,5 @@
  NSString* const n_USERSTATISTICS_CREATE = @"userstatistics_create";;
  NSString* const n_USERSTATISTICS_UPDATE=@"userstatistics_update";
  NSString* const n_IMAGEDOWNLOADED = @"image_downloaded";
+ NSString* const n_USER_LOGGED_IN = @"user_logged_in";
+ NSString* const n_USER_LOGGED_OUT=@"user_logged_out";
