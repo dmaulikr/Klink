@@ -24,7 +24,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        sv_slider = [[UIScrollView alloc]initWithFrame:frame];
+        sv_slider = [[UIKlinkScrollView alloc]initWithFrame:frame];
         
         self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
         self.m_viewList = [[NSMutableArray alloc]init];
@@ -38,7 +38,7 @@
         int height = CGRectGetHeight(self.frame);
         
         CGRect sliderFrame = CGRectMake(0, 0, width, height);
-        sv_slider = [[UIScrollView alloc]initWithFrame:sliderFrame];
+        sv_slider = [[UIKlinkScrollView alloc]initWithFrame:sliderFrame];
         sv_slider.delegate = self;
         sv_slider.pagingEnabled = YES;
         sv_slider.bounces = YES;
@@ -163,5 +163,19 @@
     return index;
 }
         
-
+#pragma mark - Scroll tap handler
+- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event 
+{
+    
+    // Process the single tap here
+    if ([touches count]==1) {
+        UITouch* touch = [[touches allObjects]objectAtIndex:0];
+        CGPoint touchLocation = [touch locationInView:self.sv_slider];
+        int x = touchLocation.x;
+        int index = (x)/(self.m_itemSpacing+self.m_itemWidth);
+        [self.delegate viewSlider:self selectIndex:index];
+    }
+      
+    
+}
 @end

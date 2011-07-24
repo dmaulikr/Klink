@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "UIViewSlider.h"
+#import "UIKlinkScrollView.h"
 
 @class UIPagedViewSlider;
 @protocol UIPagedViewSliderDelegate <NSObject>
 @optional
+
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index;
 - (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index;
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd;
 @end
 
 
 @interface UIPagedViewSlider : UIView  <UIScrollViewDelegate>{
-    UIScrollView* sv_slider;
+    UIKlinkScrollView* sv_slider;
     NSMutableArray* m_viewList;
     
     int m_itemHeight;
@@ -29,7 +32,7 @@
     id<UIPagedViewSliderDelegate> delegate;
 }
 
-@property (nonatomic,retain) UIScrollView* sv_slider;
+@property (nonatomic,retain) UIKlinkScrollView* sv_slider;
 @property (nonatomic,retain) NSMutableArray* m_viewList;
 @property int m_itemHeight;
 @property int m_itemSpacing;

@@ -648,6 +648,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
+    //called when a item is selected in the slider
+}
+
 #pragma mark - Enumeration Completion Handlers
 - (void)onEnumerateThemesFinished:(NSNotification*)notification {
     NSString* activityName = @"ThemeBrowserController.onEnumerateThemesFinished:";
