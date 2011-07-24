@@ -12,12 +12,24 @@
 #import "Photo.h"
 #import "NSStringGUIDCategory.h"
 #import <QuartzCore/QuartzCore.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import "FullScreenPhotoController.h"
 
 #define kPictureWidth 130
 #define kPictureSpacing 5
 #define kPictureHeight 120
 #define kPictureWidth_landscape 130
 #define kPictureHeight_landscape 95
+
+// Jordan's Photo sizes, need to merge with Bobby's above
+#define kThumbnailPortraitWidth 150
+#define kThumbnailPortraitHeight 200
+#define kThumbnailLandscapeWidth 266
+#define kThumbnailLandscapeHeight 200
+#define kFullscreenPortraitWidth 320
+#define kFullscreenPortraitHeight 480
+#define kFullscreenLandscapeWidth 480
+#define kFullscreenLandscapeHeight 320
 
 #define kThemePictureWidth 320
 #define kThemePictureHeight 200
@@ -39,6 +51,11 @@
 #define kCaptionTextViewWidth 120
 #define kCaptionTextViewHeight_landscape 10
 #define kCaptionTextViewWidth_landscape 120
+
+@interface ThemeBrowserViewController2 ()
+static UIImage *shrinkImage(UIImage *original, CGSize size);
+- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType;
+@end
 
 @implementation ThemeBrowserViewController2
 @synthesize pvs_photoSlider = __pvs_photoSlider;
@@ -686,5 +703,198 @@
         
     }
 }
+
+
+#pragma mark - New Photo Handlers
+- (void)shootPhoto:(id)sender {
+    [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (void)selectExistingPhoto:(id)sender {
+    [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
+    NSArray *mediaTypes = [UIImagePickerController
+                           availableMediaTypesForSourceType:sourceType];
+    if ([UIImagePickerController isSourceTypeAvailable:
+         sourceType] && [mediaTypes count] > 0) {
+        NSArray *mediaTypes = [UIImagePickerController
+							   availableMediaTypesForSourceType:sourceType];
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.mediaTypes = mediaTypes;
+        picker.delegate = self;
+        picker.allowsEditing = NO;
+        picker.sourceType = sourceType;
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle:@"Error accessing media" 
+                              message:@"Device doesn't support that media source." 
+                              delegate:nil 
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
+
+#pragma mark UIImagePickerController delegate methods
+- (void)imagePickerController:(UIImagePickerController *)picker
+didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    // Begin creation of the thumbnail and fullscreen photos
+    UIImage *chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    //UIImage *chosenImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    
+    CGSize chosenImageSize = chosenImage.size;
+    CGSize newThumbnailSize;
+    CGSize newFullscreenSize;
+    CGRect thumbnailCropRect;
+    
+    if (chosenImageSize.height > chosenImageSize.width) {
+        // Create UIImage frame for image in portrait - fill width
+        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+        newThumbnailSize = CGSizeMake(kThumbnailPortraitWidth, ((chosenImageSize.height*kThumbnailPortraitWidth)/chosenImageSize.width));
+        thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+        newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, ((chosenImageSize.height*kFullscreenPortraitWidth)/chosenImageSize.width));
+    }
+    else if (chosenImageSize.height < chosenImageSize.width) {
+        // Create UIImage frame for image in landscape - fill height
+        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
+        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
+        newThumbnailSize = CGSizeMake(((chosenImageSize.width*kThumbnailLandscapeHeight)/chosenImageSize.height), kThumbnailLandscapeHeight);
+        thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailLandscapeWidth))/2, (newThumbnailSize.height - (kThumbnailLandscapeHeight))/2, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
+        newFullscreenSize = CGSizeMake(((chosenImageSize.width*kFullscreenLandscapeHeight)/chosenImageSize.height), kFullscreenLandscapeHeight);
+    }
+    else {
+        // Create UIImage frame for image in portrait but maximize image scaling to fill height for thumbnail and width for fullscreen
+        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+        newThumbnailSize = CGSizeMake(kThumbnailPortraitHeight, kThumbnailPortraitHeight);
+        thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kThumbnailPortraitWidth, kThumbnailPortraitHeight);        
+        newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, kFullscreenPortraitWidth);
+    }
+    
+    // Make thumbnail image
+    UIImage *thumbnailImage = shrinkImage(chosenImage, newThumbnailSize);
+    // Crop the new shrunken thumbnail image to the fit the target frame size
+    CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([thumbnailImage CGImage], thumbnailCropRect);
+    thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
+    
+    // Make fullscreen image
+    UIImage *fullscreenImage = shrinkImage(chosenImage, newFullscreenSize);
+    
+    
+    // Initialize the new Photo object
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
+    NSString* thumbnailPath = nil;
+    NSString* fullscreenPath = nil;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:appContext];
+    Photo *newPhoto = [[Photo alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:appContext];
+    [newPhoto init];
+    newPhoto.descr = @"sample text";
+    newPhoto.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
+    
+    ImageManager* imageManager = [ImageManager getInstance];
+    
+    // Save thumbnail image
+    NSString* thumbnailFileName = [newPhoto.objectid stringValue];
+    thumbnailPath = [imageManager saveImage:thumbnailImage withFileName:thumbnailFileName];
+    
+    // Save fullscreen image
+    NSString* fullscreenFileName = [newPhoto.objectid stringValue];
+    fullscreenPath = [imageManager saveImage:fullscreenImage withFileName:fullscreenFileName];
+    
+    
+    newPhoto.thumbnailurl = thumbnailPath;
+    newPhoto.imageurl = fullscreenPath;   
+    
+    [newPhoto commitChangesToDatabase:YES withPendingFlag:YES];
+    
+    CGImageRelease(croppedThumbnailImage);
+    
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+
+
+#pragma mark -
+static inline double radians (double degrees) {
+    return degrees * M_PI/180;
+}
+
+#pragma mark -
+static UIImage *shrinkImage(UIImage *original, CGSize size) {
+    
+    CGFloat scale = [UIScreen mainScreen].scale;
+    
+    CGFloat targetWidth = size.width * scale;
+    CGFloat targetHeight = size.height * scale;
+    CGImageRef imageRef = [original CGImage];
+    
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+    CGColorSpaceRef colorSpaceInfo = CGColorSpaceCreateDeviceRGB();
+    
+    if (bitmapInfo == kCGImageAlphaNone) {
+        bitmapInfo = kCGImageAlphaNoneSkipLast;
+    }
+    
+    CGContextRef context;
+    
+    //if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+    context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    //} else {
+    //    context = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    
+    //}       
+    
+    // In the right or left cases, we need to switch scaledWidth and scaledHeight,
+	// and also the thumbnail point
+    if (original.imageOrientation == UIImageOrientationLeft) {
+        CGContextRotateCTM (context, radians(90));
+        CGContextTranslateCTM (context, 0, -targetWidth);
+        
+    } else if (original.imageOrientation == UIImageOrientationRight) {
+        CGContextRotateCTM (context, radians(-90));
+        CGContextTranslateCTM (context, -targetHeight, 0);
+        
+    } else if (original.imageOrientation == UIImageOrientationUp) {
+        // NOTHING
+    } else if (original.imageOrientation == UIImageOrientationDown) {
+        CGContextTranslateCTM (context, targetWidth, targetHeight);
+        CGContextRotateCTM (context, radians(-180));
+    }
+    
+    if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+        CGContextDrawImage(context, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
+        
+    } else {
+        CGContextDrawImage(context, CGRectMake(0, 0, targetHeight, targetWidth), imageRef);
+    }
+    
+    CGImageRef shrunken = CGBitmapContextCreateImage(context);
+    
+    UIImage *shrunkenImage = [UIImage imageWithCGImage:shrunken scale:original.scale orientation:original.imageOrientation];
+    //UIImage* shrunkenImage = [UIImage imageWithCGImage:shrunken];
+    
+    //CGSize shrunkenImageSize = shrunkenImage.size;
+    
+    CGContextRelease(context);
+    CGImageRelease(shrunken);
+    
+    return shrunkenImage;
+}
+
 
 @end

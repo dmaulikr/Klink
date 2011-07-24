@@ -12,7 +12,7 @@
 #import "ImageDownloadProtocol.h"
 #import "KlinkBaseViewController.h"
 
-@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate> {
+@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     
 //    UIPagedViewSlider* pvs_photoSlider;
 //    UIPagedViewSlider* pvs_themeSlider;
