@@ -202,6 +202,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         self.view = v_portrait;
     }
     
+    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                     target:self
+                                     action:@selector(shootPhoto:)];
+    self.navigationItem.rightBarButtonItem = cameraButton;
+    [cameraButton release];
+    
     self.pvs_photoSlider.layer.borderWidth = 1.0f;
     self.pvs_photoSlider.layer.borderColor = [UIColor whiteColor].CGColor;
     self.pvs_themeSlider.layer.borderWidth = 1.0f;
