@@ -17,3 +17,4 @@
  NSString* const tn_ATTACHMENT = @"attachment";
  NSString* const tn_DELETEDOBJECT = @"deletedobject";
  NSString* const tn_THEME = @"theme";
+ NSString* const tn_FEED = @"feed";

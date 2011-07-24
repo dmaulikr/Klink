@@ -91,6 +91,11 @@ extern NSString* const an_ID;
 extern NSString* const an_AUTHENTICATIONCONTEXT;
 extern NSString* const an_NAME;
 
+extern NSString* const an_TYPE;
+extern NSString* const an_TARGETOBJECTTYPE;
+extern NSString* const an_TARGETID;
+extern NSString* const an_MESSAGE;
+extern NSString* const an_SEQUENCENUMBER;
 
 
 
