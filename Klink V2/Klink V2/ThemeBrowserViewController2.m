@@ -76,6 +76,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @synthesize v_pvs_themeSlider;
 @synthesize h_pvs_photoSlider;
 @synthesize h_pvs_themeSlider;
+@synthesize fullScreenPhotoController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -180,7 +181,15 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
     
 }
+
+
 #pragma mark - View lifecycle
+
+-(void) viewWillAppear:(BOOL)animated {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    self.navigationController.navigationBar.translucent = NO;
+}
+
 - (void)viewDidLoad
 {
   
@@ -650,6 +659,17 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
     //called when a item is selected in the slider
+    if (self.fullScreenPhotoController.view.superview == nil) {
+        if (self.fullScreenPhotoController == nil) {
+            FullScreenPhotoController *fullScreenController = [[FullScreenPhotoController alloc] initWithNibName:@"FullScreenPhotoController" bundle:nil];
+            Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+            fullScreenController.photo = selectedPhoto;
+            fullScreenController.theme = theme;
+            self.fullScreenPhotoController = fullScreenController;
+            [fullScreenController release];
+        }
+        [self.navigationController pushViewController:fullScreenPhotoController animated:YES];
+    }
 }
 
 #pragma mark - Enumeration Completion Handlers
@@ -864,33 +884,30 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
     CGContextRef context;
     
-    //if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+    if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
     context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-    //} else {
-    //    context = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-    
-    //}       
+    } else {
+        context = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    }       
     
     // In the right or left cases, we need to switch scaledWidth and scaledHeight,
 	// and also the thumbnail point
     if (original.imageOrientation == UIImageOrientationLeft) {
-        CGContextRotateCTM (context, radians(90));
-        CGContextTranslateCTM (context, 0, -targetWidth);
-        
+        //CGContextRotateCTM (context, radians(90));
+        //CGContextTranslateCTM (context, 0, -targetWidth);
     } else if (original.imageOrientation == UIImageOrientationRight) {
-        CGContextRotateCTM (context, radians(-90));
-        CGContextTranslateCTM (context, -targetHeight, 0);
-        
+        //CGContextRotateCTM (context, radians(-90));
+        //CGContextTranslateCTM (context, -targetHeight, 0);
     } else if (original.imageOrientation == UIImageOrientationUp) {
         // NOTHING
     } else if (original.imageOrientation == UIImageOrientationDown) {
-        CGContextTranslateCTM (context, targetWidth, targetHeight);
-        CGContextRotateCTM (context, radians(-180));
+        //CGContextTranslateCTM (context, targetWidth, targetHeight);
+        //CGContextRotateCTM (context, radians(180));
     }
     
     if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
         CGContextDrawImage(context, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
-        
+
     } else {
         CGContextDrawImage(context, CGRectMake(0, 0, targetHeight, targetWidth), imageRef);
     }

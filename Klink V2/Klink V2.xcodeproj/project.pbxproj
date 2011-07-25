@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		3DBF679D13CEB117005CE732 /* FullScreenPhotoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF679C13CEB117005CE732 /* FullScreenPhotoController.xib */; };
 		3DBF67A113CEB215005CE732 /* FullScreenPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF67A013CEB215005CE732 /* FullScreenPhotoController.m */; };
-		3DC5227913D0193700A0F1F0 /* IMG_0006.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5227813D0193700A0F1F0 /* IMG_0006.jpg */; };
-		3DC5227B13D0194900A0F1F0 /* IMG_0009.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3DC5227A13D0194900A0F1F0 /* IMG_0009.jpg */; };
 		C5190A1F13C18C0C0077EECA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A1E13C18C0C0077EECA /* UIKit.framework */; };
 		C5190A2113C18C0C0077EECA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A2013C18C0C0077EECA /* Foundation.framework */; };
 		C5190A2313C18C0C0077EECA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A2213C18C0C0077EECA /* CoreGraphics.framework */; };
@@ -136,8 +134,6 @@
 		3DBF679C13CEB117005CE732 /* FullScreenPhotoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoController.xib; sourceTree = "<group>"; };
 		3DBF679F13CEB215005CE732 /* FullScreenPhotoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPhotoController.h; sourceTree = "<group>"; };
 		3DBF67A013CEB215005CE732 /* FullScreenPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenPhotoController.m; sourceTree = "<group>"; };
-		3DC5227813D0193700A0F1F0 /* IMG_0006.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0006.jpg; sourceTree = "<group>"; };
-		3DC5227A13D0194900A0F1F0 /* IMG_0009.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0009.jpg; sourceTree = "<group>"; };
 		C5190A1A13C18C0C0077EECA /* Klink V2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Klink V2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5190A1E13C18C0C0077EECA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C5190A2013C18C0C0077EECA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -379,8 +375,6 @@
 		3DC5227713D018CE00A0F1F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3DC5227813D0193700A0F1F0 /* IMG_0006.jpg */,
-				3DC5227A13D0194900A0F1F0 /* IMG_0009.jpg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -918,8 +912,6 @@
 				C561275313CA329A005E5731 /* SampleViewController2.xib in Resources */,
 				C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */,
 				3DBF679D13CEB117005CE732 /* FullScreenPhotoController.xib in Resources */,
-				3DC5227913D0193700A0F1F0 /* IMG_0006.jpg in Resources */,
-				3DC5227B13D0194900A0F1F0 /* IMG_0009.jpg in Resources */,
 				C5BED8AC13D52F9D007A1934 /* FBDialog.bundle in Resources */,
 				C5BED8CB13D52FC2007A1934 /* ProfileViewController.xib in Resources */,
 				C5BED8CE13D52FC2007A1934 /* ThemeBrowserViewController2.xib in Resources */,

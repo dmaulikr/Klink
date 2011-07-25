@@ -34,8 +34,8 @@
 - (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
 
 
-- (id)downloadImageFromURL:(NSString*) url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
-- (id)downloadImageFromFile:(NSString*) path withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
+- (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
+- (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
 - (NSString*)saveImage:(UIImage*)image withFileName:(NSString*)fileNameWithoutExtension;
 
 

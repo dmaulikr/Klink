@@ -35,6 +35,11 @@
 
 #pragma mark - View lifecycle
 
+-(void) viewWillAppear:(BOOL)animated {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    self.navigationController.navigationBar.translucent = NO;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

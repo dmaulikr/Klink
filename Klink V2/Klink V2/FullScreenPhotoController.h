@@ -12,14 +12,9 @@
 #import "Caption.h"
 #import "User.h"
 
-#define kThumbnailWidthPortrait 66.67
-#define kThumbnailHeightPortrait 100
-#define kThumbnailWidthLandscape 150
-#define kThumbnailHeightLandscape 100
+#define kNavigationBarFadeDelay 5.5
 
-
-@interface FullScreenPhotoController : UIViewController
-        <UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface FullScreenPhotoController : UIViewController {
     UIImageView *imageView;
     UILabel *submittedByLabel;
     UILabel *captionLabel;
