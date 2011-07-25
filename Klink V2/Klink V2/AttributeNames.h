@@ -96,8 +96,8 @@ extern NSString* const an_TARGETOBJECTTYPE;
 extern NSString* const an_TARGETID;
 extern NSString* const an_MESSAGE;
 extern NSString* const an_SEQUENCENUMBER;
-
-
+extern NSString* const an_USER;
+extern NSString* const an_USERNAME;
 
 
 

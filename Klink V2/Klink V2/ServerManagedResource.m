@@ -12,7 +12,7 @@
 #import "Photo.h"
 #import "Caption.h"
 #import "Theme.h"
-
+#import "Feed.h"
 @implementation ServerManagedResource
 @dynamic objectid;
 @dynamic datecreated;
@@ -105,6 +105,11 @@
         [[themeObject initFromDictionary:jsonObject] autorelease];
         return themeObject;
     }
+    else if ([objectType isEqualToString:tn_FEED]) {
+        Feed* feedObject =[[Feed alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:nil]; 
+        [[feedObject initFromDictionary:jsonObject] autorelease];
+        return feedObject;
+    }
     else {
         [BLLog e:activityName withMessage:@"Unrecognized object type, can not deserialize into client type"];
     }
@@ -116,6 +121,7 @@
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *appContext = appDelegate.managedObjectContext;   
     
+    NSLog(@"objecttype %@",self.objecttype);
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:self.objecttype inManagedObjectContext:appContext];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectid=%@",self.objectid];

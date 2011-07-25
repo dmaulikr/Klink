@@ -68,6 +68,15 @@
 }
 
 
+- (id) init {
+    self = [super init];
+    if (self != nil) {
+        self.objecttype = tn_FEED;
+        
+    }
+    return self;
+}
+
 
 
 @end

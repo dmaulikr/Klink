@@ -80,7 +80,7 @@
     query.attributeExpressions = expressions;
     
     [queryExpression release];
-    [expressions release];
+    
     return query;
     
 }
@@ -105,7 +105,7 @@
     query.attributeExpressions = expressions;
     
     [queryExpression release];
-    [expressions release];
+    
     
     return query;
 }

@@ -13,6 +13,7 @@
 #import "NSStringGUIDCategory.h"
 #import "WS_TransferManager.h"
 #import "NotificationNames.h"
+#import "User.h"
 @implementation AuthenticationManager
 @synthesize m_LoggedInUserID;
 @synthesize m_facebook;
@@ -100,9 +101,13 @@ static  AuthenticationManager* sharedManager;
     NSString* activityName = @"AuthenticationManager.onGetAuthenticationContextDownloaded:";
     NSDictionary* userInfo = [notification userInfo];
     AuthenticationContext* newContext = [[userInfo objectForKey:an_AUTHENTICATIONCONTEXT]retain];
+    User* user = [[userInfo objectForKey:an_USER]retain];
     
     NSString* message = [NSString stringWithFormat:@"Authentication context received from server, logging in user: %@",newContext.userid];
     [BLLog v:activityName withMessage:message];
+    
+    //save the user object that is returned to us in the database
+    [ServerManagedResource refreshWithServerVersion:user];
     
     [self loginUser:newContext.userid withAuthenticationContext:newContext];
     

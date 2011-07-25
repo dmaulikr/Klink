@@ -48,6 +48,9 @@
    useEnumerationContext:(EnumerationContext*)enumerationContext
 shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
+- (void) getUser:(NSNumber*)userID
+onFinishNotify:(NSString*)notificationID;
+
 - (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
 - (void) execute:(NSURL*)url onFinishSelector:(SEL)onfinishselector onFailSelector:(SEL)onfailselector withUserInfo:(NSDictionary*)userInfo;

@@ -44,9 +44,9 @@
 					<object class="IBUIView" id="995220646">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">310</int>
-						<string key="NSFrameSize">{320, 212}</string>
+						<string key="NSFrameSize">{320, 208}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="403566720"/>
+						<reference key="NSNextKeyView" ref="135952051"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="713282831">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -56,16 +56,16 @@
 					<object class="IBUIView" id="403566720">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">294</int>
-						<string key="NSFrame">{{-2, 220}, {325, 120}}</string>
+						<string key="NSFrame">{{-2, 206}, {325, 120}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="526535441"/>
+						<reference key="NSNextKeyView" ref="995220646"/>
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIView" id="526535441">
+					<object class="IBUIView" id="135952051">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 340}, {320, 76}}</string>
+						<string key="NSFrame">{{0, 326}, {320, 90}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
@@ -74,7 +74,7 @@
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="995220646"/>
+				<reference key="NSNextKeyView" ref="403566720"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -104,15 +104,16 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 111}, {480, 95}}</string>
 						<reference key="NSSuperview" ref="140920962"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="785352235"/>
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIView" id="649403182">
+					<object class="IBUIView" id="785352235">
 						<reference key="NSNextResponder" ref="140920962"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 206}, {480, 70}}</string>
 						<reference key="NSSuperview" ref="140920962"/>
+						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -232,7 +233,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">m_profileBar_portrait</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="526535441"/>
+						<reference key="destination" ref="135952051"/>
 					</object>
 					<int key="connectionID">34</int>
 				</object>
@@ -240,7 +241,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">m_profileBar_landscape</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="649403182"/>
+						<reference key="destination" ref="785352235"/>
 					</object>
 					<int key="connectionID">35</int>
 				</object>
@@ -261,7 +262,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="403566720"/>
 							<reference ref="995220646"/>
-							<reference ref="526535441"/>
+							<reference ref="135952051"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Portrait</string>
@@ -299,7 +300,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="70584427"/>
 							<reference ref="678872801"/>
-							<reference ref="649403182"/>
+							<reference ref="785352235"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Landscape</string>
@@ -320,13 +321,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
-						<reference key="object" ref="526535441"/>
+						<reference key="object" ref="135952051"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Profile Bar</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">33</int>
-						<reference key="object" ref="649403182"/>
+						<reference key="object" ref="785352235"/>
 						<reference key="parent" ref="140920962"/>
 						<string key="objectName">Profile Bar</string>
 					</object>

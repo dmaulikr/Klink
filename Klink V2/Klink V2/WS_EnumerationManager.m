@@ -93,6 +93,13 @@ static  WS_EnumerationManager* sharedManager;
     
 }
 
+- (void) getUser:(NSNumber*)userID
+        onFinishNotify:(NSString*)notificationID{
+    
+    QueryOptions* queryOptions = [QueryOptions queryForUser:userID];
+    [self enumerateObjectsWithIds:[NSArray arrayWithObject:userID] withQueryOptions:queryOptions onFinishNotify:notificationID];
+}
+
 - (void) enumerateFeeds:
            (NSNumber *)maximumNumberOfResults 
            withPageSize:(NSNumber *)pageSize 
@@ -332,6 +339,8 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
         
         NSMutableDictionary* notificationUserInfo = [[NSMutableDictionary alloc]init];
         [notificationUserInfo setValue:getAuthenticatorResponse.authenticationcontext forKey:an_AUTHENTICATIONCONTEXT];
+        [notificationUserInfo setValue:getAuthenticatorResponse.user forKey:an_USER];
+        
         
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfo];

@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "Response.h"
 #import "AuthenticationContext.h"
+#import "User.h"
 @interface GetAuthenticatorResponse : Response {
     AuthenticationContext* authenticationcontext;
+    User* user;
 }
 @property (nonatomic,retain) AuthenticationContext* authenticationcontext;
-
+@property (nonatomic,retain) User* user;
 @end

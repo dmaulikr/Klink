@@ -116,6 +116,7 @@
 		C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AA13DC7D4900D88B00 /* Feed.m */; };
 		C5D8E0B013DC89FC00D88B00 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AF13DC89FC00D88B00 /* SFHFKeychainUtils.m */; };
 		C5D8E0B313DCA16500D88B00 /* UIKlinkScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */; };
+		C5D8E0B613DCEDF300D88B00 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */; };
 		C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808F713C3851F001E16F3 /* CFNetwork.framework */; };
 		C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */; };
 		C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */; };
@@ -336,6 +337,8 @@
 		C5D8E0AF13DC89FC00D88B00 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		C5D8E0B113DCA16500D88B00 /* UIKlinkScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKlinkScrollView.h; sourceTree = "<group>"; };
 		C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKlinkScrollView.m; sourceTree = "<group>"; };
+		C5D8E0B413DCEDF200D88B00 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
+		C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTypes.m; sourceTree = "<group>"; };
 		C5F808F713C3851F001E16F3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -542,6 +545,8 @@
 				C5190AB913C1926C0077EECA /* WebServiceParameters.m */,
 				C5190ABA13C1926C0077EECA /* WebServiceVerbs.h */,
 				C5190ABB13C1926C0077EECA /* WebServiceVerbs.m */,
+				C5D8E0B413DCEDF200D88B00 /* FeedTypes.h */,
+				C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -1023,6 +1028,7 @@
 				C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */,
 				C5D8E0B013DC89FC00D88B00 /* SFHFKeychainUtils.m in Sources */,
 				C5D8E0B313DCA16500D88B00 /* UIKlinkScrollView.m in Sources */,
+				C5D8E0B613DCEDF300D88B00 /* FeedTypes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
