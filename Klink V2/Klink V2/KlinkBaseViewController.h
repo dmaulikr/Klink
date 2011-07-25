@@ -26,5 +26,5 @@
 
 - (void) onUserLoggedIn;
 - (void) onUserLoggedOut;
-
+- (void) enumerateFeed;
 @end

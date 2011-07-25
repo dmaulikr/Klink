@@ -9,6 +9,7 @@
 #import "KlinkBaseViewController.h"
 #import "NotificationNames.h"
 #import "AuthenticationManager.h"
+#import "NSStringGUIDCategory.h"
 
 #define kProfileBarHeight_Landscape 70 
 #define kProfileBarHeight 70
@@ -174,6 +175,41 @@
 }
 
 
+-(void)onGetUserComplete:(NSNotification*)notification {
+    NSString* activityName = @"HomeScreenController.onGetUserComplete";
+}
+
+-(void)onEnumerateFeedsComplete:(NSNotification*) notification {
+    NSString* activityName = @"HomeScreenController.onEnumerateFeedsComplete:";
+}
+
+- (void) enumerateFeed {
+    NSString* notificationID = [NSString GetGUID];
+    AuthenticationContext* context = [[AuthenticationManager getInstance]getAuthenticationContext];
+    NSString* userNotificationID = [NSString GetGUID];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    
+    
+    if (context != nil) {
+        [notificationCenter addObserver:self selector:@selector(onGetUserComplete:) name:userNotificationID object:nil];
+        [notificationCenter addObserver:self selector:@selector(onEnumerateFeedsComplete:) name:notificationID object:nil];
+        
+        WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
+        [enumerationManager enumerateFeeds:[NSNumber numberWithInt:100] 
+                              withPageSize:[NSNumber numberWithInt:10] 
+                          withQueryOptions:[QueryOptions queryForFeedsForUser:context.userid] 
+                            onFinishNotify:notificationID 
+                     useEnumerationContext:nil 
+                 shouldEnumerateSinglePage:NO];
+        
+        
+        //need to update the user object for the current person as well
+        
+        [enumerationManager getUser:context.userid onFinishNotify:userNotificationID ];
+    }
+
+}
 
 #pragma mark - System Event Handlers
 - (void) onUserLoggedIn: (NSNotification*)notification {
@@ -186,6 +222,7 @@
 
 - (void) onUserLoggedIn {
     [self showProfileBar];
+    [self enumerateFeed];
     
 }
 

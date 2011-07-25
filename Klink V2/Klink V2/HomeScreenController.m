@@ -61,13 +61,6 @@
 }
 
 
--(void)onEnumerateFeedsComplete:(NSNotification*) notification {
-    NSString* activityName = @"HomeScreenController.onEnumerateFeedsComplete:";
-}
-
--(void)onGetUserComplete:(NSNotification*)notification {
-    NSString* activityName = @"HomeScreenController.onGetUserComplete";
-}
 
 #pragma mark - Event Handlers
 - (IBAction)onButtonClicked:(id)sender {
@@ -99,31 +92,7 @@
     }
     else if (sender == button4) {
         //enumerate feed
-        NSString* notificationID = [NSString GetGUID];
-        AuthenticationContext* context = [[AuthenticationManager getInstance]getAuthenticationContext];
-         NSString* userNotificationID = [NSString GetGUID];
-        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-        
-        
-        
-        if (context != nil) {
-            [notificationCenter addObserver:self selector:@selector(onGetUserComplete:) name:userNotificationID object:nil];
-            [notificationCenter addObserver:self selector:@selector(onEnumerateFeedsComplete:) name:notificationID object:nil];
-            
-            WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
-            [enumerationManager enumerateFeeds:[NSNumber numberWithInt:100] 
-                                  withPageSize:[NSNumber numberWithInt:10] 
-                              withQueryOptions:[QueryOptions queryForFeedsForUser:context.userid] 
-                                onFinishNotify:notificationID 
-                         useEnumerationContext:nil 
-                     shouldEnumerateSinglePage:NO];
-            
-            
-            //need to update the user object for the current person as well
-           
-            [enumerationManager getUser:context.userid onFinishNotify:userNotificationID ];
-        }
-        
+        [super enumerateFeed];      
     }
 }
 
