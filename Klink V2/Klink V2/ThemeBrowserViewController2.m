@@ -659,17 +659,21 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
     //called when a item is selected in the slider
-    if (self.fullScreenPhotoController.view.superview == nil) {
-        if (self.fullScreenPhotoController == nil) {
-            FullScreenPhotoController *fullScreenController = [[FullScreenPhotoController alloc] initWithNibName:@"FullScreenPhotoController" bundle:nil];
-            Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-            fullScreenController.photo = selectedPhoto;
-            fullScreenController.theme = theme;
-            self.fullScreenPhotoController = fullScreenController;
-            [fullScreenController release];
-        }
-        [self.navigationController pushViewController:fullScreenPhotoController animated:YES];
+    if (self.fullScreenPhotoController == nil) {
+        FullScreenPhotoController *fullScreenController = [[FullScreenPhotoController alloc] initWithNibName:@"FullScreenPhotoController" bundle:nil];
+        self.fullScreenPhotoController = fullScreenController;
+        [fullScreenController release];
     }
+    
+    Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+    Theme* selectedTheme = self.theme;
+        
+    self.fullScreenPhotoController.photo = selectedPhoto;
+    self.fullScreenPhotoController.theme = selectedTheme;
+    
+    [self.navigationController pushViewController:fullScreenPhotoController animated:YES];
+
+
 }
 
 #pragma mark - Enumeration Completion Handlers

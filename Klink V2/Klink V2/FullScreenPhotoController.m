@@ -18,13 +18,13 @@
 @end
 
 @implementation FullScreenPhotoController
-@synthesize imageView;
-@synthesize submittedByLabel;
-@synthesize captionLabel;
-@synthesize photo;
-@synthesize theme;
-@synthesize caption;
-@synthesize user;
+@synthesize imageView = m_imageView;
+@synthesize submittedByLabel=m_submittedByLabel;
+@synthesize captionLabel = m_captionLabel;
+@synthesize photo = m_photo;
+@synthesize theme = m_theme;
+@synthesize caption = m_caption;
+@synthesize user = m_user;
 @synthesize fadeTimer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,7 +38,7 @@
 
 - (void)dealloc
 {
-    [imageView release];
+    [self.imageView release];
     [fadeTimer release];
     [super dealloc];
 }
@@ -54,15 +54,10 @@
 #pragma mark - View lifecycle
 
 -(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
     self.navigationController.navigationBar.translucent = YES;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     
-    //[self fadeBarController];
     if (self.fadeTimer != nil)
     {			
         [self.fadeTimer invalidate];
@@ -81,19 +76,26 @@
     //NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
     //[userInfo setObject:imageView forKey:an_IMAGEVIEW];        
     
-    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:self];   
+    UIImage* image = [imageManager downloadImage:self.photo.imageurl withUserInfo:nil atCallback:self];   
     
     if (image != nil) {
-        imageView.image = image;
+        self.imageView.image = image;
     }
     else {
-        imageView.backgroundColor =[UIColor blackColor];
+        self.imageView.backgroundColor =[UIColor blackColor];
     }
     
-    //captionLabel.text = captionLabel.text;
-        
+
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //[self fadeBarController];
+        //captionLabel.text = captionLabel.text;
+        
+}
 
 -(void) viewWillDisappear:(BOOL)animated {
     [self.fadeTimer invalidate];
@@ -160,5 +162,10 @@
     [UIView commitAnimations];
 }
 
-
+#pragma mark - Image Download Callback
+-(void)onImageDownload:(UIImage*)image withUserInfo:(NSDictionary*)userInfo {
+    //this method is called by the ImageManager whenever it is returning an image that it has downloaded from the internet
+    //the userInfo dictionary passed in is the exact same oneyou passed into the DownloadImage method of the ImageManager.
+    
+}
 @end

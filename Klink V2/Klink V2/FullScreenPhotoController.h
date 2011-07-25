@@ -11,17 +11,17 @@
 #import "Theme.h"
 #import "Caption.h"
 #import "User.h"
-
+#import "ImageDownloadProtocol.h"
 #define kNavigationBarFadeDelay 5.5
 
-@interface FullScreenPhotoController : UIViewController {
-    UIImageView *imageView;
-    UILabel *submittedByLabel;
-    UILabel *captionLabel;
-    Photo *photo;
-    Theme *theme;
-    Caption *caption;
-    User *user;
+@interface FullScreenPhotoController : UIViewController <ImageDownloadCallback> {
+    UIImageView *m_imageView;
+    UILabel     *m_submittedByLabel;
+    UILabel     *m_captionLabel;
+    Photo       *m_photo;
+    Theme       *m_theme;
+    Caption     *m_caption;
+    User        *m_user;
 }
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 @property (nonatomic, retain) IBOutlet UILabel *submittedByLabel;
