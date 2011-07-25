@@ -94,7 +94,9 @@
         
 }
 
--(void) viewWillUnload:(BOOL)animated {
+
+-(void) viewWillDisappear:(BOOL)animated {
+    [self.fadeTimer invalidate];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     self.navigationController.navigationBar.translucent = NO;
 }
@@ -103,6 +105,7 @@
 {    
     self.imageView = nil;
     [self.fadeTimer invalidate];
+    self.fadeTimer = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
