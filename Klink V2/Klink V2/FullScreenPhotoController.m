@@ -81,7 +81,7 @@
     //NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
     //[userInfo setObject:imageView forKey:an_IMAGEVIEW];        
     
-    UIImage* image = [imageManager downloadImage:theme.homeimageurl withUserInfo:nil atCallback:self];   
+    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:self];   
     
     if (image != nil) {
         imageView.image = image;
