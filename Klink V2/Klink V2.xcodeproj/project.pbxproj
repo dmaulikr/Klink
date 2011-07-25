@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3DB4F31E13DCF0C7001978C3 /* IMG_0006.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3DB4F31C13DCF0C7001978C3 /* IMG_0006.jpg */; };
+		3DB4F31F13DCF0C7001978C3 /* IMG_0009.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3DB4F31D13DCF0C7001978C3 /* IMG_0009.jpg */; };
 		3DBF679D13CEB117005CE732 /* FullScreenPhotoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF679C13CEB117005CE732 /* FullScreenPhotoController.xib */; };
 		3DBF67A113CEB215005CE732 /* FullScreenPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF67A013CEB215005CE732 /* FullScreenPhotoController.m */; };
 		C5190A1F13C18C0C0077EECA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5190A1E13C18C0C0077EECA /* UIKit.framework */; };
@@ -131,6 +133,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3DB4F31C13DCF0C7001978C3 /* IMG_0006.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0006.jpg; sourceTree = "<group>"; };
+		3DB4F31D13DCF0C7001978C3 /* IMG_0009.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_0009.jpg; sourceTree = "<group>"; };
 		3DBF679C13CEB117005CE732 /* FullScreenPhotoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoController.xib; sourceTree = "<group>"; };
 		3DBF679F13CEB215005CE732 /* FullScreenPhotoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPhotoController.h; sourceTree = "<group>"; };
 		3DBF67A013CEB215005CE732 /* FullScreenPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenPhotoController.m; sourceTree = "<group>"; };
@@ -375,6 +379,8 @@
 		3DC5227713D018CE00A0F1F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3DB4F31C13DCF0C7001978C3 /* IMG_0006.jpg */,
+				3DB4F31D13DCF0C7001978C3 /* IMG_0009.jpg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -917,6 +923,8 @@
 				C5BED8CE13D52FC2007A1934 /* ThemeBrowserViewController2.xib in Resources */,
 				C5BED8D213D52FC2007A1934 /* UIProfileBar.xib in Resources */,
 				C5CCDF9D13D99F9700ABE747 /* LoginViewController.xib in Resources */,
+				3DB4F31E13DCF0C7001978C3 /* IMG_0006.jpg in Resources */,
+				3DB4F31F13DCF0C7001978C3 /* IMG_0009.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
