@@ -12,6 +12,8 @@
 #import "ImageDownloadProtocol.h"
 #import "KlinkBaseViewController.h"
 
+@class FullScreenPhotoController;
+
 @interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSliderDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     
 //    UIPagedViewSlider* pvs_photoSlider;
@@ -25,11 +27,11 @@
     
     NSString* m_outstandingPhotoEnumNotificationID;
     
-    
+    FullScreenPhotoController *fullScreenPhotoController;
   
 }
 
-@property (nonatomic,retain)  UIPagedViewSlider* pvs_photoSlider;
+@property (nonatomic,retain) UIPagedViewSlider* pvs_photoSlider;
 @property (nonatomic,retain) UIPagedViewSlider* pvs_themeSlider;
 @property (nonatomic,retain) Theme* theme;
 
@@ -52,5 +54,6 @@
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider *v_pvs_themeSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider *h_pvs_themeSlider;
 
+@property (nonatomic, retain) FullScreenPhotoController *fullScreenPhotoController;
 
 @end
