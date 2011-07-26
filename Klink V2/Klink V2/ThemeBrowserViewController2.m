@@ -853,6 +853,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     newPhoto.imageurl = fullscreenPath;   
     
     [newPhoto commitChangesToDatabase:NO withPendingFlag:YES];
+    //now we need to upload this to the cloud. as they say in Redmond. to the cloud...
+    WS_TransferManager* transferManager = [WS_TransferManager getInstance];
+    Attachment* thumbnailAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_THUMBNAILURL atFileLocation:newPhoto.thumbnailurl];
+    Attachment* fullscreenAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_IMAGEURL atFileLocation:newPhoto.imageurl];
+    NSArray* attachments = [NSArray arrayWithObjects:thumbnailAttachment,fullscreenAttachment, nil];
+    
+    [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments];
+    
+    
     
     CGImageRelease(croppedThumbnailImage);
     

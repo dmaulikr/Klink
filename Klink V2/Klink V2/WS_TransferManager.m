@@ -113,7 +113,7 @@ static  WS_TransferManager* sharedManager;
 }
 
 - (void) createObjectsInCloud:(NSArray*)objectids withObjectTypes:(NSArray*)objectTypes withAttachments:(NSArray *)attachments{
-    NSString* activityName = @"WS_TransferManager.updateObjectInCloud:";
+    NSString* activityName = @"WS_TransferManager.createObjectsInCloud:";
 
 
     NSMutableArray *objectsToCreate = [[NSMutableArray alloc]initWithCapacity:[objectids count]];
@@ -206,7 +206,7 @@ static  WS_TransferManager* sharedManager;
     
     NSError* error = nil;
     
-    NSArray* results = [appContext executeFetchRequest:fetchRequest error:&error];
+    NSArray* results = [[appContext executeFetchRequest:fetchRequest error:&error]retain];
     
     if (error != nil) {
         NSString* message = [NSString stringWithFormat:@"unable to retrieve object id: %@ of type %@",objectid,objectType];

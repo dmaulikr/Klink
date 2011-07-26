@@ -73,7 +73,8 @@ static  DataLayer* sharedManager;
     int int_secondsSinceEpoch = (int)[[NSDate date]timeIntervalSince1970];
     NSNumber* secondsSinceEpoch = [NSNumber numberWithInt:int_secondsSinceEpoch];
     
-    NSString* idString = [NSString stringWithFormat:@"%@%@",userID,secondsSinceEpoch];
+//    NSString* idString = [NSString stringWithFormat:@"%@%@",userID,secondsSinceEpoch];
+     NSString* idString = [NSString stringWithFormat:@"%@",secondsSinceEpoch];
     
     NSNumberFormatter *f = [[NSNumberFormatter alloc]init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];

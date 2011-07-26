@@ -47,9 +47,9 @@
     }
 
     
-    NSString* message = [NSString stringWithFormat:@"Created from JSON with id=%@, dateCreated=%@,  dateModified=%@", self.objectid,self.datecreated,self.dateModified];
-    
-    [BLLog v:activityName withMessage:message];
+//    NSString* message = [NSString stringWithFormat:@"Created from JSON with id=%@, dateCreated=%@,  dateModified=%@", self.objectid,self.datecreated,self.dateModified];
+//    
+//    [BLLog v:activityName withMessage:message];
     [dateCreated release];
     
     return self;
@@ -73,9 +73,9 @@
     NSString* activityName = @"ServerManagedResource.from:";    
     NSString* objectType = [jsonObject objectForKey:an_OBJECTTYPE];
     
-    NSString* message = [[NSString alloc] initWithFormat:@"deserializing json into objectType %@",objectType];
-    [BLLog v:activityName withMessage:message];
-    [message release];
+//    NSString* message = [[NSString alloc] initWithFormat:@"deserializing json into objectType %@",objectType];
+//    [BLLog v:activityName withMessage:message];
+//    [message release];
     
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *appContext = appDelegate.managedObjectContext;    
@@ -120,8 +120,6 @@
 - (BOOL) doesExistInStore {
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *appContext = appDelegate.managedObjectContext;   
-    
-    NSLog(@"objecttype %@",self.objecttype);
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:self.objecttype inManagedObjectContext:appContext];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"objectid=%@",self.objectid];

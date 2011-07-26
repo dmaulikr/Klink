@@ -123,8 +123,9 @@ static  AuthenticationManager* sharedManager;
 -(void) authenticate {
    //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    [self.m_facebook authorize:permissions delegate:self];
-  
+    if (![self.m_facebook isSessionValid]) {
+        [self.m_facebook authorize:permissions delegate:self];
+    }
     
 }
 - (void)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
@@ -190,6 +191,7 @@ static  AuthenticationManager* sharedManager;
         self.m_LoggedInUserID = 0;
         //at this point the user is logged off
         
+        [self.m_facebook logout:self];
         
         //we emit a system wide event to notify any listeners that the user has logged out
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];

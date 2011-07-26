@@ -75,7 +75,7 @@
 	}
 	NSMutableDictionary *keyValuePair = [NSMutableDictionary dictionaryWithCapacity:2];
 	[keyValuePair setValue:key forKey:@"key"];
-	[keyValuePair setValue:[value descr] forKey:@"value"];
+	[keyValuePair setValue:[value description] forKey:@"value"];
 	[[self postData] addObject:keyValuePair];
 }
 
