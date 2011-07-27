@@ -854,12 +854,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [newPhoto commitChangesToDatabase:NO withPendingFlag:YES];
     //now we need to upload this to the cloud. as they say in Redmond. to the cloud...
+    UIProgressView* progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleBar];
+    self.navigationController.navigationItem.titleView = progressView;
+    
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
     Attachment* thumbnailAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_THUMBNAILURL atFileLocation:newPhoto.thumbnailurl];
     Attachment* fullscreenAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_IMAGEURL atFileLocation:newPhoto.imageurl];
     NSArray* attachments = [NSArray arrayWithObjects:thumbnailAttachment,fullscreenAttachment, nil];
     
-    [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments];
+    //We register a notification receiver to listen in for the completion of the uploads
+    NSString* notificationID = [NSString GetGUID];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(onPhotoWithAttachmentsUploadFinished:) name:notificationID object:nil];
+                                    
+    [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments onFinishNotify:notificationID];
     
     
     
@@ -867,6 +875,34 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [picker dismissModalViewControllerAnimated:YES];
 }
+
+//This method will be called each time an object finished upload, as well as each time an attachment was uploaded
+//Hence this is called on each successful upload, and is not batched or atomic across all uploaded objects
+- (void) onPhotoWithAttachmentsUploadFinished:(NSNotification*)notification {
+    NSString* activityName = @"ThemeBrowserViewController2.onPhotoWithAttachmentsUploadFinished:";
+    
+    NSDictionary* userInfo = [[notification userInfo]retain];
+    
+    if ([userInfo objectForKey:an_OBJECTTYPE]!= [NSNull null]) {
+        NSString* objectType = [userInfo objectForKey:an_OBJECTTYPE];
+        NSNumber* objectID = [userInfo objectForKey:an_OBJECTID];
+        
+        NSString* message = [NSString stringWithFormat:@"Object Type: %@ with Object ID: %@ completed upload",objectType,objectID];
+        [BLLog v:activityName withMessage:message];
+        
+        //we need to mark the object as not being Pending if it is a Photo
+        if ([objectType isEqualToString:PHOTO]) {
+            Photo* photo = [DataLayer getObjectByType:PHOTO withId:objectID];
+            photo.isPending = [NSNumber numberWithBool:NO];
+            
+            //we mark the object as being no longer pending.
+            [photo commitChangesToDatabase:NO withPendingFlag:NO];
+        }
+    }
+    
+        
+}
+
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissModalViewControllerAnimated:YES];
