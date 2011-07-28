@@ -19,7 +19,7 @@
 #define kPictureSpacing 5
 #define kPictureHeight 120
 #define kPictureWidth_landscape 130
-#define kPictureHeight_landscape 95
+#define kPictureHeight_landscape 120
 
 // Jordan's Photo sizes, need to merge with Bobby's above
 #define kThumbnailPortraitWidth 150
@@ -33,8 +33,8 @@
 
 #define kThemePictureWidth 320
 #define kThemePictureHeight 200
-#define kThemePictureWidth_landscape 480
-#define kThemePictureHeight_landscape 112
+#define kThemePictureWidth_landscape 320
+#define kThemePictureHeight_landscape 200
 #define kThemePictureSpacing 0
 
 #define kTextViewWidth 300
@@ -223,8 +223,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.pvs_themeSlider.layer.borderWidth = 1.0f;
     self.pvs_themeSlider.layer.borderColor = [UIColor whiteColor].CGColor;
     
-    [self.h_pvs_photoSlider initWith:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
-    [self.h_pvs_themeSlider initWith:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
+    [self.h_pvs_photoSlider initWith:NO itemWidth:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
+    [self.h_pvs_themeSlider initWith:NO itemWidth:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
     
     [self.v_pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
     [self.v_pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
@@ -425,27 +425,37 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 #pragma mark - UIViewSliderDelegate 
-- (CGRect) getPhotoFrame:(int)index{
+- (CGRect) getPhotoFrame:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     int xCoordinate = 0;
-    if (self.view == v_landscape) {
-        xCoordinate = index * (kPictureWidth_landscape + kPictureSpacing);
-        return CGRectMake(xCoordinate, 0, kPictureWidth_landscape, kPictureHeight_landscape); 
+    int yCoordinate = 0;
+    
+    if (isSliderOrientationHorizontal) {
+        //portrait
+        xCoordinate = index * (kPictureWidth + kPictureSpacing);
+        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight_landscape);
     }
     else {
-        xCoordinate = index * (kPictureWidth + kPictureSpacing);
-        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight); 
+        //landscape
+        yCoordinate = index * (kPictureHeight_landscape + kPictureSpacing);
+        return CGRectMake(0,yCoordinate,kPictureWidth_landscape,kPictureHeight_landscape);
+
     }
 }
 
-- (CGRect) getThemePhotoFrame:(int)index{
+- (CGRect) getThemePhotoFrame:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     int xCoordinate = 0;
-    if (self.view == v_landscape) {
-        xCoordinate = index * (kThemePictureWidth_landscape + kThemePictureSpacing);
-        return CGRectMake(xCoordinate, 0, kThemePictureWidth_landscape, kThemePictureHeight_landscape); 
+    int yCoordinate = 0;
+    
+    if (isSliderOrientationHorizontal) {
+        //portrait
+        xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
+        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight);
+        
     }
     else {
-        xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
-        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight); 
+        //landscape
+        yCoordinate = index * (kThemePictureHeight_landscape + kThemePictureSpacing);
+        return CGRectMake(0,yCoordinate,kThemePictureWidth_landscape,kThemePictureHeight_landscape);
     }
 }
 
@@ -488,15 +498,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-- (id) configureViewFor:(Photo*)photo atIndex:(int)index {
+- (id) configureViewFor:(Photo*)photo atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     ImageManager *imageManager = [ImageManager getInstance];
     
+  
     
-    //need to grab the photo, create the image view, and then return that sucker
-//    int xCoordinateForImage = (kPictureWidth+kPictureSpacing)*index;    
-//    CGRect rect = CGRectMake(xCoordinateForImage, 0, kPictureWidth, kPictureHeight);
-    
-    CGRect photoImageViewFrame = [self getPhotoFrame:index];
+    CGRect photoImageViewFrame = [self getPhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
     UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
     
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
@@ -531,10 +538,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     return imageView;
 }
 
-- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index {
+- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal {
     ImageManager *imageManager = [ImageManager getInstance];
     
-    CGRect imageFrame = [self getThemePhotoFrame:index];
+    CGRect imageFrame = [self getThemePhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
     UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
 
     
@@ -576,7 +583,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
 }
 
-- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index {
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isSliderOrientationHorizontal  {
     UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
     if (viewSlider == currentPhotoSlider) {
         //need cell for the photo slider
@@ -585,12 +592,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             NSString* message = @"dicks";
         }
         Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-        return [self configureViewFor:photo atIndex:index];
+        return [self configureViewFor:photo atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
     }
     else {
         //need cell for the theme slider
         Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
-        return [self configureViewForTheme:theme atIndex:index];
+        return [self configureViewForTheme:theme atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
     }
     
 }

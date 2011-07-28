@@ -15,13 +15,16 @@
 @optional
 
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index;
-- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index;
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isHorizontalOrientation;
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd;
+
+
+
 @end
 
 
 @interface UIPagedViewSlider : UIView  <UIScrollViewDelegate>{
-    UIKlinkScrollView* sv_slider;
+    UIKlinkScrollView* m_slider;
     NSMutableArray* m_viewList;
     
     int m_itemHeight;
@@ -29,21 +32,24 @@
     int m_itemWidth;
     int m_lastScrollPosition;
     int m_numItemsToLoadOnScroll;
-    id<UIPagedViewSliderDelegate> delegate;
+    id<UIPagedViewSliderDelegate> m_delegate;
+    BOOL m_isHorizontalOrientation;
 }
 
-@property (nonatomic,retain) UIKlinkScrollView* sv_slider;
-@property (nonatomic,retain) NSMutableArray* m_viewList;
-@property int m_itemHeight;
-@property int m_itemSpacing;
-@property int m_itemWidth;
-@property int m_lastScrollPosition;
-@property int m_numItemsToLoadOnScroll;
+@property (nonatomic,retain) UIKlinkScrollView* slider;
+@property (nonatomic,retain) NSMutableArray* viewList;
+@property int itemHeight;
+@property int itemSpacing;
+@property int itemWidth;
+@property int lastScrollPosition;
+@property int numItemsToLoadOnScroll;
+@property BOOL isHorizontalOrientation;
 @property (nonatomic,retain) IBOutlet id<UIPagedViewSliderDelegate> delegate;
 
 - (void)setContentOffsetTo:(int)index;
 - (int)getContentOffsetIndex;
 - (id) initWith:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing;
+- (id) initWith:(BOOL)isHorizontalOrientation  itemWidth:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing;
 - (void) resetSliderWithItems:(NSArray*)items;
 - (void) item:(id)object insertedAt:(int)index;
 - (void) item:(id)object atIndex:(int)index movedTo:(int)newIndex;
