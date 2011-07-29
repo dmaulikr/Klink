@@ -23,11 +23,11 @@
                continueAfterRunningActions = "No"
                symbolName = "-[FullScreenPhotoController imageView]"
                urlString = "file://localhost/FullScreenPhotoController.m"
-               timestampString = "332469334.270265"
+               timestampString = "333642983.185912"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "14"
-               endingLineNumber = "14">
+               startingLineNumber = "21"
+               endingLineNumber = "21">
             </Location>
             <Location
                shouldBeEnabled = "Yes"
@@ -35,11 +35,11 @@
                continueAfterRunningActions = "No"
                symbolName = "-[FullScreenPhotoController setImageView:]"
                urlString = "file://localhost/FullScreenPhotoController.m"
-               timestampString = "332469334.271909"
+               timestampString = "333642983.186357"
                startingColumnNumber = "9223372036854775807"
                endingColumnNumber = "9223372036854775807"
-               startingLineNumber = "14"
-               endingLineNumber = "14">
+               startingLineNumber = "21"
+               endingLineNumber = "21">
             </Location>
          </Locations>
       </FileBreakpoint>
