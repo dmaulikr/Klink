@@ -152,7 +152,35 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
 }
 
+#pragma mark - Enumeration Handlers
 
+-(void)enumeratePhotosForCurrentTheme {
+    NSString* activityName = @"ThemeBrowserController.enumeratePhotosForCurrentTheme:";
+    if (ec_activeThemePhotoContext == nil) {
+        //if we have a nil contect, that means we have yet to query for the photos in this theme directly
+        self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
+    }
+    
+    //execute the enumeration only if there is not already one executing and the current one is not done
+    if (!m_isThereAThemePhotoEnumerationAlreadyExecuting &&
+        ec_activeThemePhotoContext.isDone!=[NSNumber numberWithBool:YES]) {
+        
+        
+        m_isThereAThemePhotoEnumerationAlreadyExecuting = YES;
+        WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
+        QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
+        
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        self.m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
+        [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:m_outstandingPhotoEnumNotificationID object:nil];
+        
+        [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:m_outstandingPhotoEnumNotificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];
+        
+        NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
+        [BLLog v:activityName withMessage:message];
+    }
+    
+}
 
 - (void) enumerateThemesFromWebService {
     NSString* activityName = @"ThemeBrowserController.enumerateThemesFromWebService:";
@@ -619,34 +647,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
 }
 
+
 -(void)photoSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-    NSString* activityName = @"ThemeBrowserController.photoSliderIsAtIndex.isAtIndex:";
+    
     if (numberOfCellsToEnd < threshold_LOADMOREPHOTOS) {
         //the current scroll position is below the threshold, thus we need to load more photos for this particular theme
-        
-        if (ec_activeThemePhotoContext == nil) {
-            //if we have a nil contect, that means we have yet to query for the photos in this theme directly
-            self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
-        }
-        
-        //execute the enumeration only if there is not already one executing and the current one is not done
-        if (!m_isThereAThemePhotoEnumerationAlreadyExecuting &&
-            ec_activeThemePhotoContext.isDone!=[NSNumber numberWithBool:YES]) {
-            
-            
-            m_isThereAThemePhotoEnumerationAlreadyExecuting = YES;
-            WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
-            QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
-            
-            NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-            self.m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
-            [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:m_outstandingPhotoEnumNotificationID object:nil];
-            
-            [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:m_outstandingPhotoEnumNotificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];
-            
-            NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
-            [BLLog v:activityName withMessage:message];
-        }
+        [self enumeratePhotosForCurrentTheme];
     }
 
 }

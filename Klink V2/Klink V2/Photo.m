@@ -122,12 +122,18 @@
     return dictionary;    
 }
 
+- (void) dealloc {
+    if (__topCaption != nil) {
+        [__topCaption release];
+    }
+}
+
 - (Caption*)topCaption {
     if (__topCaption != nil) {
         return __topCaption;
     }
     
-    Caption* caption = [DataLayer getTopCaption:self.objectid];
+    Caption* caption = [[DataLayer getTopCaption:self.objectid] retain];
     __topCaption = caption;
     return __topCaption;
 }
