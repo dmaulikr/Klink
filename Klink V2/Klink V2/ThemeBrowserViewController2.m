@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "FullScreenPhotoController.h"
+#import "MWPhotoBrowser.h"
 
 #define kPictureWidth 130
 #define kPictureSpacing 5
@@ -667,7 +668,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
     //called when a item is selected in the slider
-    if (self.fullScreenPhotoController == nil) {
+    
+    // Jordan's OLD CODE
+    /*if (self.fullScreenPhotoController == nil) {
         FullScreenPhotoController *fullScreenController = [[FullScreenPhotoController alloc] initWithNibName:@"FullScreenPhotoController" bundle:nil];
         self.fullScreenPhotoController = fullScreenController;
         [fullScreenController release];
@@ -679,8 +682,17 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.fullScreenPhotoController.photo = selectedPhoto;
     self.fullScreenPhotoController.theme = selectedTheme;
     
-    [self.navigationController pushViewController:fullScreenPhotoController animated:YES];
-
+    [self.navigationController pushViewController:fullScreenPhotoController animated:YES]; */
+    
+    NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+    Theme* selectedTheme = self.theme;
+    
+    // Create browser
+	MWPhotoBrowser *fullscreenPhotoBrowser = [[MWPhotoBrowser alloc] initWithPhotos:picturesInTheme];
+	//[browser setInitialPageIndex:0]; // Can be changed if desired
+	[self.navigationController pushViewController:fullscreenPhotoBrowser animated:YES];
+	[fullscreenPhotoBrowser release];
+	[picturesInTheme release];
 
 }
 
@@ -785,6 +797,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 
+#pragma mark -
 #pragma mark UIImagePickerController delegate methods
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -886,6 +899,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissModalViewControllerAnimated:YES];
 }
 
+
 //This method will be called each time an object finished upload, as well as each time an attachment was uploaded
 //Hence this is called on each successful upload, and is not batched or atomic across all uploaded objects
 - (void) onPhotoWithAttachmentsUploadFinished:(NSNotification*)notification {
@@ -920,12 +934,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
 
 
-#pragma mark -
 static inline double radians (double degrees) {
     return degrees * M_PI/180;
 }
 
-#pragma mark -
+
 static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
     CGFloat scale = [UIScreen mainScreen].scale;
