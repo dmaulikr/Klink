@@ -689,7 +689,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     // Create browser
 	MWPhotoBrowser *fullscreenPhotoBrowser = [[MWPhotoBrowser alloc] initWithPhotos:picturesInTheme];
-	//[browser setInitialPageIndex:0]; // Can be changed if desired
+	[fullscreenPhotoBrowser setInitialPageIndex:index]; // Can be changed if desired
 	[self.navigationController pushViewController:fullscreenPhotoBrowser animated:YES];
 	[fullscreenPhotoBrowser release];
 	[picturesInTheme release];
