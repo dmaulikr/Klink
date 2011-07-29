@@ -19,7 +19,7 @@
 #define kPictureSpacing 5
 #define kPictureHeight 120
 #define kPictureWidth_landscape 130
-#define kPictureHeight_landscape 95
+#define kPictureHeight_landscape 120
 
 // Jordan's Photo sizes, need to merge with Bobby's above
 #define kThumbnailPortraitWidth 150
@@ -33,8 +33,8 @@
 
 #define kThemePictureWidth 320
 #define kThemePictureHeight 200
-#define kThemePictureWidth_landscape 480
-#define kThemePictureHeight_landscape 112
+#define kThemePictureWidth_landscape 320
+#define kThemePictureHeight_landscape 200
 #define kThemePictureSpacing 0
 
 #define kTextViewWidth 300
@@ -223,8 +223,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.pvs_themeSlider.layer.borderWidth = 1.0f;
     self.pvs_themeSlider.layer.borderColor = [UIColor whiteColor].CGColor;
     
-    [self.h_pvs_photoSlider initWith:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
-    [self.h_pvs_themeSlider initWith:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
+    [self.h_pvs_photoSlider initWith:NO itemWidth:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
+    [self.h_pvs_themeSlider initWith:NO itemWidth:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
     
     [self.v_pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
     [self.v_pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
@@ -425,27 +425,37 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 #pragma mark - UIViewSliderDelegate 
-- (CGRect) getPhotoFrame:(int)index{
+- (CGRect) getPhotoFrame:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     int xCoordinate = 0;
-    if (self.view == v_landscape) {
-        xCoordinate = index * (kPictureWidth_landscape + kPictureSpacing);
-        return CGRectMake(xCoordinate, 0, kPictureWidth_landscape, kPictureHeight_landscape); 
+    int yCoordinate = 0;
+    
+    if (isSliderOrientationHorizontal) {
+        //portrait
+        xCoordinate = index * (kPictureWidth + kPictureSpacing);
+        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight_landscape);
     }
     else {
-        xCoordinate = index * (kPictureWidth + kPictureSpacing);
-        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight); 
+        //landscape
+        yCoordinate = index * (kPictureHeight_landscape + kPictureSpacing);
+        return CGRectMake(0,yCoordinate,kPictureWidth_landscape,kPictureHeight_landscape);
+
     }
 }
 
-- (CGRect) getThemePhotoFrame:(int)index{
+- (CGRect) getThemePhotoFrame:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     int xCoordinate = 0;
-    if (self.view == v_landscape) {
-        xCoordinate = index * (kThemePictureWidth_landscape + kThemePictureSpacing);
-        return CGRectMake(xCoordinate, 0, kThemePictureWidth_landscape, kThemePictureHeight_landscape); 
+    int yCoordinate = 0;
+    
+    if (isSliderOrientationHorizontal) {
+        //portrait
+        xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
+        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight);
+        
     }
     else {
-        xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
-        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight); 
+        //landscape
+        yCoordinate = index * (kThemePictureHeight_landscape + kThemePictureSpacing);
+        return CGRectMake(0,yCoordinate,kThemePictureWidth_landscape,kThemePictureHeight_landscape);
     }
 }
 
@@ -488,15 +498,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-- (id) configureViewFor:(Photo*)photo atIndex:(int)index {
+- (id) configureViewFor:(Photo*)photo atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
     ImageManager *imageManager = [ImageManager getInstance];
     
+  
     
-    //need to grab the photo, create the image view, and then return that sucker
-//    int xCoordinateForImage = (kPictureWidth+kPictureSpacing)*index;    
-//    CGRect rect = CGRectMake(xCoordinateForImage, 0, kPictureWidth, kPictureHeight);
-    
-    CGRect photoImageViewFrame = [self getPhotoFrame:index];
+    CGRect photoImageViewFrame = [self getPhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
     UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -532,10 +539,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     return imageView;
 }
 
-- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index {
+- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal {
     ImageManager *imageManager = [ImageManager getInstance];
     
-    CGRect imageFrame = [self getThemePhotoFrame:index];
+    CGRect imageFrame = [self getThemePhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
     UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
 
     
@@ -577,7 +584,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
 }
 
-- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index {
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isSliderOrientationHorizontal  {
     UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
     if (viewSlider == currentPhotoSlider) {
         //need cell for the photo slider
@@ -586,12 +593,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             NSString* message = @"dicks";
         }
         Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-        return [self configureViewFor:photo atIndex:index];
+        return [self configureViewFor:photo atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
     }
     else {
         //need cell for the theme slider
         Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
-        return [self configureViewForTheme:theme atIndex:index];
+        return [self configureViewForTheme:theme atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
     }
     
 }
@@ -857,12 +864,20 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [newPhoto commitChangesToDatabase:NO withPendingFlag:YES];
     //now we need to upload this to the cloud. as they say in Redmond. to the cloud...
+    UIProgressView* progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleBar];
+    self.navigationController.navigationItem.titleView = progressView;
+    
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
     Attachment* thumbnailAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_THUMBNAILURL atFileLocation:newPhoto.thumbnailurl];
     Attachment* fullscreenAttachment = [Attachment attachmentWith:newPhoto.objectid objectType:PHOTO forAttribute:an_IMAGEURL atFileLocation:newPhoto.imageurl];
     NSArray* attachments = [NSArray arrayWithObjects:thumbnailAttachment,fullscreenAttachment, nil];
     
-    [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments];
+    //We register a notification receiver to listen in for the completion of the uploads
+    NSString* notificationID = [NSString GetGUID];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(onPhotoWithAttachmentsUploadFinished:) name:notificationID object:nil];
+                                    
+    [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments onFinishNotify:notificationID];
     
     
     
@@ -870,6 +885,34 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [picker dismissModalViewControllerAnimated:YES];
 }
+
+//This method will be called each time an object finished upload, as well as each time an attachment was uploaded
+//Hence this is called on each successful upload, and is not batched or atomic across all uploaded objects
+- (void) onPhotoWithAttachmentsUploadFinished:(NSNotification*)notification {
+    NSString* activityName = @"ThemeBrowserViewController2.onPhotoWithAttachmentsUploadFinished:";
+    
+    NSDictionary* userInfo = [[notification userInfo]retain];
+    
+    if ([userInfo objectForKey:an_OBJECTTYPE]!= [NSNull null]) {
+        NSString* objectType = [userInfo objectForKey:an_OBJECTTYPE];
+        NSNumber* objectID = [userInfo objectForKey:an_OBJECTID];
+        
+        NSString* message = [NSString stringWithFormat:@"Object Type: %@ with Object ID: %@ completed upload",objectType,objectID];
+        [BLLog v:activityName withMessage:message];
+        
+        //we need to mark the object as not being Pending if it is a Photo
+        if ([objectType isEqualToString:PHOTO]) {
+            Photo* photo = [DataLayer getObjectByType:PHOTO withId:objectID];
+            photo.isPending = [NSNumber numberWithBool:NO];
+            
+            //we mark the object as being no longer pending.
+            [photo commitChangesToDatabase:NO withPendingFlag:NO];
+        }
+    }
+    
+        
+}
+
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissModalViewControllerAnimated:YES];

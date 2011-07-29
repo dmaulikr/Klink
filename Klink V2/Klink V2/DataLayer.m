@@ -144,7 +144,7 @@ static  DataLayer* sharedManager;
         
     }
     else if ([results count] == 0) {
-        [BLLog v:activityName withMessage:@"no objects found with id"];
+//        [BLLog v:activityName withMessage:@"no objects found with id"];
         
     }
     else {
@@ -245,7 +245,7 @@ static  DataLayer* sharedManager;
         
     }
     else if ([results count] == 0) {
-        [BLLog v:activityName withMessage:@"no objects found with id"];
+//        [BLLog v:activityName withMessage:@"no objects found with id"];
         
     }
     else {

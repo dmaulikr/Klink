@@ -32,11 +32,17 @@ static  WS_TransferManager* sharedManager;
 
 }
 
-- (void) uploadAttachmentToCloud:(Attachment*)attachment {
-    [self uploadAttachementToCloud:attachment.objectid withObjectType:attachment.objecttype forAttributeName:attachment.attributename atFileLocation:attachment.filelocation];
+- (void) uploadAttachmentToCloud:(Attachment*)attachment onFinishNotify:(NSString*)notificationID {
+    [self uploadAttachementToCloud:attachment.objectid withObjectType:attachment.objecttype forAttributeName:attachment.attributename atFileLocation:attachment.filelocation onFinishNotify:notificationID];
 }
 
-- (void) uploadAttachementToCloud:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttributeName:(NSString*)attributeName atFileLocation:(NSString*)path {
+- (void) uploadAttachementToCloud:
+    (NSNumber*)objectid 
+    withObjectType:(NSString*)objectType 
+    forAttributeName:(NSString*)attributeName 
+    atFileLocation:(NSString*)path 
+    onFinishNotify:(NSString *)notificationID{
+    
     NSString* activityName = @"WS_TransferManager.uploadAttachementToCloud:";
     
     AuthenticationContext *authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
@@ -50,6 +56,7 @@ static  WS_TransferManager* sharedManager;
         [userInfo setValue:objectType forKey:an_OBJECTTYPE];
         [userInfo setValue:attributeName forKey:an_ATTRIBUTENAME];
         [userInfo setValue:path forKey:an_FILELOCATION];
+        [userInfo setValue:notificationID forKey:an_ONFINISHNOTIFY];
         
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
         [request setFile:path forKey:@"attachment"];
@@ -112,7 +119,22 @@ static  WS_TransferManager* sharedManager;
 
 }
 
-- (void) createObjectsInCloud:(NSArray*)objectids withObjectTypes:(NSArray*)objectTypes withAttachments:(NSArray *)attachments{
+- (void) createObjectsInCloud:
+              (NSArray*)objectids 
+              withObjectTypes:(NSArray*)objectTypes 
+              withAttachments:(NSArray*)attachments
+              onFinishNotify:(NSString *)notificationID{
+  
+    [self createObjectsInCloud:objectids withObjectTypes:objectTypes withAttachments:attachments useProgressView:nil onFinishNotify:notificationID];
+}
+
+- (void) createObjectsInCloud:(NSArray*)objectids 
+              withObjectTypes:(NSArray*)objectTypes 
+              withAttachments:(NSArray *)attachments
+              useProgressView:(UIProgressView *)progressView
+              onFinishNotify:(NSString *)notificationID{
+    
+    
     NSString* activityName = @"WS_TransferManager.createObjectsInCloud:";
 
 
@@ -140,13 +162,26 @@ static  WS_TransferManager* sharedManager;
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
         [request setPostValue:json forKey:@""];    
         
+        NSMutableDictionary* dictionary = nil;
         if (attachments != nil && [attachments count]>0) {
-            NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObject:attachments forKey:tn_ATTACHMENT];
-            request.userInfo = dictionary;
+             dictionary = [NSMutableDictionary dictionaryWithObject:attachments forKey:tn_ATTACHMENT];
+            
             
         }
         
-            
+        if (notificationID != nil) {
+            if (dictionary == nil) {
+                dictionary = [NSMutableDictionary dictionaryWithObject:notificationID forKey:an_ONFINISHNOTIFY];
+            }
+            else {
+                [dictionary setObject:notificationID forKey:an_ONFINISHNOTIFY];
+            }
+        }
+        
+        if (dictionary != nil) {
+            request.userInfo = dictionary;
+        }
+        [request setUploadProgressDelegate:progressView];    
         [request setDelegate:self];
         [request setDidFinishSelector:@selector(onCreateComplete:)];
         [request setDidFailSelector:@selector(requestWentWrong:)];
@@ -267,7 +302,8 @@ static  WS_TransferManager* sharedManager;
         NSString* objectType = [userInfo valueForKey:an_OBJECTTYPE];
         NSNumber* objectID = [userInfo valueForKey:an_OBJECTID];
         NSString* attributeName = [userInfo valueForKey:an_ATTRIBUTENAME];
-       
+        NSString* notificationID = [userInfo valueForKey:an_ONFINISHNOTIFY];
+        
         ServerManagedResource* returnedObject = putResponse.modifiedResource;
         NSString* newAttachmentAttributeValue = [returnedObject valueForKey:attributeName];
         ServerManagedResource* resource = [DataLayer getObjectByID:objectID withObjectType:objectType];
@@ -280,6 +316,17 @@ static  WS_TransferManager* sharedManager;
         //now we update the attribute that was set to reflect the new attribute value;
         [resource setValue:newAttachmentAttributeValue forKey:attributeName];
         [resource commitChangesToDatabase:NO withPendingFlag:NO];
+        
+        //notify all interested parties that this attachment has been uploaded
+        if (notificationID != nil) {
+            NSMutableDictionary* notificationUserInfoDictionary = [[[NSMutableDictionary alloc]init]autorelease];
+            [notificationUserInfoDictionary setObject:objectType forKey:an_OBJECTTYPE];
+            [notificationUserInfoDictionary setObject:objectID forKey:an_OBJECTID];
+            [notificationUserInfoDictionary setObject:attributeName forKey:an_ATTRIBUTENAME];
+            
+            NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+            [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfoDictionary];
+        }
     }
     else {
         [BLLog e:activityName withMessage:@"failed to upload attachment"];
@@ -379,6 +426,11 @@ static  WS_TransferManager* sharedManager;
     if (createResponse.didSucceed) {
         //now we need to process any attachments that are to be uploaded apres the creation of the object
         NSDictionary* userInfo = request.userInfo;
+        NSString* notificationID = nil;
+        
+        if ([userInfo objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
+            notificationID = [userInfo objectForKey:an_ONFINISHNOTIFY];
+        }
         
         if ([userInfo valueForKey:tn_ATTACHMENT] != [NSNull null]) {
             //we have a file attachment to upload
@@ -386,7 +438,14 @@ static  WS_TransferManager* sharedManager;
             
             NSString* message = [NSString stringWithFormat:@"Processing attachment for objectid:%@, objecttype:%@,attributename:%@,filelocation:%@",attachment.objectid,attachment.objecttype,attachment.attributename,attachment.filelocation];
             [BLLog v:activityName withMessage:message];
-            [self uploadAttachmentToCloud:attachment];
+            [self uploadAttachmentToCloud:attachment onFinishNotify:notificationID];
+        }
+        
+        //send notification to all interested parties
+        if (notificationID != nil) {
+            NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+            NSMutableDictionary* notificationUserInfo = [[[NSMutableDictionary alloc]init]autorelease];
+            [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfo];
         }
         
     }
@@ -410,10 +469,11 @@ static  WS_TransferManager* sharedManager;
     
     
     //need to grab the instance from the core data model
+    ServerManagedResource* createdResource = nil;
     if (createResponse.createdResources != nil){
         for (int i = 0; i < [createResponse.createdResources count]; i++) {
-            ServerManagedResource *downloadedResource = [createResponse.createdResources objectAtIndex:i];
-            [ServerManagedResource refreshWithServerVersion:downloadedResource];
+            createdResource = [createResponse.createdResources objectAtIndex:i];
+            [ServerManagedResource refreshWithServerVersion:createdResource];
             
 
         }
@@ -421,6 +481,12 @@ static  WS_TransferManager* sharedManager;
     
     //process any attachments to the original create request
     NSDictionary* userInfo = request.userInfo;
+    NSString* notificationID = nil;
+    
+    if ([userInfo objectForKey:an_ONFINISHNOTIFY] != nil) {
+        notificationID = [userInfo objectForKey:an_ONFINISHNOTIFY];
+    }
+    
     if ([userInfo valueForKey:tn_ATTACHMENT] != [NSNull null]) {
         NSArray* attachments = [userInfo valueForKey:tn_ATTACHMENT];
         for (int i = 0; i < [attachments count] ; i++) {
@@ -428,8 +494,19 @@ static  WS_TransferManager* sharedManager;
             NSString* message = [NSString stringWithFormat:@"Processing attachment for objectid:%@, objecttype:%@,attributename:%@,filelocation:%@",attachment.objectid,attachment.objecttype,attachment.attributename,attachment.filelocation];
             [BLLog v:activityName withMessage:message];
             
-            [self uploadAttachmentToCloud:attachment];
+            [self uploadAttachmentToCloud:attachment onFinishNotify:notificationID];
         }
+    }
+    
+    //now we launch a notification if subscribed for the creation of the original object
+    if (notificationID != nil && createdResource != nil) {
+        NSMutableDictionary* notificationUserInfoDictionary = [[[NSMutableDictionary alloc]init]autorelease];
+        [notificationUserInfoDictionary setObject:createdResource.objecttype forKey:an_OBJECTTYPE];
+        [notificationUserInfoDictionary setObject:createdResource.objectid forKey:an_OBJECTID];
+        
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfoDictionary];
+        
     }
     
     [createResponse release];

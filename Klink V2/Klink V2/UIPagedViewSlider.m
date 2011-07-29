@@ -11,23 +11,23 @@
 
 #define kNumPicturesToLoad 3;
 @implementation UIPagedViewSlider
-@synthesize sv_slider;
-@synthesize m_viewList;
-@synthesize m_itemWidth;
-@synthesize m_itemHeight;
-@synthesize m_itemSpacing;
-@synthesize m_lastScrollPosition;
-@synthesize m_numItemsToLoadOnScroll;
-@synthesize delegate;
-
+@synthesize slider                  =m_slider;
+@synthesize viewList                =m_viewList;
+@synthesize itemWidth               =m_itemWidth;
+@synthesize itemHeight              =m_itemHeight;
+@synthesize itemSpacing             =m_itemSpacing;
+@synthesize lastScrollPosition      =m_lastScrollPosition;
+@synthesize numItemsToLoadOnScroll  =m_numItemsToLoadOnScroll;
+@synthesize delegate                =m_delegate;
+@synthesize isHorizontalOrientation =m_isHorizontalOrientation;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        sv_slider = [[UIKlinkScrollView alloc]initWithFrame:frame];
+        self.slider = [[UIKlinkScrollView alloc]initWithFrame:frame];
         
-        self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
-        self.m_viewList = [[NSMutableArray alloc]init];
+        self.numItemsToLoadOnScroll = kNumPicturesToLoad;
+        self.viewList = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -38,57 +38,72 @@
         int height = CGRectGetHeight(self.frame);
         
         CGRect sliderFrame = CGRectMake(0, 0, width, height);
-        sv_slider = [[UIKlinkScrollView alloc]initWithFrame:sliderFrame];
-        sv_slider.delegate = self;
-        sv_slider.pagingEnabled = YES;
-        sv_slider.bounces = YES;
-        sv_slider.scrollEnabled = YES;
-        sv_slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        sv_slider.autoresizesSubviews = YES;
-        sv_slider.layer.borderColor = [UIColor redColor].CGColor;
-        sv_slider.layer.borderWidth = 4.4f;
-        self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
-        self.m_viewList = [[NSMutableArray alloc]init];
-        [self addSubview:sv_slider];
+        self.slider = [[UIKlinkScrollView alloc]initWithFrame:sliderFrame];
+        self.slider.delegate = self;
+        self.isHorizontalOrientation = YES;
+        self.slider.pagingEnabled = YES;
+        self.slider.bounces = YES;
+        self.slider.scrollEnabled = YES;
+        self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.slider.autoresizesSubviews = YES;
+        self.slider.layer.borderColor = [UIColor redColor].CGColor;
+        self.slider.layer.borderWidth = 4.4f;
+        self.numItemsToLoadOnScroll = kNumPicturesToLoad;
+        self.viewList = [[NSMutableArray alloc]init];
+        [self addSubview:self.slider];
         
     }
     return self;
 }
 
 - (id) initWith:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing{
-    self.m_itemHeight = itemHeight;
-    self.m_itemWidth = itemWidth;
-    self.m_itemSpacing = itemSpacing;
-    self.m_numItemsToLoadOnScroll = kNumPicturesToLoad;
+    self.itemHeight = itemHeight;
+    self.itemWidth = itemWidth;
+    self.itemSpacing = itemSpacing;
+    self.numItemsToLoadOnScroll = kNumPicturesToLoad;
+    return self;
+}
+
+- (id) initWith:(BOOL)isHorizontalOrientation itemWidth:(int)itemWidth itemHeight:(int)itemHeight itemSpacing:(int)itemSpacing {
+    self.isHorizontalOrientation = isHorizontalOrientation;
+    [self initWith:itemWidth itemHeight:itemHeight itemSpacing:itemSpacing];
     return self;
 }
 
 
-
 - (CGSize) getContentSize {
-    int numberOfItems = [m_viewList count];
+    int numberOfItems = [self.viewList count];
     
-    float width = (self.m_itemWidth + self.m_itemSpacing)*numberOfItems;
-    float height = self.m_itemHeight;
-    
-    CGSize retVal = CGSizeMake(width, height);
-    return retVal;
+    if (self.isHorizontalOrientation) {
+        float width = (self.itemWidth + self.itemSpacing)*numberOfItems;
+        float height = self.itemHeight;
+        
+        CGSize retVal = CGSizeMake(width, height);
+        return retVal;
+    }
+    else {
+        float width = (self.itemWidth);
+        float height = (self.itemHeight+self.itemSpacing) * numberOfItems;
+        
+        CGSize retVal = CGSizeMake(width,height);
+        return retVal;
+    }
 }
 
 - (void) resetSliderWithItems:(NSArray*)items {
     //Reset the slider and view array to be empty
-    [[self.sv_slider subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
-    self.sv_slider.contentOffset = CGPointMake(0, 0);
-    [m_viewList removeAllObjects];
+    [[self.slider subviews] makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    self.slider.contentOffset = CGPointMake(0, 0);
+    [self.viewList removeAllObjects];
     
     //enumerate through passed items and add to the view array and slider
     for (int i = 0; i < [items count];i++) {
-        UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i];
+        UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:i sliderIsHorizontal:self.isHorizontalOrientation];
         
-        [m_viewList insertObject:cellView atIndex:i];
-        [self.sv_slider addSubview:cellView];
+        [self.viewList insertObject:cellView atIndex:i];
+        [self.slider addSubview:cellView];
     }        
-    self.sv_slider.contentSize = [self getContentSize];
+    self.slider.contentSize = [self getContentSize];
 }
 
 /*
@@ -109,57 +124,74 @@
 
 
 - (void) item:(id)object insertedAt:(int)index {    
-    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:index];    
-    [m_viewList insertObject:cellView atIndex:index];        
-    sv_slider.contentSize = [self getContentSize];
-    [sv_slider addSubview:cellView];    
+    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:index sliderIsHorizontal:self.isHorizontalOrientation];    
+    [self.viewList insertObject:cellView atIndex:index];        
+    self.slider.contentSize = [self getContentSize];
+    [self.slider addSubview:cellView];    
 }
 
 - (void) item:(id)object atIndex:(int)index movedTo:(int)newIndex {
-    [m_viewList replaceObjectAtIndex:index withObject:[NSNull null]];
-    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:newIndex];
-    UIView* oldCell = [m_viewList objectAtIndex:index];
+    [self.viewList replaceObjectAtIndex:index withObject:[NSNull null]];
+    UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:newIndex sliderIsHorizontal:self.isHorizontalOrientation];
+    UIView* oldCell = [self.viewList objectAtIndex:index];
     [oldCell removeFromSuperview];
 
-    if (newIndex > [m_viewList count]-1) {
+    if (newIndex > [self.viewList count]-1) {
         //insert new item in the viewlist
        
-        [m_viewList insertObject:cellView atIndex:newIndex];
-        sv_slider.contentSize = [self getContentSize];
-        [sv_slider addSubview:cellView];
+        [self.viewList insertObject:cellView atIndex:newIndex];
+        self.slider.contentSize = [self getContentSize];
+        [self.slider addSubview:cellView];
                
     }
     else {
-        [m_viewList replaceObjectAtIndex:newIndex withObject:cellView];
-        [sv_slider addSubview:cellView];
+        [self.viewList replaceObjectAtIndex:newIndex withObject:cellView];
+        [self.slider addSubview:cellView];
     }
 }
 
 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGPoint position =  self.sv_slider.contentOffset;
-    int index = position.x / (m_itemWidth + m_itemSpacing);
-    if (index != self.m_lastScrollPosition) {
-        int numberOfCellsRemaining = ([self.m_viewList count]-1) - index;        
-        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
-        self.m_lastScrollPosition = index;
-
+    CGPoint position =  self.slider.contentOffset;
+    int index = 0;
+    if (self.isHorizontalOrientation) {
+         index = position.x / (self.itemWidth + self.itemSpacing);
+    }
+    else {
+         index = position.y / (self.itemHeight + self.itemSpacing);
+    }
     
+    if (index != self.lastScrollPosition) {
+        int numberOfCellsRemaining = ([self.viewList count]-1) - index;        
+        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:numberOfCellsRemaining];
+        self.lastScrollPosition = index;
+        
     }
 
 }
 #pragma mark - Scroll Accessors/Settors
 - (void)setContentOffsetTo:(int)index {
-    int xCoordinate = (self.m_itemWidth+self.m_itemSpacing)*index;
-    CGPoint offset = CGPointMake(xCoordinate, 0);
-    self.sv_slider.contentOffset = offset;
+    
+    if (self.isHorizontalOrientation) {
+        int xCoordinate = (self.itemWidth+self.itemSpacing)*index;
+        CGPoint offset = CGPointMake(xCoordinate, 0);
+        self.slider.contentOffset = offset;
+    }
+    else {
+        int yCoordinate = (self.itemHeight + self.itemSpacing)*index;
+        CGPoint offset = CGPointMake(0,yCoordinate);
+        self.slider.contentOffset = offset;
+    }
 }
 - (int)getContentOffsetIndex {
-
-    
-    int index = self.sv_slider.contentOffset.x/(self.m_itemSpacing+self.m_itemWidth);
-    
+    int index = 0;
+    if (self.isHorizontalOrientation) {
+        index = self.slider.contentOffset.x/(self.itemSpacing+self.itemWidth);
+    }
+    else {
+        index = self.slider.contentOffset.y/(self.itemSpacing + self.itemHeight);
+    }
     return index;
 }
         
@@ -168,11 +200,18 @@
 {
     
     // Process the single tap here
-    if ([touches count]==1) {
+    if ([touches count]==1) {                
         UITouch* touch = [[touches allObjects]objectAtIndex:0];
-        CGPoint touchLocation = [touch locationInView:self.sv_slider];
-        int x = touchLocation.x;
-        int index = (x)/(self.m_itemSpacing+self.m_itemWidth);
+        CGPoint touchLocation = [touch locationInView:self.slider];
+        int index = 0;
+        if (self.isHorizontalOrientation) {
+            int x = touchLocation.x;
+            index = (x)/(self.itemSpacing+self.itemWidth);
+        }
+        else {
+            int y = touchLocation.y;
+            index = (y)/(self.itemSpacing+self.itemHeight);
+        }
         [self.delegate viewSlider:self selectIndex:index];
     }
       
