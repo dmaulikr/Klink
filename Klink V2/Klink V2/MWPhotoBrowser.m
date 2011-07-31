@@ -170,6 +170,11 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	
+    // Remove status and navigation bar transparency
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationController.navigationBar.translucent = NO;
+    
 	// Super
 	[super viewWillDisappear:animated];
 
