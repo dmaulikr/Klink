@@ -226,7 +226,7 @@
 #pragma mark Photos
 
 // Get image if it has been loaded, otherwise nil
-- (UIImage *)imageAtIndex:(NSUInteger)index {
+- (UIImage *)imageAtIndex:(NSUInteger)index withUserInfo:(NSMutableDictionary*)userInfo {
 	if (photos && index < photos.count) {
 
         /* ORIGINAL MW code using MWPhoto object
@@ -238,14 +238,12 @@
 			[photo obtainImageInBackgroundAndNotify:self];
 		}*/
         
-        // JORDAN's code using our Photo object
+        // ADDED BY JORDANG code using our Photo object
         Photo *photo = [self.photos objectAtIndex:index];
         
         ImageManager* imageManager = [ImageManager getInstance];
-        //NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-        //[userInfo setObject:imageView forKey:an_IMAGEVIEW];        
         
-        UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:self];   
+        UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];   
         
         if (image != nil) {
             return image;
@@ -372,7 +370,7 @@
         // ORIGINAL MW code using MWPhoto object
         //for (i = 0; i < index-1; i++) { [(Photo *)[photos objectAtIndex:i] releasePhoto]; /*NSLog(@"Release image at index %i", i);*/ }
         
-        // JORDAN's code using our Photo object
+        // ADDED BY JORDANG code using our Photo object
         for (i = 0; i < index-1; i++) {
             Photo *photo = [self.photos objectAtIndex:i];
             photo = nil;
@@ -384,7 +382,7 @@
         // ORIGINAL MW code using MWPhoto object
         //if (i < photos.count) { [(Photo *)[photos objectAtIndex:i] obtainImageInBackgroundAndNotify:self]; /*NSLog(@"Pre-loading image at index %i", i);*/ }
         
-        // JORDAN's code using our Photo object
+        // ADDED BY JORDANG code using our Photo object
         if (i < photos.count) {
             Photo *photo = [self.photos objectAtIndex:i];
             
@@ -403,7 +401,7 @@
         // ORIGINAL MW code using MWPhoto object
         //for (i = index + 2; i < photos.count; i++) { [(Photo *)[photos objectAtIndex:i] releasePhoto]; /*NSLog(@"Release image at index %i", i);*/ }
     
-        // JORDAN's code using our Photo object
+        // ADDED BY JORDANG code using our Photo object
         for (i = index + 2; i < photos.count; i++) {
             Photo *photo = [self.photos objectAtIndex:i];
             photo = nil;
@@ -415,7 +413,7 @@
         // ORIGINAL MW code using MWPhoto object
         //if (i < photos.count) { [(Photo *)[photos objectAtIndex:i] obtainImageInBackgroundAndNotify:self]; /*NSLog(@"Pre-loading image at index %i", i);*/ }
         
-        // JORDAN's code using our Photo object
+        // ADDED BY JORDANG code using our Photo object
         if (i < photos.count) {
             Photo *photo = [self.photos objectAtIndex:i];
             
