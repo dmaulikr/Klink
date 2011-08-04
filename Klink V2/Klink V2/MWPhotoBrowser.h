@@ -16,14 +16,23 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhoto.h"
-
+#import "UIPagedViewSlider.h"
+#import "ImageDownloadProtocol.h"
+#import "Photo.h"
+#import "UIPagedViewSlider.h"
 @class ZoomingScrollView;
 
-@interface MWPhotoBrowser : UIViewController <UIScrollViewDelegate, MWPhotoDelegate> {
+@interface MWPhotoBrowser : UIViewController <UIScrollViewDelegate,ImageDownloadCallback, MWPhotoDelegate, NSFetchedResultsControllerDelegate,UIPagedViewSliderDelegate> {
 	
 	// Photos
 	NSArray *photos;
-	
+	Photo   *m_currentPhoto;
+    
+    //Enumeration Contexts
+    EnumerationContext* m_captionContext;
+    BOOL m_IsCaptionEnumerationRunning;
+    NSString* m_outstandingCaptionEnumNotificationID;
+    
 	// Views
 	UIScrollView *pagingScrollView;
 	
@@ -40,8 +49,18 @@
     // Misc
 	BOOL performingLayout;
 	BOOL rotating;
+    
+    UIPagedViewSlider* m_captionSlider;
+    
 	
 }
+
+@property (nonatomic, retain) NSFetchedResultsController    * frc_captions;
+@property (nonatomic, retain) NSManagedObjectContext        *managedObjectContext;
+@property (nonatomic, retain) UIPagedViewSlider             *captionSlider;
+@property (nonatomic, retain) Photo                         *currentPhoto;
+@property (nonatomic, retain) EnumerationContext            *captionContext;
+@property (nonatomic, retain) NSString                      *outstandingCaptionEnumNotificationID;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray;
@@ -59,10 +78,14 @@
 - (ZoomingScrollView *)dequeueRecycledPage;
 - (void)configurePage:(ZoomingScrollView *)page forIndex:(NSUInteger)index;
 - (void)didStartViewingPageAtIndex:(NSUInteger)index;
+- (void) assignPhoto: (Photo*)photo; 
 
 // Frames
 - (CGRect)frameForPagingScrollView;
 - (CGRect)frameForPageAtIndex:(NSUInteger)index;
+- (CGRect)frameForCaptionSlider;
+- (CGRect)frameForCaptionBackground:(int)index isHorizontalOrientation:(BOOL)isHorizontalOrientation;
+- (CGRect)frameForCaption;
 - (CGSize)contentSizeForPagingScrollView;
 - (CGPoint)contentOffsetForPageAtIndex:(NSUInteger)index;
 - (CGRect)frameForNavigationBarAtOrientation:(UIInterfaceOrientation)orientation;

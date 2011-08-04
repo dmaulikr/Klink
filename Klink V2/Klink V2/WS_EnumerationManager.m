@@ -11,6 +11,7 @@
 #import "ApplicationSettings.h"
 #import "Theme.h"
 #import "GetAuthenticatorResponse.h"
+#import "Photo.h"
 @implementation WS_EnumerationManager
 @synthesize queryQueue;
 
@@ -129,6 +130,28 @@ static  WS_EnumerationManager* sharedManager;
     }
 }
 
+- (void) enumerateCaptionsForPhoto:
+                    (Photo*)photo
+                      withPageSize:(NSNumber*)pageSize
+                  withQueryOptions:(QueryOptions*)queryOptions
+                    onFinishNotify:(NSString*)notificationID
+             useEnumerationContext:(EnumerationContext*)enumerationContext
+         shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage  {
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    if (enumerationContext == nil) {
+        enumerationContext = [[EnumerationContext alloc]init];
+        enumerationContext.pageSize = pageSize;
+        enumerationContext.maximumNumberOfResults =[NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
+    }
+    
+    Query* query = [Query queryCaptionsForPhoto:photo.objectid];
+    query.queryoptions = queryOptions;
+    NSURL *url = [UrlManager getEnumerateURLForQuery:query withEnumerationContext:enumerationContext withAuthenticationContext:authenticationContext];
+    [self enumerate:url withQuery:query withEnumerationContext:enumerationContext onFinishNotify:notificationID shouldEnumerateSinglePage:shouldEnumerateSinglePage];
+    
+    
+}
 
 
 - (void) enumerateThemes: (NSNumber*)maximumNumberOfResults

@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "FullScreenPhotoController.h"
+#import "PhotoViewController.h"
 #import "MWPhotoBrowser.h"
 
 #define kPictureWidth 130
@@ -231,15 +232,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
      
      
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
-    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
-        self.view = v_landscape;
         
-    }
-    else {
-        self.view = v_portrait;
-    }
-    
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                      target:self
@@ -689,16 +682,25 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.fullScreenPhotoController.theme = selectedTheme;
     
     [self.navigationController pushViewController:fullScreenPhotoController animated:YES]; */
+//    
+    PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
+    Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+    photoViewController.currentPhoto = selectedPhoto;
+    photoViewController.currentTheme = self.theme;
+    [self.navigationController pushViewController:photoViewController animated:YES];
+    [photoViewController release];
     
-    NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-    Theme* selectedTheme = self.theme;
+//    NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+//    Theme* selectedTheme = self.theme;
+    
+    
     
     // Create browser
-	MWPhotoBrowser *fullscreenPhotoBrowser = [[MWPhotoBrowser alloc] initWithPhotos:picturesInTheme];
-	//[browser setInitialPageIndex:0]; // Can be changed if desired
-	[self.navigationController pushViewController:fullscreenPhotoBrowser animated:YES];
-	[fullscreenPhotoBrowser release];
-	[picturesInTheme release];
+//	MWPhotoBrowser *fullscreenPhotoBrowser = [[MWPhotoBrowser alloc] initWithPhotos:picturesInTheme];
+//	[browser setInitialPageIndex:0]; // Can be changed if desired
+//	[self.navigationController pushViewController:fullscreenPhotoBrowser animated:YES];
+//	[fullscreenPhotoBrowser release];
+//	[picturesInTheme release];
 
 }
 

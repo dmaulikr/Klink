@@ -94,6 +94,8 @@
 		C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275B13CB4B7F005E5731 /* HomeScreenController.xib */; };
 		C561276513CB56FA005E5731 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C561276413CB56FA005E5731 /* Theme.m */; };
 		C56A8DA013C78A1E00E527D6 /* UIViewSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */; };
+		C5A095DD13E6F5EC003D4376 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */; };
+		C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */; };
 		C5BED8AB13D52F9D007A1934 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED89013D52F9D007A1934 /* Facebook.m */; };
 		C5BED8AC13D52F9D007A1934 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C5BED89313D52F9D007A1934 /* FBDialog.bundle */; };
 		C5BED8AD13D52F9D007A1934 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED89513D52F9D007A1934 /* FBDialog.m */; };
@@ -115,10 +117,13 @@
 		C5BED8D113D52FC2007A1934 /* UIProfileBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED8C713D52FC2007A1934 /* UIProfileBar.m */; };
 		C5BED8D213D52FC2007A1934 /* UIProfileBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */; };
 		C5BED8D513D53188007A1934 /* QueryExpression2.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED8D413D53188007A1934 /* QueryExpression2.m */; };
+		C5C1C6C413E7C68000856862 /* UIPagedViewSlider2.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */; };
 		C5CCDF9C13D99F9700ABE747 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */; };
 		C5CCDF9D13D99F9700ABE747 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */; };
 		C5CCDFF113D9B67400ABE747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5CCDFF013D9B67300ABE747 /* Security.framework */; };
 		C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */; };
+		C5CEF5AB13EA15D4007AD4DD /* UIPagedViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */; };
+		C5CEF5AF13EA1798007AD4DD /* UIZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */; };
 		C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */; };
 		C5D8E0A413DBBFDE00D88B00 /* KlinkBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0A313DBBFDE00D88B00 /* KlinkBaseViewController.m */; };
 		C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AA13DC7D4900D88B00 /* Feed.m */; };
@@ -303,6 +308,9 @@
 		C561276413CB56FA005E5731 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		C56A8D9E13C78A1E00E527D6 /* UIViewSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSlider.h; sourceTree = "<group>"; };
 		C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewSlider.m; sourceTree = "<group>"; };
+		C5A095DA13E6F5EC003D4376 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewController.xib; sourceTree = "<group>"; };
 		C5BBF97B13CCF0CA00A23924 /* QueryExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryExpression.h; sourceTree = "<group>"; };
 		C5BED88F13D52F9D007A1934 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		C5BED89013D52F9D007A1934 /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
@@ -343,12 +351,18 @@
 		C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProfileBar.xib; sourceTree = "<group>"; };
 		C5BED8C913D52FC2007A1934 /* UIViewSliderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSliderDelegate.h; sourceTree = "<group>"; };
 		C5BED8D413D53188007A1934 /* QueryExpression2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryExpression2.m; sourceTree = "<group>"; };
+		C5C1C6C213E7C68000856862 /* UIPagedViewSlider2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider2.h; sourceTree = "<group>"; };
+		C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider2.m; sourceTree = "<group>"; };
 		C5CCDF9913D99F9600ABE747 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C5CCDFF013D9B67300ABE747 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C5CCDFFA13D9FA8C00ABE747 /* GetAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAuthenticatorResponse.h; sourceTree = "<group>"; };
 		C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAuthenticatorResponse.m; sourceTree = "<group>"; };
+		C5CEF5A913EA15D3007AD4DD /* UIPagedViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewItem.h; sourceTree = "<group>"; };
+		C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewItem.m; sourceTree = "<group>"; };
+		C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIZoomingScrollView.h; sourceTree = "<group>"; };
+		C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIZoomingScrollView.m; sourceTree = "<group>"; };
 		C5D8E09813DA4BFE00D88B00 /* NSDateCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateCategory.h; sourceTree = "<group>"; };
 		C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateCategory.m; sourceTree = "<group>"; };
 		C5D8E0A213DBBFDE00D88B00 /* KlinkBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KlinkBaseViewController.h; sourceTree = "<group>"; };
@@ -812,6 +826,12 @@
 				C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */,
 				C5D8E0B113DCA16500D88B00 /* UIKlinkScrollView.h */,
 				C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */,
+				C5C1C6C213E7C68000856862 /* UIPagedViewSlider2.h */,
+				C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */,
+				C5CEF5A913EA15D3007AD4DD /* UIPagedViewItem.h */,
+				C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */,
+				C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */,
+				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -894,6 +914,9 @@
 				C561274F13CA329A005E5731 /* SampleViewController2.h */,
 				C561275013CA329A005E5731 /* SampleViewController2.m */,
 				C561275113CA329A005E5731 /* SampleViewController2.xib */,
+				C5A095DA13E6F5EC003D4376 /* PhotoViewController.h */,
+				C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */,
+				C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */,
 			);
 			name = BlazeStormer;
 			sourceTree = "<group>";
@@ -1000,6 +1023,7 @@
 				3D3134F513E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png in Resources */,
 				3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */,
 				3D3134F713E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png in Resources */,
+				C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1105,6 +1129,10 @@
 				3D3134EB13E2FC0300DA1BF2 /* UIImageViewTap.m in Sources */,
 				3D3134EC13E2FC0300DA1BF2 /* UIViewTap.m in Sources */,
 				3D3134EF13E2FC1C00DA1BF2 /* UIImage+Decompress.m in Sources */,
+				C5A095DD13E6F5EC003D4376 /* PhotoViewController.m in Sources */,
+				C5C1C6C413E7C68000856862 /* UIPagedViewSlider2.m in Sources */,
+				C5CEF5AB13EA15D4007AD4DD /* UIPagedViewItem.m in Sources */,
+				C5CEF5AF13EA1798007AD4DD /* UIZoomingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

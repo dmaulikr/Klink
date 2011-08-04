@@ -20,14 +20,27 @@
 @synthesize numItemsToLoadOnScroll  =m_numItemsToLoadOnScroll;
 @synthesize delegate                =m_delegate;
 @synthesize isHorizontalOrientation =m_isHorizontalOrientation;
+
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.slider = [[UIKlinkScrollView alloc]initWithFrame:frame];
-        
+//        self.slider.backgroundColor = [UIColor clearColor];
+//        self.slider.opaque = NO;
+        self.slider.delegate = self;
+        self.isHorizontalOrientation = YES;
+        self.slider.pagingEnabled = YES;
+        self.slider.bounces = YES;
+        self.slider.scrollEnabled = YES;
+        self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.slider.autoresizesSubviews = YES;
+        self.slider.layer.borderColor = [UIColor redColor].CGColor;
+        self.slider.layer.borderWidth = 4.4f;
         self.numItemsToLoadOnScroll = kNumPicturesToLoad;
         self.viewList = [[NSMutableArray alloc]init];
+        [self addSubview:self.slider];
     }
     return self;
 }
@@ -38,7 +51,9 @@
         int height = CGRectGetHeight(self.frame);
         
         CGRect sliderFrame = CGRectMake(0, 0, width, height);
-        self.slider = [[UIKlinkScrollView alloc]initWithFrame:sliderFrame];
+         self.slider = [[UIKlinkScrollView alloc]initWithFrame:sliderFrame];
+//        self.slider.backgroundColor = [UIColor clearColor];
+//        self.slider.opaque = NO;
         self.slider.delegate = self;
         self.isHorizontalOrientation = YES;
         self.slider.pagingEnabled = YES;
@@ -121,7 +136,9 @@
 }
 
 
-
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
 
 - (void) item:(id)object insertedAt:(int)index {    
     UIView* cellView = [self.delegate viewSlider:self cellForRowAtIndex:index sliderIsHorizontal:self.isHorizontalOrientation];    

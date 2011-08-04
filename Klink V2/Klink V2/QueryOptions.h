@@ -39,5 +39,6 @@
 +(QueryOptions*)queryForPhotosInTheme;
 +(QueryOptions*)queryForFeedsForUser:(NSNumber*)userID;
 +(QueryOptions*)queryForUser:(NSNumber*)userID;
++(QueryOptions*)queryForCaptions:(NSNumber*)photoID;
 - (NSDictionary*)toDictionary;
 @end

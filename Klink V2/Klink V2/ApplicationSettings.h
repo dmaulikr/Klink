@@ -17,10 +17,11 @@ extern int const pageSize_PHOTO;
 extern int const pageSize_THEME;
 extern int const maxsize_PHOTODOWNLOAD;
 extern int const maxsize_THEMEDOWNLOAD;
+extern int const maxsize_CAPTIONDOWNLOAD;
 extern int const batchSize_CAPTION;
 extern int const batchSize_THEME;
 extern int const pageSize_THEMELINKEDOBJECTS;
-
+extern int const pageSize_CAPTION;
 extern int const size_NUMLINKEDOBJECTSTOTRETURN;
 
 extern NSString* const cell_TEXTCAPTION;

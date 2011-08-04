@@ -12,7 +12,9 @@
 #import "JSONKit.h"
 #import "BLLog.h"
 #import "ApplicationSettings.h"
+
 @class Theme;
+@class Photo;
 @interface EnumerationContext : NSObject <IWireSerializable>{
     NSNumber* isDone;
     NSNumber* pageSize;
@@ -30,5 +32,6 @@
 
 + (EnumerationContext*) contextForPhotosInTheme:(Theme*)theme;
 + (EnumerationContext*) contextForThemes;
++ (EnumerationContext*) contextForCaptions:(Photo*)photo;
 - (id) init;
 @end

@@ -138,7 +138,15 @@
     m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
     m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
     
-    
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
+        self.view = self.v_landscape;
+        
+    }
+    else {
+        self.view = self.v_portrait;
+    }
+
     
     //load the profile bar view
 //    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];

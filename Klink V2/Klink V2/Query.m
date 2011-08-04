@@ -110,4 +110,19 @@
     return query;
 }
 
++ (Query*)queryCaptionsForPhoto:(NSNumber*)photoID {
+    Query* query = [[[Query alloc]init ]autorelease];
+    query.filterobjecttype = CAPTION;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = an_PHOTOID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [photoID stringValue];
+    
+    NSArray* expressions = [NSArray arrayWithObject:queryExpression];
+    query.attributeExpressions = expressions;
+    
+    [queryExpression release];
+    return query;
+}
 @end

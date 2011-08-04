@@ -9,6 +9,7 @@
 #import "EnumerationContext.h"
 #import "DataLayer.h"
 #import "Theme.h";
+#import "Photo.h"
 @implementation EnumerationContext
 @synthesize pageSize;
 @synthesize pageNumber;
@@ -89,4 +90,18 @@
     
     return enumerationContext;
 }
+
++ (EnumerationContext*) contextForCaptions:(Photo *)photo {
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init]autorelease];
+    enumerationContext.pageSize = [NSNumber numberWithInt:pageSize_CAPTION];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
+    
+    NSArray* captions = [DataLayer getObjectsByType:CAPTION withValueEqual:[photo.objectid stringValue] forAttribute:an_PHOTOID sortBy:an_NUMBEROFVOTES sortAscending:NO];
+    
+    int count = [captions count];
+    enumerationContext.pageNumber = [NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
+    return enumerationContext;
+    
+}
+
 @end

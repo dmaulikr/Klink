@@ -10,10 +10,31 @@
 
 #import "ZoomingScrollView.h"
 #import "MWPhotoBrowser.h"
+#import "AttributeNames.h"
+#import "TypeNames.h"
+
+#define kCaptionWidth 100
+#define kCaptionHeight 100
+#define kCaptionWidth_landscape 480
+#define kCaptionHeight_landscape 100
+#define kCaptionSpacing 100
+#define kCaptionSliderHeight 100
+#define kCaptionSliderWidth 320
+#define kCaptionSliderHeight_landscape 100
+#define kCaptionSliderWidth_landscape 320
 
 @implementation ZoomingScrollView
 
 @synthesize index, photoBrowser;
+@synthesize frc_captions = __frc_captions;
+@synthesize managedObjectContext = __managedObjectContext;
+@synthesize currentPhoto = m_currentPhoto;
+
+#pragma mark - Managed Object Context
+- (NSManagedObjectContext*) managedObjectContext {
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    return appDelegate.managedObjectContext;
+}
 
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
@@ -39,6 +60,17 @@
 									UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 		[self addSubview:spinner];
 		
+        captionSlider = [UIPagedViewSlider alloc];
+        captionSlider.userInteractionEnabled = YES;
+        captionSlider.backgroundColor = [UIColor clearColor];
+        captionSlider.opaque = NO;
+        
+      
+        CGRect captionSliderFrame = CGRectMake(0, 0, 0, 0);
+        [captionSlider initWithFrame:captionSliderFrame];
+        captionSlider.delegate = self;
+
+        [self addSubview:captionSlider];
 		// Setup
 		self.backgroundColor = [UIColor blackColor];
 		self.delegate = self;
@@ -46,9 +78,154 @@
 		self.showsVerticalScrollIndicator = NO;
 		self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		
+	
 	}
 	return self;
+}
+
+#pragma mark - Fetched Results Controllers
+- (NSFetchedResultsController*) frc_captions {
+    if (__frc_captions != nil) {
+        return __frc_captions;
+    }
+    if (self.currentPhoto == nil) {
+        return nil;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:self.managedObjectContext];
+    
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_NUMBEROFVOTES ascending:NO];
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"photoid=%@",self.currentPhoto.objectid];
+    
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setEntity:entityDescription];
+    [fetchRequest setFetchBatchSize:20];
+    
+    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    
+    controller.delegate = self;
+    self.frc_captions = controller;
+    
+    
+    NSError* error = nil;
+    [controller performFetch:&error];
+  	if (error != nil)
+    {
+        
+	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    abort();
+	}
+    [controller release];
+    [fetchRequest release];
+    
+    return __frc_captions;
+    
+    
+}
+#pragma mark - Fetched Results Controller Delegate
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    
+    
+    
+    
+}
+
+#pragma mark - UIPagedSlider Delegate
+- (CGRect)frameForCaptionSlider {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    CGRect viewFrame = self.bounds;
+    
+    if (UIInterfaceOrientationIsLandscape(orientation)){
+        
+        CGRect frame = CGRectMake(0, (viewFrame.size.height-kCaptionHeight_landscape), kCaptionSliderWidth_landscape, kCaptionSliderHeight_landscape);
+        return frame;
+    }
+    else {
+        CGRect frame = CGRectMake(0,  0,kCaptionSliderWidth, kCaptionSliderHeight);
+        return frame;
+        
+    }
+    
+}
+
+- (CGRect)frameForCaptionBackground:(int)index isHorizontalOrientation:(BOOL)isHorizontalOrientation {
+    int xCoordinate = 0;
+    int yCoordinate = 0;
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        xCoordinate = index * (kCaptionWidth_landscape + kCaptionSpacing);
+        return CGRectMake(xCoordinate,yCoordinate,kCaptionWidth_landscape,kCaptionHeight);
+    }
+    else {
+        xCoordinate = index * (kCaptionWidth + kCaptionSpacing);
+        return CGRectMake(xCoordinate,yCoordinate,kCaptionWidth,kCaptionHeight);
+    }
+    
+}
+
+- (CGRect)frameForCaption {
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0,0,kCaptionWidth_landscape,kCaptionHeight);
+    }
+    else {
+        
+        return CGRectMake(0,0,kCaptionWidth,kCaptionHeight);
+    }
+    
+    
+    
+    
+}
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
+    
+}
+
+-(void)onButtonClicked:(id)sender {
+    NSLog(@"hadaa");
+}
+- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isHorizontalOrientation {
+    
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+    
+    CGRect captionFrame = [self frameForCaption];
+    CGRect captionBackgroundFrame = [self frameForCaptionBackground:index isHorizontalOrientation:isHorizontalOrientation];
+    
+    UIView* view = [[UIView alloc]initWithFrame:captionBackgroundFrame];
+    view.backgroundColor = [UIColor blackColor];
+    view.opaque = YES;
+    
+    
+    UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
+    captionLabel.textColor = [UIColor whiteColor];
+    captionLabel.backgroundColor = [UIColor blackColor];
+    captionLabel.opaque = NO;
+    captionLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0];
+    captionLabel.text = caption.caption1;
+    captionLabel.textAlignment = UITextAlignmentCenter;
+    [view addSubview:captionLabel];
+    
+    UIButton* button = [[UIButton alloc]initWithFrame:captionBackgroundFrame];
+    [button setTitle:@"dick" forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor redColor];
+    button.titleLabel.textColor = [UIColor whiteColor];
+    [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    button.userInteractionEnabled = YES;
+    
+    
+    return button;
+}
+
+- (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+    
 }
 
 - (void)dealloc {
@@ -180,6 +357,13 @@
 	// Update tap view frame
 	tapView.frame = self.bounds;
 	
+    //paged slider
+    NSArray* captions = [self.frc_captions fetchedObjects];
+    [captionSlider initWith:kCaptionWidth itemHeight:kCaptionHeight itemSpacing:kCaptionSpacing];  
+    [captionSlider resetSliderWithItems:captions];
+    CGRect newFrame = CGRectMake(0, self.bounds.size.height-kCaptionHeight, self.bounds.size.width, kCaptionHeight);
+    captionSlider.frame = newFrame;
+
 	// Spinner
 	if (!spinner.hidden) spinner.center = CGPointMake(floorf(self.bounds.size.width/2.0),
 													  floorf(self.bounds.size.height/2.0));

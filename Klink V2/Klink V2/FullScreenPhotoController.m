@@ -27,6 +27,7 @@
 @synthesize user = m_user;
 @synthesize fadeTimer;
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

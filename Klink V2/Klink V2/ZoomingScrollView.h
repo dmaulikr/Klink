@@ -11,10 +11,11 @@
 #import <Foundation/Foundation.h>
 #import "UIImageViewTap.h"
 #import "UIViewTap.h"
-
+#import "UIPagedViewSlider.h"
+#import "Photo.h"
 @class MWPhotoBrowser;
 
-@interface ZoomingScrollView : UIScrollView <UIScrollViewDelegate, UIImageViewTapDelegate, UIViewTapDelegate> {
+@interface ZoomingScrollView : UIScrollView <UIScrollViewDelegate, UIImageViewTapDelegate, UIViewTapDelegate, UIPagedViewSliderDelegate, NSFetchedResultsControllerDelegate> {
 	
 	// Browser
 	MWPhotoBrowser *photoBrowser;
@@ -26,13 +27,18 @@
 	UIViewTap *tapView; // for background taps
 	UIImageViewTap *photoImageView;
 	UIActivityIndicatorView *spinner;
+    UIPagedViewSlider* captionSlider;
+    
+    Photo* m_currentPhoto;
 	
 }
 
 // Properties
 @property (nonatomic) NSUInteger index;
 @property (nonatomic, assign) MWPhotoBrowser *photoBrowser;
-
+@property (nonatomic, retain) NSFetchedResultsController    *frc_captions;
+@property (nonatomic, retain) NSManagedObjectContext        *managedObjectContext;
+@property (nonatomic, retain) Photo                         *currentPhoto;
 // Methods
 - (void)displayImage;
 - (void)displayImageFailure;

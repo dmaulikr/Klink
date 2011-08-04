@@ -112,4 +112,12 @@
     
     return newQuery;
 }
+
++(QueryOptions*)queryForCaptions:(NSNumber*)photoID{
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = an_NUMBEROFVOTES;
+    return newQuery;
+}
 @end

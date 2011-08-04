@@ -48,6 +48,14 @@
    useEnumerationContext:(EnumerationContext*)enumerationContext
 shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage;
 
+- (void) enumerateCaptionsForPhoto:
+                    (Photo*)photo
+                    withPageSize:(NSNumber*)pageSize
+                    withQueryOptions:(QueryOptions*)queryOptions
+                    onFinishNotify:(NSString*)notificationID
+                    useEnumerationContext:(EnumerationContext*)enumerationContext
+                    shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage ;
+
 - (void) getUser:(NSNumber*)userID
 onFinishNotify:(NSString*)notificationID;
 

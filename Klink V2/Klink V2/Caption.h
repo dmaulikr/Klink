@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSString* creatorname;
 @property (nonatomic, retain) NSString * caption1;
 @property (nonatomic, retain) NSString* title;
-@property (nonatomic, retain) NSNumber * numberOfVotes;
+@property (nonatomic, retain) NSNumber * numberofvotes;
 @property (nonatomic, retain) NSNumber* photoid;
 @property (nonatomic, retain) NSString* imageurl;
 @property (nonatomic, retain) NSString* thumbnailurl;

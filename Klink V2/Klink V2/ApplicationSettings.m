@@ -18,9 +18,11 @@ int const pageSize_PHOTO=10;
 int const pageSize_PHOTOSINTHEME = 10;
 int const pageSize_THEME = 2;
 int const pageSize_THEMELINKEDOBJECTS = 5;
+int const pageSize_CAPTION = 10;
 
 int const maxsize_PHOTODOWNLOAD=1000;
 int const maxsize_THEMEDOWNLOAD=100;
+int const maxsize_CAPTIONDOWNLOAD = 1000;
 int const batchSize_CAPTION=20;
 int const batchSize_THEME=20;
 int const size_NUMLINKEDOBJECTSTOTRETURN=5;

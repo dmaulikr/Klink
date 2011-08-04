@@ -12,7 +12,7 @@
 @implementation Caption
 @dynamic creatorid;
 @dynamic caption1;
-@dynamic numberOfVotes;
+@dynamic numberofvotes;
 @dynamic photoid;
 @dynamic title;
 @dynamic imageurl;
@@ -47,7 +47,7 @@
         }        
 
         if ([jsonDictionary objectForKey:an_NUMBEROFVOTES] !=[NSNull null] ) {
-            self.numberOfVotes = [jsonDictionary valueForKey:an_NUMBEROFVOTES];
+            self.numberofvotes = [jsonDictionary valueForKey:an_NUMBEROFVOTES];
         }        
 
     }
@@ -70,7 +70,7 @@
     [super copyFrom:newObject];
     self.creatorid = [newObject creatorid];
     self.caption1 = [newObject caption1];
-    self.numberOfVotes = [newObject numberOfVotes];
+    self.numberofvotes = [newObject numberofvotes];
     self.photoid = [newObject photoid];
     self.title = [newObject title];
     self.imageurl = [newObject imageurl];
@@ -99,7 +99,7 @@
     [dictionary setValue:self.creatorid forKey:an_CREATORID];
     [dictionary setValue:self.photoid forKey:an_PHOTOID];
     [dictionary setValue:self.caption1 forKey:an_CAPTION];
-    [dictionary setValue:self.numberOfVotes forKey:an_NUMBEROFVOTES];
+    [dictionary setValue:self.numberofvotes forKey:an_NUMBEROFVOTES];
     [dictionary setValue:self.title forKey:an_TITLE];
     [dictionary setValue:self.thumbnailurl forKey:an_THUMBNAILURL];
     [dictionary setValue:self.imageurl forKey:an_IMAGEURL];
