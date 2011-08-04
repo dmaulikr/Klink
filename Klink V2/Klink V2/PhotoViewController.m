@@ -315,6 +315,9 @@
 
 - (void)setControlsHidden:(BOOL)hidden {
 	
+    
+    
+    
 	// Get status bar height if visible
 	CGFloat statusBarHeight = 0;
 	if (![UIApplication sharedApplication].statusBarHidden) {
