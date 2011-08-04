@@ -130,10 +130,19 @@
     
 }
 
+-(void) didRotate:(NSNotification*)notification {
+    
+}
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
     
     m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
     m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;

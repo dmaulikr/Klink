@@ -32,6 +32,7 @@ extern int const timeout_ENUMERATION;
 //settings used to power the theme browser view controller
 extern int const threshold_LOADMOREPHOTOS;
 extern int const threshold_LOADMORETHEMES;
+extern int const threshold_LOADMORECAPTIONS;
 //opcodes for query operations
 extern int const opcode_QUERYEQUALITY;
 

@@ -84,6 +84,7 @@
 		C53F283913EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */; };
 		C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */; };
 		C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283D13EB3C040038C8F0 /* UIViewTap.m */; };
+		C53F284213EB3D000038C8F0 /* CloudEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F284113EB3D000038C8F0 /* CloudEnumerator.m */; };
 		C561275213CA329A005E5731 /* SampleViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = C561275013CA329A005E5731 /* SampleViewController2.m */; };
 		C561275313CA329A005E5731 /* SampleViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275113CA329A005E5731 /* SampleViewController2.xib */; };
 		C561275713CA4EB5005E5731 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C561275613CA4EB5005E5731 /* QuartzCore.framework */; };
@@ -288,6 +289,8 @@
 		C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageViewTap.m; sourceTree = "<group>"; };
 		C53F283C13EB3C040038C8F0 /* UIViewTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewTap.h; sourceTree = "<group>"; };
 		C53F283D13EB3C040038C8F0 /* UIViewTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewTap.m; sourceTree = "<group>"; };
+		C53F284013EB3D000038C8F0 /* CloudEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumerator.h; sourceTree = "<group>"; };
+		C53F284113EB3D000038C8F0 /* CloudEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumerator.m; sourceTree = "<group>"; };
 		C561274F13CA329A005E5731 /* SampleViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController2.h; sourceTree = "<group>"; };
 		C561275013CA329A005E5731 /* SampleViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController2.m; sourceTree = "<group>"; };
 		C561275113CA329A005E5731 /* SampleViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleViewController2.xib; sourceTree = "<group>"; };
@@ -656,6 +659,8 @@
 				C5190A9D13C1926C0077EECA /* QueryOptions.m */,
 				C5BBF97B13CCF0CA00A23924 /* QueryExpression.h */,
 				C5BED8D413D53188007A1934 /* QueryExpression2.m */,
+				C53F284013EB3D000038C8F0 /* CloudEnumerator.h */,
+				C53F284113EB3D000038C8F0 /* CloudEnumerator.m */,
 			);
 			name = Enumeration;
 			sourceTree = "<group>";
@@ -1083,6 +1088,7 @@
 				C53F283913EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m in Sources */,
 				C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */,
 				C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */,
+				C53F284213EB3D000038C8F0 /* CloudEnumerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

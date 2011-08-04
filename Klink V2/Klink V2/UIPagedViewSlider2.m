@@ -239,7 +239,9 @@
 }
 // Properties
 - (void)    setInitialPageIndex:    (NSUInteger)    index {
-    
+    self.currentPageIndex = index;
+    [self performLayout];
+    [self tilePages];
 }
 
 //Frames
@@ -299,6 +301,7 @@
 	self.currentPageIndex = index;
 	if (self.currentPageIndex != previousCurrentPage) {
         [self didStartViewingPageAtIndex:index];
+        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:count-index];
     }
 	
 }
@@ -327,19 +330,35 @@
 #pragma mark Navigation
 
 - (void)updateNavigation {
-    //TODO: make call to view controller to update navigation
-//	// Title
-//	if (photos.count > 1) {
-//		self.title = [NSString stringWithFormat:@"%i of %i", currentPageIndex+1, photos.count];		
-//	} else {
-//		self.title = nil;
-//	}
-//	
-//	// Buttons
-//	previousButton.enabled = (currentPageIndex > 0);
-//	nextButton.enabled = (currentPageIndex < photos.count-1);
+
 	
 }
 
+#pragma mark - Tap Handler
+#pragma mark - Scroll tap handler
+- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event 
+{
+    
+    // Process the single tap here
+    if ([touches count]==1) { 
+        UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+        
+        UITouch* touch = [[touches allObjects]objectAtIndex:0];
+        CGPoint touchLocation = [touch locationInView:self.pagingScrollView];
+        int index = 0;
+        int x = touchLocation.x;
+        
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            index = (x)/(m_itemSpacing+m_itemWidth_landscape);
+        }
+        else {
+             index = (x)/(m_itemSpacing+m_itemWidth);
+        }
+   
+        [self.delegate viewSlider:self selectIndex:index];
+    }
+    
+    
+}
 
 @end

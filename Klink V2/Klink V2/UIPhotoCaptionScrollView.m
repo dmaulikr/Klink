@@ -23,12 +23,13 @@
 @synthesize captionScrollView = m_captionScrollView;
 @synthesize frc_captions =      __frc_captions;
 @synthesize managedObjectContext=   __managedObjectContext;
-
+@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 
 - (void) dealloc {
     [self.frc_captions release];
     [self.photo release];
     [self.captionScrollView release];
+    [self.captionCloudEnumerator release];
 }
 
 #pragma mark - Properties
@@ -58,7 +59,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     NSFetchedResultsController* controller = [[[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil]autorelease];
-    
+    controller.delegate = self;
     
     
     
@@ -118,9 +119,21 @@
         [self.captionScrollView initWithWidth:kCaptionWidth withHeight:kCaptionHeight withWidthLandscape:kCaptionWidth_landscape withHeightLandscape:kCaptionHeight_landscape withSpacing:kCaptionSpacing];
         [self addSubview:self.captionScrollView];
         
+        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
+        self.captionCloudEnumerator.delegate = self;
+        if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
+            [self.captionCloudEnumerator enumerateNextPage];
+        }
+        
     }
     return self;
 }
+
+#pragma mark - Cloud Enumerator Delegate callback
+- (void) onEnumerateComplete {
+    
+}
+
 #pragma mark - UIPageScrollViewDelegate
 - (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
            selectIndex:        (int)                   index; {
@@ -146,11 +159,29 @@
 
 - (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
              isAtIndex:          (int)                   index 
-    withCellsRemaining: (int)                   numberOfCellsToEnd {
+    withCellsRemaining:          (int)                   numberOfCellsToEnd {
+    
+    int numberOfCaptionsRemaining = [self.frc_captions.fetchedObjects count] - index;
+    
+    if (numberOfCaptionsRemaining < threshold_LOADMORECAPTIONS &&
+        ![self.captionCloudEnumerator isDone]) {
+        
+        //need to enumerate the next set of captions
+        [self.captionCloudEnumerator enumerateNextPage];
+    }
     
 }
 
 - (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
     return [[self.frc_captions fetchedObjects]count];
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove || type == NSFetchedResultsChangeDelete) {
+        [self.captionScrollView performLayout];
+    }
 }
 @end

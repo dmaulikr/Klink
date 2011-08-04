@@ -12,9 +12,11 @@
 #import "Theme.h"
 #import "ImageDownloadProtocol.h"
 #import "UIPagedViewSlider2.h"
-@interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback> {
-    Photo* m_currentPhoto;
+#import "CloudEnumerator.h"
+
+@interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback, CloudEnumeratorDelegate> {
     Theme* m_currentTheme;
+    Photo* m_currentPhoto;
     int m_currentIndex;
     
     BOOL m_wantsFullScreenLayout;
@@ -26,12 +28,16 @@
 	UIBarButtonItem     *m_previousButton;
     UIBarButtonItem     *m_nextButton;
     
+    CloudEnumerator*    m_photoCloudEnumerator;
+    
+    
 
     
 }
 
-@property (nonatomic,retain) Photo* currentPhoto;
 @property (nonatomic,retain) Theme* currentTheme;
+@property (nonatomic,retain) Photo* currentPhoto;
+@property (nonatomic,retain) CloudEnumerator* photoCloudEnumerator;
 @property (nonatomic,retain) NSFetchedResultsController* frc_captions;
 @property (nonatomic,retain) NSFetchedResultsController* frc_photos;
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;

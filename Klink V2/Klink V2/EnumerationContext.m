@@ -62,13 +62,13 @@
 }
 
 #pragma mark - Static constructors for known scenarios
-+ (EnumerationContext*) contextForPhotosInTheme:(Theme*)th {
++ (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid {
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_PHOTOSINTHEME];
     enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];
     
     //TODO: we can intelligently guess the page we will need here in order to not make any repetitive calls
-    NSArray* photosInTheme = [DataLayer getObjectsByType:PHOTO withValueEqual:[th.objectid stringValue]  forAttribute:an_THEMEID];
+    NSArray* photosInTheme = [DataLayer getObjectsByType:PHOTO withValueEqual:[themeid stringValue]  forAttribute:an_THEMEID];
     int count = [photosInTheme count];
     
     enumerationContext.pageNumber =[NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
@@ -91,12 +91,12 @@
     return enumerationContext;
 }
 
-+ (EnumerationContext*) contextForCaptions:(Photo *)photo {
++ (EnumerationContext*) contextForCaptions:(NSNumber *)photoid {
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init]autorelease];
     enumerationContext.pageSize = [NSNumber numberWithInt:pageSize_CAPTION];
     enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
     
-    NSArray* captions = [DataLayer getObjectsByType:CAPTION withValueEqual:[photo.objectid stringValue] forAttribute:an_PHOTOID sortBy:an_NUMBEROFVOTES sortAscending:NO];
+    NSArray* captions = [DataLayer getObjectsByType:CAPTION withValueEqual:[photoid stringValue] forAttribute:an_PHOTOID sortBy:an_NUMBEROFVOTES sortAscending:NO];
     
     int count = [captions count];
     enumerationContext.pageNumber = [NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];

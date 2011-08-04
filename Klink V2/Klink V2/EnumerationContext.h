@@ -30,8 +30,8 @@
 @property (nonatomic,retain) NSNumber* maximumNumberOfResults;
 
 
-+ (EnumerationContext*) contextForPhotosInTheme:(Theme*)theme;
++ (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid;
 + (EnumerationContext*) contextForThemes;
-+ (EnumerationContext*) contextForCaptions:(Photo*)photo;
++ (EnumerationContext*) contextForCaptions:(NSNumber*)photoid;
 - (id) init;
 @end

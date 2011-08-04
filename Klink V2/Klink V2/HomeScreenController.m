@@ -65,7 +65,9 @@
     return YES;
 }
 
+- (void) didRotate : (NSNotification*)notification {
 
+}
 
 #pragma mark - Event Handlers
 - (IBAction)onButtonClicked:(id)sender {

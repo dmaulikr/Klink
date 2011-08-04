@@ -37,7 +37,7 @@
 @synthesize pagedViewSlider         = __pagedViewSlider;
 @synthesize v_pagedViewSlider;
 @synthesize h_pagedViewSlider;
-
+@synthesize photoCloudEnumerator    =m_photoCloudEnumerator;
 #pragma mark - Property Definitions
 
 -(UIPagedViewSlider2*)pagedViewSlider {
@@ -50,24 +50,7 @@
         return self.h_pagedViewSlider;
     }
 }
--(UIPagedViewSlider2*)pvs_photoSlider {
-    if (self.view == self.v_portrait) {
-        return self.v_pvs_photoSlider;
-    }
-    else {
-        return self.h_pvs_photoSlider;
-    }
-}
 
-
--(UIPagedViewSlider2*)pvs_captionSlider {
-    if (self.view == self.v_landscape) {
-        return self.h_pvs_captionSlider;
-    }
-    else {
-        return self.v_pvs_captionSlider;
-    }
-}
 
 - (NSManagedObjectContext*)managedObjectContext {
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -115,51 +98,6 @@
     return __frc_photos;
 }
 
-- (NSFetchedResultsController*) get_frc_captions:(Photo*)photo {
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:self.managedObjectContext];
-    
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_NUMBEROFVOTES ascending:NO];
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"photoid=%@",photo.objectid];
-    
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [fetchRequest setEntity:entityDescription];
-    [fetchRequest setFetchBatchSize:20];
-    
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    
-    controller.delegate = self;
-    
-    
-    
-    NSError* error = nil;
-    [controller performFetch:&error];
-  	if (error != nil)
-    {
-        
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
-    [controller release];
-    [fetchRequest release];
-    return controller;
-}
-- (NSFetchedResultsController*) frc_captions {
-    if (__frc_captions != nil) {
-        return __frc_captions;
-    }
-    if (self.currentPhoto == nil) {
-        return nil;
-    }
-
-    self.frc_captions = [self get_frc_captions:self.currentPhoto];
-    
-    return __frc_captions;
-    
-}
 
 - (void) assignPhoto: (Photo*)photo {
     NSString* activityName = @"PhotoViewController.assignPhoto:";
@@ -209,7 +147,11 @@
     [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
     [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 
- 
+    self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.currentTheme.objectid];
+    self.photoCloudEnumerator.delegate = self;
+    if ([[self.frc_photos fetchedObjects]count]<threshold_LOADMOREPHOTOS) {
+        [self.photoCloudEnumerator enumerateNextPage];
+    }
     
     m_wantsFullScreenLayout = YES;
     m_hidesBottomBarWhenPushed = YES;
@@ -241,8 +183,8 @@
             }
         }
     }
-    
-    self.pagedViewSlider.currentPageIndex = index;
+    [self.pagedViewSlider setInitialPageIndex:index];
+   
 	// Layout
 	[self.pagedViewSlider performLayout];
   
@@ -252,7 +194,6 @@
 	// Navigation
 	[self updateNavigation];
 	//[self hideControlsAfterDelay];
-	[self didStartViewingPageAtIndex:self.pagedViewSlider.currentPageIndex]; // initial
 }
 
 
@@ -266,7 +207,28 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+-(void)didRotate:(NSNotification*)notification {
+    [super didRotate:notification];
+    //need to switch out the ladscape and portrait views
+    //populate the sv_sliders as needed
+    UIDeviceOrientation toInterfaceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        //going to potrait
+        
+        int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
+        self.view = self.v_portrait;
+        [self.pagedViewSlider setInitialPageIndex:currentScrollIndex];
+    }
+    else {
+        //going to landscape
+        int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
+        self.view = self.v_landscape;        
+        [self.pagedViewSlider setInitialPageIndex:currentScrollIndex];
+    }
+    
 }
 
 #pragma mark - Navigation
@@ -287,9 +249,7 @@
 }
 
 
-// Handle page changes
-- (void)didStartViewingPageAtIndex:(NSUInteger)index {
-}
+
 
 
 
@@ -383,7 +343,7 @@
     }
 }
 
-
+#pragma mark - UIPagedViewSlider2Delegate
 
 - (UIView*)viewSlider:(UIPagedViewSlider2 *)viewSlider cellForRowAtIndex:(int)index withFrame:(CGRect)frame {
    
@@ -398,18 +358,17 @@
         UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
         
         [photoAndCaptionScrollView displayImage:image];
- 
+        
+//        [self configureCaptionSlider:zoomingScrollView forPhotoAtIndex:index];
         return photoAndCaptionScrollView;
 
 }
 
 - (void)viewSlider:(UIPagedViewSlider2*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-    if (viewSlider == self.pagedViewSlider) {
-        if (index != m_currentIndex) {
-            m_currentIndex = index;
-            Photo* currentPhoto = [[self.frc_photos fetchedObjects]objectAtIndex:index];
-            [self assignPhoto:currentPhoto];
-        }
+    int numCellsLeft = [[self.frc_photos fetchedObjects]count] - index;
+    
+    if (numCellsLeft < threshold_LOADMOREPHOTOS) {
+        [self.photoCloudEnumerator enumerateNextPage];
     }
 }
 
@@ -426,5 +385,17 @@
 - (void)onImageDownload:(UIImage *)image withUserInfo:(NSDictionary *)userInfo {
     UIZoomingScrollView* imageView = [userInfo objectForKey:an_IMAGEVIEW];
     [imageView displayImage:image];
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete {
+    
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove) {
+        [self.pagedViewSlider performLayout];
+    }
 }
 @end

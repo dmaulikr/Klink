@@ -149,7 +149,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     NSArray* photos = [self.frc_photosInCurrentTheme fetchedObjects];
     [self.pvs_photoSlider resetSliderWithItems:photos];
-    self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
+    self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme.objectid];
     self.m_outstandingPhotoEnumNotificationID = nil;
     self.m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
 }
@@ -160,7 +160,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     NSString* activityName = @"ThemeBrowserController.enumeratePhotosForCurrentTheme:";
     if (ec_activeThemePhotoContext == nil) {
         //if we have a nil contect, that means we have yet to query for the photos in this theme directly
-        self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme];
+        self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme.objectid];
     }
     
     //execute the enumeration only if there is not already one executing and the current one is not done
@@ -217,6 +217,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
     self.navigationController.navigationBar.translucent = NO;
 }
 
@@ -225,10 +226,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
   
     [super viewDidLoad];
     
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+ 
      
      
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
