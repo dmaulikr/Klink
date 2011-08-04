@@ -56,7 +56,7 @@
 
 @interface ThemeBrowserViewController2 ()
 static UIImage *shrinkImage(UIImage *original, CGSize size);
-- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType;
+- (void)getMediaFromSource:(id)sender;
 @end
 
 @implementation ThemeBrowserViewController2
@@ -236,7 +236,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                      target:self
-                                     action:@selector(shootPhoto:)];
+                                     action:@selector(getMediaFromSource:)];
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
     
@@ -769,26 +769,34 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 
 #pragma mark - New Photo Handlers
-- (void)shootPhoto:(id)sender {
+/*- (void)shootPhoto:(id)sender {
     [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
 }
 
 - (void)selectExistingPhoto:(id)sender {
     [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
-}
+}*/
 
-- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
-    NSArray *mediaTypes = [UIImagePickerController
-                           availableMediaTypesForSourceType:sourceType];
-    if ([UIImagePickerController isSourceTypeAvailable:
-         sourceType] && [mediaTypes count] > 0) {
-        NSArray *mediaTypes = [UIImagePickerController
-							   availableMediaTypesForSourceType:sourceType];
+//- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
+- (void)getMediaFromSource:(id)sender {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.mediaTypes = mediaTypes;
         picker.delegate = self;
         picker.allowsEditing = NO;
-        picker.sourceType = sourceType;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+        
+    } else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.mediaTypes = mediaTypes;
+        picker.delegate = self;
+        picker.allowsEditing = NO;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentModalViewController:picker animated:YES];
         [picker release];
     }

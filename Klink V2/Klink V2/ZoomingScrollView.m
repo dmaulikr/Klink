@@ -36,6 +36,8 @@
     return appDelegate.managedObjectContext;
 }
 
+CGFloat initialZoomScale = 1;   // ADDED BY JORDANG
+
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
 		
@@ -259,6 +261,10 @@
 - (void)displayImage {
 	if (index != NSNotFound && photoImageView.image == nil) {
 		
+        // ADDED BY JORDANG
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
+        [userInfo setObject:photoImageView forKey:an_IMAGEVIEW];  
+        
 		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
@@ -266,7 +272,7 @@
 		self.contentSize = CGSizeMake(0, 0);
 		
 		// Get image
-		UIImage *img = [self.photoBrowser imageAtIndex:index];
+		UIImage *img = [self.photoBrowser imageAtIndex:index withUserInfo:userInfo]; // EDITED BY JORDANG
 		if (img) {
 			
 			// Hide spinner
@@ -337,11 +343,19 @@
 	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
 		maxScale = maxScale / [[UIScreen mainScreen] scale];
 	}
+    
+    // ADDED BY JORDANG Calculate initial Zoom
+    if (imageSize.height > imageSize.width) {
+        initialZoomScale = yScale;
+    } else {
+        initialZoomScale = xScale;
+    }
 	
 	// Set
 	self.maximumZoomScale = maxScale;
 	self.minimumZoomScale = minScale;
-	self.zoomScale = minScale;
+	self.zoomScale = initialZoomScale;      // EDITED BY JORDANG
+
 	
 	// Reset position
 	photoImageView.frame = CGRectMake(0, 0, photoImageView.frame.size.width, photoImageView.frame.size.height);
@@ -426,10 +440,10 @@
 	[NSObject cancelPreviousPerformRequestsWithTarget:photoBrowser];
 	
 	// Zoom
-	if (self.zoomScale == self.maximumZoomScale) {
+	if (self.zoomScale == self.maximumZoomScale || (self.zoomScale == self.minimumZoomScale && self.minimumZoomScale != initialZoomScale)) {    // EDITED BY JORDANG
 		
 		// Zoom out
-		[self setZoomScale:self.minimumZoomScale animated:YES];
+		[self setZoomScale:initialZoomScale animated:YES];     // EDITED BY JORDANG
 		
 	} else {
 		
