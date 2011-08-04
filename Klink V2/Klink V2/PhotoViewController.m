@@ -10,18 +10,14 @@
 #import "AttributeNames.h"
 #import "TypeNames.h"
 #import "ImageManager.h"
-#import "UIZoomingScrollView.h"
+#import "UIPhotoCaptionScrollView.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
 #define kPictureHeight              370
 #define kPictureHeight_landscape    245
 #define kPictureSpacing             10
-#define kCaptionWidth_landscape     480
-#define kCaptionWidth               320
-#define kCaptionHeight_landscape    50
-#define kCaptionHeight              50
-#define kCaptionSpacing             0
+
 
 @implementation PhotoViewController
 @synthesize currentPhoto            = m_currentPhoto;
@@ -119,20 +115,14 @@
     return __frc_photos;
 }
 
-- (NSFetchedResultsController*) frc_captions {
-    if (__frc_captions != nil) {
-        return __frc_captions;
-    }
-    if (self.currentPhoto == nil) {
-        return nil;
-    }
+- (NSFetchedResultsController*) get_frc_captions:(Photo*)photo {
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:self.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_NUMBEROFVOTES ascending:NO];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"photoid=%@",self.currentPhoto.objectid];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"photoid=%@",photo.objectid];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -142,7 +132,7 @@
     NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     controller.delegate = self;
-    self.frc_captions = controller;
+    
     
     
     NSError* error = nil;
@@ -155,6 +145,17 @@
 	}
     [controller release];
     [fetchRequest release];
+    return controller;
+}
+- (NSFetchedResultsController*) frc_captions {
+    if (__frc_captions != nil) {
+        return __frc_captions;
+    }
+    if (self.currentPhoto == nil) {
+        return nil;
+    }
+
+    self.frc_captions = [self get_frc_captions:self.currentPhoto];
     
     return __frc_captions;
     
@@ -382,37 +383,28 @@
     }
 }
 
-- (CGRect)frameForCaption:(int)index sliderIsHorizontal:(BOOL)isHorizontalOrientation {
-    if (isHorizontalOrientation == NO) {
-        
-        return CGRectMake(0, 0, kCaptionWidth_landscape, kCaptionHeight_landscape);
-    }
-    else {
-        int xcoordinate = index * (kCaptionWidth + kCaptionSpacing);
-        return CGRectMake(xcoordinate, 0, kCaptionWidth, kCaptionHeight); 
-    }
-}
-
-#pragma mark - UIPagedViewSlider Delegate
 
 
 - (UIView*)viewSlider:(UIPagedViewSlider2 *)viewSlider cellForRowAtIndex:(int)index withFrame:(CGRect)frame {
-    
-    UIZoomingScrollView* zoomingScrollView = [[UIZoomingScrollView alloc]initWithFrame:frame];
-    zoomingScrollView.viewController = self;
-    ImageManager* imageManager = [ImageManager getInstance];
-    
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:zoomingScrollView forKey:an_IMAGEVIEW];
-    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
-    
-    [zoomingScrollView displayImage:image];
+   
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+        UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
+        
+        photoAndCaptionScrollView.viewController = nil;
+        ImageManager* imageManager = [ImageManager getInstance];
+        
+       
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photoAndCaptionScrollView forKey:an_IMAGEVIEW];
+        UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
+        
+        [photoAndCaptionScrollView displayImage:image];
  
-    return zoomingScrollView;
+        return photoAndCaptionScrollView;
+
 }
 
 - (void)viewSlider:(UIPagedViewSlider2*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-    if (viewSlider == self.pvs_photoSlider) {
+    if (viewSlider == self.pagedViewSlider) {
         if (index != m_currentIndex) {
             m_currentIndex = index;
             Photo* currentPhoto = [[self.frc_photos fetchedObjects]objectAtIndex:index];

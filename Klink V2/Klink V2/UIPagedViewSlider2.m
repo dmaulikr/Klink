@@ -140,46 +140,78 @@
 	m_performingLayout = NO;
 }
 
+- (int) getIndex {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    CGPoint offset = self.pagingScrollView.contentOffset;
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth_landscape));
+    }
+    else {
+        return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth));
+    }
+}
+
+- (int) getLastVisibleIndex {
+    int leftIndex = [self getIndex];
+    CGRect visibleBounds = self.pagingScrollView.bounds;
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    
+    
+    
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth_landscape));
+    }
+    else {
+        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth));
+    }
+}
+
 // Paging
 - (void)    tilePages {
     // Calculate which pages should be visible
 	// Ignore padding as paging bounces encroach on that
 	// and lead to false page loads
     int count = [self.delegate itemCountFor:self];
-	CGRect visibleBounds = self.pagingScrollView.bounds;
-	int iFirstIndex = (int)floorf((CGRectGetMinX(visibleBounds)+PADDING*2) / CGRectGetWidth(visibleBounds));
-	int iLastIndex  = (int)floorf((CGRectGetMaxX(visibleBounds)-PADDING*2-1) / CGRectGetWidth(visibleBounds));
-    if (iFirstIndex < 0) iFirstIndex = 0;
-    if (iFirstIndex > count - 1) iFirstIndex = count - 1;
-    if (iLastIndex < 0) iLastIndex = 0;
-    if (iLastIndex > count - 1) iLastIndex = count - 1;
-	
-	// Recycle no longer needed pages
-	for (UIPagedViewItem *page in self.visiblePages) {
-		if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
-			[self.recycledPages addObject:page];
-			/*NSLog(@"Removed page at index %i", page.index);*/
-			page.index = NSNotFound; // empty
-			[page removeFromSuperview];
-		}
-	}
-	[self.visiblePages minusSet:self.recycledPages];
-	
-	// Add missing pages
-	for (NSUInteger index = (NSUInteger)iFirstIndex; index <= (NSUInteger)iLastIndex; index++) {
-		if (![self isDisplayingPageForIndex:index]) {
-			UIPagedViewItem *page = [self dequeueRecycledPage];
-			if (!page) {
-				page = [[[UIPagedViewItem alloc] init] autorelease];
-                page.userInteractionEnabled = YES;
-//				page.photoBrowser = self;
-			}
-			[self configurePage:page forIndex:index];
-			[self.visiblePages addObject:page];
-            [self.pagingScrollView addSubview:page];
-			/*NSLog(@"Added page at index %i", page.index);*/
-		}
-	}
+    if (count > 0) {
+        CGRect visibleBounds = self.pagingScrollView.bounds;
+        
+        int iFirstIndex = [self getIndex];
+        int iLastIndex = [self getLastVisibleIndex];
+       
+//        int iFirstIndex = (int)floorf((CGRectGetMinX(visibleBounds)+PADDING*2) / CGRectGetWidth(visibleBounds));
+//        int iLastIndex  = (int)floorf((CGRectGetMaxX(visibleBounds)-PADDING*2-1) / CGRectGetWidth(visibleBounds));
+        if (iFirstIndex < 0) iFirstIndex = 0;
+        if (iFirstIndex > count - 1) iFirstIndex = count - 1;
+        if (iLastIndex < 0) iLastIndex = 0;
+        if (iLastIndex > count - 1) iLastIndex = count - 1;
+        
+        // Recycle no longer needed pages
+        for (UIPagedViewItem *page in self.visiblePages) {
+            if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
+                [self.recycledPages addObject:page];
+                /*NSLog(@"Removed page at index %i", page.index);*/
+                page.index = NSNotFound; // empty
+                [page.view removeFromSuperview];
+            }
+        }
+        [self.visiblePages minusSet:self.recycledPages];
+        
+        // Add missing pages
+        for (NSUInteger index = (NSUInteger)iFirstIndex; index <= (NSUInteger)iLastIndex; index++) {
+            if (![self isDisplayingPageForIndex:index]) {
+                UIPagedViewItem *page = [self dequeueRecycledPage];
+                if (!page) {
+                    page = [[[UIPagedViewItem alloc] init] autorelease];
+                    page.userInteractionEnabled = YES;
+                    //				page.photoBrowser = self;
+                }
+                [self configurePage:page forIndex:index];
+                [self.visiblePages addObject:page];
+                //[self.pagingScrollView addSubview:page];
+                /*NSLog(@"Added page at index %i", page.index);*/
+            }
+        }
+    }
 }
 
 - (void)configurePage:(UIPagedViewItem *)page forIndex:(NSUInteger)index {
@@ -236,8 +268,7 @@
 
 - (CGPoint) contentOffsetForPageAtIndex:    (NSUInteger)    index {
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    int count = [self.delegate itemCountFor:self];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
+       if (UIInterfaceOrientationIsLandscape(orientation)) {
         return CGPointMake((m_itemWidth_landscape+m_itemSpacing) * index, 0);
     }
     else {

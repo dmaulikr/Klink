@@ -8,6 +8,8 @@
 
 #import "UIZoomingScrollView.h"
 
+CGFloat initialZoomScale = 1;
+
 
 @implementation UIZoomingScrollView
 @synthesize viewController = m_viewController;
@@ -27,14 +29,14 @@
 		tapView = [[UIViewTap alloc] initWithFrame:frame];
 		tapView.tapDelegate = self;
 		tapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		tapView.backgroundColor = [UIColor greenColor];
+		tapView.backgroundColor = [UIColor blackColor];
 		[self addSubview:tapView];
 		
 		// Image view
 		photoImageView = [[UIImageViewTap alloc] initWithFrame:CGRectZero];
 		photoImageView.tapDelegate = self;
 		photoImageView.contentMode = UIViewContentModeCenter;
-		photoImageView.backgroundColor = [UIColor orangeColor];
+		photoImageView.backgroundColor = [UIColor clearColor];
 		[self addSubview:photoImageView];
 		
 		// Spinner
@@ -43,18 +45,7 @@
 		spinner.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin |
         UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
 		[self addSubview:spinner];
-//		
-//        captionSlider = [UIPagedViewSlider alloc];
-//        captionSlider.userInteractionEnabled = YES;
-//        captionSlider.backgroundColor = [UIColor clearColor];
-//        captionSlider.opaque = NO;
-//        
-//        
-//        CGRect captionSliderFrame = CGRectMake(0, 0, 0, 0);
-//        [captionSlider initWithFrame:captionSliderFrame];
-//        captionSlider.delegate = self;
-//        
-//        [self addSubview:captionSlider];
+
 		// Setup
 		self.backgroundColor = [UIColor blackColor];
 		self.delegate = self;
@@ -75,6 +66,8 @@
 
 // Get and display image
 - (void)displayImage : (UIImage*)image {
+
+    
     // Reset
     self.maximumZoomScale = 1;
     self.minimumZoomScale = 1;
@@ -149,10 +142,18 @@
 		maxScale = maxScale / [[UIScreen mainScreen] scale];
 	}
 	
+    // ADDED BY JORDANG Calculate initial Zoom
+    if (imageSize.height > imageSize.width) {
+        initialZoomScale = yScale;
+    } else {
+        initialZoomScale = xScale;
+    }
+    
 	// Set
 	self.maximumZoomScale = maxScale;
 	self.minimumZoomScale = minScale;
-	self.zoomScale = minScale;
+    self.zoomScale = initialZoomScale;  
+	
 	
 	// Reset position
 	photoImageView.frame = CGRectMake(0, 0, photoImageView.frame.size.width, photoImageView.frame.size.height);
@@ -241,19 +242,21 @@
 - (void)handleDoubleTap:(CGPoint)touchPoint {
 	
 	// Cancel any single tap handling
-//	[NSObject cancelPreviousPerformRequestsWithTarget:photoBrowser];
-	
-	// Zoom
-	if (self.zoomScale == self.maximumZoomScale) {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self.viewController];
+
+    
+    // Zoom
+	if (self.zoomScale == self.maximumZoomScale || (self.zoomScale == self.minimumZoomScale && self.minimumZoomScale != initialZoomScale)) {    // EDITED BY JORDANG
 		
 		// Zoom out
-		[self setZoomScale:self.minimumZoomScale animated:YES];
+		[self setZoomScale:initialZoomScale animated:YES];     // EDITED BY JORDANG
 		
 	} else {
 		
 		// Zoom in
 		[self zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 1, 1) animated:YES];
 		
+	
 	}
 	
 	// Delay controls

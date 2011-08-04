@@ -26,7 +26,7 @@
 	UIBarButtonItem     *m_previousButton;
     UIBarButtonItem     *m_nextButton;
     
-//    UIPagedViewSlider2  *m_pagedViewSlider;
+
     
 }
 
