@@ -513,7 +513,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     //Create the caption label for the current photo
     Caption* topCaption = photo.topCaption;
     
-    /*if (topCaption != nil) {
+    if (topCaption != nil) {
         CGRect captionFrame = [self getCaptionFrame];
         UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
         captionLabel.text = topCaption.caption1;
@@ -524,7 +524,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [imageView addSubview:captionLabel];
         
-    }*/
+    }
     
     [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
     UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];  
