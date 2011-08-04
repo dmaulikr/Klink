@@ -653,7 +653,11 @@
 -(void)onImageDownload:(UIImage*)image withUserInfo:(NSDictionary*)userInfo {
     //this method is called by the ImageManager whenever it is returning an image that it has downloaded from the internet
     //the userInfo dictionary passed in is the exact same oneyou passed into the DownloadImage method of the ImageManager.
-    
+    UIImageView* v = [userInfo objectForKey:an_IMAGEVIEW];
+    if (v != nil) {
+        [v setImage:image];
+        //[self.pvs_photoSlider setNeedsDisplay];
+    }
 }
 
 @end
