@@ -1,5 +1,6 @@
 # Xcode
 build/*
+.DS_Store
 *.pbxuser
 *.pbxproj
 !default.pbxuser
