@@ -85,9 +85,9 @@
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
     newQuery.includelinkedobjects = YES;
     newQuery.primary_results_sortascending = NO;
-    newQuery.primary_results_sortattribute = an_DATECREATED;
+    newQuery.primary_results_sortattribute = an_NUMBEROFVOTES;
     newQuery.linked_results_sortAscending = NO;
-    newQuery.linked_results_sortattribute = an_DATECREATED;
+    newQuery.linked_results_sortattribute = an_NUMBEROFVOTES;
     newQuery.referencingattribute=an_PHOTOID;
     newQuery.referencingobjecttype=CAPTION;
     newQuery.maxlinksreturnedperobject=1;

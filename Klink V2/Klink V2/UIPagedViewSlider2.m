@@ -166,6 +166,11 @@
     }
 }
 
+- (void)    onNewItemInsertedAt:(int)index {
+    CGSize newSize = [self contentSizeForPagingScrollView];
+    self.pagingScrollView.contentSize = newSize;
+    [self.pagingScrollView setNeedsLayout];
+}
 // Paging
 - (void)    tilePages {
     // Calculate which pages should be visible
@@ -218,9 +223,18 @@
 	page.frame = [self frameForPageAtIndex:index];
 	page.index = index;
     
-    UIView* subview = [self.delegate viewSlider:self cellForRowAtIndex:index withFrame:page.frame];
-    [self.pagingScrollView addSubview:subview];    
-    page.view = subview;
+    if (page.view == nil) {
+        UIView* subview = [self.delegate viewSlider:self cellForRowAtIndex:index withFrame:page.frame];
+        [self.pagingScrollView addSubview:subview];  
+        page.view = subview;
+    }
+    else {
+        UIView* existingView = page.view;
+        [self.delegate viewSlider:self configure:page.view forRowAtIndex:index withFrame:page.frame];
+        [self.pagingScrollView addSubview:existingView];
+        
+    }
+ 
 }
 
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index {

@@ -16,7 +16,7 @@
 #define kPictureWidth               320
 #define kPictureHeight              370
 #define kPictureHeight_landscape    245
-#define kPictureSpacing             10
+#define kPictureSpacing             0
 
 
 @implementation PhotoViewController
@@ -165,6 +165,7 @@
 	[super viewWillAppear:animated];
 	
     // Navigation bar
+    self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
@@ -207,7 +208,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return YES;
+    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 -(void)didRotate:(NSNotification*)notification {
@@ -345,9 +346,25 @@
 
 #pragma mark - UIPagedViewSlider2Delegate
 
+- (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UIPhotoCaptionScrollView *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+    ImageManager* imageManager = [ImageManager getInstance];
+//    existingCell.frc_captions = nil;
+//    existingCell.frame = frame;
+//    existingCell.photo = photo;
+    [existingCell resetWithFrame:frame withPhoto:photo];
+   // [existingCell initWithFrame:frame withPhoto:photo];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:an_IMAGEVIEW];
+    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
+    
+    [existingCell displayImage:image];
+ 
+    
+}
+
 - (UIView*)viewSlider:(UIPagedViewSlider2 *)viewSlider cellForRowAtIndex:(int)index withFrame:(CGRect)frame {
    
-        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+       Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
         
         photoAndCaptionScrollView.viewController = nil;
@@ -394,8 +411,9 @@
 
 #pragma mark - NSFetchedResultsControllerDelegate
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove) {
-        [self.pagedViewSlider performLayout];
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.pagedViewSlider onNewItemInsertedAt:newIndexPath.row];
+        [self.pagedViewSlider tilePages];
     }
 }
 @end

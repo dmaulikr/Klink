@@ -230,6 +230,7 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
                 notificationTarget = [passedContext objectForKey:an_ONFINISHNOTIFY];
                 NSDictionary* userInfo = [NSDictionary dictionaryWithObject:enumerationResponse.enumerationContext forKey:an_ENUMERATIONCONTEXT];
                 NSNotificationCenter *notifcationCenter = [NSNotificationCenter defaultCenter];
+                
                 [notifcationCenter postNotificationName:notificationTarget object:self userInfo:userInfo];
             }
             

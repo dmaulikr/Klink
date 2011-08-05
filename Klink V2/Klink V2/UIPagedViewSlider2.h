@@ -26,6 +26,14 @@
             isAtIndex:          (int)                   index 
             withCellsRemaining: (int)                   numberOfCellsToEnd;
 
+
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
+             configure:          (UIView*)               existingCell
+         forRowAtIndex:          (int)                   index
+             withFrame:          (CGRect)                frame;
+
+
+
 - (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider;
             
 
@@ -72,6 +80,7 @@
 
 // Layout
 - (void)    performLayout;
+- (void)    onNewItemInsertedAt:(int)index;
 
 // Paging
 - (void)                tilePages;

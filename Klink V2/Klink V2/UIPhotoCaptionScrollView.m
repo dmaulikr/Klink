@@ -99,6 +99,7 @@
     }
     else {
         return CGRectMake(0, self.frame.size.height - kCaptionHeight, kCaptionWidth, kCaptionHeight);
+//          return CGRectMake(0, 10, kCaptionWidth, kCaptionHeight);
     }
 }
 
@@ -108,17 +109,17 @@
     self = [super initWithFrame:frame];
     
     if (self != nil) {
+        
         self.photo = photo;
         
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
         self.captionScrollView.currentPageIndex = 0;
-        self.captionScrollView.backgroundColor = [UIColor clearColor];
+        self.captionScrollView.backgroundColor = [UIColor redColor];
         self.captionScrollView.opaque = NO;
         [self.captionScrollView initWithWidth:kCaptionWidth withHeight:kCaptionHeight withWidthLandscape:kCaptionWidth_landscape withHeightLandscape:kCaptionHeight_landscape withSpacing:kCaptionSpacing];
         [self addSubview:self.captionScrollView];
-        
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;
         if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
@@ -129,12 +130,39 @@
     return self;
 }
 
+- (id) resetWithFrame:(CGRect)frame withPhoto:(Photo*)photo {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self.captionCloudEnumerator];
+    
+    __frc_captions = nil;
+    self.photo = photo;
+    CGRect existingFrame = self.frame;
+    self.frame = frame;
+    CGRect newFrame = self.frame;
+    [self.captionScrollView removeFromSuperview];
+    self.captionScrollView = nil;
+    self.captionCloudEnumerator = nil;
+    [self initWithFrame:frame withPhoto:photo];
+}
+                                                    
+
 #pragma mark - Cloud Enumerator Delegate callback
 - (void) onEnumerateComplete {
     
 }
 
 #pragma mark - UIPageScrollViewDelegate
+
+- (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UILabel *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+    existingCell.frame = frame;
+    existingCell.backgroundColor = [UIColor clearColor];
+//    existingCell.opaque = NO;
+    existingCell.textColor = [UIColor whiteColor];
+    existingCell.text = caption.caption1;
+    existingCell.textAlignment = UITextAlignmentCenter;
+}
+
 - (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
            selectIndex:        (int)                   index; {
     
@@ -144,16 +172,11 @@
      cellForRowAtIndex:         (int)                   index 
              withFrame:          (CGRect)                frame {
     
-    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
    
-    UILabel* captionLabel = [[UILabel alloc]initWithFrame:frame];
-    captionLabel.backgroundColor = [UIColor clearColor];
-    captionLabel.opaque = NO;
-    captionLabel.textColor = [UIColor whiteColor];
-    captionLabel.text = caption.caption1;
-    captionLabel.textAlignment = UITextAlignmentCenter;
-    return captionLabel;
-    
+   
+   UILabel* captionLabel = [[UILabel alloc]initWithFrame:frame];
+   [self viewSlider:nil configure:captionLabel forRowAtIndex:index withFrame:frame];
+   return captionLabel;
 }
 
 
@@ -180,8 +203,10 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
-    if (type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove || type == NSFetchedResultsChangeDelete) {
-        [self.captionScrollView performLayout];
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.captionScrollView onNewItemInsertedAt:newIndexPath.row];
+        [self.captionScrollView tilePages];
     }
+
 }
 @end

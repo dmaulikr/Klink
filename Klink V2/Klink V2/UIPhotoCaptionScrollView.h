@@ -19,6 +19,7 @@
 }
 
 - (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo;
+- (id) resetWithFrame:(CGRect)frame withPhoto:(Photo*)photo; 
 
 @property (nonatomic,retain) Photo*                         photo;
 @property (nonatomic,retain) UIPagedViewSlider2*            captionScrollView;

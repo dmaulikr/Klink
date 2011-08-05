@@ -740,9 +740,17 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
+		C557252813EBB1850019E768 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		C561275813CB4B28005E5731 /* KlinkV2 */ = {
 			isa = PBXGroup;
 			children = (
+				C5BED8C313D52FC2007A1934 /* ThemeBrowserViewController2.m */,
 				C5D8E09C13DBBD2E00D88B00 /* Abstract */,
 				C5BED8BA13D52FC2007A1934 /* ProfileViewController.h */,
 				C5BED8BB13D52FC2007A1934 /* ProfileViewController.m */,
@@ -754,7 +762,7 @@
 				C5BED8BF13D52FC2007A1934 /* Test_Project_2.xcdatamodeld */,
 				C5BED8C113D52FC2007A1934 /* ThemeBrowserViewController2.xib */,
 				C5BED8C213D52FC2007A1934 /* ThemeBrowserViewController2.h */,
-				C5BED8C313D52FC2007A1934 /* ThemeBrowserViewController2.m */,
+				C557252813EBB1850019E768 /* New Group */,
 				C561275913CB4B7F005E5731 /* HomeScreenController.h */,
 				C561275A13CB4B7F005E5731 /* HomeScreenController.m */,
 				C561275B13CB4B7F005E5731 /* HomeScreenController.xib */,

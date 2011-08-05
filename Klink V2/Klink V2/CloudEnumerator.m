@@ -16,6 +16,7 @@
 @synthesize isDone = m_isDone;
 @synthesize delegate = m_delegate;
 
+
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
