@@ -66,7 +66,10 @@
 }
 - (void) didRotate : (NSNotification*)notification {
     [super didRotate:notification];
+    
+    
 }
+
 
 #pragma mark - Event Handlers
 - (IBAction)onButtonClicked:(id)sender {
