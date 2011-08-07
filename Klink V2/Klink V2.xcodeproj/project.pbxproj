@@ -85,8 +85,6 @@
 		C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */; };
 		C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283D13EB3C040038C8F0 /* UIViewTap.m */; };
 		C53F284213EB3D000038C8F0 /* CloudEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F284113EB3D000038C8F0 /* CloudEnumerator.m */; };
-		C557252C13EBD0090019E768 /* UIButtonBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C557252B13EBD0080019E768 /* UIButtonBar.m */; };
-		C557252E13EBD2470019E768 /* UIButtonBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = C557252D13EBD2460019E768 /* UIButtonBar.xib */; };
 		C561275213CA329A005E5731 /* SampleViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = C561275013CA329A005E5731 /* SampleViewController2.m */; };
 		C561275313CA329A005E5731 /* SampleViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275113CA329A005E5731 /* SampleViewController2.xib */; };
 		C561275713CA4EB5005E5731 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C561275613CA4EB5005E5731 /* QuartzCore.framework */; };
@@ -124,6 +122,9 @@
 		C5CCDFFC13D9FA8D00ABE747 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDFFB13D9FA8D00ABE747 /* GetAuthenticatorResponse.m */; };
 		C5CEF5AB13EA15D4007AD4DD /* UIPagedViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */; };
 		C5CEF5AF13EA1798007AD4DD /* UIZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */; };
+		C5D5044D13EDD08C0076C614 /* IDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D5044C13EDD08C0076C614 /* IDGenerator.m */; };
+		C5D5045013EE07F70076C614 /* UICaptionLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D5044F13EE07F70076C614 /* UICaptionLabel.xib */; };
+		C5D5045313EE09230076C614 /* UICaptionLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D5045213EE09220076C614 /* UICaptionLabel.m */; };
 		C5D8E09A13DA4BFE00D88B00 /* NSDateCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */; };
 		C5D8E0A413DBBFDE00D88B00 /* KlinkBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0A313DBBFDE00D88B00 /* KlinkBaseViewController.m */; };
 		C5D8E0AB13DC7D4900D88B00 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AA13DC7D4900D88B00 /* Feed.m */; };
@@ -293,9 +294,6 @@
 		C53F283D13EB3C040038C8F0 /* UIViewTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewTap.m; sourceTree = "<group>"; };
 		C53F284013EB3D000038C8F0 /* CloudEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumerator.h; sourceTree = "<group>"; };
 		C53F284113EB3D000038C8F0 /* CloudEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumerator.m; sourceTree = "<group>"; };
-		C557252A13EBD0080019E768 /* UIButtonBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIButtonBar.h; sourceTree = "<group>"; };
-		C557252B13EBD0080019E768 /* UIButtonBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIButtonBar.m; sourceTree = "<group>"; };
-		C557252D13EBD2460019E768 /* UIButtonBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIButtonBar.xib; sourceTree = "<group>"; };
 		C561274F13CA329A005E5731 /* SampleViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController2.h; sourceTree = "<group>"; };
 		C561275013CA329A005E5731 /* SampleViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController2.m; sourceTree = "<group>"; };
 		C561275113CA329A005E5731 /* SampleViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleViewController2.xib; sourceTree = "<group>"; };
@@ -362,6 +360,11 @@
 		C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewItem.m; sourceTree = "<group>"; };
 		C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIZoomingScrollView.h; sourceTree = "<group>"; };
 		C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIZoomingScrollView.m; sourceTree = "<group>"; };
+		C5D5044B13EDD08C0076C614 /* IDGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDGenerator.h; sourceTree = "<group>"; };
+		C5D5044C13EDD08C0076C614 /* IDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDGenerator.m; sourceTree = "<group>"; };
+		C5D5044F13EE07F70076C614 /* UICaptionLabel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionLabel.xib; sourceTree = "<group>"; };
+		C5D5045113EE09220076C614 /* UICaptionLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionLabel.h; sourceTree = "<group>"; };
+		C5D5045213EE09220076C614 /* UICaptionLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionLabel.m; sourceTree = "<group>"; };
 		C5D8E09813DA4BFE00D88B00 /* NSDateCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateCategory.h; sourceTree = "<group>"; };
 		C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateCategory.m; sourceTree = "<group>"; };
 		C5D8E0A213DBBFDE00D88B00 /* KlinkBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KlinkBaseViewController.h; sourceTree = "<group>"; };
@@ -593,6 +596,8 @@
 			children = (
 				C5190A7B13C1926A0077EECA /* DateTimeHelper.h */,
 				C5190A7C13C1926A0077EECA /* DateTimeHelper.m */,
+				C5D5044B13EDD08C0076C614 /* IDGenerator.h */,
+				C5D5044C13EDD08C0076C614 /* IDGenerator.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -781,6 +786,9 @@
 		C56A8D9C13C78A0100E527D6 /* KlinkV2 */ = {
 			isa = PBXGroup;
 			children = (
+				C5D5044F13EE07F70076C614 /* UICaptionLabel.xib */,
+				C5D5045113EE09220076C614 /* UICaptionLabel.h */,
+				C5D5045213EE09220076C614 /* UICaptionLabel.m */,
 				C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */,
 				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
 				C53F283C13EB3C040038C8F0 /* UIViewTap.h */,
@@ -803,9 +811,6 @@
 				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
 				C53F283713EB22CF0038C8F0 /* UIPhotoCaptionScrollView.h */,
 				C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */,
-				C557252A13EBD0080019E768 /* UIButtonBar.h */,
-				C557252B13EBD0080019E768 /* UIButtonBar.m */,
-				C557252D13EBD2460019E768 /* UIButtonBar.xib */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -998,7 +1003,7 @@
 				3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */,
 				3D3134F713E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png in Resources */,
 				C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */,
-				C557252E13EBD2470019E768 /* UIButtonBar.xib in Resources */,
+				C5D5045013EE07F70076C614 /* UICaptionLabel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,7 +1111,8 @@
 				C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */,
 				C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */,
 				C53F284213EB3D000038C8F0 /* CloudEnumerator.m in Sources */,
-				C557252C13EBD0090019E768 /* UIButtonBar.m in Sources */,
+				C5D5044D13EDD08C0076C614 /* IDGenerator.m in Sources */,
+				C5D5045313EE09230076C614 /* UICaptionLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

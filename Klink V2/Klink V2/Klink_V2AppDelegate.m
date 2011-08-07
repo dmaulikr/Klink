@@ -53,7 +53,6 @@
     self.window.rootViewController = self.navigationController;
     
     
-    
     [self loginWithDummyAuthenticationContext];
     [self.window makeKeyAndVisible];
     return YES;

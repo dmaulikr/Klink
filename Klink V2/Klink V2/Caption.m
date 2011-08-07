@@ -7,8 +7,8 @@
 //
 
 #import "Caption.h"
-
-
+#import "User.h"
+#import "IDGenerator.h"
 @implementation Caption
 @dynamic creatorid;
 @dynamic caption1;
@@ -115,5 +115,38 @@
     else {
         return NO;
     }
+}
+
+#pragma mark - Static Initializers
++ (Caption*) captionForPhoto:(NSNumber *)photoID withText:(NSString *)captionString {
+    NSString* activityName = @"Caption.captionForPhoto:";
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* appContext = appDelegate.managedObjectContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:appContext];
+    
+    Caption* caption = [[[Caption alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:nil]init];
+   
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance] getAuthenticationContext];
+    
+    if (authenticationContext != nil) {
+        User* user = [User getUserForId:authenticationContext.userid];
+        caption.caption1 = captionString;
+        caption.creatorid = authenticationContext.userid;
+        caption.creatorname = user.username;
+        caption.datecreated = [NSDate date];
+        caption.dateModified = [NSDate date];
+        caption.numberofvotes = 0;
+        caption.photoid = photoID;
+        caption.isPending = [NSNumber numberWithBool:YES];
+        caption.title = captionString;
+        caption.objectid = [IDGenerator generateNewId:CAPTION byUser:authenticationContext.userid];
+    }
+    else {
+        NSString* message = [NSString stringWithFormat:@"Cannot create a caption when no user logged in"];
+        [BLLog e:activityName withMessage:message];
+    }
+    
+    return caption;
 }
 @end

@@ -114,6 +114,8 @@
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
     [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
+      
+        
     
     AuthenticationManager *authenticationManager = [AuthenticationManager getInstance];
     
@@ -251,4 +253,6 @@
 - (void) onUserLoggedOut {
     [self hideProfileBar];
 }
+
+
 @end

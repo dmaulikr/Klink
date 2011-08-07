@@ -340,6 +340,15 @@
     //TODO: figure out whats supposed to happen here
 }
 
+
+
+- (void)goToPage:(int)index {
+    
+    CGPoint offset = CGPointMake((m_itemWidth+m_itemSpacing)*index, 0);
+    self.pagingScrollView.contentOffset = offset;
+    [self tilePages];
+}
+
 #pragma mark -
 #pragma mark Navigation
 
@@ -372,6 +381,20 @@
         [self.delegate viewSlider:self selectIndex:index];
     }
     
+    
+}
+
+#pragma mark - Layout
+-(NSArray*) getVisibleViews {
+    
+    NSMutableArray* retVal = [[NSMutableArray alloc]init];
+    NSArray* array  = [self.visiblePages allObjects];
+    
+    for (int i = 0 ; i < [self.visiblePages count];i++) {
+        UIPagedViewItem* page = [array objectAtIndex:i];
+        [retVal insertObject:page.view atIndex:i];
+    }
+    return retVal;
     
 }
 

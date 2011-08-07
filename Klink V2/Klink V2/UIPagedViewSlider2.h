@@ -78,16 +78,19 @@
             withHeightLandscape:(int)   height_landscape
             withSpacing:        (int)   spacing;
 
+
 // Layout
 - (void)    performLayout;
 - (void)    onNewItemInsertedAt:(int)index;
+
+- (NSArray*)    getVisibleViews;
 
 // Paging
 - (void)                tilePages;
 - (UIPagedViewItem *)   dequeueRecycledPage;
 - (void)                configurePage:              (UIPagedViewItem*)  page forIndex:(NSUInteger)index;
 - (void)                didStartViewingPageAtIndex: (NSUInteger)        index;
-
+- (void)                goToPage:                   (int)               index;
 // Properties
 - (void)    setInitialPageIndex:        (NSUInteger)    index;
 

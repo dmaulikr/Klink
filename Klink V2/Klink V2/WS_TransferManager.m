@@ -75,6 +75,39 @@ static  WS_TransferManager* sharedManager;
 
 }
 
+- (void) createObjectInCloud:(NSNumber *)objectid withObjectType:(NSString *)objecttype onFinishNotify:(NSString *)notificationID{
+    NSString* activityName = @"WS_TransferManager.createObjectInCloud:";
+    ServerManagedResource* object = [DataLayer getObjectByID:objectid withObjectType:objecttype];
+    NSDictionary* jsonObject = [object toJSON];
+    NSString* jsonRepresentation = [jsonObject JSONString];
+    AuthenticationContext *authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    NSArray* objectids = [NSArray arrayWithObject:objectid];
+    NSArray* objectTypes = [NSArray arrayWithObject:objecttype];
+    NSArray* objectsToCreate = [NSArray arrayWithObject:jsonRepresentation];
+    
+    if (authenticationContext != nil) {
+        NSURL *url = [UrlManager getCreateObjectsURL:objectids withObjectTypes:objectTypes withAuthenticationContext:authenticationContext];
+
+        NSError* error = nil;        
+        NSString* json = [objectsToCreate JSONStringWithOptions:JKSerializeOptionNone error:&error];
+        
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:notificationID forKey:an_ONFINISHNOTIFY];
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+        [request setPostValue:json forKey:@""];
+        request.userInfo = userInfo;
+        [request setDelegate:self];
+        [request setDidFinishSelector:@selector(onCreateSingleObjectComplete:)];
+        [request setDidFailSelector:@selector(requestWentWrong:)];
+        [self.putQueue addOperation:request];
+        
+        NSString *message = [[NSString alloc] initWithFormat:@"submitted operation at url: %@",url];
+        [BLLog v:activityName withMessage:message];
+        [message release];
+        
+    }
+}
+
 - (void) createObjectInCloud:(NSNumber*) objectid withObjectType:(NSString*)objecttype withAttachmentFor:(NSString*)attributeName atFileLocation:(NSString*)path {
     NSString* activityName = @"WS_TransferManager.createObjectInCloud:";
     
@@ -428,11 +461,11 @@ static  WS_TransferManager* sharedManager;
         NSDictionary* userInfo = request.userInfo;
         NSString* notificationID = nil;
         
-        if ([userInfo objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
+        if ([userInfo objectForKey:an_ONFINISHNOTIFY] != nil) {
             notificationID = [userInfo objectForKey:an_ONFINISHNOTIFY];
         }
         
-        if ([userInfo valueForKey:tn_ATTACHMENT] != [NSNull null]) {
+        if ([userInfo objectForKey:tn_ATTACHMENT] != nil) {
             //we have a file attachment to upload
             Attachment *attachment = [userInfo valueForKey:tn_ATTACHMENT];
             

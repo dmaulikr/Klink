@@ -28,4 +28,5 @@
 - (void) onUserLoggedOut;
 - (void) enumerateFeed;
 - (void) didRotate:(NSNotification*)notification;
+
 @end

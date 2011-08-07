@@ -47,6 +47,11 @@
 
 
 - (void) createObjectInCloud:
+            (NSNumber*)objectid
+            withObjectType:(NSString*)objecttype
+              onFinishNotify:(NSString*)notificationID;
+
+- (void) createObjectInCloud:
         (NSNumber*) objectid 
         withObjectType:(NSString*)objecttype 
         withAttachmentFor:(NSString*)attributeName 

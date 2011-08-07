@@ -11,6 +11,8 @@
 #import "TypeNames.h"
 #import "ImageManager.h"
 #import "UIPhotoCaptionScrollView.h"
+#import "NSStringGUIDCategory.h"
+#import "IDGenerator.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -19,7 +21,15 @@
 #define kPictureSpacing             0
 
 
+
+#define kCaptionTextFieldWidth 320
+#define kCaptionTextFieldHeight 100
+#define kCaptionTextFieldWidth_landscape 480
+#define kCaptionTextFieldHeight_landscape 100
+
+
 @implementation PhotoViewController
+@synthesize captionTextField        =__captionTextField;
 @synthesize currentPhoto            = m_currentPhoto;
 @synthesize currentTheme            = m_currentTheme;
 @synthesize frc_photos              = __frc_photos;
@@ -38,7 +48,36 @@
 @synthesize v_pagedViewSlider;
 @synthesize h_pagedViewSlider;
 @synthesize photoCloudEnumerator    =m_photoCloudEnumerator;
+@synthesize captionButton           =m_captionButton;
+@synthesize submitButton            =m_submitButton;
+@synthesize tv_captionBox           =__tv_captionBox;
+@synthesize v_tv_captionBox;
+@synthesize h_tv_captionBox;
+@synthesize state = m_state;
+@synthesize sv_view = __sv_view;
+@synthesize v_sv_view;
+@synthesize h_sv_view;
+@synthesize cancelCaptionButton     =m_cancelCaptionButton;
+
 #pragma mark - Property Definitions
+
+- (UIScrollView*) sv_view {
+    if (self.view == self.v_portrait) {
+        return self.v_sv_view;
+        
+    }
+    else {
+        return self.h_sv_view;
+    }
+}
+- (UITextView*) tv_captionBox {
+    if (self.view == self.v_portrait) {
+        return self.v_tv_captionBox;
+    }
+    else {
+        return self.h_tv_captionBox;
+    }
+}
 
 -(UIPagedViewSlider2*)pagedViewSlider {
 
@@ -57,7 +96,16 @@
     return appDelegate.managedObjectContext;
 }
 
-
+- (UITextField*)captionTextField {
+    if (__captionTextField != nil) {
+        return __captionTextField;
+    }
+    
+    CGRect frame = [self frameForCaptionTextField];
+    UITextField* textField = [[UITextField alloc]initWithFrame:frame];
+    
+    return textField;
+}
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
         return __frc_photos;
@@ -137,13 +185,105 @@
     [super didReceiveMemoryWarning];
 	
 }
+#pragma mark - Navigation Bar Handlers
+- (void) onCaptionButtonPressed:(id)sender {
+    [self onEnterEditMode];
+    
+    
+}
 
+- (void) onSubmitButtonPressed:(id)sender {
+    NSString* activityName = @"PhotoViewController.onSubmitButtonPressed:";
+    [self onExitEditMode];
+    
+    NSString* captionText = self.tv_captionBox.text;
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
+    Caption* caption = [Caption captionForPhoto:photo.objectid withText:captionText];
+    
+    NSManagedObjectContext *appContext = self.managedObjectContext;
+    [appContext insertObject:caption];
+    
+    NSError* error = nil;
+    [appContext save:&error];
+    
+    if (error != nil) {
+        NSString* message = [NSString stringWithFormat:@"Could not save caption to database due to %@",[error description]];
+        [BLLog e:activityName withMessage:message];
+    }
+    
+    //object is created now we need to upload it to the cloud
+    WS_TransferManager* transferManager = [WS_TransferManager getInstance];
+    NSString* notificationID = [NSString GetGUID];
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(onCreateCaptionInCloudComplete:) name:notificationID object:nil];
+    [transferManager createObjectInCloud:caption.objectid withObjectType:CAPTION onFinishNotify:notificationID];
+    
+    //now we need to scroll to the caption and display it for the user
+    NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
+    
+    for (int i = 0; i < [currentlyDisplayedViews count];i++) {
+        UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
+        if ([photoCaptionView.photo.objectid isEqualToNumber:photo.objectid]) {
+            [photoCaptionView setVisibleCaption:caption.objectid];
+        }
+    }
+    
+    
+}
 
+- (void) onCancelButtonPressed:(id)sender {
+    [self.tv_captionBox resignFirstResponder];
+    [self onExitEditMode];
+}
+
+#pragma mark - Cloud response handlers
+- (void) onCreateCaptionInCloudComplete:(NSNotification*)notification {
+    NSString* activityName = @"PhotoViewController.onCreateCaptionInCloudComplete:";
+    [BLLog v:activityName withMessage:@"Caption uploaded to the cloud successfully"];
+}
 
 #pragma mark - View lifecycle
+
+//method to move the view up/down whenever the keyboard is shown/dismissed
+-(void)setViewMovedUp:(BOOL)movedUp
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5]; // if you want to slide up the view
+    
+    CGRect rect = self.view.frame;
+    if (movedUp)
+    {
+        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard 
+        // 2. increase the size of the view so that the area behind the keyboard is covered up.
+        rect.origin.y -= 60;
+        rect.size.height += 60;;
+        self.state = kZoomedIn;
+                
+    }
+    else
+    {
+        // revert back to the normal state.
+        rect.origin.y += 60;
+        rect.size.height -= 60;
+        self.state = kNormal;
+        
+    }
+    self.view.frame = rect;
+    
+    [UIView commitAnimations];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    m_isInEditMode = NO;
+   
+    self.tv_captionBox.hidden = YES;
+    
+    self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
+    self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
+    self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
     
    
     [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
@@ -162,15 +302,27 @@
     [super viewDidLoad];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
     // Super
 	[super viewWillAppear:animated];
 	
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:self.view.window]; 
+    [notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:self.view.window];
+    
     // Navigation bar
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
+    self.navigationItem.rightBarButtonItem = self.captionButton;
 
     
     //set the initial index properly 
@@ -335,6 +487,17 @@
 }
 
 
+- (CGRect) frameForCaptionTextField {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, self.view.frame.size.height-kCaptionTextFieldHeight_landscape , kCaptionTextFieldWidth_landscape, kCaptionTextFieldHeight_landscape);
+    }
+    else {
+        return CGRectMake(0, self.view.frame.size.height-kCaptionTextFieldHeight , kCaptionTextFieldWidth, kCaptionTextFieldHeight);
+    }
+}
+
+
 - (CGRect)frameForPhoto:(int)index sliderIsHorizontal:(BOOL)isHorizontalOrientation {
     if (isHorizontalOrientation == NO) {
         
@@ -351,11 +514,9 @@
 - (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UIPhotoCaptionScrollView *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
     Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
     ImageManager* imageManager = [ImageManager getInstance];
-//    existingCell.frc_captions = nil;
-//    existingCell.frame = frame;
-//    existingCell.photo = photo;
+
     [existingCell resetWithFrame:frame withPhoto:photo];
-   // [existingCell initWithFrame:frame withPhoto:photo];
+
     NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:an_IMAGEVIEW];
     UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
     
@@ -383,12 +544,28 @@
 
 }
 
+- (void) adjustNavigationButtons {
+    if (m_isInEditMode) {
+        self.navigationItem.rightBarButtonItem = self.submitButton;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = self.captionButton;
+    }
+}
+
 - (void)viewSlider:(UIPagedViewSlider2*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+    if (index != m_currentIndex) {
+        m_currentIndex = index;
+        [self adjustNavigationButtons];
+    }
+    
     int numCellsLeft = [[self.frc_photos fetchedObjects]count] - index;
     
     if (numCellsLeft < threshold_LOADMOREPHOTOS) {
         [self.photoCloudEnumerator enumerateNextPage];
     }
+    
+    
 }
 
 - (void)viewSlider:(UIPagedViewSlider2*)viewSlider selectIndex:(int)index {
@@ -417,5 +594,90 @@
         [self.pagedViewSlider onNewItemInsertedAt:newIndexPath.row];
         [self.pagedViewSlider tilePages];
     }
+}
+
+#pragma mark - Keyboard Event Handler
+- (void) keyboardWillShow:(NSNotification *)notification {
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5]; // if you want to slide up the view
+    
+    NSDictionary* info = [notification userInfo];
+
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.sv_view.contentInset = contentInsets;
+    self.sv_view.scrollIndicatorInsets = contentInsets;
+    
+    CGPoint scrollPoint = CGPointMake(0.0, (self.tv_captionBox.frame.origin.y+self.tv_captionBox.frame.size.height)-kbSize.height);
+    [self.sv_view setContentOffset:scrollPoint animated:YES];
+
+
+    
+    [UIView commitAnimations];
+    
+}
+
+- (void) keyboardDidHide:(NSNotification *)notification {
+    [self onExitEditMode];
+}
+
+- (void) onExitEditMode {
+    m_isInEditMode = NO;
+   
+    self.navigationItem.leftBarButtonItem = self.navigationController.navigationItem.backBarButtonItem;
+    self.navigationItem.rightBarButtonItem = self.captionButton;
+    
+    //animate the fade out of the text view
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];
+    
+    self.tv_captionBox.alpha = 0;
+    [UIView commitAnimations];
+    
+    //animate the scrolling down of the view back to its original position
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5];     
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    self.sv_view.contentInset =  contentInsets;
+    self.sv_view.scrollIndicatorInsets = contentInsets;
+    
+    CGPoint scrollPoint = CGPointMake(0.0, 0.0);
+    [self.sv_view setContentOffset:scrollPoint animated:YES];
+
+    [UIView commitAnimations];
+     self.tv_captionBox.hidden = YES;
+    self.tv_captionBox.text = nil;
+}
+
+- (void) onEnterEditMode {
+    m_isInEditMode = YES;
+    self.navigationItem.leftBarButtonItem = self.cancelCaptionButton;
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    self.tv_captionBox.hidden = NO;
+    self.tv_captionBox.alpha = 0;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.5]; 
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.tv_captionBox cache:YES];
+    self.tv_captionBox.alpha = 1;
+    [self.sv_view bringSubviewToFront:self.tv_captionBox];
+    [UIView commitAnimations];
+}
+
+
+#pragma mark - UITextViewDelegate Methods
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if([text isEqualToString:@"\n"]) {
+        self.tv_captionBox.hidden = YES;
+        [textView resignFirstResponder];
+        [self onSubmitButtonPressed:nil];
+        return NO;
+    }
+    
+    return YES;
 }
 @end

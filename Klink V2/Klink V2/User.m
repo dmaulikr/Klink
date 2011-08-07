@@ -7,7 +7,7 @@
 //
 
 #import "User.h"
-
+#import "DataLayer.h"
 
 @implementation User
 @dynamic displayname;
@@ -110,6 +110,11 @@
         
     }
     return self;
+}
+
++ (User*) getUserForId:(NSNumber *)userid {
+    User* user = [DataLayer getObjectByType:USER withId:userid];
+    return user;
 }
 
 @end

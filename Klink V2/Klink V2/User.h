@@ -22,4 +22,6 @@
 @property (nonatomic, retain) NSNumber* numberofcaptions;
 @property (nonatomic, retain) NSNumber* rank;
 @property (nonatomic, retain) NSString* username;
+
++ (User*) getUserForId:(NSNumber*)userid;
 @end

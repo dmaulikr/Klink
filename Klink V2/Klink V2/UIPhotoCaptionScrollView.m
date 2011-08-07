@@ -199,6 +199,25 @@
     return [[self.frc_captions fetchedObjects]count];
 }
 
+- (void) setVisibleCaption:(NSNumber *)objectid {
+    NSArray* captions = [self.frc_captions fetchedObjects];
+    int index = -1;
+    
+    for (int i = 0 ; i < [captions count];i++) {
+        Caption* caption = [captions objectAtIndex:i];
+        if ([caption.objectid isEqualToNumber:objectid]) {
+            index = i;
+            break;
+        }
+    }
+    
+    if (index != -1) {
+        [self.captionScrollView goToPage:index];
+    }
+        
+    
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {

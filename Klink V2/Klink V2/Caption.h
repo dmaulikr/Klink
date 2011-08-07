@@ -22,7 +22,12 @@
 @property (nonatomic, retain) NSNumber* photoid;
 @property (nonatomic, retain) NSString* imageurl;
 @property (nonatomic, retain) NSString* thumbnailurl;
+
+
 + (NSString*)getNewCaptionTitle;
 +(NSString*)getNewCaptionNote;
 - (BOOL) isTextCaption;
+
+//Static initializers
++ (Caption*) captionForPhoto:(NSNumber*)photoID withText:(NSString*)caption;
 @end
