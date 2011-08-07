@@ -10,6 +10,7 @@
 #import "UIZoomingScrollView.h"
 #import "UIPagedViewSlider2.h"
 #import "CloudEnumerator.h"
+
 @class Photo;
 
 @interface UIPhotoCaptionScrollView : UIZoomingScrollView <UIPagedViewSlider2Delegate, CloudEnumeratorDelegate, NSFetchedResultsControllerDelegate> {

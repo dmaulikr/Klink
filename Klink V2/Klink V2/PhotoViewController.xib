@@ -12,10 +12,9 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBUITextView</string>
+			<string>IBProxyObject</string>
 			<string>IBUIView</string>
 			<string>IBUIScrollView</string>
-			<string>IBProxyObject</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -49,33 +48,28 @@
 						<string key="NSFrameSize">{320, 371}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1054364315"/>
+						<reference key="NSNextKeyView" ref="303494256"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4wOTMzNDk0Mzg2NiAwLjA3MTg1NDUxMjE0IDEAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUITextView" id="1054364315">
+					<object class="IBUIView" id="303494256">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 329}, {320, 110}}</string>
+						<string key="NSFrame">{{0, 293}, {320, 110}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="166058762"/>
-						<object class="NSColor" key="IBUIBackgroundColor" id="845359307">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MSAxIDEAA</bytes>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="529683744">
+								<int key="NSID">2</int>
+							</object>
 						</object>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Burial</string>
-						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
-							<int key="IBUIAutocapitalizationType">2</int>
-							<int key="IBUIReturnKeyType">9</int>
-							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						</object>
 					</object>
 					<object class="IBUIView" id="166058762">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -98,9 +92,7 @@
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
-					<object class="NSColorSpace" key="NSCustomColorSpace" id="529683744">
-						<int key="NSID">2</int>
-					</object>
+					<reference key="NSCustomColorSpace" ref="529683744"/>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics" id="1018882163">
@@ -166,30 +158,22 @@
 								<string key="NSFrameSize">{320, 371}</string>
 								<reference key="NSSuperview" ref="1009136194"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="825130150"/>
+								<reference key="NSNextKeyView" ref="479578123"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4wOTMzNDk0Mzg2NiAwLjA3MTg1NDUxMjE0IDEAA</bytes>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
-							<object class="IBUITextView" id="825130150">
+							<object class="IBUIView" id="479578123">
 								<reference key="NSNextResponder" ref="1009136194"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 329}, {320, 131}}</string>
+								<string key="NSFrame">{{0, 300}, {320, 70}}</string>
 								<reference key="NSSuperview" ref="1009136194"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="531034387"/>
-								<reference key="IBUIBackgroundColor" ref="845359307"/>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<bool key="IBUIMultipleTouchEnabled">YES</bool>
+								<reference key="IBUIBackgroundColor" ref="562556322"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Burial</string>
-								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
-									<int key="IBUIAutocapitalizationType">2</int>
-									<int key="IBUIReturnKeyType">9</int>
-									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								</object>
 							</object>
 							<object class="IBUIView" id="531034387">
 								<reference key="NSNextResponder" ref="1009136194"/>
@@ -306,14 +290,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">v_tv_captionBox</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="825130150"/>
-					</object>
-					<int key="connectionID">45</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">v_pagedViewSlider</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="557433665"/>
@@ -330,11 +306,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">v_tv_captionBox</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="479578123"/>
+					</object>
+					<int key="connectionID">51</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="825130150"/>
+						<reference key="source" ref="479578123"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
-					<int key="connectionID">48</int>
+					<int key="connectionID">52</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -353,7 +337,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="166058762"/>
 							<reference ref="985321683"/>
-							<reference ref="1054364315"/>
+							<reference ref="303494256"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">portrait</string>
@@ -411,11 +395,6 @@
 						<string key="objectName">Profile View</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">33</int>
-						<reference key="object" ref="1054364315"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">36</int>
 						<reference key="object" ref="67613219"/>
 						<object class="NSMutableArray" key="children">
@@ -431,8 +410,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="557433665"/>
-							<reference ref="825130150"/>
 							<reference ref="531034387"/>
+							<reference ref="479578123"/>
 						</object>
 						<reference key="parent" ref="67613219"/>
 						<string key="objectName">ScrollView</string>
@@ -447,15 +426,22 @@
 						<string key="objectName">UIPagedViewSlider</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">40</int>
-						<reference key="object" ref="825130150"/>
-						<reference key="parent" ref="1009136194"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">41</int>
 						<reference key="object" ref="531034387"/>
 						<reference key="parent" ref="1009136194"/>
 						<string key="objectName">Profile View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">49</int>
+						<reference key="object" ref="303494256"/>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Caption Text View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">50</int>
+						<reference key="object" ref="479578123"/>
+						<reference key="parent" ref="1009136194"/>
+						<string key="objectName">Caption Text View</string>
 					</object>
 				</object>
 			</object>
@@ -467,17 +453,19 @@
 					<string>-2.CustomClassName</string>
 					<string>1.IBEditorWindowLastContentRect</string>
 					<string>1.IBPluginDependency</string>
-					<string>33.IBPluginDependency</string>
 					<string>35.IBPluginDependency</string>
 					<string>36.IBPluginDependency</string>
 					<string>37.CustomClassName</string>
 					<string>37.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
-					<string>40.IBPluginDependency</string>
 					<string>41.CustomClassName</string>
 					<string>41.IBPluginDependency</string>
+					<string>49.CustomClassName</string>
+					<string>49.IBPluginDependency</string>
 					<string>5.CustomClassName</string>
 					<string>5.IBPluginDependency</string>
+					<string>50.CustomClassName</string>
+					<string>50.IBPluginDependency</string>
 					<string>6.CustomClassName</string>
 					<string>6.IBPluginDependency</string>
 					<string>7.CustomClassName</string>
@@ -493,14 +481,16 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIPagedViewSlider2</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>UIProfileBar</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>UICaptionTextView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIProfileBar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>UIProfileBar</string>
+					<string>UICaptionTextView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIPagedViewSlider2</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -522,7 +512,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">48</int>
+			<int key="maxID">52</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -605,12 +595,12 @@
 							<string>UIPagedViewSlider2</string>
 							<string>UIPagedViewSlider2</string>
 							<string>UIScrollView</string>
-							<string>UITextView</string>
+							<string>UICaptionTextView</string>
 							<string>UIPagedViewSlider2</string>
 							<string>UIPagedViewSlider2</string>
 							<string>UIPagedViewSlider2</string>
 							<string>UIScrollView</string>
-							<string>UITextView</string>
+							<string>UICaptionTextView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -648,7 +638,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">h_tv_captionBox</string>
-								<string key="candidateClassName">UITextView</string>
+								<string key="candidateClassName">UICaptionTextView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">v_pagedViewSlider</string>
@@ -668,13 +658,32 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">v_tv_captionBox</string>
-								<string key="candidateClassName">UITextView</string>
+								<string key="candidateClassName">UICaptionTextView</string>
 							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/PhotoViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICaptionTextView</string>
+					<string key="superclassName">UIView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">delegate</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">delegate</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICaptionTextView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

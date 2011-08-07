@@ -10,11 +10,12 @@
 #import "Photo.h"
 #import "AttributeNames.h"
 #import "TypeNames.h"
+#import "UICaptionLabel.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
-#define kCaptionHeight_landscape    50
-#define kCaptionHeight              50
+#define kCaptionHeight_landscape    70
+#define kCaptionHeight              70
 #define kCaptionSpacing             0
 
 
@@ -153,14 +154,12 @@
 
 #pragma mark - UIPageScrollViewDelegate
 
-- (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UILabel *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
+- (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UICaptionLabel *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
     Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+    [existingCell setCaption:caption];
     existingCell.frame = frame;
-    existingCell.backgroundColor = [UIColor clearColor];
-//    existingCell.opaque = NO;
-    existingCell.textColor = [UIColor whiteColor];
-    existingCell.text = caption.caption1;
-    existingCell.textAlignment = UITextAlignmentCenter;
+
+
 }
 
 - (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
@@ -174,7 +173,9 @@
     
    
    
-   UILabel* captionLabel = [[UILabel alloc]initWithFrame:frame];
+//   UICaptionLabel* captionLabel = [[UICaptionLabel alloc]initWithFrame:frame];
+  UICaptionLabel* captionLabel = [[UICaptionLabel alloc]initWithFrame:frame];
+
    [self viewSlider:nil configure:captionLabel forRowAtIndex:index withFrame:frame];
    return captionLabel;
 }

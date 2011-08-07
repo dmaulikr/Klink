@@ -216,13 +216,15 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 #pragma mark - View lifecycle
 
 -(void) viewWillAppear:(BOOL)animated {
-//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-//    
-//    self.navigationController.navigationBar.translucent = NO;
+    [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidLoad
@@ -670,39 +672,16 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
     //called when a item is selected in the slider
     
-    // Jordan's OLD CODE
-    /*if (self.fullScreenPhotoController == nil) {
-        FullScreenPhotoController *fullScreenController = [[FullScreenPhotoController alloc] initWithNibName:@"FullScreenPhotoController" bundle:nil];
-        self.fullScreenPhotoController = fullScreenController;
-        [fullScreenController release];
+    if (viewSlider == self.pvs_photoSlider &&
+        index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
+        PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
+        Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        photoViewController.currentPhoto = selectedPhoto;
+        photoViewController.currentTheme = self.theme;
+        [self.navigationController pushViewController:photoViewController animated:YES];
+        [photoViewController release];
     }
-    
-    Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-    Theme* selectedTheme = self.theme;
-        
-    self.fullScreenPhotoController.photo = selectedPhoto;
-    self.fullScreenPhotoController.theme = selectedTheme;
-    
-    [self.navigationController pushViewController:fullScreenPhotoController animated:YES]; */
-//    
-    PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
-    Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-    photoViewController.currentPhoto = selectedPhoto;
-    photoViewController.currentTheme = self.theme;
-    [self.navigationController pushViewController:photoViewController animated:YES];
-    [photoViewController release];
-    
-//    NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-//    Theme* selectedTheme = self.theme;
-    
-    
-    
-    // Create browser
-//	MWPhotoBrowser *fullscreenPhotoBrowser = [[MWPhotoBrowser alloc] initWithPhotos:picturesInTheme];
-//	[browser setInitialPageIndex:0]; // Can be changed if desired
-//	[self.navigationController pushViewController:fullscreenPhotoBrowser animated:YES];
-//	[fullscreenPhotoBrowser release];
-//	[picturesInTheme release];
+
 
 }
 

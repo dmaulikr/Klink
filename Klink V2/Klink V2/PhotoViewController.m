@@ -70,7 +70,7 @@
         return self.h_sv_view;
     }
 }
-- (UITextView*) tv_captionBox {
+- (UICaptionTextView*) tv_captionBox {
     if (self.view == self.v_portrait) {
         return self.v_tv_captionBox;
     }
@@ -159,6 +159,16 @@
 }
 
 
+- (void) addCaptionButtonToNavigationItem {
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    if (authenticationContext != nil) {
+        self.navigationItem.rightBarButtonItem = self.captionButton;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
 #pragma mark - initializers
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -173,6 +183,8 @@
 - (void)dealloc
 {
     [super dealloc];
+  
+    
 }
 
 #pragma mark Memory
@@ -194,9 +206,9 @@
 
 - (void) onSubmitButtonPressed:(id)sender {
     NSString* activityName = @"PhotoViewController.onSubmitButtonPressed:";
-    [self onExitEditMode];
     
-    NSString* captionText = self.tv_captionBox.text;
+    
+    NSString* captionText = [self.tv_captionBox getText];
     Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
     Caption* caption = [Caption captionForPhoto:photo.objectid withText:captionText];
     
@@ -210,6 +222,8 @@
         NSString* message = [NSString stringWithFormat:@"Could not save caption to database due to %@",[error description]];
         [BLLog e:activityName withMessage:message];
     }
+    
+    [self onExitEditMode];
     
     //object is created now we need to upload it to the cloud
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
@@ -232,7 +246,7 @@
 }
 
 - (void) onCancelButtonPressed:(id)sender {
-    [self.tv_captionBox resignFirstResponder];
+    [self.tv_captionBox cancel];
     [self onExitEditMode];
 }
 
@@ -273,7 +287,9 @@
     [UIView commitAnimations];
 }
 
-
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -309,6 +325,7 @@
 
 }
 
+
 - (void) viewWillAppear:(BOOL)animated {
     // Super
 	[super viewWillAppear:animated];
@@ -322,7 +339,8 @@
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
-    self.navigationItem.rightBarButtonItem = self.captionButton;
+    [self addCaptionButtonToNavigationItem];
+    
 
     
     //set the initial index properly 
@@ -623,11 +641,14 @@
     [self onExitEditMode];
 }
 
+#pragma mark - Edit Mode Transitions
+
 - (void) onExitEditMode {
     m_isInEditMode = NO;
    
     self.navigationItem.leftBarButtonItem = self.navigationController.navigationItem.backBarButtonItem;
-    self.navigationItem.rightBarButtonItem = self.captionButton;
+    [self addCaptionButtonToNavigationItem];
+    
     
     //animate the fade out of the text view
     [UIView beginAnimations:nil context:NULL];
@@ -646,10 +667,10 @@
     
     CGPoint scrollPoint = CGPointMake(0.0, 0.0);
     [self.sv_view setContentOffset:scrollPoint animated:YES];
-
+    
     [UIView commitAnimations];
      self.tv_captionBox.hidden = YES;
-    self.tv_captionBox.text = nil;
+    [self.tv_captionBox setText:nil];
 }
 
 - (void) onEnterEditMode {
@@ -663,21 +684,28 @@
     [UIView setAnimationDuration:0.5]; 
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.tv_captionBox cache:YES];
     self.tv_captionBox.alpha = 1;
+    
     [self.sv_view bringSubviewToFront:self.tv_captionBox];
     [UIView commitAnimations];
 }
 
 
-#pragma mark - UITextViewDelegate Methods
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+#pragma mark - UICaptionTextViewDelegate Methods
+- (void)captionTextView:(UICaptionTextView *)captionTextView finishedWithString:(NSString *)caption {
+    self.tv_captionBox.hidden = YES;
+    [captionTextView resignFirstResponder];
+    [self onSubmitButtonPressed:nil];
     
-    if([text isEqualToString:@"\n"]) {
-        self.tv_captionBox.hidden = YES;
-        [textView resignFirstResponder];
-        [self onSubmitButtonPressed:nil];
-        return NO;
-    }
-    
-    return YES;
+}
+
+
+- (void) onUserLoggedIn {
+    [super onUserLoggedIn];
+    [self addCaptionButtonToNavigationItem];
+}
+
+- (void) onUserLoggedOut {
+    [super onUserLoggedOut];
+    [self addCaptionButtonToNavigationItem];
 }
 @end

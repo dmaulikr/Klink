@@ -40,3 +40,5 @@ int const opcode_QUERYEQUALITY=1;
 
 NSString* const facebook_APPID=@"168077769927457";
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
+
+int const maxlength_CAPTION = 30;

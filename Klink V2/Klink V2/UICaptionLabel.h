@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Caption.h"
 
 @interface UICaptionLabel : UIView {
-    
+    Caption* m_caption;
 }
 
 @property (nonatomic,retain) IBOutlet UITextView* tv_caption;
 @property (nonatomic,retain) IBOutlet UITextView* tv_metadata;
 
+- (void) setCaption:(Caption*)caption;
 @end

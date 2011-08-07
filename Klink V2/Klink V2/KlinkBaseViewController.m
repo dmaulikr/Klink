@@ -80,6 +80,8 @@
 
 - (void)dealloc
 {
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
     [self.profileBar release];
     [super dealloc];
 }
@@ -102,9 +104,24 @@
 }
 */
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+}
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     self.navigationController.navigationBar.translucent = NO;
+    
+    AuthenticationManager *authenticationManager = [AuthenticationManager getInstance];
+    
+    if ([authenticationManager isUserLoggedIn]==YES) {
+        [self onUserLoggedIn];
+    }
+    else {
+        [self onUserLoggedOut];
+    }
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -117,15 +134,7 @@
       
         
     
-    AuthenticationManager *authenticationManager = [AuthenticationManager getInstance];
-    
-    if ([authenticationManager isUserLoggedIn]==YES) {
-        [self onUserLoggedIn];
-    }
-    else {
-        [self onUserLoggedOut];
-    }
-    
+
     
     
     

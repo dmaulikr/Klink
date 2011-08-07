@@ -177,6 +177,7 @@
 	// Ignore padding as paging bounces encroach on that
 	// and lead to false page loads
     int count = [self.delegate itemCountFor:self];
+    self.pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
     if (count > 0) {
         CGRect visibleBounds = self.pagingScrollView.bounds;
         

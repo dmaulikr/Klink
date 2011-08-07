@@ -13,14 +13,14 @@
 #import "ImageDownloadProtocol.h"
 #import "UIPagedViewSlider2.h"
 #import "CloudEnumerator.h"
-
+#import "UICaptionTextView.h"
 typedef enum {
     kNormal,
     kZoomedIn
 } ViewState;
 
 
-@interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate,UITextViewDelegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback, CloudEnumeratorDelegate> {
+@interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate,UICaptionTextViewDelegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback, CloudEnumeratorDelegate> {
     Theme* m_currentTheme;
     Photo* m_currentPhoto;
     int m_currentIndex;
@@ -52,14 +52,16 @@ typedef enum {
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic,retain) UIPagedViewSlider2* pvs_photoSlider;
 @property (nonatomic,retain) UIPagedViewSlider2* pvs_captionSlider;
+
+
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2* v_pvs_photoSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2* h_pvs_photoSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2* v_pvs_captionSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2* h_pvs_captionSlider;
 
-@property (nonatomic,retain) IBOutlet UITextView*   h_tv_captionBox;
-@property (nonatomic,retain) IBOutlet UITextView*   v_tv_captionBox;
-@property (nonatomic,retain) UITextView*            tv_captionBox;
+@property (nonatomic,retain) IBOutlet UICaptionTextView*   h_tv_captionBox;
+@property (nonatomic,retain) IBOutlet UICaptionTextView*   v_tv_captionBox;
+@property (nonatomic,retain) UICaptionTextView*            tv_captionBox;
 
 @property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
 @property (nonatomic,retain) UIBarButtonItem*               previousButton;

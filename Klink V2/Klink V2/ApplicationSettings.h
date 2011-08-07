@@ -40,3 +40,5 @@ extern int const pageSize_PHOTOSINTHEME;
 
 extern NSString* const facebook_APPID;
 extern NSString* const sn_KEYCHAINSERVICENAME;
+
+extern int const maxlength_CAPTION;

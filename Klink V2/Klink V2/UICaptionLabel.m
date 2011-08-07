@@ -8,23 +8,68 @@
 
 #import "UICaptionLabel.h"
 
+#define kCaptionLabelWidth_landscape 480
+#define kCaptionLabelWidth 320
+#define kCaptionHeight 41
+
+#define kMetadataLabelWidth_landscape 480
+#define kMetadataLabelWidth 320
+#define kMetadataHeight 41
+
 
 @implementation UICaptionLabel
 @synthesize tv_caption;
 @synthesize tv_metadata;
 
+#pragma mark - Frames
+- (CGRect) frameForCaptionLabel {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, 0, kCaptionLabelWidth_landscape, kCaptionHeight);
+    }
+    else {
+        return CGRectMake(0, 0, kCaptionLabelWidth, kCaptionHeight);
+
+    }
+}
+
+- (CGRect) frameForMetadataLabel:(CGRect)frame {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, frame.size.height-kMetadataHeight, kMetadataLabelWidth_landscape, kMetadataHeight);
+    }
+    else {
+        return CGRectMake(0, frame.size.height-kMetadataHeight, kMetadataLabelWidth, kMetadataHeight);
+        
+    }
+}
+
+#pragma mark - Initializers
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UICaptionLabel" owner:self options:nil];
+        self.frame = frame;
         
-        UIView* profileBar = [bundle objectAtIndex:0];
-        profileBar.frame = frame;
-        [self addSubview:profileBar];
+        self.tv_caption = [[UILabel alloc]initWithFrame:[self frameForCaptionLabel]];
+        self.tv_metadata = [[UILabel alloc]initWithFrame:[self frameForMetadataLabel:frame]];
         
+        self.tv_caption.backgroundColor = [UIColor clearColor];
+        self.tv_caption.opaque = NO;
+        self.tv_caption.textColor = [UIColor whiteColor];
+        self.tv_caption.textAlignment = UITextAlignmentCenter;
+        
+        self.tv_metadata.backgroundColor = [UIColor clearColor];
+        self.tv_metadata.opaque = NO;
+        self.tv_metadata.textColor = [UIColor whiteColor];
+        self.tv_metadata.textAlignment = UITextAlignmentCenter;
+        
+        
+        [self addSubview:tv_caption];
+        [self addSubview:tv_metadata];
+       
     }
     return self;
 }
@@ -53,7 +98,25 @@
 
 - (void)dealloc
 {
+    [m_caption release];
+    [self.tv_caption release];
+    [self.tv_metadata release];
     [super dealloc];
 }
 
+//This is where the "by ChronicPoker 2 minutes ago" stirng is created
+- (NSString*) getMetadataString {
+    return [NSString stringWithFormat:@"By %@ on %@",m_caption.creatorname,[DateTimeHelper formatShortDate:[NSDate date]]];
+}
+
+- (void) setCaption:(Caption *)caption {
+    if (m_caption != nil) {
+        [m_caption release];
+    }
+    
+    m_caption = [caption retain];
+    self.tv_caption.text = [NSString stringWithFormat:@"\"%@\"",m_caption.caption1];
+    self.tv_metadata.text =[self getMetadataString];
+    
+}
 @end

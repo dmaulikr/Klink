@@ -227,6 +227,8 @@
 
 - (void)dealloc
 {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
     [self.frc_feed_photovotes release];
     [self.frc_feed_captionvotes release];
     [self.frc_loggedInUser release];
