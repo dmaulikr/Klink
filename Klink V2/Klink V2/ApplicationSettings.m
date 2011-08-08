@@ -42,3 +42,6 @@ NSString* const facebook_APPID=@"168077769927457";
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
 int const maxlength_CAPTION = 30;
+extern NSString* const font_CAPTION = @"Marker Felt";
+extern int const fontsize_CAPTION = 16;
+

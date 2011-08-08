@@ -54,6 +54,10 @@
 #define kCaptionTextViewHeight_landscape 10
 #define kCaptionTextViewWidth_landscape 120
 
+
+#define kCaptionHeight 25
+#define kCaptionPadding 5
+
 @interface ThemeBrowserViewController2 ()
 static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void)getMediaFromSource:(id)sender;
@@ -412,16 +416,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (controller == self.frc_photosInCurrentTheme) {
         
         if (type == NSFetchedResultsChangeInsert) {
-
-          
-            
-        }
-        else if (type == NSFetchedResultsChangeMove) {
-
+            [self.pvs_photoSlider2 onNewItemInsertedAt:[newIndexPath row]];
         }
     }
     else if (controller == self.frc_themes) {
         //its a new object in the theme controller
+        [self.pvs_themeSlider2 onNewItemInsertedAt:[newIndexPath row]];
         [self frc_themes_didChangeObject:anObject
                              atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
     }
@@ -476,17 +476,21 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-- (CGRect) getCaptionFrame {
-    int xCoordinate = 10;
-    int yCoordinate = 0;
-    if (self.view == v_landscape) {
-        yCoordinate = kPictureHeight_landscape - kCaptionTextViewHeight;
-        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth_landscape, kCaptionTextViewHeight); 
-    }
-    else {
-        yCoordinate = kPictureHeight - kCaptionTextViewHeight_landscape;
-        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth, kCaptionTextViewHeight); 
-    }
+
+
+- (CGRect) getCaptionFrame : (CGRect)frame {
+//    int xCoordinate = 10;
+//    int yCoordinate = 0;
+//    if (self.view == v_landscape) {
+//        yCoordinate = kPictureHeight_landscape - kCaptionTextViewHeight;
+//        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth_landscape, kCaptionTextViewHeight); 
+//    }
+//    else {
+//        yCoordinate = kPictureHeight - kCaptionTextViewHeight_landscape;
+//        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth, kCaptionTextViewHeight); 
+//    }
+    
+    return CGRectMake(0, 0, frame.size.width - (2*kCaptionPadding), kCaptionHeight);
 }
 
 - (CGRect) getThemeTitleFrame {
@@ -1050,9 +1054,35 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
        
         Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        Caption* caption = [photo topCaption];
+        
         imageView.frame = frame;
         NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
         [userInfo setObject:photo.objectid forKey:an_OBJECTID];
+        
+        
+        CGRect captionFrame = [self getCaptionFrame:frame];
+        UILabel* captionLabel = nil;
+        if ([imageView.subviews count] == 1) {
+            captionLabel = [imageView.subviews objectAtIndex:0];
+            captionLabel.frame = captionFrame;
+        }
+        else {
+            captionLabel = [[UILabel alloc]initWithFrame:captionFrame];
+            captionLabel.backgroundColor = [UIColor clearColor];
+            captionLabel.opaque = NO;
+            captionLabel.textColor = [UIColor whiteColor];
+            captionLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+            [imageView addSubview:captionLabel];
+        }
+        
+        if (caption != nil) {
+            captionLabel.text= caption.caption1;
+        }
+        else {
+            captionLabel.text = nil;
+        }
+        
         
         UIImage* image = [[ImageManager getInstance]downloadImage:photo.thumbnailurl withUserInfo:userInfo atCallback:self];
         

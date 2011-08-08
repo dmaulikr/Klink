@@ -166,10 +166,21 @@
     }
 }
 
+- (BOOL) isVisible:(int)index {
+    int leftIndex = [self getIndex];
+    int rightIndex = [self getLastVisibleIndex];
+    
+    return (index >= leftIndex && index <= rightIndex);
+}
+
 - (void)    onNewItemInsertedAt:(int)index {
     CGSize newSize = [self contentSizeForPagingScrollView];
     self.pagingScrollView.contentSize = newSize;
-    [self.pagingScrollView setNeedsLayout];
+    
+    if ([self isVisible:index]) {
+        [self tilePages];
+    }
+    
 }
 // Paging
 - (void)    tilePages {

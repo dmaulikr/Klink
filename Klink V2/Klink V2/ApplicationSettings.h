@@ -42,3 +42,5 @@ extern NSString* const facebook_APPID;
 extern NSString* const sn_KEYCHAINSERVICENAME;
 
 extern int const maxlength_CAPTION;
+extern NSString* const font_CAPTION;
+extern int const fontsize_CAPTION;
