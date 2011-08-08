@@ -111,7 +111,10 @@
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = nil;
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     AuthenticationManager *authenticationManager = [AuthenticationManager getInstance];
     

@@ -44,7 +44,11 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    [super viewWillAppear:animated];
+    
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = nil;
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 - (void)viewDidLoad
