@@ -94,6 +94,7 @@
 // Properties
 - (void)    setInitialPageIndex:        (NSUInteger)    index;
 
+- (void) reset;
 
 //Frames
 - (CGSize)  contentSizeForPagingScrollView;

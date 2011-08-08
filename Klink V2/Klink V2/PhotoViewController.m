@@ -35,12 +35,6 @@
 @synthesize frc_photos              = __frc_photos;
 @synthesize frc_captions            = __frc_captions;
 @synthesize managedObjectContext    = __managedObjectContext;
-@synthesize pvs_photoSlider         = __pvs_photoSlider;
-@synthesize pvs_captionSlider       = __pvs_captionSlider;
-@synthesize v_pvs_captionSlider;
-@synthesize v_pvs_photoSlider;
-@synthesize h_pvs_photoSlider;
-@synthesize h_pvs_captionSlider;
 @synthesize previousButton          = m_previousButton;
 @synthesize nextButton              = m_nextButton;
 @synthesize controlVisibilityTimer  = m_controlVisibilityTimer;

@@ -21,68 +21,63 @@ typedef enum {
 
 
 @interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate,UICaptionTextViewDelegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback, CloudEnumeratorDelegate> {
-    Theme* m_currentTheme;
-    Photo* m_currentPhoto;
-    int m_currentIndex;
+    Theme*                      m_currentTheme;
+    Photo*                      m_currentPhoto;
+    int                         m_currentIndex;
     
-    BOOL m_wantsFullScreenLayout;
-    BOOL m_hidesBottomBarWhenPushed;
+    BOOL                        m_wantsFullScreenLayout;
+    BOOL                        m_hidesBottomBarWhenPushed;
     
     // Navigation & controls
 	
-	NSTimer             *m_controlVisibilityTimer;
+	NSTimer*                    m_controlVisibilityTimer;
 
     
-    CloudEnumerator*    m_photoCloudEnumerator;
+    CloudEnumerator*            m_photoCloudEnumerator;
     
-    UIBarButtonItem*    m_captionButton;
-    UIBarButtonItem*    m_submitButton;
-    UIBarButtonItem*    m_cancelCaptionButton;
-    BOOL                m_isInEditMode;
+    UIBarButtonItem*            m_captionButton;
+    UIBarButtonItem*            m_submitButton;
+    UIBarButtonItem*            m_cancelCaptionButton;
+    BOOL                        m_isInEditMode;
     
-    ViewState           m_state;
+    ViewState                   m_state;
     
 }
 
-@property (nonatomic,retain) Theme* currentTheme;
-@property (nonatomic,retain) Photo* currentPhoto;
-@property (nonatomic,retain) CloudEnumerator* photoCloudEnumerator;
-@property (nonatomic,retain) NSFetchedResultsController* frc_captions;
-@property (nonatomic,retain) NSFetchedResultsController* frc_photos;
-@property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic,retain) UIPagedViewSlider2* pvs_photoSlider;
-@property (nonatomic,retain) UIPagedViewSlider2* pvs_captionSlider;
+@property (nonatomic,retain) Theme*                         currentTheme;
+@property (nonatomic,retain) Photo*                         currentPhoto;
+@property (nonatomic,retain) CloudEnumerator*               photoCloudEnumerator;
+@property (nonatomic,retain) NSFetchedResultsController*    frc_captions;
+@property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
+@property (nonatomic,retain) NSManagedObjectContext*        managedObjectContext;
 
-
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2* v_pvs_photoSlider;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2* h_pvs_photoSlider;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2* v_pvs_captionSlider;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2* h_pvs_captionSlider;
-
-@property (nonatomic,retain) IBOutlet UICaptionTextView*   h_tv_captionBox;
-@property (nonatomic,retain) IBOutlet UICaptionTextView*   v_tv_captionBox;
-@property (nonatomic,retain) UICaptionTextView*            tv_captionBox;
+@property (nonatomic,retain) IBOutlet UICaptionTextView*    h_tv_captionBox;
+@property (nonatomic,retain) IBOutlet UICaptionTextView*    v_tv_captionBox;
+@property (nonatomic,retain) UICaptionTextView*             tv_captionBox;
 
 @property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
 @property (nonatomic,retain) UIBarButtonItem*               previousButton;
 @property (nonatomic,retain) UIBarButtonItem*               nextButton;
 
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*    h_pagedViewSlider;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*    v_pagedViewSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   h_pagedViewSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   v_pagedViewSlider;
+@property (nonatomic,retain) UIPagedViewSlider2*            pagedViewSlider;
+
 
 @property (nonatomic,retain) IBOutlet UIScrollView*         h_sv_view;
 @property (nonatomic,retain) IBOutlet UIScrollView*         v_sv_view;
 @property (nonatomic,retain) UIScrollView*                  sv_view;
 
-@property (nonatomic,retain) UIPagedViewSlider2*            pagedViewSlider;
+
 @property (nonatomic,retain) UIBarButtonItem*               captionButton;
 @property (nonatomic,retain) UIBarButtonItem*               submitButton;
 @property (nonatomic,retain) UIBarButtonItem*               cancelCaptionButton;
 @property (nonatomic,retain) UITextField*                   captionTextField;
+@property ViewState                                         state;
 
-@property ViewState state;
+
 - (CGRect)  frameForToolbarAtOrientation:   (UIInterfaceOrientation)    orientation;
-- (CGRect) frameForCaptionTextField;
+- (CGRect)  frameForCaptionTextField;
 // Navigation
 - (void)    updateNavigation;
 - (void)    hideControlsAfterDelay;

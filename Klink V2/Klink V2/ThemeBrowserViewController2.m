@@ -60,12 +60,11 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @end
 
 @implementation ThemeBrowserViewController2
-@synthesize pvs_photoSlider = __pvs_photoSlider;
-@synthesize pvs_themeSlider = __pvs_themeSlider;
+
 @synthesize theme;
 @synthesize managedObjectContext;
-@synthesize frc_photosInCurrentTheme = __frc_photosInCurrentTheme;
-@synthesize frc_themes = __frc_themes;
+@synthesize frc_photosInCurrentTheme    = __frc_photosInCurrentTheme;
+@synthesize frc_themes                  = __frc_themes;
 @synthesize lbl_theme;
 @synthesize ec_activeThemePhotoContext;
 @synthesize m_isThereAThemePhotoEnumerationAlreadyExecuting;
@@ -74,11 +73,38 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @synthesize m_outstandingPhotoEnumNotificationID;
 @synthesize v_portrait;
 @synthesize v_landscape;
-@synthesize v_pvs_photoSlider;
-@synthesize v_pvs_themeSlider;
-@synthesize h_pvs_photoSlider;
-@synthesize h_pvs_themeSlider;
-@synthesize fullScreenPhotoController;
+@synthesize v_pvs_photoSlider2;
+@synthesize h_pvs_photoSlider2;
+@synthesize h_pvs_themeSlider2;
+@synthesize v_pvs_themeSlider2;
+@synthesize pvs_photoSlider2            =__pvs_photoSlider2;
+@synthesize pvs_themeSlider2            =__pvs_themeSlider2;
+
+#pragma mark - Properties
+- (UIPagedViewSlider2*) pvs_photoSlider2 {
+    if (self.view == self.v_portrait) {
+        return self.v_pvs_photoSlider2;
+    }
+    else {
+        return self.h_pvs_photoSlider2;
+    }
+}
+
+- (UIPagedViewSlider2*) pvs_themeSlider2 {
+    if (self.view == self.v_portrait) {
+        return self.v_pvs_themeSlider2;
+    }
+    else {
+        return self.h_pvs_themeSlider2;
+    }
+}
+
+- (void) registerNotification:(NSString*) notificationID  targetSelector:(SEL)targetSelector targetObject:(id) targetObject {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:targetObject selector:targetSelector name:notificationID object:nil];
+    
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -92,47 +118,17 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void)dealloc
 {
     [super dealloc];
-    [self.v_pvs_photoSlider release];
-    [self.h_pvs_photoSlider release];
-    [self.v_pvs_themeSlider release];
-    [self.h_pvs_themeSlider release];
+    [self.h_pvs_themeSlider2 release];
+    [self.v_pvs_themeSlider2 release];
+    [self.h_pvs_photoSlider2 release];
+    [self.v_pvs_photoSlider2 release];
 }
 
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 
-- (void) registerNotification:(NSString*) notificationID  targetSelector:(SEL)targetSelector targetObject:(id) targetObject {
-    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:targetObject selector:targetSelector name:notificationID object:nil];
-    
-}
-
-
-- (UIPagedViewSlider*) pvs_photoSlider {
-    if (self.view == v_portrait) {
-        //portrait mode
-        return self.v_pvs_photoSlider;
-    }
-    else {
-        //landscape
-        return self.h_pvs_photoSlider;
-    }
-}
-
-- (UIPagedViewSlider*) pvs_themeSlider {
-    if (self.view == v_portrait) {
-        //portrait mode
-        return self.v_pvs_themeSlider;
-    }
-    else {
-        //landscape
-        return self.h_pvs_themeSlider;
-    }
 }
 
 #pragma mark - View Controller Theme Assignment
@@ -147,8 +143,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     NSString* message = [NSString stringWithFormat:@"Changing from ThemeID:%@ to ThemeID:%@",[oldThemeID stringValue],[themeObject.objectid stringValue]];
     [BLLog v:activityName withMessage:message];
     
-    NSArray* photos = [self.frc_photosInCurrentTheme fetchedObjects];
-    [self.pvs_photoSlider resetSliderWithItems:photos];
+
+    [self.pvs_photoSlider2 reset];
     self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme.objectid];
     self.m_outstandingPhotoEnumNotificationID = nil;
     self.m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
@@ -244,20 +240,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
     
-    self.pvs_photoSlider.layer.borderWidth = 1.0f;
-    self.pvs_photoSlider.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.pvs_themeSlider.layer.borderWidth = 1.0f;
-    self.pvs_themeSlider.layer.borderColor = [UIColor whiteColor].CGColor;
-    
-    [self.h_pvs_photoSlider initWith:NO itemWidth:kPictureWidth_landscape itemHeight:kPictureHeight_landscape itemSpacing:kPictureSpacing];
-    [self.h_pvs_themeSlider initWith:NO itemWidth:kThemePictureWidth_landscape itemHeight:kThemePictureHeight_landscape itemSpacing:kThemePictureSpacing];
-    
-    [self.v_pvs_themeSlider initWith:kThemePictureWidth itemHeight:kThemePictureHeight itemSpacing:kThemePictureSpacing];
-    [self.v_pvs_photoSlider initWith:kPictureWidth itemHeight:kPictureHeight itemSpacing:kPictureSpacing];
     
     if (self.theme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
-        [self.pvs_themeSlider resetSliderWithItems:themes];
+    
         if ([themes count] > 0) {
             [self assignTheme:[themes objectAtIndex:0]];
         }
@@ -270,10 +256,19 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         }
         
     }
-     
-
     
-    // Do any additional setup after loading the view from its nib.
+    self.pvs_photoSlider2.layer.borderWidth = 1.0f;
+    self.pvs_photoSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pvs_themeSlider2.layer.borderWidth = 1.0f;
+    self.pvs_themeSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    
+    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+    
+    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureHeight_landscape withHeightLandscape:kThemePictureHeight withSpacing:kThemePictureSpacing];
+    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureWidth_landscape withHeightLandscape:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing];
+
 }
 
 - (void)viewDidUnload
@@ -292,28 +287,22 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     UIDeviceOrientation toInterfaceOrientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
+
+        int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
+        int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
         self.view = v_portrait;
-        int currentScrollIndex = [self.pvs_photoSlider getContentOffsetIndex];
-        
-        //need to recreate the view in the new orientation mode
-        NSArray* themes = [self.frc_themes fetchedObjects];
-        NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-        
-        [self.pvs_photoSlider resetSliderWithItems:picturesInTheme];
-        [self.pvs_themeSlider resetSliderWithItems:themes];        
-        [self.pvs_photoSlider setContentOffsetTo:currentScrollIndex];
+        self.pvs_photoSlider2.currentPageIndex = currentPhotoScrollIndex;
+        self.pvs_themeSlider2.currentPageIndex = currentThemeScrollIndex;
+
     }
     else {
         //going to landscape
-        self.view = v_landscape;        
-        int currentScrollIndex = [self.pvs_photoSlider getContentOffsetIndex];
-        
-        NSArray* themes = [self.frc_themes fetchedObjects];
-        NSArray* picturesInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-        
-        [self.pvs_photoSlider resetSliderWithItems:picturesInTheme];
-        [self.pvs_themeSlider resetSliderWithItems:themes];      
-        [self.pvs_photoSlider setContentOffsetTo:currentScrollIndex];
+        int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
+        int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
+        self.view = v_landscape;
+        self.pvs_photoSlider2.currentPageIndex = currentPhotoScrollIndex;
+        self.pvs_themeSlider2.currentPageIndex = currentThemeScrollIndex;       
+
 
     }
 
@@ -406,14 +395,14 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 -(void) frc_themes_didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath {
     
     if (type == NSFetchedResultsChangeInsert) {
-        [self.pvs_themeSlider item:anObject insertedAt:[newIndexPath row]];
+
         if (self.theme == nil) {
-            //need to set the view controller's theme to theme
+  
             [self assignTheme:anObject];
         }
     }
     else if (type == NSFetchedResultsChangeMove) {
-        [self.pvs_themeSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+
     }
 }
 
@@ -422,12 +411,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (controller == self.frc_photosInCurrentTheme) {
         
         if (type == NSFetchedResultsChangeInsert) {
-            [self.pvs_photoSlider item:anObject insertedAt:[newIndexPath row] ];
+
           
             
         }
         else if (type == NSFetchedResultsChangeMove) {
-            [self.pvs_photoSlider item:anObject atIndex:[indexPath row] movedTo:[newIndexPath row]];
+
         }
     }
     else if (controller == self.frc_themes) {
@@ -445,7 +434,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     UIImageView* v = [userInfo objectForKey:an_IMAGEVIEW];
     if (v != nil) {
         [v setImage:image];
-        [self.pvs_photoSlider setNeedsDisplay];
+        [self.pvs_photoSlider2 setNeedsDisplay];
+
     }
     
 }
@@ -524,112 +514,137 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-- (id) configureViewFor:(Photo*)photo atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
-    ImageManager *imageManager = [ImageManager getInstance];
-    
-  
-    
-    CGRect photoImageViewFrame = [self getPhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
-    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-    
-    //Create the caption label for the current photo
-    Caption* topCaption = photo.topCaption;
-    
-    if (topCaption != nil) {
-        CGRect captionFrame = [self getCaptionFrame];
-        UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
-        captionLabel.text = topCaption.caption1;
-        captionLabel.textColor = [UIColor whiteColor];
-        captionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-        captionLabel.numberOfLines = 0;
-        captionLabel.lineBreakMode = UILineBreakModeWordWrap;
-        captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [imageView addSubview:captionLabel];
-        
-    }
-    
-    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
-    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];  
-    if (image != nil) {
-        
-        imageView.image = image;
-     
-    }
-    else {
-        imageView.backgroundColor = [UIColor blackColor];
-    }
-    
-    return imageView;
-}
+//- (id) configureViewFor:(Photo*)photo atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
+//    ImageManager *imageManager = [ImageManager getInstance];
+//    
+//  
+//    
+//    CGRect photoImageViewFrame = [self getPhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
+//    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
+//    imageView.contentMode = UIViewContentModeScaleAspectFill;
+//    
+//    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
+//    
+//    //Create the caption label for the current photo
+//    Caption* topCaption = photo.topCaption;
+//    
+//    if (topCaption != nil) {
+//        CGRect captionFrame = [self getCaptionFrame];
+//        UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
+//        captionLabel.text = topCaption.caption1;
+//        captionLabel.textColor = [UIColor whiteColor];
+//        captionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+//        captionLabel.numberOfLines = 0;
+//        captionLabel.lineBreakMode = UILineBreakModeWordWrap;
+//        captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//        [imageView addSubview:captionLabel];
+//        
+//    }
+//    
+//    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
+//    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];  
+//    if (image != nil) {
+//        
+//        imageView.image = image;
+//     
+//    }
+//    else {
+//        imageView.backgroundColor = [UIColor blackColor];
+//    }
+//    
+//    return imageView;
+//}
 
-- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal {
-    ImageManager *imageManager = [ImageManager getInstance];
-    
-    CGRect imageFrame = [self getThemePhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
-    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
+//- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal {
+//    ImageManager *imageManager = [ImageManager getInstance];
+//    
+//    CGRect imageFrame = [self getThemePhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
+//    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
+//
+//    
+//    //The following adds the text label for the theme display name
+//    CGRect textViewFrame = [self getThemeTitleFrame];
+//    UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
+//    textView.textColor = [UIColor whiteColor];
+//    textView.numberOfLines = 0;
+//    textView.lineBreakMode = UILineBreakModeWordWrap;
+//    textView.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+//    textView.text = theme.displayname;
+//    [imageView addSubview:textView];
+//    
+//    
+//    //The following adds the text label for the theme description
+//    CGRect textViewDescriptionFrame = [self getThemeDescriptionFrame];
+//    UILabel* textViewDescription = [[[UILabel alloc]initWithFrame:textViewDescriptionFrame]autorelease];
+//    textViewDescription.textColor = [UIColor whiteColor];
+//    textViewDescription.numberOfLines = 0;
+//    textViewDescription.lineBreakMode = UILineBreakModeWordWrap;
+//    textViewDescription.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+//    textViewDescription.text = theme.descr;
+//    textViewDescription.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    [imageView addSubview:textViewDescription];
+//    
+//    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
+//
+//    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
+//    
+//    UIImage* image = [imageManager downloadImage:theme.homeimageurl withUserInfo:userInfo atCallback:self];   
+//    
+//    if (image != nil) {
+//        imageView.image = image;
+//    }
+//    else {
+//        imageView.backgroundColor =[UIColor blackColor];
+//    }
+//    return imageView;
+//    
+//}
 
-    
-    //The following adds the text label for the theme display name
-    CGRect textViewFrame = [self getThemeTitleFrame];
-    UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
-    textView.textColor = [UIColor whiteColor];
-    textView.numberOfLines = 0;
-    textView.lineBreakMode = UILineBreakModeWordWrap;
-    textView.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-    textView.text = theme.displayname;
-    [imageView addSubview:textView];
-    
-    
-    //The following adds the text label for the theme description
-    CGRect textViewDescriptionFrame = [self getThemeDescriptionFrame];
-    UILabel* textViewDescription = [[[UILabel alloc]initWithFrame:textViewDescriptionFrame]autorelease];
-    textViewDescription.textColor = [UIColor whiteColor];
-    textViewDescription.numberOfLines = 0;
-    textViewDescription.lineBreakMode = UILineBreakModeWordWrap;
-    textViewDescription.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-    textViewDescription.text = theme.descr;
-    textViewDescription.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [imageView addSubview:textViewDescription];
-    
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-
-    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
-    
-    UIImage* image = [imageManager downloadImage:theme.homeimageurl withUserInfo:userInfo atCallback:self];   
-    
-    if (image != nil) {
-        imageView.image = image;
-    }
-    else {
-        imageView.backgroundColor =[UIColor blackColor];
-    }
-    return imageView;
-    
-}
-
-- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isSliderOrientationHorizontal  {
-    UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
-    if (viewSlider == currentPhotoSlider) {
-        //need cell for the photo slider
-        NSArray* photosInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-        if (index >= [photosInTheme count]) {
-            NSString* message = @"dicks";
-        }
-        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-        return [self configureViewFor:photo atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
-    }
-    else {
-        //need cell for the theme slider
-        Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
-        return [self configureViewForTheme:theme atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
-    }
-    
-}
+//- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isSliderOrientationHorizontal  {
+//    UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
+//    if (viewSlider == currentPhotoSlider) {
+//        //need cell for the photo slider
+//        NSArray* photosInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
+//        if (index >= [photosInTheme count]) {
+//            NSString* message = @"dicks";
+//        }
+//        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+//        return [self configureViewFor:photo atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
+//    }
+//    else {
+//        //need cell for the theme slider
+//        Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
+//        return [self configureViewForTheme:theme atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
+//    }
+//    
+//}
 
 
+
+//-(void)themeSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+//  
+//    if (numberOfCellsToEnd < threshold_LOADMORETHEMES) {
+//        //the current scroll position is below the threshold, thus we need to load more themes
+//        [self enumerateThemesFromWebService];
+//    }
+//    
+//    Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+//    if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
+//        //the theme scrolled to is not the same as the current one, time to switch themes
+//        [self assignTheme:themeAtCurrentIndex];
+//    }
+//    
+//}
+
+
+//-(void)photoSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
+//    
+//    if (numberOfCellsToEnd < threshold_LOADMOREPHOTOS) {
+//        //the current scroll position is below the threshold, thus we need to load more photos for this particular theme
+//        [self enumeratePhotosForCurrentTheme];
+//    }
+//
+//}
 
 -(void)themeSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
   
@@ -656,34 +671,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 }
 
-//we will use this method to pre-fetch additional pictures for a particular theme as a user pulls on the listÔ
-- (void)viewSlider:(UIPagedViewSlider*)viewSlider isAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-    
-    //need to launch a new enumeration if the user gets within a certain threshold of the end scroll position
-    
-    if (viewSlider == self.pvs_photoSlider) {
-        [self photoSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
-    }
-    else {
-        [self themeSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
-    }
-}
 
-- (void)viewSlider:(UIPagedViewSlider*)viewSlider selectIndex:(int)index {
-    //called when a item is selected in the slider
-    
-    if (viewSlider == self.pvs_photoSlider &&
-        index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
-        PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
-        Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-        photoViewController.currentPhoto = selectedPhoto;
-        photoViewController.currentTheme = self.theme;
-        [self.navigationController pushViewController:photoViewController animated:YES];
-        [photoViewController release];
-    }
-
-
-}
 
 #pragma mark - Enumeration Completion Handlers
 - (void)onEnumerateThemesFinished:(NSNotification*)notification {
@@ -749,14 +737,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 
-#pragma mark - New Photo Handlers
-/*- (void)shootPhoto:(id)sender {
-    [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
-}
 
-- (void)selectExistingPhoto:(id)sender {
-    [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
-}*/
 
 //- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
 - (void)getMediaFromSource:(id)sender {
@@ -811,27 +792,21 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kPictureWidth, kPictureHeight);
     
     if (chosenImageSize.height > chosenImageSize.width) {
-        // Create UIImage frame for image in portrait - fill width
-        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
-        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+       
         newThumbnailSize = CGSizeMake(kThumbnailPortraitWidth, ((chosenImageSize.height*kThumbnailPortraitWidth)/chosenImageSize.width));
-        //thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
+
         newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, ((chosenImageSize.height*kFullscreenPortraitWidth)/chosenImageSize.width));
     }
     else if (chosenImageSize.height < chosenImageSize.width) {
         // Create UIImage frame for image in landscape - fill height
-        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
-        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
-        newThumbnailSize = CGSizeMake(((chosenImageSize.width*kThumbnailLandscapeHeight)/chosenImageSize.height), kThumbnailLandscapeHeight);
-        //thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailLandscapeWidth))/2, (newThumbnailSize.height - (kThumbnailLandscapeHeight))/2, kThumbnailLandscapeWidth, kThumbnailLandscapeHeight);
+               newThumbnailSize = CGSizeMake(((chosenImageSize.width*kThumbnailLandscapeHeight)/chosenImageSize.height), kThumbnailLandscapeHeight);
+        
         newFullscreenSize = CGSizeMake(((chosenImageSize.width*kFullscreenLandscapeHeight)/chosenImageSize.height), kFullscreenLandscapeHeight);
     }
     else {
         // Create UIImage frame for image in portrait but maximize image scaling to fill height for thumbnail and width for fullscreen
-        //imageView.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
-        //clearImageButton.frame = CGRectMake( imageView.frame.origin.x, imageView.frame.origin.y, kThumbnailPortraitWidth, kThumbnailPortraitHeight);
-        newThumbnailSize = CGSizeMake(kThumbnailPortraitHeight, kThumbnailPortraitHeight);
-        //thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kThumbnailPortraitWidth, kThumbnailPortraitHeight);        
+            newThumbnailSize = CGSizeMake(kThumbnailPortraitHeight, kThumbnailPortraitHeight);
+       
         newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, kFullscreenPortraitWidth);
     }
     
@@ -1002,5 +977,123 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     return shrunkenImage;
 }
 
+#pragma mark - UIPagedViewDelegate2 
 
+- (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
+           selectIndex:        (int)                   index {
+    
+    if (viewSlider == self.pvs_photoSlider2 && 
+        index < [[self.frc_photosInCurrentTheme  fetchedObjects]count ]) {
+        
+        Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
+        photoViewController.currentPhoto = selectedPhoto;
+        photoViewController.currentTheme = self.theme;
+        [self.navigationController pushViewController:photoViewController animated:YES];
+        [photoViewController release];
+        
+    }
+    else if (viewSlider == self.pvs_themeSlider2 &&
+             index < [[self.frc_themes fetchedObjects]count]) {
+        Theme* selectedTheme = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+        [self assignTheme:selectedTheme];
+        
+    }
+    
+    
+}
+
+- (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
+     cellForRowAtIndex:  (int)                   index 
+             withFrame:          (CGRect)                frame {
+    
+    if (viewSlider == self.pvs_photoSlider2 &&
+        index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
+
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
+        [self viewSlider:self.pvs_photoSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
+        return imageView;
+    }
+    else if (viewSlider == self.pvs_themeSlider2 &&
+             index < [[self.frc_themes fetchedObjects]count] ){
+
+        
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
+        [self viewSlider:self.pvs_themeSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
+        
+        return imageView;
+    }
+    return nil;
+}
+
+
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
+             isAtIndex:          (int)                   index 
+    withCellsRemaining: (int)                   numberOfCellsToEnd {
+    
+        if (viewSlider == self.pvs_photoSlider2) {
+            [self photoSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
+        }
+        else {
+            [self themeSliderIsAtIndex:index withCellsRemaining:numberOfCellsToEnd];
+        }
+    
+}
+
+
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
+             configure:          (UIImageView*)               imageView
+         forRowAtIndex:          (int)                   index
+             withFrame:          (CGRect)                frame {
+    if (viewSlider == self.pvs_photoSlider2 &&
+        index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
+       
+        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        imageView.frame = frame;
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
+        [userInfo setObject:photo.objectid forKey:an_OBJECTID];
+        
+        UIImage* image = [[ImageManager getInstance]downloadImage:photo.thumbnailurl withUserInfo:userInfo atCallback:self];
+        
+        if (image == nil) {
+            imageView.backgroundColor = [UIColor blackColor];
+            imageView.image = nil;
+        }
+        else {
+            imageView.image = image;
+        }
+   
+    }
+        
+    else if (viewSlider == self.pvs_themeSlider2 &&
+             index < [[self.frc_themes fetchedObjects]count]) {
+        Theme* selectedTheme = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
+        imageView.frame = frame;
+        
+        [userInfo setObject:selectedTheme.objectid forKey:an_OBJECTID];
+        UIImage* image = [[ImageManager getInstance]downloadImage:selectedTheme.homeimageurl  withUserInfo:userInfo atCallback:self];
+        
+        if (image == nil) {
+            imageView.backgroundColor = [UIColor blackColor];
+        }
+        else {
+            imageView.image = image;
+        }
+      
+
+    }
+}
+
+
+
+- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
+    if (viewSlider == self.pvs_photoSlider2) {
+        return [[self.frc_photosInCurrentTheme fetchedObjects]count];
+    }
+    else if (viewSlider == self.pvs_themeSlider2) {
+        return [[self.frc_themes fetchedObjects]count];
+    }
+    return 0;
+}
 @end

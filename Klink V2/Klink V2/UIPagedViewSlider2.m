@@ -238,6 +238,18 @@
  
 }
 
+- (void) reset  {
+    [self.recycledPages removeAllObjects];
+    NSArray* visiblePagesArray = [self.visiblePages allObjects];
+    for (int i = 0; i < [visiblePagesArray count];i++) {
+        UIPagedViewItem* item = [visiblePagesArray objectAtIndex:i];
+        [item.view removeFromSuperview];
+    }
+    
+    [self.visiblePages removeAllObjects];
+    [self tilePages];
+}
+
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index {
 	for (UIPagedViewItem *page in self.visiblePages)
 		if (page.index == index) return YES;
