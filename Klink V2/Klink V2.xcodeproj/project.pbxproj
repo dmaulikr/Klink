@@ -751,13 +751,6 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
-		C557252813EBB1850019E768 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
-			sourceTree = "<group>";
-		};
 		C561275813CB4B28005E5731 /* KlinkV2 */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,7 +766,6 @@
 				C5BED8C313D52FC2007A1934 /* ThemeBrowserViewController2.m */,
 				C5BED8C113D52FC2007A1934 /* ThemeBrowserViewController2.xib */,
 				C5BED8C213D52FC2007A1934 /* ThemeBrowserViewController2.h */,
-				C557252813EBB1850019E768 /* New Group */,
 				C561275913CB4B7F005E5731 /* HomeScreenController.h */,
 				C561275A13CB4B7F005E5731 /* HomeScreenController.m */,
 				C561275B13CB4B7F005E5731 /* HomeScreenController.xib */,
@@ -787,32 +779,9 @@
 		C56A8D9C13C78A0100E527D6 /* KlinkV2 */ = {
 			isa = PBXGroup;
 			children = (
-				C5D5045113EE09220076C614 /* UICaptionLabel.h */,
-				C5D5045213EE09220076C614 /* UICaptionLabel.m */,
-				C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */,
-				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
-				C53F283C13EB3C040038C8F0 /* UIViewTap.h */,
-				C53F283D13EB3C040038C8F0 /* UIViewTap.m */,
-				C5BED8C413D52FC2007A1934 /* UIPagedViewSlider.h */,
-				C5BED8C513D52FC2007A1934 /* UIPagedViewSlider.m */,
-				C5BED8C613D52FC2007A1934 /* UIProfileBar.h */,
-				C5BED8C713D52FC2007A1934 /* UIProfileBar.m */,
-				C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */,
-				C5BED8C913D52FC2007A1934 /* UIViewSliderDelegate.h */,
-				C56A8D9E13C78A1E00E527D6 /* UIViewSlider.h */,
-				C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */,
-				C5D8E0B113DCA16500D88B00 /* UIKlinkScrollView.h */,
-				C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */,
-				C5C1C6C213E7C68000856862 /* UIPagedViewSlider2.h */,
-				C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */,
-				C5CEF5A913EA15D3007AD4DD /* UIPagedViewItem.h */,
-				C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */,
-				C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */,
-				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
-				C53F283713EB22CF0038C8F0 /* UIPhotoCaptionScrollView.h */,
-				C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */,
-				C5CDA43813EF11EC008462FF /* UICaptionTextView.h */,
-				C5CDA43913EF11EC008462FF /* UICaptionTextView.m */,
+				C5CDA44613EFACE7008462FF /* Application Specific */,
+				C5CDA44513EFACBC008462FF /* Deprecated */,
+				C5CDA44313EFAC21008462FF /* Generics */,
 			);
 			name = KlinkV2;
 			sourceTree = "<group>";
@@ -854,6 +823,53 @@
 				C5BED8A713D52F9D007A1934 /* SBJsonWriter.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		C5CDA44313EFAC21008462FF /* Generics */ = {
+			isa = PBXGroup;
+			children = (
+				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
+				C53F283C13EB3C040038C8F0 /* UIViewTap.h */,
+				C53F283D13EB3C040038C8F0 /* UIViewTap.m */,
+				C5D8E0B113DCA16500D88B00 /* UIKlinkScrollView.h */,
+				C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */,
+				C5C1C6C213E7C68000856862 /* UIPagedViewSlider2.h */,
+				C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */,
+				C5CEF5A913EA15D3007AD4DD /* UIPagedViewItem.h */,
+				C5CEF5AA13EA15D4007AD4DD /* UIPagedViewItem.m */,
+				C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */,
+				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
+				C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */,
+			);
+			name = Generics;
+			sourceTree = "<group>";
+		};
+		C5CDA44513EFACBC008462FF /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				C5BED8C413D52FC2007A1934 /* UIPagedViewSlider.h */,
+				C5BED8C513D52FC2007A1934 /* UIPagedViewSlider.m */,
+				C5BED8C913D52FC2007A1934 /* UIViewSliderDelegate.h */,
+				C56A8D9E13C78A1E00E527D6 /* UIViewSlider.h */,
+				C56A8D9F13C78A1E00E527D6 /* UIViewSlider.m */,
+			);
+			name = Deprecated;
+			sourceTree = "<group>";
+		};
+		C5CDA44613EFACE7008462FF /* Application Specific */ = {
+			isa = PBXGroup;
+			children = (
+				C5D5045113EE09220076C614 /* UICaptionLabel.h */,
+				C5D5045213EE09220076C614 /* UICaptionLabel.m */,
+				C5BED8C613D52FC2007A1934 /* UIProfileBar.h */,
+				C5BED8C713D52FC2007A1934 /* UIProfileBar.m */,
+				C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */,
+				C53F283713EB22CF0038C8F0 /* UIPhotoCaptionScrollView.h */,
+				C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */,
+				C5CDA43813EF11EC008462FF /* UICaptionTextView.h */,
+				C5CDA43913EF11EC008462FF /* UICaptionTextView.m */,
+			);
+			name = "Application Specific";
 			sourceTree = "<group>";
 		};
 		C5D8E09C13DBBD2E00D88B00 /* Abstract */ = {
