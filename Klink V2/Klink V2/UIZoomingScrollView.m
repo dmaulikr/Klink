@@ -210,21 +210,21 @@ CGFloat initialZoomScale = 1;
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
-    if ([self.viewController respondsToSelector:@selector(cancelControlHiding:)]) {
+    if ([self.viewController respondsToSelector:@selector(cancelControlHiding)]) {
         [self.viewController cancelControlHiding];
     }
 
 }
 
 - (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
-    if ([self.viewController respondsToSelector:@selector(cancelControlHiding:)]) {
+    if ([self.viewController respondsToSelector:@selector(cancelControlHiding)]) {
         [self.viewController cancelControlHiding];
     }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 
-    if ([self.viewController respondsToSelector:@selector(hideControlsAfterDelay:)]) {
+    if ([self.viewController respondsToSelector:@selector(hideControlsAfterDelay)]) {
         [self.viewController hideControlsAfterDelay];
     }
 }
@@ -233,7 +233,7 @@ CGFloat initialZoomScale = 1;
 #pragma mark Tap Detection
 
 - (void)handleSingleTap:(CGPoint)touchPoint {
-    if ([self.viewController respondsToSelector:@selector(toggleControls:)]) {
+    if ([self.viewController respondsToSelector:@selector(toggleControls)]) {
         [self.viewController performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
     }
 

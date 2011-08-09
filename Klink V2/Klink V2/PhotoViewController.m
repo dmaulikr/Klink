@@ -360,7 +360,7 @@
     
 	// Navigation
 	[self updateNavigation];
-	//[self hideControlsAfterDelay];
+	[self hideControlsAfterDelay];
 }
 
 
@@ -475,6 +475,11 @@
 	[UIView setAnimationDuration:0.35];
 	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
 
+    // Captions scrollviewer
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    [photoCaptionView.captionScrollView setAlpha:hidden ? 0 : 1];
+
+    
 	[UIView commitAnimations];
 	
 	// Control hiding timer
@@ -521,6 +526,18 @@
     }
 }
 
+#pragma mark - UIPhotoCaptionScrollViewDelegate
+- (UIPhotoCaptionScrollView*)currentlyDisplayedView {
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
+    NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
+    for (int i = 0; i < [currentlyDisplayedViews count];i++) {
+        UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
+        if ([photoCaptionView.photo.objectid isEqualToNumber:photo.objectid]) {
+            return photoCaptionView;
+        }
+    }
+}
+
 #pragma mark - UIPagedViewSlider2Delegate
 
 - (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UIPhotoCaptionScrollView *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
@@ -542,7 +559,7 @@
        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
         
-        photoAndCaptionScrollView.viewController = nil;
+        photoAndCaptionScrollView.viewController = self;
         ImageManager* imageManager = [ImageManager getInstance];
         
        
