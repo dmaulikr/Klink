@@ -147,4 +147,9 @@
 }
 
 
++ (Photo*)photo:(NSNumber*)objectID {
+    Photo* retVal = [DataLayer getObjectByType:PHOTO withId:objectID];
+    return retVal;
+}
+
 @end

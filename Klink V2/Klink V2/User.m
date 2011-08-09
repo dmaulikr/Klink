@@ -22,29 +22,29 @@
     self = [super initFromDictionary:jsonDictionary];
     if (self != nil) {
       
-        if ([jsonDictionary objectForKey:an_DISPLAYNAME] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_DISPLAYNAME] != nil) {
             self.displayname = [jsonDictionary objectForKey:an_DISPLAYNAME];
         }
         
-        if ([jsonDictionary objectForKey:an_THUMBNAILURL] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_THUMBNAILURL] != nil) {
             self.thumbnailURL = [jsonDictionary objectForKey:an_THUMBNAILURL];
         }
         
-        if ([jsonDictionary objectForKey:an_NUMBEROFVIEWS] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_NUMBEROFVIEWS] != nil) {
             self.numberofviews = [jsonDictionary objectForKey:an_NUMBEROFVIEWS];
         }
         else {
             self.numberofviews = [NSNumber numberWithInt:0];
         }
         
-        if ([jsonDictionary objectForKey:an_NUMBEROFVOTES] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_NUMBEROFVOTES] != nil) {
             self.numberofvotes = [jsonDictionary objectForKey:an_NUMBEROFVOTES];
         }
         else {
             self.numberofvotes = [NSNumber numberWithInt:0];
         }
         
-        if ([jsonDictionary objectForKey:an_NUMBEROFCAPTIONS] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_NUMBEROFCAPTIONS] != nil) {
             self.numberofcaptions = [jsonDictionary objectForKey:an_NUMBEROFCAPTIONS];
         }
         
@@ -52,7 +52,7 @@
             self.numberofcaptions = [NSNumber numberWithInt:0];
         }
         
-        if ([jsonDictionary objectForKey:an_RANK] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_RANK] != nil) {
             self.rank = [jsonDictionary objectForKey:an_RANK];
         }
         
@@ -60,7 +60,7 @@
             self.rank = [NSNumber numberWithInt:0];
         }
         
-        if ([jsonDictionary objectForKey:an_USERNAME] != [NSNull null]) {
+        if ([jsonDictionary objectForKey:an_USERNAME] != nil) {
             self.username = [jsonDictionary objectForKey:an_USERNAME];
         }
        
@@ -80,6 +80,7 @@
     self.numberofvotes = [newObject numberofvotes];
     self.numberofviews = [newObject numberofviews];
     self.numberofcaptions = [newObject numberofcaptions];
+    self.username = [newObject username];
     self.rank = [newObject rank];
 }
 
@@ -93,7 +94,7 @@
 -  (id) toJSON {
     NSMutableDictionary *dictionary = nil;
     dictionary = [super toJSON];
-    
+    [dictionary setObject:self.username forKey:an_USERNAME];
     [dictionary setObject:self.displayname forKey:an_DISPLAYNAME];
     [dictionary setObject:self.thumbnailURL forKey:an_THUMBNAILURL];
     [dictionary setObject:self.numberofcaptions forKey:an_NUMBEROFCAPTIONS];

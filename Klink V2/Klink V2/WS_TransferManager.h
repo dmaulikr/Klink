@@ -19,6 +19,8 @@
 #import "PutResponse.h"
 #import "DataLayer.h"
 #import "Attachment.h"
+
+
 @interface WS_TransferManager : NSObject {
         NSOperationQueue *putQueue;
 }
@@ -59,6 +61,13 @@
 
 
 - (void) deleteObjectInCloud:(NSNumber*)objectid withObjectType:(NSString*)objectType;
+
+- (void) updateAttributeInCloud:
+                    (NSNumber*)objectid 
+                    withObjectType:(NSString*)objectType 
+                   forAttribute:(NSString*)attributeName 
+                        byValue:(NSString*)value 
+                 onFinishNotify:(NSString*)notificationID;
 
 - (void) uploadAttachementToCloud:
         (NSNumber*)objectid 

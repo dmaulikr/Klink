@@ -31,4 +31,6 @@
 @property (nonatomic, retain) NSNumber * numberofvotes;
 @property (nonatomic, retain) Caption  * topCaption;
 + (NSString*) getNewPhotoTitle;
+
++ (Photo*)photo:(NSNumber*)objectID;
 @end

@@ -546,12 +546,12 @@
         ImageManager* imageManager = [ImageManager getInstance];
         
        
+        
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photoAndCaptionScrollView forKey:an_IMAGEVIEW];
         UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
         
         [photoAndCaptionScrollView displayImage:image];
-        
-//        [self configureCaptionSlider:zoomingScrollView forPhotoAtIndex:index];
+
         return photoAndCaptionScrollView;
 
 }
@@ -682,6 +682,7 @@
     [self.sv_view bringSubviewToFront:self.tv_captionBox];
     [UIView commitAnimations];
 }
+
 
 
 #pragma mark - UICaptionTextViewDelegate Methods

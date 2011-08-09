@@ -318,9 +318,88 @@ static  WS_TransferManager* sharedManager;
     
 }
 
+
+- (void) updateAttributeInCloud:
+                                (NSNumber*)objectid 
+                 withObjectType:(NSString*)objectType 
+                   forAttribute:(NSString*)attributeName 
+                        byValue:(NSString*)value
+                 onFinishNotify:(NSString*)notificationID {
+    
+    NSString* activityName = @"WS_TransferManager.updateAttributeInCloud";
+    ServerManagedResource* resource = [DataLayer getObjectByType:objectType withId:objectid];
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    if (authenticationContext != nil) {
+        NSURL *url = [UrlManager getUpdateAttributeURL:objectid withObjectType:objectType forAttribute:attributeName withOperationCode:0 byValue:value withAuthenticationContext:authenticationContext];
+
+        
+        NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+        [userInfo setObject:objectid forKey:an_OBJECTID];
+        [userInfo setObject:objectType forKey:an_OBJECTTYPE];
+        [userInfo setObject:attributeName forKey:an_ATTRIBUTENAME];
+        [userInfo setObject:notificationID forKey:an_ONFINISHNOTIFY];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+        request.requestMethod = @"POST";
+        request.delegate = self;
+        request.userInfo = userInfo;
+        request.didFinishSelector=@selector(onPutAttributeComplete:);
+        request.didFailSelector = @selector(requestWentWrong:);
+        [self.putQueue addOperation:request];
+        
+        NSString *message = [[NSString alloc] initWithFormat:@"submitted put attribute operation at url: %@",url];
+        [BLLog v:activityName withMessage:message];
+        [message release];
+        [userInfo release];
+    }
+}
+
 #pragma mark - Asynchronous Response Handlers
 
-
+//Generic put response handling method that can be used on both cases
+- (void) onPutAttributeComplete:(ASIHTTPRequest*) request {
+    NSString* activityName = @"WS_TransferManager.onPutAttributeComplete";
+    NSString* response = [request responseString];
+    
+    NSDictionary *jsonDictionary = [response objectFromJSONString];
+    PutResponse* putResponse = [[PutResponse alloc]initFromDictionary:jsonDictionary];
+    
+    ServerManagedResource* returnedObject = nil;
+    NSArray* secondaryObjects = nil;
+    
+    if (putResponse.didSucceed == [NSNumber numberWithBool:YES]) {
+        returnedObject = [putResponse.modifiedResource retain];
+        secondaryObjects = [putResponse.secondaryResults retain];
+        
+        NSDictionary *userInfo = request.userInfo;
+        NSString* objectid = [userInfo objectForKey:an_OBJECTID];
+        NSString* objectType = [userInfo objectForKey:an_OBJECTTYPE];
+        NSString* attributeName = [userInfo objectForKey:an_ATTRIBUTENAME];
+            
+        [ServerManagedResource refreshWithServerVersion:returnedObject];
+        
+        for (int i = 0; i < [secondaryObjects count];i++) {
+            ServerManagedResource* secondaryObject = [secondaryObjects objectAtIndex:i];
+            [ServerManagedResource refreshWithServerVersion:secondaryObject];
+        }
+        
+        
+        NSString* message = [NSString stringWithFormat:@"Attribute: %@ on %@ with id %@", objectid,objectType,attributeName];
+        [BLLog v:activityName withMessage:message];
+        
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        NSString* notificationID = [userInfo objectForKey:an_ONFINISHNOTIFY];
+        [notificationCenter postNotificationName:notificationID object:self userInfo:userInfo];
+        
+        [returnedObject release];
+        [secondaryObjects release];
+    }
+    else {
+        NSString* errorMessage = @"Put Attribute operation failed";
+        [BLLog e:activityName withMessage:errorMessage];
+    }
+}
 
 -(void) onUploadAttachmentComplete:(ASIFormDataRequest*)request {
     NSString* activityName = @"WS_TransferManager.onUploadComplete:";

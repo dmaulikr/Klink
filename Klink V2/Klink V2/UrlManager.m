@@ -196,4 +196,36 @@
     return url;
 }
 
++ (NSURL*) getUpdateAttributeURL:(NSNumber*)objectid 
+                                withObjectType:(NSString*)objectType 
+                                forAttribute:(NSString*)attributeName 
+                                withOperationCode:(int)operationCode 
+                                byValue:(NSString*)value
+                                withAuthenticationContext:(id)context{
+   
+    NSString* verbName = verb_UPDATEATTRIBUTE;
+    NSString* baseURL = [ApplicationSettingsManager getBaseURL];
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* objectidParamName = param_OBJECTID;
+    NSString* objecttypeParamName = param_OBJECTTYPE;
+    NSString* attributenameParamName = param_ATTRIBUTENAME;
+    NSString* valueParamName = param_VALUE;
+    NSString* operationCodeParamName = param_OPCODE;
+    NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [context toJSON];
+    [parameters appendFormat:@"%@=%@",objectidParamName,objectid];
+    [parameters appendFormat:@"&%@=%@",objecttypeParamName,objectType];
+    [parameters appendFormat:@"&%@=%@",attributenameParamName,attributeName];
+    [parameters appendFormat:@"&%@=%@",valueParamName,value];
+    [parameters appendFormat:@"&%@=%d",operationCodeParamName,operationCode];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    return url;
+    
+    
+}
+
 @end
