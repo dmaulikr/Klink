@@ -16,3 +16,4 @@ NSString* const verb_ENUMERATE=@"Objects/Enumerate";
 NSString* const verb_DELETE=@"Objects/Delete";
 NSString* const verb_UPLOADATTACHMENT = @"Objects/PutAttachment";
 NSString* const verb_GETAUTHENTICATOR = @"Objects/Users/GetAuthenticator";
+NSString* const verb_UPDATEATTRIBUTE = @"Objects/PutAttribute";

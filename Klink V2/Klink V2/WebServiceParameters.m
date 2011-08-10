@@ -22,4 +22,6 @@ NSString* const param_DISPLAYNAME=@"displayname";
 NSString* const param_FACEBOOKID=@"facebookid";
 NSString* const param_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
 NSString* const param_FACEBOOKACCESSTOKENEXPIRY=@"facebookaccesstokenexpirydate";
+NSString* const param_VALUE=@"value";
+NSString* const param_OPCODE=@"operationcode";
 

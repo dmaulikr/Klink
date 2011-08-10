@@ -18,6 +18,7 @@
 @dynamic imageurl;
 @dynamic thumbnailurl;
 @dynamic creatorname;
+@dynamic user_hasvoted;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
@@ -27,6 +28,10 @@
         
         if ([jsonDictionary objectForKey:an_TITLE] != [NSNull null]) {
             self.title = [jsonDictionary valueForKey:an_TITLE];
+        }
+        
+        if ([jsonDictionary objectForKey:an_USERHASVOTED] != nil) {
+            self.user_hasvoted = [jsonDictionary objectForKey:an_USERHASVOTED];
         }
         
         if ([jsonDictionary objectForKey:an_THUMBNAILURL] != [NSNull null]) {
@@ -66,7 +71,7 @@
     return CAPTION;
 }
 
-- (void) copyFrom:(id)newObject {
+- (void) copyFrom:(Caption*)newObject {
     [super copyFrom:newObject];
     self.creatorid = [newObject creatorid];
     self.caption1 = [newObject caption1];
@@ -75,6 +80,10 @@
     self.title = [newObject title];
     self.imageurl = [newObject imageurl];
     self.thumbnailurl =[newObject thumbnailurl];
+    self.creatorname = [newObject creatorname];
+    //Note we do not overwrite user_hasVoted, to prevent a server version from resetting this
+
+    //self.user_hasvoted = newObject.user_hasvoted;
 }
 
 - (id) init {
@@ -82,6 +91,7 @@
     
     if (self != nil) {
         self.objecttype = CAPTION;
+       
     }
     return self;
 }
@@ -96,6 +106,7 @@
     NSMutableDictionary *dictionary = nil;
     
     dictionary = [super toJSON];
+    [dictionary setValue:self.creatorname forKey:an_CREATORNAME];
     [dictionary setValue:self.creatorid forKey:an_CREATORID];
     [dictionary setValue:self.photoid forKey:an_PHOTOID];
     [dictionary setValue:self.caption1 forKey:an_CAPTION];
@@ -103,6 +114,8 @@
     [dictionary setValue:self.title forKey:an_TITLE];
     [dictionary setValue:self.thumbnailurl forKey:an_THUMBNAILURL];
     [dictionary setValue:self.imageurl forKey:an_IMAGEURL];
+    
+    [dictionary setValue:self.user_hasvoted forKey:an_USERHASVOTED];
     return dictionary;
         
 }
@@ -148,5 +161,10 @@
     }
     
     return caption;
+}
+
++ (Caption*) caption:(NSNumber*)objectID {
+    Caption* retVal = (Caption*)[DataLayer getObjectByType:CAPTION withId:objectID];
+    return retVal;
 }
 @end

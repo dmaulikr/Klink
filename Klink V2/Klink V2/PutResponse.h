@@ -12,9 +12,11 @@
 #import "ServerManagedResource.h"
 
 @interface PutResponse : Response {
-    id modifiedResource;
+    id      m_modifiedResource;
+    NSArray *m_secondaryResults;
 }
 
-@property (nonatomic,retain) id modifiedResource;
+@property (nonatomic,retain) id         modifiedResource;
+@property (nonatomic,retain) NSArray*   secondaryResults;
 
 @end

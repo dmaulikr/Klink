@@ -42,6 +42,8 @@ typedef enum {
     
     ViewState                   m_state;
     
+    
+    
 }
 
 @property (nonatomic,retain) Theme*                         currentTheme;
@@ -92,4 +94,5 @@ typedef enum {
 
 - (void)    onEnterEditMode;
 - (void)    onExitEditMode;
+
 @end

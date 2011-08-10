@@ -33,4 +33,7 @@
 + (NSURL*) getUploadAttachmentURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttributeName:(NSString*)attributeName withAuthenticationContext:(id)authenticationContext;
 
 + (NSURL*) getAuthenticationURL:(NSNumber*)facebookID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date;
+
++ (NSURL*) getUpdateAttributeURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttribute:(NSString*)attributeName withOperationCode:(int)operationCode byValue:(NSString*)value withAuthenticationContext:(id)context;
+
 @end

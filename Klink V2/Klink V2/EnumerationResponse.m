@@ -36,7 +36,7 @@
         NSArray* secondaryResultsJSON = [jsonDictionary objectForKey:an_SECONDARYRESULTS];                        
         //Need to call generic methods to deserialize generic object instances
         
-        if (primaryResultsJSON != [NSNull null]) {
+        if (primaryResultsJSON != nil) {
             
             NSMutableArray *primaryResultsObjects = [[NSMutableArray alloc]initWithCapacity:[primaryResultsJSON count]];
             
@@ -49,7 +49,7 @@
             self.primaryResults = primaryResultsObjects;
         }
         
-        if (secondaryResultsJSON != [NSNull null]) {
+        if (secondaryResultsJSON != nil) {
             
             NSMutableArray *secondaryResultsObjects = [[NSMutableArray alloc]initWithCapacity:[secondaryResultsJSON count]];
             

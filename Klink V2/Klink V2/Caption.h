@@ -14,15 +14,15 @@
 @interface Caption : ServerManagedResource  <IWireSerializable>{
 @private
 }
-@property (nonatomic, retain) NSNumber * creatorid;
+@property (nonatomic, retain) NSNumber* creatorid;
 @property (nonatomic, retain) NSString* creatorname;
-@property (nonatomic, retain) NSString * caption1;
+@property (nonatomic, retain) NSString* caption1;
 @property (nonatomic, retain) NSString* title;
-@property (nonatomic, retain) NSNumber * numberofvotes;
+@property (nonatomic, retain) NSNumber* numberofvotes;
 @property (nonatomic, retain) NSNumber* photoid;
 @property (nonatomic, retain) NSString* imageurl;
 @property (nonatomic, retain) NSString* thumbnailurl;
-
+@property (nonatomic, retain) NSNumber* user_hasvoted;
 
 + (NSString*)getNewCaptionTitle;
 +(NSString*)getNewCaptionNote;
@@ -30,4 +30,5 @@
 
 //Static initializers
 + (Caption*) captionForPhoto:(NSNumber*)photoID withText:(NSString*)caption;
++ (Caption*) caption:(NSNumber*)objectID;
 @end
