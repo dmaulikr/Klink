@@ -53,7 +53,6 @@
     [UIView setAnimationDuration:1.3f];
     CGRect existingFrame = self.profileBar.frame;
     self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, 0);
-    ;
     [UIView commitAnimations];
 }
 

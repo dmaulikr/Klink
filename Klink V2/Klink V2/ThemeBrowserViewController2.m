@@ -994,6 +994,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
         photoViewController.currentPhoto = selectedPhoto;
         photoViewController.currentTheme = self.theme;
+        
         [self.navigationController pushViewController:photoViewController animated:YES];
         [photoViewController release];
         
