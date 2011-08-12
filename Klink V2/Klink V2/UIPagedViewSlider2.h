@@ -64,6 +64,8 @@
     int                 m_itemHeight_landscape;
     int                 m_itemSpacing;
     
+    BOOL                m_isHorizontalOrientation;
+    
 }
 
 @property (nonatomic,retain)    UIKlinkScrollView*   pagingScrollView;
@@ -78,6 +80,10 @@
             withHeightLandscape:(int)   height_landscape
             withSpacing:        (int)   spacing;
 
+- (id)      initWithWidth:      (int)   width
+            withHeight:         (int)   height
+            withSpacing:        (int)   spacing
+            isHorizontal:       (BOOL)  isHorizontal;
 
 // Layout
 - (void)    performLayout;

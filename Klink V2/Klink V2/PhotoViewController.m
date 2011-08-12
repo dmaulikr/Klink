@@ -17,7 +17,7 @@
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
 #define kPictureHeight              370
-#define kPictureHeight_landscape    245
+#define kPictureHeight_landscape    230
 #define kPictureSpacing             0
 
 
@@ -29,7 +29,6 @@
 
 
 @implementation PhotoViewController
-@synthesize captionTextField        =__captionTextField;
 @synthesize currentPhoto            = m_currentPhoto;
 @synthesize currentTheme            = m_currentTheme;
 @synthesize frc_photos              = __frc_photos;
@@ -90,16 +89,6 @@
     return appDelegate.managedObjectContext;
 }
 
-- (UITextField*)captionTextField {
-    if (__captionTextField != nil) {
-        return __captionTextField;
-    }
-    
-    CGRect frame = [self frameForCaptionTextField];
-    UITextField* textField = [[UITextField alloc]initWithFrame:frame];
-    
-    return textField;
-}
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
         return __frc_photos;
@@ -289,15 +278,17 @@
     [super viewDidLoad];
     m_isInEditMode = NO;
    
-    self.tv_captionBox.hidden = YES;
+    self.h_tv_captionBox.hidden = YES;
+    self.v_tv_captionBox.hidden = YES;
     
     self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
     self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
     self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
     
-   
-    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
-    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+    [self.h_pagedViewSlider initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:YES];    
+    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
+//    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+//    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 
     self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.currentTheme.objectid];
     self.photoCloudEnumerator.delegate = self;
@@ -374,27 +365,48 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 -(void)didRotate:(NSNotification*)notification {
     [super didRotate:notification];
     //need to switch out the ladscape and portrait views
     //populate the sv_sliders as needed
+    NSString* captionText = nil;
+    
+    if (m_isInEditMode) {
+        captionText = [self.tv_captionBox getText];
+    }
+
+    
     UIDeviceOrientation toInterfaceOrientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
         
         int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
         self.view = self.v_portrait;
-        [self.pagedViewSlider setInitialPageIndex:currentScrollIndex];
+        [self.pagedViewSlider goToPage:currentScrollIndex];
     }
     else {
         //going to landscape
         int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
         self.view = self.v_landscape;        
-        [self.pagedViewSlider setInitialPageIndex:currentScrollIndex];
+        [self.pagedViewSlider goToPage:currentScrollIndex];
+        
+        
     }
+    
+    //if the view is in edit mode, we need to transfer the contents of the various
+    //text boxes between the two
+    if (m_isInEditMode) {
+        self.tv_captionBox.hidden = NO;
+        [self.tv_captionBox setText:captionText];
+        [self onEnterEditMode];
+    }
+    else {
+        self.tv_captionBox.hidden = YES;
+    }
+    
     
 }
 
@@ -414,12 +426,6 @@
 	self.previousButton.enabled = (self.pagedViewSlider.currentPageIndex > 0);
 	self.nextButton.enabled = (self.pagedViewSlider.currentPageIndex < photos.count-1);
 }
-
-
-
-
-
-
 
 #pragma mark Control Hiding / Showing
 
@@ -633,7 +639,7 @@
     
     NSDictionary* info = [notification userInfo];
 
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [[info objectForKey:UIKeyboardBoundsUserInfoKey] CGRectValue].size;
     
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.sv_view.contentInset = contentInsets;

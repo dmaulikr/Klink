@@ -70,11 +70,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @synthesize frc_photosInCurrentTheme    = __frc_photosInCurrentTheme;
 @synthesize frc_themes                  = __frc_themes;
 @synthesize lbl_theme;
-@synthesize ec_activeThemePhotoContext;
-@synthesize m_isThereAThemePhotoEnumerationAlreadyExecuting;
-@synthesize ec_activeThemeContext;
-@synthesize m_isThereAThemeEnumerationAlreadyExecuting;
-@synthesize m_outstandingPhotoEnumNotificationID;
 @synthesize v_portrait;
 @synthesize v_landscape;
 @synthesize v_pvs_photoSlider2;
@@ -83,6 +78,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @synthesize v_pvs_themeSlider2;
 @synthesize pvs_photoSlider2            =__pvs_photoSlider2;
 @synthesize pvs_themeSlider2            =__pvs_themeSlider2;
+@synthesize themeCloudEnumerator        =m_themeCloudEnumerator;
+@synthesize photosInThemeCloudEnumerator=m_photosInThemeCloudEnumeator;
 
 #pragma mark - Properties
 - (UIPagedViewSlider2*) pvs_photoSlider2 {
@@ -149,68 +146,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
 
     [self.pvs_photoSlider2 reset];
-    self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme.objectid];
-    self.m_outstandingPhotoEnumNotificationID = nil;
-    self.m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
+    
+    self.photosInThemeCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.theme.objectid];
+  
 }
 
-#pragma mark - Enumeration Handlers
 
--(void)enumeratePhotosForCurrentTheme {
-    NSString* activityName = @"ThemeBrowserController.enumeratePhotosForCurrentTheme:";
-    if (ec_activeThemePhotoContext == nil) {
-        //if we have a nil contect, that means we have yet to query for the photos in this theme directly
-        self.ec_activeThemePhotoContext = [EnumerationContext contextForPhotosInTheme:self.theme.objectid];
-    }
-    
-    //execute the enumeration only if there is not already one executing and the current one is not done
-    if (!m_isThereAThemePhotoEnumerationAlreadyExecuting &&
-        ec_activeThemePhotoContext.isDone!=[NSNumber numberWithBool:YES]) {
-        
-        
-        m_isThereAThemePhotoEnumerationAlreadyExecuting = YES;
-        WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
-        QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
-        
-        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-        self.m_outstandingPhotoEnumNotificationID = [NSString GetGUID];
-        [notificationCenter addObserver:self selector:@selector(onEnumeratePhotosForThemeFinished:) name:m_outstandingPhotoEnumNotificationID object:nil];
-        
-        [enumerationManager enumeratePhotosInTheme:self.theme withQueryOptions:queryOptions onFinishNotify:m_outstandingPhotoEnumNotificationID useEnumerationContext:self.ec_activeThemePhotoContext shouldEnumerateSinglePage:YES];
-        
-        NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
-        [BLLog v:activityName withMessage:message];
-    }
-    
-}
-
-- (void) enumerateThemesFromWebService {
-    NSString* activityName = @"ThemeBrowserController.enumerateThemesFromWebService:";
-    if (ec_activeThemeContext == nil) {
-        //if we have a nil contect, that means we have yet to query for the photos in this theme directly
-        self.ec_activeThemeContext = [EnumerationContext contextForThemes];
-    }
-    
-    //execute the enumeration only if there is not already one executing
-    if (!m_isThereAThemeEnumerationAlreadyExecuting &&
-        ec_activeThemeContext.isDone!=[NSNumber numberWithBool:YES]) {
-        
-        m_isThereAThemeEnumerationAlreadyExecuting = YES;
-        WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
-        QueryOptions* queryOptions = [QueryOptions queryForThemes];
-        
-        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-        NSString* notificationID = [NSString GetGUID];
-        [notificationCenter addObserver:self selector:@selector(onEnumerateThemesFinished:) name:notificationID object:nil];
-        
-        [enumerationManager enumerateThemes:[NSNumber numberWithInt:maxsize_THEMEDOWNLOAD] withPageSize:[NSNumber numberWithInt:pageSize_THEME] withQueryOptions:queryOptions onFinishNotify:notificationID useEnumerationContext:ec_activeThemeContext shouldEnumerateSinglePage:YES];
-        
-        
-        NSString* message = [NSString stringWithFormat:@"executing web service enumeration due to scroll threshold being crossed"];
-        [BLLog v:activityName withMessage:message];
-    }
-    
-}
 
 
 #pragma mark - View lifecycle
@@ -232,10 +173,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 {
   
     [super viewDidLoad];
-    
- 
-     
-     
+
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
         
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
@@ -245,6 +183,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
     
+    self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
+    self.themeCloudEnumerator.delegate = self;
     
     if (self.theme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
@@ -256,8 +196,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             //need to issue request to get themes from web service
             NSString* message = [NSString stringWithFormat:@"No themes found in database, enumerating from the web service"];
             [BLLog v:activityName withMessage:message];
-            
-            [self enumerateThemesFromWebService];
+            [self.themeCloudEnumerator enumerateNextPage];
+
         }
         
     }
@@ -267,12 +207,17 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.pvs_themeSlider2.layer.borderWidth = 1.0f;
     self.pvs_themeSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
     
+    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
+    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
     
-    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
-    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
+    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
     
-    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureHeight_landscape withHeightLandscape:kThemePictureHeight withSpacing:kThemePictureSpacing];
-    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureWidth_landscape withHeightLandscape:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing];
+//    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+//    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
+//    
+//    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureHeight_landscape withHeightLandscape:kThemePictureHeight withSpacing:kThemePictureSpacing];
+//    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureWidth_landscape withHeightLandscape:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing];
 
 }
 
@@ -296,8 +241,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
         int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
         self.view = v_portrait;
-        self.pvs_photoSlider2.currentPageIndex = currentPhotoScrollIndex;
-        self.pvs_themeSlider2.currentPageIndex = currentThemeScrollIndex;
+        
+        [self.pvs_photoSlider2 goToPage:currentPhotoScrollIndex];
+        [self.pvs_themeSlider2 goToPage:currentThemeScrollIndex];
+      
 
     }
     else {
@@ -305,8 +252,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
         int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
         self.view = v_landscape;
-        self.pvs_photoSlider2.currentPageIndex = currentPhotoScrollIndex;
-        self.pvs_themeSlider2.currentPageIndex = currentThemeScrollIndex;       
+
+        [self.pvs_photoSlider2 goToPage:currentPhotoScrollIndex];
+        [self.pvs_themeSlider2 goToPage:currentThemeScrollIndex];
 
 
     }
@@ -519,143 +467,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-//- (id) configureViewFor:(Photo*)photo atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal{
-//    ImageManager *imageManager = [ImageManager getInstance];
-//    
-//  
-//    
-//    CGRect photoImageViewFrame = [self getPhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
-//    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:photoImageViewFrame]autorelease];
-//    imageView.contentMode = UIViewContentModeScaleAspectFill;
-//    
-//    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-//    
-//    //Create the caption label for the current photo
-//    Caption* topCaption = photo.topCaption;
-//    
-//    if (topCaption != nil) {
-//        CGRect captionFrame = [self getCaptionFrame];
-//        UILabel* captionLabel = [[[UILabel alloc]initWithFrame:captionFrame]autorelease];
-//        captionLabel.text = topCaption.caption1;
-//        captionLabel.textColor = [UIColor whiteColor];
-//        captionLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-//        captionLabel.numberOfLines = 0;
-//        captionLabel.lineBreakMode = UILineBreakModeWordWrap;
-//        captionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//        [imageView addSubview:captionLabel];
-//        
-//    }
-//    
-//    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
-//    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];  
-//    if (image != nil) {
-//        
-//        imageView.image = image;
-//     
-//    }
-//    else {
-//        imageView.backgroundColor = [UIColor blackColor];
-//    }
-//    
-//    return imageView;
-//}
-
-//- (id) configureViewForTheme:(Theme*)theme atIndex:(int)index isOrientationHorizontal:(BOOL)isSliderOrientationHorizontal {
-//    ImageManager *imageManager = [ImageManager getInstance];
-//    
-//    CGRect imageFrame = [self getThemePhotoFrame:index isOrientationHorizontal:isSliderOrientationHorizontal];
-//    UIImageView* imageView = [[[UIImageView alloc]initWithFrame:imageFrame]autorelease];
-//
-//    
-//    //The following adds the text label for the theme display name
-//    CGRect textViewFrame = [self getThemeTitleFrame];
-//    UILabel* textView = [[[UILabel alloc]initWithFrame:textViewFrame]autorelease];
-//    textView.textColor = [UIColor whiteColor];
-//    textView.numberOfLines = 0;
-//    textView.lineBreakMode = UILineBreakModeWordWrap;
-//    textView.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-//    textView.text = theme.displayname;
-//    [imageView addSubview:textView];
-//    
-//    
-//    //The following adds the text label for the theme description
-//    CGRect textViewDescriptionFrame = [self getThemeDescriptionFrame];
-//    UILabel* textViewDescription = [[[UILabel alloc]initWithFrame:textViewDescriptionFrame]autorelease];
-//    textViewDescription.textColor = [UIColor whiteColor];
-//    textViewDescription.numberOfLines = 0;
-//    textViewDescription.lineBreakMode = UILineBreakModeWordWrap;
-//    textViewDescription.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
-//    textViewDescription.text = theme.descr;
-//    textViewDescription.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    [imageView addSubview:textViewDescription];
-//    
-//    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:[NSNumber numberWithInt:index] forKey:an_INDEXPATH];
-//
-//    [userInfo setObject:imageView forKey:an_IMAGEVIEW];        
-//    
-//    UIImage* image = [imageManager downloadImage:theme.homeimageurl withUserInfo:userInfo atCallback:self];   
-//    
-//    if (image != nil) {
-//        imageView.image = image;
-//    }
-//    else {
-//        imageView.backgroundColor =[UIColor blackColor];
-//    }
-//    return imageView;
-//    
-//}
-
-//- (UIView*)viewSlider:(UIPagedViewSlider *)viewSlider cellForRowAtIndex:(int)index sliderIsHorizontal:(BOOL)isSliderOrientationHorizontal  {
-//    UIPagedViewSlider* currentPhotoSlider = self.pvs_photoSlider;
-//    if (viewSlider == currentPhotoSlider) {
-//        //need cell for the photo slider
-//        NSArray* photosInTheme = [self.frc_photosInCurrentTheme fetchedObjects];
-//        if (index >= [photosInTheme count]) {
-//            NSString* message = @"dicks";
-//        }
-//        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-//        return [self configureViewFor:photo atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
-//    }
-//    else {
-//        //need cell for the theme slider
-//        Theme* theme = [[self.frc_themes fetchedObjects] objectAtIndex:index];
-//        return [self configureViewForTheme:theme atIndex:index isOrientationHorizontal:isSliderOrientationHorizontal];
-//    }
-//    
-//}
-
-
-
-//-(void)themeSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-//  
-//    if (numberOfCellsToEnd < threshold_LOADMORETHEMES) {
-//        //the current scroll position is below the threshold, thus we need to load more themes
-//        [self enumerateThemesFromWebService];
-//    }
-//    
-//    Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
-//    if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
-//        //the theme scrolled to is not the same as the current one, time to switch themes
-//        [self assignTheme:themeAtCurrentIndex];
-//    }
-//    
-//}
-
-
-//-(void)photoSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
-//    
-//    if (numberOfCellsToEnd < threshold_LOADMOREPHOTOS) {
-//        //the current scroll position is below the threshold, thus we need to load more photos for this particular theme
-//        [self enumeratePhotosForCurrentTheme];
-//    }
-//
-//}
 
 -(void)themeSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
   
     if (numberOfCellsToEnd < threshold_LOADMORETHEMES) {
         //the current scroll position is below the threshold, thus we need to load more themes
-        [self enumerateThemesFromWebService];
+        [self.themeCloudEnumerator enumerateNextPage];
     }
     
     Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
@@ -671,75 +488,14 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     if (numberOfCellsToEnd < threshold_LOADMOREPHOTOS) {
         //the current scroll position is below the threshold, thus we need to load more photos for this particular theme
-        [self enumeratePhotosForCurrentTheme];
+//        [self enumeratePhotosForCurrentTheme];
+        [self.photosInThemeCloudEnumerator enumerateNextPage];
     }
 
 }
 
 
 
-#pragma mark - Enumeration Completion Handlers
-- (void)onEnumerateThemesFinished:(NSNotification*)notification {
-    NSString* activityName = @"ThemeBrowserController.onEnumerateThemesFinished:";
-    NSDictionary *userInfo = [notification userInfo];
-    
-
-    
-    if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
-        EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
-        if ([returnedContext.isDone boolValue] == NO) {
-            //enumeration remains open
-            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
-            [BLLog v:activityName withMessage:message];
-           
-        }
-        else {
-            //enumeration is complete, set the context to nil
-            
-            NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
-            [BLLog v:activityName withMessage:message];
-            
-            
-        }
-        self.ec_activeThemeContext = returnedContext;
-        
-    }
-    m_isThereAThemeEnumerationAlreadyExecuting = NO;
-}
-
-- (void)onEnumeratePhotosForThemeFinished:(NSNotification*)notification {
-    NSString* activityName = @"ThemeBrowserController.onEnumeratePhotosForThemeFinished:";
-    NSDictionary *userInfo = [notification userInfo];
-    
-    //we need to check to ensure that the theme for which this enumeration was launched is still the currently active theme    
-    if ([notification.name isEqualToString:self.m_outstandingPhotoEnumNotificationID]) {
-        if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
-            EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
-            if ([returnedContext.isDone boolValue] == NO) {
-                //enumeration remains open
-                NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved for future use",returnedContext.isDone];
-                [BLLog v:activityName withMessage:message];
-                
-            }
-            else {
-                //enumeration is complete, set the context to nil
-                
-                NSString* message = [NSString stringWithFormat:@"enumeration context isDone:%@, saved value set to null",returnedContext.isDone];
-                [BLLog v:activityName withMessage:message];
-              
-                               
-            }
-            self.ec_activeThemePhotoContext = returnedContext;
-        }
-        
-        m_isThereAThemePhotoEnumerationAlreadyExecuting = NO;
-    }
-    else {
-        NSString* message = [NSString stringWithFormat:@"expired enumeration context returned, not persisting value"];
-        [BLLog v:activityName withMessage:message];
-        
-    }
-}
 
 
 
@@ -1017,6 +773,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
 
         UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
         [self viewSlider:self.pvs_photoSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
+
         return imageView;
     }
     else if (viewSlider == self.pvs_themeSlider2 &&
@@ -1025,7 +782,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         
         UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
         [self viewSlider:self.pvs_themeSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
-        
+      
         return imageView;
     }
     return nil;
@@ -1126,5 +883,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         return [[self.frc_themes fetchedObjects]count];
     }
     return 0;
+}
+
+#pragma mark - Cloud Enumerator delegate
+- (void) onEnumerateComplete {
+    
 }
 @end

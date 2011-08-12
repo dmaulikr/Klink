@@ -50,4 +50,5 @@
 //static initializers
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid;
 + (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
++ (CloudEnumerator*) enumeratorForThemes;
 @end

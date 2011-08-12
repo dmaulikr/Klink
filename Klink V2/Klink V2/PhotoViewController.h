@@ -74,7 +74,7 @@ typedef enum {
 @property (nonatomic,retain) UIBarButtonItem*               captionButton;
 @property (nonatomic,retain) UIBarButtonItem*               submitButton;
 @property (nonatomic,retain) UIBarButtonItem*               cancelCaptionButton;
-@property (nonatomic,retain) UITextField*                   captionTextField;
+
 @property ViewState                                         state;
 
 

@@ -102,15 +102,10 @@
     
 }
 #pragma mark - Frames
-- (CGRect) frameForCaptionScrollView {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, self.frame.size.height - kCaptionHeight_landscape, kCaptionWidth_landscape, kCaptionHeight_landscape);
-    }
-    else {
-        return CGRectMake(0, self.frame.size.height - kCaptionHeight, kCaptionWidth, kCaptionHeight);
-//          return CGRectMake(0, 10, kCaptionWidth, kCaptionHeight);
-    }
+- (CGRect) frameForCaptionScrollView:(CGRect)frame {
+    
+    return CGRectMake(0, frame.size.height-kCaptionHeight, frame.size.width, kCaptionHeight);
+
 }
 
 - (CGRect)frameForVoteButton:(CGRect)frame {
@@ -128,13 +123,16 @@
         
         self.photo = photo;
         
-        CGRect frameForCaptionScrollView = [self frameForCaptionScrollView];
+        CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
         self.captionScrollView.currentPageIndex = 0;
         self.captionScrollView.backgroundColor = [UIColor redColor];
         self.captionScrollView.opaque = NO;
-        [self.captionScrollView initWithWidth:kCaptionWidth withHeight:kCaptionHeight withWidthLandscape:kCaptionWidth_landscape withHeightLandscape:kCaptionHeight_landscape withSpacing:kCaptionSpacing];
+        
+        [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing isHorizontal:YES];
+//        
+//        [self.captionScrollView initWithWidth:kCaptionWidth withHeight:kCaptionHeight withWidthLandscape:kCaptionWidth_landscape withHeightLandscape:kCaptionHeight_landscape withSpacing:kCaptionSpacing];
         [self addSubview:self.captionScrollView];
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;

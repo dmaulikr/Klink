@@ -12,33 +12,32 @@
 #import "ImageDownloadProtocol.h"
 #import "KlinkBaseViewController.h"
 #import "UIPagedViewSlider2.h"
+#import "CloudEnumerator.h"
 
 
-@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSlider2Delegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+
+@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSlider2Delegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CloudEnumeratorDelegate> {
 
     UILabel*                        lbl_theme;
     Theme*                          theme;  
-    EnumerationContext*             ec_activeThemePhotoContext;
-    EnumerationContext*             ec_activeThemeContext;
-    BOOL                            m_isThereAThemePhotoEnumerationAlreadyExecuting;
-    BOOL                            m_isThereAThemeEnumerationAlreadyExecuting;
-    
-    NSString*                       m_outstandingPhotoEnumNotificationID;
+
+    CloudEnumerator*                m_themeCloudEnumerator;
+    CloudEnumerator*                m_photosInThemeCloudEnumeator;
   
   
 }
 
 @property (nonatomic,retain) Theme*                     theme;
-@property (nonatomic,retain) NSString*                  m_outstandingPhotoEnumNotificationID;
+
 @property (nonatomic,retain) NSManagedObjectContext*    managedObjectContext;
 @property (nonatomic,retain) NSFetchedResultsController*frc_photosInCurrentTheme;
 @property (nonatomic,retain) NSFetchedResultsController*frc_themes;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_theme;
 
-@property BOOL                                     m_isThereAThemePhotoEnumerationAlreadyExecuting;
-@property BOOL                                     m_isThereAThemeEnumerationAlreadyExecuting;
-@property (nonatomic, retain) EnumerationContext* ec_activeThemePhotoContext;
-@property (nonatomic, retain) EnumerationContext* ec_activeThemeContext;
+
+
+@property (nonatomic, retain) CloudEnumerator*    themeCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator*    photosInThemeCloudEnumerator;
 
 
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2* v_pvs_photoSlider2;

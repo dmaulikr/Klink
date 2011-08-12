@@ -112,5 +112,15 @@
     return enumerator;
 }
 
++ (CloudEnumerator*) enumeratorForThemes {
+    Query* query = [Query queryThemes];
+    QueryOptions* queryOptions = [QueryOptions queryForThemes];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForThemes];
+    query.queryoptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    return enumerator;
+}
+
 
 @end
