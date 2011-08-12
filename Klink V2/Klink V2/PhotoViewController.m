@@ -351,7 +351,7 @@
     
 	// Navigation
 	[self updateNavigation];
-	[self hideControlsAfterDelay];
+	//[self hideControlsAfterDelay];
 }
 
 
