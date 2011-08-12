@@ -89,6 +89,12 @@
     m_isEnumerationPending = NO;
 }
 
+- (void) dealloc {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+    
+    [super dealloc];
+}
 
 #pragma mark - Static initializers
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {

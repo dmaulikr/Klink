@@ -16,7 +16,7 @@ NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
 NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=10;
 int const pageSize_PHOTOSINTHEME = 10;
-int const pageSize_THEME = 2;
+int const pageSize_THEME = 5;
 int const pageSize_THEMELINKEDOBJECTS = 5;
 int const pageSize_CAPTION = 10;
 
@@ -33,7 +33,7 @@ int const timeout_ENUMERATION = 30;
 
 //theme browsing view controller settings
 int const threshold_LOADMOREPHOTOS = 10;
-int const threshold_LOADMORETHEMES = 2;
+int const threshold_LOADMORETHEMES = 5;
 int const threshold_LOADMORECAPTIONS = 10;
 
 int const opcode_QUERYEQUALITY=1;

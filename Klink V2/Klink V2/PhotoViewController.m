@@ -542,6 +542,7 @@
             return photoCaptionView;
         }
     }
+    return nil;
 }
 
 #pragma mark - UIPagedViewSlider2Delegate

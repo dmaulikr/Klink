@@ -95,11 +95,11 @@
 - (void)                tilePages;
 - (UIPagedViewItem *)   dequeueRecycledPage;
 - (void)                configurePage:              (UIPagedViewItem*)  page forIndex:(NSUInteger)index;
-- (void)                didStartViewingPageAtIndex: (NSUInteger)        index;
+//- (void)                didStartViewingPageAtIndex: (NSUInteger)        index;
 - (void)                goToPage:                   (int)               index;
 - (BOOL)                isVisible:                   (int)               index;
 // Properties
-- (void)    setInitialPageIndex:        (NSUInteger)    index;
+//- (void)    setInitialPageIndex:        (NSUInteger)    index;
 
 - (void) reset;
 

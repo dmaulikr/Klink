@@ -232,7 +232,7 @@
     int count = [self.delegate itemCountFor:self];
     self.pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
     if (count > 0) {
-        CGRect visibleBounds = self.pagingScrollView.bounds;
+    
         
         int iFirstIndex = [self getIndex];
         int iLastIndex = [self getLastVisibleIndex];
@@ -333,14 +333,7 @@
     else {
         return CGSizeMake(m_itemWidth,(m_itemHeight + m_itemSpacing)*count);
     }
-//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//    int count = [self.delegate itemCountFor:self];
-//    if (UIInterfaceOrientationIsLandscape(orientation)) {
-//        return CGSizeMake((m_itemWidth_landscape+m_itemSpacing) * count, m_itemHeight_landscape);
-//    }
-//    else {
-//         return CGSizeMake((m_itemWidth+m_itemSpacing) * count, m_itemHeight);
-//    }
+
     
 }
 
@@ -354,14 +347,7 @@
         return CGPointMake(0,(m_itemHeight+m_itemSpacing)*index);
     }
     
-//    
-//    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//       if (UIInterfaceOrientationIsLandscape(orientation)) {
-//        return CGPointMake((m_itemWidth_landscape+m_itemSpacing) * index, 0);
-//    }
-//    else {
-//        return CGPointMake((m_itemWidth+m_itemSpacing) * index, 0);
-//    }
+
 }
 
 #pragma mark -
@@ -386,7 +372,7 @@
     NSUInteger previousCurrentPage = m_currentPageIndex;
 	self.currentPageIndex = index;
 	if (self.currentPageIndex != previousCurrentPage) {
-        [self didStartViewingPageAtIndex:index];
+        
         [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:count-index];
     }
 	
@@ -436,7 +422,7 @@
     
     // Process the single tap here
     if ([touches count]==1) { 
-        UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+        
         
         UITouch* touch = [[touches allObjects]objectAtIndex:0];
         CGPoint touchLocation = [touch locationInView:self.pagingScrollView];

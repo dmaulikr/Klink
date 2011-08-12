@@ -156,6 +156,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 #pragma mark - View lifecycle
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     [super viewWillAppear:animated];
@@ -163,6 +166,16 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
+        self.view = self.v_landscape;
+        
+    }
+    else {
+        self.view = self.v_portrait;
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -247,7 +260,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
       
 
     }
-    else {
+    else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         //going to landscape
         int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
         int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
