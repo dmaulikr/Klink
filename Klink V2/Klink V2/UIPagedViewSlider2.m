@@ -64,6 +64,19 @@
     return self;
 }
 
+- (id)      initWithWidth:          (int)   width
+               withHeight:          (int)   height
+              withSpacing:          (int)   spacing
+             isHorizontal:          (BOOL)  isHorizontal {
+    
+    m_itemWidth = width;
+    m_itemHeight= height;
+    m_itemSpacing = spacing;
+    m_isHorizontalOrientation   = isHorizontal;
+    [self init];
+    return self;
+}
+
 - (id)    init {
     
 //    self = [super init];
@@ -106,6 +119,15 @@
     return frame;
 }
 
+- (CGRect)  frameForPageAtIndex:            (NSUInteger)    index {
+    if (m_isHorizontalOrientation) {
+        return CGRectMake((m_itemWidth + m_itemSpacing) * index, 0, m_itemWidth,  m_itemHeight);
+    }
+    else {
+        return CGRectMake(0,(m_itemHeight+m_itemSpacing)*index, m_itemWidth, m_itemHeight);
+    }
+}
+
 
 
 // Layout
@@ -143,28 +165,46 @@
 }
 
 - (int) getIndex {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     CGPoint offset = self.pagingScrollView.contentOffset;
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth_landscape));
-    }
-    else {
+    if (m_isHorizontalOrientation) {
         return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth));
     }
+    else {
+        return (int)floorf(offset.y/(m_itemSpacing+m_itemHeight));
+    }
+    
+//    
+//    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+//    CGPoint offset = self.pagingScrollView.contentOffset;
+//    if (UIInterfaceOrientationIsLandscape(orientation)) {
+//        return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth_landscape));
+//    }
+//    else {
+//        return (int)floorf(offset.x/(m_itemSpacing+m_itemWidth));
+//    }
 }
 
 - (int) getLastVisibleIndex {
-    int leftIndex = [self getIndex];
+    
     CGRect visibleBounds = self.pagingScrollView.bounds;
-    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+//    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+//    
+//    
+//    
+//    if (UIInterfaceOrientationIsLandscape(orientation)) {
+//        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth_landscape));
+//    }
+//    else {
+//        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth));
+//    }
     
-    
-    
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth_landscape));
+    if (m_isHorizontalOrientation) {
+        int leftIndex = [self getIndex];
+        return leftIndex + ceilf(visibleBounds.size.width/ (m_itemSpacing+m_itemWidth));
     }
     else {
-        return leftIndex + ceilf(visibleBounds.size.width / (m_itemSpacing+m_itemWidth));
+        int topIndex = [self getIndex];
+        return topIndex + ceilf(visibleBounds.size.height / (m_itemSpacing + m_itemHeight));
     }
 }
 
@@ -192,7 +232,7 @@
     int count = [self.delegate itemCountFor:self];
     self.pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
     if (count > 0) {
-        CGRect visibleBounds = self.pagingScrollView.bounds;
+    
         
         int iFirstIndex = [self getIndex];
         int iLastIndex = [self getLastVisibleIndex];
@@ -286,36 +326,28 @@
 
 //Frames
 - (CGSize)  contentSizeForPagingScrollView {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
     int count = [self.delegate itemCountFor:self];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGSizeMake((m_itemWidth_landscape+m_itemSpacing) * count, m_itemHeight_landscape);
+    if (m_isHorizontalOrientation) {
+        return CGSizeMake((m_itemWidth+m_itemSpacing)*count,m_itemHeight);
     }
     else {
-         return CGSizeMake((m_itemWidth+m_itemSpacing) * count, m_itemHeight);
+        return CGSizeMake(m_itemWidth,(m_itemHeight + m_itemSpacing)*count);
     }
+
     
 }
 
-- (CGRect)  frameForPageAtIndex:            (NSUInteger)    index {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake((m_itemWidth_landscape+m_itemSpacing) * index,0,m_itemWidth_landscape, m_itemHeight_landscape);
-    }
-    else {
-        return CGRectMake((m_itemWidth+m_itemSpacing) * index,0,m_itemWidth, m_itemHeight);
 
-    }
-}
 
 - (CGPoint) contentOffsetForPageAtIndex:    (NSUInteger)    index {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-       if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGPointMake((m_itemWidth_landscape+m_itemSpacing) * index, 0);
-    }
-    else {
+    if (m_isHorizontalOrientation) {
         return CGPointMake((m_itemWidth+m_itemSpacing) * index, 0);
     }
+    else {
+        return CGPointMake(0,(m_itemHeight+m_itemSpacing)*index);
+    }
+    
+
 }
 
 #pragma mark -
@@ -340,7 +372,7 @@
     NSUInteger previousCurrentPage = m_currentPageIndex;
 	self.currentPageIndex = index;
 	if (self.currentPageIndex != previousCurrentPage) {
-        [self didStartViewingPageAtIndex:index];
+        
         [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:count-index];
     }
 	
@@ -390,19 +422,22 @@
     
     // Process the single tap here
     if ([touches count]==1) { 
-        UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+        
         
         UITouch* touch = [[touches allObjects]objectAtIndex:0];
         CGPoint touchLocation = [touch locationInView:self.pagingScrollView];
         int index = 0;
         int x = touchLocation.x;
+        int y = touchLocation.y;
         
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            index = (x)/(m_itemSpacing+m_itemWidth_landscape);
+        if (m_isHorizontalOrientation) {
+            index = (x) / (m_itemSpacing + m_itemWidth);
         }
         else {
-             index = (x)/(m_itemSpacing+m_itemWidth);
+            index = (y) / (m_itemSpacing + m_itemHeight); 
         }
+        
+
    
         [self.delegate viewSlider:self selectIndex:index];
     }

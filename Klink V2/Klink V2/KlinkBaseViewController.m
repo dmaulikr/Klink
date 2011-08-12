@@ -110,6 +110,7 @@
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.tintColor = nil;
@@ -124,6 +125,8 @@
         [self onUserLoggedOut];
     }
     
+
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -134,7 +137,7 @@
     [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
     [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
       
-        
+
     
 
     
@@ -160,14 +163,7 @@
     m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
     m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
     
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
-    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
-        self.view = self.v_landscape;
-        
-    }
-    else {
-        self.view = self.v_portrait;
-    }
+
 
     
     //load the profile bar view

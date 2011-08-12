@@ -83,10 +83,10 @@
     enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_THEMEDOWNLOAD];
     
     //TODO: we can intelligently guess the page we will need here in order to not make any repetitive calls
-    NSArray* themes = [DataLayer getObjectsByType:tn_THEME sortBy:an_DATECREATED sortAscending:NO];
-    int count = [themes count];
-    
-    enumerationContext.pageNumber =[NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
+//    NSArray* themes = [DataLayer getObjectsByType:tn_THEME sortBy:an_DATECREATED sortAscending:NO];
+//    int count = [themes count];
+//    
+//    enumerationContext.pageNumber =[NSNumber numberWithInt:(count / [enumerationContext.pageSize intValue])];
     
     return enumerationContext;
 }

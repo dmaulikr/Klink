@@ -89,6 +89,12 @@
     m_isEnumerationPending = NO;
 }
 
+- (void) dealloc {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+    
+    [super dealloc];
+}
 
 #pragma mark - Static initializers
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
@@ -106,6 +112,16 @@
     Query* query = [Query queryPhotosWithTheme:themeid];
     QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
     EnumerationContext* enumerationContext = [EnumerationContext contextForPhotosInTheme:themeid];
+    query.queryoptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    return enumerator;
+}
+
++ (CloudEnumerator*) enumeratorForThemes {
+    Query* query = [Query queryThemes];
+    QueryOptions* queryOptions = [QueryOptions queryForThemes];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForThemes];
     query.queryoptions = queryOptions;
     
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
