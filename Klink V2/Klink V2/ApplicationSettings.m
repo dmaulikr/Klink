@@ -41,6 +41,10 @@ int const opcode_QUERYEQUALITY=1;
 NSString* const facebook_APPID=@"168077769927457";
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
+
+// text strings transparency
+float const textAlpha = 0.9;
+
 // caption text settings
 int const maxlength_CAPTION = 30;
 extern NSString* const font_CAPTION = @"Marker Felt";
@@ -50,4 +54,9 @@ extern int const fontsize_CAPTION = 16;
 int const maxlength_THEME = 15;
 extern NSString* const font_THEME = @"Marker Felt";
 extern int const fontsize_THEME = 36;
+
+// description text settings
+int const maxlength_DESCRIPTION = 150;
+extern NSString* const font_DESCRIPTION = @"Marker Felt";
+extern int const fontsize_DESCRIPTION = 16;
 

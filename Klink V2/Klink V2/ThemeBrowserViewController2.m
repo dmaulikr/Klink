@@ -887,18 +887,28 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         
         // Add theme title        
         CGRect themeTitleFrame = [self getThemeTitleFrame];
-        UILabel* themeLabel = nil;
-        if ([imageView.subviews count] == 2) {
-            themeLabel = [imageView.subviews objectAtIndex:0];
+        UIView* themeLabelBackground = nil;     // subview at index 0
+        UILabel* themeLabel = nil;              // subview at index 1
+        if ([imageView.subviews count] == 4) {
+            themeLabel = [imageView.subviews objectAtIndex:1];
             themeLabel.frame = themeTitleFrame;
             [themeLabel setText:selectedTheme.displayname];
         }
         else {
+            // set transparent background first
+            themeLabelBackground = [[UIView alloc] initWithFrame:themeTitleFrame];
+            [themeLabelBackground setBackgroundColor:[UIColor blackColor]];
+            [themeLabelBackground setAlpha:0.5];
+            [themeLabelBackground setOpaque:YES];
+            [imageView addSubview:themeLabelBackground];
+
+            // now add non-transparent text
             themeLabel = [[UILabel alloc] initWithFrame:themeTitleFrame];
             [themeLabel setFont:[UIFont fontWithName:font_THEME size:fontsize_THEME]];
-            [themeLabel setBackgroundColor:[UIColor blackColor]];
-            [themeLabel setAlpha:0.5];
+            [themeLabel setBackgroundColor:[UIColor clearColor]];
+            [themeLabel setAlpha:textAlpha];
             [themeLabel setTextColor:[UIColor whiteColor]];
+            [themeLabel setOpaque:YES];
             [themeLabel setTextAlignment:UITextAlignmentCenter];        
             [themeLabel setText:selectedTheme.displayname];
             [imageView addSubview:themeLabel];
@@ -907,18 +917,28 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         
         // Add theme description        
         CGRect themeDescriptionFrame = [self getThemeDescriptionFrame];
-        UITextView* themeDescTextView = nil;
-        if ([imageView.subviews count] == 2) {
-            themeDescTextView = [imageView.subviews objectAtIndex:1];
+        UIView* themeDescBackground = nil;      // subview at index 2
+        UITextView* themeDescTextView = nil;    // subview at index 3
+        if ([imageView.subviews count] == 4) {
+            themeDescTextView = [imageView.subviews objectAtIndex:3];
             themeDescTextView.frame = themeDescriptionFrame;
             [themeDescTextView setText:selectedTheme.descr];
         }
         else {
-            themeDescTextView = [[UITextView alloc] initWithFrame:themeTitleFrame];
-            [themeDescTextView setFont:[UIFont fontWithName:font_CAPTION size:fontsize_CAPTION]];
-            [themeDescTextView setBackgroundColor:[UIColor blackColor]];
-            [themeDescTextView setAlpha:0.5];
+            // set transparent background first
+            themeDescBackground = [[UIView alloc] initWithFrame:themeDescriptionFrame];
+            [themeDescBackground setBackgroundColor:[UIColor blackColor]];
+            [themeDescBackground setAlpha:0.5];
+            [themeDescBackground setOpaque:YES];
+            [imageView addSubview:themeDescBackground];
+            
+            // now add non-transparent text
+            themeDescTextView = [[UITextView alloc] initWithFrame:themeDescriptionFrame];
+            [themeDescTextView setFont:[UIFont fontWithName:font_DESCRIPTION size:fontsize_DESCRIPTION]];
+            [themeDescTextView setBackgroundColor:[UIColor clearColor]];
+            [themeDescTextView setAlpha:textAlpha];
             [themeDescTextView setTextColor:[UIColor whiteColor]];
+            [themeDescTextView setOpaque:YES];
             [themeDescTextView setTextAlignment:UITextAlignmentCenter];        
             [themeDescTextView setText:selectedTheme.descr];
             [imageView addSubview:themeDescTextView];
