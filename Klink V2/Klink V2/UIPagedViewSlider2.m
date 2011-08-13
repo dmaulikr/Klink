@@ -216,8 +216,12 @@
 }
 
 - (void)    onNewItemInsertedAt:(int)index {
+    
+   
     CGSize newSize = [self contentSizeForPagingScrollView];
     self.pagingScrollView.contentSize = newSize;
+    
+    
     
     if ([self isVisible:index]) {
         [self tilePages];

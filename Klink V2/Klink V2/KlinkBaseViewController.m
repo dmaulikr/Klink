@@ -25,6 +25,7 @@
 @synthesize v_landscape = m_v_landscape;
 @synthesize v_portrait = m_v_portrait;
 @synthesize profileBarHeight = __profileBarHeight;
+@synthesize shouldShowProfileBar = m_shouldShowProfileBar;
 
 #pragma mark - Properties
 - (int)profileBarHeight {
@@ -57,12 +58,14 @@
 }
 
 - (void)showProfileBar {
-    [self.profileBar setHidden:NO];
-    [UIView beginAnimations:@"animationOn" context:NULL]; 
-    [UIView setAnimationDuration:1.3f];
-    CGRect existingFrame = self.profileBar.frame;
-    self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, self.profileBarHeight);
-    [UIView commitAnimations];
+    if (self.shouldShowProfileBar) {
+        [self.profileBar setHidden:NO];
+        [UIView beginAnimations:@"animationOn" context:NULL]; 
+        [UIView setAnimationDuration:1.3f];
+        CGRect existingFrame = self.profileBar.frame;
+        self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, self.profileBarHeight);
+        [UIView commitAnimations];
+    }
 }
 
 #pragma mark - initializers
@@ -159,36 +162,15 @@
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
+    if (!self.shouldShowProfileBar) {
+        [self hideProfileBar];
+    }
     
     m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
     m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
     
 
 
-    
-    //load the profile bar view
-//    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
-//    int x;
-//    int y;
-//    int width;
-//    int height;
-//    
-//    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
-//        x = kProfileBarX_Landscape;
-//        y = kProfileBarY_Landscape;
-//        width = kProfileBarWidth_Landscape;
-//        height = kProfileBarHeight_Landscape;
-//    }
-//    else {
-//        x = kProfileBarX;
-//        y = kProfileBarY;
-//        width = kProfileBarWidth;
-//        height = kProfileBarHeight;
-//    }
-//    
-//    
-//    CGRect profileBarFrame = CGRectMake(x, y, width, height);
-//    self.profileBar = [[UIProfileBar alloc]initWithFrame:profileBarFrame];
 }
 
 

@@ -52,6 +52,7 @@
 
 - (void)viewDidLoad
 {
+    self.shouldShowProfileBar = YES;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -95,6 +96,7 @@
         ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
         
         themeBrowserController2.managedObjectContext = self.managedObjectContext;
+        themeBrowserController2.shouldShowProfileBar = YES;
         [self.navigationController pushViewController:themeBrowserController2 animated:YES];
         [themeBrowserController2 release];
     }
