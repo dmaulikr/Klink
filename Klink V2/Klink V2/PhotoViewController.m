@@ -283,6 +283,8 @@
     self.h_tv_captionBox.hidden = YES;
     self.v_tv_captionBox.hidden = YES;
     
+ 
+    
     self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
     self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
     self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
@@ -389,7 +391,7 @@
         self.view = self.v_portrait;
         [self.pagedViewSlider goToPage:currentScrollIndex];
     }
-    else {
+    else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
         //going to landscape
         int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
         self.view = self.v_landscape;        

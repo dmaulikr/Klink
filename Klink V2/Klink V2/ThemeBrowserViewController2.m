@@ -177,6 +177,11 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     else {
         self.view = self.v_portrait;
     }
+    
+    //now we need to make sure that we are navigating to the proper theme any time we
+    //navigate back to this view controller
+    
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -764,7 +769,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
         photoViewController.currentPhoto = selectedPhoto;
         photoViewController.currentTheme = self.theme;
-        
+        photoViewController.shouldShowProfileBar = NO;
         [self.navigationController pushViewController:photoViewController animated:YES];
         [photoViewController release];
         
