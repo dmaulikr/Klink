@@ -39,15 +39,15 @@
 #define kThemePictureHeight_landscape 200
 #define kThemePictureSpacing 0
 
-#define kTextViewWidth 300
-#define kTextViewHeight 30
-#define kTextViewWidth_landscape 300
-#define kTextViewHeight_landscape 30
+#define kThemeTextViewWidth 320
+#define kThemeTextViewHeight 40
+#define kThemeTextViewWidth_landscape 480
+#define kThemeTextViewHeight_landscape 40
 
-#define kTextViewDescriptionHeight 30
-#define kTextViewDescriptionWidth 300
-#define kTextViewDescriptionWidth_landscape 300
-#define kTextViewDescriptionHeight_landscape 30
+#define kTextViewDescriptionHeight 60
+#define kTextViewDescriptionWidth 320
+#define kTextViewDescriptionWidth_landscape 320
+#define kTextViewDescriptionHeight_landscape 60
 
 #define kCaptionTextViewHeight 10
 #define kCaptionTextViewWidth 120
@@ -139,7 +139,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     NSNumber* oldThemeID = self.theme.objectid;
    
     self.theme = themeObject;    
-    self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
+    //self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
+    [self.lbl_theme setText:themeObject.displayname];
     
     NSString* message = [NSString stringWithFormat:@"Changing from ThemeID:%@ to ThemeID:%@",[oldThemeID stringValue],[themeObject.objectid stringValue]];
     [BLLog v:activityName withMessage:message];
@@ -460,20 +461,20 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 - (CGRect) getThemeTitleFrame {
-    int xCoordinate = 10;
+    int xCoordinate = 0;
     int yCoordinate = 0;
     if (self.view == v_landscape) {
-        yCoordinate = 10;
-        return CGRectMake(xCoordinate, yCoordinate, kTextViewWidth_landscape, kTextViewHeight_landscape); 
+        yCoordinate = 0;
+        return CGRectMake(xCoordinate, yCoordinate, kThemeTextViewWidth_landscape, kThemeTextViewHeight_landscape); 
     }
     else {
-        yCoordinate = 10;
-        return CGRectMake(xCoordinate, yCoordinate, kTextViewWidth, kTextViewHeight); 
+        yCoordinate = 0;
+        return CGRectMake(xCoordinate, yCoordinate, kThemeTextViewWidth, kThemeTextViewHeight); 
     }
 }
 
 - (CGRect) getThemeDescriptionFrame {
-    int xCoordinate = 10;
+    int xCoordinate = 0;
     int yCoordinate = 0;
     if (self.view == v_landscape) {
         yCoordinate = kThemePictureHeight_landscape - kTextViewDescriptionHeight_landscape;
@@ -887,8 +888,47 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         else {
             imageView.image = image;
         }
-      
-
+        
+        
+        // Add theme title        
+        CGRect themeTitleFrame = [self getThemeTitleFrame];
+        UILabel* themeLabel = nil;
+        if ([imageView.subviews count] == 2) {
+            themeLabel = [imageView.subviews objectAtIndex:0];
+            themeLabel.frame = themeTitleFrame;
+            [themeLabel setText:selectedTheme.displayname];
+        }
+        else {
+            themeLabel = [[UILabel alloc] initWithFrame:themeTitleFrame];
+            [themeLabel setFont:[UIFont fontWithName:font_THEME size:fontsize_THEME]];
+            [themeLabel setBackgroundColor:[UIColor blackColor]];
+            [themeLabel setAlpha:0.5];
+            [themeLabel setTextColor:[UIColor whiteColor]];
+            [themeLabel setTextAlignment:UITextAlignmentCenter];        
+            [themeLabel setText:selectedTheme.displayname];
+            [imageView addSubview:themeLabel];
+        }
+        
+        
+        // Add theme description        
+        CGRect themeDescriptionFrame = [self getThemeDescriptionFrame];
+        UITextView* themeDescTextView = nil;
+        if ([imageView.subviews count] == 2) {
+            themeDescTextView = [imageView.subviews objectAtIndex:1];
+            themeDescTextView.frame = themeDescriptionFrame;
+            [themeDescTextView setText:selectedTheme.descr];
+        }
+        else {
+            themeDescTextView = [[UITextView alloc] initWithFrame:themeTitleFrame];
+            [themeDescTextView setFont:[UIFont fontWithName:font_CAPTION size:fontsize_CAPTION]];
+            [themeDescTextView setBackgroundColor:[UIColor blackColor]];
+            [themeDescTextView setAlpha:0.5];
+            [themeDescTextView setTextColor:[UIColor whiteColor]];
+            [themeDescTextView setTextAlignment:UITextAlignmentCenter];        
+            [themeDescTextView setText:selectedTheme.descr];
+            [imageView addSubview:themeDescTextView];
+        }
+        
     }
 }
 

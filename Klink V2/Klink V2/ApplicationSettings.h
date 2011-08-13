@@ -44,3 +44,7 @@ extern NSString* const sn_KEYCHAINSERVICENAME;
 extern int const maxlength_CAPTION;
 extern NSString* const font_CAPTION;
 extern int const fontsize_CAPTION;
+
+extern int const maxlength_THEME;
+extern NSString* const font_THEME;
+extern int const fontsize_THEME;

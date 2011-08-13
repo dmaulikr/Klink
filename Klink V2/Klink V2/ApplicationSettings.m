@@ -41,7 +41,13 @@ int const opcode_QUERYEQUALITY=1;
 NSString* const facebook_APPID=@"168077769927457";
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
+// caption text settings
 int const maxlength_CAPTION = 30;
 extern NSString* const font_CAPTION = @"Marker Felt";
 extern int const fontsize_CAPTION = 16;
+
+// theme title text settings
+int const maxlength_THEME = 15;
+extern NSString* const font_THEME = @"Marker Felt";
+extern int const fontsize_THEME = 36;
 
