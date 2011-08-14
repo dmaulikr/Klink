@@ -181,15 +181,15 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     
     
-//    
-//    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
-//    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
-//        self.view = self.v_landscape;
-//        
-//    }
-//    else {
-//        self.view = self.v_portrait;
-//    }
+    
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
+        self.view = self.v_landscape;
+        
+    }
+    else {
+        self.view = self.v_portrait;
+    }
   
     
 }

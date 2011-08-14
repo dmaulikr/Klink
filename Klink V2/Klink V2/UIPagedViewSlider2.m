@@ -365,20 +365,30 @@
 	[self tilePages];
 	
 	// Calculate current page
-	CGRect visibleBounds = self.pagingScrollView.bounds;
-	int index = (int)(floorf(CGRectGetMidX(visibleBounds) / CGRectGetWidth(visibleBounds)));
+//	CGRect visibleBounds = self.pagingScrollView.bounds;
+//	int index = (int)(floorf(CGRectGetMidX(visibleBounds) / CGRectGetWidth(visibleBounds)));
     int count = [self.delegate itemCountFor:self];
     
-    if (index < 0) index = 0;
-	if (index > count - 1) index = count - 1;
+//    if (index < 0) index = 0;
+//	if (index > count - 1) index = count - 1;
 	
+    int index = [self getIndex];
+    int oldIndex = m_currentPageIndex;
     
-    NSUInteger previousCurrentPage = m_currentPageIndex;
-	self.currentPageIndex = index;
-	if (self.currentPageIndex != previousCurrentPage) {
-        
-        [self.delegate viewSlider:self isAtIndex:index withCellsRemaining:count-index];
+    m_currentPageIndex = index;
+    if (index != oldIndex) {
+        [self.delegate viewSlider:self isAtIndex:m_currentPageIndex withCellsRemaining:count-m_currentPageIndex];
     }
+    
+    
+//    
+//    
+//    NSUInteger previousCurrentPage = m_currentPageIndex;
+//	self.currentPageIndex = index;
+//	if (self.currentPageIndex != previousCurrentPage) {
+//        
+//        
+//    }
 	
 }
 
