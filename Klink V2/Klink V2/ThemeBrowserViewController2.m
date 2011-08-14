@@ -19,7 +19,7 @@
 #import "NSFetchedResultsControllerCategory.h"
 
 #define kPictureWidth 130
-#define kPictureSpacing 5
+#define kPictureSpacing 0
 #define kPictureHeight 120
 #define kPictureWidth_landscape 130
 #define kPictureHeight_landscape 120

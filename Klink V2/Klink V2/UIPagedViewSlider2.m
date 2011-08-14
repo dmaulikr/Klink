@@ -373,6 +373,9 @@
 //	if (index > count - 1) index = count - 1;
 	
     int index = [self getIndex];
+    if (index < 0) index =0 ;
+    
+    if (index > count - 1) index = count - 1;
     int oldIndex = m_currentPageIndex;
     
     m_currentPageIndex = index;
