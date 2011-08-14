@@ -16,6 +16,7 @@
 #import "FullScreenPhotoController.h"
 #import "PhotoViewController.h"
 #import "MWPhotoBrowser.h"
+#import "NSFetchedResultsControllerCategory.h"
 
 #define kPictureWidth 130
 #define kPictureSpacing 5
@@ -155,6 +156,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 
 
+
 #pragma mark - View lifecycle
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -168,19 +170,27 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
-    
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
-    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
-        self.view = self.v_landscape;
+    //find the index for the current theme in the frc
+    int index = 0;
+    if (self.theme != nil) {
+        index = [self.frc_themes indexOf:self.theme];
         
-    }
-    else {
-        self.view = self.v_portrait;
+        //move the scroller to that position
+        [self.pvs_themeSlider2 goToPage:index];
     }
     
-    //now we need to make sure that we are navigating to the proper theme any time we
-    //navigate back to this view controller
     
+    
+//    
+//    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice]orientation];
+//    if (UIInterfaceOrientationIsLandscape(deviceOrientation)) {
+//        self.view = self.v_landscape;
+//        
+//    }
+//    else {
+//        self.view = self.v_portrait;
+//    }
+  
     
 }
 
@@ -231,12 +241,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
     [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
-    
-//    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
-//    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
-//    
-//    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureHeight_landscape withHeightLandscape:kThemePictureHeight withSpacing:kThemePictureSpacing];
-//    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withWidthLandscape:kThemePictureWidth_landscape withHeightLandscape:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing];
 
 }
 
@@ -297,7 +301,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:tn_THEME inManagedObjectContext:self.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_DATECREATED ascending:NO];
-    
+
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
@@ -334,11 +338,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:self.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor_DateCreated = [[NSSortDescriptor alloc]initWithKey:an_DATECREATED ascending:YES];
     
+    NSArray* sortDescriptors = [NSArray arrayWithObjects:sortDescriptor,sortDescriptor_DateCreated, nil];
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"themeid=%@",self.theme.objectid];
     [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setSortDescriptors:sortDescriptors];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     

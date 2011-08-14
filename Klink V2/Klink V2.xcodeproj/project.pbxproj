@@ -116,6 +116,7 @@
 		C5BED8D213D52FC2007A1934 /* UIProfileBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5BED8C813D52FC2007A1934 /* UIProfileBar.xib */; };
 		C5BED8D513D53188007A1934 /* QueryExpression2.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED8D413D53188007A1934 /* QueryExpression2.m */; };
 		C5C1C6C413E7C68000856862 /* UIPagedViewSlider2.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */; };
+		C5C3087113F86D71008E1C81 /* NSFetchedResultsControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C3087013F86D71008E1C81 /* NSFetchedResultsControllerCategory.m */; };
 		C5CCDF9C13D99F9700ABE747 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */; };
 		C5CCDF9D13D99F9700ABE747 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */; };
 		C5CCDFF113D9B67400ABE747 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5CCDFF013D9B67300ABE747 /* Security.framework */; };
@@ -350,6 +351,8 @@
 		C5BED8D413D53188007A1934 /* QueryExpression2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueryExpression2.m; sourceTree = "<group>"; };
 		C5C1C6C213E7C68000856862 /* UIPagedViewSlider2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider2.h; sourceTree = "<group>"; };
 		C5C1C6C313E7C68000856862 /* UIPagedViewSlider2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider2.m; sourceTree = "<group>"; };
+		C5C3086F13F86D71008E1C81 /* NSFetchedResultsControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFetchedResultsControllerCategory.h; sourceTree = "<group>"; };
+		C5C3087013F86D71008E1C81 /* NSFetchedResultsControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFetchedResultsControllerCategory.m; sourceTree = "<group>"; };
 		C5CCDF9913D99F9600ABE747 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C5CCDF9A13D99F9600ABE747 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		C5CCDF9B13D99F9600ABE747 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -706,6 +709,8 @@
 				C5190AAF13C1926C0077EECA /* URLEncoding.m */,
 				C5D8E09813DA4BFE00D88B00 /* NSDateCategory.h */,
 				C5D8E09913DA4BFE00D88B00 /* NSDateCategory.m */,
+				C5C3086F13F86D71008E1C81 /* NSFetchedResultsControllerCategory.h */,
+				C5C3087013F86D71008E1C81 /* NSFetchedResultsControllerCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1131,6 +1136,7 @@
 				C5D5044D13EDD08C0076C614 /* IDGenerator.m in Sources */,
 				C5D5045313EE09230076C614 /* UICaptionLabel.m in Sources */,
 				C5CDA43A13EF11ED008462FF /* UICaptionTextView.m in Sources */,
+				C5C3087113F86D71008E1C81 /* NSFetchedResultsControllerCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
