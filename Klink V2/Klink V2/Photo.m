@@ -123,6 +123,7 @@
 }
 
 - (void) dealloc {
+    [super dealloc];
     if (__topCaption != nil) {
         [__topCaption release];
     }

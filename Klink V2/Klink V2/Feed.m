@@ -57,7 +57,7 @@
     
 }
 
-- (void) copyFrom:(id)newObject {
+- (void) copyFrom:(Feed*)newObject {
     [super copyFrom:newObject];
     self.message = [newObject message];
     self.userid= [newObject userid];

@@ -51,7 +51,7 @@ typedef enum {
 @property (nonatomic,retain) CloudEnumerator*               photoCloudEnumerator;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_captions;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
-@property (nonatomic,retain) NSManagedObjectContext*        managedObjectContext;
+
 
 @property (nonatomic,retain) IBOutlet UICaptionTextView*    h_tv_captionBox;
 @property (nonatomic,retain) IBOutlet UICaptionTextView*    v_tv_captionBox;
@@ -87,7 +87,6 @@ typedef enum {
 - (void)    hideControls;
 - (void)    toggleControls;
 - (void)    setControlsHidden:          (BOOL)      hidden;
-- (void)    didStartViewingPageAtIndex: (NSUInteger)index;
 - (void)    setViewMovedUp:(BOOL)movedUp;
 - (void)    keyboardWillShow:(NSNotification*)notification;
 - (void)    keyboardDidHide:(NSNotification*)notification;

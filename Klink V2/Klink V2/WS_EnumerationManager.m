@@ -181,7 +181,7 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
 
 - (void) enumeratePhotosInTheme:(Theme*)theme withQueryOptions:(QueryOptions*)queryOptions onFinishNotify:(NSString*)notificationID useEnumerationContext:(EnumerationContext*)enumerationContext shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage{
     
-    NSString* activityName = @"WS_EnumerationManager.enumeratePhotosInTheme:";
+//    NSString* activityName = @"WS_EnumerationManager.enumeratePhotosInTheme:";
     
     AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     
@@ -200,7 +200,7 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
    
     
     EnumerationResponse* enumerationResponse = [[EnumerationResponse alloc]initFromDictionary:response];
-    EnumerationContext* enumerationContext = [enumerationResponse.enumerationContext retain];
+//    EnumerationContext* enumerationContext = [enumerationResponse.enumerationContext retain];
     if (enumerationResponse.didSucceed == [NSNumber numberWithBool:YES]) {
         
         NSString* message = [NSString stringWithFormat:@"enumeration succeeded, returned: %@",[request responseString]];
@@ -335,7 +335,7 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
 //will user Facebook access token to retrieve a valid session token for the currently logged-in user
 - (void) getAuthenticatorToken:(NSNumber*)facebookID withName:(NSString*)name withFacebookAccessToken:(NSString*)facebookAccessToken withFacebookTokenExpiry:(NSDate*)date onFinishNotify:(NSString*)notificationID {
     
-    NSString* activityName = @"WS_EnumerationManager.getAuthenticatorToken:";
+//    NSString* activityName = @"WS_EnumerationManager.getAuthenticatorToken:";
     NSURL* url = [UrlManager getAuthenticationURL:facebookID withName:name withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date];
     
     NSMutableDictionary* passedContext = [[NSMutableDictionary alloc]init];

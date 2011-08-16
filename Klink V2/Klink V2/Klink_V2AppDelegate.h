@@ -33,7 +33,7 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (NSString*) getImageCacheStorageDirectory;
-- (void) loginWithDummyAuthenticationContext;
+
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) Facebook *facebook;
 @end

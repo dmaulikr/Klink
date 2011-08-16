@@ -327,7 +327,6 @@ static  WS_TransferManager* sharedManager;
                  onFinishNotify:(NSString*)notificationID {
     
     NSString* activityName = @"WS_TransferManager.updateAttributeInCloud";
-    ServerManagedResource* resource = [DataLayer getObjectByType:objectType withId:objectid];
     
     AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     

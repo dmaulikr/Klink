@@ -295,22 +295,6 @@
 }
 
 #pragma mark - Dummy login methods
-- (void) loginWithDummyAuthenticationContext {
-    AuthenticationManager* authenticationManager = [[AuthenticationManager getInstance]retain];
-    //Create dummy authentication context
-    NSMutableDictionary* authenticationContextDictionary = [[NSMutableDictionary alloc]init];
-    NSTimeInterval currentDateInSeconds = [[NSDate date] timeIntervalSince1970];
-    NSNumber *currentDate = [NSNumber numberWithDouble:currentDateInSeconds];
-    
-    [authenticationContextDictionary setObject:[NSNumber numberWithInt:1] forKey:an_USERID];
-    [authenticationContextDictionary setObject:[currentDate stringValue] forKey:an_EXPIRY_DATE];
-    [authenticationContextDictionary setObject:[NSString stringWithFormat:@"dicks"] forKey:an_TOKEN];
-    
 
-    AuthenticationContext* context = [[AuthenticationContext alloc]initFromDictionary:authenticationContextDictionary];
-    
-    //[authenticationManager loginUser:[NSNumber numberWithInt:1] withAuthenticationContext:context];
-    [context release];
-}
 
 @end

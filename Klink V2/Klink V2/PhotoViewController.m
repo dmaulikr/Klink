@@ -33,7 +33,6 @@
 @synthesize currentTheme            = m_currentTheme;
 @synthesize frc_photos              = __frc_photos;
 @synthesize frc_captions            = __frc_captions;
-@synthesize managedObjectContext    = __managedObjectContext;
 @synthesize previousButton          = m_previousButton;
 @synthesize nextButton              = m_nextButton;
 @synthesize controlVisibilityTimer  = m_controlVisibilityTimer;
@@ -84,10 +83,7 @@
 }
 
 
-- (NSManagedObjectContext*)managedObjectContext {
-    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-    return appDelegate.managedObjectContext;
-}
+
 
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
@@ -345,7 +341,7 @@
             }
         }
     }
-    [self.pagedViewSlider setInitialPageIndex:index];
+    [self.pagedViewSlider goToPage:index];
    
 	// Layout
 	[self.pagedViewSlider performLayout];

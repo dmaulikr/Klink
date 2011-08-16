@@ -25,7 +25,7 @@
 
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
-    NSString* activityName = @"ServerManagedResource.initFromDictionary:";
+//    NSString* activityName = @"ServerManagedResource.initFromDictionary:";
     self.objectid = [jsonDictionary valueForKey:an_OBJECTID];
     
 //    //extract system timestamp

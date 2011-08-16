@@ -24,6 +24,9 @@
 #define kButtonRightPadding         20
 #define kButtonBottomPadding        100
 
+#define kShareButtonLeftPadding     20
+#define kShareButtonBottomPadding   100
+
 @implementation UIPhotoCaptionScrollView
 @synthesize photo =                     m_photo;
 @synthesize captionScrollView =         m_captionScrollView;
@@ -31,6 +34,7 @@
 @synthesize managedObjectContext=       __managedObjectContext;
 @synthesize captionCloudEnumerator =    m_captionCloudEnumerator;
 @synthesize voteButton =                m_voteButton;
+@synthesize shareButton=                m_shareButton;
 
 - (void) dealloc {
     
@@ -39,6 +43,7 @@
     [self.photo release];
     [self.captionScrollView release];
     [self.captionCloudEnumerator release];
+    [self.shareButton release];
     [super dealloc];
 }
 
@@ -115,6 +120,13 @@
 }
 
 
+- (CGRect)frameForShareButton:(CGRect)frame {
+    int xCoordinate =   kShareButtonLeftPadding;
+    int yCoordinate = frame.size.height - kButtonHeight - kShareButtonBottomPadding;
+    return CGRectMake(xCoordinate, yCoordinate, kButtonWidth, kButtonHeight);
+}
+
+
 #pragma mark - Initializers
 - (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo {
     self = [super initWithFrame:frame];
@@ -132,11 +144,17 @@
         self.captionScrollView.opaque = NO;
         
         [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing isHorizontal:YES];
-//        
-//        [self.captionScrollView initWithWidth:kCaptionWidth withHeight:kCaptionHeight withWidthLandscape:kCaptionWidth_landscape withHeightLandscape:kCaptionHeight_landscape withSpacing:kCaptionSpacing];
+
         [self addSubview:self.captionScrollView];
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;
+        
+        CGRect frameForShareButton = [self frameForShareButton:frame];
+        self.shareButton = [[UIButton alloc]initWithFrame:frameForShareButton];
+        self.shareButton.backgroundColor = [UIColor redColor];
+        [self.shareButton setTitle:@"Share" forState:UIControlStateNormal];
+        [self.shareButton addTarget:self action:@selector(onShareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.shareButton];
         
         CGRect frameForVoteButton = [self frameForVoteButton:frame];
         self.voteButton = [[UIButton alloc]initWithFrame:frameForVoteButton];
@@ -182,6 +200,7 @@
     self.captionScrollView = nil;
     self.captionCloudEnumerator = nil;
     [self initWithFrame:frame withPhoto:photo];
+    return self;
 }
                                                     
 
@@ -225,7 +244,6 @@
              isAtIndex:          (int)                   index 
     withCellsRemaining:          (int)                   numberOfCellsToEnd {
     
-    NSArray* captions = [self.frc_captions fetchedObjects];
     int numberOfCaptions = [[self.frc_captions fetchedObjects]count];
     if (index < numberOfCaptions) {
         int numberOfCaptionsRemaining = [self.frc_captions.fetchedObjects count] - index;
@@ -302,6 +320,20 @@
 }
 
 #pragma mark - Button Handlers
+
+//method called when the
+- (void) onShareButtonPressed:(id)sender {
+        
+}
+
+- (void) disableShareButton {
+    
+}
+
+- (void) enableShareButton {
+    
+}
+
 - (void) onVoteUpButtonPressed:(id)sender {
     self.photo = [Photo photo:self.photo.objectid];
     Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];

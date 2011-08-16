@@ -14,7 +14,7 @@
 static  DataLayer* sharedManager; 
 
 + (DataLayer*)getInstance {
-    NSString* activityName = @"DataLayer.getInstance:";
+//    NSString* activityName = @"DataLayer.getInstance:";
     @synchronized(self)
     {
         if (!sharedManager) {
@@ -66,10 +66,7 @@ static  DataLayer* sharedManager;
 
 //Generates a unique identifier for a new entity
 -(NSNumber*)getNextID {
-    NSString* activityName = @"DataLayer.getNextID";
-    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
-    NSNumber* userID = authenticationManager.m_LoggedInUserID;
-
+   
     int int_secondsSinceEpoch = (int)[[NSDate date]timeIntervalSince1970];
     NSNumber* secondsSinceEpoch = [NSNumber numberWithInt:int_secondsSinceEpoch];
     

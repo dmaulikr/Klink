@@ -200,11 +200,11 @@
 
 
 -(void)onGetUserComplete:(NSNotification*)notification {
-    NSString* activityName = @"HomeScreenController.onGetUserComplete";
+//    NSString* activityName = @"HomeScreenController.onGetUserComplete";
 }
 
 -(void)onEnumerateFeedsComplete:(NSNotification*) notification {
-    NSString* activityName = @"HomeScreenController.onEnumerateFeedsComplete:";
+//    NSString* activityName = @"HomeScreenController.onEnumerateFeedsComplete:";
 }
 
 - (void) enumerateFeed {
