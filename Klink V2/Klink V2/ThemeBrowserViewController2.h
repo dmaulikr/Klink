@@ -28,8 +28,6 @@
 }
 
 @property (nonatomic,retain) Theme*                     theme;
-
-@property (nonatomic,retain) NSManagedObjectContext*    managedObjectContext;
 @property (nonatomic,retain) NSFetchedResultsController*frc_photosInCurrentTheme;
 @property (nonatomic,retain) NSFetchedResultsController*frc_themes;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_theme;

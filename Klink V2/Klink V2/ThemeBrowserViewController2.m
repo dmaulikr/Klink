@@ -67,7 +67,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @implementation ThemeBrowserViewController2
 
 @synthesize theme;
-@synthesize managedObjectContext;
 @synthesize frc_photosInCurrentTheme    = __frc_photosInCurrentTheme;
 @synthesize frc_themes                  = __frc_themes;
 @synthesize lbl_theme;
@@ -170,6 +169,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
+    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                     target:self
+                                     action:@selector(getMediaFromSource:)];
+    self.navigationItem.rightBarButtonItem = cameraButton;
+    [cameraButton release];
+    
     //find the index for the current theme in the frc
     int index = 0;
     if (self.theme != nil) {
@@ -200,17 +206,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 - (void)viewDidLoad
 {
-  
+    self.shouldShowProfileBar = YES;
     [super viewDidLoad];
 
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
         
-    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                     target:self
-                                     action:@selector(getMediaFromSource:)];
-    self.navigationItem.rightBarButtonItem = cameraButton;
-    [cameraButton release];
+
     
     self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
     self.themeCloudEnumerator.delegate = self;

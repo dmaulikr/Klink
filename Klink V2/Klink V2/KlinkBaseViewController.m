@@ -26,8 +26,19 @@
 @synthesize v_portrait = m_v_portrait;
 @synthesize profileBarHeight = __profileBarHeight;
 @synthesize shouldShowProfileBar = m_shouldShowProfileBar;
+@synthesize managedObjectContext = __managedObjectContext;
 
 #pragma mark - Properties
+- (NSManagedObjectContext*)managedObjectContext {
+    if (__managedObjectContext != nil) {
+        return __managedObjectContext;
+    }
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
+    __managedObjectContext = appContext;
+    return __managedObjectContext;
+}
+
 - (int)profileBarHeight {
     if (self.view == self.v_portrait) {
         return m_profileBar_portrait_height;

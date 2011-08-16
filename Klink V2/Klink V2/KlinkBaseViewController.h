@@ -26,6 +26,7 @@
 @property (nonatomic,retain) IBOutlet UIView* v_landscape;
 @property (nonatomic,retain) IBOutlet UIView* v_portrait;
 @property BOOL shouldShowProfileBar;
+@property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 
 - (void) onUserLoggedIn;
 - (void) onUserLoggedOut;

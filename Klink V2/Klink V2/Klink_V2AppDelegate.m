@@ -12,6 +12,7 @@
 #import "SampleViewController2.h"
 #import "HomeScreenController.h"
 #import "ApplicationSettings.h"
+#import "ThemeBrowserViewController2.h"
 
 @implementation Klink_V2AppDelegate
 
@@ -52,8 +53,11 @@
     self.wsEnumerationManager = [WS_EnumerationManager getInstance];
     self.window.rootViewController = self.navigationController;
     
+    ThemeBrowserViewController2* themeBrowserController = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
+    [self.navigationController pushViewController:themeBrowserController animated:NO];
     
-    [self loginWithDummyAuthenticationContext];
+    
+//    [self loginWithDummyAuthenticationContext];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -105,9 +109,7 @@
 
 - (void)awakeFromNib
 {
-    HomeScreenController* viewController = (HomeScreenController*)[self.navigationController topViewController];
-    viewController.managedObjectContext = self.managedObjectContext;
-    
+        
 //    SampleViewController2* viewController = (SampleViewController2*)[self.navigationController topViewController];
 //    viewController.managedObjectContext = self.managedObjectContext;
     /*
