@@ -16,8 +16,8 @@
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
-#define kPictureHeight              370
-#define kPictureHeight_landscape    230
+#define kPictureHeight              480
+#define kPictureHeight_landscape    320
 #define kPictureSpacing             0
 
 
@@ -484,7 +484,10 @@
     // Captions scrollviewer
     UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
     [photoCaptionView.captionScrollView setAlpha:hidden ? 0 : 1];
-
+    
+    // Vote and Share buttons
+    [photoCaptionView.voteButton setAlpha:hidden ? 0 : 1];
+    [photoCaptionView.shareButton setAlpha:hidden ? 0 : 1];
     
 	[UIView commitAnimations];
 	

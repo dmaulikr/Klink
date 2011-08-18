@@ -139,9 +139,9 @@
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
         self.captionScrollView.currentPageIndex = 0;
-        self.captionScrollView.backgroundColor = [UIColor blackColor];
-        self.captionScrollView.alpha = 0.5;
-        self.captionScrollView.opaque = NO;
+        self.captionScrollView.backgroundColor = [UIColor clearColor];
+        self.captionScrollView.alpha = 1;
+        self.captionScrollView.opaque = YES;
         
         [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing isHorizontal:YES];
 

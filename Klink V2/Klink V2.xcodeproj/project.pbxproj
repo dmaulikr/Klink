@@ -720,9 +720,9 @@
 				C5BED8BC13D52FC2007A1934 /* ProfileViewController.xib */,
 				C5BED8BD13D52FC2007A1934 /* SystemDataModel.xcdatamodeld */,
 				C5BED8BF13D52FC2007A1934 /* Test_Project_2.xcdatamodeld */,
+				C5BED8C213D52FC2007A1934 /* ThemeBrowserViewController2.h */,
 				C5BED8C313D52FC2007A1934 /* ThemeBrowserViewController2.m */,
 				C5BED8C113D52FC2007A1934 /* ThemeBrowserViewController2.xib */,
-				C5BED8C213D52FC2007A1934 /* ThemeBrowserViewController2.h */,
 				C561275913CB4B7F005E5731 /* HomeScreenController.h */,
 				C561275A13CB4B7F005E5731 /* HomeScreenController.m */,
 				C561275B13CB4B7F005E5731 /* HomeScreenController.xib */,
@@ -785,7 +785,6 @@
 		C5CDA44313EFAC21008462FF /* Generics */ = {
 			isa = PBXGroup;
 			children = (
-				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
 				C53F283C13EB3C040038C8F0 /* UIViewTap.h */,
 				C53F283D13EB3C040038C8F0 /* UIViewTap.m */,
 				C5D8E0B113DCA16500D88B00 /* UIKlinkScrollView.h */,
@@ -797,6 +796,7 @@
 				C5CEF5AD13EA1798007AD4DD /* UIZoomingScrollView.h */,
 				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
 				C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */,
+				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
 			);
 			name = Generics;
 			sourceTree = "<group>";

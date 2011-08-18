@@ -10,11 +10,11 @@
 
 #define kCaptionLabelWidth_landscape 480
 #define kCaptionLabelWidth 320
-#define kCaptionHeight 41
+#define kCaptionHeight 40
 
 #define kMetadataLabelWidth_landscape 480
 #define kMetadataLabelWidth 320
-#define kMetadataHeight 41
+#define kMetadataHeight 30
 
 
 @implementation UICaptionLabel
@@ -53,16 +53,37 @@
         // Initialization code
         self.frame = frame;
         
-        self.tv_caption = [[UILabel alloc]initWithFrame:[self frameForCaptionLabel]];
-        self.tv_metadata = [[UILabel alloc]initWithFrame:[self frameForMetadataLabel:frame]];
+        // set transparent backgrounds first
+        UIView* tv_captionBackground = nil;
+        tv_captionBackground = [[UIView alloc] initWithFrame:[self frameForCaptionLabel]];
+        [tv_captionBackground setBackgroundColor:[UIColor blackColor]];
+        [tv_captionBackground setAlpha:0.5];
+        [tv_captionBackground setOpaque:YES];
+        [self addSubview:tv_captionBackground];
+        
+        UIView* tv_metadataBackground = nil;
+        tv_metadataBackground = [[UIView alloc] initWithFrame:[self frameForMetadataLabel:frame]];
+        [tv_metadataBackground setBackgroundColor:[UIColor blackColor]];
+        [tv_metadataBackground setAlpha:0.5];
+        [tv_metadataBackground setOpaque:YES];
+        [self addSubview:tv_metadataBackground];
+        
+        
+        // now add non-transparent text
+        self.tv_caption = [[UILabel alloc] initWithFrame:[self frameForCaptionLabel]];
+        self.tv_metadata = [[UILabel alloc] initWithFrame:[self frameForMetadataLabel:frame]];
         
         self.tv_caption.backgroundColor = [UIColor clearColor];
         self.tv_caption.opaque = NO;
+        self.tv_caption.alpha = textAlpha;
+        self.tv_caption.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
         self.tv_caption.textColor = [UIColor whiteColor];
         self.tv_caption.textAlignment = UITextAlignmentCenter;
         
         self.tv_metadata.backgroundColor = [UIColor clearColor];
-        self.tv_metadata.opaque = NO;
+        self.tv_metadata.opaque = YES;
+        self.tv_metadata.alpha = textAlpha;
+        self.tv_metadata.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
         self.tv_metadata.textColor = [UIColor whiteColor];
         self.tv_metadata.textAlignment = UITextAlignmentCenter;
         

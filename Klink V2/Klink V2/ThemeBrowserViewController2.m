@@ -42,8 +42,9 @@
 
 #define kThemeTextViewWidth 320
 #define kThemeTextViewHeight 40
-#define kThemeTextViewWidth_landscape 480
+#define kThemeTextViewWidth_landscape 320
 #define kThemeTextViewHeight_landscape 40
+#define kThemeTitlePadding 10
 
 #define kTextViewDescriptionHeight 60
 #define kTextViewDescriptionWidth 320
@@ -55,9 +56,8 @@
 #define kCaptionTextViewHeight_landscape 10
 #define kCaptionTextViewWidth_landscape 120
 
-
-#define kCaptionHeight 25
-#define kCaptionPadding 5
+#define kCaptionHeight 40
+#define kCaptionPadding 10
 
 @interface ThemeBrowserViewController2 ()
 static UIImage *shrinkImage(UIImage *original, CGSize size);
@@ -172,7 +172,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                      target:self
-                                     action:@selector(getMediaFromSource:)];
+                                     action:@selector(cameraButtonPressed:)];
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
     
@@ -232,10 +232,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         
     }
     
-    self.pvs_photoSlider2.layer.borderWidth = 1.0f;
+    /*self.pvs_photoSlider2.layer.borderWidth = 1.0f;
     self.pvs_photoSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
     self.pvs_themeSlider2.layer.borderWidth = 1.0f;
-    self.pvs_themeSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pvs_themeSlider2.layer.borderColor = [UIColor whiteColor].CGColor;*/
     
     [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
     [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
@@ -464,7 +464,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 //        return CGRectMake(xCoordinate, yCoordinate, kCaptionTextViewWidth, kCaptionTextViewHeight); 
 //    }
     
-    return CGRectMake(0, 0, frame.size.width - (2*kCaptionPadding), kCaptionHeight);
+    return CGRectMake(0, kPictureHeight - kCaptionHeight, frame.size.width, kCaptionHeight);
 }
 
 - (CGRect) getThemeTitleFrame {
@@ -522,30 +522,44 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 
 
+#pragma mark -
+#pragma mark CameraButton methods
+- (IBAction)cameraButtonPressed:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  destructiveButtonTitle:@"Take Photo"
+                                  otherButtonTitles:@"Choose Existing", nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
 
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [actionSheet cancelButtonIndex]) {
+        if (buttonIndex == 0) {
+            [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
+        } else {
+            [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
+        }
+    }
+}
 
-
-
-//- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
-- (void)getMediaFromSource:(id)sender {
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+- (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
+    NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
+    if ([UIImagePickerController isSourceTypeAvailable:sourceType] && [mediaTypes count] > 0) {
         NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.mediaTypes = mediaTypes;
         picker.delegate = self;
         picker.allowsEditing = NO;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+        picker.sourceType = sourceType;
         
-    } else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.mediaTypes = mediaTypes;
-        picker.delegate = self;
-        picker.allowsEditing = NO;
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        if (sourceType == UIImagePickerControllerSourceTypeCamera) {
+            picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+        }
+        
         [self presentModalViewController:picker animated:YES];
         [picker release];
     }
@@ -831,7 +845,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
 
 
 - (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
-             configure:          (UIImageView*)               imageView
+             configure:          (UIImageView*)          imageView
          forRowAtIndex:          (int)                   index
              withFrame:          (CGRect)                frame {
     if (viewSlider == self.pvs_photoSlider2 &&
@@ -846,25 +860,41 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         
         
         CGRect captionFrame = [self getCaptionFrame:frame];
-        UILabel* captionLabel = nil;
-        if ([imageView.subviews count] == 1) {
-            captionLabel = [imageView.subviews objectAtIndex:0];
+        UIView* captionLabelBackground = nil;   // subview at index 0
+        UILabel* captionLabel = nil;            // subview at index 1
+        if ([imageView.subviews count] == 2) {
+            captionLabel = [imageView.subviews objectAtIndex:1];
             captionLabel.frame = captionFrame;
+            [captionLabel setBounds:CGRectMake(captionFrame.origin.x - kCaptionPadding, captionFrame.origin.y, captionFrame.size.width - kCaptionPadding, captionFrame.size.height)];
         }
         else {
-            captionLabel = [[UILabel alloc]initWithFrame:captionFrame];
-            captionLabel.backgroundColor = [UIColor clearColor];
-            captionLabel.opaque = NO;
-            captionLabel.textColor = [UIColor whiteColor];
-            captionLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+            // set transparent background first
+            captionLabelBackground = [[UIView alloc] initWithFrame:captionFrame];
+            [captionLabelBackground setBackgroundColor:[UIColor blackColor]];
+            [captionLabelBackground setAlpha:0.5];
+            [captionLabelBackground setOpaque:YES];
+            [imageView addSubview:captionLabelBackground];
+            
+            // now add non-transparent text
+            captionLabel = [[UILabel alloc] initWithFrame:captionFrame];
+            [captionLabel setBounds:CGRectMake(captionFrame.origin.x - kCaptionPadding, captionFrame.origin.y, captionFrame.size.width - kCaptionPadding, captionFrame.size.height)];
+            [captionLabel setFont:[UIFont fontWithName:font_CAPTION size:fontsize_CAPTION]];
+            [captionLabel setBackgroundColor:[UIColor clearColor]];
+            [captionLabel setAlpha:textAlpha];
+            [captionLabel setTextColor:[UIColor whiteColor]];
+            [captionLabel setOpaque:YES];
+            [captionLabel setNumberOfLines:2];
+            [captionLabel setTextAlignment:UITextAlignmentLeft];
             [imageView addSubview:captionLabel];
         }
         
         if (caption != nil) {
-            captionLabel.text= caption.caption1;
+            captionLabel.text = caption.caption1;
+            captionLabelBackground.hidden = NO;
         }
         else {
             captionLabel.text = nil;
+            captionLabelBackground.hidden = YES;
         }
         
         
@@ -904,6 +934,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         if ([imageView.subviews count] == 4) {
             themeLabel = [imageView.subviews objectAtIndex:1];
             themeLabel.frame = themeTitleFrame;
+            [themeLabel setBounds:CGRectMake(themeTitleFrame.origin.x - kThemeTitlePadding, themeTitleFrame.origin.y, themeTitleFrame.size.width - kThemeTitlePadding, themeTitleFrame.size.height)];
             [themeLabel setText:selectedTheme.displayname];
         }
         else {
@@ -916,6 +947,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
 
             // now add non-transparent text
             themeLabel = [[UILabel alloc] initWithFrame:themeTitleFrame];
+            [themeLabel setBounds:CGRectMake(themeTitleFrame.origin.x - kThemeTitlePadding, themeTitleFrame.origin.y, themeTitleFrame.size.width - kThemeTitlePadding, themeTitleFrame.size.height)];
             [themeLabel setFont:[UIFont fontWithName:font_THEME size:fontsize_THEME]];
             [themeLabel setBackgroundColor:[UIColor clearColor]];
             [themeLabel setAlpha:textAlpha];
