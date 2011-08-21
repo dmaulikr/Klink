@@ -16,7 +16,7 @@
 
 
 
-@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSlider2Delegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CloudEnumeratorDelegate> {
+@interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSlider2Delegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CloudEnumeratorDelegate, UIActionSheetDelegate> {
 
     UILabel*                        lbl_theme;
     Theme*                          theme;  

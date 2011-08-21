@@ -93,7 +93,7 @@
         self.pagingScrollView.delegate = self;
         self.pagingScrollView.showsHorizontalScrollIndicator = NO;
         self.pagingScrollView.showsVerticalScrollIndicator = NO;
-        self.pagingScrollView.backgroundColor = [UIColor blackColor];
+        self.pagingScrollView.backgroundColor = nil;
         self.pagingScrollView.contentSize = [self contentSizeForPagingScrollView];
         self.pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:m_currentPageIndex];        
         [self addSubview:self.pagingScrollView];
