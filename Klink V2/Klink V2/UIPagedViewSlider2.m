@@ -9,7 +9,8 @@
 #import "UIPagedViewSlider2.h"
 #import "UIPagedViewItem.h"
 #define PADDING 0
-
+#define kNumberOfPagesAfterLastVisibleIndexToLoad   5
+#define kNumberOfPagesBeforeFirstVisibleIndexToLoad 5
 @implementation UIPagedViewSlider2
 @synthesize pagingScrollView    =   m_pagingScrollView;
 @synthesize visiblePages        =   m_visiblePages;
@@ -240,9 +241,10 @@
         
         int iFirstIndex = [self getIndex];
         int iLastIndex = [self getLastVisibleIndex];
-       
-//        int iFirstIndex = (int)floorf((CGRectGetMinX(visibleBounds)+PADDING*2) / CGRectGetWidth(visibleBounds));
-//        int iLastIndex  = (int)floorf((CGRectGetMaxX(visibleBounds)-PADDING*2-1) / CGRectGetWidth(visibleBounds));
+        
+        iFirstIndex = iFirstIndex - kNumberOfPagesBeforeFirstVisibleIndexToLoad;
+        iLastIndex = iLastIndex + kNumberOfPagesAfterLastVisibleIndexToLoad;
+        
         if (iFirstIndex < 0) iFirstIndex = 0;
         if (iFirstIndex > count - 1) iFirstIndex = count - 1;
         if (iLastIndex < 0) iLastIndex = 0;
@@ -250,12 +252,13 @@
         
         // Recycle no longer needed pages
         for (UIPagedViewItem *page in self.visiblePages) {
-            if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
-                [self.recycledPages addObject:page];
-                /*NSLog(@"Removed page at index %i", page.index);*/
-                page.index = NSNotFound; // empty
-                [page.view removeFromSuperview];
-            }
+            
+            //TODO: implement better view recycling methods
+//            if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
+//               [self.recycledPages addObject:page];
+//                page.index = NSNotFound; // empty
+//               [page.view removeFromSuperview];
+//            }
         }
         [self.visiblePages minusSet:self.recycledPages];
         
