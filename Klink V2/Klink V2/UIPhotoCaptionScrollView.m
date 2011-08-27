@@ -12,7 +12,6 @@
 #import "TypeNames.h"
 #import "UICaptionLabel.h"
 #import "NSStringGUIDCategory.h"
-#import "WPDataController.h"
 #import "SocialSharingManager.h"
 
 #define kCaptionWidth_landscape     480
