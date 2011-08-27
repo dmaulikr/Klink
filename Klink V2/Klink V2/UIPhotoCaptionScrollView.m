@@ -360,6 +360,7 @@
     if (count > 0) {
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
         [sharingManager shareCaption:caption.objectid];
+        [self hideShareButton];
     }
    
 }
