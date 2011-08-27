@@ -13,9 +13,11 @@
 @private
 }
 
-@property (nonatomic,retain) NSNumber* creatorid;
+- (NSArray*) arrayForHashtags;
+@property (nonatomic, retain) NSNumber* creatorid;
 @property (nonatomic, retain) NSString* creatorname;
 @property (nonatomic, retain) NSString* descr;
 @property (nonatomic, retain) NSString* displayname;
 @property (nonatomic, retain) NSString* homeimageurl;
+@property (nonatomic, retain) NSString* hashtags;
 @end

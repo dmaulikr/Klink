@@ -16,11 +16,19 @@
 #import "User.h"
 @implementation AuthenticationManager
 @synthesize m_LoggedInUserID;
-@synthesize m_facebook;
+@synthesize facebook = __facebook;
 
 static  AuthenticationManager* sharedManager; 
 
-
+#pragma mark - Properties
+- (Facebook*) facebook {
+    if (__facebook != nil) {
+        return __facebook;
+    }
+    Klink_V2AppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    __facebook = appDelegate.facebook;
+    return __facebook;
+}
 
 #pragma mark - initializers
 - (id) init {
@@ -44,18 +52,12 @@ static  AuthenticationManager* sharedManager;
         else {
              [BLLog v:activityName withMessage:@"no last logged in user id present in settings"];
         }
-        
-        
     }
     else {
         [BLLog v:activityName withMessage:@"no last logged in user id present in settings"];
     }
     
-    //grab the facebook instance from the app delegate handler
-    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.m_facebook = appDelegate.facebook;
-    
-
+ 
     
     
     return self;
@@ -64,13 +66,14 @@ static  AuthenticationManager* sharedManager;
 #pragma mark - FBSessionDelegate
 - (void)fbDidLogin {
     NSString* activityName = @"AuthenticationManager.fbDidLogin:";
-    NSString* message = [NSString stringWithFormat:@"Facebook login successful, retrieving user profile data"];
+    NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",self.facebook.accessToken,self.facebook.expirationDate];
+    NSDate* expirationDate = self.facebook.expirationDate;
     [BLLog v:activityName withMessage:message];
 
     
     
     //get the user object
-    [self.m_facebook requestWithGraphPath:@"me" andDelegate:self];
+    [self.facebook requestWithGraphPath:@"me" andDelegate:self];
 }
 
 
@@ -87,13 +90,13 @@ static  AuthenticationManager* sharedManager;
     NSString* notificationID = [NSString GetGUID];
     
     //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
-    NSDate* expiryDate = [NSDate date];
+ 
     //Add an observer so that we can listen in for when authentication is complete
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
     
     
-    [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.m_facebook.accessToken withFacebookTokenExpiry:expiryDate onFinishNotify:notificationID];
+    [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:notificationID];
     
 }
 
@@ -123,8 +126,8 @@ static  AuthenticationManager* sharedManager;
 -(void) authenticate {
    //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    if (![self.m_facebook isSessionValid]) {
-        [self.m_facebook authorize:permissions delegate:self];
+    if (![self.facebook isSessionValid]) {
+        [self.facebook authorize:permissions delegate:self];
     }
     
 }
@@ -139,11 +142,14 @@ static  AuthenticationManager* sharedManager;
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     
     //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
-    if (context.facebookAccessToken && context.facebookAccessTokenExpiryDate) {
-        self.m_facebook.accessToken = context.facebookAccessToken;
-        self.m_facebook.expirationDate = context.facebookAccessTokenExpiryDate;
+    if (context.facebookAccessToken) {
+        self.facebook.accessToken = context.facebookAccessToken;
+        self.facebook.expirationDate = context.facebookAccessTokenExpiryDate;
         
-        if (![self.m_facebook isSessionValid]) {
+        NSString* message = [NSString stringWithFormat:@"Attempting to create Facebook session for accessToken:%@ and expiryDate:%@",context.facebookAccessToken,context.facebookAccessTokenExpiryDate];
+        [BLLog v:activityName withMessage:message];
+        
+        if (![self.facebook isSessionValid]) {
             NSString* message = [NSString stringWithFormat:@"Passed in access token is not valid, Facebook session not created"];
             [BLLog v:activityName withMessage:message];
         }
@@ -191,7 +197,7 @@ static  AuthenticationManager* sharedManager;
         self.m_LoggedInUserID = 0;
         //at this point the user is logged off
         
-        [self.m_facebook logout:self];
+        [self.facebook logout:self];
         
         //we emit a system wide event to notify any listeners that the user has logged out
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];

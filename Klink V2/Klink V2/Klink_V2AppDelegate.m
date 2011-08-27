@@ -16,7 +16,7 @@
 
 @implementation Klink_V2AppDelegate
 
-@synthesize facebook;
+@synthesize facebook = __facebook;
 
 @synthesize systemObjectModel = __systemObjectModel;
 
@@ -38,6 +38,14 @@
 
 @synthesize authnManager;
 
+#pragma mark - Properties
+- (Facebook*) facebook {
+    if (__facebook != nil) {
+        return __facebook;
+    }
+    __facebook = [[Facebook alloc]initWithAppId:facebook_APPID];
+    return __facebook;
+}
 
 #pragma mark - FBSession Delegate Handlers
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
@@ -47,7 +55,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    facebook = [[Facebook alloc] initWithAppId:facebook_APPID];
     // Override point for customization after application launch.
     self.authnManager = [AuthenticationManager getInstance];
     self.wsEnumerationManager = [WS_EnumerationManager getInstance];

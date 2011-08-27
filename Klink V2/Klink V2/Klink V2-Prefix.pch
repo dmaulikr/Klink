@@ -12,4 +12,20 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+
+
+#import <CoreLocation/CoreLocation.h>
+
+
+// 3rd Party
+#import "RegexkitLite.h"
+#import "XMLRPCRequest.h"
+#import "XMLRPCResponse.h"
+#import "XMLRPCConnection.h"
+
+// Project-specific
+#import "Constants.h"
+#import "NSString+Util.h"
+#import "CDeviceSupport.h"
+#import "FileLogger.h"
 #endif

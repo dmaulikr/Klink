@@ -78,7 +78,7 @@ extern NSString* const an_PRIMARY_RESULTS_SORTATTRIBUTE;
 extern NSString* const an_OPCODE;
 extern NSString* const an_VALUE;
 extern NSString* const an_RANK;
-
+extern NSString* const an_HASHTAGS;
 extern NSString* const an_FACEBOOKTOKENEXPIRYDATE;
 extern NSString* const an_FACEBOOKACCESSTOKEN;
 extern NSString* const an_FACEBOOKUSERID;
@@ -99,6 +99,10 @@ extern NSString* const an_SEQUENCENUMBER;
 extern NSString* const an_USER;
 extern NSString* const an_USERNAME;
 extern NSString* const an_USERHASVOTED;
+
+extern NSString* const an_WORDPRESSUSERNAME;
+extern NSString* const an_WORDPRESSPASSWORD;
+extern NSString* const an_WORDPRESSURL;
 
 
 

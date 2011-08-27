@@ -39,6 +39,7 @@ extern int const opcode_QUERYEQUALITY;
 extern int const pageSize_PHOTOSINTHEME;
 
 extern NSString* const facebook_APPID;
+extern double  const facebook_MAXDATE;
 extern NSString* const sn_KEYCHAINSERVICENAME;
 
 float const textAlpha;
@@ -54,3 +55,11 @@ extern int const fontsize_THEME;
 extern int const maxlength_DESCRIPTION;
 extern NSString* const font_DESCRIPTION;
 extern int const fontsize_DESCRIPTION;
+
+extern NSString* const delimeter_HASHTAGS;
+
+extern int const default_width_WORDPRESSIMAGE;
+extern int const default_height_WORDPRESSIMAGE;
+extern int const max_width_WORDPRESSIMAGE;
+extern int const max_height_WORDPRESSIMAGE;
+extern NSString* const category_WORDPRESS;

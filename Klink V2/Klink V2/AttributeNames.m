@@ -75,6 +75,7 @@ NSString* const an_INDEXPATH=@"indexpath";
 NSString* const an_CREATORNAME = @"creatorname";
 NSString* const an_DESCRIPTION = @"descr";
 NSString* const an_HOMEIMAGEURL = @"home_image_url";
+NSString* const an_HASHTAGS = @"hashtags";
 
 NSString* const an_THEMEID= @"themeid";
 NSString* const an_IMAGEVIEW=@"imageview";
@@ -90,7 +91,7 @@ NSString* const an_VALUE = @"value";
 
 NSString* const an_RANK = @"rank";
 
-NSString* const an_FACEBOOKTOKENEXPIRYDATE = @"facebooktokenexpirydate";
+NSString* const an_FACEBOOKTOKENEXPIRYDATE = @"facebookaccesstokenexpirydate";
 NSString* const an_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
 NSString* const an_FACEBOOKUSERID=@"facebookuserid";
 
@@ -98,6 +99,10 @@ NSString* const an_TWITTERTOKENEXPIRYDATE = @"twittertokenexpirydate";
 NSString* const an_TWITTERACCESSTOKEN=@"twitteraccesstoken";
 NSString* const an_TWITTERUSERID=@"twitteruserid";
 NSString* const an_ID=@"id";
+
+NSString* const an_WORDPRESSUSERNAME = @"wordpressusername";
+NSString* const an_WORDPRESSPASSWORD = @"wordpresspassword";
+NSString* const an_WORDPRESSURL = @"wordpressblogurl";
 
 NSString* const an_AUTHENTICATIONCONTEXT=@"authenticationcontext";
 NSString* const an_NAME = @"name";

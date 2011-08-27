@@ -19,18 +19,33 @@
 @synthesize twitterAccessToken = m_twitterAccessToken;
 @synthesize twitterAccessTokenExpiryDate = m_twitterAccessTokenExpiryDate;
 @synthesize twitterUserID = m_twitterUserID;
+@synthesize wpPassword = m_wpPassword;
+@synthesize wpUsername = m_wpUsername;
+@synthesize wordpressURL = m_wordpressURL;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary { 
     NSNumber* expiryDateSinceEpoch = [jsonDictionary valueForKey:an_EXPIRY_DATE];
     self.expiryDate = [NSDate dateWithTimeIntervalSince1970:[expiryDateSinceEpoch doubleValue]];
     self.token = [jsonDictionary valueForKey:an_TOKEN];
     self.userid = [jsonDictionary valueForKey:an_USERID];
-    self.facebookAccessTokenExpiryDate = [jsonDictionary valueForKey:an_FACEBOOKTOKENEXPIRYDATE];
+    
+    NSNumber* fb_expiryDateSinceEpoch = [jsonDictionary valueForKey:an_FACEBOOKTOKENEXPIRYDATE];
+    
+    if ([fb_expiryDateSinceEpoch doubleValue] != 0) {
+        self.facebookAccessTokenExpiryDate = [NSDate dateWithTimeIntervalSince1970:[fb_expiryDateSinceEpoch doubleValue]];
+    }
+    else {
+        self.facebookAccessTokenExpiryDate = [NSDate dateWithTimeIntervalSince1970:facebook_MAXDATE];;
+    }
+  
     self.facebookAccessToken = [jsonDictionary valueForKey:an_FACEBOOKACCESSTOKEN];
     self.facebookUserID = [jsonDictionary valueForKey:an_FACEBOOKUSERID];
     self.twitterUserID = [jsonDictionary valueForKey:an_TWITTERUSERID];
     self.twitterAccessToken = [jsonDictionary valueForKey:an_TWITTERACCESSTOKEN];
     self.twitterAccessTokenExpiryDate = [jsonDictionary valueForKey:an_TWITTERTOKENEXPIRYDATE];
+    self.wpPassword = [jsonDictionary valueForKey:an_WORDPRESSPASSWORD];
+    self.wpUsername = [jsonDictionary valueForKey:an_WORDPRESSUSERNAME];
+    self.wordpressURL = [jsonDictionary valueForKey:an_WORDPRESSURL];
     return self;
 }
 
@@ -44,6 +59,9 @@
     self.twitterUserID = newContext.twitterUserID;
     self.twitterAccessTokenExpiryDate = newContext.twitterAccessTokenExpiryDate;
     self.twitterAccessToken = newContext.twitterAccessToken;
+    self.wordpressURL = newContext.wordpressURL;
+    self.wpUsername = newContext.wpUsername;
+    self.wpPassword = newContext.wpPassword;
 }
 
 - (NSString*) toJSON {
@@ -54,11 +72,23 @@
     [newDictionary setValue:self.token forKey:an_TOKEN];
     [newDictionary setValue:self.userid forKey:an_USERID];
     [newDictionary setValue:self.facebookAccessToken forKey:an_FACEBOOKACCESSTOKEN];
-    [newDictionary setValue:self.facebookAccessTokenExpiryDate forKey:an_FACEBOOKTOKENEXPIRYDATE];
+    
+    double dbl_facebookAccessTokenExpiry =[self.facebookAccessTokenExpiryDate timeIntervalSince1970];
+    if (dbl_facebookAccessTokenExpiry == facebook_MAXDATE) {
+        [newDictionary setValue:[NSNumber numberWithInt:0] forKey:an_FACEBOOKTOKENEXPIRYDATE];
+    }
+    else {
+        [newDictionary setValue:self.facebookAccessTokenExpiryDate
+          forKey:an_FACEBOOKTOKENEXPIRYDATE];
+    }
+   
     [newDictionary setValue:self.facebookUserID forKey:an_FACEBOOKUSERID];
     [newDictionary setValue:self.twitterAccessToken forKey:an_TWITTERACCESSTOKEN];
     [newDictionary setValue:self.twitterAccessTokenExpiryDate forKey:an_TWITTERTOKENEXPIRYDATE];
     [newDictionary setValue:self.twitterUserID forKey:an_TWITTERUSERID];
+    [newDictionary setValue:self.wpPassword forKey:an_WORDPRESSPASSWORD];
+    [newDictionary setValue:self.wpUsername forKey:an_WORDPRESSUSERNAME];
+    [newDictionary setValue:self.wordpressURL forKey:an_WORDPRESSURL];
     NSError* error = nil;
     JKSerializeOptionFlags flags = JKSerializeOptionNone;
                                     
@@ -67,6 +97,23 @@
     return retVal;
 }
 
+- (BOOL) hasWordpress {
+    BOOL retVal = NO;
+    
+    if (self.wpUsername != nil && self.wordpressURL != nil) {
+        retVal = YES;
+    }
+    return retVal;
+}
+
+- (BOOL) hasFacebook {
+    BOOL retVal = NO;
+    
+    if (self.facebookUserID != nil && self.facebookAccessToken != nil) {
+        retVal = YES;
+    }
+    return retVal;
+}
 + (NSString*) getTypeName {
     return tn_AUTHENTICATIONCONTEXT;
 }

@@ -24,6 +24,9 @@
     NSString* m_twitterAccessToken;
     NSDate* m_twitterAccessTokenExpiryDate;
     NSString* m_twitterUserID;
+    NSString* m_wordpressURL;
+    NSString* m_wpUsername;
+    NSString* m_wpPassword;
 @private
 }
 @property (nonatomic, retain) NSNumber * userid;
@@ -35,9 +38,14 @@
 @property (nonatomic, retain) NSString* twitterAccessToken;
 @property (nonatomic, retain) NSDate* twitterAccessTokenExpiryDate;
 @property (nonatomic, retain) NSString* twitterUserID;
+@property (nonatomic, retain) NSString* wordpressURL;
+@property (nonatomic, retain) NSString* wpUsername;
+@property (nonatomic, retain) NSString* wpPassword;
+
 
 //- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context;
 - (void) copyFrom:(AuthenticationContext*)newContext;
-
+- (BOOL) hasWordpress;
+- (BOOL) hasFacebook;
 + (id)newInstance;
 @end

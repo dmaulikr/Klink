@@ -12,6 +12,8 @@
 #import "TypeNames.h"
 #import "UICaptionLabel.h"
 #import "NSStringGUIDCategory.h"
+#import "WPDataController.h"
+#import "SocialSharingManager.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
@@ -171,18 +173,12 @@
             [self.captionCloudEnumerator enumerateNextPage];
         }
         
-        //lets check to see if the first caption requires us to start with the voting button hidden
-        int count = [[self.frc_captions fetchedObjects]count];
-        if (count > 0) {
-            Caption* firstCaption = [[self.frc_captions fetchedObjects]objectAtIndex:0];
-            [self evaluateVotingButton:firstCaption];
-        }
-        else {
-            //if there are no captions, then we need to hide the voting button
-            self.voteButton.hidden = YES;
-        }
+        [self showHideVotingSharingButtons];
         
-        
+        //register for global events
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
     }
     return self;
 }
@@ -255,8 +251,7 @@
             [self.captionCloudEnumerator enumerateNextPage];
         }
         
-        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        [self evaluateVotingButton:currentCaption];
+        [self showHideVotingSharingButtons];
     }
 }
 
@@ -283,28 +278,66 @@
     
 }
 
-#pragma mark - Button helpers
+#pragma mark - System Event Handlers
+-(void)onUserLoggedIn:(NSNotification*)notification {
+    [self showHideVotingSharingButtons];
+}
 
-- (void) evaluateVotingButton:(Caption*)caption {
+-(void)onUserLoggedOut:(NSNotification*)notification {
+    [self showHideVotingSharingButtons];
+}
+
+#pragma mark - Button helpers
+- (void) showHideVotingSharingButtons {
+    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
+    AuthenticationContext* authenticationContext = [authenticationManager getAuthenticationContext];
     
-    if ([caption.user_hasvoted boolValue] == YES) {
-        [self disableVotingButton];
+    int captionCount = [[self.frc_captions fetchedObjects] count];
+    if (authenticationContext == nil || captionCount == 0) {
+        //hide both
+        [self hideShareButton];
+        
     }
     else {
-        [self enableVotingButton];
+        [self showShareButton];
     }
-
+    
+    
+    
+    if (captionCount > 0) {
+        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
+        [self showVotingButton];
+        if ([currentCaption.user_hasvoted boolValue] == YES) {
+            [self disableVotingButton];
+        }
+        else {
+            [self enableVotingButton];
+        }
+       
+    }
+    else {
+        [self hideVotingButton];
+    }
 }
+
 - (void) disableVotingButton {
-    self.voteButton.hidden = NO;
+ 
     self.voteButton.enabled = NO;
     self.voteButton.backgroundColor = [UIColor grayColor];
 }
 
 - (void) enableVotingButton {
-    self.voteButton.hidden = NO;
+
     self.voteButton.enabled = YES;
     self.voteButton.backgroundColor = [UIColor redColor];
+}
+
+- (void) hideVotingButton {
+    self.voteButton.hidden = YES;
+}
+
+- (void) showVotingButton {
+    self.voteButton.hidden = NO;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -314,7 +347,7 @@
     if (type == NSFetchedResultsChangeInsert) {
         [self.captionScrollView onNewItemInsertedAt:newIndexPath.row];
         [self.captionScrollView tilePages];
-        self.voteButton.hidden = NO;
+        [self showHideVotingSharingButtons];
     }
 
 }
@@ -323,15 +356,26 @@
 
 //method called when the
 - (void) onShareButtonPressed:(id)sender {
-        
+    SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+    int count = [[self.frc_captions fetchedObjects]count];
+    if (count > 0) {
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
+        [sharingManager shareCaption:caption.objectid];
+    }
+   
 }
 
-- (void) disableShareButton {
-    
+
+#pragma mark - Button Handlers (cont'd)
+
+- (void) hideShareButton {
+    self.shareButton.hidden = YES;
+    self.shareButton.enabled = NO;
 }
 
-- (void) enableShareButton {
-    
+- (void) showShareButton {
+    self.shareButton.hidden = NO;
+    self.shareButton.enabled = YES;
 }
 
 - (void) onVoteUpButtonPressed:(id)sender {

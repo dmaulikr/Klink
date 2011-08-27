@@ -149,24 +149,23 @@ static  ImageManager* sharedManager;
         return retVal;
     }
     
-//    NSString* message = [NSString stringWithFormat:@"Beginning download of %@ to file %@",url,path];
-//    [BLLog v:activityName withMessage:message];
-    
-    NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-    [requestUserInfo setValue:url forKey:@"url"];
-    [requestUserInfo setValue:userInfo forKey:@"callbackdata"];
-    [requestUserInfo setObject:callback forKey:@"callback"];
-    
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:urlObject];    
-    request.userInfo = requestUserInfo;
-    request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-    request.delegate = self;
-    request.downloadDestinationPath = path;
-    request.downloadCache = imageCache;
-    [request setDidFinishSelector:@selector(onImageDownloaded:)];
-    [request setDidFailSelector:@selector(onImageDownloadFail:)] ;
-    [self.queue addOperation:request];
-    
+    if (callback != nil) {
+        
+        NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+        [requestUserInfo setValue:url forKey:@"url"];
+        [requestUserInfo setValue:userInfo forKey:@"callbackdata"];
+        [requestUserInfo setObject:callback forKey:@"callback"];
+        
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:urlObject];    
+        request.userInfo = requestUserInfo;
+        request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+        request.delegate = self;
+        request.downloadDestinationPath = path;
+        request.downloadCache = imageCache;
+        [request setDidFinishSelector:@selector(onImageDownloaded:)];
+        [request setDidFailSelector:@selector(onImageDownloadFail:)] ;
+        [self.queue addOperation:request];
+    }
     return nil;
 }
 

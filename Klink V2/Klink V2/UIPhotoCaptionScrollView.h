@@ -10,6 +10,7 @@
 #import "UIZoomingScrollView.h"
 #import "UIPagedViewSlider2.h"
 #import "CloudEnumerator.h"
+
 @class Caption;
 @class Photo;
 
@@ -29,9 +30,12 @@
 - (void)    onShareButtonPressed:(id)sender;
 - (void)    disableVotingButton;
 - (void)    enableVotingButton;
-- (void)    enableShareButton;
-- (void)    disableShareButton;
-- (void)    evaluateVotingButton:(Caption*)caption;
+- (void)    showShareButton;
+- (void)    hideShareButton;
+- (void)    hideVotingButton;
+- (void)    showVotingButton;
+- (void)    showHideVotingSharingButtons;
+
 
 @property (nonatomic,retain) Photo*                         photo;
 @property (nonatomic,retain) UIPagedViewSlider2*            captionScrollView;
@@ -40,4 +44,6 @@
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic,retain) UIButton*                      shareButton;
 @property (nonatomic,retain) UIButton*                      voteButton;
+
+
 @end

@@ -254,11 +254,11 @@
         for (UIPagedViewItem *page in self.visiblePages) {
             
             //TODO: implement better view recycling methods
-//            if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
-//               [self.recycledPages addObject:page];
-//                page.index = NSNotFound; // empty
-//               [page.view removeFromSuperview];
-//            }
+            if (page.index < (NSUInteger)iFirstIndex || page.index > (NSUInteger)iLastIndex) {
+               [self.recycledPages addObject:page];
+                page.index = NSNotFound; // empty
+               [page.view removeFromSuperview];
+            }
         }
         [self.visiblePages minusSet:self.recycledPages];
         

@@ -39,6 +39,7 @@ int const threshold_LOADMORECAPTIONS = 10;
 int const opcode_QUERYEQUALITY=1;
 
 NSString* const facebook_APPID=@"168077769927457";
+double const facebook_MAXDATE=64092211200;
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
 
@@ -60,3 +61,9 @@ int const maxlength_DESCRIPTION = 150;
 NSString* const font_DESCRIPTION = @"Marker Felt";
 int const fontsize_DESCRIPTION = 16;
 
+NSString* const delimeter_HASHTAGS = @",";
+NSString* const category_WORDPRESS = @"aardvark";
+int const default_width_WORDPRESSIMAGE = 593;
+int const default_height_WORDPRESSIMAGE = 261;
+int const max_width_WORDPRESSIMAGE = 600;
+int const max_height_WORDPRESSIMAGE = 600;

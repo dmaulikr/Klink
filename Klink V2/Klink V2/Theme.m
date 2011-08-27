@@ -15,8 +15,14 @@
 @dynamic descr;
 @dynamic displayname;
 @dynamic homeimageurl;
+@dynamic hashtags;
 
-
+- (NSArray*)arrayForHashtags {
+    if (self.hashtags != nil) {
+        return [self.hashtags componentsSeparatedByString: delimeter_HASHTAGS];
+    }
+    return nil;
+}
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
     if (self != nil) {
@@ -41,6 +47,10 @@
             self.homeimageurl = [jsonDictionary objectForKey:an_HOMEIMAGEURL];
         }
         
+        if ([jsonDictionary objectForKey:an_HASHTAGS] != [NSNull null]) {
+            self.hashtags = [jsonDictionary objectForKey:an_HASHTAGS];
+        }
+        
                 
     }
     return self;
@@ -58,7 +68,7 @@
     self.descr = [newObject descr];
     self.displayname = [newObject displayname];
     self.homeimageurl = [newObject homeimageurl];
-
+    self.hashtags = [newObject hashtags];
 }
 
 
@@ -81,7 +91,7 @@
     [dictionary setValue:self.descr forKey:an_DESCRIPTION];
     [dictionary setValue:self.displayname forKey:an_DISPLAYNAME];
     [dictionary setValue:self.homeimageurl forKey:an_HOMEIMAGEURL];
-
+    [dictionary setValue:self.hashtags forKey:an_HASHTAGS];
     
     return dictionary;    
 }

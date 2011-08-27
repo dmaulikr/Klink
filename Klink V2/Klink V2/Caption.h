@@ -28,6 +28,7 @@
 +(NSString*)getNewCaptionNote;
 - (BOOL) isTextCaption;
 
+
 //Static initializers
 + (Caption*) captionForPhoto:(NSNumber*)photoID withText:(NSString*)caption;
 + (Caption*) caption:(NSNumber*)objectID;
