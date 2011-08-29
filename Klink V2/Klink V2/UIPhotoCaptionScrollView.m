@@ -359,8 +359,9 @@
     int count = [[self.frc_captions fetchedObjects]count];
     if (count > 0) {
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
-        [sharingManager shareCaption:caption.objectid];
         [self hideShareButton];
+        [sharingManager shareCaption:caption.objectid];
+        
     }
    
 }

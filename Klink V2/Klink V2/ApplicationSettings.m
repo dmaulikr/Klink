@@ -47,7 +47,7 @@ NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 float const textAlpha = 0.9;
 
 // caption text settings
-int const maxlength_CAPTION = 30;
+int const maxlength_CAPTION = 150;
 NSString* const font_CAPTION = @"Marker Felt";
 int const fontsize_CAPTION = 16;
 
@@ -65,5 +65,4 @@ NSString* const delimeter_HASHTAGS = @",";
 NSString* const category_WORDPRESS = @"aardvark";
 int const default_width_WORDPRESSIMAGE = 593;
 int const default_height_WORDPRESSIMAGE = 261;
-int const max_width_WORDPRESSIMAGE = 600;
-int const max_height_WORDPRESSIMAGE = 600;
+600;int const max_height_WORDPRESSIMAGE = 600;
