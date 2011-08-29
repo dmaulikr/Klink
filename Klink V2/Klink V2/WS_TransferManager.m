@@ -62,7 +62,7 @@ static  WS_TransferManager* sharedManager;
         [request setFile:path forKey:@"attachment"];
         request.userInfo = userInfo;
         [request setDelegate:self];
-        [request setTimeOutSeconds:60];
+        [request setTimeOutSeconds:130];
         [request setDidFinishSelector:@selector(onUploadAttachmentComplete:)];
         [request setDidFailSelector:@selector(requestWentWrong:)];
         [self.putQueue addOperation:request];

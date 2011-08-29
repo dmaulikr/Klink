@@ -22,5 +22,5 @@
 @property (nonatomic,retain) NSArray* hashtags;
 
 + (SocialPost*) postFor:(NSString*)message withTitle:(NSString*)title atUrl:(NSString*)url;
-+ (SocialPost*) postFor:(NSString*)message withTitle:(NSString*)title withHashtags:postHashTags;
++ (SocialPost*) postFor:(NSString*)message withTitle:(NSString*)title priwithHashtags:postHashTags;
 @end
