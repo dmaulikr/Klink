@@ -65,4 +65,5 @@ NSString* const delimeter_HASHTAGS = @",";
 NSString* const category_WORDPRESS = @"aardvark";
 int const default_width_WORDPRESSIMAGE = 593;
 int const default_height_WORDPRESSIMAGE = 261;
-600;int const max_height_WORDPRESSIMAGE = 600;
+int const max_height_WORDPRESSIMAGE = 600;
+int const max_width_WORDPRESSIMAGE=600;
