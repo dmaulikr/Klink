@@ -988,6 +988,18 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             [imageView addSubview:themeDescTextView];
         }
         
+        // Add page indicator for themes
+        UIPageControl* themePageIndicator = nil; // subview at index 4
+        if ([imageView.subviews count] == 5) {
+            themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
+            themePageIndicator.currentPage = index;
+        } else {
+            themePageIndicator = [[UIPageControl alloc] init];
+            themePageIndicator.center = CGPointMake(themeDescriptionFrame.size.width/2, themeDescriptionFrame.origin.y + themeDescriptionFrame.size.height - 2);
+            themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
+            themePageIndicator.currentPage = index;
+            [imageView addSubview:themePageIndicator];
+        }
     }
 }
 
