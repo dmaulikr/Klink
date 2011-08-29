@@ -32,6 +32,39 @@ static  WS_TransferManager* sharedManager;
 
 }
 
+- (void) shareCaptionViaCloud:(NSNumber *)captionid {
+    NSString* activityName = @"WS_TransferManager.shareCaption:";
+    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
+    AuthenticationContext* authnContext = [authnManager getAuthenticationContext];
+    
+    if (authnContext != nil &&
+        [authnContext hasWordpress]) {
+        
+        NSURL* url = [UrlManager getShareCaptionURL:captionid withAuthenticationContext:authnContext];
+    
+        
+        ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
+        [request setPostValue:@"a" forKey:@""];
+        [request setDelegate:self];
+        [request setTimeOutSeconds:130];
+        [request setDidFinishSelector:@selector(onShareCaptionComplete:)];
+        [request setDidFailSelector:@selector(requestWentWrong:)];
+        [self.putQueue addOperation:request];
+        
+        NSString *message = [[NSString alloc] initWithFormat:@"shared caption %@ at url: %@",captionid,url];
+        [BLLog v:activityName withMessage:message];
+        [message release];
+       
+
+        
+        
+    }
+
+    
+    
+}
+
+
 - (void) uploadAttachmentToCloud:(Attachment*)attachment onFinishNotify:(NSString*)notificationID {
     [self uploadAttachementToCloud:attachment.objectid withObjectType:attachment.objecttype forAttributeName:attachment.attributename atFileLocation:attachment.filelocation onFinishNotify:notificationID];
 }
@@ -356,6 +389,12 @@ static  WS_TransferManager* sharedManager;
 
 #pragma mark - Asynchronous Response Handlers
 
+- (void) onShareCaptionComplete:(ASIHTTPRequest*) request {
+    NSString* activityName = @"WS_TransferManager.onPutAttributeComplete";
+    NSString* message = [NSString stringWithFormat:@"Caption shared successfully"];
+    [BLLog v:activityName withMessage:message];
+    
+}
 //Generic put response handling method that can be used on both cases
 - (void) onPutAttributeComplete:(ASIHTTPRequest*) request {
     NSString* activityName = @"WS_TransferManager.onPutAttributeComplete";

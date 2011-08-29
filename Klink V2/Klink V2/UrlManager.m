@@ -11,6 +11,26 @@
 
 @implementation UrlManager
 
++ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withAuthenticationContext:(id)authenticationContext {
+    NSString* verbName = verb_SHARECAPTION;
+    NSString* baseURL = [ApplicationSettingsManager getBaseURL];
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* captionIDParamName = param_OBJECTID;
+    NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+    
+    [parameters appendFormat:@"%@=%@",captionIDParamName,captionID];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParameterName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURL* url = [[[NSURL alloc] initWithString:escapedURL]autorelease];
+    [parameters release];
+    return url;
+
+}
+
 + (NSURL*) getUploadAttachmentURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttributeName:(NSString*)attributeName withAuthenticationContext:(id)authenticationContext {
     NSString* verbName = verb_UPLOADATTACHMENT;
     NSString* baseURL = [ApplicationSettingsManager getBaseURL];

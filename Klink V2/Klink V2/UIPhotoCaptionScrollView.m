@@ -168,9 +168,9 @@
         
     
         
-        if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
-            [self.captionCloudEnumerator enumerateNextPage];
-        }
+//        if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
+//            [self.captionCloudEnumerator enumerateNextPage];
+//        }
         
         [self showHideVotingSharingButtons];
         

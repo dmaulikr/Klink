@@ -246,7 +246,7 @@
 
 - (void) onUserLoggedIn {
     [self showProfileBar];
-    [self enumerateFeed];
+//    [self enumerateFeed];
     
 }
 

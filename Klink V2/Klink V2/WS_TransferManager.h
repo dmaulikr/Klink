@@ -29,6 +29,7 @@
 + (WS_TransferManager*)getInstance;
 - (id)init;
 
+- (void) shareCaptionViaCloud:(NSNumber*)captionid;
 
 - (void) updateObjectInCloud:
         (NSNumber*)objectid 

@@ -17,3 +17,4 @@ extern NSString* const verb_DELETE;
 extern NSString* const verb_UPLOADATTACHMENT;
 extern NSString* const verb_GETAUTHENTICATOR;
 extern NSString* const verb_UPDATEATTRIBUTE;
+extern NSString* const verb_SHARECAPTION;

@@ -32,9 +32,9 @@ NSString* const cell_IMAGECAPTION=@"imageCaptionCell";
 int const timeout_ENUMERATION = 30;
 
 //theme browsing view controller settings
-int const threshold_LOADMOREPHOTOS = 10;
-int const threshold_LOADMORETHEMES = 5;
-int const threshold_LOADMORECAPTIONS = 10;
+int const threshold_LOADMOREPHOTOS = 4;
+int const threshold_LOADMORETHEMES = 2;
+int const threshold_LOADMORECAPTIONS = 2;
 
 int const opcode_QUERYEQUALITY=1;
 

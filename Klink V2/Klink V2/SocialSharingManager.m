@@ -251,44 +251,49 @@ static  SocialSharingManager* sharedManager;
 }
 
 #pragma mark - Sharing Methods
-- (void) shareCaption:(NSNumber *)captionID {
-    NSString* activityName = @"SocialSharingManager.shareCaption:";
-    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
-    AuthenticationContext* authnContext = [authnManager getAuthenticationContext];
-    
-    if (authnContext != nil &&
-        [authnContext hasWordpress]) {
-        //user has to be logged in in order to share and have a wordpress account
-        Caption* caption = [DataLayer getObjectByType:CAPTION withId:captionID];
-        Photo* photo = [DataLayer getObjectByID:caption.photoid withObjectType:PHOTO];
-        Theme* theme = [DataLayer getObjectByID:photo.themeid withObjectType:tn_THEME];
-        //need to first post the caption as a post to the wordpress
-        NSString* postTitle = [self postTitleFor:caption];
-        NSString* postMessage = [self postHTMLFor:caption withPhoto:photo];
-        NSArray* postHashTags = [theme arrayForHashtags];
-        
-        SocialPost* newPost = [SocialPost postFor:postMessage withTitle:postTitle withHashtags:postHashTags];
-        NSURL* postURL = [self submitPostToWordpress:newPost withUsername:authnContext.wpUsername withPassword:authnContext.wpPassword atBlog:authnContext.wordpressURL forCaption:caption];
-        
-        if (postURL != nil) {
-            NSString* message = [NSString stringWithFormat:@"Published caption: %@ to url: %@",captionID,postURL];
-            [BLLog e:activityName withMessage:message];
-            
-            newPost.url = postURL;
-            //now we share this url with twitter and facebook angles
-            [self shareCaptionOnFacebook:caption withPost:newPost];
-        }
-        else {
-            //there was an error
-            NSString* message = [NSString stringWithFormat:@"Could not publish caption: %@",captionID];
-            [BLLog e:activityName withMessage:message];
-        }
-    }
-    else {
-        NSString* message = @"Must be logged in and have a registered wordpress blog to share";
-        [BLLog e:activityName withMessage:message];
-    }
+- (void) shareCaption:(NSNumber*)captionID {
+    WS_TransferManager* transferManager = [WS_TransferManager getInstance];
+    [transferManager shareCaptionViaCloud:captionID];
 }
+
+//- (void) shareCaption:(NSNumber *)captionID {
+//    NSString* activityName = @"SocialSharingManager.shareCaption:";
+//    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
+//    AuthenticationContext* authnContext = [authnManager getAuthenticationContext];
+//    
+//    if (authnContext != nil &&
+//        [authnContext hasWordpress]) {
+//        //user has to be logged in in order to share and have a wordpress account
+//        Caption* caption = [DataLayer getObjectByType:CAPTION withId:captionID];
+//        Photo* photo = [DataLayer getObjectByID:caption.photoid withObjectType:PHOTO];
+//        Theme* theme = [DataLayer getObjectByID:photo.themeid withObjectType:tn_THEME];
+//        //need to first post the caption as a post to the wordpress
+//        NSString* postTitle = [self postTitleFor:caption];
+//        NSString* postMessage = [self postHTMLFor:caption withPhoto:photo];
+//        NSArray* postHashTags = [theme arrayForHashtags];
+//        
+//        SocialPost* newPost = [SocialPost postFor:postMessage withTitle:postTitle withHashtags:postHashTags];
+//        NSURL* postURL = [self submitPostToWordpress:newPost withUsername:authnContext.wpUsername withPassword:authnContext.wpPassword atBlog:authnContext.wordpressURL forCaption:caption];
+//        
+//        if (postURL != nil) {
+//            NSString* message = [NSString stringWithFormat:@"Published caption: %@ to url: %@",captionID,postURL];
+//            [BLLog e:activityName withMessage:message];
+//            
+//            newPost.url = postURL;
+//            //now we share this url with twitter and facebook angles
+//            [self shareCaptionOnFacebook:caption withPost:newPost];
+//        }
+//        else {
+//            //there was an error
+//            NSString* message = [NSString stringWithFormat:@"Could not publish caption: %@",captionID];
+//            [BLLog e:activityName withMessage:message];
+//        }
+//    }
+//    else {
+//        NSString* message = @"Must be logged in and have a registered wordpress blog to share";
+//        [BLLog e:activityName withMessage:message];
+//    }
+//}
 
 
 

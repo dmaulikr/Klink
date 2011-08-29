@@ -36,4 +36,6 @@
 
 + (NSURL*) getUpdateAttributeURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttribute:(NSString*)attributeName withOperationCode:(int)operationCode byValue:(NSString*)value withAuthenticationContext:(id)context;
 
++ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withAuthenticationContext:(id)context;
+
 @end

@@ -102,7 +102,7 @@
         // Setup pages
         self.visiblePages = [[NSMutableSet alloc] init];
         self.recycledPages = [[NSMutableSet alloc] init];
-        [self tilePages];
+        [self goToPage:0];
         
         
         
@@ -421,10 +421,15 @@
 
 
 - (void)goToPage:(int)index {
-    
+    int currentIndex = self.currentPageIndex;\
+    int count = [self.delegate itemCountFor:self];
     CGPoint offset = CGPointMake((m_itemWidth+m_itemSpacing)*index, 0);
     self.pagingScrollView.contentOffset = offset;
     [self tilePages];
+
+    
+        [self.delegate viewSlider:self isAtIndex:self.currentPageIndex withCellsRemaining:count-m_currentPageIndex];
+    
 }
 
 #pragma mark -
