@@ -28,6 +28,8 @@
 #define kShareButtonLeftPadding     20
 #define kShareButtonBottomPadding   100
 
+#define kToolbarHeight              44
+
 @implementation UIPhotoCaptionScrollView
 @synthesize photo =                     m_photo;
 @synthesize captionScrollView =         m_captionScrollView;
@@ -110,7 +112,7 @@
 #pragma mark - Frames
 - (CGRect) frameForCaptionScrollView:(CGRect)frame {
     
-    return CGRectMake(0, frame.size.height-kCaptionHeight, frame.size.width, kCaptionHeight);
+    return CGRectMake(0, frame.size.height-kCaptionHeight-kToolbarHeight, frame.size.width, kCaptionHeight);
 
 }
 

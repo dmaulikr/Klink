@@ -46,10 +46,10 @@
 #define kThemeTextViewHeight_landscape 40
 #define kThemeTitlePadding 10
 
-#define kTextViewDescriptionHeight 60
+#define kTextViewDescriptionHeight 65
 #define kTextViewDescriptionWidth 320
 #define kTextViewDescriptionWidth_landscape 320
-#define kTextViewDescriptionHeight_landscape 60
+#define kTextViewDescriptionHeight_landscape 65
 
 #define kCaptionTextViewHeight 10
 #define kCaptionTextViewWidth 120
@@ -196,7 +196,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     else {
         self.view = self.v_portrait;
     }
-  
     
 }
 
@@ -995,7 +994,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             themePageIndicator.currentPage = index;
         } else {
             themePageIndicator = [[UIPageControl alloc] init];
-            themePageIndicator.center = CGPointMake(themeDescriptionFrame.size.width/2, themeDescriptionFrame.origin.y + themeDescriptionFrame.size.height - 2);
+            themePageIndicator.center = CGPointMake(themeDescriptionFrame.size.width/2, themeDescriptionFrame.origin.y + themeDescriptionFrame.size.height - 1);
             themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
             themePageIndicator.currentPage = index;
             [imageView addSubview:themePageIndicator];

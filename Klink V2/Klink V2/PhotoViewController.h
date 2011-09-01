@@ -29,12 +29,19 @@ typedef enum {
     BOOL                        m_hidesBottomBarWhenPushed;
     
     // Navigation & controls
-	
+    
 	NSTimer*                    m_controlVisibilityTimer;
 
     
     CloudEnumerator*            m_photoCloudEnumerator;
     
+    // Toolbar Buttons
+    UIBarButtonItem*            m_tb_shareButton;
+    UIBarButtonItem*            m_tb_cameraButton;
+    UIBarButtonItem*            m_tb_voteButton;
+    UIBarButtonItem*            m_tb_captionButton;
+    
+    // Original Buttons
     UIBarButtonItem*            m_captionButton;
     UIBarButtonItem*            m_submitButton;
     UIBarButtonItem*            m_cancelCaptionButton;
@@ -70,7 +77,14 @@ typedef enum {
 @property (nonatomic,retain) IBOutlet UIScrollView*         v_sv_view;
 @property (nonatomic,retain) UIScrollView*                  sv_view;
 
+// Toolbar Buttons
+@property (nonatomic,retain) UIBarButtonItem*               tb_shareButton;
+@property (nonatomic,retain) UIBarButtonItem*               tb_cameraButton;
+@property (nonatomic,retain) UIBarButtonItem*               tb_voteButton;
+@property (nonatomic,retain) UIBarButtonItem*               tb_captionButton;
+@property (nonatomic,retain) UIToolbar*                     toolbar;
 
+// Original Buttons
 @property (nonatomic,retain) UIBarButtonItem*               captionButton;
 @property (nonatomic,retain) UIBarButtonItem*               submitButton;
 @property (nonatomic,retain) UIBarButtonItem*               cancelCaptionButton;
