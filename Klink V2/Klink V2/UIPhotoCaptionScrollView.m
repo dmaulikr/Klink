@@ -152,6 +152,7 @@
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;
         
+    
         CGRect frameForShareButton = [self frameForShareButton:frame];
         self.shareButton = [[UIButton alloc]initWithFrame:frameForShareButton];
         self.shareButton.backgroundColor = [UIColor redColor];
@@ -165,10 +166,14 @@
         [self.voteButton setTitle:@"Vote" forState:UIControlStateNormal];
         [self.voteButton setTitle:@"Voted!" forState:UIControlStateDisabled];
         [self.voteButton addTarget:self action:@selector(onVoteUpButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
         [self addSubview:self.voteButton];
         
-    
+        // (TODO) TEMP hidding share and vote buttons, need to implement show/hide functionality on new toolbar button versions
+        self.shareButton.hidden = YES;
+        self.shareButton.enabled = NO;
+        self.voteButton.hidden = YES;
+        self.voteButton.enabled = NO;
+     
         
         if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
             [self.captionCloudEnumerator enumerateNextPage];

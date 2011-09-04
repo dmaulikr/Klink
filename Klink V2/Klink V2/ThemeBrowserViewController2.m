@@ -210,7 +210,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
         
-
     
     self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
     self.themeCloudEnumerator.delegate = self;
@@ -230,6 +229,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         }
         
     }
+    
     
     /*self.pvs_photoSlider2.layer.borderWidth = 1.0f;
     self.pvs_photoSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -534,6 +534,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     [actionSheet release];
 }
 
+
+#pragma mark ActionSheet delegate methods
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != [actionSheet cancelButtonIndex]) {
@@ -544,6 +546,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         }
     }
 }
+
 
 - (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType {
     NSArray *mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
@@ -782,8 +785,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
 - (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
            selectIndex:        (int)                   index {
     
-    if (viewSlider == self.pvs_photoSlider2 && 
-        index < [[self.frc_photosInCurrentTheme  fetchedObjects]count ]) {
+    if (viewSlider == self.pvs_photoSlider2 && index < [[self.frc_photosInCurrentTheme  fetchedObjects]count ]) {
+        
+        // Set up navigation bar back button
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:self.theme.displayname
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                 target:nil
+                                                                                 action:nil] autorelease];
         
         Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
         PhotoViewController* photoViewController = [[PhotoViewController alloc]init];

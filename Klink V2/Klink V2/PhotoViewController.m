@@ -300,7 +300,7 @@
     
  
     
-    self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
+    //self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
     self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
     self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
     
@@ -326,6 +326,7 @@
     // Toolbar Items
     UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
     ThemeBrowserViewController2* themeBrowserViewController = [[ThemeBrowserViewController2 alloc] init];
+    [themeBrowserViewController assignTheme:self.currentTheme];
     
     self.tb_shareButton = [[UIBarButtonItem alloc]
                           initWithTitle:@"Share"
@@ -364,7 +365,8 @@
     // Add array of buttons to toolbar
     [toolbar setItems:items animated:NO];
     
-    
+    [photoCaptionView release];
+    [photoCaptionView release];
     
     m_wantsFullScreenLayout = YES;
     m_hidesBottomBarWhenPushed = YES;
@@ -520,7 +522,10 @@
 
 
 - (void)setControlsHidden:(BOOL)hidden {
-	
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+    
 	// Get status bar height if visible
 	CGFloat statusBarHeight = 0;
 	if (![UIApplication sharedApplication].statusBarHidden) {
@@ -547,13 +552,14 @@
 	self.navigationController.navigationBar.frame = navBarFrame;
 	
 	// Bars
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
 	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
 
     // Captions scrollviewer
     UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
     [photoCaptionView.captionScrollView setAlpha:hidden ? 0 : 1];
+    
+    // Toolbar
+    [toolbar setAlpha:hidden ? 0 : 1];
     
     // Vote and Share buttons
     [photoCaptionView.voteButton setAlpha:hidden ? 0 : 1];
@@ -646,7 +652,7 @@
         self.navigationItem.rightBarButtonItem = self.submitButton;
     }
     else {
-        self.navigationItem.rightBarButtonItem = self.captionButton;
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 
