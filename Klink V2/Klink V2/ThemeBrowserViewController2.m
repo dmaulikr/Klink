@@ -18,17 +18,35 @@
 #import "MWPhotoBrowser.h"
 #import "NSFetchedResultsControllerCategory.h"
 
-#define kPictureWidth 130
+/*#define kPictureWidth 130
 #define kPictureSpacing 0
 #define kPictureHeight 120
 #define kPictureWidth_landscape 130
+#define kPictureHeight_landscape 120*/
+
+#define kScale 2
+
+#define kPictureSpacing 0
+#define kPictureWidth 120
+#define kPictureHeight 120
+#define kPictureWidth_landscape 120
 #define kPictureHeight_landscape 120
 
-// Jordan's Photo sizes, need to merge with Bobby's above
+/*// Jordan's Photo sizes, need to merge with Bobby's above
 #define kThumbnailPortraitWidth 150
 #define kThumbnailPortraitHeight 200
 #define kThumbnailLandscapeWidth 266
 #define kThumbnailLandscapeHeight 200
+#define kFullscreenPortraitWidth 320
+#define kFullscreenPortraitHeight 480
+#define kFullscreenLandscapeWidth 480
+#define kFullscreenLandscapeHeight 320*/
+
+// Jordan's Photo sizes, need to merge with Bobby's above
+#define kThumbnailPortraitWidth 120
+#define kThumbnailPortraitHeight 160
+#define kThumbnailLandscapeWidth 160
+#define kThumbnailLandscapeHeight 120
 #define kFullscreenPortraitWidth 320
 #define kFullscreenPortraitHeight 480
 #define kFullscreenLandscapeWidth 480
@@ -585,39 +603,42 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Begin creation of the thumbnail and fullscreen photos
     UIImage *chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    //UIImage *chosenImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    //UIImage *chosenImage = [info objectForKey:UIImagePickerControllerEditedImage];    //can be used if we want a standard sized square cropped image
     
     CGSize chosenImageSize = chosenImage.size;
     CGSize newThumbnailSize;
     CGSize newFullscreenSize;
     CGRect thumbnailCropRect;
     
-    thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kPictureWidth, kPictureHeight);
+    //thumbnailCropRect = CGRectMake((newThumbnailSize.width - (kThumbnailPortraitWidth))/2, (newThumbnailSize.height - (kThumbnailPortraitHeight))/2, kPictureWidth, kPictureHeight);
     
     if (chosenImageSize.height > chosenImageSize.width) {
-       
+        // Create UIImage frame for image in portrait - fill width
         newThumbnailSize = CGSizeMake(kThumbnailPortraitWidth, ((chosenImageSize.height*kThumbnailPortraitWidth)/chosenImageSize.width));
-
         newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, ((chosenImageSize.height*kFullscreenPortraitWidth)/chosenImageSize.width));
     }
     else if (chosenImageSize.height < chosenImageSize.width) {
         // Create UIImage frame for image in landscape - fill height
-               newThumbnailSize = CGSizeMake(((chosenImageSize.width*kThumbnailLandscapeHeight)/chosenImageSize.height), kThumbnailLandscapeHeight);
-        
+        newThumbnailSize = CGSizeMake(((chosenImageSize.width*kThumbnailLandscapeHeight)/chosenImageSize.height), kThumbnailLandscapeHeight);
         newFullscreenSize = CGSizeMake(((chosenImageSize.width*kFullscreenLandscapeHeight)/chosenImageSize.height), kFullscreenLandscapeHeight);
     }
     else {
         // Create UIImage frame for image in portrait but maximize image scaling to fill height for thumbnail and width for fullscreen
-            newThumbnailSize = CGSizeMake(kThumbnailPortraitHeight, kThumbnailPortraitHeight);
-       
+        newThumbnailSize = CGSizeMake(kThumbnailPortraitHeight, kThumbnailPortraitHeight);
         newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, kFullscreenPortraitWidth);
     }
     
     // Make thumbnail image
     UIImage *thumbnailImage = shrinkImage(chosenImage, newThumbnailSize);
     // Crop the new shrunken thumbnail image to the fit the target frame size
+    
+    //CGSize thumbnailImageSize = thumbnailImage.size;
+    
+    thumbnailCropRect = CGRectMake((thumbnailImage.size.width - (kPictureWidth * kScale))/2, (thumbnailImage.size.height - (kPictureHeight * kScale))/2, kPictureWidth * kScale, kPictureHeight * kScale);
     CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([thumbnailImage CGImage], thumbnailCropRect);
     thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
+    
+    //CGSize croppedThumbnailImageSize = thumbnailImage.size;
     
     // Make fullscreen image
     UIImage *fullscreenImage = shrinkImage(chosenImage, newFullscreenSize);
@@ -639,11 +660,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     ImageManager* imageManager = [ImageManager getInstance];
     
     // Save thumbnail image
-    NSString* thumbnailFileName = [newPhoto.objectid stringValue];
+    NSString* thumbnailFileName = [NSString stringWithFormat:@"%@%@", [newPhoto.objectid stringValue], @"-tb"];
     thumbnailPath = [imageManager saveImage:thumbnailImage withFileName:thumbnailFileName];
     
     // Save fullscreen image
-    NSString* fullscreenFileName = [newPhoto.objectid stringValue];
+    NSString* fullscreenFileName = [NSString stringWithFormat:@"%@%@", [newPhoto.objectid stringValue], @"-fs"];
     fullscreenPath = [imageManager saveImage:fullscreenImage withFileName:fullscreenFileName];
     
     
@@ -716,7 +737,8 @@ static inline double radians (double degrees) {
 
 static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
-    CGFloat scale = [UIScreen mainScreen].scale;
+    //CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat scale = kScale;
     
     CGFloat targetWidth = size.width * scale;
     CGFloat targetHeight = size.height * scale;
@@ -731,46 +753,44 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
     CGContextRef context;
     
-    // For the thumbnail images, in the right or left cases, we need to switch targetWidth and targetHeight when building the CG context
-    //if ((targetWidth / scale) == kFullscreenPortraitWidth || (targetHeight / scale) == kFullscreenPortraitHeight) {
-    //    context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    // For images taken in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when building the CG context
+    //if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+    //if (original.imageOrientation == UIImageOrientationLeft || original.imageOrientation == UIImageOrientationRight) {
+        context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
     //} else {
-        if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
-            context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-        } else {
-            context = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-        }
+    //    context = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
     //}
     
-    // For the fullscreen photos we need to rotate the CG context before drawing the image.
-    // In the right or left cases, we need to switch scaledWidth and scaledHeight,
-	// and also the origin point
-    //if ((targetWidth / scale) == kFullscreenPortraitWidth || (targetHeight / scale) == kFullscreenPortraitHeight) {
-        if (original.imageOrientation == UIImageOrientationLeft) {
-            //CGContextRotateCTM (context, radians(90));
-            //CGContextTranslateCTM (context, 0, -targetWidth);
-        } else if (original.imageOrientation == UIImageOrientationRight) {
-            //CGContextRotateCTM (context, radians(-90));
-            //CGContextTranslateCTM (context, -targetHeight, 0);
-        } else if (original.imageOrientation == UIImageOrientationUp) {
-            // NOTHING
-        } else if (original.imageOrientation == UIImageOrientationDown) {
-            //CGContextTranslateCTM (context, targetWidth, targetHeight);
-            //CGContextRotateCTM (context, radians(180));
-        }
-    //}
     
+    // We need to rotate the CG context before drawing the image.
+    // In the right or left cases, we need to switch targetWidth and targetHeight, and also the origin point
+    if (original.imageOrientation == UIImageOrientationLeft) {
+        CGContextRotateCTM (context, radians(90));
+        CGContextTranslateCTM (context, 0, -targetWidth);
+    } else if (original.imageOrientation == UIImageOrientationRight) {
+        CGContextRotateCTM (context, radians(-90));
+        CGContextTranslateCTM (context, -targetHeight, 0);
+    } else if (original.imageOrientation == UIImageOrientationUp) {
+        // NOTHING
+    } else if (original.imageOrientation == UIImageOrientationDown) {
+        CGContextTranslateCTM (context, targetWidth, targetHeight);
+        CGContextRotateCTM (context, radians(-180));
+    }
+    
+    // For images to be presented in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when drawing the new image
     if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+    //if (original.imageOrientation == UIImageOrientationLeft || original.imageOrientation == UIImageOrientationRight) {
         CGContextDrawImage(context, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
 
     } else {
         CGContextDrawImage(context, CGRectMake(0, 0, targetHeight, targetWidth), imageRef);
     }
     
+    
     CGImageRef shrunken = CGBitmapContextCreateImage(context);
     
-    UIImage *shrunkenImage = [UIImage imageWithCGImage:shrunken scale:original.scale orientation:original.imageOrientation];
-    //UIImage* shrunkenImage = [UIImage imageWithCGImage:shrunken];
+    //UIImage *shrunkenImage = [UIImage imageWithCGImage:shrunken scale:original.scale orientation:original.imageOrientation];
+    UIImage* shrunkenImage = [UIImage imageWithCGImage:shrunken];
     
     //CGSize shrunkenImageSize = shrunkenImage.size;
     
