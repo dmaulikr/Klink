@@ -890,6 +890,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             [imageView addSubview:captionLabel];
         }
         
+        
         if (caption != nil) {
             captionLabel.text = caption.caption1;
             captionLabelBackground.hidden = NO;
