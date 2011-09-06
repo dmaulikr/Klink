@@ -8,6 +8,10 @@
 
 #import "UICaptionLabel.h"
 
+#define kBackgroundWidth_landscape 480
+#define kBackgroundWidth 320
+#define kBackgroundHeight 70
+
 #define kCaptionLabelWidth_landscape 480
 #define kCaptionLabelWidth 320
 #define kCaptionHeight 40
@@ -16,19 +20,32 @@
 #define kMetadataLabelWidth 320
 #define kMetadataHeight 30
 
+#define kPadding 5
+
 
 @implementation UICaptionLabel
 @synthesize tv_caption;
 @synthesize tv_metadata;
 
 #pragma mark - Frames
+- (CGRect) frameForBackground {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, 0, kBackgroundWidth_landscape, kBackgroundHeight);
+    }
+    else {
+        return CGRectMake(0, 0, kBackgroundWidth, kBackgroundHeight);
+        
+    }
+}
+
 - (CGRect) frameForCaptionLabel {
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, 0, kCaptionLabelWidth_landscape, kCaptionHeight);
+        return CGRectMake(kPadding, 0, kCaptionLabelWidth_landscape - 2*kPadding, kCaptionHeight);
     }
     else {
-        return CGRectMake(0, 0, kCaptionLabelWidth, kCaptionHeight);
+        return CGRectMake(kPadding, 0, kCaptionLabelWidth - 2*kPadding, kCaptionHeight);
 
     }
 }
@@ -36,13 +53,14 @@
 - (CGRect) frameForMetadataLabel:(CGRect)frame {
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, frame.size.height-kMetadataHeight, kMetadataLabelWidth_landscape, kMetadataHeight);
+        return CGRectMake(kPadding, frame.size.height-kMetadataHeight, kMetadataLabelWidth_landscape - 2*kPadding, kMetadataHeight);
     }
     else {
-        return CGRectMake(0, frame.size.height-kMetadataHeight, kMetadataLabelWidth, kMetadataHeight);
+        return CGRectMake(kPadding, frame.size.height-kMetadataHeight, kMetadataLabelWidth - 2*kPadding, kMetadataHeight);
         
     }
 }
+
 
 #pragma mark - Initializers
 
@@ -54,19 +72,12 @@
         self.frame = frame;
         
         // set transparent backgrounds first
-        UIView* tv_captionBackground = nil;
-        tv_captionBackground = [[UIView alloc] initWithFrame:[self frameForCaptionLabel]];
-        [tv_captionBackground setBackgroundColor:[UIColor blackColor]];
-        [tv_captionBackground setAlpha:0.5];
-        [tv_captionBackground setOpaque:YES];
-        [self addSubview:tv_captionBackground];
-        
-        UIView* tv_metadataBackground = nil;
-        tv_metadataBackground = [[UIView alloc] initWithFrame:[self frameForMetadataLabel:frame]];
-        [tv_metadataBackground setBackgroundColor:[UIColor blackColor]];
-        [tv_metadataBackground setAlpha:0.5];
-        [tv_metadataBackground setOpaque:YES];
-        [self addSubview:tv_metadataBackground];
+        UIView* v_captionBackground = nil;
+        v_captionBackground = [[UIView alloc] initWithFrame:[self frameForBackground]];
+        [v_captionBackground setBackgroundColor:[UIColor blackColor]];
+        [v_captionBackground setAlpha:0.5];
+        [v_captionBackground setOpaque:YES];
+        [self addSubview:v_captionBackground];
         
         
         // now add non-transparent text
@@ -74,10 +85,12 @@
         self.tv_metadata = [[UILabel alloc] initWithFrame:[self frameForMetadataLabel:frame]];
         
         self.tv_caption.backgroundColor = [UIColor clearColor];
-        self.tv_caption.opaque = NO;
+        self.tv_caption.opaque = YES;
         self.tv_caption.alpha = textAlpha;
         self.tv_caption.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
         self.tv_caption.textColor = [UIColor whiteColor];
+        self.tv_caption.lineBreakMode = UILineBreakModeWordWrap;
+        self.tv_caption.numberOfLines = 2;
         self.tv_caption.textAlignment = UITextAlignmentCenter;
         
         self.tv_metadata.backgroundColor = [UIColor clearColor];

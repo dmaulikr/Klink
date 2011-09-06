@@ -13,6 +13,7 @@
 #import "UIPhotoCaptionScrollView.h"
 #import "NSStringGUIDCategory.h"
 #import "IDGenerator.h"
+#import "ThemeBrowserViewController2.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -50,6 +51,12 @@
 @synthesize v_sv_view;
 @synthesize h_sv_view;
 @synthesize cancelCaptionButton     =m_cancelCaptionButton;
+@synthesize toolbar;
+@synthesize tb_shareButton          =m_tb_shareButton;
+@synthesize tb_cameraButton         =m_tb_cameraButton;
+@synthesize tb_voteButton           =m_tb_voteButton;
+@synthesize tb_captionButton        =m_tb_captionButton;
+
 
 #pragma mark - Property Definitions
 
@@ -83,6 +90,18 @@
 }
 
 
+#pragma mark - UIPhotoCaptionScrollViewDelegate
+- (UIPhotoCaptionScrollView*)currentlyDisplayedView {
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
+    NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
+    for (int i = 0; i < [currentlyDisplayedViews count];i++) {
+        UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
+        if ([photoCaptionView.photo.objectid isEqualToNumber:photo.objectid]) {
+            return photoCaptionView;
+        }
+    }
+    return nil;
+}
 
 
 - (NSFetchedResultsController*) frc_photos {
@@ -281,7 +300,7 @@
     
  
     
-    self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
+    //self.captionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCaptionButtonPressed:)];
     self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
     self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
     
@@ -295,6 +314,59 @@
     if ([[self.frc_photos fetchedObjects]count]<threshold_LOADMOREPHOTOS) {
         [self.photoCloudEnumerator enumerateNextPage];
     }
+    
+    
+    // Toolbar
+    toolbar = [[UIToolbar alloc] initWithFrame:[self frameForToolbarAtOrientation:self.interfaceOrientation]];
+    toolbar.tintColor = nil;
+    toolbar.barStyle = UIBarStyleBlackTranslucent;
+    toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:toolbar];
+    
+    // Toolbar Items
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    ThemeBrowserViewController2* themeBrowserViewController = [[ThemeBrowserViewController2 alloc] init];
+    [themeBrowserViewController assignTheme:self.currentTheme];
+    
+    self.tb_shareButton = [[UIBarButtonItem alloc]
+                          initWithTitle:@"Share"
+                          style:UIBarButtonItemStyleBordered
+                          target:photoCaptionView
+                          action:@selector(onShareButtonPressed:)];
+    
+    self.tb_cameraButton = [[UIBarButtonItem alloc]
+                          initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                          target:themeBrowserViewController
+                          action:@selector(cameraButtonPressed:)];
+    
+    self.tb_voteButton = [[UIBarButtonItem alloc]
+                          initWithTitle:@"Vote"
+                          style:UIBarButtonItemStyleBordered
+                          target:photoCaptionView
+                          action:@selector(onVoteUpButtonPressed:)];
+    
+    self.tb_captionButton = [[UIBarButtonItem alloc]
+                             initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                             target:self
+                             action:@selector(onCaptionButtonPressed:)];
+    
+    UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    // Add buttons to the array
+    NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_shareButton, space, self.tb_cameraButton, space, self.tb_voteButton, space, self.tb_captionButton, nil];
+    
+    // Release buttons
+    [self.tb_shareButton release];
+    [self.tb_cameraButton release];
+    [self.tb_voteButton release];
+    [self.tb_captionButton release];
+    [space release];
+    
+    // Add array of buttons to toolbar
+    [toolbar setItems:items animated:NO];
+    
+    [photoCaptionView release];
+    [photoCaptionView release];
     
     m_wantsFullScreenLayout = YES;
     m_hidesBottomBarWhenPushed = YES;
@@ -450,7 +522,10 @@
 
 
 - (void)setControlsHidden:(BOOL)hidden {
-	
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+    
 	// Get status bar height if visible
 	CGFloat statusBarHeight = 0;
 	if (![UIApplication sharedApplication].statusBarHidden) {
@@ -477,13 +552,14 @@
 	self.navigationController.navigationBar.frame = navBarFrame;
 	
 	// Bars
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
 	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
 
     // Captions scrollviewer
     UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
     [photoCaptionView.captionScrollView setAlpha:hidden ? 0 : 1];
+    
+    // Toolbar
+    [toolbar setAlpha:hidden ? 0 : 1];
     
     // Vote and Share buttons
     [photoCaptionView.voteButton setAlpha:hidden ? 0 : 1];
@@ -535,18 +611,6 @@
     }
 }
 
-#pragma mark - UIPhotoCaptionScrollViewDelegate
-- (UIPhotoCaptionScrollView*)currentlyDisplayedView {
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
-    NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
-    for (int i = 0; i < [currentlyDisplayedViews count];i++) {
-        UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
-        if ([photoCaptionView.photo.objectid isEqualToNumber:photo.objectid]) {
-            return photoCaptionView;
-        }
-    }
-    return nil;
-}
 
 #pragma mark - UIPagedViewSlider2Delegate
 
@@ -588,7 +652,7 @@
         self.navigationItem.rightBarButtonItem = self.submitButton;
     }
     else {
-        self.navigationItem.rightBarButtonItem = self.captionButton;
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D2ED2A114130B0E007CB840 /* CameraButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */; };
 		3D3134F413E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F013E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png */; };
 		3D3134F513E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */; };
 		3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */; };
@@ -194,6 +195,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D2ED29F14130B0E007CB840 /* CameraButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraButtonManager.h; sourceTree = "<group>"; };
+		3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraButtonManager.m; sourceTree = "<group>"; };
 		3D3134F013E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonItemArrowLeft.png; sourceTree = "<group>"; };
 		3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBarButtonItemArrowLeft@2x.png"; sourceTree = "<group>"; };
 		3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonItemArrowRight.png; sourceTree = "<group>"; };
@@ -719,12 +722,14 @@
 				C5190A8313C1926A0077EECA /* ImageManager.h */,
 				C5190A8413C1926A0077EECA /* ImageManager.m */,
 				C5190AB113C1926C0077EECA /* UrlManager.m */,
+				C5190ABC13C1926C0077EECA /* WS_EnumerationManager.h */,
 				C5190ABD13C1926C0077EECA /* WS_EnumerationManager.m */,
 				C5190ABE13C1926C0077EECA /* WS_TransferManager.h */,
-				C5190ABC13C1926C0077EECA /* WS_EnumerationManager.h */,
 				C5190ABF13C1926C0077EECA /* WS_TransferManager.m */,
 				C5F5F4321406D39B0067084D /* SocialSharingManager.h */,
 				C5F5F4331406D39B0067084D /* SocialSharingManager.m */,
+				3D2ED29F14130B0E007CB840 /* CameraButtonManager.h */,
+				3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -1435,6 +1440,7 @@
 				C50E6BF714097DA800BF4ED3 /* NSString+XMLExtensions.m in Sources */,
 				C50E6BFA14097DDE00BF4ED3 /* CXMLDocument_PrivateExtensions.m in Sources */,
 				C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */,
+				3D2ED2A114130B0E007CB840 /* CameraButtonManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

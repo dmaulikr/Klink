@@ -47,4 +47,5 @@
 @property (nonatomic,retain) UIPagedViewSlider2* pvs_photoSlider2;
 @property (nonatomic,retain) UIPagedViewSlider2* pvs_themeSlider2;
 
+
 @end
