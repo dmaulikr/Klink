@@ -646,7 +646,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Initialize the new Photo object
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;
+    User* user = [User getUserForId:[[AuthenticationManager getInstance]getLoggedInUserID]];
+    
     NSString* thumbnailPath = nil;
     NSString* fullscreenPath = nil;
     
@@ -654,8 +656,10 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     Photo *newPhoto = [[Photo alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:appContext];
     [newPhoto init];
     newPhoto.themeid = theme.objectid;
-    newPhoto.descr = @"sample text";
     newPhoto.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
+    newPhoto.creatorname = user.username;
+    newPhoto.descr = [NSString stringWithFormat:@"By %@ on %@", @"By", user.username, [DateTimeHelper formatShortDate:[NSDate date]]];
+
     
     ImageManager* imageManager = [ImageManager getInstance];
     

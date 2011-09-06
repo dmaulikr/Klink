@@ -20,13 +20,16 @@
 #define kCaptionHeight              70
 #define kCaptionSpacing             0
 
-#define kButtonWidth                70
+#define kButtonWidth                65
 #define kButtonHeight               30
-#define kButtonRightPadding         20
-#define kButtonBottomPadding        100
+#define kButtonRightPadding         0
+#define kButtonBottomPadding        114
+#define kShareButtonLeftPadding     0
+#define kShareButtonBottomPadding   114
 
-#define kShareButtonLeftPadding     20
-#define kShareButtonBottomPadding   100
+#define kPhotoCreditsWidth_landscape    480
+#define kPhotoCreditsWidth              320
+#define kPhotoCreditsHeight             24
 
 #define kToolbarHeight              44
 
@@ -110,6 +113,28 @@
     
 }
 #pragma mark - Frames
+- (CGRect) frameForPhotoCredits {
+    // Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// TODO Get navigation bar height
+	CGFloat navigationBarHeight = 44;
+
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+    }
+    else {
+        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
+        
+    }
+    
+}
+
 - (CGRect) frameForCaptionScrollView:(CGRect)frame {
     
     return CGRectMake(0, frame.size.height-kCaptionHeight-kToolbarHeight, frame.size.width, kCaptionHeight);
@@ -137,6 +162,9 @@
     if (self != nil) {
         
         self.photo = photo;
+        
+        CGRect frameForPhotoCredits = [self frameForPhotoCredits];
+        
         
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
@@ -202,6 +230,7 @@
     self.captionScrollView = nil;
     self.captionCloudEnumerator = nil;
     [self initWithFrame:frame withPhoto:photo];
+    
     return self;
 }
                                                     

@@ -218,7 +218,7 @@ static  ImageManager* sharedManager;
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSMutableString* path =[NSMutableString stringWithString:[appDelegate getImageCacheStorageDirectory]];
     
-    [path appendFormat:@"/%@.jpg",fileNameWithoutExtension]; 
+    [path appendFormat:@"/%@.jpg",fileNameWithoutExtension];
     
     [UIImageJPEGRepresentation(image, 1) writeToFile:path atomically:YES];
     return path;

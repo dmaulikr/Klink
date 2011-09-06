@@ -13,8 +13,8 @@
     Caption* m_caption;
 }
 
-@property (nonatomic,retain) IBOutlet UITextView* tv_caption;
-@property (nonatomic,retain) IBOutlet UITextView* tv_metadata;
+@property (nonatomic,retain) IBOutlet UILabel* tv_caption;
+@property (nonatomic,retain) IBOutlet UILabel* tv_metadata;
 
 - (void) setCaption:(Caption*)caption;
 @end
