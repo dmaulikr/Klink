@@ -2,7 +2,7 @@
 <Scheme
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -17,6 +17,20 @@
                BuildableName = "Klink V2.app"
                BlueprintName = "Klink V2"
                ReferencedContainer = "container:Klink V2.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C59F7A49140DF68E0030828D"
+               BuildableName = "libMGTwitterEngineFramework.a"
+               BlueprintName = "MGTwitterEngineFramework"
+               ReferencedContainer = "container:../../dev/MGTwitterEngine/MGTwitterEngine.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
