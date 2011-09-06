@@ -83,6 +83,7 @@
 		C561275C13CB4B7F005E5731 /* HomeScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = C561275A13CB4B7F005E5731 /* HomeScreenController.m */; };
 		C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275B13CB4B7F005E5731 /* HomeScreenController.xib */; };
 		C561276513CB56FA005E5731 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C561276413CB56FA005E5731 /* Theme.m */; };
+		C59F7A87140DFD4A0030828D /* libMGTwitterEngineFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */; };
 		C5A095DD13E6F5EC003D4376 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */; };
 		C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */; };
 		C5BED8AB13D52F9D007A1934 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED89013D52F9D007A1934 /* Facebook.m */; };
@@ -337,6 +338,7 @@
 		C561275B13CB4B7F005E5731 /* HomeScreenController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeScreenController.xib; sourceTree = "<group>"; };
 		C561276313CB56F9005E5731 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		C561276413CB56FA005E5731 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
+		C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libMGTwitterEngineFramework.a; path = "../../../../../../../../Documents/Klink/Klink V2/libMGTwitterEngineFramework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5A095DA13E6F5EC003D4376 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewController.xib; sourceTree = "<group>"; };
@@ -408,7 +410,6 @@
 		C5D8E0B413DCEDF200D88B00 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
 		C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTypes.m; sourceTree = "<group>"; };
 		C5F5F0681405B1C60067084D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		C5F5F06A1405B20A0067084D /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "Klink V2/Wordpress/FlurryLib/libFlurry.a"; sourceTree = "<group>"; };
 		C5F5F0DD140684440067084D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C5F5F0DF140684520067084D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C5F5F0E11406845F0067084D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -535,6 +536,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C59F7A87140DFD4A0030828D /* libMGTwitterEngineFramework.a in Frameworks */,
 				C5F5F4221406954E0067084D /* libicucore.dylib in Frameworks */,
 				C5F5F411140693430067084D /* libFlurry.a in Frameworks */,
 				C5F5F0EA140684F60067084D /* libtidy.dylib in Frameworks */,
@@ -575,6 +577,7 @@
 		C5190A0F13C18C0C0077EECA = {
 			isa = PBXGroup;
 			children = (
+				C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */,
 				C5F5F4211406954E0067084D /* libicucore.dylib */,
 				C5F5F410140693430067084D /* libFlurry.a */,
 				C5F5F0E9140684F50067084D /* libtidy.dylib */,
@@ -584,7 +587,6 @@
 				C5F5F0E11406845F0067084D /* AssetsLibrary.framework */,
 				C5F5F0DF140684520067084D /* CoreLocation.framework */,
 				C5F5F0DD140684440067084D /* MapKit.framework */,
-				C5F5F06A1405B20A0067084D /* libFlurry.a */,
 				C5F5F0681405B1C60067084D /* libxml2.2.dylib */,
 				C5CCDFF013D9B67300ABE747 /* Security.framework */,
 				C5190A2613C18C0C0077EECA /* Klink V2 */,
@@ -898,6 +900,7 @@
 		C5190B1213C196960077EECA /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				C59F7A54140DF6F00030828D /* New Group */,
 				C5F5F236140690300067084D /* Wordpress */,
 				C5D8E0AD13DC89E200D88B00 /* Keychain */,
 				C5BED88B13D52F9D007A1934 /* src */,
@@ -941,6 +944,13 @@
 				C5CDA44313EFAC21008462FF /* Generics */,
 			);
 			name = KlinkV2;
+			sourceTree = "<group>";
+		};
+		C59F7A54140DF6F00030828D /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
 			sourceTree = "<group>";
 		};
 		C5BED88B13D52F9D007A1934 /* src */ = {
@@ -1491,7 +1501,7 @@
 		C5190A3B13C18C0D0077EECA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1505,6 +1515,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/include/libxml2",
 					/usr/include/tidy,
+					"$(SRC_KLINK)",
+					"$(SRC_MGTwitterEngine)",
 				);
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
@@ -1513,6 +1525,7 @@
 					"\"$(SRCROOT)/Klink V2/Wordpress/FlurryLib\"",
 					"$(SDKROOT)/usr/include/libxml2",
 					"\"$(SRCROOT)\"",
+					"$(SRC_MGTwitterEngine)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1522,7 +1535,7 @@
 		C5190A3C13C18C0D0077EECA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1535,6 +1548,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/include/libxml2",
 					/usr/include/tidy,
+					"$(SRC_KLINK)",
+					"$(SRC_MGTwitterEngine)",
 				);
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
@@ -1543,6 +1558,7 @@
 					"\"$(SRCROOT)/Klink V2/Wordpress/FlurryLib\"",
 					"$(SDKROOT)/usr/include/libxml2",
 					"\"$(SRCROOT)\"",
+					"$(SRC_MGTwitterEngine)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
