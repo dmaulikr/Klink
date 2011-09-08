@@ -44,6 +44,9 @@
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic,retain) UIButton*                      shareButton;
 @property (nonatomic,retain) UIButton*                      voteButton;
+@property (nonatomic,retain) UIView*                        photoCreditsBackground;
+@property (nonatomic,retain) UILabel*                       photoCreditsLabel;
+@property (nonatomic,retain) UILabel*                       photoVotesLabel;
 
 
 @end

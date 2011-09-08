@@ -30,10 +30,15 @@
 #define kPhotoCreditsWidth_landscape    480
 #define kPhotoCreditsWidth              320
 #define kPhotoCreditsHeight             24
+#define kPhotoVotesWidth                100
+#define kPhotoVotesHeight               24
+#define kPhotoCreditsPadding            5
 
 #define kToolbarHeight              44
+#define kNavigationbarHeight        44
 
 @implementation UIPhotoCaptionScrollView
+
 @synthesize photo =                     m_photo;
 @synthesize captionScrollView =         m_captionScrollView;
 @synthesize frc_captions =              __frc_captions;
@@ -41,6 +46,9 @@
 @synthesize captionCloudEnumerator =    m_captionCloudEnumerator;
 @synthesize voteButton =                m_voteButton;
 @synthesize shareButton=                m_shareButton;
+@synthesize photoCreditsBackground;
+@synthesize photoCreditsLabel;
+@synthesize photoVotesLabel;
 
 - (void) dealloc {
     
@@ -112,7 +120,28 @@
     return __frc_captions;
     
 }
+
 #pragma mark - Frames
+- (CGRect) frameForPhotoCreditsBackground {
+    // Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// TODO Get navigation bar height
+	CGFloat navigationBarHeight = 44;
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+    }
+    else {
+        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
+    }
+}
+
 - (CGRect) frameForPhotoCredits {
     // Get status bar height if visible
 	CGFloat statusBarHeight = 0;
@@ -126,12 +155,26 @@
 
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
     else {
-        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
-        
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
+    
+}
+
+- (CGRect) frameForPhotoVotes:(CGRect)frame {
+    // Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// TODO Get navigation bar height
+	CGFloat navigationBarHeight = 44;
+    
+    return CGRectMake(frame.size.width - kPhotoVotesWidth - kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoVotesWidth, kPhotoCreditsHeight);
     
 }
 
@@ -163,7 +206,37 @@
         
         self.photo = photo;
         
-        CGRect frameForPhotoCredits = [self frameForPhotoCredits];
+        // Add Photo Credits Label
+        // set transparent backgrounds first
+        //UIView* frameForPhotoCreditsBackground = nil;
+        photoCreditsBackground = [[UIView alloc] initWithFrame:[self frameForPhotoCreditsBackground]];
+        [photoCreditsBackground setBackgroundColor:[UIColor blackColor]];
+        [photoCreditsBackground setAlpha:0.5];
+        [photoCreditsBackground setOpaque:YES];
+        [self addSubview:photoCreditsBackground];
+        
+        // now add non-transparent text for Credits label
+        self.photoCreditsLabel = [[UILabel  alloc] initWithFrame:[self frameForPhotoCredits]];
+        self.photoCreditsLabel.backgroundColor = [UIColor clearColor];
+        self.photoCreditsLabel.opaque = YES;
+        self.photoCreditsLabel.alpha = textAlpha;
+        self.photoCreditsLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+        self.photoCreditsLabel.textColor = [UIColor whiteColor];
+        self.photoCreditsLabel.textAlignment = UITextAlignmentLeft;
+        photoCreditsLabel.text = photo.descr;
+        [self addSubview:self.photoCreditsLabel];
+        
+        // now add non-transparent text for number of votes on the Photo
+        self.photoVotesLabel = [[UILabel  alloc] initWithFrame:[self frameForPhotoVotes:frame]];
+        self.photoVotesLabel.backgroundColor = [UIColor clearColor];
+        self.photoVotesLabel.opaque = YES;
+        self.photoVotesLabel.alpha = textAlpha;
+        self.photoVotesLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+        self.photoVotesLabel.textColor = [UIColor whiteColor];
+        self.photoVotesLabel.textAlignment = UITextAlignmentRight;
+        photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", photo.numberofvotes];
+        [self addSubview:self.photoVotesLabel];
+        
         
         
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];

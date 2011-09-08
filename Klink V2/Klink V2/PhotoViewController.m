@@ -497,6 +497,7 @@
 	// Buttons
 	self.previousButton.enabled = (self.pagedViewSlider.currentPageIndex > 0);
 	self.nextButton.enabled = (self.pagedViewSlider.currentPageIndex < photos.count-1);
+    
 }
 
 #pragma mark Control Hiding / Showing
@@ -565,12 +566,18 @@
     [photoCaptionView.voteButton setAlpha:hidden ? 0 : 1];
     [photoCaptionView.shareButton setAlpha:hidden ? 0 : 1];
     
+    // Photo Credits and Votes
+    [photoCaptionView.photoCreditsBackground setAlpha:hidden ? 0 : 0.5];
+    [photoCaptionView.photoCreditsLabel setAlpha:hidden ? 0 : 1];
+    [photoCaptionView.photoVotesLabel setAlpha:hidden ? 0 : 1];
+    
+    
 	[UIView commitAnimations];
 	
 	// Control hiding timer
 	// Will cancel existing timer but only begin hiding if
 	// they are visible
-	[self hideControlsAfterDelay];
+	//[self hideControlsAfterDelay];
 	
 }
 
@@ -668,6 +675,11 @@
         [self.photoCloudEnumerator enumerateNextPage];
     }
     
+    [self updateNavigation];
+    
+    if ([UIApplication sharedApplication].statusBarHidden) {
+        [self toggleControls];
+    }
     
 }
 

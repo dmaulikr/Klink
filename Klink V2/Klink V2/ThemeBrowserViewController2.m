@@ -658,7 +658,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     newPhoto.themeid = theme.objectid;
     newPhoto.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
     newPhoto.creatorname = user.username;
-    newPhoto.descr = [NSString stringWithFormat:@"By %@ on %@", @"By", user.username, [DateTimeHelper formatShortDate:[NSDate date]]];
+    newPhoto.descr = [NSString stringWithFormat:@"By %@ on %@", user.username, [DateTimeHelper formatShortDate:[NSDate date]]];
 
     
     ImageManager* imageManager = [ImageManager getInstance];
