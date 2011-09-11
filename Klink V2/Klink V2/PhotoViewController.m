@@ -14,6 +14,7 @@
 #import "NSStringGUIDCategory.h"
 #import "IDGenerator.h"
 #import "ThemeBrowserViewController2.h"
+#import "CameraButtonManager.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -335,9 +336,9 @@
                           action:@selector(onShareButtonPressed:)];
     
     self.tb_cameraButton = [[UIBarButtonItem alloc]
-                          initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                          target:themeBrowserViewController
-                          action:@selector(cameraButtonPressed:)];
+                            initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                            target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.currentTheme]
+                            action:@selector(cameraButtonPressed:)];
     
     self.tb_voteButton = [[UIBarButtonItem alloc]
                           initWithTitle:@"Vote"
@@ -377,8 +378,6 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-
 
 }
 
@@ -397,7 +396,6 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
     [self addCaptionButtonToNavigationItem];
-    
 
     
     //set the initial index properly 

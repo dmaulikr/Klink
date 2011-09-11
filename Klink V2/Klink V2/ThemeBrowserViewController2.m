@@ -17,6 +17,7 @@
 #import "PhotoViewController.h"
 #import "MWPhotoBrowser.h"
 #import "NSFetchedResultsControllerCategory.h"
+#import "CameraButtonManager.h"
 
 /*#define kPictureWidth 130
 #define kPictureSpacing 0
@@ -77,10 +78,12 @@
 #define kCaptionHeight 40
 #define kCaptionPadding 10
 
+/*
+// DELETE AFTER VERIFYING CAMERABUTTON SINGLETON COMPLETION - jordang
 @interface ThemeBrowserViewController2 ()
 static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void)getMediaFromSource:(id)sender;
-@end
+@end*/
 
 @implementation ThemeBrowserViewController2
 
@@ -187,13 +190,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     self.navigationController.navigationBar.tintColor = nil;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
-    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                     target:self
-                                     action:@selector(cameraButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = cameraButton;
-    [cameraButton release];
-    
     //find the index for the current theme in the frc
     int index = 0;
     if (self.theme != nil) {
@@ -247,6 +243,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         }
         
     }
+    
+    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                                     target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.theme]
+                                     action:@selector(cameraButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = cameraButton;
+    [cameraButton release];
     
     
     /*self.pvs_photoSlider2.layer.borderWidth = 1.0f;
@@ -538,7 +541,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 }
 
 
-
+/*
+// DELETE AFTER VERIFYING CAMERABUTTON SINGLETON COMPLETION - jordang
 #pragma mark -
 #pragma mark CameraButton methods
 - (IBAction)cameraButtonPressed:(id)sender {
@@ -803,6 +807,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
     return shrunkenImage;
 }
+*/ 
+ 
 
 #pragma mark - UIPagedViewDelegate2 
 

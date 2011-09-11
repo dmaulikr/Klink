@@ -13,6 +13,7 @@
 #import "UICaptionLabel.h"
 #import "NSStringGUIDCategory.h"
 #import "SocialSharingManager.h"
+#import "PhotoViewController.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
@@ -51,13 +52,15 @@
 @synthesize photoVotesLabel;
 
 - (void) dealloc {
-    
     [self.voteButton release];
     [self.frc_captions release];
     [self.photo release];
     [self.captionScrollView release];
     [self.captionCloudEnumerator release];
     [self.shareButton release];
+    [self.photoCreditsBackground release];
+    [self.photoCreditsLabel release];
+    [self.photoVotesLabel release];
     [super dealloc];
 }
 
@@ -130,8 +133,8 @@
 		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
 	}
 	
-	// TODO Get navigation bar height
-	CGFloat navigationBarHeight = 44;
+	// TODO Programatically get navigation bar height
+    CGFloat navigationBarHeight = 44;
     
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
@@ -220,7 +223,7 @@
         self.photoCreditsLabel.backgroundColor = [UIColor clearColor];
         self.photoCreditsLabel.opaque = YES;
         self.photoCreditsLabel.alpha = textAlpha;
-        self.photoCreditsLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+        self.photoCreditsLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_PHOTOCREDITS];
         self.photoCreditsLabel.textColor = [UIColor whiteColor];
         self.photoCreditsLabel.textAlignment = UITextAlignmentLeft;
         photoCreditsLabel.text = photo.descr;
@@ -270,10 +273,10 @@
         [self addSubview:self.voteButton];
         
         // (TODO) TEMP hidding share and vote buttons, need to implement show/hide functionality on new toolbar button versions
-        self.shareButton.hidden = YES;
-        self.shareButton.enabled = NO;
-        self.voteButton.hidden = YES;
-        self.voteButton.enabled = NO;
+        //self.shareButton.hidden = YES;
+        //self.shareButton.enabled = NO;
+        //self.voteButton.hidden = YES;
+        //self.voteButton.enabled = NO;
      
         
         if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
@@ -401,16 +404,13 @@
     AuthenticationContext* authenticationContext = [authenticationManager getAuthenticationContext];
     
     int captionCount = [[self.frc_captions fetchedObjects] count];
+    
     if (authenticationContext == nil || captionCount == 0) {
-        //hide both
         [self hideShareButton];
-        
     }
     else {
         [self showShareButton];
     }
-    
-    
     
     if (captionCount > 0) {
         Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
@@ -424,20 +424,27 @@
        
     }
     else {
+        [self disableVotingButton];
         [self hideVotingButton];
     }
 }
 
-- (void) disableVotingButton {
- 
+- (void) disableVotingButton {   
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_voteButton.enabled = NO;
     self.voteButton.enabled = NO;
     self.voteButton.backgroundColor = [UIColor grayColor];
+    
+    //[photoViewController release];
 }
 
 - (void) enableVotingButton {
-
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_voteButton.enabled = YES;
     self.voteButton.enabled = YES;
     self.voteButton.backgroundColor = [UIColor redColor];
+    
+    //[photoViewController release];
 }
 
 - (void) hideVotingButton {
@@ -477,16 +484,22 @@
 }
 
 
-#pragma mark - Button Handlers (cont'd)
-
 - (void) hideShareButton {
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_shareButton.enabled = NO;
     self.shareButton.hidden = YES;
     self.shareButton.enabled = NO;
+    
+    //[photoViewController release];
 }
 
 - (void) showShareButton {
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_shareButton.enabled = YES;
     self.shareButton.hidden = NO;
     self.shareButton.enabled = YES;
+    
+    //[photoViewController release];
 }
 
 - (void) onVoteUpButtonPressed:(id)sender {
@@ -502,6 +515,7 @@
     [caption commitChangesToDatabase:NO withPendingFlag:YES];
     
     [self disableVotingButton];
+    
     //now we upload to the cloud
     NSString* notificationID = [NSString GetGUID];
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
