@@ -10,6 +10,6 @@
 
 
 @interface NSString (NSStringGUIDCategory)
-+ (NSString *)GetGUID;
++ (NSString*) GetGUID;
 - (NSNumber*) numberValue;
 @end

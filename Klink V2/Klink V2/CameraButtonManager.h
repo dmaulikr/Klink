@@ -7,12 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BLLog.h"
+#import "Theme.h"
 
-
-@interface CameraButtonManager : NSObject {
-    
+@interface CameraButtonManager : NSObject <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+    Theme* theme;
+    UIViewController* viewController;
 }
 
-+ (CameraButtonManager*) getInstance;
+@property (nonatomic, retain) Theme* theme;
+@property (nonatomic, retain) UIViewController* viewController;
+
++ (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController withTheme:(Theme*)currentTheme;
+
+- (id) init;
+- (id) initWithTheme:(Theme*)currentTheme withViewController:(id)callingViewController;
+
 
 @end

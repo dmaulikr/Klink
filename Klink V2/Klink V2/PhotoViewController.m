@@ -14,6 +14,7 @@
 #import "NSStringGUIDCategory.h"
 #import "IDGenerator.h"
 #import "ThemeBrowserViewController2.h"
+#import "CameraButtonManager.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -335,9 +336,9 @@
                           action:@selector(onShareButtonPressed:)];
     
     self.tb_cameraButton = [[UIBarButtonItem alloc]
-                          initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                          target:themeBrowserViewController
-                          action:@selector(cameraButtonPressed:)];
+                            initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                            target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.currentTheme]
+                            action:@selector(cameraButtonPressed:)];
     
     self.tb_voteButton = [[UIBarButtonItem alloc]
                           initWithTitle:@"Vote"
@@ -377,8 +378,6 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-
 
 }
 
@@ -397,7 +396,6 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
     [self addCaptionButtonToNavigationItem];
-    
 
     
     //set the initial index properly 
@@ -497,6 +495,7 @@
 	// Buttons
 	self.previousButton.enabled = (self.pagedViewSlider.currentPageIndex > 0);
 	self.nextButton.enabled = (self.pagedViewSlider.currentPageIndex < photos.count-1);
+    
 }
 
 #pragma mark Control Hiding / Showing
@@ -565,12 +564,18 @@
     [photoCaptionView.voteButton setAlpha:hidden ? 0 : 1];
     [photoCaptionView.shareButton setAlpha:hidden ? 0 : 1];
     
+    // Photo Credits and Votes
+    [photoCaptionView.photoCreditsBackground setAlpha:hidden ? 0 : 0.5];
+    [photoCaptionView.photoCreditsLabel setAlpha:hidden ? 0 : 1];
+    [photoCaptionView.photoVotesLabel setAlpha:hidden ? 0 : 1];
+    
+    
 	[UIView commitAnimations];
 	
 	// Control hiding timer
 	// Will cancel existing timer but only begin hiding if
 	// they are visible
-	[self hideControlsAfterDelay];
+	//[self hideControlsAfterDelay];
 	
 }
 
@@ -668,6 +673,11 @@
         [self.photoCloudEnumerator enumerateNextPage];
     }
     
+    [self updateNavigation];
+    
+    if ([UIApplication sharedApplication].statusBarHidden) {
+        [self toggleControls];
+    }
     
 }
 

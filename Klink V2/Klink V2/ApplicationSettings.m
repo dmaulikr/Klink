@@ -44,12 +44,17 @@ NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
 
 // text strings transparency
-float const textAlpha = 0.9;
+float const textAlpha = 1;
 
 // caption text settings
 int const maxlength_CAPTION = 150;
 NSString* const font_CAPTION = @"Helvetica";
 int const fontsize_CAPTION = 16;
+
+// photo credits text settings
+int const maxlength_PHOTOCREDITS = 50;
+NSString* const font_PHOTOCREDITS = @"Helvetica";
+int const fontsize_PHOTOCREDITS = 14;
 
 // theme title text settings
 int const maxlength_THEME = 15;

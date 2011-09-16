@@ -13,6 +13,7 @@
 #import "UICaptionLabel.h"
 #import "NSStringGUIDCategory.h"
 #import "SocialSharingManager.h"
+#import "PhotoViewController.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
@@ -30,10 +31,15 @@
 #define kPhotoCreditsWidth_landscape    480
 #define kPhotoCreditsWidth              320
 #define kPhotoCreditsHeight             24
+#define kPhotoVotesWidth                100
+#define kPhotoVotesHeight               24
+#define kPhotoCreditsPadding            5
 
 #define kToolbarHeight              44
+#define kNavigationbarHeight        44
 
 @implementation UIPhotoCaptionScrollView
+
 @synthesize photo =                     m_photo;
 @synthesize captionScrollView =         m_captionScrollView;
 @synthesize frc_captions =              __frc_captions;
@@ -41,15 +47,20 @@
 @synthesize captionCloudEnumerator =    m_captionCloudEnumerator;
 @synthesize voteButton =                m_voteButton;
 @synthesize shareButton=                m_shareButton;
+@synthesize photoCreditsBackground;
+@synthesize photoCreditsLabel;
+@synthesize photoVotesLabel;
 
 - (void) dealloc {
-    
     [self.voteButton release];
     [self.frc_captions release];
     [self.photo release];
     [self.captionScrollView release];
     [self.captionCloudEnumerator release];
     [self.shareButton release];
+    [self.photoCreditsBackground release];
+    [self.photoCreditsLabel release];
+    [self.photoVotesLabel release];
     [super dealloc];
 }
 
@@ -112,7 +123,28 @@
     return __frc_captions;
     
 }
+
 #pragma mark - Frames
+- (CGRect) frameForPhotoCreditsBackground {
+    // Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// TODO Programatically get navigation bar height
+    CGFloat navigationBarHeight = 44;
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+    }
+    else {
+        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
+    }
+}
+
 - (CGRect) frameForPhotoCredits {
     // Get status bar height if visible
 	CGFloat statusBarHeight = 0;
@@ -126,12 +158,26 @@
 
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
     else {
-        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
-        
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
+    
+}
+
+- (CGRect) frameForPhotoVotes:(CGRect)frame {
+    // Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// TODO Get navigation bar height
+	CGFloat navigationBarHeight = 44;
+    
+    return CGRectMake(frame.size.width - kPhotoVotesWidth - kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoVotesWidth, kPhotoCreditsHeight);
     
 }
 
@@ -163,7 +209,37 @@
         
         self.photo = photo;
         
-        CGRect frameForPhotoCredits = [self frameForPhotoCredits];
+        // Add Photo Credits Label
+        // set transparent backgrounds first
+        //UIView* frameForPhotoCreditsBackground = nil;
+        photoCreditsBackground = [[UIView alloc] initWithFrame:[self frameForPhotoCreditsBackground]];
+        [photoCreditsBackground setBackgroundColor:[UIColor blackColor]];
+        [photoCreditsBackground setAlpha:0.5];
+        [photoCreditsBackground setOpaque:YES];
+        [self addSubview:photoCreditsBackground];
+        
+        // now add non-transparent text for Credits label
+        self.photoCreditsLabel = [[UILabel  alloc] initWithFrame:[self frameForPhotoCredits]];
+        self.photoCreditsLabel.backgroundColor = [UIColor clearColor];
+        self.photoCreditsLabel.opaque = YES;
+        self.photoCreditsLabel.alpha = textAlpha;
+        self.photoCreditsLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_PHOTOCREDITS];
+        self.photoCreditsLabel.textColor = [UIColor whiteColor];
+        self.photoCreditsLabel.textAlignment = UITextAlignmentLeft;
+        photoCreditsLabel.text = photo.descr;
+        [self addSubview:self.photoCreditsLabel];
+        
+        // now add non-transparent text for number of votes on the Photo
+        self.photoVotesLabel = [[UILabel  alloc] initWithFrame:[self frameForPhotoVotes:frame]];
+        self.photoVotesLabel.backgroundColor = [UIColor clearColor];
+        self.photoVotesLabel.opaque = YES;
+        self.photoVotesLabel.alpha = textAlpha;
+        self.photoVotesLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
+        self.photoVotesLabel.textColor = [UIColor whiteColor];
+        self.photoVotesLabel.textAlignment = UITextAlignmentRight;
+        photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", photo.numberofvotes];
+        [self addSubview:self.photoVotesLabel];
+        
         
         
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
@@ -197,10 +273,10 @@
         [self addSubview:self.voteButton];
         
         // (TODO) TEMP hidding share and vote buttons, need to implement show/hide functionality on new toolbar button versions
-        self.shareButton.hidden = YES;
-        self.shareButton.enabled = NO;
-        self.voteButton.hidden = YES;
-        self.voteButton.enabled = NO;
+        //self.shareButton.hidden = YES;
+        //self.shareButton.enabled = NO;
+        //self.voteButton.hidden = YES;
+        //self.voteButton.enabled = NO;
      
         
 //        if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
@@ -328,16 +404,13 @@
     AuthenticationContext* authenticationContext = [authenticationManager getAuthenticationContext];
     
     int captionCount = [[self.frc_captions fetchedObjects] count];
+    
     if (authenticationContext == nil || captionCount == 0) {
-        //hide both
         [self hideShareButton];
-        
     }
     else {
         [self showShareButton];
     }
-    
-    
     
     if (captionCount > 0) {
         Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
@@ -351,20 +424,27 @@
        
     }
     else {
+        [self disableVotingButton];
         [self hideVotingButton];
     }
 }
 
-- (void) disableVotingButton {
- 
+- (void) disableVotingButton {   
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_voteButton.enabled = NO;
     self.voteButton.enabled = NO;
     self.voteButton.backgroundColor = [UIColor grayColor];
+    
+    //[photoViewController release];
 }
 
 - (void) enableVotingButton {
-
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_voteButton.enabled = YES;
     self.voteButton.enabled = YES;
     self.voteButton.backgroundColor = [UIColor redColor];
+    
+    //[photoViewController release];
 }
 
 - (void) hideVotingButton {
@@ -404,16 +484,22 @@
 }
 
 
-#pragma mark - Button Handlers (cont'd)
-
 - (void) hideShareButton {
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_shareButton.enabled = NO;
     self.shareButton.hidden = YES;
     self.shareButton.enabled = NO;
+    
+    //[photoViewController release];
 }
 
 - (void) showShareButton {
+    //PhotoViewController* photoViewController = [self viewController];
+    //photoViewController.tb_shareButton.enabled = YES;
     self.shareButton.hidden = NO;
     self.shareButton.enabled = YES;
+    
+    //[photoViewController release];
 }
 
 - (void) onVoteUpButtonPressed:(id)sender {
@@ -429,6 +515,7 @@
     [caption commitChangesToDatabase:NO withPendingFlag:YES];
     
     [self disableVotingButton];
+    
     //now we upload to the cloud
     NSString* notificationID = [NSString GetGUID];
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];

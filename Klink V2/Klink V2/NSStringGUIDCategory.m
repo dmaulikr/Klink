@@ -10,7 +10,7 @@
 
 
 @implementation NSString (NSStringGUIDCategory)
-+ (NSString *)GetGUID
++ (NSString*) GetGUID
 {
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
