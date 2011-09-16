@@ -116,3 +116,6 @@ NSString* const an_USER=@"user";
 NSString* const an_USERNAME = @"username";
 
 NSString* const an_USERHASVOTED = @"user_hasVoted";
+
+NSString* const an_SHAREONFACEBOOK=@"shareonfacebook";
+NSString* const an_SHAREONTWITTER = @"shareontwitter";

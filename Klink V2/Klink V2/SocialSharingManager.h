@@ -18,9 +18,9 @@
 
 - (id) init;
 - (void) shareCaption:(NSNumber*)captionID;
-- (void) shareCaptionOnTwitter:(SocialPost*)post;
-- (void) shareCaptionOnFacebook:(Caption*)caption withPost:(SocialPost*)post;
-- (void) shareCaptionOnWordpress:(NSNumber*)captionID;
+- (void) shareCaptionOnTwitter:(NSNumber*)captionID;
+- (void) shareCaptionOnFacebook:(NSNumber*)captionID;
+
 + (id) getInstance;
 
 @end

@@ -84,7 +84,6 @@
 		C561275C13CB4B7F005E5731 /* HomeScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = C561275A13CB4B7F005E5731 /* HomeScreenController.m */; };
 		C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275B13CB4B7F005E5731 /* HomeScreenController.xib */; };
 		C561276513CB56FA005E5731 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C561276413CB56FA005E5731 /* Theme.m */; };
-		C59F7A87140DFD4A0030828D /* libMGTwitterEngineFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */; };
 		C5A095DD13E6F5EC003D4376 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */; };
 		C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */; };
 		C5BED8AB13D52F9D007A1934 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BED89013D52F9D007A1934 /* Facebook.m */; };
@@ -123,6 +122,7 @@
 		C5D8E0B013DC89FC00D88B00 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0AF13DC89FC00D88B00 /* SFHFKeychainUtils.m */; };
 		C5D8E0B313DCA16500D88B00 /* UIKlinkScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */; };
 		C5D8E0B613DCEDF300D88B00 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */; };
+		C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EED142381F1000D3B5E /* SharingOptions.m */; };
 		C5F5F0691405B1C60067084D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0681405B1C60067084D /* libxml2.2.dylib */; };
 		C5F5F0DE140684440067084D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0DD140684440067084D /* MapKit.framework */; };
 		C5F5F0E0140684520067084D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0DF140684520067084D /* CoreLocation.framework */; };
@@ -341,7 +341,6 @@
 		C561275B13CB4B7F005E5731 /* HomeScreenController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeScreenController.xib; sourceTree = "<group>"; };
 		C561276313CB56F9005E5731 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		C561276413CB56FA005E5731 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
-		C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libMGTwitterEngineFramework.a; path = "../../../../../../../../Documents/Klink/Klink V2/libMGTwitterEngineFramework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5A095DA13E6F5EC003D4376 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewController.xib; sourceTree = "<group>"; };
@@ -412,6 +411,8 @@
 		C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKlinkScrollView.m; sourceTree = "<group>"; };
 		C5D8E0B413DCEDF200D88B00 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
 		C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTypes.m; sourceTree = "<group>"; };
+		C5DF0EEC142381F1000D3B5E /* SharingOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingOptions.h; sourceTree = "<group>"; };
+		C5DF0EED142381F1000D3B5E /* SharingOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingOptions.m; sourceTree = "<group>"; };
 		C5F5F0681405B1C60067084D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		C5F5F0DD140684440067084D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C5F5F0DF140684520067084D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -539,7 +540,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C59F7A87140DFD4A0030828D /* libMGTwitterEngineFramework.a in Frameworks */,
 				C5F5F4221406954E0067084D /* libicucore.dylib in Frameworks */,
 				C5F5F411140693430067084D /* libFlurry.a in Frameworks */,
 				C5F5F0EA140684F60067084D /* libtidy.dylib in Frameworks */,
@@ -580,7 +580,6 @@
 		C5190A0F13C18C0C0077EECA = {
 			isa = PBXGroup;
 			children = (
-				C59F7A86140DFD4A0030828D /* libMGTwitterEngineFramework.a */,
 				C5F5F4211406954E0067084D /* libicucore.dylib */,
 				C5F5F410140693430067084D /* libFlurry.a */,
 				C5F5F0E9140684F50067084D /* libtidy.dylib */,
@@ -1176,6 +1175,8 @@
 			children = (
 				C5F5F4371406D91C0067084D /* SocialPost.h */,
 				C5F5F4381406D91C0067084D /* SocialPost.m */,
+				C5DF0EEC142381F1000D3B5E /* SharingOptions.h */,
+				C5DF0EED142381F1000D3B5E /* SharingOptions.m */,
 			);
 			name = Sharing;
 			sourceTree = "<group>";
@@ -1441,6 +1442,7 @@
 				C50E6BFA14097DDE00BF4ED3 /* CXMLDocument_PrivateExtensions.m in Sources */,
 				C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */,
 				3D2ED2A114130B0E007CB840 /* CameraButtonManager.m in Sources */,
+				C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

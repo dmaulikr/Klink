@@ -477,8 +477,8 @@
         [self hideShareButton];
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
         
-        [sharingManager shareCaption:caption.objectid];
-        
+        //[sharingManager shareCaption:caption.objectid];
+        [sharingManager shareCaptionOnTwitter:caption.objectid];
     }
    
 }

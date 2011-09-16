@@ -19,7 +19,7 @@
 #import "PutResponse.h"
 #import "DataLayer.h"
 #import "Attachment.h"
-
+#import "SharingOptions.h"
 
 @interface WS_TransferManager : NSObject {
         NSOperationQueue *putQueue;
@@ -29,7 +29,8 @@
 + (WS_TransferManager*)getInstance;
 - (id)init;
 
-- (void) shareCaptionViaCloud:(NSNumber*)captionid;
+- (void) shareCaptionViaCloud:(NSNumber*)captionid
+        withOptions:(SharingOptions*)sharingOptions;
 
 - (void) updateObjectInCloud:
         (NSNumber*)objectid 

@@ -16,7 +16,7 @@
 #import "ApplicationSettingsManager.h"
 #import "URLEncoding.h"
 #import "Query.h"
-
+#import "SharingOptions.h"
 @interface UrlManager : NSObject {
     
 }
@@ -36,6 +36,6 @@
 
 + (NSURL*) getUpdateAttributeURL:(NSNumber*)objectid withObjectType:(NSString*)objectType forAttribute:(NSString*)attributeName withOperationCode:(int)operationCode byValue:(NSString*)value withAuthenticationContext:(id)context;
 
-+ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withAuthenticationContext:(id)context;
++ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withOptions:(SharingOptions*)sharingOptions withAuthenticationContext:(id)context;
 
 @end

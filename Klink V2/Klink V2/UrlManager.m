@@ -11,16 +11,19 @@
 
 @implementation UrlManager
 
-+ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withAuthenticationContext:(id)authenticationContext {
++ (NSURL*) getShareCaptionURL:(NSNumber*)captionID withOptions:(SharingOptions *)sharingOptions  withAuthenticationContext:(id)authenticationContext {
     NSString* verbName = verb_SHARECAPTION;
     NSString* baseURL = [ApplicationSettingsManager getBaseURL];
     NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
     
     NSString* captionIDParamName = param_OBJECTID;
+    NSString* sharingOptionsIDParamName = param_SHARINGOPTIONS;
     NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
-    
+    NSString* jsonSharingOptions = [sharingOptions toJSON];
+   
     [parameters appendFormat:@"%@=%@",captionIDParamName,captionID];
+    [parameters appendFormat:@"&%@=%@",sharingOptionsIDParamName, jsonSharingOptions];
     [parameters appendFormat:@"&%@=%@",authenticationContextParameterName,jsonAuthenticationContext];
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

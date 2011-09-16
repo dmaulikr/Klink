@@ -24,4 +24,5 @@ NSString* const param_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
 NSString* const param_FACEBOOKACCESSTOKENEXPIRY=@"facebookaccesstokenexpirydate";
 NSString* const param_VALUE=@"value";
 NSString* const param_OPCODE=@"operationcode";
+NSString* const param_SHARINGOPTIONS = @"sharingoptions";
 

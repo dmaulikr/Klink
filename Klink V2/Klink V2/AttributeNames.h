@@ -105,7 +105,8 @@ extern NSString* const an_WORDPRESSPASSWORD;
 extern NSString* const an_WORDPRESSURL;
 
 
-
+extern NSString* const an_SHAREONFACEBOOK;
+extern NSString* const an_SHAREONTWITTER;
 
 
 

@@ -23,3 +23,4 @@ extern NSString* const param_FACEBOOKACCESSTOKEN;
 extern NSString* const param_FACEBOOKACCESSTOKENEXPIRY;
 extern NSString* const param_VALUE;
 extern NSString* const param_OPCODE;
+extern NSString* const param_SHARINGOPTIONS;

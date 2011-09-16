@@ -32,7 +32,7 @@ static  WS_TransferManager* sharedManager;
 
 }
 
-- (void) shareCaptionViaCloud:(NSNumber *)captionid {
+- (void) shareCaptionViaCloud:(NSNumber *)captionid withOptions:(SharingOptions *)sharingOptions {
     NSString* activityName = @"WS_TransferManager.shareCaption:";
     AuthenticationManager* authnManager = [AuthenticationManager getInstance];
     AuthenticationContext* authnContext = [authnManager getAuthenticationContext];
@@ -40,7 +40,7 @@ static  WS_TransferManager* sharedManager;
     if (authnContext != nil &&
         [authnContext hasWordpress]) {
         
-        NSURL* url = [UrlManager getShareCaptionURL:captionid withAuthenticationContext:authnContext];
+        NSURL* url = [UrlManager getShareCaptionURL:captionid withOptions:sharingOptions withAuthenticationContext:authnContext];
     
         
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
@@ -50,6 +50,7 @@ static  WS_TransferManager* sharedManager;
         [request setDidFinishSelector:@selector(onShareCaptionComplete:)];
         [request setDidFailSelector:@selector(requestWentWrong:)];
         [self.putQueue addOperation:request];
+        
         
         NSString *message = [[NSString alloc] initWithFormat:@"shared caption %@ at url: %@",captionid,url];
         [BLLog v:activityName withMessage:message];
