@@ -521,7 +521,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         [self.themeCloudEnumerator enumerateNextPage];
     }
     
-    if (index != 0 && numberOfCellsToEnd !=0) {
+    if (index >= 0 && numberOfCellsToEnd !=0) {
         Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
         if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
             //the theme scrolled to is not the same as the current one, time to switch themes

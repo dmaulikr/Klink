@@ -13,6 +13,7 @@ NSString* const stng_BASEURL = @"baseurl";
 NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
 //NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
 NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
+//NSString* const default_BASEURL = @"http://www.oscial.com/service";
 NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=10;
 int const pageSize_PHOTOSINTHEME = 10;
