@@ -249,6 +249,7 @@ static  SocialSharingManager* sharedManager;
 //}
 
 #pragma mark - Sharing Methods
+//This method will share a caption on Facebook and Twitter
 - (void) shareCaption:(NSNumber*)captionID {
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
     SharingOptions* sharingOptions = [SharingOptions shareOnAll];
@@ -256,6 +257,7 @@ static  SocialSharingManager* sharedManager;
     [transferManager shareCaptionViaCloud:captionID withOptions:sharingOptions];
 }
 
+//This method will share a caption on Facebook 
 - (void) shareCaptionOnFacebook:(NSNumber*)captionID {
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
     SharingOptions* sharingOptions = [SharingOptions shareOnFacebook];
@@ -263,6 +265,7 @@ static  SocialSharingManager* sharedManager;
     [transferManager shareCaptionViaCloud:captionID withOptions:sharingOptions];
 }
 
+//This method will share a caption on Twitter
 - (void) shareCaptionOnTwitter:(NSNumber*)captionID {
     WS_TransferManager* transferManager = [WS_TransferManager getInstance];
     SharingOptions* sharingOptions = [SharingOptions shareOnTwitter];
