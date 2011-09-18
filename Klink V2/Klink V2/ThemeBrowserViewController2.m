@@ -214,6 +214,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         self.view = self.v_portrait;
     }
     
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
