@@ -11,7 +11,7 @@
 #import "Photo.h"
 #import "Theme.h"
 #import "ImageDownloadProtocol.h"
-#import "UIPagedViewSlider2.h"
+#import "UIPagedViewSlider3.h"
 #import "CloudEnumerator.h"
 #import "UICaptionTextView.h"
 typedef enum {

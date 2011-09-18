@@ -11,7 +11,7 @@
 #import "Theme.h"
 #import "ImageDownloadProtocol.h"
 #import "KlinkBaseViewController.h"
-#import "UIPagedViewSlider2.h"
+#import "UIPagedViewSlider3.h"
 #import "CloudEnumerator.h"
 
 

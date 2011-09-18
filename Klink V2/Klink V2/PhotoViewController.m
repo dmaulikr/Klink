@@ -93,7 +93,7 @@
 
 #pragma mark - UIPhotoCaptionScrollViewDelegate
 - (UIPhotoCaptionScrollView*)currentlyDisplayedView {
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.pageIndex];
     NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
     for (int i = 0; i < [currentlyDisplayedViews count];i++) {
         UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
@@ -208,7 +208,7 @@
     
     
     NSString* captionText = [self.tv_captionBox getText];
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.currentPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.pageIndex];
     Caption* caption = [Caption captionForPhoto:photo.objectid withText:captionText];
     
     NSManagedObjectContext *appContext = self.managedObjectContext;
@@ -326,8 +326,10 @@
     
     // Toolbar Items
     UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
-    ThemeBrowserViewController2* themeBrowserViewController = [[ThemeBrowserViewController2 alloc] init];
-    [themeBrowserViewController assignTheme:self.currentTheme];
+//    ThemeBrowserViewController2* themeBrowserViewController = [[ThemeBrowserViewController2 alloc] init];
+//    [themeBrowserViewController assignTheme:self.currentTheme];
+    
+
     
     self.tb_shareButton = [[UIBarButtonItem alloc]
                           initWithTitle:@"Share"
@@ -411,10 +413,12 @@
             }
         }
     }
-    [self.pagedViewSlider goToPage:index];
+    [self.pagedViewSlider goTo:index];
    
-	// Layout
-	[self.pagedViewSlider performLayout];
+    //we inform the view to pre-fetch captions if necessary
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    [photoCaptionView loadViewData];
+	
   
     // Set status bar style to black translucent
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
@@ -453,15 +457,15 @@
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
         
-        int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
+        int currentScrollIndex = self.pagedViewSlider.pageIndex;
         self.view = self.v_portrait;
-        [self.pagedViewSlider goToPage:currentScrollIndex];
+        [self.pagedViewSlider goTo:currentScrollIndex];
     }
     else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
         //going to landscape
-        int currentScrollIndex = self.pagedViewSlider.currentPageIndex;
+        int currentScrollIndex = self.pagedViewSlider.pageIndex;
         self.view = self.v_landscape;        
-        [self.pagedViewSlider goToPage:currentScrollIndex];
+        [self.pagedViewSlider goTo:currentScrollIndex];
         
         
     }
@@ -487,14 +491,14 @@
     NSArray* photos = [self.frc_photos fetchedObjects];
     // Title
 	if (photos.count > 1) {
-		self.title = [NSString stringWithFormat:@"%i of %i", self.pagedViewSlider.currentPageIndex+1, photos.count];		
+		self.title = [NSString stringWithFormat:@"%i of %i", self.pagedViewSlider.pageIndex+1, photos.count];		
 	} else {
 		self.title = nil;
 	}
 	
 	// Buttons
-	self.previousButton.enabled = (self.pagedViewSlider.currentPageIndex > 0);
-	self.nextButton.enabled = (self.pagedViewSlider.currentPageIndex < photos.count-1);
+	self.previousButton.enabled = (self.pagedViewSlider.pageIndex > 0);
+	self.nextButton.enabled = (self.pagedViewSlider.pageIndex < photos.count-1);
     
 }
 
@@ -620,16 +624,19 @@
 #pragma mark - UIPagedViewSlider2Delegate
 
 - (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UIPhotoCaptionScrollView *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
-    ImageManager* imageManager = [ImageManager getInstance];
-
-    [existingCell resetWithFrame:frame withPhoto:photo];
-
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:an_IMAGEVIEW];
-    UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
+    int count = [[self.frc_photos fetchedObjects]count];
     
-    [existingCell displayImage:image];
- 
+    if (count > 0 && index < count-1) {
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+        ImageManager* imageManager = [ImageManager getInstance];
+        
+        [existingCell resetWithFrame:frame withPhoto:photo];
+        
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:an_IMAGEVIEW];
+        UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:self];
+        
+        [existingCell displayImage:image];
+    }
     
 }
 
@@ -705,7 +712,7 @@
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     if (type == NSFetchedResultsChangeInsert) {
         [self.pagedViewSlider onNewItemInsertedAt:newIndexPath.row];
-        [self.pagedViewSlider tilePages];
+       
     }
 }
 

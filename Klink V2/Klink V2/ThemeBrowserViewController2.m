@@ -18,6 +18,7 @@
 #import "MWPhotoBrowser.h"
 #import "NSFetchedResultsControllerCategory.h"
 #import "CameraButtonManager.h"
+#import "UIViewCategory.h"
 
 /*#define kPictureWidth 130
 #define kPictureSpacing 0
@@ -170,7 +171,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     [self.pvs_photoSlider2 reset];
     
     self.photosInThemeCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.theme.objectid];
-  
+    //[self.pvs_photoSlider2 goTo:0];
 }
 
 
@@ -196,9 +197,11 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         index = [self.frc_themes indexOf:self.theme];
         
         //move the scroller to that position
-        [self.pvs_themeSlider2 goToPage:index];
+        [self.pvs_themeSlider2 goTo:index];
     }
     
+    //reset the photo slider to position 0
+    [self.pvs_photoSlider2 goTo:0];
     
     
     
@@ -230,7 +233,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     if (self.theme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
-    
+        
         if ([themes count] > 0) {
             [self assignTheme:[themes objectAtIndex:0]];
         }
@@ -239,10 +242,19 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             NSString* message = [NSString stringWithFormat:@"No themes found in database, enumerating from the web service"];
             [BLLog v:activityName withMessage:message];
             [self.themeCloudEnumerator enumerateNextPage];
-
+            
         }
         
     }
+    
+    
+    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
+    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
+    
+    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
+    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
+    
+
     
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
@@ -250,18 +262,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
                                      action:@selector(cameraButtonPressed:)];
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
-    
-    
-    /*self.pvs_photoSlider2.layer.borderWidth = 1.0f;
-    self.pvs_photoSlider2.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.pvs_themeSlider2.layer.borderWidth = 1.0f;
-    self.pvs_themeSlider2.layer.borderColor = [UIColor whiteColor].CGColor;*/
-    
-    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
-    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
-    
-    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
-    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
 
 }
 
@@ -282,23 +282,23 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
 
-        int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
-        int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
+        int currentPhotoScrollIndex = self.pvs_photoSlider2.pageIndex;
+        int currentThemeScrollIndex = self.pvs_themeSlider2.pageIndex;
         self.view = v_portrait;
         
-        [self.pvs_photoSlider2 goToPage:currentPhotoScrollIndex];
-        [self.pvs_themeSlider2 goToPage:currentThemeScrollIndex];
+        [self.pvs_photoSlider2 goTo:currentPhotoScrollIndex];
+        [self.pvs_themeSlider2 goTo:currentThemeScrollIndex];
       
 
     }
     else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         //going to landscape
-        int currentPhotoScrollIndex = self.pvs_photoSlider2.currentPageIndex;
-        int currentThemeScrollIndex = self.pvs_themeSlider2.currentPageIndex;
+        int currentPhotoScrollIndex = self.pvs_photoSlider2.pageIndex;
+        int currentThemeScrollIndex = self.pvs_themeSlider2.pageIndex;
         self.view = v_landscape;
 
-        [self.pvs_photoSlider2 goToPage:currentPhotoScrollIndex];
-        [self.pvs_themeSlider2 goToPage:currentThemeScrollIndex];
+        [self.pvs_photoSlider2 goTo:currentPhotoScrollIndex];
+        [self.pvs_themeSlider2 goTo:currentThemeScrollIndex];
 
 
     }
@@ -526,6 +526,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
             //the theme scrolled to is not the same as the current one, time to switch themes
             [self assignTheme:themeAtCurrentIndex];
+            //reset the photo slider to position 0
+            [self.pvs_photoSlider2 goTo:0];
         }
     }
     
@@ -937,12 +939,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             captionLabelBackground.hidden = YES;
         }
         
-        
+        imageView.image = nil;
         UIImage* image = [[ImageManager getInstance]downloadImage:photo.thumbnailurl withUserInfo:userInfo atCallback:self];
         
         if (image == nil) {
             imageView.backgroundColor = [UIColor blackColor];
-            imageView.image = nil;
+            
         }
         else {
             imageView.image = image;
@@ -958,7 +960,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         
         [userInfo setObject:selectedTheme.objectid forKey:an_OBJECTID];
         UIImage* image = [[ImageManager getInstance]downloadImage:selectedTheme.homeimageurl  withUserInfo:userInfo atCallback:self];
-        
+        imageView.image = nil;
         if (image == nil) {
             imageView.backgroundColor = [UIColor blackColor];
         }
@@ -978,6 +980,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             [themeLabel setText:selectedTheme.displayname];
         }
         else {
+            [imageView removeAllSubviews];
+            //todo: need to release all the objects
+            
             // set transparent background first
             themeLabelBackground = [[UIView alloc] initWithFrame:themeTitleFrame];
             [themeLabelBackground setBackgroundColor:[UIColor blackColor]];
@@ -1009,6 +1014,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
             [themeDescTextView setText:selectedTheme.descr];
         }
         else {
+            
             // set transparent background first
             themeDescBackground = [[UIView alloc] initWithFrame:themeDescriptionFrame];
             [themeDescBackground setBackgroundColor:[UIColor blackColor]];

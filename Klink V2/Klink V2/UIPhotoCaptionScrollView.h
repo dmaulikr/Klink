@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UIZoomingScrollView.h"
-#import "UIPagedViewSlider2.h"
+#import "UIPagedViewSlider3.h"
 #import "CloudEnumerator.h"
 
 @class Caption;
@@ -35,6 +35,7 @@
 - (void)    hideVotingButton;
 - (void)    showVotingButton;
 - (void)    showHideVotingSharingButtons;
+- (void)    loadViewData;
 
 
 @property (nonatomic,retain) Photo*                         photo;

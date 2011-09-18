@@ -82,11 +82,12 @@
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:self.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:an_NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc]initWithKey:an_CAPTION ascending:NO];
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"photoid=%@",photo.objectid];
     
     [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor,sortDescriptor2, nil]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     
@@ -245,7 +246,7 @@
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
-        self.captionScrollView.currentPageIndex = 0;
+        self.captionScrollView.pageIndex = 0;
         self.captionScrollView.backgroundColor = [UIColor clearColor];
         self.captionScrollView.alpha = 1;
         self.captionScrollView.opaque = YES;
@@ -278,10 +279,7 @@
         //self.voteButton.hidden = YES;
         //self.voteButton.enabled = NO;
      
-        
-//        if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
-//            [self.captionCloudEnumerator enumerateNextPage];
-//        }
+
         
         [self showHideVotingSharingButtons];
         
@@ -309,8 +307,18 @@
     
     return self;
 }
-                                                    
-
+    
+//checks to see if any additional caption data needs to be fetched prior to the view becoming active
+- (void) loadViewData {
+    NSString* activityName = @"UIPhotoCaptionScrollView.loadViewData:";
+    
+            if ([[self.frc_captions fetchedObjects]count] < threshold_LOADMORECAPTIONS) {
+                NSString* message = @"Executing fetch of caption data from web service";
+                [self.captionCloudEnumerator enumerateNextPage];
+                [BLLog v:activityName withMessage:message];
+            }
+    
+}
 #pragma mark - Cloud Enumerator Delegate callback
 - (void) onEnumerateComplete {
     
@@ -319,9 +327,13 @@
 #pragma mark - UIPageScrollViewDelegate
 
 - (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UICaptionLabel *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
-    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-    [existingCell setCaption:caption];
-    existingCell.frame = frame;
+    
+    if ([self.frc_captions.fetchedObjects count] > 0 &&
+        index < [self.frc_captions.fetchedObjects count]) {
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+        [existingCell setCaption:caption];
+        existingCell.frame = frame;
+    }
 
 
 }
@@ -383,7 +395,7 @@
     }
     
     if (index != -1) {
-        [self.captionScrollView goToPage:index];
+        [self.captionScrollView goTo:index];
     }
         
     
@@ -413,7 +425,7 @@
     }
     
     if (captionCount > 0) {
-        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
+        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
         [self showVotingButton];
         if ([currentCaption.user_hasvoted boolValue] == YES) {
             [self disableVotingButton];
@@ -461,7 +473,6 @@
     
     if (type == NSFetchedResultsChangeInsert) {
         [self.captionScrollView onNewItemInsertedAt:newIndexPath.row];
-        [self.captionScrollView tilePages];
         [self showHideVotingSharingButtons];
     }
 
@@ -475,7 +486,7 @@
     int count = [[self.frc_captions fetchedObjects]count];
     if (count > 0) {
         [self hideShareButton];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
         
         [sharingManager shareCaption:caption.objectid];
         
@@ -504,7 +515,7 @@
 
 - (void) onVoteUpButtonPressed:(id)sender {
     self.photo = [Photo photo:self.photo.objectid];
-    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.currentPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
     
     self.photo.numberofvotes =[NSNumber numberWithInt:([self.photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue]+1)];
