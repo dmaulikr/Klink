@@ -73,3 +73,7 @@ int const default_width_WORDPRESSIMAGE = 593;
 int const default_height_WORDPRESSIMAGE = 261;
 int const max_height_WORDPRESSIMAGE = 600;
 int const max_width_WORDPRESSIMAGE=600;
+
+long const threshold_CAPTION_ENUMERATION_TIME_GAP = 60;
+long const threshold_PHOTO_ENUMERATION_TIME_GAP = 60;
+long const threshold_THEME_ENUMERATION_TIME_GAP = 60;

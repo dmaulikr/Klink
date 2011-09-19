@@ -124,6 +124,7 @@
 		C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EED142381F1000D3B5E /* SharingOptions.m */; };
 		C5DF0EF11423EACB000D3B5E /* UIPagedViewSlider3.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF01423EACB000D3B5E /* UIPagedViewSlider3.m */; };
 		C5DF0EF71424FFAC000D3B5E /* UIViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF61424FFAC000D3B5E /* UIViewCategory.m */; };
+		C5DF0EFA1426E7B4000D3B5E /* CloudEnumeratorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF91426E7B4000D3B5E /* CloudEnumeratorFactory.m */; };
 		C5F5F0691405B1C60067084D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0681405B1C60067084D /* libxml2.2.dylib */; };
 		C5F5F0DE140684440067084D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0DD140684440067084D /* MapKit.framework */; };
 		C5F5F0E0140684520067084D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0DF140684520067084D /* CoreLocation.framework */; };
@@ -416,6 +417,8 @@
 		C5DF0EF01423EACB000D3B5E /* UIPagedViewSlider3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider3.m; sourceTree = "<group>"; };
 		C5DF0EF51424FFAC000D3B5E /* UIViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewCategory.h; sourceTree = "<group>"; };
 		C5DF0EF61424FFAC000D3B5E /* UIViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewCategory.m; sourceTree = "<group>"; };
+		C5DF0EF81426E7B3000D3B5E /* CloudEnumeratorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumeratorFactory.h; sourceTree = "<group>"; };
+		C5DF0EF91426E7B4000D3B5E /* CloudEnumeratorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumeratorFactory.m; sourceTree = "<group>"; };
 		C5F5F0681405B1C60067084D /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		C5F5F0DD140684440067084D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C5F5F0DF140684520067084D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -732,6 +735,8 @@
 				C5F5F4331406D39B0067084D /* SocialSharingManager.m */,
 				3D2ED29F14130B0E007CB840 /* CameraButtonManager.h */,
 				3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */,
+				C5DF0EF81426E7B3000D3B5E /* CloudEnumeratorFactory.h */,
+				C5DF0EF91426E7B4000D3B5E /* CloudEnumeratorFactory.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -1449,6 +1454,7 @@
 				C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */,
 				C5DF0EF11423EACB000D3B5E /* UIPagedViewSlider3.m in Sources */,
 				C5DF0EF71424FFAC000D3B5E /* UIViewCategory.m in Sources */,
+				C5DF0EFA1426E7B4000D3B5E /* CloudEnumeratorFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

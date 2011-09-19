@@ -15,7 +15,9 @@
 @synthesize queryOptions = m_queryOptions;
 @synthesize isDone = m_isDone;
 @synthesize delegate = m_delegate;
-
+@synthesize lastExecutedTime = m_lastExecutedTime;
+@synthesize secondsBetweenConsecutiveSearches = m_secondsBetweenConsecutiveSearches;
+@synthesize identifier = m_identifier;
 
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
@@ -42,12 +44,38 @@
     return self;
 }
 
+- (BOOL) hasEnoughTimeLapsedBetweenConsecutiveSearches {
+    long secondsSinceLastSearch = 0;
+    bool hasEnoughTimeLapsedBetweenConsecutiveSearches;
+    
+    hasEnoughTimeLapsedBetweenConsecutiveSearches = YES;
+    NSDate* currentDate = [NSDate date];
+    secondsSinceLastSearch = [currentDate timeIntervalSinceDate:self.lastExecutedTime];
+    
+    if (self.lastExecutedTime != nil) {
+        if (secondsSinceLastSearch > self.secondsBetweenConsecutiveSearches) {
+            hasEnoughTimeLapsedBetweenConsecutiveSearches = YES;
+        }
+        else {
+            hasEnoughTimeLapsedBetweenConsecutiveSearches = NO;
+        }
+    }
+    return hasEnoughTimeLapsedBetweenConsecutiveSearches;
+}
+
+
+
 - (void) enumerateNextPage {
     WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
     AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     
-    if (!m_isEnumerationPending) {
+    BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+    
+    if (!m_isEnumerationPending &&
+        hasEnoughTimeLapsedBetweenConsecutiveSearches) {
+        
+        self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         NSString* notificationID = [NSString GetGUID];    
         [notificationCenter addObserver:self selector:@selector(onEnumerateComplete:) name:notificationID object:nil];
@@ -59,12 +87,20 @@
     
 }
 
+
 - (void) enumerateUntilEnd {
     WS_EnumerationManager* enumerationManager = [WS_EnumerationManager getInstance];
     AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     
-    if (!m_isEnumerationPending) {
+    BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+    
+   
+       
+    if (!m_isEnumerationPending &&
+        hasEnoughTimeLapsedBetweenConsecutiveSearches) {
+        
+        self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         NSString* notificationID = [NSString GetGUID];    
         [notificationCenter addObserver:self selector:@selector(onEnumerateComplete:) name:notificationID object:nil];
@@ -77,7 +113,7 @@
 
 - (void) onEnumerateComplete : (NSNotification*)notification {
     NSDictionary* userInfo = [notification userInfo];
-    if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != [NSNull null]) {
+    if ([userInfo objectForKey:an_ENUMERATIONCONTEXT] != nil) {
         EnumerationContext* returnedContext = [userInfo objectForKey:an_ENUMERATIONCONTEXT];
         self.enumerationContext = returnedContext;
         self.isDone = [self.enumerationContext.isDone boolValue];
@@ -98,12 +134,15 @@
 
 #pragma mark - Static initializers
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
+    
     Query* query = [Query queryCaptionsForPhoto:photoid];
     QueryOptions* queryOptions = [QueryOptions queryForCaptions:photoid];
     EnumerationContext* enumerationContext = [EnumerationContext contextForCaptions:photoid];
     query.queryoptions = queryOptions;
   
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [photoid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = threshold_CAPTION_ENUMERATION_TIME_GAP;
     return enumerator;
     
 }
@@ -115,6 +154,8 @@
     query.queryoptions = queryOptions;
     
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [themeid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = threshold_PHOTO_ENUMERATION_TIME_GAP;
     return enumerator;
 }
 
@@ -125,6 +166,7 @@
     query.queryoptions = queryOptions;
     
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = threshold_THEME_ENUMERATION_TIME_GAP;
     return enumerator;
 }
 

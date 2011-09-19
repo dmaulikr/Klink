@@ -233,6 +233,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [transferManager createObjectsInCloud:[NSArray arrayWithObject:newPhoto.objectid] withObjectTypes:[NSArray arrayWithObject:PHOTO] withAttachments:attachments onFinishNotify:notificationID];
     
     
+    //we notify any recipients of the starting of the photo upload
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:newPhoto.objectid forKey:an_OBJECTID];
+    [notificationCenter postNotificationName:n_PHOTO_UPLOAD_START object:self userInfo:userInfo];
+    
+    //we also make the call on the held instance since the Notification may not receive a view controller
+    //which has gone to sleep
+    [self.viewController onPhotoUploadStart:newPhoto];
+    
     CGImageRelease(croppedThumbnailImage);
     
     [picker dismissModalViewControllerAnimated:YES];
@@ -260,7 +268,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
             
             //we mark the object as being no longer pending.
             [photo commitChangesToDatabase:NO withPendingFlag:NO];
+            
+            //lets also call the view controller to identify that it is done
+            NSDictionary* newUserInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:an_OBJECTID];
+            NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+            [notificationCenter postNotificationName:n_PHOTO_UPLOAD_COMPLETE object:self userInfo:newUserInfo];
         }
+        
+        
     }
     
     

@@ -15,6 +15,7 @@
 #import "IDGenerator.h"
 #import "ThemeBrowserViewController2.h"
 #import "CameraButtonManager.h"
+#import "CloudEnumeratorFactory.h"
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -310,7 +311,8 @@
 //    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 //    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 
-    self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.currentTheme.objectid];
+    self.photoCloudEnumerator = [[CloudEnumeratorFactory getInstance] enumeratorForPhotos:self.currentTheme.objectid];
+    //self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.currentTheme.objectid];
     self.photoCloudEnumerator.delegate = self;
     if ([[self.frc_photos fetchedObjects]count]<threshold_LOADMOREPHOTOS) {
         [self.photoCloudEnumerator enumerateNextPage];
@@ -626,7 +628,7 @@
 - (void) viewSlider:(UIPagedViewSlider2 *)viewSlider configure:(UIPhotoCaptionScrollView *)existingCell forRowAtIndex:(int)index withFrame:(CGRect)frame {
     int count = [[self.frc_photos fetchedObjects]count];
     
-    if (count > 0 && index < count-1) {
+    if (count > 0 && index < count) {
         Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         ImageManager* imageManager = [ImageManager getInstance];
         
@@ -686,6 +688,9 @@
         [self toggleControls];
     }
     
+    //we inform the view to pre-fetch captions if necessary
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    [photoCaptionView loadViewData];
 }
 
 - (void)viewSlider:(UIPagedViewSlider2*)viewSlider selectIndex:(int)index {

@@ -33,6 +33,12 @@ extern int const timeout_ENUMERATION;
 extern int const threshold_LOADMOREPHOTOS;
 extern int const threshold_LOADMORETHEMES;
 extern int const threshold_LOADMORECAPTIONS;
+
+//governs how often a cloud enumerator can execute an enum against the service (in seconds)
+extern long const threshold_CAPTION_ENUMERATION_TIME_GAP;
+extern long const threshold_PHOTO_ENUMERATION_TIME_GAP;
+extern long const threshold_THEME_ENUMERATION_TIME_GAP;
+
 //opcodes for query operations
 extern int const opcode_QUERYEQUALITY;
 

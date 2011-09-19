@@ -280,6 +280,14 @@ shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage {
     
     NSString* message = [NSString stringWithFormat:@"Enumeration failed for URL: %@",url];
     [BLLog e:activityName withMessage:message];
+    
+    NSDictionary* passedContext = [request userInfo];
+    if ([passedContext objectForKey:an_ONFINISHNOTIFY] != [NSNull null]) {
+        NSString* notificationTarget = [passedContext objectForKey:an_ONFINISHNOTIFY];
+        NSNotificationCenter *notifcationCenter = [NSNotificationCenter defaultCenter];
+        
+        [notifcationCenter postNotificationName:notificationTarget object:self userInfo:nil];
+    }
 }
 
 #pragma mark - Enumeration Executers

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UIProfileBar.h"
+#import "Photo.h"
 
 @interface KlinkBaseViewController : UIViewController {
     IBOutlet UIProfileBar* m_profileBar_landscape;
@@ -30,6 +31,8 @@
 
 - (void) onUserLoggedIn;
 - (void) onUserLoggedOut;
+- (void) onPhotoUploadComplete:(Photo*)photo;
+- (void) onPhotoUploadStart:(Photo*)photo;
 - (void) enumerateFeed;
 - (void) didRotate:(NSNotification*)notification;
 

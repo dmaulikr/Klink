@@ -57,6 +57,8 @@
     }
 }
 
+
+
 #pragma mark - Private Methods
 
 - (void)hideProfileBar {
@@ -79,6 +81,8 @@
     }
 }
 
+
+
 #pragma mark - initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -98,6 +102,7 @@
     [self.profileBar release];
     [super dealloc];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -150,7 +155,8 @@
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
     [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
-      
+    [notificationCenter addObserver:self selector:@selector(onPhotoUploadCompleteNotificationHandler:) name:n_PHOTO_UPLOAD_COMPLETE object:nil];
+    [notificationCenter addObserver:self selector:@selector(onPhotoUploadStartNotificationHandler:) name:n_PHOTO_UPLOAD_START object:nil];
 
     
 
@@ -197,6 +203,7 @@
     // Return YES for supported orientations
     return YES;
 }
+
 
 
 -(void)onGetUserComplete:(NSNotification*)notification {
@@ -254,5 +261,43 @@
     [self hideProfileBar];
 }
 
+
+- (void) onPhotoUploadCompleteNotificationHandler:(NSNotification*)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    NSString* activityName = @"KlinkBaseViewController.onPhotoUploadCompleteNotificationHandler:";
+    
+    NSString* message = @"handling system event notification";
+    [BLLog v:activityName withMessage:message];
+    
+    if ([userInfo objectForKey:an_OBJECTID] != nil) {
+        Photo* photo = [DataLayer getObjectByID:[userInfo objectForKey:an_OBJECTID] withObjectType:PHOTO];
+        [self onPhotoUploadComplete:photo];
+        
+        
+    }
+}
+
+- (void) onPhotoUploadStartNotificationHandler:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSString* activityName = @"KlinkBaseViewController.onPhotoUploadStartNotificationHandler:";
+    
+    NSString* message = @"handling system event notification";
+    [BLLog v:activityName withMessage:message];
+    
+    if ([userInfo objectForKey:an_OBJECTID] != nil) {
+        Photo* photo = [DataLayer getObjectByID:[userInfo objectForKey:an_OBJECTID] withObjectType:PHOTO];
+        [self onPhotoUploadStart:photo];
+    }
+}
+
+
+- (void) onPhotoUploadComplete:(Photo*)photo {
+    
+}
+
+- (void) onPhotoUploadStart:(Photo *)photo {
+    
+}
 
 @end

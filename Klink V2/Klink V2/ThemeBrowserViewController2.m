@@ -19,6 +19,7 @@
 #import "NSFetchedResultsControllerCategory.h"
 #import "CameraButtonManager.h"
 #import "UIViewCategory.h"
+#import "CloudEnumeratorFactory.h"
 
 /*#define kPictureWidth 130
 #define kPictureSpacing 0
@@ -228,8 +229,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
     NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
         
-    
-    self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
+    self.themeCloudEnumerator = [[CloudEnumeratorFactory getInstance] enumeratorForThemes];
+   // self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
     self.themeCloudEnumerator.delegate = self;
     
     if (self.theme == nil) {
@@ -309,7 +310,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return YES;
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+   
 }
 
 #pragma mark - UIViewSlider Fetched Results Controller
@@ -534,6 +536,46 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
 }
 
+- (void) onPhotoUploadStart:(Photo *)newPhoto {
+    [super onPhotoUploadStart:newPhoto];
+    
+    //we now position our sliders to show the newly formed photo
+    int index = 0;
+    int count = [[self.frc_photosInCurrentTheme fetchedObjects]count];
+    for (int i = 0; i < count; i++) {
+        Photo* photoAtIndex = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:i];
+        if (photoAtIndex.objectid == newPhoto.objectid) {
+            index = i;
+            break;
+        }
+    }
+    
+    //move the scroller to the appropriate position
+    [self.pvs_photoSlider2 goTo:index];
+}
+
+
+- (void) onPhotoUploadComplete : (Photo*) newPhoto {
+    [super onPhotoUploadComplete:newPhoto];
+    
+//    
+//    //we now position our sliders to show the newly formed photo
+//    int index = 0;
+//    int count = [[self.frc_photosInCurrentTheme fetchedObjects]count];
+//    for (int i = 0; i < count; i++) {
+//        Photo* photoAtIndex = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:i];
+//        if (photoAtIndex.objectid == newPhoto.objectid) {
+//            index = i;
+//            break;
+//        }
+//    }
+//    
+//    //move the scroller to the appropriate position
+//    [self.pvs_photoSlider2 goTo:index];
+
+
+    
+}
 
 -(void)photoSliderIsAtIndex:(int)index withCellsRemaining:(int)numberOfCellsToEnd {
     

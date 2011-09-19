@@ -18,6 +18,8 @@
 
 @end
 
+
+
 @interface CloudEnumerator : NSObject {
     BOOL m_isEnumerationPending;
     EnumerationContext* m_enumerationContext;
@@ -25,18 +27,28 @@
     QueryOptions*       m_queryOptions;
     BOOL m_isDone;
     id<CloudEnumeratorDelegate> m_delegate;
+    NSDate*             m_lastExecutedTime;
+    long                m_secondsBetweenConsecutiveSearches;
+    
+    NSString*           m_identifier;
+    
 }
-
+@property (nonatomic,retain) NSString*              identifier;
 @property (nonatomic,retain) EnumerationContext*    enumerationContext;
 @property (nonatomic,retain) Query*                 query;
 @property (nonatomic,retain) QueryOptions*          queryOptions;
 @property BOOL                                      isDone;
+@property (nonatomic,retain) NSDate*                lastExecutedTime;
+@property long                                      secondsBetweenConsecutiveSearches;
 @property (nonatomic,retain) id<CloudEnumeratorDelegate>   delegate;
 
+
+
 - (id)  initWithEnumerationContext:
-                (EnumerationContext*)enumerationContext
+                  (EnumerationContext*)enumerationContext
                   withQuery:(Query*)query
                   withQueryOptions:(QueryOptions*)queryOptions;
+
 
 - (id) initWithQuery:
                 (Query *)query 

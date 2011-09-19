@@ -9,14 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "BLLog.h"
 #import "Theme.h"
+#import "KlinkBaseViewController.h"
 
 @interface CameraButtonManager : NSObject <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     Theme* theme;
-    UIViewController* viewController;
+    KlinkBaseViewController* viewController;
 }
 
 @property (nonatomic, retain) Theme* theme;
-@property (nonatomic, retain) UIViewController* viewController;
+@property (nonatomic, retain) KlinkBaseViewController* viewController;
 
 + (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController withTheme:(Theme*)currentTheme;
 

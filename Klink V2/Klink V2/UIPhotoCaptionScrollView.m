@@ -14,6 +14,7 @@
 #import "NSStringGUIDCategory.h"
 #import "SocialSharingManager.h"
 #import "PhotoViewController.h"
+#import "CloudEnumeratorFactory.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
@@ -254,7 +255,8 @@
         [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing isHorizontal:YES];
 
         [self addSubview:self.captionScrollView];
-        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
+        self.captionCloudEnumerator = [[CloudEnumeratorFactory getInstance]enumeratorForCaptions:self.photo.objectid];
+//        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;
         
     
@@ -378,9 +380,16 @@
     }
 }
 
-- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
+//- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
+//    return [[self.frc_captions fetchedObjects]count];
+//}
+
+- (int) itemCountFor:(UIPagedViewSlider2 *)viewSlider {
     return [[self.frc_captions fetchedObjects]count];
 }
+
+
+
 
 - (void) setVisibleCaption:(NSNumber *)objectid {
     NSArray* captions = [self.frc_captions fetchedObjects];
@@ -491,7 +500,7 @@
         [sharingManager shareCaption:caption.objectid];
         
     }
-   
+       
 }
 
 

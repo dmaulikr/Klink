@@ -21,3 +21,5 @@ extern NSString* const n_IMAGEDOWNLOADED;
 
 extern NSString* const n_USER_LOGGED_IN;
 extern NSString* const n_USER_LOGGED_OUT;
+extern NSString* const n_PHOTO_UPLOAD_START;
+extern NSString* const n_PHOTO_UPLOAD_COMPLETE;

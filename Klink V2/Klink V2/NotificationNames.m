@@ -20,3 +20,5 @@
  NSString* const n_IMAGEDOWNLOADED = @"image_downloaded";
  NSString* const n_USER_LOGGED_IN = @"user_logged_in";
  NSString* const n_USER_LOGGED_OUT=@"user_logged_out";
+ NSString* const n_PHOTO_UPLOAD_START=@"photo_upload_start";
+ NSString* const n_PHOTO_UPLOAD_COMPLETE=@"photo_upload_complete";
