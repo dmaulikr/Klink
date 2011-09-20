@@ -81,7 +81,7 @@ static CameraButtonManager* sharedManager;
 
 #pragma mark -
 #pragma mark CameraButton methods
-- (IBAction)cameraButtonPressed:(id)sender {
+- (void)cameraButtonPressed:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
