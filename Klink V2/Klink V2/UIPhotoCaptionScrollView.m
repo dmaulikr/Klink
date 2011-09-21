@@ -51,6 +51,7 @@
 @synthesize photoCreditsBackground;
 @synthesize photoCreditsLabel;
 @synthesize photoVotesLabel;
+@synthesize photoViewController =       m_photoViewController;
 
 - (void) dealloc {
     [self.voteButton release];
@@ -62,6 +63,7 @@
     [self.photoCreditsBackground release];
     [self.photoCreditsLabel release];
     [self.photoVotesLabel release];
+    [self.photoViewController release];
     [super dealloc];
 }
 
@@ -210,6 +212,7 @@
     if (self != nil) {
         
         self.photo = photo;
+        self.photoViewController = self.viewController;
         
         // Add Photo Credits Label
         // set transparent backgrounds first
@@ -451,21 +454,15 @@
 }
 
 - (void) disableVotingButton {   
-    //PhotoViewController* photoViewController = [self viewController];
-    //photoViewController.tb_voteButton.enabled = NO;
+    self.photoViewController.tb_voteButton.enabled = NO;
     self.voteButton.enabled = NO;
     self.voteButton.backgroundColor = [UIColor grayColor];
-    
-    //[photoViewController release];
 }
 
 - (void) enableVotingButton {
-    //PhotoViewController* photoViewController = [self viewController];
-    //photoViewController.tb_voteButton.enabled = YES;
+    self.photoViewController.tb_voteButton.enabled = YES;
     self.voteButton.enabled = YES;
     self.voteButton.backgroundColor = [UIColor redColor];
-    
-    //[photoViewController release];
 }
 
 - (void) hideVotingButton {

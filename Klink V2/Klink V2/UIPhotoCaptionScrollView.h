@@ -10,6 +10,7 @@
 #import "UIZoomingScrollView.h"
 #import "UIPagedViewSlider3.h"
 #import "CloudEnumerator.h"
+#import "PhotoViewController.h"
 
 @class Caption;
 @class Photo;
@@ -20,6 +21,7 @@
     UIButton*           m_voteButton;
     CloudEnumerator*    m_captionCloudEnumerator;
     UIButton*           m_shareButton;
+    PhotoViewController* m_photoViewController;
 }
 
 - (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo;
@@ -48,6 +50,7 @@
 @property (nonatomic,retain) UIView*                        photoCreditsBackground;
 @property (nonatomic,retain) UILabel*                       photoCreditsLabel;
 @property (nonatomic,retain) UILabel*                       photoVotesLabel;
+@property (nonatomic,retain) PhotoViewController*           photoViewController;
 
 
 @end

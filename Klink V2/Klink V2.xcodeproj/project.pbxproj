@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D1A6A0B142A57B80095B366 /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A07142A57B80095B366 /* icon-facebook.png */; };
+		3D1A6A0C142A57B80095B366 /* icon-facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A08142A57B80095B366 /* icon-facebook@2x.png */; };
+		3D1A6A0E142A57B80095B366 /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A0A142A57B80095B366 /* icon-twitter-t@2x.png */; };
+		3D1A6A12142A5C830095B366 /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A10142A5C830095B366 /* icon-thumbUp.png */; };
+		3D1A6A13142A5C830095B366 /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A11142A5C830095B366 /* icon-thumbUp@2x.png */; };
+		3D1A6A16142A62FD0095B366 /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A14142A62FD0095B366 /* icon-camera2.png */; };
+		3D1A6A17142A62FD0095B366 /* icon-camera2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A15142A62FD0095B366 /* icon-camera2@2x.png */; };
+		3D1A6A1A142A63500095B366 /* icon-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A18142A63500095B366 /* icon-compose.png */; };
+		3D1A6A1B142A63500095B366 /* icon-compose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A19142A63500095B366 /* icon-compose@2x.png */; };
+		3D1A6A1D142A70160095B366 /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D1A6A1C142A70160095B366 /* icon-twitter-t.png */; };
 		3D2ED2A114130B0E007CB840 /* CameraButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */; };
 		3D3134F413E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F013E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png */; };
 		3D3134F513E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */; };
@@ -197,6 +207,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D1A6A07142A57B80095B366 /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
+		3D1A6A08142A57B80095B366 /* icon-facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook@2x.png"; sourceTree = "<group>"; };
+		3D1A6A0A142A57B80095B366 /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
+		3D1A6A10142A5C830095B366 /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
+		3D1A6A11142A5C830095B366 /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
+		3D1A6A14142A62FD0095B366 /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
+		3D1A6A15142A62FD0095B366 /* icon-camera2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2@2x.png"; sourceTree = "<group>"; };
+		3D1A6A18142A63500095B366 /* icon-compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose.png"; sourceTree = "<group>"; };
+		3D1A6A19142A63500095B366 /* icon-compose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose@2x.png"; sourceTree = "<group>"; };
+		3D1A6A1C142A70160095B366 /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		3D2ED29F14130B0E007CB840 /* CameraButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraButtonManager.h; sourceTree = "<group>"; };
 		3D2ED2A014130B0E007CB840 /* CameraButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraButtonManager.m; sourceTree = "<group>"; };
 		3D3134F013E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonItemArrowLeft.png; sourceTree = "<group>"; };
@@ -575,6 +595,16 @@
 		3DC5227713D018CE00A0F1F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3D1A6A18142A63500095B366 /* icon-compose.png */,
+				3D1A6A19142A63500095B366 /* icon-compose@2x.png */,
+				3D1A6A14142A62FD0095B366 /* icon-camera2.png */,
+				3D1A6A15142A62FD0095B366 /* icon-camera2@2x.png */,
+				3D1A6A10142A5C830095B366 /* icon-thumbUp.png */,
+				3D1A6A11142A5C830095B366 /* icon-thumbUp@2x.png */,
+				3D1A6A07142A57B80095B366 /* icon-facebook.png */,
+				3D1A6A08142A57B80095B366 /* icon-facebook@2x.png */,
+				3D1A6A1C142A70160095B366 /* icon-twitter-t.png */,
+				3D1A6A0A142A57B80095B366 /* icon-twitter-t@2x.png */,
 				3D3134F013E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft.png */,
 				3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */,
 				3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */,
@@ -1299,6 +1329,16 @@
 				3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */,
 				3D3134F713E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png in Resources */,
 				C5A095DE13E6F5EC003D4376 /* PhotoViewController.xib in Resources */,
+				3D1A6A0B142A57B80095B366 /* icon-facebook.png in Resources */,
+				3D1A6A0C142A57B80095B366 /* icon-facebook@2x.png in Resources */,
+				3D1A6A0E142A57B80095B366 /* icon-twitter-t@2x.png in Resources */,
+				3D1A6A12142A5C830095B366 /* icon-thumbUp.png in Resources */,
+				3D1A6A13142A5C830095B366 /* icon-thumbUp@2x.png in Resources */,
+				3D1A6A16142A62FD0095B366 /* icon-camera2.png in Resources */,
+				3D1A6A17142A62FD0095B366 /* icon-camera2@2x.png in Resources */,
+				3D1A6A1A142A63500095B366 /* icon-compose.png in Resources */,
+				3D1A6A1B142A63500095B366 /* icon-compose@2x.png in Resources */,
+				3D1A6A1D142A70160095B366 /* icon-twitter-t.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
