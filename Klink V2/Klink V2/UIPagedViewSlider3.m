@@ -198,12 +198,16 @@
     
     if (page.view == nil) {
         UIView* subview = [self.delegate viewSlider:self cellForRowAtIndex:index withFrame:page.frame];
+        
+       // [UIView transitionWithView:self.pagingScrollView duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{ [self.pagingScrollView addSubview:subview];} completion:nil];
+        
         [self.pagingScrollView addSubview:subview];  
         page.view = subview;
     }
     else {
         UIView* existingView = page.view;
         [self.delegate viewSlider:self configure:page.view forRowAtIndex:index withFrame:page.frame];
+   //             [UIView transitionWithView:self.pagingScrollView duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{ [self.pagingScrollView addSubview:subview];} completion:nil];
         [self.pagingScrollView addSubview:existingView];
         
     }
