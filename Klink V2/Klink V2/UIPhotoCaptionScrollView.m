@@ -503,6 +503,34 @@
        
 }
 
+//method called when the
+- (void) onFacebookShareButtonPressed:(id)sender {
+    SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+    int count = [[self.frc_captions fetchedObjects]count];
+    if (count > 0) {
+        [self hideShareButton];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        
+        [sharingManager shareCaptionOnFacebook:caption.objectid];
+        
+    }
+    
+}
+
+//method called when the
+- (void) onTwitterShareButtonPressed:(id)sender {
+    SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+    int count = [[self.frc_captions fetchedObjects]count];
+    if (count > 0) {
+        [self hideShareButton];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        
+        [sharingManager shareCaptionOnTwitter:caption.objectid];
+        
+    }
+    
+}
+
 
 - (void) hideShareButton {
     //PhotoViewController* photoViewController = [self viewController];

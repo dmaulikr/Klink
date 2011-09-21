@@ -54,7 +54,8 @@
 @synthesize h_sv_view;
 @synthesize cancelCaptionButton     =m_cancelCaptionButton;
 @synthesize toolbar;
-@synthesize tb_shareButton          =m_tb_shareButton;
+@synthesize tb_facebookButton       =m_tb_facebookButton;
+@synthesize tb_twitterButton        =m_tb_twitterButton;
 @synthesize tb_cameraButton         =m_tb_cameraButton;
 @synthesize tb_voteButton           =m_tb_voteButton;
 @synthesize tb_captionButton        =m_tb_captionButton;
@@ -327,17 +328,20 @@
     [self.view addSubview:toolbar];
     
     // Toolbar Items
-    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
-//    ThemeBrowserViewController2* themeBrowserViewController = [[ThemeBrowserViewController2 alloc] init];
-//    [themeBrowserViewController assignTheme:self.currentTheme];
-    
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];    
 
     
-    self.tb_shareButton = [[UIBarButtonItem alloc]
-                          initWithTitle:@"Share"
+    self.tb_facebookButton = [[UIBarButtonItem alloc]
+                          initWithTitle:@"Fb"
                           style:UIBarButtonItemStyleBordered
                           target:photoCaptionView
-                          action:@selector(onShareButtonPressed:)];
+                          action:@selector(onFacebookShareButtonPressed:)];
+    
+    self.tb_twitterButton = [[UIBarButtonItem alloc]
+                           initWithTitle:@"Tw"
+                           style:UIBarButtonItemStyleBordered
+                           target:photoCaptionView
+                           action:@selector(onTwitterShareButtonPressed:)];
     
     self.tb_cameraButton = [[UIBarButtonItem alloc]
                             initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
@@ -358,10 +362,11 @@
     UIBarButtonItem* space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
     // Add buttons to the array
-    NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_shareButton, space, self.tb_cameraButton, space, self.tb_voteButton, space, self.tb_captionButton, nil];
+    NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_facebookButton, space, self.tb_twitterButton, space, self.tb_cameraButton, space, self.tb_voteButton, space, self.tb_captionButton, nil];
     
     // Release buttons
-    [self.tb_shareButton release];
+    [self.tb_facebookButton release];
+    [self.tb_twitterButton release];
     [self.tb_cameraButton release];
     [self.tb_voteButton release];
     [self.tb_captionButton release];
