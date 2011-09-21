@@ -36,7 +36,8 @@ typedef enum {
     CloudEnumerator*            m_photoCloudEnumerator;
     
     // Toolbar Buttons
-    UIBarButtonItem*            m_tb_shareButton;
+    UIBarButtonItem*            m_tb_facebookButton;
+    UIBarButtonItem*            m_tb_twitterButton;
     UIBarButtonItem*            m_tb_cameraButton;
     UIBarButtonItem*            m_tb_voteButton;
     UIBarButtonItem*            m_tb_captionButton;
@@ -78,7 +79,8 @@ typedef enum {
 @property (nonatomic,retain) UIScrollView*                  sv_view;
 
 // Toolbar Buttons
-@property (nonatomic,retain) UIBarButtonItem*               tb_shareButton;
+@property (nonatomic,retain) UIBarButtonItem*               tb_facebookButton;
+@property (nonatomic,retain) UIBarButtonItem*               tb_twitterButton;
 @property (nonatomic,retain) UIBarButtonItem*               tb_cameraButton;
 @property (nonatomic,retain) UIBarButtonItem*               tb_voteButton;
 @property (nonatomic,retain) UIBarButtonItem*               tb_captionButton;
