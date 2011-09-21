@@ -127,7 +127,7 @@ static  ImageManager* sharedManager;
     }
     else {
         NSString* message = [NSString stringWithFormat:@"No file exists at %@",fileName];
-        [BLLog e:activityName withMessage:message];
+       // [BLLog e:activityName withMessage:message];
     }
     return nil;
 }
@@ -184,7 +184,7 @@ static  ImageManager* sharedManager;
     
     if ([fileManager fileExistsAtPath:downloadedImagePath]) {
         NSString* message = [NSString stringWithFormat:@"Image downloaded successfully from %@ to %@",url,downloadedImagePath];
-        [BLLog v:activityName withMessage:message];
+        //[BLLog v:activityName withMessage:message];
         
         UIImage* image = [UIImage imageWithContentsOfFile:downloadedImagePath];
         
