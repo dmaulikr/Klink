@@ -20,7 +20,7 @@
 #import "CameraButtonManager.h"
 #import "UIViewCategory.h"
 #import "CloudEnumeratorFactory.h"
-
+#import "UIThemePhotoCellView.h"
 /*#define kPictureWidth 130
 #define kPictureSpacing 0
 #define kPictureHeight 120
@@ -255,16 +255,26 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
     [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
-    
-
+    self.v_pvs_themeSlider2.pagingScrollView.pagingEnabled = YES;
+    self.h_pvs_themeSlider2.pagingScrollView.pagingEnabled = YES;
     
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                                      target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.theme]
                                      action:@selector(cameraButtonPressed:)];
+    
+//    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
+//                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+//                                     target:self
+//                                     action:@selector(test_Scroll:)];
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
 
+}
+
+- (void) test_Scroll:(id)sender {
+    int lastIndex = [[self.frc_photosInCurrentTheme fetchedObjects]count];
+    [self.pvs_photoSlider2 goTo:(lastIndex-1) withAnimation:YES];
 }
 
 - (void)viewDidUnload
@@ -896,7 +906,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     if (viewSlider == self.pvs_photoSlider2 &&
         index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
 
-        UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
+//        UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
+        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        Caption* caption = nil;
+        UIThemePhotoCellView *imageView = [[UIThemePhotoCellView alloc]initWithFrame:frame withPhoto:photo withCaption:caption withPadding:5];
         [self viewSlider:self.pvs_photoSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
 
         return imageView;
@@ -927,7 +940,121 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
 }
 
-
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
+             configure:          (UIView*)               v
+         forRowAtIndex:          (int)                   index
+             withFrame:          (CGRect)                frame {
+    
+    if (viewSlider == self.pvs_photoSlider2 &&
+        index < [[self.frc_photosInCurrentTheme fetchedObjects]count]) {
+        
+        Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
+        Caption* caption = [photo topCaption];
+        UIThemePhotoCellView* themeView = (UIThemePhotoCellView*)v;
+        themeView.frame = frame;
+        [themeView setPhoto:photo withCaption:caption];
+        
+    }
+    else if (viewSlider == self.pvs_themeSlider2 &&
+             index < [[self.frc_themes fetchedObjects]count]) {
+        Theme* selectedTheme = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+        UIImageView* imageView = (UIImageView*)v;
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
+        imageView.frame = frame;
+        
+        [userInfo setObject:selectedTheme.objectid forKey:an_OBJECTID];
+        UIImage* image = [[ImageManager getInstance]downloadImage:selectedTheme.homeimageurl  withUserInfo:userInfo atCallback:self];
+        imageView.image = nil;
+        if (image == nil) {
+            imageView.backgroundColor = [UIColor blackColor];
+        }
+        else {
+            imageView.image = image;
+        }
+        
+        
+        // Add theme title        
+        CGRect themeTitleFrame = [self getThemeTitleFrame];
+        UIView* themeLabelBackground = nil;     // subview at index 0
+        UILabel* themeLabel = nil;              // subview at index 1
+        if ([imageView.subviews count] == 4) {
+            themeLabel = [imageView.subviews objectAtIndex:1];
+            themeLabel.frame = themeTitleFrame;
+            [themeLabel setBounds:CGRectMake(themeTitleFrame.origin.x - kThemeTitlePadding, themeTitleFrame.origin.y, themeTitleFrame.size.width - kThemeTitlePadding, themeTitleFrame.size.height)];
+            [themeLabel setText:selectedTheme.displayname];
+        }
+        else {
+            [imageView removeAllSubviews];
+            //todo: need to release all the objects
+            
+            // set transparent background first
+            themeLabelBackground = [[UIView alloc] initWithFrame:themeTitleFrame];
+            [themeLabelBackground setBackgroundColor:[UIColor blackColor]];
+            [themeLabelBackground setAlpha:0.5];
+            [themeLabelBackground setOpaque:YES];
+            [imageView addSubview:themeLabelBackground];
+            
+            // now add non-transparent text
+            themeLabel = [[UILabel alloc] initWithFrame:themeTitleFrame];
+            [themeLabel setBounds:CGRectMake(themeTitleFrame.origin.x - kThemeTitlePadding, themeTitleFrame.origin.y, themeTitleFrame.size.width - kThemeTitlePadding, themeTitleFrame.size.height)];
+            [themeLabel setFont:[UIFont fontWithName:font_THEME size:fontsize_THEME]];
+            [themeLabel setBackgroundColor:[UIColor clearColor]];
+            [themeLabel setAlpha:textAlpha];
+            [themeLabel setTextColor:[UIColor whiteColor]];
+            [themeLabel setOpaque:YES];
+            [themeLabel setTextAlignment:UITextAlignmentCenter];        
+            [themeLabel setText:selectedTheme.displayname];
+            [imageView addSubview:themeLabel];
+        }
+        
+        
+        // Add theme description        
+        CGRect themeDescriptionFrame = [self getThemeDescriptionFrame];
+        UIView* themeDescBackground = nil;      // subview at index 2
+        UITextView* themeDescTextView = nil;    // subview at index 3
+        if ([imageView.subviews count] == 4) {
+            themeDescTextView = [imageView.subviews objectAtIndex:3];
+            themeDescTextView.frame = themeDescriptionFrame;
+            [themeDescTextView setText:selectedTheme.descr];
+        }
+        else {
+            
+            // set transparent background first
+            themeDescBackground = [[UIView alloc] initWithFrame:themeDescriptionFrame];
+            [themeDescBackground setBackgroundColor:[UIColor blackColor]];
+            [themeDescBackground setAlpha:0.5];
+            [themeDescBackground setOpaque:YES];
+            [imageView addSubview:themeDescBackground];
+            
+            // now add non-transparent text
+            themeDescTextView = [[UITextView alloc] initWithFrame:themeDescriptionFrame];
+            [themeDescTextView setFont:[UIFont fontWithName:font_DESCRIPTION size:fontsize_DESCRIPTION]];
+            [themeDescTextView setBackgroundColor:[UIColor clearColor]];
+            [themeDescTextView setAlpha:textAlpha];
+            [themeDescTextView setTextColor:[UIColor whiteColor]];
+            [themeDescTextView setOpaque:YES];
+            [themeDescTextView setTextAlignment:UITextAlignmentCenter];        
+            [themeDescTextView setText:selectedTheme.descr];
+            [imageView addSubview:themeDescTextView];
+        }
+        
+        // Add page indicator for themes
+        UIPageControl* themePageIndicator = nil; // subview at index 4
+        if ([imageView.subviews count] == 5) {
+            themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
+            themePageIndicator.currentPage = index;
+        } else {
+            themePageIndicator = [[UIPageControl alloc] init];
+            themePageIndicator.center = CGPointMake(themeDescriptionFrame.size.width/2, themeDescriptionFrame.origin.y + themeDescriptionFrame.size.height - 1);
+            themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
+            themePageIndicator.currentPage = index;
+            [imageView addSubview:themePageIndicator];
+        }
+    }
+    
+    
+}
+/*
 - (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
              configure:          (UIImageView*)          imageView
          forRowAtIndex:          (int)                   index
@@ -986,7 +1113,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         UIImage* image = [[ImageManager getInstance]downloadImage:photo.thumbnailurl withUserInfo:userInfo atCallback:self];
         
         if (image == nil) {
-            imageView.backgroundColor = [UIColor blackColor];
+            imageView.backgroundColor = [UIColor whiteColor];
             
         }
         else {
@@ -1091,7 +1218,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
         }
     }
 }
-
+*/
 
 
 - (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {

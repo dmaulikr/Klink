@@ -108,8 +108,10 @@ extern NSString* const an_WORDPRESSURL;
 extern NSString* const an_SHAREONFACEBOOK;
 extern NSString* const an_SHAREONTWITTER;
 
-
-
+extern NSString* const an_STARTTIME;
+extern NSString* const an_TIMERDURATION;
+extern NSString* const an_DESTINATIONINDEX;
+extern NSString* const an_STARTINGINDEX;
 
 
 

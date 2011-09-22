@@ -19,13 +19,13 @@ static  WS_EnumerationManager* sharedManager;
 
 #pragma mark - Initializers / Singleton Accessors
 + (WS_EnumerationManager*) getInstance {
-    NSString* activityName = @"WS_EnumerationManager.getInstance:";
+   // NSString* activityName = @"WS_EnumerationManager.getInstance:";
     @synchronized(self)
     {
         if (!sharedManager) {
             sharedManager = [[super allocWithZone:NULL]init];
         } 
-        [BLLog v:activityName withMessage:@"completed initialization"];
+        //[BLLog v:activityName withMessage:@"completed initialization"];
         return sharedManager;
     }
 }

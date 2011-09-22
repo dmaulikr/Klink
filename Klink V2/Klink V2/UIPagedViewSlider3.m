@@ -7,6 +7,7 @@
 //
 
 #import "UIPagedViewSlider3.h"
+#import "AttributeNames.h"
 #import "UIPagedViewItem.h"
 @implementation UIPagedViewSlider2
 @synthesize pageIndex = m_pageIndex;
@@ -131,7 +132,7 @@
         self.pagingScrollView = [[UIKlinkScrollView alloc] initWithFrame:pagingScrollViewFrame];
         self.pagingScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.pagingScrollView.userInteractionEnabled = YES;
-        self.pagingScrollView.pagingEnabled = YES;
+        self.pagingScrollView.pagingEnabled = NO;
         self.pagingScrollView.delegate = self;
         self.pagingScrollView.showsHorizontalScrollIndicator = NO;
         self.pagingScrollView.showsVerticalScrollIndicator = NO;
@@ -219,7 +220,14 @@
     //foreach page 
     //configure and attach new view
     int lowerBound = self.pageIndex;
+    
     int upperBound = [self getLastVisibleIndex];
+    int itemCount = [self.delegate itemCountFor:self];
+    
+    if (upperBound >= itemCount) {
+        upperBound = itemCount-1;
+    }
+    
     
     for (UIPagedViewItem *page in self.visiblePages) {
         if (page.index < lowerBound || page.index > upperBound) {
@@ -307,18 +315,68 @@
 }
 
 
-
-
+- (void) animateScrollView : (NSTimer*) timerParam {
+    NSDictionary *userInfo = [timerParam userInfo];
+    NSNumber* timerDuration = [userInfo objectForKey:an_TIMERDURATION];
+    NSDate* startTime = [userInfo objectForKey:an_STARTTIME];
+    
+    NSNumber* startingIndex = [userInfo objectForKey:an_STARTINGINDEX];
+    NSNumber* destinationIndex = [userInfo objectForKey:an_DESTINATIONINDEX];
+    NSTimeInterval timeRunning = - [startTime timeIntervalSinceNow];
+    
+    if (timeRunning >= [timerDuration doubleValue]) {
+        self.pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:[destinationIndex intValue]];
+        [timerParam invalidate];
+        timerParam = nil;
+        return;
+    }
+    else {
+        CGPoint currentOffset = self.pagingScrollView.contentOffset;
+        CGPoint startingOffset = [self contentOffsetForPageAtIndex:[startingIndex intValue]];
+        CGPoint destinationOffset = [self contentOffsetForPageAtIndex:[destinationIndex intValue]];
+        
+        if (m_isHorizontalOrientation) {
+            currentOffset.x = startingOffset.x + (destinationOffset.x - startingOffset.x) * (timeRunning / [timerDuration doubleValue]); 
+        }
+        else {
+            currentOffset.y = startingOffset.y + (destinationOffset.y - startingOffset.y) * (timeRunning / [timerDuration doubleValue]); 
+        }
+        [self.pagingScrollView setContentOffset:currentOffset animated:YES];
+    }
+}
 
 - (void) goTo:(int)index {
+    [self goTo:index withAnimation:NO];
+}
+
+- (void) goTo:(int)index withAnimation:(BOOL)withAnimation {
     
-    //move scroll head position
-    int count = [self.delegate itemCountFor:self];
-    if (index < count && index > 0) {
-        self.pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:index];
-        self.pageIndex = index;
+    if (!withAnimation) {
+        //move scroll head position
+        int count = [self.delegate itemCountFor:self];
+        if (index < count && index > 0) {
+            self.pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:index];
+            self.pageIndex = index;
+        }
+        [self render];
     }
-    [self render];
+    else {
+        NSNumber* destinationIndex = [NSNumber numberWithInt:index];
+        NSNumber* startingIndex = [NSNumber numberWithInt:self.pageIndex];
+        
+        NSDate* startTime = [NSDate date];
+        
+        NSNumber* duration =[NSNumber numberWithDouble:10.2];
+        
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:startTime forKey:an_STARTTIME];
+        [userInfo setObject:duration forKey:an_TIMERDURATION];
+        [userInfo setObject:destinationIndex forKey:an_DESTINATIONINDEX];
+        [userInfo setObject:startingIndex forKey:an_STARTINGINDEX];
+        
+        NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(animateScrollView:) userInfo:userInfo repeats:YES];
+        
+        
+    }
 } 
 
 - (void)dealloc
@@ -395,9 +453,13 @@
     NSMutableArray* retVal = [[NSMutableArray alloc]init];
     NSArray* array  = [self.visiblePages allObjects];
     
+    int insertIndex = 0;
     for (int i = 0 ; i < [self.visiblePages count];i++) {
         UIPagedViewItem* page = [array objectAtIndex:i];
-        [retVal insertObject:page.view atIndex:i];
+        if (page.view != nil) {
+            [retVal insertObject:page.view atIndex:insertIndex];
+            insertIndex++;
+        }
     }
     return retVal;
     
