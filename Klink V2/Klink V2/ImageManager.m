@@ -198,7 +198,8 @@ static  ImageManager* sharedManager;
 
 - (void)onImageDownloadFail:(ASIHTTPRequest*)request {
     NSString* activityName = @"ImageManager.onImageDownloadFail:";
-    [BLLog e:activityName withMessage:@"Image download failed"];
+    NSString* message = [NSString stringWithFormat:@"%@ failed to download due to %@",request.url,request.error];
+    [BLLog e:activityName withMessage:message];
     
 }
 

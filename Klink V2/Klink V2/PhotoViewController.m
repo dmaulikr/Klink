@@ -309,6 +309,8 @@
     
     [self.h_pagedViewSlider initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:YES];    
     [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
+    self.h_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
+    self.v_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
 //    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 //    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 
@@ -665,6 +667,9 @@
 
 - (UIView*)viewSlider:(UIPagedViewSlider2 *)viewSlider cellForRowAtIndex:(int)index withFrame:(CGRect)frame {
    
+    int count = [[self.frc_photos fetchedObjects]count];
+    
+    if (count > 0 && index < count) {
        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
         
@@ -679,6 +684,7 @@
         [photoAndCaptionScrollView displayImage:image];
 
         return photoAndCaptionScrollView;
+    }
 
 }
 

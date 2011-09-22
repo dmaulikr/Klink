@@ -119,3 +119,8 @@ NSString* const an_USERHASVOTED = @"user_hasVoted";
 
 NSString* const an_SHAREONFACEBOOK=@"shareonfacebook";
 NSString* const an_SHAREONTWITTER = @"shareontwitter";
+
+NSString* const an_STARTTIME = @"starttime";
+NSString* const an_TIMERDURATION=@"timerduration";
+NSString* const an_DESTINATIONINDEX = @"destinationindex";
+NSString* const an_STARTINGINDEX = @"startingindex";

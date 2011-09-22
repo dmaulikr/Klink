@@ -75,8 +75,10 @@
               withSpacing:          (int)   spacing
              isHorizontal:          (BOOL)  isHorizontal;
 
+- (void)        animateScrollView: (NSTimer*) timerParam;
 - (void)        onNewItemInsertedAt:(int)index;
 - (void)        goTo:               (int)index;
+- (void)        goTo:               (int)index withAnimation:(BOOL)withAnimation;
 - (void)        reset;
 - (NSArray*)    getVisibleViews;
 - (void)        render;
