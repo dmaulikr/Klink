@@ -279,10 +279,10 @@
         [self addSubview:self.voteButton];
         
         // (TODO) TEMP hidding share and vote buttons, need to implement show/hide functionality on new toolbar button versions
-        //self.shareButton.hidden = YES;
-        //self.shareButton.enabled = NO;
-        //self.voteButton.hidden = YES;
-        //self.voteButton.enabled = NO;
+        self.shareButton.hidden = YES;
+        self.shareButton.enabled = NO;
+        self.voteButton.hidden = YES;
+        self.voteButton.enabled = NO;
      
 
         
@@ -339,28 +339,20 @@
         [existingCell setCaption:caption];
         existingCell.frame = frame;
     }
-
-
 }
 
-- (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
+- (void)    viewSlider:        (UIPagedViewSlider2*)   viewSlider  
            selectIndex:        (int)                   index; {
-    
-
     
 }
 
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
      cellForRowAtIndex:         (int)                   index 
-             withFrame:          (CGRect)                frame {
-    
-   
-   
+             withFrame:         (CGRect)                frame {
 
-  UICaptionLabel* captionLabel = [[UICaptionLabel alloc]initWithFrame:frame];
-
-   [self viewSlider:nil configure:captionLabel forRowAtIndex:index withFrame:frame];
-   return captionLabel;
+    UICaptionLabel* captionLabel = [[UICaptionLabel alloc]initWithFrame:frame];
+    [self viewSlider:nil configure:captionLabel forRowAtIndex:index withFrame:frame];
+    return captionLabel;
 }
 
 
@@ -378,9 +370,8 @@
             //need to enumerate the next set of captions
             [self.captionCloudEnumerator enumerateNextPage];
         }
-        
-        [self showHideVotingSharingButtons];
     }
+    [self showHideVotingSharingButtons];
 }
 
 //- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
@@ -455,14 +446,14 @@
 
 - (void) disableVotingButton {   
     self.photoViewController.tb_voteButton.enabled = NO;
-    self.voteButton.enabled = NO;
-    self.voteButton.backgroundColor = [UIColor grayColor];
+    //self.voteButton.enabled = NO;
+    //self.voteButton.backgroundColor = [UIColor grayColor];
 }
 
 - (void) enableVotingButton {
     self.photoViewController.tb_voteButton.enabled = YES;
-    self.voteButton.enabled = YES;
-    self.voteButton.backgroundColor = [UIColor redColor];
+    //self.voteButton.enabled = YES;
+    //self.voteButton.backgroundColor = [UIColor redColor];
 }
 
 - (void) hideVotingButton {
@@ -470,7 +461,7 @@
 }
 
 - (void) showVotingButton {
-    self.voteButton.hidden = NO;
+    //self.voteButton.hidden = NO;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -541,8 +532,8 @@
 - (void) showShareButton {
     //PhotoViewController* photoViewController = [self viewController];
     //photoViewController.tb_shareButton.enabled = YES;
-    self.shareButton.hidden = NO;
-    self.shareButton.enabled = YES;
+    //self.shareButton.hidden = NO;
+    //self.shareButton.enabled = YES;
     
     //[photoViewController release];
 }
