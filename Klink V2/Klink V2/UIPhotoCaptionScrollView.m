@@ -36,8 +36,6 @@
 #define kPhotoVotesHeight               24
 #define kPhotoCreditsPadding            5
 
-#define kToolbarHeight              44
-#define kNavigationbarHeight        44
 
 @implementation UIPhotoCaptionScrollView
 
@@ -137,15 +135,15 @@
 		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
 	}
 	
-	// TODO Programatically get navigation bar height
-    CGFloat navigationBarHeight = 44;
+	// Get navigation bar height
+    CGFloat navigationBarHeight = self.photoViewController.navigationController.navigationBar.frame.size.height;
     
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
+        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth_landscape, kPhotoCreditsHeight);
     }
     else {
-        return CGRectMake(0, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
+        return CGRectMake(0, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth, kPhotoCreditsHeight);
     }
 }
 
@@ -157,15 +155,15 @@
 		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
 	}
 	
-	// TODO Get navigation bar height
-	CGFloat navigationBarHeight = 44;
+	// Get navigation bar height
+    CGFloat navigationBarHeight = self.photoViewController.navigationController.navigationBar.frame.size.height;
 
     UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth_landscape - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth_landscape - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
     else {
-        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoCreditsWidth - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
+        return CGRectMake(kPhotoCreditsPadding, statusBarHeight + navigationBarHeight, kPhotoCreditsWidth - kPhotoVotesWidth - 2*kPhotoCreditsPadding, kPhotoCreditsHeight);
     }
     
 }
@@ -178,16 +176,18 @@
 		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
 	}
 	
-	// TODO Get navigation bar height
-	CGFloat navigationBarHeight = 44;
+	// Get navigation bar height
+    CGFloat navigationBarHeight = self.photoViewController.navigationController.navigationBar.frame.size.height;
     
-    return CGRectMake(frame.size.width - kPhotoVotesWidth - kPhotoCreditsPadding, statusBarHeight + kNavigationbarHeight, kPhotoVotesWidth, kPhotoCreditsHeight);
+    return CGRectMake(frame.size.width - kPhotoVotesWidth - kPhotoCreditsPadding, statusBarHeight + navigationBarHeight, kPhotoVotesWidth, kPhotoCreditsHeight);
     
 }
 
 - (CGRect) frameForCaptionScrollView:(CGRect)frame {
+    // Get toolbar height
+    CGFloat toolbarHeight = self.photoViewController.navigationController.toolbar.frame.size.height;
     
-    return CGRectMake(0, frame.size.height-kCaptionHeight-kToolbarHeight, frame.size.width, kCaptionHeight);
+    return CGRectMake(0, frame.size.height-kCaptionHeight-toolbarHeight, frame.size.width, kCaptionHeight);
 
 }
 
@@ -242,9 +242,8 @@
         self.photoVotesLabel.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
         self.photoVotesLabel.textColor = [UIColor whiteColor];
         self.photoVotesLabel.textAlignment = UITextAlignmentRight;
-        photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", photo.numberofvotes];
+        self.photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", photo.numberofvotes];
         [self addSubview:self.photoVotesLabel];
-        
         
         
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
@@ -542,9 +541,40 @@
     self.photo = [Photo photo:self.photo.objectid];
     Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
     
-    self.photo.numberofvotes =[NSNumber numberWithInt:([self.photo.numberofvotes intValue] + 1)];
+    self.photo.numberofvotes = [NSNumber numberWithInt:([self.photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue]+1)];
     caption.user_hasvoted = [NSNumber numberWithBool:YES];
+    
+    
+    /*[UIView beginAnimations:@"Update Votes" context:nil];
+    [UIView setAnimationDuration:1.00];
+    //[UIView setAnimationRepeatAutoreverses:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    self.photoVotesLabel.transform = CGAffineTransformMakeTranslation(-10, 0);
+    self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.5, 1.5 );
+    self.photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", self.photo.numberofvotes];
+    self.photoVotesLabel.transform = CGAffineTransformMakeTranslation(10, 0);
+    self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.0, 1.0 );
+    [UIView commitAnimations];*/
+    
+    // animate the updating of the votes label
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.5, 1.5 );
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:0
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              self.photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", self.photo.numberofvotes];
+                                              self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.0, 1.0 );
+                                          }
+                                          completion:nil];
+                     }];
+    
     
     //now we need to commit to the store
     [self.photo commitChangesToDatabase:NO withPendingFlag:YES];
