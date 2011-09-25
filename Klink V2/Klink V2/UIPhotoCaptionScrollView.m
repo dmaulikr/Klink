@@ -210,7 +210,6 @@
     self = [super initWithFrame:frame];
     
     if (self != nil) {
-        
         self.photo = photo;
         self.photoViewController = self.viewController;
         
@@ -246,18 +245,19 @@
         [self addSubview:self.photoVotesLabel];
         
         
-        
+        self.backgroundColor = [UIColor yellowColor];
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
-        self.captionScrollView.pageIndex = 0;
+        
         self.captionScrollView.backgroundColor = [UIColor clearColor];
         self.captionScrollView.alpha = 1;
         self.captionScrollView.opaque = YES;
         
-        [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing isHorizontal:YES];
-
-        [self addSubview:self.captionScrollView];
+        [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing useCellIdentifier:@"captioncell" ];
+        //TODO UNCOMMENT
+       // [self addSubview:self.captionScrollView];
+       
         self.captionCloudEnumerator = [[CloudEnumeratorFactory getInstance]enumeratorForCaptions:self.photo.objectid];
 //        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
         self.captionCloudEnumerator.delegate = self;
@@ -302,9 +302,8 @@
     
     __frc_captions = nil;
     self.photo = photo;
-
+    
     self.frame = frame;
-   
     [self.captionScrollView removeFromSuperview];
     self.captionScrollView = nil;
     self.captionCloudEnumerator = nil;
@@ -383,9 +382,7 @@
     }
 }
 
-//- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
-//    return [[self.frc_captions fetchedObjects]count];
-//}
+
 
 - (int) itemCountFor:(UIPagedViewSlider2 *)viewSlider {
     return [[self.frc_captions fetchedObjects]count];
@@ -437,7 +434,7 @@
     }
     
     if (captionCount > 0) {
-        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:[self.captionScrollView getPageIndex]];
         [self showVotingButton];
         if ([currentCaption.user_hasvoted boolValue] == YES) {
             [self disableVotingButton];
@@ -492,7 +489,8 @@
     int count = [[self.frc_captions fetchedObjects]count];
     if (count > 0) {
         [self hideShareButton];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        int index = [self.captionScrollView getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         
         [sharingManager shareCaption:caption.objectid];
         
@@ -506,7 +504,8 @@
     int count = [[self.frc_captions fetchedObjects]count];
     if (count > 0) {
         [self hideShareButton];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        int index = [self.captionScrollView getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         
         [sharingManager shareCaptionOnFacebook:caption.objectid];
         
@@ -520,7 +519,8 @@
     int count = [[self.frc_captions fetchedObjects]count];
     if (count > 0) {
         [self hideShareButton];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+        int index = [self.captionScrollView getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         
         [sharingManager shareCaptionOnTwitter:caption.objectid];
         
@@ -549,7 +549,8 @@
 
 - (void) onVoteUpButtonPressed:(id)sender {
     self.photo = [Photo photo:self.photo.objectid];
-    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:self.captionScrollView.pageIndex];
+    int index = [self.captionScrollView getPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
     
     self.photo.numberofvotes =[NSNumber numberWithInt:([self.photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue]+1)];

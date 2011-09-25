@@ -28,7 +28,7 @@
     
     NSString* message = [[NSString alloc]initWithFormat:@"Created with: pageSize=%@, pageNumber=%@, numberOfResultsReturned=%@, isDone=%@", pageSize,pageNumber,numberOfResultsReturned,isDone];
     
-    [BLLog v:activityName withMessage:message];
+    //[BLLog v:activityName withMessage:message];
     [message release];
     
     return self;

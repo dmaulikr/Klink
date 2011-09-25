@@ -86,6 +86,7 @@
 		C5190AFA13C1926C0077EECA /* WS_EnumerationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5190ABD13C1926C0077EECA /* WS_EnumerationManager.m */; };
 		C5190AFB13C1926C0077EECA /* WS_TransferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5190ABF13C1926C0077EECA /* WS_TransferManager.m */; };
 		C5190B1613C196AD0077EECA /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C5190B1513C196AD0077EECA /* JSONKit.m */; };
+		C52876A7142BC51300B6AEF7 /* UIPagedViewSlider4.m in Sources */ = {isa = PBXBuildFile; fileRef = C52876A6142BC51300B6AEF7 /* UIPagedViewSlider4.m */; };
 		C53F283913EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */; };
 		C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */; };
 		C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283D13EB3C040038C8F0 /* UIViewTap.m */; };
@@ -133,7 +134,6 @@
 		C5D8E0B313DCA16500D88B00 /* UIKlinkScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B213DCA16500D88B00 /* UIKlinkScrollView.m */; };
 		C5D8E0B613DCEDF300D88B00 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */; };
 		C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EED142381F1000D3B5E /* SharingOptions.m */; };
-		C5DF0EF11423EACB000D3B5E /* UIPagedViewSlider3.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF01423EACB000D3B5E /* UIPagedViewSlider3.m */; };
 		C5DF0EF71424FFAC000D3B5E /* UIViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF61424FFAC000D3B5E /* UIViewCategory.m */; };
 		C5DF0EFA1426E7B4000D3B5E /* CloudEnumeratorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DF0EF91426E7B4000D3B5E /* CloudEnumeratorFactory.m */; };
 		C5F5F0691405B1C60067084D /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F5F0681405B1C60067084D /* libxml2.2.dylib */; };
@@ -350,6 +350,8 @@
 		C5190ABF13C1926C0077EECA /* WS_TransferManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WS_TransferManager.m; sourceTree = "<group>"; };
 		C5190B1413C196AD0077EECA /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		C5190B1513C196AD0077EECA /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		C52876A5142BC51300B6AEF7 /* UIPagedViewSlider4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider4.h; sourceTree = "<group>"; };
+		C52876A6142BC51300B6AEF7 /* UIPagedViewSlider4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider4.m; sourceTree = "<group>"; };
 		C53F283713EB22CF0038C8F0 /* UIPhotoCaptionScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoCaptionScrollView.h; sourceTree = "<group>"; };
 		C53F283813EB22CF0038C8F0 /* UIPhotoCaptionScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoCaptionScrollView.m; sourceTree = "<group>"; };
 		C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageViewTap.h; sourceTree = "<group>"; };
@@ -436,8 +438,6 @@
 		C5D8E0B513DCEDF300D88B00 /* FeedTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTypes.m; sourceTree = "<group>"; };
 		C5DF0EEC142381F1000D3B5E /* SharingOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingOptions.h; sourceTree = "<group>"; };
 		C5DF0EED142381F1000D3B5E /* SharingOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingOptions.m; sourceTree = "<group>"; };
-		C5DF0EEF1423EACB000D3B5E /* UIPagedViewSlider3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider3.h; sourceTree = "<group>"; };
-		C5DF0EF01423EACB000D3B5E /* UIPagedViewSlider3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider3.m; sourceTree = "<group>"; };
 		C5DF0EF51424FFAC000D3B5E /* UIViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewCategory.h; sourceTree = "<group>"; };
 		C5DF0EF61424FFAC000D3B5E /* UIViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewCategory.m; sourceTree = "<group>"; };
 		C5DF0EF81426E7B3000D3B5E /* CloudEnumeratorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumeratorFactory.h; sourceTree = "<group>"; };
@@ -1052,8 +1052,8 @@
 				C5CEF5AE13EA1798007AD4DD /* UIZoomingScrollView.m */,
 				C53F283A13EB3C040038C8F0 /* UIImageViewTap.h */,
 				C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */,
-				C5DF0EEF1423EACB000D3B5E /* UIPagedViewSlider3.h */,
-				C5DF0EF01423EACB000D3B5E /* UIPagedViewSlider3.m */,
+				C52876A5142BC51300B6AEF7 /* UIPagedViewSlider4.h */,
+				C52876A6142BC51300B6AEF7 /* UIPagedViewSlider4.m */,
 			);
 			name = Generics;
 			sourceTree = "<group>";
@@ -1497,10 +1497,10 @@
 				C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */,
 				3D2ED2A114130B0E007CB840 /* CameraButtonManager.m in Sources */,
 				C5DF0EEE142381F1000D3B5E /* SharingOptions.m in Sources */,
-				C5DF0EF11423EACB000D3B5E /* UIPagedViewSlider3.m in Sources */,
 				C5DF0EF71424FFAC000D3B5E /* UIViewCategory.m in Sources */,
 				C5DF0EFA1426E7B4000D3B5E /* CloudEnumeratorFactory.m in Sources */,
 				C5BD2468142AB7C1001205AD /* UIThemePhotoCellView.m in Sources */,
+				C52876A7142BC51300B6AEF7 /* UIPagedViewSlider4.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

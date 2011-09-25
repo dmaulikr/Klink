@@ -46,13 +46,13 @@ static CameraButtonManager* sharedManager;
 
 #pragma mark - Initializers / Singleton Accessors
 + (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController withTheme:(Theme*)currentTheme {
-    NSString* activityName = @"CameraButtonManager.getInstance:";
+  
     @synchronized(self)
     {
         if (!sharedManager) {
             sharedManager = [[super allocWithZone:NULL]init];
         } 
-        [BLLog v:activityName withMessage:@"completed initialization"];
+       // [BLLog v:activityName withMessage:@"completed initialization"];
         sharedManager.viewController = callingViewController;
         sharedManager.theme = currentTheme;
         return sharedManager;

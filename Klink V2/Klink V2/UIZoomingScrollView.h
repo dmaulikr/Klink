@@ -10,6 +10,7 @@
 #import "UIKlinkScrollView.h"
 #import "UIViewTap.h"
 #import "UIImageViewTap.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface UIZoomingScrollView : UIKlinkScrollView <UIScrollViewDelegate, UIImageViewTapDelegate, UIViewTapDelegate>{
     

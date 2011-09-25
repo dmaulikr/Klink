@@ -65,7 +65,7 @@
         
         
         NSString* message = [[NSString alloc]initWithFormat:@"Created with: date=%@, #ofPrimaryResults=%i, #ofSecondaryResults=%i",date,[primaryResults count],[secondaryResults count]];
-        [BLLog v:activityName withMessage:message];
+      //  [BLLog v:activityName withMessage:message];
         
         [message release];
     }

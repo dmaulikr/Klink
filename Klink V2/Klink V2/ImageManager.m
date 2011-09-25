@@ -31,6 +31,7 @@ static  ImageManager* sharedManager;
     self.imageCache = [[ASIDownloadCache alloc]init];
     Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.imageCache setStoragePath:[appDelegate getImageCacheStorageDirectory]];
+    
     return self;
 }
 
@@ -160,6 +161,9 @@ static  ImageManager* sharedManager;
         request.userInfo = requestUserInfo;
         request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
         request.delegate = self;
+        request.timeOutSeconds = 5;
+        [request setNumberOfTimesToRetryOnTimeout:3];
+        
         request.downloadDestinationPath = path;
         request.downloadCache = imageCache;
         [request setDidFinishSelector:@selector(onImageDownloaded:)];

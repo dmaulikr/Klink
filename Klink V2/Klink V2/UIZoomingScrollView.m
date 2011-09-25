@@ -24,6 +24,7 @@ CGFloat initialZoomScale = 1;
 
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
+        
 		
 		// Tap view for background
 		tapView = [[UIViewTap alloc] initWithFrame:frame];
@@ -52,8 +53,8 @@ CGFloat initialZoomScale = 1;
 		self.showsHorizontalScrollIndicator = NO;
 		self.showsVerticalScrollIndicator = NO;
 		self.decelerationRate = UIScrollViewDecelerationRateFast;
-		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
+//		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.autoresizingMask = UIViewAutoresizingNone;
 	}
 	return self;
 }
@@ -82,14 +83,17 @@ CGFloat initialZoomScale = 1;
         photoImageView.hidden = NO;
         
         // Setup photo frame
+        
         CGRect photoImageViewFrame;
         photoImageViewFrame.origin = CGPointZero;
         photoImageViewFrame.size = image.size;
         photoImageView.frame = photoImageViewFrame;
         self.contentSize = photoImageViewFrame.size;
-        
+   
         // Set zoom to minimum zoom
         [self setMaxMinZoomScalesForCurrentBounds];
+        
+        
     }
     else {
         // Hide image view
@@ -154,11 +158,11 @@ CGFloat initialZoomScale = 1;
 	self.minimumZoomScale = minScale;
     self.zoomScale = minScale;
 	
-	
-	// Reset position
+    	// Reset position
 	photoImageView.frame = CGRectMake(0, 0, photoImageView.frame.size.width, photoImageView.frame.size.height);
 	[self setNeedsLayout];
     
+  
 }
 
 #pragma mark -
@@ -194,6 +198,7 @@ CGFloat initialZoomScale = 1;
 	} else {
         frameToCenter.origin.y = 0;
 	}
+   
     
 	// Center
 	if (!CGRectEqualToRect(photoImageView.frame, frameToCenter))

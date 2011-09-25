@@ -29,12 +29,12 @@
     if ([self.errorCode intValue]==0) {
         message = [[NSString alloc] initWithFormat:@"Created with: didSucceed=%@", self.didSucceed];
         
-        [BLLog v:activityName withMessage:message];
+        //[BLLog v:activityName withMessage:message];
     }
     else {
         message = [[NSString alloc] initWithFormat:@"Created with: didSucceed=%@, errorCode=%@, errorMessage=%@", didSucceed,errorCode,errorMessage];
         
-        [BLLog e:activityName withMessage:message];
+       // [BLLog e:activityName withMessage:message];
     }
    
     

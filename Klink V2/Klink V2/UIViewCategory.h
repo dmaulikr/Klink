@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface UIView (UIViewCategory)
 - (void) removeAllSubviews;
+- (void) setAnchorPoint:(CGPoint)newAnchorPoint;
 @end

@@ -1,15 +1,19 @@
 //
-//  UIPagedViewSlider3.h
+//  UIPagedViewSlider4.h
 //  Klink V2
 //
-//  Created by Bobby Gill on 9/16/11.
+//  Created by Bobby Gill on 9/22/11.
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
+#import <QuartzCore/QuartzCore.h>
 #import <Foundation/Foundation.h>
 
 #import "UIKlinkScrollView.h"
 
+#define degreesToRadians(x) (M_PI * x / 180.0)
 
 @class UIPagedViewItem;
 @class UIPagedViewSlider2;
@@ -43,43 +47,38 @@
 
 @end
 
-@interface UIPagedViewSlider2 : UIView <UIScrollViewDelegate> {
-    UIKlinkScrollView   *m_pagingScrollView;
-    NSMutableSet        *m_visiblePages;
-    NSMutableSet        *m_recyclePages;
-    
-    BOOL                m_isHorizontalOrientation;
-    int                 m_pageIndex;
+@interface UIPagedViewSlider2 : UIView <UITableViewDelegate, UITableViewDataSource> {
+  
+
     id<UIPagedViewSlider2Delegate> m_delegate;
     int                 m_itemWidth;
-    int                 m_itemWidth_landscape;
     int                 m_itemHeight;
-    int                 m_itemHeight_landscape;
     int                 m_itemSpacing;
+    int                 m_index;
+    UITableView*        m_tableView;
+    NSString*           m_cellIdentifier;
 }
 
-@property (nonatomic,retain)    UIKlinkScrollView   *pagingScrollView;
-@property int pageIndex;
-@property (nonatomic,retain)    NSMutableSet  *visiblePages;
-@property (nonatomic,retain)    NSMutableSet  *recycledPages;
+@property (nonatomic,retain)    UITableView         *tableView;
+@property int   cellWidth;
+@property int   cellHeight;
+@property int   cellSpacing;
+
+
 @property (nonatomic,retain)    id<UIPagedViewSlider2Delegate>  delegate;
 
--(id)       initWithWidth:      (int)   width_portrait
-               withHeight:      (int)   height_portrait
-       withWidthLandscape:      (int)   width_landscape
-      withHeightLandscape:      (int)   height_landscape
-              withSpacing:      (int)   spacing;
 
 - (id)      initWithWidth:          (int)   width
                withHeight:          (int)   height
               withSpacing:          (int)   spacing
-             isHorizontal:          (BOOL)  isHorizontal;
+        useCellIdentifier:          (NSString*) identifier;
 
-- (void)        animateScrollView: (NSTimer*) timerParam;
+- (int)         getPageIndex;
 - (void)        onNewItemInsertedAt:(int)index;
 - (void)        goTo:               (int)index;
 - (void)        goTo:               (int)index withAnimation:(BOOL)withAnimation;
 - (void)        reset;
 - (NSArray*)    getVisibleViews;
-- (void)        render;
+
 @end
+

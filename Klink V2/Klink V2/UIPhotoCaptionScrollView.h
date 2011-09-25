@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UIZoomingScrollView.h"
-#import "UIPagedViewSlider3.h"
+#import "UIPagedViewSlider4.h"
 #import "CloudEnumerator.h"
 #import "PhotoViewController.h"
 

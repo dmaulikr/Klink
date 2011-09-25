@@ -24,7 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.opaque = YES;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor blackColor];
         self.photo = photo;
         self.caption = caption;
         //self.image = [[ImageManager getInstance] downloadImage:self.photo.thumbnailurl withUserInfo:nil atCallback:self];
@@ -64,25 +64,25 @@
         CGFloat boundsX = contentRect.origin.x;
         CGPoint point;
         
-//        if (self.caption != nil) {
-//            //initialize the caption background object
-//            CGRect frameForCaptionBackground = CGRectMake(self.padding, self.bounds.size.height-kCaptionHeight, self.bounds.size.width-(2*self.padding), kCaptionHeight);
-//            self.captionBackground.frame = frameForCaptionBackground;
-//            
-//            //draw the caption background
-//            self.captionBackground.backgroundColor = [UIColor blackColor];
-//            self.captionBackground.alpha = 0.5;
-//            self.captionBackground.opaque = YES;
-//            [self.captionBackground drawRect:self.captionBackground.bounds];
-//            
-//            //draw the caption text
-//            int captionWidth = self.bounds.size.width - (2*self.padding) - (2*kCaptionPadding);
-//            CGPoint captionOrigin = CGPointMake(self.padding+kCaptionPadding, self.bounds.size.height-kCaptionHeight+kCaptionPadding);
-//            
-//            
-//            NSString* captionText = self.caption.caption1;
-//            [captionText drawAtPoint:captionOrigin forWidth:captionWidth withFont:textFont fontSize:fontsize_CAPTION lineBreakMode:UILineBreakModeCharacterWrap baselineAdjustment:UIBaselineAdjustmentNone];
-//        }
+        if (self.caption != nil) {
+            //initialize the caption background object
+            CGRect frameForCaptionBackground = CGRectMake(self.padding, self.bounds.size.height-kCaptionHeight, self.bounds.size.width-(2*self.padding), kCaptionHeight);
+            self.captionBackground.frame = frameForCaptionBackground;
+            
+            //draw the caption background
+            self.captionBackground.backgroundColor = [UIColor blackColor];
+            self.captionBackground.alpha = 0.5;
+            self.captionBackground.opaque = YES;
+            [self.captionBackground drawRect:self.captionBackground.bounds];
+            
+            //draw the caption text
+            int captionWidth = self.bounds.size.width - (2*self.padding) - (2*kCaptionPadding);
+            CGPoint captionOrigin = CGPointMake(self.padding+kCaptionPadding, self.bounds.size.height-kCaptionHeight+kCaptionPadding);
+            
+            
+            NSString* captionText = self.caption.caption1;
+            [captionText drawAtPoint:captionOrigin forWidth:captionWidth withFont:textFont fontSize:fontsize_CAPTION lineBreakMode:UILineBreakModeCharacterWrap baselineAdjustment:UIBaselineAdjustmentNone];
+        }
         
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.photo.objectid forKey:an_PHOTOID];
         
@@ -102,10 +102,9 @@
 -(void)onImageDownload:(UIImage*)image withUserInfo:(NSDictionary*)userInfo {
     //need to draw the image
     if ([[userInfo objectForKey:an_PHOTOID]isEqualToNumber:self.photo.objectid]) {
-        CGFloat imageY = self.padding;
-        CGRect contentRect = self.bounds;
-        CGFloat boundsX = contentRect.origin.x;
-        CGPoint point = CGPointMake(boundsX,imageY);
+
+    
+    
         self.image = image;
         [self setNeedsDisplay];
     }

@@ -95,7 +95,7 @@
 
 #pragma mark - UIPhotoCaptionScrollViewDelegate
 - (UIPhotoCaptionScrollView*)currentlyDisplayedView {
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.pageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:[self.pagedViewSlider getPageIndex]];
     NSArray* currentlyDisplayedViews = [self.pagedViewSlider getVisibleViews];
     for (int i = 0; i < [currentlyDisplayedViews count];i++) {
         UIPhotoCaptionScrollView* photoCaptionView = [currentlyDisplayedViews objectAtIndex:i];
@@ -210,7 +210,7 @@
     
     
     NSString* captionText = [self.tv_captionBox getText];
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:self.pagedViewSlider.pageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:[self.pagedViewSlider getPageIndex]];
     Caption* caption = [Caption captionForPhoto:photo.objectid withText:captionText];
     
     NSManagedObjectContext *appContext = self.managedObjectContext;
@@ -307,10 +307,10 @@
     self.submitButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onSubmitButtonPressed:)];
     self.cancelCaptionButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
     
-    [self.h_pagedViewSlider initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:YES];    
-    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
-    self.h_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
-    self.v_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
+    [self.h_pagedViewSlider initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing useCellIdentifier:@"fullscreenphoto" ];    
+    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"fullscreenphoto" ];
+//    self.h_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
+//    self.v_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
 //    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 //    [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];
 
@@ -320,9 +320,7 @@
     if ([[self.frc_photos fetchedObjects]count]<threshold_LOADMOREPHOTOS) {
         [self.photoCloudEnumerator enumerateNextPage];
     }
-    
-    
-    // Toolbar
+      // Toolbar
     toolbar = [[UIToolbar alloc] initWithFrame:[self frameForToolbarAtOrientation:self.interfaceOrientation]];
     toolbar.tintColor = nil;
     toolbar.barStyle = UIBarStyleBlackTranslucent;
@@ -482,13 +480,13 @@
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
         
-        int currentScrollIndex = self.pagedViewSlider.pageIndex;
+        int currentScrollIndex = [self.pagedViewSlider getPageIndex];
         self.view = self.v_portrait;
         [self.pagedViewSlider goTo:currentScrollIndex];
     }
     else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)){
         //going to landscape
-        int currentScrollIndex = self.pagedViewSlider.pageIndex;
+        int currentScrollIndex = [self.pagedViewSlider getPageIndex];
         self.view = self.v_landscape;        
         [self.pagedViewSlider goTo:currentScrollIndex];
         
@@ -514,16 +512,17 @@
 // Navigation
 - (void)updateNavigation {
     NSArray* photos = [self.frc_photos fetchedObjects];
+    int index = [self.pagedViewSlider getPageIndex];
     // Title
 	if (photos.count > 1) {
-		self.title = [NSString stringWithFormat:@"%i of %i", self.pagedViewSlider.pageIndex+1, photos.count];		
+		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
 	} else {
 		self.title = nil;
 	}
 	
 	// Buttons
-	self.previousButton.enabled = (self.pagedViewSlider.pageIndex > 0);
-	self.nextButton.enabled = (self.pagedViewSlider.pageIndex < photos.count-1);
+	self.previousButton.enabled = (index > 0);
+	self.nextButton.enabled = (index < photos.count-1);
     
 }
 
@@ -672,10 +671,13 @@
     if (count > 0 && index < count) {
        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
+    
+        
+        
         
         photoAndCaptionScrollView.viewController = self;
         ImageManager* imageManager = [ImageManager getInstance];
-        
+                
        
         
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photoAndCaptionScrollView forKey:an_IMAGEVIEW];
@@ -683,6 +685,11 @@
         
         [photoAndCaptionScrollView displayImage:image];
 
+        
+        
+//        UIImageView* imageview = [[UIImageView alloc]initWithFrame:frame];
+//        imageview.image = image;
+//        return imageview;
         return photoAndCaptionScrollView;
     }
 

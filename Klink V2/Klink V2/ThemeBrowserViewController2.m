@@ -202,6 +202,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
     
     //reset the photo slider to position 0
+    [self.pvs_photoSlider2 reset];
     [self.pvs_photoSlider2 goTo:0];
     
     
@@ -250,13 +251,12 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
     
     
-    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
-    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
+//    [self.h_pvs_photoSlider2 initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing isHorizontal:NO];
+    [self.v_pvs_photoSlider2 initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"thumbnailphoto"];
     
-    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
-    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing isHorizontal:YES];
-    self.v_pvs_themeSlider2.pagingScrollView.pagingEnabled = YES;
-    self.h_pvs_themeSlider2.pagingScrollView.pagingEnabled = YES;
+//    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
+    [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"themephoto"];
+    
     
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
@@ -294,8 +294,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         //going to potrait
 
-        int currentPhotoScrollIndex = self.pvs_photoSlider2.pageIndex;
-        int currentThemeScrollIndex = self.pvs_themeSlider2.pageIndex;
+        int currentPhotoScrollIndex = [self.pvs_photoSlider2 getPageIndex];
+        int currentThemeScrollIndex = [self.pvs_themeSlider2 getPageIndex];
         self.view = v_portrait;
         
         [self.pvs_photoSlider2 goTo:currentPhotoScrollIndex];
@@ -305,8 +305,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
     else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         //going to landscape
-        int currentPhotoScrollIndex = self.pvs_photoSlider2.pageIndex;
-        int currentThemeScrollIndex = self.pvs_themeSlider2.pageIndex;
+        int currentPhotoScrollIndex = [self.pvs_photoSlider2 getPageIndex];
+        int currentThemeScrollIndex = [self.pvs_themeSlider2 getPageIndex];
         self.view = v_landscape;
 
         [self.pvs_photoSlider2 goTo:currentPhotoScrollIndex];
@@ -908,8 +908,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
 
 //        UIImageView* imageView = [[UIImageView alloc]initWithFrame:frame];
         Photo* photo = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
-        Caption* caption = nil;
-        UIThemePhotoCellView *imageView = [[UIThemePhotoCellView alloc]initWithFrame:frame withPhoto:photo withCaption:caption withPadding:5];
+        Caption* caption = photo.topCaption;
+        UIThemePhotoCellView *imageView = [[UIThemePhotoCellView alloc]initWithFrame:frame withPhoto:photo withCaption:caption withPadding:0];
         [self viewSlider:self.pvs_photoSlider2 configure:imageView forRowAtIndex:index withFrame:frame];
 
         return imageView;
