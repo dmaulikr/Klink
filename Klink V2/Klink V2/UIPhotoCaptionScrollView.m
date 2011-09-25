@@ -252,11 +252,10 @@
         
         self.captionScrollView.backgroundColor = [UIColor clearColor];
         self.captionScrollView.alpha = 1;
-        self.captionScrollView.opaque = YES;
+        self.captionScrollView.opaque = NO;
         
         [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing useCellIdentifier:@"captioncell" ];
-        //TODO UNCOMMENT
-       // [self addSubview:self.captionScrollView];
+         [self addSubview:self.captionScrollView];
        
         self.captionCloudEnumerator = [[CloudEnumeratorFactory getInstance]enumeratorForCaptions:self.photo.objectid];
 //        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
