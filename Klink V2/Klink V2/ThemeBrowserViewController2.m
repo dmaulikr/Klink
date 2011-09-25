@@ -597,6 +597,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 }
 
+
  
 
 #pragma mark - UIPagedViewDelegate2 
