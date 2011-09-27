@@ -466,6 +466,10 @@
 }
 
 -(void)didRotate:(NSNotification*)notification {
+    
+  /*
+  // old code to handle rotation of view 
+   
     [super didRotate:notification];
     //need to switch out the ladscape and portrait views
     //populate the sv_sliders as needed
@@ -503,7 +507,7 @@
     else {
         self.tv_captionBox.hidden = YES;
     }
-    
+  */
     
 }
 
@@ -829,6 +833,13 @@
     [self.sv_view bringSubviewToFront:self.tv_captionBox];
     [UIView commitAnimations];
 }
+
+
+#pragma mark - Toolbar Button Handlers
+
+//- (void) onVoteButtonPressed {
+//    
+//}
 
 
 

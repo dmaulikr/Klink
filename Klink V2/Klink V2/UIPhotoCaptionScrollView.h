@@ -37,6 +37,7 @@
 - (void)    hideVotingButton;
 - (void)    showVotingButton;
 - (void)    showHideVotingSharingButtons;
+- (void)    enableDisableVotingButton;
 - (void)    loadViewData;
 
 

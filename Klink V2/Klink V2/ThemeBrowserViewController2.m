@@ -288,6 +288,10 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
      
 -(void)didRotate:(NSNotification*)notification {
+    
+   /*
+   // old code to handle rotation of view   
+    
     //need to switch out the ladscape and portrait views
     //populate the sv_sliders as needed
     UIDeviceOrientation toInterfaceOrientation = [[UIDevice currentDevice]orientation];
@@ -314,6 +318,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 
     }
+  */
 
 }
 
