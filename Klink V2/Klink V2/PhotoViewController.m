@@ -309,6 +309,7 @@
     
     [self.h_pagedViewSlider initWithWidth:kPictureWidth_landscape withHeight:kPictureHeight_landscape withSpacing:kPictureSpacing useCellIdentifier:@"fullscreenphoto" ];    
     [self.v_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"fullscreenphoto" ];
+    self.v_pagedViewSlider.tableView.pagingEnabled = YES;
 //    self.h_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
 //    self.v_pagedViewSlider.pagingScrollView.pagingEnabled = YES;
 //    [self.h_pagedViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withWidthLandscape:kPictureWidth_landscape withHeightLandscape:kPictureHeight_landscape withSpacing:kPictureSpacing];

@@ -29,7 +29,7 @@
 @property (nonatomic,retain) NSNumber* isDone;
 @property (nonatomic,retain) NSNumber* maximumNumberOfResults;
 
-
++ (EnumerationContext*) contextForFeeds:(NSNumber*)userid;
 + (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid;
 + (EnumerationContext*) contextForThemes;
 + (EnumerationContext*) contextForCaptions:(NSNumber*)photoid;

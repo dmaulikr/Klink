@@ -22,3 +22,13 @@
  NSString* const n_USER_LOGGED_OUT=@"user_logged_out";
  NSString* const n_PHOTO_UPLOAD_START=@"photo_upload_start";
  NSString* const n_PHOTO_UPLOAD_COMPLETE=@"photo_upload_complete";
+
+
+//called whenever a new feed object for a Caption vote event is created
+NSString* const n_NEW_FEED_CAPTION_VOTE = @"feed_caption_vote_created"; 
+
+//called whenever a new feed object for a Photo vote event is created
+NSString* const n_NEW_FEED_PHOTO_VOTE = @"feed_photo_vote_created"; 
+
+//called whenver the news feed has been refreshed
+NSString* const n_FEED_REFRESHED = @"feed_refreshed";

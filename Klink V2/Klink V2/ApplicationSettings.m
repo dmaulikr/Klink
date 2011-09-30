@@ -11,19 +11,21 @@
 
 NSString* const stng_BASEURL = @"baseurl";
 NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
-//NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
+NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
 //NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
-NSString* const default_BASEURL = @"http://oscial.com/service";
+//NSString* const default_BASEURL = @"http://oscial.com/service";
 //NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=10;
 int const pageSize_PHOTOSINTHEME = 10;
 int const pageSize_THEME = 5;
 int const pageSize_THEMELINKEDOBJECTS = 5;
 int const pageSize_CAPTION = 10;
+int const pageSize_FEED = 10;
 
 int const maxsize_PHOTODOWNLOAD=1000;
 int const maxsize_THEMEDOWNLOAD=100;
 int const maxsize_CAPTIONDOWNLOAD = 1000;
+int const maxsize_FEEDDOWNLOAD = 50;
 int const batchSize_CAPTION=20;
 int const batchSize_THEME=20;
 int const size_NUMLINKEDOBJECTSTOTRETURN=5;
@@ -38,6 +40,7 @@ int const threshold_LOADMORETHEMES = 2;
 int const threshold_LOADMORECAPTIONS = 2;
 
 int const opcode_QUERYEQUALITY=1;
+int const opcode_QUERYGREATERTHAN=2;
 
 NSString* const facebook_APPID=@"168077769927457";
 double const facebook_MAXDATE=64092211200;
@@ -77,3 +80,4 @@ int const max_width_WORDPRESSIMAGE=600;
 long const threshold_CAPTION_ENUMERATION_TIME_GAP = 60;
 long const threshold_PHOTO_ENUMERATION_TIME_GAP = 60;
 long const threshold_THEME_ENUMERATION_TIME_GAP = 60;
+long const threshold_FEED_ENUMERATION_TIME_GAP = 60;

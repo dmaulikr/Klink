@@ -15,6 +15,16 @@
 
 #define degreesToRadians(x) (M_PI * x / 180.0)
 
+
+enum DIRECTION {
+    NONE,
+    RIGHT,
+    LEFT,
+    UP,
+    DOWN,
+    CRAZY,
+};
+
 @class UIPagedViewItem;
 @class UIPagedViewSlider2;
 @protocol UIPagedViewSlider2Delegate <NSObject>
@@ -57,6 +67,8 @@
     int                 m_index;
     UITableView*        m_tableView;
     NSString*           m_cellIdentifier;
+    CGFloat             m_lastContentOffset;
+    int                 m_scrollDirection;
 }
 
 @property (nonatomic,retain)    UITableView         *tableView;

@@ -158,7 +158,7 @@
     [notificationCenter addObserver:self selector:@selector(onPhotoUploadCompleteNotificationHandler:) name:n_PHOTO_UPLOAD_COMPLETE object:nil];
     [notificationCenter addObserver:self selector:@selector(onPhotoUploadStartNotificationHandler:) name:n_PHOTO_UPLOAD_START object:nil];
 
-    
+    [notificationCenter addObserver:self selector:@selector(onFeedRefreshed:) name:n_FEED_REFRESHED object:nil];
 
     
     
@@ -242,6 +242,11 @@
 
 }
 
+- (BOOL) deviceInPortraitOrientation {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
+    return UIDeviceOrientationIsPortrait(orientation);
+}
+
 #pragma mark - System Event Handlers
 - (void) onUserLoggedIn: (NSNotification*)notification {
     [self onUserLoggedIn];  
@@ -261,6 +266,9 @@
     [self hideProfileBar];
 }
 
+- (void) onFeedRefreshed:(NSNotification*)notification {
+    
+}
 
 - (void) onPhotoUploadCompleteNotificationHandler:(NSNotification*)notification {
     NSDictionary* userInfo = [notification userInfo];

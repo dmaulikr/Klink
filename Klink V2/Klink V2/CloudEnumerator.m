@@ -18,13 +18,14 @@
 @synthesize lastExecutedTime = m_lastExecutedTime;
 @synthesize secondsBetweenConsecutiveSearches = m_secondsBetweenConsecutiveSearches;
 @synthesize identifier = m_identifier;
-
+@synthesize isLoading = m_isEnumerationPending;
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
     if (self != nil) {
         self.enumerationContext = enumerationContext;
         self.query = query;
+        
         self.queryOptions = queryOptions;
         m_isEnumerationPending = NO;
     }
@@ -134,6 +135,19 @@
 }
 
 #pragma mark - Static initializers
+
++ (CloudEnumerator*) enumeratorForFeeds:(NSNumber *)userid {
+    Query* query = [Query queryFeedsForUser:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForFeedsForUser:userid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForFeeds:userid];
+    query.queryoptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [userid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = threshold_FEED_ENUMERATION_TIME_GAP;
+    return enumerator;
+}
+
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
     
     Query* query = [Query queryCaptionsForPhoto:photoid];

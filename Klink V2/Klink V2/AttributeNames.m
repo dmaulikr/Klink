@@ -124,3 +124,5 @@ NSString* const an_STARTTIME = @"starttime";
 NSString* const an_TIMERDURATION=@"timerduration";
 NSString* const an_DESTINATIONINDEX = @"destinationindex";
 NSString* const an_STARTINGINDEX = @"startingindex";
+
+NSString* const an_FEEDTABLECELL = @"feedtablecell";

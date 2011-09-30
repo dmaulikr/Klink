@@ -22,15 +22,14 @@
 
 @interface CloudEnumerator : NSObject {
     BOOL m_isEnumerationPending;
-    EnumerationContext* m_enumerationContext;
-    Query*              m_query;
-    QueryOptions*       m_queryOptions;
-    BOOL m_isDone;
+    EnumerationContext*         m_enumerationContext;
+    Query*                      m_query;
+    QueryOptions*               m_queryOptions;
+    BOOL                        m_isDone;
     id<CloudEnumeratorDelegate> m_delegate;
-    NSDate*             m_lastExecutedTime;
-    long                m_secondsBetweenConsecutiveSearches;
-    
-    NSString*           m_identifier;
+    NSDate*                     m_lastExecutedTime;
+    long                        m_secondsBetweenConsecutiveSearches;
+    NSString*                   m_identifier;
     
 }
 @property (nonatomic,retain) NSString*              identifier;
@@ -40,6 +39,7 @@
 @property BOOL                                      isDone;
 @property (nonatomic,retain) NSDate*                lastExecutedTime;
 @property long                                      secondsBetweenConsecutiveSearches;
+@property BOOL                                      isLoading;
 @property (nonatomic,retain) id<CloudEnumeratorDelegate>   delegate;
 
 
@@ -60,6 +60,7 @@
 
 
 //static initializers
++ (CloudEnumerator*) enumeratorForFeeds:(NSNumber*)userid;
 + (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid;
 + (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
 + (CloudEnumerator*) enumeratorForThemes;

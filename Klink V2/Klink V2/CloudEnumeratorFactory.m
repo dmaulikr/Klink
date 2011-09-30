@@ -13,7 +13,7 @@
 @synthesize  enumeratorsForPhotos = m_enumeratorsForPhotos;
 @synthesize enumeratorsForThemes = m_enumeratorsForThemes;
 @synthesize enumeratorsForCaptions = m_enumeratorsForCaptions;
-
+@synthesize enumeratorsForFeeds = m_enumeratorsForFeeds;
 static CloudEnumeratorFactory* sharedManager;
 
 + (CloudEnumeratorFactory*)getInstance {
@@ -33,6 +33,7 @@ static CloudEnumeratorFactory* sharedManager;
         self.enumeratorsForCaptions = [[NSMutableSet alloc]init];
         self.enumeratorsForPhotos = [[NSMutableSet alloc]init];
         self.enumeratorsForThemes = [[NSMutableSet alloc]init];
+        self.enumeratorsForFeeds  = [[NSMutableSet alloc]init];
     }
     return self;
 }
@@ -41,6 +42,28 @@ static CloudEnumeratorFactory* sharedManager;
 }
 
 #pragma mark - Factory Methods
+
+- (CloudEnumerator*) enumeratorForFeeds:(NSNumber*)userid {
+    CloudEnumerator* retVal = nil;
+    
+    NSArray* arrayOfEnumerators = [self.enumeratorsForFeeds allObjects];
+    for (int i = 0; i < [arrayOfEnumerators count];i++) {
+        CloudEnumerator* currentEnumerator = [arrayOfEnumerators objectAtIndex:i];
+        if ([currentEnumerator.identifier isEqualToString:[userid stringValue]]) {
+            //this enumerator matches the type that we need, return it
+            retVal = currentEnumerator;
+            break;
+        }
+    }
+    
+    if (retVal == nil) {
+        //could not find an existing enumerator to return, create a new one
+        CloudEnumerator* newEnumerator = [CloudEnumerator enumeratorForFeeds:userid];
+        [self.enumeratorsForFeeds addObject:newEnumerator];
+        retVal = newEnumerator;
+    }
+    return retVal;
+}
 
 - (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
     CloudEnumerator* retVal = nil;

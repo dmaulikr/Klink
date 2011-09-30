@@ -19,7 +19,7 @@
 @property (nonatomic,retain) NSNumber* targetid;
 @property (nonatomic,retain) NSNumber* sequencenumber;
 @property (nonatomic,retain) NSNumber* type;
-
+@property (nonatomic,retain) NSNumber* user_hasread;
 
 
 @end

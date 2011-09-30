@@ -16,7 +16,7 @@
 @dynamic message;
 @dynamic sequencenumber;
 @dynamic userid;
-
+@dynamic user_hasread;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
     self = [super initFromDictionary:jsonDictionary];
@@ -72,6 +72,7 @@
     self = [super init];
     if (self != nil) {
         self.objecttype = tn_FEED;
+        self.user_hasread = [NSNumber numberWithBool:NO];
         
     }
     return self;

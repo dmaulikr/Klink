@@ -62,6 +62,14 @@
 }
 
 #pragma mark - Static constructors for known scenarios
++ (EnumerationContext*) contextForFeeds:(NSNumber *)userid {
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_FEED];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
+    return enumerationContext;
+
+}
+
 + (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid {
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize =[NSNumber numberWithInt:pageSize_PHOTOSINTHEME];

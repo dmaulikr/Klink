@@ -23,6 +23,5 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_new_votes;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_new_captions;
 @property (nonatomic, retain) NSFetchedResultsController* frc_loggedInUser;
-@property (nonatomic, retain) NSFetchedResultsController* frc_feed_photovotes;
-@property (nonatomic, retain) NSFetchedResultsController* frc_feed_captionvotes;
+
 @end

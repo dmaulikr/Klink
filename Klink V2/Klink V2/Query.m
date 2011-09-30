@@ -8,6 +8,9 @@
 
 #import "Query.h"
 #import "QueryExpression.h"
+#import "DataLayer.h"
+#import "Feed.h"
+
 @implementation Query
 @synthesize  objectIDs;
 @synthesize filterExpression;
@@ -100,11 +103,26 @@
     queryExpression.attributeName = an_USERID;
     queryExpression.opCode = opcode_QUERYEQUALITY;
     queryExpression.value = [userID stringValue];
-
-    NSArray* expressions = [NSArray arrayWithObject:queryExpression];
+    
+    NSMutableArray* expressions = [NSMutableArray arrayWithObject:queryExpression];
+    [queryExpression release];
+    
+    //we need to query the database to find the feed object with the highest id for this user
+    NSArray* feedItems = [DataLayer getObjectsByType:tn_FEED withValueEqual:[userID stringValue] forAttribute:an_USERID sortBy:an_DATECREATED sortAscending:NO];
+    
+    if ([feedItems count] > 0) {
+        QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+        queryExpression2.attributeName = an_ID;
+        queryExpression2.opCode = opcode_QUERYGREATERTHAN;
+        Feed* feedItem = [feedItems objectAtIndex:0];
+        queryExpression2.value = [feedItem.objectid stringValue];
+        [expressions addObject:queryExpression2];
+        [queryExpression2 release];
+    }
+    
+    
     query.attributeExpressions = expressions;
     
-    [queryExpression release];
     
     
     return query;

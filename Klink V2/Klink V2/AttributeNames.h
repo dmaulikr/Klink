@@ -112,6 +112,9 @@ extern NSString* const an_STARTTIME;
 extern NSString* const an_TIMERDURATION;
 extern NSString* const an_DESTINATIONINDEX;
 extern NSString* const an_STARTINGINDEX;
+extern NSString* const an_FEEDTABLECELL;
+
+
 
 
 

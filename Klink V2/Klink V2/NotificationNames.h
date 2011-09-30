@@ -23,3 +23,12 @@ extern NSString* const n_USER_LOGGED_IN;
 extern NSString* const n_USER_LOGGED_OUT;
 extern NSString* const n_PHOTO_UPLOAD_START;
 extern NSString* const n_PHOTO_UPLOAD_COMPLETE;
+
+//called whenever a new feed object for a Caption vote event is created
+extern NSString* const n_NEW_FEED_CAPTION_VOTE; 
+
+//called whenever a new feed object for a Photo vote event is created
+extern NSString* const n_NEW_FEED_PHOTO_VOTE; 
+
+//called whenever the news feed has been refreshed
+extern NSString* const n_FEED_REFRESHED;

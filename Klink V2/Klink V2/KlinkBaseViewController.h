@@ -33,7 +33,8 @@
 - (void) onUserLoggedOut;
 - (void) onPhotoUploadComplete:(Photo*)photo;
 - (void) onPhotoUploadStart:(Photo*)photo;
+- (void) onFeedRefreshed:(NSNotification*)notification;
 - (void) enumerateFeed;
 - (void) didRotate:(NSNotification*)notification;
-
+- (BOOL) deviceInPortraitOrientation;
 @end

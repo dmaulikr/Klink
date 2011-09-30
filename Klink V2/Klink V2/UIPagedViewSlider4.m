@@ -28,7 +28,7 @@
     //we need to create a table with the dimensions reversed because we are going to transform that bitch
     CGRect tableFrame = CGRectMake(0, 0, self.frame.size.height, self.frame.size.width);        
     self.tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
-    self.tableView.pagingEnabled = YES;
+    self.tableView.pagingEnabled = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -38,7 +38,7 @@
     CGAffineTransform rotateTable = CGAffineTransformMakeRotation(degreesToRadians(-90));
     int y = self.tableView.frame.size.width;
     self.tableView.transform = CGAffineTransformTranslate(rotateTable, -y, 0);
-    
+    m_lastContentOffset = 0;
        [self addSubview:self.tableView];
 }
 
@@ -76,16 +76,64 @@
     return self;
 }
 
-- (int)  indexForContentOffset:(CGPoint)point {
+- (int)  indexForContentOffset:(CGPoint)point useFloor:(BOOL)useFloor{
     int index = 0;
-    index = floor(point.y/ (m_itemWidth + m_itemSpacing));
+    if (useFloor) {
+        index = floor(point.y/ (m_itemWidth + m_itemSpacing));
+    }
+    else {
+        index = ceil(point.y / (m_itemWidth + m_itemSpacing));
+    }
     return index;
 }
 
+- (CGPoint) contentOffsetForIndex:(int)index {
+    CGPoint retVal = CGPointMake(0, index*(m_itemSpacing+m_itemWidth));
+    return retVal;
+}
+
 #pragma mark - UIScrollViewDelegate
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (decelerate) {
+        //check the direction
+        //find the nearest index
+        //set the motion to that
+//        int nextIndex = 0;
+//        if (m_scrollDirection == RIGHT) {
+//            
+//            nextIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:NO];
+//            int itemCount = [self.delegate itemCountFor:self];
+//            
+//            if (nextIndex >= itemCount) {
+//                nextIndex--;
+//            }
+//            
+//        }
+//        else if (m_scrollDirection == LEFT) {
+//            nextIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
+//            
+//            if (nextIndex == 0) {
+//                nextIndex++;
+//            }
+//        }
+//        
+//        
+//        //we set the scroll view to animate itself to that nextIndex location
+//        CGPoint currentOffset = scrollView.contentOffset;
+//        CGPoint targetOffset = [self contentOffsetForIndex:nextIndex];
+//        CGRect rectWindow = CGRectMake(targetOffset.x,targetOffset.y,m_itemHeight,(m_itemWidth+m_itemSpacing));
+//        [scrollView scrollRectToVisible:rectWindow animated:YES];
+
+    }
+}
+
+//this method will ensure the scrollview continues to scroll towards
+//the edge of the nearest index
+-(void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     int count = [self.delegate itemCountFor:self];
-    int newIndex = [self indexForContentOffset:scrollView.contentOffset];
+    int newIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
     
     if (newIndex < 0) newIndex =0 ;
     
@@ -97,13 +145,21 @@
         [self.delegate viewSlider:self isAtIndex:m_index withCellsRemaining:count-m_index];
     }
     
+    //we now record the direction we have detected the scroll view to be moving
+    if (m_lastContentOffset < scrollView.contentOffset.y)
+        m_scrollDirection = RIGHT;
+    else if (m_lastContentOffset > scrollView.contentOffset.y) 
+        m_scrollDirection = LEFT;
     
+    m_lastContentOffset = scrollView.contentOffset.y;
     
 }
+    
+    
+
 
 #pragma mark - UITableViewDelegate
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int row = indexPath.row;
     [self.delegate viewSlider:self selectIndex:indexPath.row];
 }
 

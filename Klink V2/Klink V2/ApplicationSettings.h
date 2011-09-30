@@ -18,10 +18,12 @@ extern int const pageSize_THEME;
 extern int const maxsize_PHOTODOWNLOAD;
 extern int const maxsize_THEMEDOWNLOAD;
 extern int const maxsize_CAPTIONDOWNLOAD;
+extern int const maxsize_FEEDDOWNLOAD;
 extern int const batchSize_CAPTION;
 extern int const batchSize_THEME;
 extern int const pageSize_THEMELINKEDOBJECTS;
 extern int const pageSize_CAPTION;
+extern int const pageSize_FEED;
 extern int const size_NUMLINKEDOBJECTSTOTRETURN;
 
 extern NSString* const cell_TEXTCAPTION;
@@ -38,9 +40,11 @@ extern int const threshold_LOADMORECAPTIONS;
 extern long const threshold_CAPTION_ENUMERATION_TIME_GAP;
 extern long const threshold_PHOTO_ENUMERATION_TIME_GAP;
 extern long const threshold_THEME_ENUMERATION_TIME_GAP;
+extern long const threshold_FEED_ENUMERATION_TIME_GAP;
 
 //opcodes for query operations
 extern int const opcode_QUERYEQUALITY;
+extern int const opcode_QUERYGREATERTHAN;
 
 extern int const pageSize_PHOTOSINTHEME;
 

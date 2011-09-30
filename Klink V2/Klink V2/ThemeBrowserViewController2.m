@@ -21,6 +21,9 @@
 #import "UIViewCategory.h"
 #import "CloudEnumeratorFactory.h"
 #import "UIThemePhotoCellView.h"
+#import "FeedManager.h"
+#import "FeedViewController.h"
+
 /*#define kPictureWidth 130
 #define kPictureSpacing 0
 #define kPictureHeight 120
@@ -257,6 +260,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 //    [self.h_pvs_themeSlider2 initWithWidth:kThemePictureWidth_landscape withHeight:kThemePictureHeight_landscape withSpacing:kThemePictureSpacing isHorizontal:NO];
     [self.v_pvs_themeSlider2 initWithWidth:kThemePictureWidth withHeight:kThemePictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"themephoto"];
     
+    self.v_pvs_themeSlider2.tableView.pagingEnabled = YES;
     
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
@@ -269,12 +273,16 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 //                                     action:@selector(test_Scroll:)];
     self.navigationItem.rightBarButtonItem = cameraButton;
     [cameraButton release];
+    
+    //enumerate the feed
+    FeedManager* feedManager = [FeedManager getInstance];
+    [feedManager refreshFeed];
 
 }
 
 - (void) test_Scroll:(id)sender {
-    int lastIndex = [[self.frc_photosInCurrentTheme fetchedObjects]count];
-    [self.pvs_photoSlider2 goTo:(lastIndex-1) withAnimation:YES];
+    FeedViewController* feedVC = [[FeedViewController alloc]init];
+    [self.navigationController pushViewController:feedVC animated:YES];
 }
 
 - (void)viewDidUnload

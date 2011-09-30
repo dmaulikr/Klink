@@ -12,13 +12,13 @@
 #import "User.h"
 #import "FeedTypes.h"
 #import "Feed.h"
+#import "FeedManager.h"
+
 @implementation UIProfileBar
 @synthesize lbl_rank;
 @synthesize lbl_votes;
 @synthesize lbl_captions;
 @synthesize frc_loggedInUser = __frc_loggedInUser;
-@synthesize frc_feed_photovotes=__frc_feed_photovotes;
-@synthesize frc_feed_captionvotes = __frc_feed_captionvotes;
 @synthesize lbl_new_votes;
 @synthesize lbl_new_captions;
 
@@ -26,12 +26,14 @@
     AuthenticationManager* authnManager = [AuthenticationManager getInstance];
     if ([authnManager isUserLoggedIn] == YES) {
         User* user = [[self.frc_loggedInUser fetchedObjects]objectAtIndex:0];
+        FeedManager* feedManager = [FeedManager getInstance];
+        
         self.lbl_captions.text  = [user.numberofcaptions stringValue];
         self.lbl_rank.text = [user.rank stringValue];
         self.lbl_votes.text = [user.numberofvotes stringValue];
         
-        int newCaptions = [[self.frc_feed_captionvotes fetchedObjects]count];
-        int newVotes = [[self.frc_feed_photovotes fetchedObjects]count];
+        int newCaptions = [feedManager.numberOfNewCaptionVotesInFeed intValue];
+        int newVotes = [feedManager.numberOfNewPhotoVotesInFeed intValue];
 
         if (newCaptions == 0) {
             self.lbl_new_captions.text = [NSString stringWithFormat:@""];
@@ -56,101 +58,6 @@
     }
 }
 
-- (NSFetchedResultsController*)frc_feed_captionvotes {
-    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
-    
-    if ([authenticationManager isUserLoggedIn]==NO) {
-        __frc_feed_captionvotes = nil;
-        return nil;
-    }
-    
-    if (__frc_feed_captionvotes != nil) {
-        return __frc_feed_captionvotes;
-    }
-    
-    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
-    NSFetchRequest* fetchRequest = [[NSFetchRequest alloc]init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:tn_FEED inManagedObjectContext:appContext];
-    
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"type=%@ AND userid=%@" argumentArray:[NSArray arrayWithObjects:[NSNumber numberWithInt:feed_CAPTION_VOTE],authenticationManager.m_LoggedInUserID, nil]];
-    
-    
-    
-    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:an_OBJECTID ascending:NO];
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [fetchRequest setEntity:entityDescription];
-    
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:appContext sectionNameKeyPath:nil cacheName:nil];
-    controller.delegate = self;
-    
-    self.frc_feed_captionvotes = controller;
-    
-    NSError* error = nil;
-    [controller performFetch:&error];
-  	if (error != nil)
-    {
-        
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
-    [controller release];
-    [fetchRequest release];
-    
-    
-    return __frc_feed_captionvotes;
-    
-}
-
-- (NSFetchedResultsController*)frc_feed_photovotes {
-    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
-    
-    if ([authenticationManager isUserLoggedIn]==NO) {
-        __frc_feed_photovotes = nil;
-        return nil;
-    }
-    
-    if (__frc_feed_photovotes != nil) {
-        return __frc_feed_photovotes;
-    }
-    
-    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
-    NSFetchRequest* fetchRequest = [[NSFetchRequest alloc]init];
-    
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:tn_FEED inManagedObjectContext:appContext];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"type=%@ AND userid=%@" argumentArray:[NSArray arrayWithObjects:[NSNumber numberWithInt:feed_PHOTO_VOTE],authenticationManager.m_LoggedInUserID, nil]];
-    
-    
-    
-    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:an_OBJECTID ascending:NO];
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [fetchRequest setEntity:entityDescription];
-    
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:appContext sectionNameKeyPath:nil cacheName:nil];
-    controller.delegate = self;
-    
-    self.frc_feed_photovotes = controller;
-    
-    NSError* error = nil;
-    [controller performFetch:&error];
-  	if (error != nil)
-    {
-        
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
-    [controller release];
-    [fetchRequest release];
-    
-    
-    return __frc_feed_photovotes;
-
-}
 
 - (NSFetchedResultsController*)frc_loggedInUser {
     
@@ -208,7 +115,8 @@
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
         [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
-        
+        [notificationCenter addObserver:self selector:@selector(onNewCaptionVoteFeedItem:) name:n_NEW_FEED_CAPTION_VOTE object:nil];
+        [notificationCenter addObserver:self selector:@selector(onNewPhotoVoteFeedItem:) name:n_NEW_FEED_PHOTO_VOTE object:nil];
         [self updateLabels];
     }
     return self;
@@ -229,8 +137,6 @@
 {
     NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self];
-    [self.frc_feed_photovotes release];
-    [self.frc_feed_captionvotes release];
     [self.frc_loggedInUser release];
     [self.lbl_new_captions release];
     [self.lbl_new_votes release];
@@ -250,6 +156,14 @@
 }
 
 
+-(void) onNewCaptionVoteFeedItem:(NSNotification*)notification {
+       [self updateLabels];    
+}
+
+-(void) onNewPhotoVoteFeedItem:(NSNotification*)notification {
+    [self updateLabels];
+}
+
 - (void) onUserUpdated:(User*)user {
     
     AuthenticationManager* authnManager = [AuthenticationManager getInstance];
@@ -267,41 +181,7 @@
 
 }
 
--(void) onNewPhotoFeedItem:(Feed*)feed {
-    //need to get a total count of Feed items of this type
-    [self updateLabels];
-}
 
--(void) onNewCaptionFeedItem:(Feed*)feed {
-    [self updateLabels];
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    
-    if (controller == self.frc_feed_captionvotes) {
-        if (type == NSFetchedResultsChangeInsert) {
-            Feed* feed = (Feed*)anObject;
-            [self onNewCaptionFeedItem:feed];
-        }
-    }
-    else if (controller == self.frc_feed_photovotes) {
-        if (type == NSFetchedResultsChangeInsert) {
-            Feed* feed = (Feed*)anObject;
-            [self onNewPhotoFeedItem:feed];
-        }
-    }
-    else if (controller == self.frc_loggedInUser) {
-        User* user = (User*)anObject;
-        
-        if (type == NSFetchedResultsChangeUpdate) {
-            [self onUserUpdated:user];
-        }
-    }
-    
-        
-    
-}
 
 
 @end
