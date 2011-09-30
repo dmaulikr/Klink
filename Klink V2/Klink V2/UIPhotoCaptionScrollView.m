@@ -285,7 +285,8 @@
      
 
         
-        [self showHideVotingSharingButtons];
+        //[self showHideVotingSharingButtons];
+        [self enableDisableVotingButton];
         
         //register for global events
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -369,7 +370,8 @@
             [self.captionCloudEnumerator enumerateNextPage];
         }
     }
-    [self showHideVotingSharingButtons];
+    //[self showHideVotingSharingButtons];
+    [self enableDisableVotingButton];
 }
 
 
@@ -396,17 +398,19 @@
     if (index != -1) {
         [self.captionScrollView goTo:index];
     }
-        
+    
+    //[self showHideVotingSharingButtons];
+    [self enableDisableVotingButton];
     
 }
 
 #pragma mark - System Event Handlers
 -(void)onUserLoggedIn:(NSNotification*)notification {
-    [self showHideVotingSharingButtons];
+    //[self showHideVotingSharingButtons];
 }
 
 -(void)onUserLoggedOut:(NSNotification*)notification {
-    [self showHideVotingSharingButtons];
+    //[self showHideVotingSharingButtons];
 }
 
 #pragma mark - Button helpers
@@ -440,6 +444,26 @@
     }
 }
 
+- (void) enableDisableVotingButton {
+    
+    int captionCount = [[self.frc_captions fetchedObjects] count];
+    
+    if (captionCount > 0) {
+        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:[self.captionScrollView getPageIndex]];
+        [self enableVotingButton];
+        if ([currentCaption.user_hasvoted boolValue] == YES) {
+            [self disableVotingButton];
+        }
+        else {
+            [self enableVotingButton];
+        }
+        
+    }
+    else {
+        [self disableVotingButton];
+    }
+}
+
 - (void) disableVotingButton {   
     self.photoViewController.tb_voteButton.enabled = NO;
     //self.voteButton.enabled = NO;
@@ -466,7 +490,7 @@
     
     if (type == NSFetchedResultsChangeInsert) {
         [self.captionScrollView onNewItemInsertedAt:newIndexPath.row];
-        [self showHideVotingSharingButtons];
+        //[self showHideVotingSharingButtons];
     }
 
 }
@@ -559,7 +583,7 @@
     [UIView commitAnimations];*/
     
     // animate the updating of the votes label
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.25
                           delay:0
                         options:( UIViewAnimationCurveEaseInOut )
                      animations:^{

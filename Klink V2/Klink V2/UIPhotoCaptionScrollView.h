@@ -30,6 +30,8 @@
 
 - (void)    onVoteUpButtonPressed:(id)sender;
 - (void)    onShareButtonPressed:(id)sender;
+- (void)    onFacebookShareButtonPressed:(id)sender;
+- (void)    onTwitterShareButtonPressed:(id)sender;
 - (void)    disableVotingButton;
 - (void)    enableVotingButton;
 - (void)    showShareButton;
@@ -37,6 +39,7 @@
 - (void)    hideVotingButton;
 - (void)    showVotingButton;
 - (void)    showHideVotingSharingButtons;
+- (void)    enableDisableVotingButton;
 - (void)    loadViewData;
 
 

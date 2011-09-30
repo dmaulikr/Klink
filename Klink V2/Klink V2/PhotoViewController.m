@@ -335,47 +335,49 @@
     self.tb_facebookButton = [[UIBarButtonItem alloc]
                              initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
                              style:UIBarButtonItemStylePlain
-                             target:photoCaptionView
-                            action:@selector(onFacebookShareButtonPressed:)];
+                             target:self
+                              action:@selector(onFacebookButtonPressed:)];
     
     self.tb_twitterButton = [[UIBarButtonItem alloc]
                            initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
                            style:UIBarButtonItemStylePlain
-                           target:photoCaptionView
-                           action:@selector(onTwitterShareButtonPressed:)];
+                           target:self
+                             action:@selector(onTwitterButtonPressed:)];
     
     self.tb_cameraButton = [[UIBarButtonItem alloc]
-                            //initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
-                            //style:UIBarButtonItemStylePlain
-                            initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+                            initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
+                            style:UIBarButtonItemStylePlain
+                            //initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
                             target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.currentTheme]
                             action:@selector(cameraButtonPressed:)];
     
     self.tb_voteButton = [[UIBarButtonItem alloc]
                           initWithImage:[UIImage imageNamed:@"icon-thumbUp.png"]
                           style:UIBarButtonItemStylePlain
-                          target:photoCaptionView
-                          action:@selector(onVoteUpButtonPressed:)];
+                          target:self
+                          action:@selector(onVoteButtonPressed:)];
     
     self.tb_captionButton = [[UIBarButtonItem alloc]
-                             //initWithImage:[UIImage imageNamed:@"icon-compose.png"]
-                             //style:UIBarButtonItemStylePlain
-                             initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                             initWithImage:[UIImage imageNamed:@"icon-compose.png"]
+                             style:UIBarButtonItemStylePlain
+                             //initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                              target:self
                              action:@selector(onCaptionButtonPressed:)];
     
     UIBarButtonItem* flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem* fixedSpaceLeft1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-    UIBarButtonItem* fixedSpaceLeft2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-    UIBarButtonItem* fixedSpaceRight1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-    UIBarButtonItem* fixedSpaceRight2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
-    fixedSpaceLeft1.width = 20;
-    fixedSpaceLeft2.width = 34;
-    fixedSpaceRight1.width = 40;
-    fixedSpaceRight2.width = 20;
+    //UIBarButtonItem* fixedSpaceLeft1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    //UIBarButtonItem* fixedSpaceLeft2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    //UIBarButtonItem* fixedSpaceRight1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    //UIBarButtonItem* fixedSpaceRight2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
+    //fixedSpaceLeft1.width = 20;
+    //fixedSpaceLeft2.width = 34;
+    //fixedSpaceRight1.width = 40;
+    //fixedSpaceRight2.width = 20;
     
     // Add buttons to the array
-    NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_facebookButton, fixedSpaceLeft1, self.tb_twitterButton, fixedSpaceLeft2, self.tb_cameraButton, fixedSpaceRight1, self.tb_voteButton, fixedSpaceRight2, self.tb_captionButton, nil];
+    //NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_facebookButton, fixedSpaceLeft1, self.tb_twitterButton, fixedSpaceLeft2, self.tb_cameraButton, fixedSpaceRight1, self.tb_voteButton, fixedSpaceRight2, self.tb_captionButton, nil];
+    
+    NSMutableArray *items = [NSMutableArray arrayWithObjects: self.tb_facebookButton, flexSpace, self.tb_twitterButton, flexSpace, self.tb_cameraButton, flexSpace, self.tb_voteButton, flexSpace, self.tb_captionButton, nil];
     
     // Release buttons
     [self.tb_facebookButton release];
@@ -384,10 +386,10 @@
     [self.tb_voteButton release];
     [self.tb_captionButton release];
     [flexSpace release];
-    [fixedSpaceLeft1 release];
-    [fixedSpaceLeft2 release];
-    [fixedSpaceRight1 release];
-    [fixedSpaceRight2 release];
+    //[fixedSpaceLeft1 release];
+    //[fixedSpaceLeft2 release];
+    //[fixedSpaceRight1 release];
+    //[fixedSpaceRight2 release];
     
     // Add array of buttons to toolbar
     [toolbar setItems:items animated:NO];
@@ -467,6 +469,10 @@
 }
 
 -(void)didRotate:(NSNotification*)notification {
+    
+  /*
+  // old code to handle rotation of view 
+   
     [super didRotate:notification];
     //need to switch out the ladscape and portrait views
     //populate the sv_sliders as needed
@@ -504,7 +510,7 @@
     else {
         self.tv_captionBox.hidden = YES;
     }
-    
+  */
     
 }
 
@@ -829,6 +835,33 @@
     
     [self.sv_view bringSubviewToFront:self.tv_captionBox];
     [UIView commitAnimations];
+}
+
+
+#pragma mark - Toolbar Button Handlers
+
+- (void) onVoteButtonPressed:(id)sender {
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    
+    [photoCaptionView onVoteUpButtonPressed:self];
+    
+    [photoCaptionView release];
+}
+
+- (void) onFacebookButtonPressed:(id)sender {
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    
+    [photoCaptionView onFacebookShareButtonPressed:self];
+    
+    [photoCaptionView release];
+}
+
+- (void) onTwitterButtonPressed:(id)sender {
+    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+    
+    [photoCaptionView onTwitterShareButtonPressed:self];
+    
+    [photoCaptionView release];
 }
 
 
