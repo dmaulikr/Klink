@@ -8,7 +8,9 @@
 
 #import "FeedTypes.h"
 
-int const feed_CAPTION_VOTE=0;
-int const feed_PHOTO_VOTE=1;
+int const feed_CAPTION_VOTE     =0;
+int const feed_PHOTO_VOTE       =1;
+int const feed_CAPTION_ADDED    =2;
 NSString* const cellid_CAPTION_VOTE = @"caption_vote_cell";
 NSString* const cellid_PHOTO_VOTE = @"photo_vote_cell";
+NSString* const cellid_CAPTION_ADDED=@"caption_added_cell";

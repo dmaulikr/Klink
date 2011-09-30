@@ -228,10 +228,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 - (void)viewDidLoad
 {
-    self.shouldShowProfileBar = YES;
+    NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";  
     [super viewDidLoad];
+    self.shouldShowProfileBar = YES;
+    self.profileBar.viewController = self;
 
-    NSString* activityName = @"ThemeBrowserViewController2.viewDidLoad:";   
+
+     
         
     self.themeCloudEnumerator = [[CloudEnumeratorFactory getInstance] enumeratorForThemes];
    // self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];

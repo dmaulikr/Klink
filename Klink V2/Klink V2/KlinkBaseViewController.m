@@ -185,7 +185,7 @@
     
     m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
     m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
-    
+    self.profileBar.viewController = self;
 
 
 }

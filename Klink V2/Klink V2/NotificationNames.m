@@ -30,5 +30,11 @@ NSString* const n_NEW_FEED_CAPTION_VOTE = @"feed_caption_vote_created";
 //called whenever a new feed object for a Photo vote event is created
 NSString* const n_NEW_FEED_PHOTO_VOTE = @"feed_photo_vote_created"; 
 
+//called whenever a new feed object for a Caption event is created
+NSString* const n_NEW_FEED_CAPTION = @"feed_caption_created";
+
 //called whenver the news feed has been refreshed
 NSString* const n_FEED_REFRESHED = @"feed_refreshed";
+
+//callled whenever a feed item has been cleared/read by the user
+NSString* const n_FEED_ITEM_CLEARED = @"feed_item_clear";

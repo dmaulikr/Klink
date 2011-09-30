@@ -216,7 +216,8 @@
             //TODO: need to make a call to the cloud to retrieve the missing reference
         }
     }
-    else if (feedType == feed_PHOTO_VOTE) {
+    else if (feedType == feed_PHOTO_VOTE ||
+             feedType == feed_CAPTION_ADDED) {
          Photo* photo = [DataLayer getObjectByType:feed.targetobjecttype withId:feed.targetid];
         if (photo != nil) {
             cell.imageView.image = nil;
@@ -237,6 +238,7 @@
             //todo ened to download photo if missing
         }
     }
+    
     
 }
 
@@ -266,6 +268,16 @@
             }
             cell.feedItem = feedItem;
             [self configureCell:cell atIndex:index forFeedItem:feedItem];
+        }
+        else if ([feedItem.type intValue] == feed_CAPTION_ADDED) {
+            cell = (UIFeedTableCellView*)[tableView dequeueReusableCellWithIdentifier:cellid_CAPTION_ADDED];
+            if (!cell) {
+                cell = [[UIFeedTableCellView alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid_CAPTION_ADDED];
+                
+            }
+            cell.feedItem = feedItem;
+            [self configureCell:cell atIndex:index forFeedItem:feedItem];
+
         }
         else {
             NSString* message = [NSString stringWithFormat:@"Unrecognized feed type: %d for index %d",[feedItem.type intValue],index];
@@ -343,11 +355,13 @@
 - (void) onClearAllSelected:(id)sender {
     //clear all notifications
     NSArray* feedItems = [self.frc_feeds fetchedObjects];
-    int count = [feedItems count];
+    NSArray* itemsInFeed = [NSArray arrayWithArray:feedItems];
+    
+    int count = [itemsInFeed count];
     NSMutableSet* indexPathsToDelete = [[NSMutableSet alloc]init ];
     
     for (int i = 0; i < count ; i++) {
-        Feed* feedItem = [feedItems objectAtIndex:i];
+        Feed* feedItem = [itemsInFeed objectAtIndex:i];
         feedItem.user_hasread = [NSNumber numberWithBool:YES];
         [feedItem commitChangesToDatabase:NO withPendingFlag:NO];
         
@@ -356,16 +370,21 @@
         [indexPathsToDelete addObject:indexPath];
     }
     
-    [self.feedTable deleteRowsAtIndexPaths:[indexPathsToDelete allObjects] withRowAnimation:UITableViewRowAnimationTop];
+//    [self.feedTable deleteRowsAtIndexPaths:[indexPathsToDelete allObjects] withRowAnimation:UITableViewRowAnimationTop];
     [indexPathsToDelete release];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
-    if (type == NSFetchedResultsChangeInsert) {
-     
-        [self.feedTable insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    if (anObject != nil) {
+        if (type == NSFetchedResultsChangeInsert) {
+            
+            [self.feedTable insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+        }
+        else if (type == NSFetchedResultsChangeDelete) {
+            [self.feedTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        }
     }
 }
 

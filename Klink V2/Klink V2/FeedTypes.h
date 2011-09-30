@@ -10,6 +10,8 @@
 
 extern int const feed_CAPTION_VOTE;
 extern int const feed_PHOTO_VOTE;
+extern int const feed_CAPTION_ADDED;
 
 extern NSString* const cellid_CAPTION_VOTE;
 extern NSString* const cellid_PHOTO_VOTE;
+extern NSString* const cellid_CAPTION_ADDED;

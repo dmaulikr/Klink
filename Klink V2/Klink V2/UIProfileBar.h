@@ -15,6 +15,7 @@
     UILabel* lbl_captions;
     UILabel* lbl_new_votes;
     UILabel* lbl_new_captions;
+    UIViewController*   m_viewController;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel* lbl_votes;
@@ -23,5 +24,6 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_new_votes;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_new_captions;
 @property (nonatomic, retain) NSFetchedResultsController* frc_loggedInUser;
+@property (nonatomic, retain) UIViewController* viewController;
 
 @end

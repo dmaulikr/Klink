@@ -13,6 +13,7 @@
 #import "FeedTypes.h"
 #import "Feed.h"
 #import "FeedManager.h"
+#import "FeedViewController.h"
 
 @implementation UIProfileBar
 @synthesize lbl_rank;
@@ -21,6 +22,7 @@
 @synthesize frc_loggedInUser = __frc_loggedInUser;
 @synthesize lbl_new_votes;
 @synthesize lbl_new_captions;
+@synthesize viewController = m_viewController;
 
 - (void)updateLabels {
     AuthenticationManager* authnManager = [AuthenticationManager getInstance];
@@ -32,9 +34,11 @@
         self.lbl_rank.text = [user.rank stringValue];
         self.lbl_votes.text = [user.numberofvotes stringValue];
         
-        int newCaptions = [feedManager.numberOfNewCaptionVotesInFeed intValue];
-        int newVotes = [feedManager.numberOfNewPhotoVotesInFeed intValue];
-
+        int newCaptionVotes = [feedManager.numberOfNewCaptionVotesInFeed intValue];
+        int newPhotoVotes = [feedManager.numberOfNewPhotoVotesInFeed intValue];
+        int newVotes = newCaptionVotes + newPhotoVotes;
+        
+        int newCaptions = [feedManager.numberOfNewCaptionsInFeed intValue];
         if (newCaptions == 0) {
             self.lbl_new_captions.text = [NSString stringWithFormat:@""];
         }
@@ -109,7 +113,13 @@
         
         UIView* profileBar = [bundle objectAtIndex:0];
         [self addSubview:profileBar];
-                
+        self.userInteractionEnabled = YES;
+//        CGRect frameForButton = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+//        UIButton *button = [[UIButton alloc]initWithFrame:frameForButton];
+//        [button addTarget:self action:@selector(onTap:) forControlEvents:UIControlEventAllEvents];
+//        [self addSubview:button];
+        
+//        [button release];
         
         //register for global events
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -117,6 +127,8 @@
         [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
         [notificationCenter addObserver:self selector:@selector(onNewCaptionVoteFeedItem:) name:n_NEW_FEED_CAPTION_VOTE object:nil];
         [notificationCenter addObserver:self selector:@selector(onNewPhotoVoteFeedItem:) name:n_NEW_FEED_PHOTO_VOTE object:nil];
+        [notificationCenter addObserver:self selector:@selector(onNewCaptionFeedItem:) name:n_NEW_FEED_CAPTION object:nil];
+        [notificationCenter addObserver:self selector:@selector(onFeedItemRead:) name:n_FEED_ITEM_CLEARED object:nil];
         [self updateLabels];
     }
     return self;
@@ -146,7 +158,20 @@
     [super dealloc];
 }
 
+#pragma mark - Tap handler
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    if (self.viewController != nil) {
+        FeedViewController* fvc = [[FeedViewController alloc]init];
+        [self.viewController.navigationController pushViewController:fvc animated:YES];
+    }
+}
+
+
 #pragma mark - System Event Handlers
+- (void) onFeedItemRead : (NSNotification*)notification {
+    [self updateLabels];
+}
 -(void)onUserLoggedIn:(NSNotification*)notification {
     [self updateLabels];
 }
@@ -155,6 +180,9 @@
     self.frc_loggedInUser = nil;
 }
 
+- (void)onNewCaptionFeedItem:(NSNotification*)notification {
+    [self updateLabels];
+}
 
 -(void) onNewCaptionVoteFeedItem:(NSNotification*)notification {
        [self updateLabels];    

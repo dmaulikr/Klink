@@ -30,5 +30,11 @@ extern NSString* const n_NEW_FEED_CAPTION_VOTE;
 //called whenever a new feed object for a Photo vote event is created
 extern NSString* const n_NEW_FEED_PHOTO_VOTE; 
 
+//called whenever a new caption object is created
+extern NSString* const n_NEW_FEED_CAPTION;
+
 //called whenever the news feed has been refreshed
 extern NSString* const n_FEED_REFRESHED;
+
+//called whenever a feed item has been read
+extern NSString* const n_FEED_ITEM_CLEARED;
