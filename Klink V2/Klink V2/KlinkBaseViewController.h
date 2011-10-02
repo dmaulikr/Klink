@@ -19,15 +19,17 @@
     int m_profileBar_landscape_height;
     int m_profileBar_portrait_height;
     
+    Theme* m_currentTheme;
     BOOL m_shouldShowProfileBar;
     
 }
-@property (nonatomic,retain)  UIProfileBar* profileBar;
-@property (readonly) int profileBarHeight;
-@property (nonatomic,retain) IBOutlet UIView* v_landscape;
-@property (nonatomic,retain) IBOutlet UIView* v_portrait;
-@property BOOL shouldShowProfileBar;
-@property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
+@property (nonatomic,retain)            UIProfileBar* profileBar;
+@property (readonly)                    int profileBarHeight;
+@property (nonatomic,retain) IBOutlet   UIView* v_landscape;
+@property (nonatomic,retain) IBOutlet   UIView* v_portrait;
+@property                               BOOL shouldShowProfileBar;
+@property (nonatomic,retain)            NSManagedObjectContext* managedObjectContext;
+@property (nonatomic,retain)            Theme* currentTheme;
 
 - (void) onUserLoggedIn;
 - (void) onUserLoggedOut;

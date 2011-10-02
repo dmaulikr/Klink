@@ -19,7 +19,7 @@
 @interface ThemeBrowserViewController2 : KlinkBaseViewController <NSFetchedResultsControllerDelegate, ImageDownloadCallback, UIPagedViewSlider2Delegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CloudEnumeratorDelegate, UIActionSheetDelegate> {
 
     UILabel*                        lbl_theme;
-    Theme*                          theme;  
+     
 
     CloudEnumerator*                m_themeCloudEnumerator;
     CloudEnumerator*                m_photosInThemeCloudEnumeator;
@@ -27,7 +27,7 @@
   
 }
 
-@property (nonatomic,retain) Theme*                     theme;
+
 @property (nonatomic,retain) NSFetchedResultsController*frc_photosInCurrentTheme;
 @property (nonatomic,retain) NSFetchedResultsController*frc_themes;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_theme;

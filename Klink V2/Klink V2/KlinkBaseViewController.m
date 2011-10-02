@@ -27,6 +27,7 @@
 @synthesize profileBarHeight = __profileBarHeight;
 @synthesize shouldShowProfileBar = m_shouldShowProfileBar;
 @synthesize managedObjectContext = __managedObjectContext;
+@synthesize currentTheme = m_currentTheme;
 
 #pragma mark - Properties
 - (NSManagedObjectContext*)managedObjectContext {

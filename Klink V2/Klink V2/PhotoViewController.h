@@ -21,7 +21,7 @@ typedef enum {
 
 
 @interface PhotoViewController : KlinkBaseViewController <UIPagedViewSlider2Delegate,UICaptionTextViewDelegate, NSFetchedResultsControllerDelegate,ImageDownloadCallback, CloudEnumeratorDelegate> {
-    Theme*                      m_currentTheme;
+    
     Photo*                      m_currentPhoto;
     int                         m_currentIndex;
     
@@ -54,7 +54,7 @@ typedef enum {
     
 }
 
-@property (nonatomic,retain) Theme*                         currentTheme;
+
 @property (nonatomic,retain) Photo*                         currentPhoto;
 @property (nonatomic,retain) CloudEnumerator*               photoCloudEnumerator;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_captions;

@@ -33,7 +33,7 @@
 
 @implementation PhotoViewController
 @synthesize currentPhoto            = m_currentPhoto;
-@synthesize currentTheme            = m_currentTheme;
+
 @synthesize frc_photos              = __frc_photos;
 @synthesize frc_captions            = __frc_captions;
 @synthesize previousButton          = m_previousButton;

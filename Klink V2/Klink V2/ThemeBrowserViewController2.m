@@ -92,7 +92,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 @implementation ThemeBrowserViewController2
 
-@synthesize theme;
+
 @synthesize frc_photosInCurrentTheme    = __frc_photosInCurrentTheme;
 @synthesize frc_themes                  = __frc_themes;
 @synthesize lbl_theme;
@@ -162,9 +162,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void) assignTheme:(Theme*)themeObject {
     NSString* activityName = @"ThemeBrowserViewController2.assignTheme:";
     __frc_photosInCurrentTheme = nil;
-    NSNumber* oldThemeID = self.theme.objectid;
+    NSNumber* oldThemeID = self.currentTheme.objectid;
    
-    self.theme = themeObject;    
+    self.currentTheme = themeObject;    
     //self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
     [self.lbl_theme setText:themeObject.displayname];
     
@@ -174,7 +174,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
     [self.pvs_photoSlider2 reset];
     
-    self.photosInThemeCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.theme.objectid];
+    self.photosInThemeCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.currentTheme.objectid];
     //[self.pvs_photoSlider2 goTo:0];
 }
 
@@ -197,8 +197,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     //find the index for the current theme in the frc
     int index = 0;
-    if (self.theme != nil) {
-        index = [self.frc_themes indexOf:self.theme];
+    if (self.currentTheme != nil) {
+        index = [self.frc_themes indexOf:self.currentTheme];
         
         //move the scroller to that position
         [self.pvs_themeSlider2 goTo:index];
@@ -240,7 +240,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
    // self.themeCloudEnumerator = [CloudEnumerator enumeratorForThemes];
     self.themeCloudEnumerator.delegate = self;
     
-    if (self.theme == nil) {
+    if (self.currentTheme == nil) {
         NSArray* themes = self.frc_themes.fetchedObjects;
         
         if ([themes count] > 0) {
@@ -267,7 +267,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                     target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.theme]
+                                     target:[CameraButtonManager getInstanceWithViewController:self]
                                      action:@selector(cameraButtonPressed:)];
     
 //    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
@@ -392,7 +392,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     NSArray* sortDescriptors = [NSArray arrayWithObjects:sortDescriptor,sortDescriptor_DateCreated, nil];
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"themeid=%@",self.theme.objectid];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"themeid=%@",self.currentTheme.objectid];
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptors];
     [fetchRequest setEntity:entityDescription];
@@ -424,7 +424,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     if (type == NSFetchedResultsChangeInsert) {
 
-        if (self.theme == nil) {
+        if (self.currentTheme == nil) {
   
             [self assignTheme:anObject];
         }
@@ -552,7 +552,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     if (index >= 0 && numberOfCellsToEnd !=0) {
         Theme* themeAtCurrentIndex = [[self.frc_themes fetchedObjects]objectAtIndex:index];
-        if (![self.theme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
+        if (![self.currentTheme.objectid isEqualToNumber:themeAtCurrentIndex.objectid]) {
             //the theme scrolled to is not the same as the current one, time to switch themes
             [self assignTheme:themeAtCurrentIndex];
             //reset the photo slider to position 0
@@ -624,7 +624,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (viewSlider == self.pvs_photoSlider2 && index < [[self.frc_photosInCurrentTheme  fetchedObjects]count ]) {
         
         // Set up navigation bar back button
-        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:self.theme.displayname
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:self.currentTheme.displayname
                                                                                   style:UIBarButtonItemStyleBordered
                                                                                  target:nil
                                                                                  action:nil] autorelease];
@@ -632,7 +632,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         Photo* selectedPhoto = [[self.frc_photosInCurrentTheme fetchedObjects]objectAtIndex:index];
         PhotoViewController* photoViewController = [[PhotoViewController alloc]init];
         photoViewController.currentPhoto = selectedPhoto;
-        photoViewController.currentTheme = self.theme;
+        photoViewController.currentTheme = self.currentTheme;
         photoViewController.shouldShowProfileBar = NO;
         [self.navigationController pushViewController:photoViewController animated:YES];
         [photoViewController release];

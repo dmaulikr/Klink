@@ -12,14 +12,13 @@
 #import "KlinkBaseViewController.h"
 
 @interface CameraButtonManager : NSObject <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
-    Theme* theme;
     KlinkBaseViewController* viewController;
 }
 
-@property (nonatomic, retain) Theme* theme;
+
 @property (nonatomic, retain) KlinkBaseViewController* viewController;
 
-+ (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController withTheme:(Theme*)currentTheme;
++ (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController; 
 
 - (id) init;
 - (id) initWithTheme:(Theme*)currentTheme withViewController:(id)callingViewController;

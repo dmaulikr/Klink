@@ -40,12 +40,12 @@ static UIImage* shrinkImage(UIImage* original, CGSize size);
 @implementation CameraButtonManager
 
 @synthesize viewController;
-@synthesize theme;
+
 
 static CameraButtonManager* sharedManager;
 
 #pragma mark - Initializers / Singleton Accessors
-+ (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController withTheme:(Theme*)currentTheme {
++ (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController{
   
     @synchronized(self)
     {
@@ -54,7 +54,7 @@ static CameraButtonManager* sharedManager;
         } 
        // [BLLog v:activityName withMessage:@"completed initialization"];
         sharedManager.viewController = callingViewController;
-        sharedManager.theme = currentTheme;
+     
         return sharedManager;
     }
 }
@@ -63,8 +63,7 @@ static CameraButtonManager* sharedManager;
     return self;
 }
 
-- (id) initWithTheme:(Theme*)currentTheme withViewController:(UIViewController*)callingViewController {
-    theme = currentTheme;
+- (id) initWithTheme:(Theme*)currentTheme withViewController:(KlinkBaseViewController*)callingViewController {
     viewController = callingViewController;
     return self;
 }
@@ -73,8 +72,7 @@ static CameraButtonManager* sharedManager;
 #pragma mark - Dealloc
 - (void)dealloc
 {
-    [theme release];
-    [viewController release];
+        [viewController release];
     [super dealloc];
 }
 
@@ -195,7 +193,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:appContext];
     Photo* newPhoto = [[Photo alloc]initWithEntity:entityDescription insertIntoManagedObjectContext:appContext];
     [newPhoto init];
-    newPhoto.themeid = theme.objectid;
+    newPhoto.themeid = self.viewController.currentTheme.objectid;
     newPhoto.creatorid = [[AuthenticationManager getInstance]getLoggedInUserID];
     newPhoto.creatorname = user.username;
     newPhoto.descr = [NSString stringWithFormat:@"By %@ on %@", user.username, [DateTimeHelper formatShortDate:[NSDate date]]];
