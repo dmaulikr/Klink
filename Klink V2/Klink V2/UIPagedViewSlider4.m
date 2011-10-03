@@ -32,14 +32,18 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [UIColor clearColor];
+    
     m_index = 0;
+    
     //transformation to flip the table view on its side
     [self.tableView setAnchorPoint:CGPointMake(0,0)];
     CGAffineTransform rotateTable = CGAffineTransformMakeRotation(degreesToRadians(-90));
     int y = self.tableView.frame.size.width;
     self.tableView.transform = CGAffineTransformTranslate(rotateTable, -y, 0);
     m_lastContentOffset = 0;
-       [self addSubview:self.tableView];
+    [self addSubview:self.tableView];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {

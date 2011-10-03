@@ -22,6 +22,7 @@
 		3D3134F513E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */; };
 		3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */; };
 		3D3134F713E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F313E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png */; };
+		3D7FB0E5143A37F800EF78CF /* UIViewControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D7FB0E4143A37F800EF78CF /* UIViewControllerCategory.m */; };
 		C50E6BF714097DA800BF4ED3 /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */; };
 		C50E6BFA14097DDE00BF4ED3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF914097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.m */; };
 		C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BFC14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m */; };
@@ -237,6 +238,8 @@
 		3D3134F113E2FC2B00DA1BF2 /* UIBarButtonItemArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBarButtonItemArrowLeft@2x.png"; sourceTree = "<group>"; };
 		3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonItemArrowRight.png; sourceTree = "<group>"; };
 		3D3134F313E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBarButtonItemArrowRight@2x.png"; sourceTree = "<group>"; };
+		3D7FB0E3143A37F800EF78CF /* UIViewControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewControllerCategory.h; sourceTree = "<group>"; };
+		3D7FB0E4143A37F800EF78CF /* UIViewControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewControllerCategory.m; sourceTree = "<group>"; };
 		C50E6BF514097DA700BF4ED3 /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C50E6BF814097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
@@ -943,6 +946,8 @@
 				C5C3087013F86D71008E1C81 /* NSFetchedResultsControllerCategory.m */,
 				C5DF0EF51424FFAC000D3B5E /* UIViewCategory.h */,
 				C5DF0EF61424FFAC000D3B5E /* UIViewCategory.m */,
+				3D7FB0E3143A37F800EF78CF /* UIViewControllerCategory.h */,
+				3D7FB0E4143A37F800EF78CF /* UIViewControllerCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1585,6 +1590,7 @@
 				C5E7EEA41434B6F800FB08D2 /* FeedViewController.m in Sources */,
 				C5E7EEA81434D2A300FB08D2 /* UIFeedTableCellView.m in Sources */,
 				C5E7EFBE143607BB00FB08D2 /* EGORefreshTableHeaderView.m in Sources */,
+				3D7FB0E5143A37F800EF78CF /* UIViewControllerCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1625,7 +1631,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -1641,7 +1647,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -1669,7 +1675,7 @@
 					"$(SRC_MGTwitterEngine)",
 				);
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Klink V2/Wordpress/FlurryLib\"",
@@ -1702,7 +1708,7 @@
 					"$(SRC_MGTwitterEngine)",
 				);
 				INFOPLIST_FILE = "Klink V2/Klink V2-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Klink V2/Wordpress/FlurryLib\"",
