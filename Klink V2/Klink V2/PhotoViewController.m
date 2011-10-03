@@ -348,7 +348,7 @@
                             initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
                             style:UIBarButtonItemStylePlain
                             //initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                            target:[CameraButtonManager getInstanceWithViewController:self withTheme:self.currentTheme]
+                            target:[CameraButtonManager getInstanceWithViewController:self]
                             action:@selector(cameraButtonPressed:)];
     
     self.tb_voteButton = [[UIBarButtonItem alloc]
