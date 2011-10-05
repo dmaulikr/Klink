@@ -15,12 +15,16 @@
 #import "FBConnect.h"
 @class AuthenticationContext;
 @interface AuthenticationManager : NSObject <FBSessionDelegate, FBRequestDelegate> {
- NSNumber* m_LoggedInUserID;
- Facebook* facebook;
+    NSNumber*   m_LoggedInUserID;
+    Facebook*   facebook;
+    FBRequest*  m_fbProfileRequest;
+    FBRequest*  m_fbPictureRequest;
 }
 
 @property (nonatomic, retain) NSNumber* m_LoggedInUserID;
 @property (nonatomic, retain) Facebook* facebook;
+@property (nonatomic, retain) FBRequest*    fbProfileRequest;
+@property (nonatomic, retain) FBRequest*    fbPictureRequest;
 
 - (id) init;
 - (id) getAuthenticationContextForUser:(NSNumber*)userID;
