@@ -14,9 +14,13 @@
 #import "WS_TransferManager.h"
 #import "NotificationNames.h"
 #import "User.h"
+#import "ImageManager.h"
 @implementation AuthenticationManager
+
 @synthesize m_LoggedInUserID;
 @synthesize facebook = __facebook;
+@synthesize fbPictureRequest = m_fbPictureRequest;
+@synthesize fbProfileRequest = m_fbProfileRequest;
 
 static  AuthenticationManager* sharedManager; 
 
@@ -67,13 +71,15 @@ static  AuthenticationManager* sharedManager;
 - (void)fbDidLogin {
     NSString* activityName = @"AuthenticationManager.fbDidLogin:";
     NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",self.facebook.accessToken,self.facebook.expirationDate];
-    NSDate* expirationDate = self.facebook.expirationDate;
+  
     [BLLog v:activityName withMessage:message];
 
     
     
     //get the user object
-    [self.facebook requestWithGraphPath:@"me" andDelegate:self];
+    self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];
+    
+  
 }
 
 
@@ -83,20 +89,47 @@ static  AuthenticationManager* sharedManager;
     NSString* message = [NSString stringWithFormat:@"Facebook request succeeded"];
     [BLLog v:activityName withMessage:message];
     
-    WS_EnumerationManager *enumerationManager = [WS_EnumerationManager getInstance];
-    NSString* facebookIDString = [result valueForKey:an_ID];
-    NSNumber* facebookID = [facebookIDString numberValue];
-    NSString* displayName = [result valueForKey:an_NAME];
-    NSString* notificationID = [NSString GetGUID];
-    
-    //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
- 
-    //Add an observer so that we can listen in for when authentication is complete
-    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
-    
-    
-    [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:notificationID];
+    if (request == self.fbProfileRequest) {
+        WS_EnumerationManager *enumerationManager = [WS_EnumerationManager getInstance];
+        NSString* facebookIDString = [result valueForKey:an_ID];
+        NSNumber* facebookID = [facebookIDString numberValue];
+        NSString* displayName = [result valueForKey:an_NAME];
+        NSString* notificationID = [NSString GetGUID];
+        
+        //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
+        
+        //Add an observer so that we can listen in for when authentication is complete
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
+        
+        
+        NSString* nm = [NSString stringWithFormat:@"Returned facebook token: %@",self.facebook.accessToken];
+        [BLLog v:activityName withMessage:nm];
+        [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:notificationID];
+        
+       
+        
+    }
+    else if (request == self.fbPictureRequest) {
+        User* userObject = [DataLayer getObjectByID:m_LoggedInUserID withObjectType:USER];
+        AuthenticationContext* currentContext = [self getAuthenticationContext];
+        
+        if (userObject != nil && currentContext != nil) {
+            UIImage* image = [UIImage imageWithData:result];
+            
+            //we need to save this image to the local file system
+            ImageManager* imageManager = [ImageManager getInstance];
+            NSString* path = [imageManager saveImage:image withFileName:currentContext.facebookUserID];
+            
+            //save the path on the user object and commit
+            
+            userObject.thumbnailURL = path;
+            [userObject commitChangesToDatabase:NO withPendingFlag:NO];
+            
+            NSString* message = [NSString stringWithFormat:@"Updated user profile photo to %@",path];
+            [BLLog v:activityName withMessage:message];
+        }
+    }
     
 }
 
@@ -153,6 +186,11 @@ static  AuthenticationManager* sharedManager;
             NSString* message = [NSString stringWithFormat:@"Passed in access token is not valid, Facebook session not created"];
             [BLLog v:activityName withMessage:message];
         }
+        else {
+            NSString* message = [NSString stringWithFormat:@"Successfully created Facebook session"];
+            [BLLog v:activityName withMessage:message];
+            
+        }
     }
     
     
@@ -172,6 +210,18 @@ static  AuthenticationManager* sharedManager;
         [userDefaults setValue:[userID stringValue] forKey:an_USERID];
         [userDefaults synchronize];
         
+        //check to see if the profile picture is empty, if so, lets grab it from fb
+        User* currentUser = [DataLayer getObjectByID:m_LoggedInUserID withObjectType:USER];
+        if (currentUser != nil && (currentUser.thumbnailURL == nil ||
+                                   [currentUser.thumbnailURL isEqualToString:@""])) {
+            
+            NSString* message = [NSString stringWithFormat:@"User %@ thumbnailURL is %@ and requires update",m_LoggedInUserID,currentUser.thumbnailURL];
+            [BLLog v:activityName withMessage:message];
+            //since we logged in successfully, now lets grab the profile photo            
+            
+            self.fbPictureRequest = [self.facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+        }
+
         //now we emit the system wide notification to tell people the user has logged in
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter postNotificationName:n_USER_LOGGED_IN object:self];
