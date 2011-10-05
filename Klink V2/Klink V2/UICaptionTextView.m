@@ -32,13 +32,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        self.opaque = NO;
+        self.backgroundColor = [UIColor whiteColor];
+        self.opaque = YES;
+        
         CGRect textFieldFrame = [self frameForTextView:frame];
         self.tv_text = [[UITextField alloc]initWithFrame:[self frameForTextView:frame]];
         self.tv_text.returnKeyType = UIReturnKeyDone;
         self.tv_text.delegate = self;
-        self.tv_text.borderStyle = UITextBorderStyleRoundedRect;
+        self.tv_text.borderStyle = UITextBorderStyleBezel;
         self.tv_text.font = [UIFont fontWithName:font_CAPTION size:fontsize_CAPTION];
         self.tv_text.backgroundColor = [UIColor clearColor];
         self.tv_text.opaque = NO;

@@ -19,6 +19,7 @@
 @property (nonatomic, retain) KlinkBaseViewController* viewController;
 
 + (CameraButtonManager*) getInstanceWithViewController:(id)callingViewController; 
+- (void)cameraButtonPressed:(id)sender;
 
 - (id) init;
 - (id) initWithTheme:(Theme*)currentTheme withViewController:(id)callingViewController;

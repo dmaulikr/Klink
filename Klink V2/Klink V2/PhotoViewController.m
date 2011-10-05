@@ -329,7 +329,7 @@
     [self.view addSubview:toolbar];
     
     // Toolbar Items
-    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];    
+    //UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];    
 
     
     self.tb_facebookButton = [[UIBarButtonItem alloc]
@@ -394,8 +394,8 @@
     // Add array of buttons to toolbar
     [toolbar setItems:items animated:NO];
     
-    [photoCaptionView release];
-    [photoCaptionView release];
+    //[photoCaptionView release];
+    //[photoCaptionView release];
     
     m_wantsFullScreenLayout = YES;
     m_hidesBottomBarWhenPushed = YES;
@@ -675,9 +675,13 @@
    
     int count = [[self.frc_photos fetchedObjects]count];
     
+    //CGRect customFrame = CGRectMake(0, 0, kPictureWidth, kPictureHeight);
+    
     if (count > 0 && index < count) {
        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
-        UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
+        //UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo];
+        //UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:customFrame withPhoto:photo];
+        UIPhotoCaptionScrollView* photoAndCaptionScrollView = [[UIPhotoCaptionScrollView alloc]initWithFrame:frame withPhoto:photo withViewController:self];
     
         
         
@@ -776,7 +780,7 @@
     self.sv_view.contentInset = contentInsets;
     self.sv_view.scrollIndicatorInsets = contentInsets;
     
-    CGPoint scrollPoint = CGPointMake(0.0, (self.tv_captionBox.frame.origin.y+self.tv_captionBox.frame.size.height)-kbSize.height);
+    CGPoint scrollPoint = CGPointMake(0.0, (self.tv_captionBox.frame.origin.y + self.tv_captionBox.frame.size.height) - kbSize.height - self.toolbar.frame.size.height);
     [self.sv_view setContentOffset:scrollPoint animated:YES];
 
 

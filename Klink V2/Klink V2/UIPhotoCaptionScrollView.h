@@ -24,7 +24,9 @@
     PhotoViewController* m_photoViewController;
 }
 
+- (id) commonInitWithFrame:(CGRect)frame withPhoto:(Photo *)photo;
 - (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo;
+- (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo withViewController:(PhotoViewController *)viewController;
 - (id) resetWithFrame:(CGRect)frame withPhoto:(Photo*)photo; 
 - (void) setVisibleCaption:(NSNumber*)objectid;
 

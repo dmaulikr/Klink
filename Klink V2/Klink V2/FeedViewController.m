@@ -102,6 +102,8 @@
     
     self.feedTable.delegate = self;
     self.feedTable.dataSource = self;
+    
+    //self.feedTable.backgroundColor = [UIColor whiteColor];
 
     [self.view addSubview:self.feedTable];
     [self.feedTable addSubview:self.refreshHeader];

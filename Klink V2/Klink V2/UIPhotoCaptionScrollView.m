@@ -15,6 +15,7 @@
 #import "SocialSharingManager.h"
 #import "PhotoViewController.h"
 #import "CloudEnumeratorFactory.h"
+#import "UIViewControllerCategory.h"
 
 #define kCaptionWidth_landscape     480
 #define kCaptionWidth               320
@@ -127,7 +128,7 @@
 }
 
 #pragma mark - Frames
-- (CGRect) frameForPhotoCreditsBackground {
+- (CGRect) frameForPhotoCreditsBackground {  
     // Get status bar height if visible
 	CGFloat statusBarHeight = 0;
 	if (![UIApplication sharedApplication].statusBarHidden) {
@@ -207,11 +208,19 @@
 
 #pragma mark - Initializers
 - (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo {
+    return [self commonInitWithFrame:(CGRect)frame withPhoto:(Photo *)photo];
+}
+
+- (id) initWithFrame:(CGRect)frame withPhoto:(Photo *)photo withViewController:(PhotoViewController *)viewController {
+    self.photoViewController = viewController;
+    return [self commonInitWithFrame:(CGRect)frame withPhoto:(Photo *)photo];
+}
+
+- (id) commonInitWithFrame:(CGRect)frame withPhoto:(Photo *)photo {
     self = [super initWithFrame:frame];
     
     if (self != nil) {
         self.photo = photo;
-        self.photoViewController = self.viewController;
         
         // Add Photo Credits Label
         // set transparent backgrounds first
@@ -245,17 +254,21 @@
         [self addSubview:self.photoVotesLabel];
         
         
-        self.backgroundColor = [UIColor yellowColor];
+        // Add Caption Scroll View
+        self.backgroundColor = [UIColor clearColor];
         CGRect frameForCaptionScrollView = [self frameForCaptionScrollView:frame];
         self.captionScrollView = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionScrollView];
         self.captionScrollView.delegate = self;
         
         self.captionScrollView.backgroundColor = [UIColor clearColor];
         self.captionScrollView.alpha = 1;
-        self.captionScrollView.opaque = NO;
+        self.captionScrollView.opaque = YES;
         
         [self.captionScrollView initWithWidth:frameForCaptionScrollView.size.width withHeight:frameForCaptionScrollView.size.height withSpacing:kCaptionSpacing useCellIdentifier:@"captioncell" ];
-         [self addSubview:self.captionScrollView];
+        
+        self.captionScrollView.tableView.pagingEnabled = YES;
+        
+        [self addSubview:self.captionScrollView];
        
         self.captionCloudEnumerator = [[CloudEnumeratorFactory getInstance]enumeratorForCaptions:self.photo.objectid];
 //        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photo.objectid];
