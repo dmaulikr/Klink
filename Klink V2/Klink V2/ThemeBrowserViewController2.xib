@@ -77,7 +77,7 @@
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIPageControl" id="787153578">
+					<object class="IBUIPageControl" id="358151938">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">1316</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
@@ -268,7 +268,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">themePageIndicator</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="787153578"/>
+						<reference key="destination" ref="358151938"/>
 					</object>
 					<int key="connectionID">53</int>
 				</object>
@@ -289,8 +289,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="403566720"/>
 							<reference ref="995220646"/>
+							<reference ref="358151938"/>
 							<reference ref="135952051"/>
-							<reference ref="787153578"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Portrait</string>
@@ -367,7 +367,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">52</int>
-						<reference key="object" ref="787153578"/>
+						<reference key="object" ref="358151938"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>

@@ -14,7 +14,7 @@
 
 @synthesize lbl_votes;
 @synthesize lbl_userName;
-@synthesize lbl_notifications;
+@synthesize lbl_captions;
 @synthesize img_profilePic;
 @synthesize btn_cameraButton;
 @synthesize viewController = m_viewController;
@@ -33,6 +33,12 @@
         NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIProfileBar2" owner:self options:nil];
         
         UIView* profileBar2 = [bundle objectAtIndex:0];
+        
+        // Add custom backgound image to the view
+        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"background-toolbar-black.png"]];
+        //profileBar2.backgroundColor = background;
+        //[background release];
+        
         [self addSubview:profileBar2];
         //self.userInteractionEnabled = YES;
     }
@@ -43,7 +49,7 @@
 {
     [lbl_userName release];
     [lbl_votes release];
-    [lbl_notifications release];
+    [lbl_captions release];
     [img_profilePic release];
     [btn_cameraButton release];
     [super dealloc];
@@ -63,6 +69,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
 }
 
 - (void)viewDidUnload
@@ -72,7 +79,7 @@
     // e.g. self.myOutlet = nil;
     self.lbl_userName = nil;
     self.lbl_votes = nil;
-    self.lbl_notifications = nil;
+    self.lbl_captions = nil;
     self.img_profilePic = nil;
     self.btn_cameraButton = nil;
 }

@@ -12,7 +12,7 @@
 @interface UIProfileBar2 : UIView {
     UILabel* lbl_userName;
     UILabel* lbl_votes;
-    UILabel* lbl_notifications;
+    UILabel* lbl_captions;
     UIImageView* img_profilePic;
     UIButton* btn_cameraButton;
     UIViewController* m_viewController;
@@ -20,8 +20,8 @@
 
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_userName;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_votes;
-@property (nonatomic, retain) IBOutlet UILabel*     lbl_notifications;
-@property (nonatomic, retain) IBOutlet UIImageView*     img_profilePic;
+@property (nonatomic, retain) IBOutlet UILabel*     lbl_captions;
+@property (nonatomic, retain) IBOutlet UIImageView* img_profilePic;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_cameraButton;
 @property (nonatomic, retain) UIViewController*     viewController;
 

@@ -66,21 +66,21 @@
 
 - (void)hideProfileBar {
     [self.profileBar setHidden:YES];
-    [UIView beginAnimations:@"animationOff" context:NULL]; 
-    [UIView setAnimationDuration:1.3f];
-    CGRect existingFrame = self.profileBar.frame;
-    self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, 0);
-    [UIView commitAnimations];
+    //[UIView beginAnimations:@"animationOff" context:NULL]; 
+    //[UIView setAnimationDuration:1.3f];
+    //CGRect existingFrame = self.profileBar.frame;
+    //self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, 0);
+    //[UIView commitAnimations];
 }
 
 - (void)showProfileBar {
     if (self.shouldShowProfileBar) {
         [self.profileBar setHidden:NO];
-        [UIView beginAnimations:@"animationOn" context:NULL]; 
-        [UIView setAnimationDuration:1.3f];
-        CGRect existingFrame = self.profileBar.frame;
-        self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, self.profileBarHeight);
-        [UIView commitAnimations];
+        //[UIView beginAnimations:@"animationOn" context:NULL]; 
+        //[UIView setAnimationDuration:1.3f];
+        //CGRect existingFrame = self.profileBar.frame;
+        //self.profileBar.frame = CGRectMake(existingFrame.origin.x, existingFrame.origin.y, existingFrame.size.width, self.profileBarHeight);
+        //[UIView commitAnimations];
     }
 }
 

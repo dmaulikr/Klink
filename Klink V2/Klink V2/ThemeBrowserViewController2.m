@@ -804,6 +804,8 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             themePageIndicator.currentPage = index;
             [imageView addSubview:themePageIndicator];
         }*/
+        
+        
         // Update page indicartor for themes
         themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
         themePageIndicator.currentPage = index;
