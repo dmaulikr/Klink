@@ -106,6 +106,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 @synthesize pvs_themeSlider2            =__pvs_themeSlider2;
 @synthesize themeCloudEnumerator        =m_themeCloudEnumerator;
 @synthesize photosInThemeCloudEnumerator=m_photosInThemeCloudEnumeator;
+@synthesize themePageIndicator;
 
 #pragma mark - Properties
 - (UIPagedViewSlider2*) pvs_photoSlider2 {
@@ -266,17 +267,18 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     
     self.v_pvs_themeSlider2.tableView.pagingEnabled = YES;
     
-    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
-                                     target:[CameraButtonManager getInstanceWithViewController:self]
-                                     action:@selector(cameraButtonPressed:)];
+//    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
+//                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
+//                                     target:[CameraButtonManager getInstanceWithViewController:self]
+//                                     action:@selector(cameraButtonPressed:)];
     
 //    UIBarButtonItem *cameraButton = [[UIBarButtonItem alloc]
 //                                     initWithBarButtonSystemItem:UIBarButtonSystemItemCamera
 //                                     target:self
 //                                     action:@selector(test_Scroll:)];
-    self.navigationItem.rightBarButtonItem = cameraButton;
-    [cameraButton release];
+//    self.navigationItem.rightBarButtonItem = cameraButton;
+//    [cameraButton release];
+    
     
     //enumerate the feed
     FeedManager* feedManager = [FeedManager getInstance];
@@ -790,7 +792,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             [imageView addSubview:themeDescTextView];
         }
         
-        // Add page indicator for themes
+        /*// Add page indicator for themes
         UIPageControl* themePageIndicator = nil; // subview at index 4
         if ([imageView.subviews count] == 5) {
             themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
@@ -801,7 +803,11 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
             themePageIndicator.currentPage = index;
             [imageView addSubview:themePageIndicator];
-        }
+        }*/
+        // Update page indicartor for themes
+        themePageIndicator.numberOfPages = [self itemCountFor:viewSlider];
+        themePageIndicator.currentPage = index;
+        
     }
     
     

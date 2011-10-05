@@ -24,13 +24,15 @@
     CloudEnumerator*                m_themeCloudEnumerator;
     CloudEnumerator*                m_photosInThemeCloudEnumeator;
   
-  
+    UIPageControl*                  themePageIndicator;
 }
 
 
 @property (nonatomic,retain) NSFetchedResultsController*frc_photosInCurrentTheme;
 @property (nonatomic,retain) NSFetchedResultsController*frc_themes;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_theme;
+
+@property (nonatomic,retain) IBOutlet UIPageControl*    themePageIndicator;
 
 
 
