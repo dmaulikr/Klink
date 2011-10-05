@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "UIProfileBar.h"
+#import "UIProfileBar2.h"
 #import "Photo.h"
 
 @interface KlinkBaseViewController : UIViewController {
-    IBOutlet UIProfileBar* m_profileBar_landscape;
-    IBOutlet UIProfileBar* m_profileBar_portrait;
+    IBOutlet UIProfileBar2* m_profileBar_landscape;
+    IBOutlet UIProfileBar2* m_profileBar_portrait;
+//    IBOutlet UIProfileBar2* m_profileBar2;
     UIView* m_v_landscape;
     UIView* m_v_portrait;
     
@@ -23,11 +25,13 @@
     BOOL m_shouldShowProfileBar;
     
 }
-@property (nonatomic,retain)            UIProfileBar* profileBar;
+@property (nonatomic,retain)            UIProfileBar2* profileBar;
+//@property (nonatomic,retain)            UIProfileBar2* profileBar2;
 @property (readonly)                    int profileBarHeight;
 @property (nonatomic,retain) IBOutlet   UIView* v_landscape;
 @property (nonatomic,retain) IBOutlet   UIView* v_portrait;
 @property                               BOOL shouldShowProfileBar;
+//@property                               BOOL shouldShowProfileBar2;
 @property (nonatomic,retain)            NSManagedObjectContext* managedObjectContext;
 @property (nonatomic,retain)            Theme* currentTheme;
 

@@ -23,6 +23,10 @@
 		3D3134F613E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F213E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight.png */; };
 		3D3134F713E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D3134F313E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png */; };
 		3D7FB0E5143A37F800EF78CF /* UIViewControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D7FB0E4143A37F800EF78CF /* UIViewControllerCategory.m */; };
+		3D7FB0EC143A7E6700EF78CF /* UIProfileBar2.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EA143A7E6500EF78CF /* UIProfileBar2.m */; };
+		3D7FB0ED143A7E6700EF78CF /* UIProfileBar2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EB143A7E6600EF78CF /* UIProfileBar2.xib */; };
+		3D7FB0F0143B985C00EF78CF /* icon-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EE143B985C00EF78CF /* icon-profile.png */; };
+		3D7FB0F1143B985C00EF78CF /* icon-profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */; };
 		C50E6BF714097DA800BF4ED3 /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */; };
 		C50E6BFA14097DDE00BF4ED3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF914097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.m */; };
 		C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BFC14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m */; };
@@ -240,6 +244,11 @@
 		3D3134F313E2FC2B00DA1BF2 /* UIBarButtonItemArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIBarButtonItemArrowRight@2x.png"; sourceTree = "<group>"; };
 		3D7FB0E3143A37F800EF78CF /* UIViewControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewControllerCategory.h; sourceTree = "<group>"; };
 		3D7FB0E4143A37F800EF78CF /* UIViewControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewControllerCategory.m; sourceTree = "<group>"; };
+		3D7FB0E9143A7E6400EF78CF /* UIProfileBar2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProfileBar2.h; sourceTree = "<group>"; };
+		3D7FB0EA143A7E6500EF78CF /* UIProfileBar2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProfileBar2.m; sourceTree = "<group>"; };
+		3D7FB0EB143A7E6600EF78CF /* UIProfileBar2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProfileBar2.xib; sourceTree = "<group>"; };
+		3D7FB0EE143B985C00EF78CF /* icon-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile.png"; sourceTree = "<group>"; };
+		3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile@2x.png"; sourceTree = "<group>"; };
 		C50E6BF514097DA700BF4ED3 /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C50E6BF814097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
@@ -631,6 +640,8 @@
 		3DC5227713D018CE00A0F1F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3D7FB0EE143B985C00EF78CF /* icon-profile.png */,
+				3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */,
 				3D1A6A18142A63500095B366 /* icon-compose.png */,
 				3D1A6A19142A63500095B366 /* icon-compose@2x.png */,
 				3D1A6A14142A62FD0095B366 /* icon-camera2.png */,
@@ -1001,10 +1012,10 @@
 				C5D8E09C13DBBD2E00D88B00 /* Abstract */,
 				C5BED8BA13D52FC2007A1934 /* ProfileViewController.h */,
 				C5BED8BB13D52FC2007A1934 /* ProfileViewController.m */,
+				C5BED8BC13D52FC2007A1934 /* ProfileViewController.xib */,
 				C5A095DA13E6F5EC003D4376 /* PhotoViewController.h */,
 				C5A095DB13E6F5EC003D4376 /* PhotoViewController.m */,
 				C5A095DC13E6F5EC003D4376 /* PhotoViewController.xib */,
-				C5BED8BC13D52FC2007A1934 /* ProfileViewController.xib */,
 				C5BED8BD13D52FC2007A1934 /* SystemDataModel.xcdatamodeld */,
 				C5BED8BF13D52FC2007A1934 /* Test_Project_2.xcdatamodeld */,
 				C5BED8C213D52FC2007A1934 /* ThemeBrowserViewController2.h */,
@@ -1114,6 +1125,9 @@
 				C5E7EEA61434D2A300FB08D2 /* UIFeedTableCellView.h */,
 				C5E7EEA71434D2A300FB08D2 /* UIFeedTableCellView.m */,
 				C5E7EEA91434D2C900FB08D2 /* UIFeedTableCellView.xib */,
+				3D7FB0E9143A7E6400EF78CF /* UIProfileBar2.h */,
+				3D7FB0EA143A7E6500EF78CF /* UIProfileBar2.m */,
+				3D7FB0EB143A7E6600EF78CF /* UIProfileBar2.xib */,
 			);
 			name = "Application Specific";
 			sourceTree = "<group>";
@@ -1429,6 +1443,9 @@
 				C5E7EFC4143607BB00FB08D2 /* grayArrow@2x.png in Resources */,
 				C5E7EFC5143607BB00FB08D2 /* whiteArrow.png in Resources */,
 				C5E7EFC6143607BB00FB08D2 /* whiteArrow@2x.png in Resources */,
+				3D7FB0ED143A7E6700EF78CF /* UIProfileBar2.xib in Resources */,
+				3D7FB0F0143B985C00EF78CF /* icon-profile.png in Resources */,
+				3D7FB0F1143B985C00EF78CF /* icon-profile@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1591,6 +1608,7 @@
 				C5E7EEA81434D2A300FB08D2 /* UIFeedTableCellView.m in Sources */,
 				C5E7EFBE143607BB00FB08D2 /* EGORefreshTableHeaderView.m in Sources */,
 				3D7FB0E5143A37F800EF78CF /* UIViewControllerCategory.m in Sources */,
+				3D7FB0EC143A7E6700EF78CF /* UIProfileBar2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

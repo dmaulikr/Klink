@@ -42,14 +42,16 @@
 
 - (int)profileBarHeight {
     if (self.view == self.v_portrait) {
-        return m_profileBar_portrait_height;
+        //return m_profileBar_portrait_height;
+        return 44;
     }
     else {
-        return m_profileBar_landscape_height;
+        //return m_profileBar_landscape_height;
+        return 44;
     }
 }
 
-- (UIProfileBar*)profileBar {
+- (UIProfileBar2*) profileBar {
     if (self.view == self.v_portrait) {
         return m_profileBar_portrait;
     }
@@ -184,8 +186,12 @@
         [self hideProfileBar];
     }
     
-    m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
-    m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
+    //m_profileBar_landscape_height = m_profileBar_landscape.frame.size.height;
+    //m_profileBar_portrait_height =m_profileBar_portrait.frame.size.height;
+    m_profileBar_landscape_height = 44;
+    m_profileBar_portrait_height = 44;
+    
+    
     self.profileBar.viewController = self;
 
 
