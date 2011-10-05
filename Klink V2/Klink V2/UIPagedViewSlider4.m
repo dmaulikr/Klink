@@ -228,12 +228,9 @@
 
 - (void)        onNewItemInsertedAt:(int)index {
     NSIndexPath* indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    int rowCount = [self.tableView numberOfRowsInSection:0];
     
-    if (index < rowCount) {
-        
-        [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
 }
 
 
@@ -306,7 +303,7 @@
 - (void)dealloc
 {
     [super dealloc];
-    [self.tableView dealloc];
+  
 }
 
 @end

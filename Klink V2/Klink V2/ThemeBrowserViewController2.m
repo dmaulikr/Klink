@@ -109,12 +109,13 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 #pragma mark - Properties
 - (UIPagedViewSlider2*) pvs_photoSlider2 {
-    if (self.view == self.v_portrait) {
-        return self.v_pvs_photoSlider2;
-    }
-    else {
-        return self.h_pvs_photoSlider2;
-    }
+//    if (self.view == self.v_portrait) {
+//        return self.v_pvs_photoSlider2;
+//    }
+//    else {
+//        return self.h_pvs_photoSlider2;
+//    }
+    return self.v_pvs_photoSlider2;
 }
 
 - (UIPagedViewSlider2*) pvs_themeSlider2 {
@@ -444,7 +445,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
     else if (controller == self.frc_themes) {
         //its a new object in the theme controller
-        [self.pvs_themeSlider2 onNewItemInsertedAt:[newIndexPath row]];
+        if (type == NSFetchedResultsChangeInsert) {
+            [self.pvs_themeSlider2 onNewItemInsertedAt:[newIndexPath row]];
+        }
         [self frc_themes_didChangeObject:anObject
                              atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
     }
