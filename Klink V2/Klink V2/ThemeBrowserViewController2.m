@@ -477,7 +477,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (isSliderOrientationHorizontal) {
         //portrait
         xCoordinate = index * (kPictureWidth + kPictureSpacing);
-        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight_landscape);
+        return CGRectMake(xCoordinate, 0, kPictureWidth, kPictureHeight);
     }
     else {
         //landscape
@@ -494,7 +494,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     if (isSliderOrientationHorizontal) {
         //portrait
         xCoordinate = index * (kThemePictureWidth + kThemePictureSpacing);
-        return CGRectMake(xCoordinate, 0, kThemePictureWidth, kThemePictureHeight);
+        return CGRectMake(xCoordinate, yCoordinate, kThemePictureWidth, kThemePictureHeight);
         
     }
     else {
@@ -534,15 +534,17 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     }
 }
 
-- (CGRect) getThemeDescriptionFrame {
+- (CGRect) getThemeDescriptionFrame:(CGRect)frame {
     int xCoordinate = 0;
     int yCoordinate = 0;
     if (self.view == v_landscape) {
         yCoordinate = kThemePictureHeight_landscape - kTextViewDescriptionHeight_landscape;
+        //yCoordinate = frame.size.height - kTextViewDescriptionHeight_landscape;
         return CGRectMake(xCoordinate, yCoordinate, kTextViewDescriptionWidth_landscape, kTextViewDescriptionHeight_landscape); 
     }
     else {
         yCoordinate = kThemePictureHeight - kTextViewDescriptionHeight;
+        //yCoordinate = frame.size.height - kTextViewDescriptionHeight;
         return CGRectMake(xCoordinate, yCoordinate, kTextViewDescriptionWidth, kTextViewDescriptionHeight); 
     }
 }
@@ -715,6 +717,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         UIImageView* imageView = (UIImageView*)v;
         NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
         imageView.frame = frame;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
         
         [userInfo setObject:selectedTheme.objectid forKey:an_OBJECTID];
         UIImage* image = [[ImageManager getInstance]downloadImage:selectedTheme.homeimageurl  withUserInfo:userInfo atCallback:self];
@@ -763,7 +766,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
         
         
         // Add theme description        
-        CGRect themeDescriptionFrame = [self getThemeDescriptionFrame];
+        CGRect themeDescriptionFrame = [self getThemeDescriptionFrame:frame];
         UIView* themeDescBackground = nil;      // subview at index 2
         UITextView* themeDescTextView = nil;    // subview at index 3
         if ([imageView.subviews count] == 4) {
@@ -995,4 +998,5 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void) onEnumerateComplete {
     
 }
+
 @end

@@ -31,6 +31,7 @@
 @property (nonatomic, retain) NSFetchedResultsController* frc_loggedInUser;
 
 - (void)updateLabels;
+- (void)animateNewCaption;
 - (IBAction) onCameraButtonPressed:(id)sender;
 
 @end

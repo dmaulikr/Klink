@@ -14,7 +14,7 @@
 //#import "FeedTypes.h"
 //#import "Feed.h"
 #import "FeedManager.h"
-//#import "FeedViewController.h"
+#import "FeedViewController.h"
 #import "ImageManager.h"
 
 
@@ -39,6 +39,25 @@
     return self;
 }*/
 
+- (void)animateNewVote {
+    // animate the updating of the votes label
+    [UIView animateWithDuration:1
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         self.lbl_new_votes.alpha = 1;
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:1
+                                               delay:0
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              self.lbl_new_votes.alpha = 0;
+                                          }
+                                          completion:nil];
+                     }];
+}
+
 
 - (void)updateLabels {
     AuthenticationManager* authnManager = [AuthenticationManager getInstance];
@@ -62,18 +81,29 @@
         
         int newCaptions = [feedManager.numberOfNewCaptionsInFeed intValue];
         if (newCaptions == 0) {
-            self.lbl_new_captions.text = [NSString stringWithFormat:@""];
+            self.lbl_new_captions.text = [NSString stringWithFormat:@"0 new!"];
+            self.lbl_new_captions.hidden = YES;
+            self.lbl_captions.hidden = NO;
+            
         }
         else {
-            self.lbl_new_captions.text = [NSString stringWithFormat:@"%d",newCaptions];
+            self.lbl_new_captions.text = [NSString stringWithFormat:@"%d new!",newCaptions];
+            self.lbl_new_captions.hidden = YES;
+            self.lbl_captions.hidden = NO;
         }
         
         
         if (newVotes == 0) {
-            self.lbl_new_votes.text = [NSString stringWithFormat:@""];
+            self.lbl_new_votes.text = [NSString stringWithFormat:@"0 new!"];
+            self.lbl_new_votes.hidden = YES;
+            self.lbl_votes.hidden = NO;
+            //[self animateNewVote];
         }
         else {
-            self.lbl_new_votes.text = [NSString stringWithFormat:@"%d",newVotes];
+            self.lbl_new_votes.text = [NSString stringWithFormat:@"%d new!",newVotes];
+            self.lbl_new_votes.hidden = YES;
+            self.lbl_votes.hidden = NO;
+            //[self animateNewVote];
         }
         
         [self.lbl_new_captions setNeedsDisplay];
@@ -139,10 +169,10 @@
         // Add custom backgound image to the view
         //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"background-toolbar-black.png"]];
         //profileBar2.backgroundColor = background;
-        //[background release];
+        //[background release];        
         
         [self addSubview:profileBar2];
-        //self.userInteractionEnabled = YES;
+        self.userInteractionEnabled = YES;
         
         
         //register for global events
@@ -167,8 +197,8 @@
     [lbl_userName release];
     [lbl_votes release];
     [lbl_captions release];
-    [self.lbl_new_captions release];
-    [self.lbl_new_votes release];
+    [lbl_new_votes release];
+    [lbl_new_captions release];
     [img_profilePic release];
     [btn_cameraButton release];
     [super dealloc];
@@ -199,6 +229,8 @@
     self.lbl_userName = nil;
     self.lbl_votes = nil;
     self.lbl_captions = nil;
+    self.lbl_new_votes = nil;
+    self.lbl_new_captions = nil;
     self.img_profilePic = nil;
     self.btn_cameraButton = nil;
 }
@@ -214,6 +246,16 @@
 - (IBAction) onCameraButtonPressed:(id)sender {
     CameraButtonManager* cameraButtonManager = [CameraButtonManager getInstanceWithViewController:self.viewController];
     [cameraButtonManager cameraButtonPressed:self];
+}
+
+
+#pragma mark - Tap handler
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    if (self.viewController != nil) {
+        FeedViewController* fvc = [[FeedViewController alloc]init];
+        [self.viewController.navigationController pushViewController:fvc animated:YES];
+    }
 }
 
 

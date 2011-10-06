@@ -27,8 +27,10 @@
 		3D7FB0ED143A7E6700EF78CF /* UIProfileBar2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EB143A7E6600EF78CF /* UIProfileBar2.xib */; };
 		3D7FB0F0143B985C00EF78CF /* icon-profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EE143B985C00EF78CF /* icon-profile.png */; };
 		3D7FB0F1143B985C00EF78CF /* icon-profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */; };
-		3DB9D572143CAD630099E241 /* background-toolbar-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB9D570143CAD630099E241 /* background-toolbar-black.png */; };
 		3DB9D573143CAD630099E241 /* background-toolbar-black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB9D571143CAD630099E241 /* background-toolbar-black@2x.png */; };
+		3DB9D578143CFC1D0099E241 /* background-toolbar-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB9D577143CFC1D0099E241 /* background-toolbar-black.png */; };
+		3DB9D57B143D05F80099E241 /* badge-singledigit-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB9D579143D05F80099E241 /* badge-singledigit-red.png */; };
+		3DB9D57C143D05F80099E241 /* badge-singledigit-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB9D57A143D05F80099E241 /* badge-singledigit-red@2x.png */; };
 		C50E6BF714097DA800BF4ED3 /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */; };
 		C50E6BFA14097DDE00BF4ED3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BF914097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.m */; };
 		C50E6BFD14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C50E6BFC14097DF600BF4ED3 /* CXMLElement_CreationExtensions.m */; };
@@ -251,8 +253,10 @@
 		3D7FB0EB143A7E6600EF78CF /* UIProfileBar2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProfileBar2.xib; sourceTree = "<group>"; };
 		3D7FB0EE143B985C00EF78CF /* icon-profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile.png"; sourceTree = "<group>"; };
 		3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile@2x.png"; sourceTree = "<group>"; };
-		3DB9D570143CAD630099E241 /* background-toolbar-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-toolbar-black.png"; sourceTree = "<group>"; };
 		3DB9D571143CAD630099E241 /* background-toolbar-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-toolbar-black@2x.png"; sourceTree = "<group>"; };
+		3DB9D577143CFC1D0099E241 /* background-toolbar-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-toolbar-black.png"; sourceTree = "<group>"; };
+		3DB9D579143D05F80099E241 /* badge-singledigit-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "badge-singledigit-red.png"; sourceTree = "<group>"; };
+		3DB9D57A143D05F80099E241 /* badge-singledigit-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "badge-singledigit-red@2x.png"; sourceTree = "<group>"; };
 		C50E6BF514097DA700BF4ED3 /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C50E6BF614097DA700BF4ED3 /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C50E6BF814097DDD00BF4ED3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
@@ -644,7 +648,9 @@
 		3DC5227713D018CE00A0F1F0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3DB9D570143CAD630099E241 /* background-toolbar-black.png */,
+				3DB9D579143D05F80099E241 /* badge-singledigit-red.png */,
+				3DB9D57A143D05F80099E241 /* badge-singledigit-red@2x.png */,
+				3DB9D577143CFC1D0099E241 /* background-toolbar-black.png */,
 				3DB9D571143CAD630099E241 /* background-toolbar-black@2x.png */,
 				3D7FB0EE143B985C00EF78CF /* icon-profile.png */,
 				3D7FB0EF143B985C00EF78CF /* icon-profile@2x.png */,
@@ -1452,8 +1458,10 @@
 				3D7FB0ED143A7E6700EF78CF /* UIProfileBar2.xib in Resources */,
 				3D7FB0F0143B985C00EF78CF /* icon-profile.png in Resources */,
 				3D7FB0F1143B985C00EF78CF /* icon-profile@2x.png in Resources */,
-				3DB9D572143CAD630099E241 /* background-toolbar-black.png in Resources */,
 				3DB9D573143CAD630099E241 /* background-toolbar-black@2x.png in Resources */,
+				3DB9D578143CFC1D0099E241 /* background-toolbar-black.png in Resources */,
+				3DB9D57B143D05F80099E241 /* badge-singledigit-red.png in Resources */,
+				3DB9D57C143D05F80099E241 /* badge-singledigit-red@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
