@@ -198,9 +198,6 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell* cell = (UITableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:m_cellIdentifier];
-   
-
-
     
     //this frame is passed to the delegate to attach subviews with
     CGRect frame = CGRectMake(0, 0, m_itemWidth, m_itemHeight);

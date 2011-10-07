@@ -168,7 +168,24 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
    
     self.currentTheme = themeObject;    
     //self.lbl_theme.text = [NSString stringWithFormat:@"Loaded Theme ID %@",themeObject.objectid];
-    [self.lbl_theme setText:themeObject.displayname];
+    
+    // animate the changing of the theme title label
+    [UIView animateWithDuration:0.15
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction )
+                     animations:^{
+                             self.lbl_theme.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.25
+                                               delay:0
+                                             options:( UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction )
+                                          animations:^{
+                                              [self.lbl_theme setText:themeObject.displayname];
+                                              self.lbl_theme.alpha = 1;
+                                          }
+                                          completion:nil];
+                     }];
     
     NSString* message = [NSString stringWithFormat:@"Changing from ThemeID:%@ to ThemeID:%@",[oldThemeID stringValue],[themeObject.objectid stringValue]];
     [BLLog v:activityName withMessage:message];
@@ -714,6 +731,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     else if (viewSlider == self.pvs_themeSlider2 &&
              index < [[self.frc_themes fetchedObjects]count]) {
         Theme* selectedTheme = [[self.frc_themes fetchedObjects]objectAtIndex:index];
+        
         UIImageView* imageView = (UIImageView*)v;
         NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:imageView forKey:an_IMAGEVIEW];
         imageView.frame = frame;
@@ -763,6 +781,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
             [themeLabel setText:selectedTheme.displayname];
             [imageView addSubview:themeLabel];
         }
+        
+        themeLabelBackground.hidden = YES;
+        themeLabel.hidden = YES;
         
         
         // Add theme description        
