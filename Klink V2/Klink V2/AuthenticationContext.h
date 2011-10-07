@@ -22,6 +22,7 @@
     NSString* m_facebookUserID;
     NSDate* m_facebookAccessTokenExpiryDate;
     NSString* m_twitterAccessToken;
+    NSString* m_twitterAccessTokenSecret;
     NSDate* m_twitterAccessTokenExpiryDate;
     NSString* m_twitterUserID;
     NSString* m_wordpressURL;
@@ -36,6 +37,7 @@
 @property (nonatomic, retain) NSDate* facebookAccessTokenExpiryDate;
 @property (nonatomic, retain) NSString* facebookUserID;
 @property (nonatomic, retain) NSString* twitterAccessToken;
+@property (nonatomic, retain) NSString* twitterAccessTokenSecret;
 @property (nonatomic, retain) NSDate* twitterAccessTokenExpiryDate;
 @property (nonatomic, retain) NSString* twitterUserID;
 @property (nonatomic, retain) NSString* wordpressURL;
@@ -47,5 +49,6 @@
 - (void) copyFrom:(AuthenticationContext*)newContext;
 - (BOOL) hasWordpress;
 - (BOOL) hasFacebook;
+- (BOOL) hasTwitter;
 + (id)newInstance;
 @end

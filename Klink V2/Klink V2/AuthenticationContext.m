@@ -22,6 +22,7 @@
 @synthesize wpPassword = m_wpPassword;
 @synthesize wpUsername = m_wpUsername;
 @synthesize wordpressURL = m_wordpressURL;
+@synthesize twitterAccessTokenSecret = m_twitterAccessTokenSecret;
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary { 
     NSNumber* expiryDateSinceEpoch = [jsonDictionary valueForKey:an_EXPIRY_DATE];
@@ -46,6 +47,7 @@
     self.wpPassword = [jsonDictionary valueForKey:an_WORDPRESSPASSWORD];
     self.wpUsername = [jsonDictionary valueForKey:an_WORDPRESSUSERNAME];
     self.wordpressURL = [jsonDictionary valueForKey:an_WORDPRESSURL];
+    self.twitterAccessTokenSecret = [jsonDictionary valueForKey:an_TWITTERACCESSTOKENSECRET];
     return self;
 }
 
@@ -62,6 +64,7 @@
     self.wordpressURL = newContext.wordpressURL;
     self.wpUsername = newContext.wpUsername;
     self.wpPassword = newContext.wpPassword;
+    self.twitterAccessTokenSecret = newContext.twitterAccessTokenSecret;
 }
 
 - (NSString*) toJSON {
@@ -84,7 +87,9 @@
    
     [newDictionary setValue:self.facebookUserID forKey:an_FACEBOOKUSERID];
     [newDictionary setValue:self.twitterAccessToken forKey:an_TWITTERACCESSTOKEN];
-    [newDictionary setValue:self.twitterAccessTokenExpiryDate forKey:an_TWITTERTOKENEXPIRYDATE];
+    //we dont use the twitter expirt date, so we put 0 in it as a stub
+    [newDictionary setValue:[NSNumber numberWithInt:0] forKey:an_TWITTERTOKENEXPIRYDATE];
+    [newDictionary setValue:self.twitterAccessTokenSecret forKey:an_TWITTERACCESSTOKENSECRET];
     [newDictionary setValue:self.twitterUserID forKey:an_TWITTERUSERID];
     [newDictionary setValue:self.wpPassword forKey:an_WORDPRESSPASSWORD];
     [newDictionary setValue:self.wpUsername forKey:an_WORDPRESSUSERNAME];
@@ -114,6 +119,18 @@
     }
     return retVal;
 }
+
+- (BOOL) hasTwitter {
+    BOOL retVal = NO;
+    
+    if (self.twitterUserID != nil && ![self.twitterUserID isEqual:[NSNull null]]  
+        && self.twitterAccessTokenSecret != nil && ![self.twitterAccessTokenSecret isEqual:[NSNull null]] 
+        && self.twitterAccessToken != nil && ![self.twitterAccessToken isEqual:[NSNull null]]) {
+        retVal = YES;
+    }
+    return retVal;
+}
+
 + (NSString*) getTypeName {
     return tn_AUTHENTICATIONCONTEXT;
 }

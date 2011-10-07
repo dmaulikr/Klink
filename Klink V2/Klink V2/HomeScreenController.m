@@ -10,7 +10,7 @@
 #import "NSStringGUIDCategory.h"
 #import "ThemeBrowserViewController2.h"
 #import "FullScreenPhotoController.h"
-
+#import "LoginViewController.h"
 @implementation HomeScreenController
 @synthesize managedObjectContext;
 @synthesize button1;
@@ -82,15 +82,21 @@
 - (IBAction)onButtonClicked:(id)sender {
     
     if (sender == button1) {
-        AuthenticationManager* authManager = [AuthenticationManager getInstance];
-        if (![authManager getLoggedInUserID]) {
-            //need to login
-            [authManager authenticate];
-        }
-        else {
-            //user is already logged in
-            NSLog(@"No need to log in user, they already are logged in");
-        }
+        LoginViewController* loginViewController = [LoginViewController controllerForFacebookLogin:self onFinishPerform:nil];
+        //[self.navigationController pushViewController:loginViewController animated:YES];
+       
+          [self.navigationController presentModalViewController:loginViewController animated:YES];
+      //  [self.navigationController pushViewController:loginViewController animated:YES];
+       // [loginViewController beginTwitterAuthentication];
+//        AuthenticationManager* authManager = [AuthenticationManager getInstance];
+//        if (![authManager getLoggedInUserID]) {
+//            //need to login
+//            [authManager authenticate];
+//        }
+//        else {
+//            //user is already logged in
+//            NSLog(@"No need to log in user, they already are logged in");
+//        }
         
 
     }

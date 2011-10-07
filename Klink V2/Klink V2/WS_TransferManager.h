@@ -32,6 +32,13 @@
 - (void) shareCaptionViaCloud:(NSNumber*)captionid
         withOptions:(SharingOptions*)sharingOptions;
 
+- (void) updateAuthenticatorInCloud:
+        (NSString*)twitterID
+        withToken:(NSString*)twitterAccessToken
+  withTokenSecret:(NSString*)twitterAccessTokenSecret
+        withExpiry:(NSString*)twitterTokenExpiryDate
+        onFinishNotify:(NSString*)notificationID;
+
 - (void) updateObjectInCloud:
         (NSNumber*)objectid 
         withObjectType:(NSString*)objectType;

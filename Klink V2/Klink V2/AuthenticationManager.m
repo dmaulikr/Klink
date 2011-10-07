@@ -68,19 +68,19 @@ static  AuthenticationManager* sharedManager;
 }
 
 #pragma mark - FBSessionDelegate
-- (void)fbDidLogin {
-    NSString* activityName = @"AuthenticationManager.fbDidLogin:";
-    NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",self.facebook.accessToken,self.facebook.expirationDate];
-  
-    [BLLog v:activityName withMessage:message];
-
-    
-    
-    //get the user object
-    self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];
-    
-  
-}
+//- (void)fbDidLogin {
+//    NSString* activityName = @"AuthenticationManager.fbDidLogin:";
+//    NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",self.facebook.accessToken,self.facebook.expirationDate];
+//  
+//    [BLLog v:activityName withMessage:message];
+//
+//    
+//    
+//    //get the user object
+//    self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];
+//    
+//  
+//}
 
 
 #pragma mark -- FBRequestDelegate
@@ -90,22 +90,22 @@ static  AuthenticationManager* sharedManager;
     [BLLog v:activityName withMessage:message];
     
     if (request == self.fbProfileRequest) {
-        WS_EnumerationManager *enumerationManager = [WS_EnumerationManager getInstance];
-        NSString* facebookIDString = [result valueForKey:an_ID];
-        NSNumber* facebookID = [facebookIDString numberValue];
-        NSString* displayName = [result valueForKey:an_NAME];
-        NSString* notificationID = [NSString GetGUID];
-        
-        //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
-        
-        //Add an observer so that we can listen in for when authentication is complete
-        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
-        
-        
-        NSString* nm = [NSString stringWithFormat:@"Returned facebook token: %@",self.facebook.accessToken];
-        [BLLog v:activityName withMessage:nm];
-        [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:notificationID];
+//        WS_EnumerationManager *enumerationManager = [WS_EnumerationManager getInstance];
+//        NSString* facebookIDString = [result valueForKey:an_ID];
+//        NSNumber* facebookID = [facebookIDString numberValue];
+//        NSString* displayName = [result valueForKey:an_NAME];
+//        NSString* notificationID = [NSString GetGUID];
+//        
+//        //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
+//        
+//        //Add an observer so that we can listen in for when authentication is complete
+//        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+//        [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
+//        
+//        
+//        NSString* nm = [NSString stringWithFormat:@"Returned facebook token: %@",self.facebook.accessToken];
+//        [BLLog v:activityName withMessage:nm];
+//        [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:notificationID];
         
        
         
@@ -132,22 +132,22 @@ static  AuthenticationManager* sharedManager;
     }
     
 }
-
-- (void) onGetAuthenticationContextDownloaded:(NSNotification*)notification {
-    NSString* activityName = @"AuthenticationManager.onGetAuthenticationContextDownloaded:";
-    NSDictionary* userInfo = [notification userInfo];
-    AuthenticationContext* newContext = [[userInfo objectForKey:an_AUTHENTICATIONCONTEXT]retain];
-    User* user = [[userInfo objectForKey:an_USER]retain];
-    
-    NSString* message = [NSString stringWithFormat:@"Authentication context received from server, logging in user: %@",newContext.userid];
-    [BLLog v:activityName withMessage:message];
-    
-    //save the user object that is returned to us in the database
-    [ServerManagedResource refreshWithServerVersion:user];
-    
-    [self loginUser:newContext.userid withAuthenticationContext:newContext];
-    
-}
+//
+//- (void) onGetAuthenticationContextDownloaded:(NSNotification*)notification {
+//    NSString* activityName = @"AuthenticationManager.onGetAuthenticationContextDownloaded:";
+//    NSDictionary* userInfo = [notification userInfo];
+//    AuthenticationContext* newContext = [[userInfo objectForKey:an_AUTHENTICATIONCONTEXT]retain];
+//    User* user = [[userInfo objectForKey:an_USER]retain];
+//    
+//    NSString* message = [NSString stringWithFormat:@"Authentication context received from server, logging in user: %@",newContext.userid];
+//    [BLLog v:activityName withMessage:message];
+//    
+//    //save the user object that is returned to us in the database
+//    [ServerManagedResource refreshWithServerVersion:user];
+//    
+//    [self loginUser:newContext.userid withAuthenticationContext:newContext];
+//    
+//}
 
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error  {
     NSString* activityName = @"AuthenticationManager:request:didFailWithError";
@@ -156,14 +156,50 @@ static  AuthenticationManager* sharedManager;
 }
 
 #pragma mark - authenticators
--(void) authenticate {
-   //now we need to grab their facebook authentication data, and then log them into our app    
-    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    if (![self.facebook isSessionValid]) {
-        [self.facebook authorize:permissions delegate:self];
-    }
+//-(void) authenticate {
+//   //now we need to grab their facebook authentication data, and then log them into our app    
+//    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
+//    if (![self.facebook isSessionValid]) {
+//        [self.facebook authorize:permissions delegate:self];
+//    }
+//    
+//}
+
+- (id)updateAuthentiationContextWith:(NSString *)twitterUserID 
+                     withAccessToken:(NSString *)twitterAccessToken
+               withAccessTokenSecret:(NSString *)twitterAccessTokenSecret 
+                      withExpiryDate:(NSString *)twitterTokenExpiry
+                      onFinishNotify:(NSString*)notificationID{
     
+    NSString* activityName = @"AuthenticationManager.updateAuthenticationContextWith:";
+    AuthenticationContext* context = [self getAuthenticationContext];
+    if (context != nil) {
+        context.twitterAccessToken = twitterAccessToken;
+        context.twitterAccessTokenExpiryDate =[DateTimeHelper parseWebServiceDateString:twitterTokenExpiry];
+        context.twitterUserID = twitterUserID;
+        context.twitterAccessTokenSecret = twitterAccessTokenSecret;
+        NSString* json = [context toJSON];
+        NSError* error = nil;
+        
+        [SFHFKeychainUtils storeUsername:[m_LoggedInUserID stringValue] andPassword:json forServiceName:sn_KEYCHAINSERVICENAME updateExisting:YES error:&error];
+        
+        if (error != nil) {
+            NSString* errorMessage = [NSString stringWithFormat:@"error: %@",[error description]];
+            [BLLog e:activityName withMessage:errorMessage];
+            return [self getAuthenticationContext];
+        }
+        else {
+            //update the authenticator in the cloud
+            [[WS_TransferManager getInstance]updateAuthenticatorInCloud:twitterUserID withToken:twitterAccessToken withTokenSecret:twitterAccessTokenSecret withExpiry:twitterTokenExpiry onFinishNotify:notificationID];
+            return context;
+        }
+        
+    }
+    else {
+        return nil;
+    }
 }
+
 - (void)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
     NSString* activityName = @"AuthenticationManager.loginUser";
 

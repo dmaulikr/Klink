@@ -18,3 +18,4 @@ extern NSString* const verb_UPLOADATTACHMENT;
 extern NSString* const verb_GETAUTHENTICATOR;
 extern NSString* const verb_UPDATEATTRIBUTE;
 extern NSString* const verb_SHARECAPTION;
+extern NSString* const verb_UPDATEAUTHENTICATOR;
