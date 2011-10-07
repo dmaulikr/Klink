@@ -39,23 +39,24 @@
     return self;
 }*/
 
-- (void)animateNewVote {
-    // animate the updating of the votes label
-    [UIView animateWithDuration:1
-                          delay:0
-                        options:( UIViewAnimationCurveEaseInOut )
+- (void)animateLabel:(UILabel*)label withDuration:(int)duration withDelay:(int)delay {
+    // animate the updating of the vote and caption counter labels
+    [UIView animateWithDuration:duration
+                          delay:delay
+                        options:( UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAutoreverse |  UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction )
                      animations:^{
-                         self.lbl_new_votes.alpha = 1;
+                         label.alpha = 1;
                      }
-                     completion:^(BOOL finished) {
-                         [UIView animateWithDuration:1
-                                               delay:0
-                                             options:( UIViewAnimationCurveEaseInOut )
-                                          animations:^{
-                                              self.lbl_new_votes.alpha = 0;
-                                          }
-                                          completion:nil];
-                     }];
+                     completion:nil
+     /*^(BOOL finished) {
+      [UIView animateWithDuration:duration
+      delay:delay
+      options:( UIViewAnimationCurveEaseInOut | UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction )
+      animations:^{
+      label.alpha = 0;
+      }
+      completion:nil];}*/
+     ];
 }
 
 
@@ -95,15 +96,21 @@
         
         if (newVotes == 0) {
             self.lbl_new_votes.text = [NSString stringWithFormat:@"0 new!"];
-            self.lbl_new_votes.hidden = YES;
+            self.lbl_new_votes.hidden = NO;
             self.lbl_votes.hidden = NO;
-            //[self animateNewVote];
+            self.lbl_new_votes.alpha = 0;
+            self.lbl_votes.alpha = 0;
+            [self animateLabel:self.lbl_new_votes withDuration:2 withDelay:0];
+            [self animateLabel:self.lbl_votes withDuration:2 withDelay:4];
         }
         else {
             self.lbl_new_votes.text = [NSString stringWithFormat:@"%d new!",newVotes];
-            self.lbl_new_votes.hidden = YES;
+            self.lbl_new_votes.hidden = NO;
             self.lbl_votes.hidden = NO;
-            //[self animateNewVote];
+            self.lbl_new_votes.alpha = 0;
+            self.lbl_votes.alpha = 0;
+            [self animateLabel:self.lbl_new_votes withDuration:2 withDelay:0];
+            [self animateLabel:self.lbl_votes withDuration:2 withDelay:4];
         }
         
         [self.lbl_new_captions setNeedsDisplay];

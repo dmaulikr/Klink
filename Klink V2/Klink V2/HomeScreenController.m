@@ -97,6 +97,12 @@
     else if (sender == button2) {
         ThemeBrowserViewController2* themeBrowserController2 = [[ThemeBrowserViewController2 alloc]initWithNibName:@"ThemeBrowserViewController2" bundle:nil];
         
+        // Set up navigation bar back button
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Home"
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                 target:nil
+                                                                                 action:nil] autorelease];
+        
         themeBrowserController2.managedObjectContext = self.managedObjectContext;
         themeBrowserController2.shouldShowProfileBar = YES;
         [self.navigationController pushViewController:themeBrowserController2 animated:YES];
