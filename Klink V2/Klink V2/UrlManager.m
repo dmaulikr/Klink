@@ -251,4 +251,33 @@
     
 }
 
++ (NSURL*) getUpdateAuthenticatorURL:(NSString *)twitterID 
+                           withToken:(NSString *)twitterAccessToken 
+                     withTokenSecret:(NSString*)twitterAccessTokenSecret
+                          withExpiry:(NSString*)twitterAccessTokenExpiry 
+           withAuthenticationContext:(id)context {
+    
+    NSString* verbName = verb_UPDATEAUTHENTICATOR;
+    NSString* baseURL = [ApplicationSettingsManager getBaseURL];
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+
+    NSString* twitterUserIdParamName = param_TWITTERUSERID;
+    NSString* twitterAccessTokenParamName = param_TWITTERACCESSTOKEN;
+    NSString* twitterAccessTokenSecretParamName = param_TWITTERACCESSTOKENSECRET;
+    NSString* twitterTokenExpiryName = param_TWITTERACCESSTOKENEXPIRY;
+    
+    NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [context toJSON];
+    
+    [parameters appendFormat:@"%@=%@",twitterUserIdParamName,twitterID];
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenParamName,twitterAccessToken];
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenSecretParamName,twitterAccessTokenSecret];
+    [parameters appendFormat:@"&%@=%@",twitterTokenExpiryName,twitterAccessTokenExpiry];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    return url;
+}
+
 @end

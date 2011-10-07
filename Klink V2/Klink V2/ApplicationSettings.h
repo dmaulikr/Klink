@@ -77,3 +77,6 @@ extern int const default_height_WORDPRESSIMAGE;
 extern int const max_width_WORDPRESSIMAGE;
 extern int const max_height_WORDPRESSIMAGE;
 extern NSString* const category_WORDPRESS;
+
+extern NSString* const twitter_CONSUMERKEY;
+extern NSString* const twitter_CONSUMERSECRET;

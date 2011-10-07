@@ -11,7 +11,7 @@
 #import "Photo.h"
 #import "ImageManager.h"
 #import "NSStringGUIDCategory.h"
-
+#import "LoginViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 
 
@@ -80,14 +80,26 @@ static CameraButtonManager* sharedManager;
 #pragma mark -
 #pragma mark CameraButton methods
 - (void)cameraButtonPressed:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:nil
-                                  delegate:self
-                                  cancelButtonTitle:@"Cancel"
-                                  destructiveButtonTitle:@"Take Photo"
-                                  otherButtonTitles:@"Choose Existing", nil];
-    [actionSheet showInView:viewController.view];
-    [actionSheet release];
+    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
+    AuthenticationContext* currentContext = [authenticationManager getAuthenticationContext];
+    
+    if (currentContext == nil) {
+        LoginViewController* loginController = [[LoginViewController controllerForFacebookLogin:self onFinishPerform:@selector(cameraButtonPressed:)]retain];
+        loginController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        [self.viewController presentModalViewController:loginController animated:YES];
+        
+    }
+    else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:nil
+                                      delegate:self
+                                      cancelButtonTitle:@"Cancel"
+                                      destructiveButtonTitle:@"Take Photo"
+                                      otherButtonTitles:@"Choose Existing", nil];
+        [actionSheet showInView:viewController.view];
+        [actionSheet release];
+    }
 }
 
 

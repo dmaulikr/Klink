@@ -38,4 +38,10 @@
 
 + (NSURL*) getShareCaptionURL:(NSNumber*)captionID withOptions:(SharingOptions*)sharingOptions withAuthenticationContext:(id)context;
 
++ (NSURL*) getUpdateAuthenticatorURL:(NSString *)twitterID 
+                           withToken:(NSString *)twitterAccessToken 
+                     withTokenSecret:(NSString*)twitterAccessTokenSecret
+                          withExpiry:(NSString*)twitterAccessTokenExpiry 
+           withAuthenticationContext:(id)context;
+
 @end

@@ -29,6 +29,11 @@
 - (id) init;
 - (id) getAuthenticationContextForUser:(NSNumber*)userID;
 - (id) getAuthenticationContext;
+- (id) updateAuthentiationContextWith:(NSString*)twitterUserID 
+                      withAccessToken:(NSString*)twitterAccessToken
+                withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                       withExpiryDate:(NSString*)twitterTokenExpiry
+                       onFinishNotify:(NSString*)notificationID;
 - (NSNumber*) getLoggedInUserID;
 - (BOOL) isUserLoggedIn;
 - (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;

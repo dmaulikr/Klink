@@ -86,6 +86,7 @@ extern NSString* const an_FACEBOOKUSERID;
 extern NSString* const an_TWITTERTOKENEXPIRYDATE;
 extern NSString* const an_TWITTERACCESSTOKEN;
 extern NSString* const an_TWITTERUSERID;
+extern NSString* const an_TWITTERACCESSTOKENSECRET;
 extern NSString* const an_ID;
 
 extern NSString* const an_AUTHENTICATIONCONTEXT;

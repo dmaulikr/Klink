@@ -96,6 +96,7 @@ NSString* const an_FACEBOOKACCESSTOKEN=@"facebookaccesstoken";
 NSString* const an_FACEBOOKUSERID=@"facebookuserid";
 
 NSString* const an_TWITTERTOKENEXPIRYDATE = @"twittertokenexpirydate";
+NSString* const an_TWITTERACCESSTOKENSECRET = @"twitteraccesstokensecret";
 NSString* const an_TWITTERACCESSTOKEN=@"twitteraccesstoken";
 NSString* const an_TWITTERUSERID=@"twitteruserid";
 NSString* const an_ID=@"id";

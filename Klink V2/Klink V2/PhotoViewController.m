@@ -16,6 +16,8 @@
 #import "ThemeBrowserViewController2.h"
 #import "CameraButtonManager.h"
 #import "CloudEnumeratorFactory.h"
+#import "LoginViewController.h"
+
 
 #define kPictureWidth_landscape     480
 #define kPictureWidth               320
@@ -853,19 +855,48 @@
 }
 
 - (void) onFacebookButtonPressed:(id)sender {
-    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
-    
-    [photoCaptionView onFacebookShareButtonPressed:self];
-    
-    [photoCaptionView release];
+    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
+    AuthenticationContext* currentContext = [authenticationManager getAuthenticationContext];
+
+    if (currentContext == nil) {
+        LoginViewController* loginController = [[LoginViewController controllerForFacebookLogin:self onFinishPerform:@selector(onFacebookButtonPressed:)]retain];
+        loginController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        [self presentModalViewController:loginController animated:YES];
+
+    }
+    else {
+        
+        UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
+        [photoCaptionView onFacebookShareButtonPressed:self];
+        
+        
+    }
 }
 
 - (void) onTwitterButtonPressed:(id)sender {
-    UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];
     
-    [photoCaptionView onTwitterShareButtonPressed:self];
+    //we need to check the authentication state, if there is a twitter account
+    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
+    AuthenticationContext* currentContext = [authenticationManager getAuthenticationContext];
     
-    [photoCaptionView release];
+    if (currentContext == nil || ![currentContext hasTwitter]) {
+        LoginViewController* loginController = [[LoginViewController controllerForTwitterLogin:self onFinishPerform:@selector(onTwitterButtonPressed:)]retain];
+        loginController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    
+        [self presentModalViewController:loginController animated:YES];
+        //[self.navigationController pushViewController:loginController animated:YES];
+    }
+    else {
+        //user has a twitter account
+        UIPhotoCaptionScrollView* photoCaptionView = [self currentlyDisplayedView];        
+        [photoCaptionView onTwitterShareButtonPressed:self];
+
+    }
+    
+
+
+
 }
 
 

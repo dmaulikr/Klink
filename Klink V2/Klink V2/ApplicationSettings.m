@@ -46,6 +46,8 @@ NSString* const facebook_APPID=@"168077769927457";
 double const facebook_MAXDATE=64092211200;
 NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 
+NSString* const twitter_CONSUMERKEY=@"oy2bDqBeASOP7fXXwqOAQ";
+NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBHgQ";
 
 // text strings transparency
 float const textAlpha = 1;

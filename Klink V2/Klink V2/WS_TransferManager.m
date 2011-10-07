@@ -7,7 +7,7 @@
 //
 
 #import "WS_TransferManager.h"
-
+#import "GetAuthenticatorResponse.h"
 
 @implementation WS_TransferManager
 @synthesize putQueue;
@@ -353,6 +353,40 @@ static  WS_TransferManager* sharedManager;
 }
 
 
+
+- (void) updateAuthenticatorInCloud:
+                                    (NSString *)twitterID 
+                          withToken:(NSString *)twitterAccessToken 
+                    withTokenSecret:(NSString*)twitterAccessTokenSecret
+                         withExpiry:(NSString *)twitterTokenExpiryDate
+                     onFinishNotify:(NSString *)notificationID{
+    
+    NSString* activityName = @"WS_TransferManager.updateAuthenticatorInCloud";
+    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    
+    if (authenticationContext != nil) {
+        NSURL* url = [UrlManager getUpdateAuthenticatorURL:twitterID withToken:twitterAccessToken withTokenSecret:twitterAccessTokenSecret withExpiry:twitterTokenExpiryDate withAuthenticationContext:authenticationContext];
+        
+        NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+        if (notificationID != nil) {
+            [userInfo setObject:notificationID forKey:an_ONFINISHNOTIFY];
+        }
+        
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+        request.requestMethod = @"POST";
+        request.delegate = self;
+        request.userInfo = userInfo;
+        request.didFinishSelector=@selector(onUpdateAuthenticatorComplete:);
+        request.didFailSelector = @selector(requestWentWrong:);
+        [self.putQueue addOperation:request];
+        
+        NSString* message = [NSString stringWithFormat:@"Submitted update authenticator operation at url: %@",url];
+        [BLLog v:activityName withMessage:message];
+        [userInfo release];
+    }
+}
+
 - (void) updateAttributeInCloud:
                                 (NSNumber*)objectid 
                  withObjectType:(NSString*)objectType 
@@ -390,6 +424,37 @@ static  WS_TransferManager* sharedManager;
 
 #pragma mark - Asynchronous Response Handlers
 
+- (void) onUpdateAuthenticatorComplete:(ASIHTTPRequest*)request {
+    NSString* activityName = @"WS_TransferManager.onUpdateAuthentiatorComplete:";
+    NSString* response = [request responseString];
+    NSDictionary *jsonDictionary = [response objectFromJSONString];
+    NSDictionary *userInfo = request.userInfo;
+    
+    GetAuthenticatorResponse* getAuthenticatorResponse = [[GetAuthenticatorResponse alloc]initFromDictionary:jsonDictionary];
+    
+    if (getAuthenticatorResponse.didSucceed == [NSNumber numberWithBool:YES]) {
+        NSString* message = [NSString stringWithFormat:@"Authenticator updated successfully"];
+        [BLLog v:activityName withMessage:message];
+        
+        if ([userInfo valueForKey:an_ONFINISHNOTIFY] != nil) {
+            NSString* notificationID = [userInfo valueForKey:an_ONFINISHNOTIFY];
+            
+            NSMutableDictionary* notificationUserInfo = [[NSMutableDictionary alloc]init];
+            [notificationUserInfo setValue:getAuthenticatorResponse.authenticationcontext forKey:an_AUTHENTICATIONCONTEXT];
+            [notificationUserInfo setValue:getAuthenticatorResponse.user forKey:an_USER];
+            
+            
+            NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+            [notificationCenter postNotificationName:notificationID object:self userInfo:notificationUserInfo];
+        }
+    }
+    else {
+        
+        NSString* message = [NSString stringWithFormat:@"request failed due to %@",getAuthenticatorResponse.errorMessage];
+        [BLLog e:activityName withMessage:message];
+    }
+    
+}
 - (void) onShareCaptionComplete:(ASIHTTPRequest*) request {
     NSString* activityName = @"WS_TransferManager.onPutAttributeComplete";
     NSString* message = [NSString stringWithFormat:@"Caption shared successfully"];
