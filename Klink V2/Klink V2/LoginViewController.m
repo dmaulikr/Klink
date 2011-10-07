@@ -48,6 +48,8 @@
         self.view.opaque = NO;
         self.view.backgroundColor = [UIColor clearColor];
         self.isBusy = NO;
+        
+        
         self.isProgressBarShowing = NO;
     }
     return self;
