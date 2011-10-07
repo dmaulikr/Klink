@@ -8,16 +8,27 @@
 
 #import "UIProfileBar2.h"
 #import "CameraButtonManager.h"
+//#import "NotificationNames.h"
+//#import "AuthenticationManager.h"
+#import "User.h"
+//#import "FeedTypes.h"
+//#import "Feed.h"
+#import "FeedManager.h"
+#import "FeedViewController.h"
+#import "ImageManager.h"
 
 
 @implementation UIProfileBar2
 
-@synthesize lbl_votes;
 @synthesize lbl_userName;
+@synthesize lbl_votes;
 @synthesize lbl_captions;
+@synthesize lbl_new_votes;
+@synthesize lbl_new_captions;
 @synthesize img_profilePic;
 @synthesize btn_cameraButton;
 @synthesize viewController = m_viewController;
+@synthesize frc_loggedInUser = __frc_loggedInUser;
 
 /*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,6 +39,127 @@
     return self;
 }*/
 
+- (void)animateNewVote {
+    // animate the updating of the votes label
+    [UIView animateWithDuration:1
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         self.lbl_new_votes.alpha = 1;
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:1
+                                               delay:0
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              self.lbl_new_votes.alpha = 0;
+                                          }
+                                          completion:nil];
+                     }];
+}
+
+
+- (void)updateLabels {
+    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
+    if ([authnManager isUserLoggedIn] == YES) {
+        User* user = [[self.frc_loggedInUser fetchedObjects]objectAtIndex:0];
+        
+        self.lbl_userName.text = user.username;
+        
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.img_profilePic forKey:an_IMAGEVIEW];
+        UIImage* profileImage = [[ImageManager getInstance] downloadImage:user.thumbnailURL withUserInfo:userInfo atCallback:self];
+        [self.img_profilePic setImage:profileImage];
+        
+        self.lbl_captions.text  = [user.numberofcaptions stringValue];
+        self.lbl_votes.text = [user.numberofvotes stringValue];
+        
+        FeedManager* feedManager = [FeedManager getInstance];
+        
+        int newCaptionVotes = [feedManager.numberOfNewCaptionVotesInFeed intValue];
+        int newPhotoVotes = [feedManager.numberOfNewPhotoVotesInFeed intValue];
+        int newVotes = newCaptionVotes + newPhotoVotes;
+        
+        int newCaptions = [feedManager.numberOfNewCaptionsInFeed intValue];
+        if (newCaptions == 0) {
+            self.lbl_new_captions.text = [NSString stringWithFormat:@"0 new!"];
+            self.lbl_new_captions.hidden = YES;
+            self.lbl_captions.hidden = NO;
+            
+        }
+        else {
+            self.lbl_new_captions.text = [NSString stringWithFormat:@"%d new!",newCaptions];
+            self.lbl_new_captions.hidden = YES;
+            self.lbl_captions.hidden = NO;
+        }
+        
+        
+        if (newVotes == 0) {
+            self.lbl_new_votes.text = [NSString stringWithFormat:@"0 new!"];
+            self.lbl_new_votes.hidden = YES;
+            self.lbl_votes.hidden = NO;
+            //[self animateNewVote];
+        }
+        else {
+            self.lbl_new_votes.text = [NSString stringWithFormat:@"%d new!",newVotes];
+            self.lbl_new_votes.hidden = YES;
+            self.lbl_votes.hidden = NO;
+            //[self animateNewVote];
+        }
+        
+        [self.lbl_new_captions setNeedsDisplay];
+        [self.lbl_new_votes setNeedsDisplay];
+        [self.lbl_captions setNeedsDisplay];
+        [self.lbl_votes setNeedsDisplay];
+    }
+}
+
+
+- (NSFetchedResultsController*)frc_loggedInUser {
+    
+    AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
+    if ([authenticationManager isUserLoggedIn]==NO) {
+        __frc_loggedInUser = nil;
+        return nil;
+    }
+    
+    if (__frc_loggedInUser != nil) {
+        return __frc_loggedInUser;
+    }
+    
+    
+    Klink_V2AppDelegate *appDelegate = (Klink_V2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *appContext = appDelegate.managedObjectContext;  
+    NSFetchRequest* fetchRequest = [[NSFetchRequest alloc]init];
+    
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:USER inManagedObjectContext:appContext];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"objectid=%@",authenticationManager.m_LoggedInUserID];
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:an_OBJECTID ascending:NO];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setEntity:entityDescription];
+    
+    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:appContext sectionNameKeyPath:nil cacheName:nil];
+    controller.delegate = self;
+    
+    self.frc_loggedInUser = controller;
+    
+    NSError* error = nil;
+    [controller performFetch:&error];
+  	if (error != nil)
+    {
+        
+	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+	    abort();
+	}
+    [controller release];
+    [fetchRequest release];
+    
+    
+    return __frc_loggedInUser;
+    
+}
+
+
 - (id) initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
         NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIProfileBar2" owner:self options:nil];
@@ -37,19 +169,36 @@
         // Add custom backgound image to the view
         //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"background-toolbar-black.png"]];
         //profileBar2.backgroundColor = background;
-        //[background release];
+        //[background release];        
         
         [self addSubview:profileBar2];
-        //self.userInteractionEnabled = YES;
+        self.userInteractionEnabled = YES;
+        
+        
+        //register for global events
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedIn:) name:n_USER_LOGGED_IN object:nil];
+        [notificationCenter addObserver:self selector:@selector(onUserLoggedOut:) name:n_USER_LOGGED_OUT object:nil];
+        [notificationCenter addObserver:self selector:@selector(onNewCaptionVoteFeedItem:) name:n_NEW_FEED_CAPTION_VOTE object:nil];
+        [notificationCenter addObserver:self selector:@selector(onNewPhotoVoteFeedItem:) name:n_NEW_FEED_PHOTO_VOTE object:nil];
+        [notificationCenter addObserver:self selector:@selector(onNewCaptionFeedItem:) name:n_NEW_FEED_CAPTION object:nil];
+        [notificationCenter addObserver:self selector:@selector(onFeedItemRead:) name:n_FEED_ITEM_CLEARED object:nil];
+        [self updateLabels];
+        
     }
     return self;
 }
 
 - (void)dealloc
 {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+    [self.frc_loggedInUser release];
     [lbl_userName release];
     [lbl_votes release];
     [lbl_captions release];
+    [lbl_new_votes release];
+    [lbl_new_captions release];
     [img_profilePic release];
     [btn_cameraButton release];
     [super dealloc];
@@ -80,6 +229,8 @@
     self.lbl_userName = nil;
     self.lbl_votes = nil;
     self.lbl_captions = nil;
+    self.lbl_new_votes = nil;
+    self.lbl_new_captions = nil;
     self.img_profilePic = nil;
     self.btn_cameraButton = nil;
 }
@@ -96,5 +247,57 @@
     CameraButtonManager* cameraButtonManager = [CameraButtonManager getInstanceWithViewController:self.viewController];
     [cameraButtonManager cameraButtonPressed:self];
 }
+
+
+#pragma mark - Tap handler
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesEnded:touches withEvent:event];
+    if (self.viewController != nil) {
+        FeedViewController* fvc = [[FeedViewController alloc]init];
+        [self.viewController.navigationController pushViewController:fvc animated:YES];
+    }
+}
+
+
+#pragma mark - System Event Handlers
+- (void) onFeedItemRead : (NSNotification*)notification {
+    [self updateLabels];
+}
+-(void)onUserLoggedIn:(NSNotification*)notification {
+    [self updateLabels];
+}
+
+-(void)onUserLoggedOut:(NSNotification*)notification {
+    self.frc_loggedInUser = nil;
+}
+
+- (void)onNewCaptionFeedItem:(NSNotification*)notification {
+    [self updateLabels];
+}
+
+-(void) onNewCaptionVoteFeedItem:(NSNotification*)notification {
+    [self updateLabels];    
+}
+
+-(void) onNewPhotoVoteFeedItem:(NSNotification*)notification {
+    [self updateLabels];
+}
+
+- (void) onUserUpdated:(User*)user {
+    
+    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
+    
+    if ([authnManager isUserLoggedIn]==YES &&
+        [user.objectid isEqualToNumber:authnManager.m_LoggedInUserID]) {
+        
+        
+        //at this point we know the user object has changed, now lets update the scores
+        self.lbl_captions.text  = [user.numberofcaptions stringValue];
+        self.lbl_votes.text = [user.numberofvotes stringValue];
+        
+    }
+    
+}
+
 
 @end

@@ -107,6 +107,8 @@ typedef enum {
 - (void)    keyboardWillShow:(NSNotification*)notification;
 - (void)    keyboardDidHide:(NSNotification*)notification;
 
+- (void)    onVoteButtonPressed:(id)sender;
+
 - (void)    onEnterEditMode;
 - (void)    onExitEditMode;
 
