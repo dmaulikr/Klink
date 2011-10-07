@@ -58,11 +58,11 @@
 					<object class="IBUIView" id="403566720">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">303</int>
-						<string key="NSFrame">{{-3, 226}, {320, 120}}</string>
+						<string key="NSFrame">{{0, 226}, {320, 120}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1068879148"/>
-						<object class="NSColor" key="IBUIBackgroundColor" id="710140143">
+						<reference key="NSNextKeyView" ref="934473054"/>
+						<object class="NSColor" key="IBUIBackgroundColor" id="221410234">
 							<int key="NSColorSpace">10</int>
 							<object class="NSImage" key="NSImage">
 								<int key="NSImageFlags">549453824</int>
@@ -4470,7 +4470,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="IBUIBackgroundColor" ref="713282831"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIPageControl" id="1068879148">
+					<object class="IBUIPageControl" id="934473054">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">1316</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
@@ -4489,7 +4489,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="995220646"/>
-				<reference key="IBUIBackgroundColor" ref="710140143"/>
+				<reference key="IBUIBackgroundColor" ref="221410234"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics" id="1060572506">
 					<bool key="IBUIPrompted">NO</bool>
@@ -4659,7 +4659,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">themePageIndicator</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="1068879148"/>
+						<reference key="destination" ref="934473054"/>
 					</object>
 					<int key="connectionID">53</int>
 				</object>
@@ -4681,7 +4681,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<reference ref="403566720"/>
 							<reference ref="995220646"/>
 							<reference ref="135952051"/>
-							<reference ref="1068879148"/>
+							<reference ref="934473054"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Portrait</string>
@@ -4758,7 +4758,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">52</int>
-						<reference key="object" ref="1068879148"/>
+						<reference key="object" ref="934473054"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
