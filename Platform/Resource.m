@@ -10,6 +10,7 @@
 #import "LoggerCommon.h"
 #import "LoggerClient.h"
 #import "JSONKit.h"
+#import "AttributeInstanceData.h"
 
 @implementation Resource
 @dynamic resourceid;
@@ -17,13 +18,37 @@
 @dynamic datecreated;
 @dynamic datemodified;
 @dynamic attributeinstancedata;
+@synthesize resourceContext = m_resourceContext;
 
-- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+- (void) dealloc {
+    [super dealloc];
     
-    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+}
+
+//todo need to change this method signature to take in a resourceocntext
+- (id) initWithEntity:(NSEntityDescription *)entity insertIntoResourceContext:(ResourceContext *)context {
+    
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     if (self) {
         self.resourcetype = [entity name];
+        
+        if (context != nil) {
+            //we need to create a set of attribute description objects upon initialization of 
+            //a new object
+            NSDictionary* attributes = [entity attributesByName];
+            NSMutableArray* attributeInstanceData = [[NSMutableArray alloc]init];
+            for (NSString* attribute in attributes) {
+                //create a new attribute type description object
+                AttributeInstanceData* attributeMetadata = [AttributeInstanceData attributeInstanceDataFor:self.resourcetype forAttribute:attribute withManagedObjectContext:context];
+                
+                //add it to the internal attribute store
+                [attributeInstanceData addObject:attributeMetadata];
+            }
+            self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
+            [attributeInstanceData release];
+        }
     }
+    
     return self;
     
 }
@@ -38,6 +63,16 @@
     return self;
 }
 
+- (void) markAsDirty {
+    //foreach attribute description for this object, we go through
+    //and mark it dirty
+    NSArray* attributeInstanceData = [self.attributeinstancedata allObjects];
+    for (int i = 0; i < [attributeInstanceData count]; i++) {
+        AttributeInstanceData* attributeInstance = [attributeInstanceData objectAtIndex:i];
+        attributeInstance.isdirty = [NSNumber numberWithBool:YES];
+    }
+    
+}
 - (id) dictionaryFrom {
     NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc]init]autorelease];
     NSEntityDescription* entityDescription = [self entity];

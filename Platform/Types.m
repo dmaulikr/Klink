@@ -9,4 +9,5 @@
 #import "Types.h"
 
 
-NSString* const USER    = @"User";
+NSString* const USER    = @"user";
+NSString* const ATTRIBUTEINSTANCEDATA = @"attributeinstancedata";
