@@ -23,8 +23,12 @@
 @synthesize lbl_userName;
 @synthesize lbl_votes;
 @synthesize lbl_captions;
-@synthesize lbl_new_votes;
-@synthesize lbl_new_captions;
+@synthesize lbl_newVotes;
+@synthesize iv_newVotesBadgeSingleDigit;
+@synthesize iv_newVotesBadgeDoubleDigit;
+@synthesize lbl_newCaptions;
+@synthesize iv_newCaptionsBadgeSingleDigit;
+@synthesize iv_newCaptionsBadgeDoubleDigit;
 @synthesize img_profilePic;
 @synthesize btn_cameraButton;
 @synthesize viewController = m_viewController;
@@ -39,13 +43,13 @@
     return self;
 }*/
 
-- (void)animateLabel:(UILabel*)label withDuration:(int)duration withDelay:(int)delay {
+- (void)animateLabel:(UILabel*)label withDuration:(int)duration withDelay:(int)delay withAlpha:(int)alpha {
     // animate the updating of the vote and caption counter labels
     [UIView animateWithDuration:duration
                           delay:delay
                         options:( UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAutoreverse |  UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction )
                      animations:^{
-                         label.alpha = 1;
+                         label.alpha = alpha;
                      }
                      completion:nil
      /*^(BOOL finished) {
@@ -55,7 +59,18 @@
       animations:^{
       label.alpha = 0;
       }
-      completion:nil];}*/
+      completion:nil];}
+      
+      or
+      
+      ^(BOOL finished) {
+      int newAlpha = (alpha == 0) ? 1 : 0;
+      NSTimer* pauseTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:nil userInfo:nil repeats:NO];
+      [pauseTimer invalidate];
+      [pauseTimer release];
+      [self animateLabel:label withDuration:duration withDelay:delay withAlpha:newAlpha];
+
+      */
      ];
 }
 
@@ -81,40 +96,103 @@
         int newVotes = newCaptionVotes + newPhotoVotes;
         
         int newCaptions = [feedManager.numberOfNewCaptionsInFeed intValue];
-        if (newCaptions == 0) {
-            self.lbl_new_captions.text = [NSString stringWithFormat:@"0 new!"];
-            self.lbl_new_captions.hidden = YES;
-            self.lbl_captions.hidden = NO;
+        
+        //DELETE for testing notification labels
+        //newVotes = 7;
+        //newCaptions = 1;
+        
+        if (newVotes == 0) {                        
+            self.lbl_newVotes.hidden = YES;
+            self.iv_newVotesBadgeDoubleDigit.hidden = YES;
+            self.iv_newVotesBadgeSingleDigit.hidden = YES;
+            
+            // Saved for animated notifications
+            //self.lbl_newVotes.text = [NSString stringWithFormat:@"0\nnew"];
+            //self.lbl_newVotes.text = [NSString stringWithFormat:@"0"];
+            //self.lbl_newVotes.hidden = NO;
+            //self.lbl_votes.hidden = NO;
+            //self.lbl_newVotes.alpha = 0;
+            //self.lbl_votes.alpha = 0;
+            //[self animateLabel:self.lbl_newVotes withDuration:2 withDelay:0 withAlpha:1];
+            //[self animateLabel:self.lbl_votes withDuration:2 withDelay:4 withAlpha:1];
+        }
+        else {
+            // max the displayed new vote notification count to 99
+            newVotes = (newVotes > 99) ? 99 : newVotes;
+            
+            // Assign oval badge background to notification icon if new votes is a double-digit number
+            if (newVotes > 9)
+            {
+                self.iv_newVotesBadgeDoubleDigit.hidden = NO;
+                self.iv_newVotesBadgeSingleDigit.hidden = YES;
+            } else {
+                self.iv_newVotesBadgeDoubleDigit.hidden = YES;
+                self.iv_newVotesBadgeSingleDigit.hidden = NO;
+            }
+            
+            self.lbl_newVotes.text = [NSString stringWithFormat:@"%d",newVotes];
+            self.lbl_newVotes.hidden = NO;
+            
+            // Saved for animated notifications
+            //self.lbl_newVotes.text = [NSString stringWithFormat:@"%d\nnew",newVotes];
+            //self.lbl_newVotes.text = [NSString stringWithFormat:@"%d",newVotes];
+            //self.lbl_newVotes.hidden = NO;
+            //self.lbl_votes.hidden = NO;
+            //self.lbl_newVotes.alpha = 0;
+            //self.lbl_votes.alpha = 0;
+            //[self animateLabel:self.lbl_newVotes withDuration:2 withDelay:0 withAlpha:1];
+            //[self animateLabel:self.lbl_votes withDuration:2 withDelay:4 withAlpha:1];
+        }
+        
+        
+        if (newCaptions == 0) {            
+            self.lbl_newCaptions.hidden = YES;
+            self.iv_newCaptionsBadgeDoubleDigit.hidden = YES;
+            self.iv_newCaptionsBadgeSingleDigit.hidden = YES;
+            
+            // Saved for animated notifications
+            //self.lbl_newCaptions.text = [NSString stringWithFormat:@"0\nnew"];
+            //self.lbl_newCaptions.text = [NSString stringWithFormat:@"0"];
+            //self.lbl_newCaptions.hidden = NO;
+            //self.lbl_captions.hidden = NO;
+            //self.lbl_newCaptions.alpha = 0;
+            //self.lbl_captions.alpha = 0;
+            //[self animateLabel:self.lbl_newCaptions withDuration:2 withDelay:0 withAlpha:1];
+            //[self animateLabel:self.lbl_captions withDuration:2 withDelay:2 withAlpha:1];
             
         }
         else {
-            self.lbl_new_captions.text = [NSString stringWithFormat:@"%d new!",newCaptions];
-            self.lbl_new_captions.hidden = YES;
-            self.lbl_captions.hidden = NO;
+            // max the displayed new caption notification count to 99
+            newCaptions = (newCaptions > 99) ? 99 : newCaptions;
+            
+            // Assign oval badge background to notification icon if new votes is a double-digit number
+            if (newCaptions > 9)
+            {
+                self.iv_newCaptionsBadgeDoubleDigit.hidden = NO;
+                self.iv_newCaptionsBadgeSingleDigit.hidden = YES;
+                self.lbl_newCaptions.frame = CGRectMake(296, 2, 24, 18);
+            } else {
+                self.iv_newCaptionsBadgeDoubleDigit.hidden = YES;
+                self.iv_newCaptionsBadgeSingleDigit.hidden = NO;
+                self.lbl_newCaptions.frame = CGRectMake(298, 2, 24, 18);
+            }    
+            
+            self.lbl_newCaptions.text = [NSString stringWithFormat:@"%d",newCaptions];
+            self.lbl_newCaptions.hidden = NO;
+            
+            // Saved for animated notifications
+            //self.lbl_newCaptions.text = [NSString stringWithFormat:@"%d\nnew",newCaptions];
+            //self.lbl_newCaptions.text = [NSString stringWithFormat:@"%d",newCaptions];
+            //self.lbl_newCaptions.hidden = NO;
+            //self.lbl_captions.hidden = NO;
+            //self.lbl_newCaptions.alpha = 0;
+            //self.lbl_captions.alpha = 0;
+            //[self animateLabel:self.lbl_newCaptions withDuration:2 withDelay:0 withAlpha:1];
+            //[self animateLabel:self.lbl_captions withDuration:2 withDelay:2 withAlpha:1];
         }
         
-        
-        if (newVotes == 0) {
-            self.lbl_new_votes.text = [NSString stringWithFormat:@"0 new!"];
-            self.lbl_new_votes.hidden = NO;
-            self.lbl_votes.hidden = NO;
-            self.lbl_new_votes.alpha = 0;
-            self.lbl_votes.alpha = 0;
-            [self animateLabel:self.lbl_new_votes withDuration:2 withDelay:0];
-            [self animateLabel:self.lbl_votes withDuration:2 withDelay:4];
-        }
-        else {
-            self.lbl_new_votes.text = [NSString stringWithFormat:@"%d new!",newVotes];
-            self.lbl_new_votes.hidden = NO;
-            self.lbl_votes.hidden = NO;
-            self.lbl_new_votes.alpha = 0;
-            self.lbl_votes.alpha = 0;
-            [self animateLabel:self.lbl_new_votes withDuration:2 withDelay:0];
-            [self animateLabel:self.lbl_votes withDuration:2 withDelay:4];
-        }
-        
-        [self.lbl_new_captions setNeedsDisplay];
-        [self.lbl_new_votes setNeedsDisplay];
+        [self.lbl_newCaptions setNeedsDisplay];
+        [self.lbl_newVotes setNeedsDisplay];
         [self.lbl_captions setNeedsDisplay];
         [self.lbl_votes setNeedsDisplay];
     }
@@ -176,7 +254,7 @@
         // Add custom backgound image to the view
         //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"background-toolbar-black.png"]];
         //profileBar2.backgroundColor = background;
-        //[background release];        
+        //[background release];
         
         [self addSubview:profileBar2];
         self.userInteractionEnabled = YES;
@@ -204,8 +282,8 @@
     [lbl_userName release];
     [lbl_votes release];
     [lbl_captions release];
-    [lbl_new_votes release];
-    [lbl_new_captions release];
+    [lbl_newVotes release];
+    [lbl_newCaptions release];
     [img_profilePic release];
     [btn_cameraButton release];
     [super dealloc];
@@ -236,8 +314,8 @@
     self.lbl_userName = nil;
     self.lbl_votes = nil;
     self.lbl_captions = nil;
-    self.lbl_new_votes = nil;
-    self.lbl_new_captions = nil;
+    self.lbl_newVotes = nil;
+    self.lbl_newCaptions = nil;
     self.img_profilePic = nil;
     self.btn_cameraButton = nil;
 }
