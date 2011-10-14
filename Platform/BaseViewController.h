@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "ResourceContext.h"
 
 @interface BaseViewController : UIViewController {
     
 }
 
-@property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
+@property (nonatomic, retain) ResourceContext*   resourceContext;
 
 @end

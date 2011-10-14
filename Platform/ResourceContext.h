@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Resource.h"
+
 #import "Callback.h"
+@class Resource;
+@class Query;
+@class EnumerationContext;
 
 @interface ResourceContext : NSObject {
     
@@ -18,4 +21,21 @@
 - (void) save:(BOOL)saveToCloudAfter
 onFinishCallback:(Callback*)callback;
 
+- (void) enumerate:(Query*)query
+useEnumerationContext:(EnumerationContext*) enumerationContext
+shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage 
+    onFinishNotify:(Callback*) callback;
+
+- (BOOL) doesExistInLocalStore:(NSNumber*)resourceID;
+
+//data access methods
+- (Resource*) resourceWithType:(NSString*)typeName withID:(NSNumber*)resourceID;
+- (Resource*) singletonResourceWithType:(NSString*)typeName;
+
+//utility methods
+- (void) markResourcesAsBeingSynchronized:(NSArray*)resources withResourceTypes:(NSArray*)resourceTypes;
+- (void) markResourceAsBeingSynchronized:(NSNumber*)resourceID withResourceType:(NSString*)resourceType;
+
+//static initializers
++ (id) instance;
 @end

@@ -10,18 +10,18 @@
 #import "PlatformAppDelegate.h"
 
 @implementation BaseViewController
-@synthesize managedObjectContext = __managedObjectContext;
+@synthesize resourceContext = __resourceContext;
 
 #pragma mark - Properties
-- (NSManagedObjectContext*) managedObjectContext {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
+- (ResourceContext*) resourceContext {
+    if (__resourceContext != nil) {
+        return __resourceContext;
     }
     PlatformAppDelegate *appDelegate = [(PlatformAppDelegate*)[UIApplication sharedApplication]delegate];
-    NSManagedObjectContext* context = appDelegate.managedObjectContext;
-    __managedObjectContext = context;
+    __resourceContext = appDelegate.resourceContext;
     
-    return __managedObjectContext;
+    
+    return __resourceContext;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

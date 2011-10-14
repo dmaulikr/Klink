@@ -11,4 +11,18 @@
 
 @implementation Callback
 
+- (id) initWithTarget:(id)target withSelector:(SEL)selector {
+    self = [super init];
+    if (self) {
+        m_target = target;
+        m_selector = selector;
+        m_notificationID = nil;
+    }
+    return self;
+}
+
+- (void) fire {
+    
+}
+
 @end

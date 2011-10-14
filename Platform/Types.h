@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 
-
+extern NSString* const QUERY;
 extern NSString* const USER;
+extern NSString* const PHOTO;
 extern NSString* const ATTRIBUTEINSTANCEDATA;
+extern NSString* const CAPTION;
+extern NSString* const APPLICATIONSETTINGS;
+extern NSString* const TYPEINSTANCEDATA;
+extern NSString* const REQUEST;

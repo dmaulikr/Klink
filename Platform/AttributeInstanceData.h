@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Resource.h"
 
 @interface AttributeInstanceData : NSManagedObject {
     
@@ -16,13 +16,15 @@
 @property (nonatomic, retain) NSString* attributename;
 @property (nonatomic, retain) NSNumber* isdirty;
 @property (nonatomic, retain) NSNumber* islocked;
+@property (nonatomic, retain) NSNumber* isurlattachment;
 
 - (id) initWithEntity:(NSEntityDescription *)entity 
-insertIntoManagedObjectContext:(NSManagedObjectContext *)context 
+insertIntoResourceContext:(ResourceContext *)context 
      forAttributeName:(NSString*)attributeName;
+
 //static initializers
 + (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)type 
-                                       forAttribute:(NSString*)attribute 
-                           withManagedObjectContext:(NSManagedObjectContext*)context;
+                           withResourceContext:(ResourceContext*)context
+                            forAttribute:(NSString*)attribute;
 
 @end

@@ -9,5 +9,11 @@
 #import "Types.h"
 
 
-NSString* const USER    = @"user";
-NSString* const ATTRIBUTEINSTANCEDATA = @"attributeinstancedata";
+NSString* const USER    = @"User";
+NSString* const QUERY   = @"Query";
+NSString* const ATTRIBUTEINSTANCEDATA = @"AttributeInstanceData";
+NSString* const CAPTION = @"Caption";
+NSString* const APPLICATIONSETTINGS = @"ApplicationSettings";
+NSString* const PHOTO   = @"Photo";
+NSString* const TYPEINSTANCEDATA = @"TypeInstanceData";
+NSString* const REQUEST = @"Request";

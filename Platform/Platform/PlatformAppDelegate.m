@@ -23,6 +23,8 @@
 
 @synthesize navigationController=_navigationController;
 
+@synthesize resourceContext = __resourceContext;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
@@ -75,6 +77,7 @@
 
 - (void)dealloc
 {
+    [__resourceContext release];
     [_window release];
     [__managedObjectContext release];
     [__managedObjectModel release];
@@ -107,6 +110,10 @@
     }
 }
 
+#pragma mark - Resource Context
+- (ResourceContext*) resourceContext {
+    return [ResourceContext instance];
+}
 #pragma mark - Core Data stack
 
 /**
