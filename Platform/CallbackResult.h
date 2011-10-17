@@ -10,7 +10,9 @@
 
 
 @interface CallbackResult : NSObject {
-    
+    NSDictionary* m_userInfo;
 }
+
+@property (nonatomic,retain) NSDictionary* userInfo;
 
 @end

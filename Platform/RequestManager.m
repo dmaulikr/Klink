@@ -16,7 +16,9 @@
 #import "UrlManager.h"
 #import "AuthenticationContext.h"
 #import "AuthenticationManager.h"
-
+#import "CreateResponse.h"
+#import "PutResponse.h"
+#import "JSONKit.h"
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
 
@@ -229,6 +231,43 @@ static RequestManager* sharedInstance;
 }
 
 #pragma mark - Async Request Handlers
+- (void) processModifyResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    
+    PutResponse* putResponse = [[PutResponse alloc] initFromDictionary:jsonDictionary];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Resource* modifiedResource = putResponse.modifiedResource;
+    Resource* existingResource = [resourceContext resourceWithType:modifiedResource.resourcetype withID:modifiedResource.resourceid];
+
+    [existingResource refreshWith:modifiedResource];
+    
+    
+    for (Resource* resource in putResponse.secondaryResults) {
+        existingResource = nil;
+        existingResource = [resourceContext resourceWithType:resource.resourcetype withID:resource.resourceid];
+        [existingResource refreshWith:resource];
+    }
+    
+    [resourceContext save:YES onFinishCallback:nil];
+    
+}
+
+- (void) processCreateResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    
+    //create a create response handler
+    CreateResponse* createResponse = [[CreateResponse alloc] initFromDictionary:jsonDictionary];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    for (Resource* createdResource in createResponse.createdResources)  {
+        Resource* existingResource = [resourceContext resourceWithType:createdResource.resourcetype withID:createdResource.resourceid];
+        [existingResource refreshWith:createdResource];
+      
+    }
+    [resourceContext save:YES onFinishCallback:nil];
+}
+
 
 - (void) onRequestFailed:(ASIHTTPRequest*)request {
     NSDictionary* userInfo = request.userInfo;
@@ -239,6 +278,9 @@ static RequestManager* sharedInstance;
         //it was a bulk operation that failed
         NSArray* requests = [userInfo objectForKey:kREQUEST];
         for (Request* request in requests) {
+            //mark the request has having failed
+            request.statuscode = kFAILED;
+            
             //execute the fail selector on each request
             if (request.onFailCallback != nil) {
                 [request.onFailCallback fire];
@@ -248,7 +290,7 @@ static RequestManager* sharedInstance;
     else {
         //it was a single resource operation that failed
         Request* request = [userInfo objectForKey:kREQUEST];
-        
+        request.statuscode = kFAILED;
         if (request.onFailCallback != nil) {
             [request.onFailCallback fire];
         }
@@ -257,7 +299,7 @@ static RequestManager* sharedInstance;
 
 - (void) onRequestSucceeded:(ASIHTTPRequest*)request {
     NSDictionary* userInfo = request.userInfo;
-    
+    NSString* response = [request responseString];
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
         ResourceContext* context = [ResourceContext instance];
@@ -267,6 +309,23 @@ static RequestManager* sharedInstance;
             //it was a bulk operation that failed
             NSArray* requests = [userInfo objectForKey:kREQUEST];
             for (Request* request in requests) {
+                //process the specific request response
+                if (request.operationcode == kCREATE) {
+                    
+                    //processing a create response
+                    [self processCreateResponse:response withRequest:request];
+                }
+                else if (request.operationcode == kMODIFY) {
+                    //processing a modify response
+                    [self processModifyResponse:response withRequest:request];
+                }
+                else if (request.operationcode == kDELETE) {
+                    //TODO: implement response handling for deletes
+                }
+                
+                //mark the request being completed
+                request.statuscode = kCOMPLETED;
+                
                 //execute the success selector on each request
                 if (request.onSuccessCallback != nil) {
                     [request.onSuccessCallback fire];

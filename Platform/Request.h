@@ -19,7 +19,7 @@ typedef enum {
 typedef enum {
     kPENDING,
     kCOMPLETED,
-    KFAILED
+    kFAILED
 } RequestStatus;
 
 @interface Request : Resource {

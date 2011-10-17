@@ -17,3 +17,4 @@ extern NSString* const CAPTION;
 extern NSString* const APPLICATIONSETTINGS;
 extern NSString* const TYPEINSTANCEDATA;
 extern NSString* const REQUEST;
+extern NSString* const AUTHENTICATIONCONTEXT;

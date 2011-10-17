@@ -48,6 +48,7 @@ insertIntoResourceContext:(ResourceContext *)context;
 - (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)attributeName;
 - (NSArray*) attributeInstanceDataForList:(NSArray*)attributes;
 - (TypeInstanceData*) typeInstanceData;
+- (void)        refreshWith:(Resource*)newResource;
 
 //Used for logging
 - (NSString*)   componentName;

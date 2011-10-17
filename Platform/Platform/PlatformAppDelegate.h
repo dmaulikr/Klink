@@ -22,6 +22,7 @@
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (NSString*) getImageCacheStorageDirectory;
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 

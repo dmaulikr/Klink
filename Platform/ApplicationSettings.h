@@ -15,6 +15,7 @@
 
 //Generic settings
 @property (nonatomic, retain) NSString* base_url;
+@property (nonatomic, retain) NSString* fb_app_id;
 
 //Generic enumeration settings
 @property (nonatomic,retain) NSNumber* pagesize;

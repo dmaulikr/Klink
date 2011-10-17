@@ -21,10 +21,19 @@
 - (void) save:(BOOL)saveToCloudAfter
 onFinishCallback:(Callback*)callback;
 
+//enumeration methods
 - (void) enumerate:(Query*)query
 useEnumerationContext:(EnumerationContext*) enumerationContext
 shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage 
     onFinishNotify:(Callback*) callback;
+
+
+//authentication methods
+- (void) getAuthenticatorToken:(NSNumber*)facebookID 
+                      withName:(NSString*)displayName 
+       withFacebookAccessToken:(NSString*)facebookAccessToken 
+    withFacebookTokenExpiry:(NSDate*)date 
+                onFinishNotify:(Callback*)callback;
 
 - (BOOL) doesExistInLocalStore:(NSNumber*)resourceID;
 

@@ -53,7 +53,7 @@ static ApplicationSettingsManager* instance;
 - (ApplicationSettings*) createDefaultSettingsObject {
     ApplicationSettings* settings = (ApplicationSettings*) [Resource createInstanceOfType:APPLICATIONSETTINGS withResourceContext:self.resourceContext];
     
-   
+    settings.fb_app_id = @"168077769927457";
     
     
     [self.resourceContext save:NO onFinishCallback:nil];

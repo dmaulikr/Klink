@@ -7,16 +7,34 @@
 //
 
 #import "AuthenticationManager.h"
+#import "PlatformAppDelegate.h"
+#import "ResourceContext.h"
+#import "User.h"
+#import "ImageManager.h"
+#import "Types.h"
+#import "Attributes.h"
+#import "Facebook.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+#import "AuthenticationContext.h"
+#import "NSStringGUIDCategory.h"
+#import "SFHFKeychainUtils.h"
+#import "CallbackResult.h"
+#import "EventManager.h"
 
+#define kKeyChainServiceName    @"Aardvark"
+#define kUser                   @"User"
 
 static  AuthenticationManager* sharedManager;
 
 @implementation AuthenticationManager
+@synthesize m_LoggedInUserID;
+@synthesize facebook = __facebook;
+@synthesize fbPictureRequest = m_fbPictureRequest;
+@synthesize fbProfileRequest = m_fbProfileRequest;
 
-- (AuthenticationContext*) contextForLoggedInUser {
-    //TODO implement authentication manager methods;
-    return nil;
-}
+
+
 + (id) instance {
     @synchronized(self) {
         if (!sharedManager) {
@@ -25,4 +43,220 @@ static  AuthenticationManager* sharedManager;
         return sharedManager;
     }
 }
+
+#pragma mark - Properties
+- (Facebook*) facebook {
+    if (__facebook != nil) {
+        return __facebook;
+    }
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    __facebook = [[Facebook alloc]initWithAppId:settingsObject.fb_app_id];
+    return __facebook;
+}
+
+#pragma mark - initializers
+- (id) init {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString* lastUserID = [defaults valueForKey:USERID];
+    
+    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    [f setNumberStyle:NSNumberFormatterNoStyle];
+    NSNumber * lastLoggedInUserID = [f numberFromString:lastUserID];
+    [f release];
+    
+    
+    if (lastLoggedInUserID != 0) {
+        AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
+        if (storedContext != nil) {
+            [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
+     
+        }
+        else {
+      
+        }
+    }
+    else {
+
+    }
+    
+    
+    
+    
+    return self;
+}
+
+
+#pragma mark - FBSessionDelegate
+- (void)fbDidLogin {       
+    //get the user object
+    self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];        
+}
+
+#pragma mark -- FBRequestDelegate
+- (void)request:(FBRequest *)request didLoad:(id)result {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    if (request == self.fbProfileRequest) {
+       
+        NSString* facebookIDString = [result valueForKey:ID];
+        NSNumber* facebookID = [facebookIDString numberValue];
+        NSString* displayName = [result valueForKey:NAME];
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+        //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
+                
+        [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:callback];
+          
+    }
+    else if (request == self.fbPictureRequest) {
+        User* userObject = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID];
+      
+        AuthenticationContext* currentContext = [self contextForLoggedInUser];
+        
+        if (userObject != nil && currentContext != nil) {
+            UIImage* image = [UIImage imageWithData:result];
+            
+            //we need to save this image to the local file system
+            ImageManager* imageManager = [ImageManager getInstance];
+            NSString* path = [imageManager saveImage:image withFileName:currentContext.facebookuserid];
+            
+            //save the path on the user object and commit            
+            userObject.thumbnailurl = path;
+            [resourceContext save:YES onFinishCallback:nil];
+        }
+    }
+    
+}
+
+- (AuthenticationContext*) contextForUserWithID:(NSNumber*)userid {
+    AuthenticationContext* retVal = nil;
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //grab access token
+    NSError* error = nil;
+    NSString* jsonRepresentation = [SFHFKeychainUtils getPasswordForUsername:[userid stringValue] andServiceName:kKeyChainServiceName error:&error];
+    
+    if (jsonRepresentation != nil) {
+        
+        if (error != nil) {
+           //TODO: log an authentication deserialization error
+            
+        }
+        else {
+            NSEntityDescription* entity = [NSEntityDescription entityForName:@"AuthenticationContext" inManagedObjectContext:resourceContext.managedObjectContext];
+           
+            NSDictionary* jsonDictionary = [jsonRepresentation objectFromJSONString];
+            retVal = [[AuthenticationContext alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entity insertIntoResourceContext:resourceContext];
+            
+        }
+    }
+    //now we have a context that is populated with the necessary credentials for the user
+    return retVal;
+}
+- (AuthenticationContext*) contextForLoggedInUser {
+    //TODO implement authentication manager methods;
+    return nil;
+}
+
+#pragma mark - Login/Logoff Methods
+- (void)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
+    NSError* error = nil;
+    NSString* json = [context toJSON];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
+    if (context.facebookaccesstoken) {
+        self.facebook.accessToken = context.facebookaccesstoken;
+        self.facebook.expirationDate = context.facebookaccesstokenexpirydate;
+        
+               
+        if (![self.facebook isSessionValid]) {
+            //TODO: log errore when passed in access token is invalid
+        }
+        else {
+        
+            
+        }
+    }
+    
+    
+    //now we save it in the key chain
+    [SFHFKeychainUtils storeUsername:[userID stringValue] andPassword:json forServiceName:kKeyChainServiceName updateExisting:YES error:&error];
+    
+    
+    if (error != nil) {
+        //TODO: log an error in storing the user name to keychain
+    }
+    else {
+        self.m_LoggedInUserID = userID;
+        
+        //we save the user id into the user defaults object so we can use that to load the correct user up
+        //upon startup
+        [userDefaults setValue:[userID stringValue] forKey:USERID];
+        [userDefaults synchronize];
+        
+        //check to see if the profile picture is empty, if so, lets grab it from fb
+        User* currentUser = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID]; 
+        
+        if (currentUser != nil && (currentUser.thumbnailurl == nil ||
+                                   [currentUser.thumbnailurl isEqualToString:@""])) {
+            
+            //since we logged in successfully, now lets grab the profile photo            
+            
+            self.fbPictureRequest = [self.facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+        }
+        
+        //now we emit the system wide notification to tell people the user has logged in
+        EventManager* eventManager = [EventManager instance];
+        [eventManager raiseUserLoggedInEvent:nil];
+    }
+    
+}
+
+- (void) logoff {
+   
+    
+    if (![self.m_LoggedInUserID isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        //user is currently logged in
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        if ([userDefaults valueForKey:USERID] != nil) {
+            [userDefaults removeObjectForKey:USERID];
+            [userDefaults synchronize];
+        }
+        
+        NSError* error = nil;
+        [SFHFKeychainUtils deleteItemForUsername:[self.m_LoggedInUserID stringValue] andServiceName:kKeyChainServiceName error:&error];
+        
+        self.m_LoggedInUserID = 0;
+        //at this point the user is logged off
+        
+        [self.facebook logout:self];
+        
+        //we emit a system wide event to notify any listeners that the user has logged out
+        EventManager* eventManager = [EventManager instance];
+        [eventManager raiseUserLoggedOutEvent:nil];
+        
+    }
+
+}
+
+#pragma mark - Async Callback Handlers
+- (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSDictionary* userInfo = result.userInfo;
+    AuthenticationContext* newContext = [[userInfo objectForKey:@"AuthenticationContext"]retain];
+    User* returnedUser = [[userInfo objectForKey:kUser]retain];
+    Resource* existingUser = [resourceContext resourceWithType:USER withID:returnedUser.resourceid];
+        
+    //save the user object that is returned to us in the database
+    
+    [existingUser refreshWith:returnedUser];
+    [resourceContext save:YES onFinishCallback:nil];
+    [self loginUser:newContext.userid withAuthenticationContext:newContext];
+    
+}
+
+
 @end

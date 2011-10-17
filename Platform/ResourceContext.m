@@ -193,6 +193,11 @@ static ResourceContext* sharedInstance;
     
 }
 
+#pragma mark - Authentication Enumeration
+- (void) getAuthenticatorToken:(NSNumber *)facebookID withName:(NSString *)displayName withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date onFinishNotify:(Callback *)callback {
+    //TODO: implement logic to login via the server
+}
+
 #pragma mark - Data Access Methods
 - (Resource*)resourceWithType:(NSString *)typeName withID:(NSNumber *)resourceID {
     Resource* retVal = nil;

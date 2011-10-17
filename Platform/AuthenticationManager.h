@@ -8,11 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import "AuthenticationContext.h"
-
-@interface AuthenticationManager : NSObject {
-    
+#import "FBConnect.h"
+@interface AuthenticationManager : NSObject <FBSessionDelegate, FBRequestDelegate> {
+    NSNumber*   m_LoggedInUserID;
+    Facebook*   facebook;
+    FBRequest*  m_fbProfileRequest;
+    FBRequest*  m_fbPictureRequest;
 }
 
-+ (id) instance;
+@property (nonatomic, retain) NSNumber* m_LoggedInUserID;
+@property (nonatomic, retain) Facebook* facebook;
+@property (nonatomic, retain) FBRequest*    fbProfileRequest;
+@property (nonatomic, retain) FBRequest*    fbPictureRequest;
+
+- (id) init;
 - (AuthenticationContext*) contextForLoggedInUser;
+- (AuthenticationContext*) contextForUserWithID:(NSNumber*)userid;
+- (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
+- (void) logoff;
++ (id) instance;
+
 @end

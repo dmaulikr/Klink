@@ -13,4 +13,5 @@
 @implementation User
 @dynamic displayname;
 @dynamic numberofvotes;
+@dynamic thumbnailurl;
 @end

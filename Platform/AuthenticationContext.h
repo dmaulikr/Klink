@@ -29,4 +29,6 @@
 //- (NSString*) toJSON;
 - (BOOL) hasWordpress;
 - (BOOL) hasFacebook;
+
+
 @end

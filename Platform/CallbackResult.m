@@ -10,5 +10,5 @@
 
 
 @implementation CallbackResult
-
+@synthesize userInfo;
 @end

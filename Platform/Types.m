@@ -17,3 +17,4 @@ NSString* const APPLICATIONSETTINGS = @"ApplicationSettings";
 NSString* const PHOTO   = @"Photo";
 NSString* const TYPEINSTANCEDATA = @"TypeInstanceData";
 NSString* const REQUEST = @"Request";
+NSString* const AUTHENTICATIONCONTEXT=@"AuthenticationContext";

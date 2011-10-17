@@ -91,6 +91,19 @@
     
 }
 
+- (NSString*) getImageCacheStorageDirectory {
+    NSString *path = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+                                                         NSCachesDirectory, NSUserDomainMask, YES);
+    if ([paths count])
+    {
+        NSString *bundleName =
+        [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+        path = [[paths objectAtIndex:0] stringByAppendingPathComponent:bundleName];
+    }
+    return path;
+}
+
 - (void)saveContext
 {
     NSError *error = nil;

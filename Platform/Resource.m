@@ -196,6 +196,10 @@
     return retVal;
                               
 }
+
+- (void)refreshWith:(Resource *)newResource {
+    //TODO: implement refresh resource code
+}
     
 
 
@@ -291,11 +295,7 @@
 
 
 
-//will copy the values of the passed in resource object
-//to this current instance of ther resource
-- (void) refreshFromServer:(Resource*)resource {
-    
-}
+
 
 #pragma mark - Static Initializers
 + (NSString*)   typeNameFromJSON:(NSDictionary*)jsonDictionary {

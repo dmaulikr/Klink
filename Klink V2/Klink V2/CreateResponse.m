@@ -15,20 +15,20 @@
 
 
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
-    NSString* activityName = @"CreateResponse.initFromDictionary:";
+   
     
     self = [super initFromDictionary:jsonDictionary]; 
     
     if (self != nil) {                 
-        NSArray* jsonCreatedResource = [jsonDictionary objectForKey:an_CREATEDRESOURCES];
+        NSArray* jsonCreatedResource = [jsonDictionary objectForKey:CREATEDRESOURCES];
         NSMutableArray *newObjects = [[NSMutableArray alloc]initWithCapacity:[jsonCreatedResource count]];
         for (int i = 0; i < [jsonCreatedResource count];i++) {
-            ServerManagedResource *object = [ServerManagedResource from:[jsonCreatedResource objectAtIndex:i]];
+            Resource *object = [[Resource alloc]initFromJSONDictionary:[jsonCreatedResource objectAtIndex:i]];
             [newObjects insertObject:object atIndex:i];
         }
         self.createdResources = newObjects;
         [newObjects release];
-        [BLLog v:activityName withMessage:@"dicks"]; 
+     
                
     }
     return self;

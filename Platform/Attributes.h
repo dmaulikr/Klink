@@ -48,3 +48,9 @@ extern NSString* const NUMBEROFVOTES;
 
 extern NSString* const SHOULDENUMERATESINGLEPAGE;
 extern NSString* const ONFINISHCALLBACK;
+extern NSString* const ID;
+extern NSString* const NAME;
+extern NSString* const USERID;
+extern NSString* const CREATEDRESOURCES;
+extern NSString* const MODIFIEDRESOURCE;
+extern NSString* const SECONDARYRESULTS;

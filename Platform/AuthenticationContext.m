@@ -8,6 +8,7 @@
 
 #import "AuthenticationContext.h"
 #import "JSONKit.h"
+#import "IJSONSerializable.h"
 
 @implementation AuthenticationContext
 @dynamic userid;
@@ -45,6 +46,9 @@
 - (NSString*) toJSON {
     return nil;
 }
+
+
+
 
 
 @end
