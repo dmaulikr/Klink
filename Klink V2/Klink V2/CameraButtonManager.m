@@ -326,21 +326,21 @@ static UIImage *shrinkImage(UIImage *original, CGSize size) {
     
     // We need to rotate the CG context before drawing the image.
     // In the right or left cases, we need to switch targetWidth and targetHeight, and also the origin point
-    if (original.imageOrientation == UIImageOrientationLeft) {
+    if (original.imageOrientation == UIImageOrientationLeft || original.imageOrientation == UIImageOrientationLeftMirrored) {
         CGContextRotateCTM (context, radians(90));
         CGContextTranslateCTM (context, 0, -targetWidth);
-    } else if (original.imageOrientation == UIImageOrientationRight) {
+    } else if (original.imageOrientation == UIImageOrientationRight || original.imageOrientation == UIImageOrientationRightMirrored) {
         CGContextRotateCTM (context, radians(-90));
         CGContextTranslateCTM (context, -targetHeight, 0);
-    } else if (original.imageOrientation == UIImageOrientationUp) {
+    } else if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationUpMirrored) {
         // NOTHING
-    } else if (original.imageOrientation == UIImageOrientationDown) {
+    } else if (original.imageOrientation == UIImageOrientationDown || original.imageOrientation == UIImageOrientationDownMirrored) {
         CGContextTranslateCTM (context, targetWidth, targetHeight);
         CGContextRotateCTM (context, radians(-180));
     }
     
     // For images to be presented in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when drawing the new image
-    if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown) {
+    if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown || original.imageOrientation == UIImageOrientationUpMirrored  || original.imageOrientation == UIImageOrientationDownMirrored) {
         //if (original.imageOrientation == UIImageOrientationLeft || original.imageOrientation == UIImageOrientationRight) {
         CGContextDrawImage(context, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
         

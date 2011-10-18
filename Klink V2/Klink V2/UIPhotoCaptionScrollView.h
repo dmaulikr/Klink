@@ -40,7 +40,7 @@
 - (void)    hideShareButton;
 - (void)    hideVotingButton;
 - (void)    showVotingButton;
-- (void)    showHideVotingSharingButtons;
+- (void)    enableDisableSharingButtons;
 - (void)    enableDisableVotingButton;
 - (void)    loadViewData;
 
