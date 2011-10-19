@@ -8,8 +8,8 @@
 
 #import "Attributes.h"
 
-NSString* const RESOURCEID     =@"resourceid";
-NSString* const RESOURCETYPE   =@"resourcetype";
+NSString* const RESOURCEID     =@"objectid";
+NSString* const RESOURCETYPE   =@"objecttype";
 NSString* const DATECREATED    =@"datecreated";
 NSString* const DATEMODIFIED   =@"datemodified";
 NSString* const ERRORCODE   =@"errorcode";
@@ -51,3 +51,6 @@ NSString* const USERID                  =@"userid";
 NSString* const CREATEDRESOURCES        =@"newobjects";
 NSString* const MODIFIEDRESOURCE        =@"updatedobject";
 NSString* const SECONDARYRESULTS        =@"secondaryresults";
+NSString* const CALLBACKRESULT          =@"callbackresult";
+
+NSString* const an_USER                 =@"user";

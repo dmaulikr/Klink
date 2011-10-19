@@ -10,6 +10,7 @@
 
 #import "SampleViewController.h"
 
+#import "ApplicationSettings.h"
 @implementation PlatformAppDelegate
 
 
@@ -24,6 +25,46 @@
 @synthesize navigationController=_navigationController;
 
 @synthesize resourceContext = __resourceContext;
+
+@synthesize authenticationManager = __authenticationManager;
+
+@synthesize applicationSettingsManager = __applicationSettingsManager;
+
+@synthesize facebook = __facebook;
+
+
+#pragma mark - Properties
+- (ApplicationSettingsManager*)applicationSettingsManager {
+    if (__applicationSettingsManager != nil) {
+        return __applicationSettingsManager;
+    }
+    __applicationSettingsManager = [ApplicationSettingsManager instance];
+    return __applicationSettingsManager;
+}
+- (Facebook*) facebook {
+    if (__facebook != nil) {
+        return __facebook;
+    }
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    __facebook = [[Facebook alloc]initWithAppId:settingsObject.fb_app_id];
+    
+    return __facebook;
+    
+}
+- (AuthenticationManager*) authenticationManager {
+    if (__authenticationManager != nil) {
+        return __authenticationManager;
+    }
+    
+    __authenticationManager = [AuthenticationManager instance];
+    return __authenticationManager;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    // obtain facebook instance ref
+    return [self.authenticationManager.facebook handleOpenURL:url];
+    
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

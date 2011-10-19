@@ -7,8 +7,24 @@
 //
 
 #import "CallbackResult.h"
-
+#import "Callback.h"
 
 @implementation CallbackResult
-@synthesize userInfo;
+@synthesize context = m_context;
+@synthesize response;
+
+- (id) init {
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
++ (CallbackResult*) resultForCallback:(Callback*)callback {
+    //returns a callbackresult object generated for the specific callback objects
+    CallbackResult* retVal = [[[CallbackResult alloc]init]autorelease];
+    retVal.context = callback.context;
+    return retVal;
+}
 @end
+

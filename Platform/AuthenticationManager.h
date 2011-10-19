@@ -14,6 +14,7 @@
     Facebook*   facebook;
     FBRequest*  m_fbProfileRequest;
     FBRequest*  m_fbPictureRequest;
+
 }
 
 @property (nonatomic, retain) NSNumber* m_LoggedInUserID;
@@ -21,9 +22,13 @@
 @property (nonatomic, retain) FBRequest*    fbProfileRequest;
 @property (nonatomic, retain) FBRequest*    fbPictureRequest;
 
+
+
 - (id) init;
+- (void) authenticate;
 - (AuthenticationContext*) contextForLoggedInUser;
 - (AuthenticationContext*) contextForUserWithID:(NSNumber*)userid;
+- (BOOL) isUserAuthenticated;
 - (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
 - (void) logoff;
 + (id) instance;

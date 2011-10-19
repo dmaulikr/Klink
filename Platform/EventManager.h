@@ -16,5 +16,6 @@
 
 - (void) raiseUserLoggedInEvent:(NSDictionary*)userInfo;
 - (void) raiseUserLoggedOutEvent: (NSDictionary*)userInfo;
+- (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo;
 + (EventManager*)instance;
 @end

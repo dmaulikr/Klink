@@ -17,7 +17,13 @@
 #import "RequestManager.h"
 #import "AuthenticationContext.h"
 #import "AuthenticationManager.h"
+#import "Response.h"
+#import "EnumerationResponse.h"
+#import "GetAuthenticatorResponse.h"
+#import "Macros.h"
+#import "Types.h"
 
+#define kCallback   @"callback";
 @implementation ResourceContext
 @synthesize managedObjectContext = __managedObjectContext;
 
@@ -50,10 +56,10 @@ static ResourceContext* sharedInstance;
 }
 
 - (Request*) requestFor:(Resource*)resource forOperation:(RequestOperation*)opcode onFinishCallback:(Callback*)callback {
+ 
+    Request* request = [Request createInstanceOfRequest];
+    [[request initFor:resource.objectid withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback]autorelease];
     
-    Request* request = [[[Request alloc]initFor:resource.resourceid withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback]autorelease];
-    
-
     return request;
 }
 
@@ -65,8 +71,11 @@ static ResourceContext* sharedInstance;
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
     
+    NSMutableArray* resourcesToUpdateInCloud = [[NSMutableArray alloc]init];
+    NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
+    
     NSMutableArray* createRequests = [[NSMutableArray alloc]init];
-    AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
+    
     
     //get all pending changes
     NSSet* insertedObjects = [self.managedObjectContext insertedObjects];
@@ -80,10 +89,13 @@ static ResourceContext* sharedInstance;
         Resource* resource = [insertedObjectsArray objectAtIndex:i];
         //mark the object as being "dirty"
         if ([resource isKindOfClass:[Resource class]]) {
-            if ([resource isResourceSynchronizedToCloud]) {
-                [resource markAsDirty];
+            if ([resource shouldResourceBeSynchronizedToCloud]) {
                 [resourcesToCreateInCloud addObject:resource];
-                [resourceTypesToCreateInCloud addObject:resource.resourcetype];
+                [resourceTypesToCreateInCloud addObject:resource.objecttype];
+               
+                //mark newly created object as being dirty, will become clean when
+                //it has been successfully created on the server
+                [resource markAsDirty];
             }
         }
     }
@@ -94,7 +106,8 @@ static ResourceContext* sharedInstance;
         Resource* resource = [updatedObjectsArray objectAtIndex:i];
         
         
-        if ([resource isResourceSynchronizedToCloud]) {
+        if ([resource shouldResourceBeSynchronizedToCloud]) {
+            [resourcesToUpdateInCloud addObject:resource];
             [resource markAsDirty];
            
         }
@@ -105,7 +118,8 @@ static ResourceContext* sharedInstance;
     NSArray* deletedObjectsArray = [deletedObjects allObjects];
     for (int i = 0; i < [deletedObjectsArray count]; i++) {
         Resource* resource = [deletedObjectsArray objectAtIndex:i];
-        if ([resource isResourceSynchronizedToCloud]) {
+        if ([resource shouldResourceBeSynchronizedToCloud]) {
+            [resourcesToDeleteInCloud addObject:resource];
             [resource markAsDirty];
         }
     }
@@ -119,7 +133,7 @@ static ResourceContext* sharedInstance;
     }
     
     
-    
+    AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
     RequestManager* requestManager = [RequestManager instance];
     if (authenticationContext != nil) {
         if ([resourcesToCreateInCloud count] > 0) {
@@ -195,7 +209,25 @@ static ResourceContext* sharedInstance;
 
 #pragma mark - Authentication Enumeration
 - (void) getAuthenticatorToken:(NSNumber *)facebookID withName:(NSString *)displayName withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date onFinishNotify:(Callback *)callback {
-    //TODO: implement logic to login via the server
+    NSString* activityName = @"ResourceContext.getAuthenticatorToken:";
+   
+ 
+    Request* request = (Request*)[Request createInstanceOfRequest];
+   
+    
+    request.statuscode =[NSNumber numberWithInt:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kAUTHENTICATE];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    NSURL* url = [UrlManager urlForAuthentication:facebookID withName:displayName withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date];
+    
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting Authentication request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+    
 }
 
 #pragma mark - Data Access Methods
@@ -230,6 +262,7 @@ static ResourceContext* sharedInstance;
 }
  
 - (Resource*) singletonResourceWithType:(NSString*)typeName {
+    NSString* activityName = @"ResourceContext.singletonResourceWithType:";
     Resource* retVal = nil;
     NSEntityDescription* entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:self.managedObjectContext];
     
@@ -244,15 +277,14 @@ static ResourceContext* sharedInstance;
             retVal = [results objectAtIndex:0];
         }
         else if (results != nil && [results count] > 1) {
-            //TODO: log an error indicating object is not a singleton
+            LOG_RESOURCECONTEXT(1,@"@%@%",activityName,@"Singleton object either doesn't exist, or has multiple instances in the database");
         }
         
                
         
     }
     else {
-        //TODO: log an error message here
-        //error condition, type doesn't exist
+         LOG_RESOURCECONTEXT(1,@"@%Resource type %@ doesn't exist",activityName,typeName);
     }
     return retVal;
 
@@ -283,7 +315,19 @@ static ResourceContext* sharedInstance;
 
 #pragma mark - Async Event Handlers
 - (void) onEnumerateComplete : (CallbackResult*) result {
+    //called when an enumerate methods completes
+    Response* response = result.response;
     
+    
+    if ([response isKindOfClass:[EnumerationResponse class]]) {
+        //processing enumerationg results
+        
+        
+    }
+
+                
+                                                              
+                                                        
 }
 
 - (void) onEnumerateFailed : (CallbackResult*) result {

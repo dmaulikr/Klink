@@ -11,8 +11,18 @@
 
 @implementation BaseViewController
 @synthesize resourceContext = __resourceContext;
+@synthesize authenticationManager = __authenticationManager;
+
 
 #pragma mark - Properties
+- (AuthenticationManager*) authenticationManager {
+    if (__authenticationManager != nil) {
+        return __authenticationManager;
+    }
+    __authenticationManager = [AuthenticationManager instance];
+    return __authenticationManager;
+}
+
 - (ResourceContext*) resourceContext {
     if (__resourceContext != nil) {
         return __resourceContext;

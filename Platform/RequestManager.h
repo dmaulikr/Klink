@@ -11,9 +11,11 @@
 @class Request;
 @interface RequestManager : NSObject {
     NSOperationQueue* m_operationQueue;
+    NSOperationQueue* m_enumerationQueue;
 }
 
 @property (nonatomic,retain) NSOperationQueue* operationQueue;
+@property (nonatomic,retain) NSOperationQueue* enumerationQueue;
 + (RequestManager*)instance;
 
 - (void) submitRequest:(Request*)request;

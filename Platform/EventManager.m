@@ -30,4 +30,8 @@ static EventManager* sharedInstance;
 - (void) raiseUserLoggedOutEvent:(NSDictionary*)userInfo {
     //TODO: implement system log off eventing mechanism
 }
+
+- (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo {
+    
+}
 @end

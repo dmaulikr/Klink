@@ -33,4 +33,10 @@
 + (NSURL*) urlForCreateObjects:(NSArray*)objectids 
                withObjectTypes:(NSArray*)objectTypes 
      withAuthenticationContext:(id)authenticationContext;
+
+
++ (NSURL*) urlForAuthentication:(NSNumber*)facebookID 
+                       withName:(NSString*)name 
+        withFacebookAccessToken:(NSString*)facebookAccessToken 
+        withFacebookTokenExpiry:(NSDate*)date;
 @end

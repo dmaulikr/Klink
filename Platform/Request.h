@@ -13,7 +13,9 @@
 typedef enum {
     kCREATE,
     kMODIFY,
-    kDELETE
+    kDELETE,
+    kENUMERATION,
+    kAUTHENTICATE
 } RequestOperation;
 
 typedef enum {
@@ -22,7 +24,7 @@ typedef enum {
     kFAILED
 } RequestStatus;
 
-@interface Request : Resource {
+@interface Request : NSManagedObject {
     NSDictionary*   m_userInfo;
     Callback*       m_onSuccessCallback;
     Callback*       m_onFailCallback;
@@ -33,8 +35,8 @@ typedef enum {
 @property (nonatomic,retain) NSDictionary* userInfo;
 @property (nonatomic,retain) Callback*  onSuccessCallback;
 @property (nonatomic,retain) Callback*  onFailCallback;
-@property  int    operationcode;
-@property  int    statuscode;
+@property (nonatomic,retain) NSNumber*    operationcode;
+@property (nonatomic,retain) NSNumber*    statuscode;
 @property (nonatomic,retain) NSNumber*  targetresourceid;
 @property (nonatomic,retain) NSString*  url;
 @property (nonatomic,retain) NSString*  changedattributes;
@@ -46,5 +48,7 @@ typedef enum {
      onSuccess:(Callback*)onSuccessCallback 
      onFailure:(Callback*)onFailureCallback;
 
+
++ (id)          createInstanceOfRequest;
 
 @end

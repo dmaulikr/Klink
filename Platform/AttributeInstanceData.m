@@ -39,6 +39,9 @@ insertIntoResourceContext:(ResourceContext *)context
     //this method takes the type name and attribute name and creates an attribute description object for it
     NSEntityDescription* entityDescription = [NSEntityDescription entityForName:ATTRIBUTEINSTANCEDATA inManagedObjectContext:context.managedObjectContext];
     AttributeInstanceData* retVal = [[AttributeInstanceData alloc]initWithEntity:entityDescription insertIntoResourceContext:context forAttributeName:attribute];
+    retVal.isdirty = NO;
+    retVal.islocked = NO;
+    retVal.isurlattachment = NO;
     return retVal;
     
     

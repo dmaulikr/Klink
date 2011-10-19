@@ -7,21 +7,48 @@
 //
 
 #import "Callback.h"
-
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+#import "CallbackResult.h"
+#import "Attributes.h"
 
 @implementation Callback
+@synthesize context = m_context;
 
-- (id) initWithTarget:(id)target withSelector:(SEL)selector {
+- (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(id)context {
     self = [super init];
     if (self) {
         m_target = target;
         m_selector = selector;
-        m_notificationID = nil;
+       
+        m_context = context;
+        
     }
     return self;
 }
+- (id) initWithTarget:(id)target withSelector:(SEL)selector {
+    return [self initWithTarget:target withSelector:selector withContext:nil];
+}
+
+- (void) fireWithResult:(CallbackResult*)callbackResult {
+    if (m_target != nil &&
+        [m_target respondsToSelector:m_selector]) {
+        [m_target performSelectorInBackground:m_selector withObject:callbackResult];
+    }
+}
 
 - (void) fire {
+    
+    CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
+    [self fireWithResult:callbackResult];
+    
+    
+}
+
+- (void) fireWithResponse:(Response*)response {
+    CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
+    callbackResult.response = response;
+    [self fireWithResult:callbackResult];
     
 }
 

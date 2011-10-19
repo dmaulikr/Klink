@@ -17,6 +17,8 @@
     UIButton*   m_toJSONButton;
     UIButton*   m_fromJSONButton;
     UITextView* m_textView;
+    UIButton*   m_loginButton;
+    UIButton*   m_logoutButton;
     User*       m_user;
     Query*      m_query;
     EnumerationContext* m_enumerationContext;
@@ -30,7 +32,11 @@
 @property (nonatomic,retain)          Query*        query;
 @property (nonatomic,retain)          EnumerationContext*    enumerationContext;
 @property (nonatomic,retain)          EnumerationResponse*   enumerationResponse;
+@property (nonatomic,retain) IBOutlet UIButton*     loginButton;
+@property (nonatomic,retain) IBOutlet UIButton*     logoutButton;
 
 - (IBAction)toJSON  :(id)sender;
 - (IBAction)fromJSON:(id)sender;
+- (IBAction)login:(id)sender;
+- (IBAction)logout:(id)sender;
 @end

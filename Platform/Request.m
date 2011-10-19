@@ -7,7 +7,7 @@
 //
 
 #import "Request.h"
-
+#import "Types.h"
 
 @implementation Request
 @synthesize onFailCallback      = m_onFailCallback;
@@ -34,7 +34,14 @@
 }
 
 #pragma initializers
+- (id) initWithEntity:(NSEntityDescription*)entity insertIntoResourceContext:(ResourceContext*)resourceContext {
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:resourceContext.managedObjectContext];
+    if (self) {
+        self.statuscode = [NSNumber numberWithInt:kPENDING];
 
+    }
+    return self;
+}
 - (id) initFor:(NSNumber *)objectid 
  withOperation:(int)opcode 
   withUserInfo:(NSDictionary *)userInfo 
@@ -44,13 +51,21 @@
     self = [super init];
     if (self) {
         //initialize the request to be pending
-        self.statuscode = kPENDING;
+        self.statuscode = [NSNumber numberWithInt:kPENDING];
         self.targetresourceid = objectid;
-        self.operationcode = opcode;
+        self.operationcode = [NSNumber numberWithInt:opcode];
         self.onFailCallback = onFailureCallback;
         self.onSuccessCallback = onSuccessCallback;
         self.userInfo = userInfo;
     }
     return self;
+}
+
++ (id) createInstanceOfRequest {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:REQUEST inManagedObjectContext:resourceContext.managedObjectContext];
+    Request* retVal = [[Request alloc]initWithEntity:entity insertIntoResourceContext:nil];
+    [retVal autorelease];
+    return retVal;
 }
 @end

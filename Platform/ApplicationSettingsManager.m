@@ -9,7 +9,8 @@
 #import "ApplicationSettingsManager.h"
 #import "Types.h"
 #import "Resource.h"
-
+#import "ApplicationSettingsDefaults.h"
+#import "Macros.h"
 
 @implementation ApplicationSettingsManager
 @synthesize resourceContext = m_resourceContext;
@@ -29,9 +30,17 @@ static ApplicationSettingsManager* instance;
 }
 
 - (id) init {
+    NSString* activityName = @"ApplicationSettingsManager.init:";
     self = [super init];
     if (self) {
         self.resourceContext = [ResourceContext instance];
+        ApplicationSettings* appSettings =(ApplicationSettings*) [self.resourceContext singletonResourceWithType:APPLICATIONSETTINGS];
+        if (appSettings != nil) {
+            self.settings = appSettings;
+        }
+        else {
+            LOG_CONFIGURATION(0,@"@%Could not load saved settings object, will need to create default",activityName);
+        }
     }
     return self;
 }
@@ -52,11 +61,19 @@ static ApplicationSettingsManager* instance;
 //is unable to pull down settings from the cloud and the local is corrupted/missing
 - (ApplicationSettings*) createDefaultSettingsObject {
     ApplicationSettings* settings = (ApplicationSettings*) [Resource createInstanceOfType:APPLICATIONSETTINGS withResourceContext:self.resourceContext];
+    //here we need to set up the defaults according to whats in the 
+    //ApplicationSettingsDefaults.h file
+    settings.fb_app_id = facebook_APPID;
+    settings.base_url = default_BASEURL;
+    settings.feed_maxnumtodownload =[NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
+    settings.photo_maxnumtodownload = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];
+    settings.theme_maxnumtodownload = [NSNumber numberWithInt:maxsize_THEMEDOWNLOAD];
+    settings.caption_maxnumtodownload = [NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
+    settings.numberoflinkedobjectstoreturn = [NSNumber numberWithInt:size_NUMLINKEDOBJECTSTOTRETURN];
+    settings.pagesize = [NSNumber numberWithInt:pageSize_PHOTO];
     
-    settings.fb_app_id = @"168077769927457";
     
-    
-    [self.resourceContext save:NO onFinishCallback:nil];
+    [self.resourceContext save:YES onFinishCallback:nil];
     
     return settings;
 }

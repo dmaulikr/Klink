@@ -7,16 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Response.h"
 
 @interface Callback : NSObject {
-    NSString* m_notificationID;
+   
     
     
     SEL m_selector;
     id  m_target;
+    
+    NSDictionary* m_context;
+    
+    
 }
+
+@property (nonatomic, retain) NSDictionary* context;
+
+- (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(NSDictionary*)context;
 - (id) initWithTarget:(id)target withSelector:(SEL)selector;
 - (void) fire;
+- (void) fireWithResponse:(Response*)response; 
 
 @end

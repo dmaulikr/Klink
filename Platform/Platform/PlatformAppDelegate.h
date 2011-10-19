@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ResourceContext.h"
-
+#import "AuthenticationManager.h"
+#import "ApplicationSettingsManager.h"
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
 
 }
@@ -19,11 +20,12 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-
+@property (nonatomic, retain) AuthenticationManager*    authenticationManager;
+@property (nonatomic, retain) ApplicationSettingsManager*   applicationSettingsManager;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (NSString*) getImageCacheStorageDirectory;
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-
+@property (nonatomic, retain)           Facebook    *facebook;
 @end

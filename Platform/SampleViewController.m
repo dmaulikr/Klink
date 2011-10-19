@@ -24,6 +24,8 @@
 @synthesize query           =m_query;
 @synthesize enumerationContext = m_enumerationContext;
 @synthesize enumerationResponse = m_enumerationResponse;
+@synthesize loginButton     =m_loginButton;
+@synthesize logoutButton    =m_logoutButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,29 +56,27 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     ResourceContext* testResourceContext = self.resourceContext;
-    NSManagedObjectContext* appContext = testResourceContext.managedObjectContext;
+  
     
     ApplicationSettings* applicationSettings = [[ApplicationSettingsManager instance]settings];
     
-    User* user = [Resource createInstanceOfType:USER withResourceContext:self.resourceContext];
-    self.user = user;
-    self.user.displayname = @"jagoo aiya";
-    self.user.numberofvotes = [NSNumber numberWithInt:10];    
-    
-    User* user2 = [[Resource createInstanceOfType:USER withResourceContext:self.resourceContext]retain];
-    user2.displayname = @"user 2";
-    user2.numberofvotes = [NSNumber numberWithInt:20];    
-    
-    Query* query = [Query queryPhotosWithTheme:[NSNumber numberWithInt:10]];
-    self.query = query;
-    self.enumerationContext = [EnumerationContext contextForPhotosInTheme:[NSNumber numberWithInt:10]];
-    
-    self.enumerationResponse = [[EnumerationResponse alloc]init];
-    self.enumerationResponse.primaryResults = [NSArray arrayWithObjects:user,user2, nil];
-    self.enumerationResponse.secondaryResults = [NSArray arrayWithObject:user];
-    
+       
+        
                                
     
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if ([self.authenticationManager isUserAuthenticated]) {
+        self.loginButton.hidden = YES;
+        self.logoutButton.hidden = NO;
+    }
+    else {
+        self.loginButton.hidden = NO;
+        self.logoutButton.hidden = YES;
+    }
 }
 
 - (void)viewDidUnload
@@ -117,6 +117,17 @@
     //User* userObj = (User*)[Resource createInstanceOfTypeFromJSON:jsonDictionary];
     //EnumerationContext* enumerationContext = [[EnumerationContext alloc]initFromJSON:jsonString];
     NSString* test = @"test";
+}
+
+- (IBAction)login:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //perform authentication
+        [self.authenticationManager authenticate];
+    }
+}
+
+- (IBAction)logout:(id)sender {
+    [self.authenticationManager logoff];
 }
 
 @end

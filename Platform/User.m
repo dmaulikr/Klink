@@ -14,4 +14,11 @@
 @dynamic displayname;
 @dynamic numberofvotes;
 @dynamic thumbnailurl;
+
+- (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSManagedObjectContext* appContext = resourceContext.managedObjectContext;
+    NSEntityDescription* entity = [NSEntityDescription entityForName:USER inManagedObjectContext:appContext];
+    return [super initFromJSONDictionary:jsonDictionary withEntityDescription:entity insertIntoResourceContext:resourceContext];
+}
 @end

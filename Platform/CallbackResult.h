@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-
-
+@class Callback;
+@class Response;
 @interface CallbackResult : NSObject {
-    NSDictionary* m_userInfo;
+    NSDictionary* m_context;
+    Response* m_response;
 }
 
-@property (nonatomic,retain) NSDictionary* userInfo;
+@property (nonatomic,retain) NSDictionary* context;
+@property (nonatomic,retain) Response*  response;
 
+
++ (CallbackResult*) resultForCallback:(Callback*)callback;
 @end

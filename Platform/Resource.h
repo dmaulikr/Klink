@@ -19,8 +19,8 @@
   
 }
 @property   (nonatomic,retain)  TypeInstanceData*   typeinstancedata;
-@property   (nonatomic,retain)  NSNumber*           resourceid;
-@property   (nonatomic,retain)  NSString*           resourcetype;
+@property   (nonatomic,retain)  NSNumber*           objectid;
+@property   (nonatomic,retain)  NSString*           objecttype;
 @property   (nonatomic,retain)  NSNumber*           datecreated;
 @property   (nonatomic,retain)  NSNumber*           datemodified;
 @property   (nonatomic,retain)  NSSet*              attributeinstancedata;
@@ -44,7 +44,8 @@ insertIntoResourceContext:(ResourceContext *)context;
 //Utility Methods
 - (void)        markAsDirty;
 - (void)        markAsClean;
-- (BOOL)        isResourceSynchronizedToCloud;
+- (BOOL)        shouldResourceBeSynchronizedToCloud;
+- (BOOL)        isResourceTypeSynchronizedToCloud;
 - (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)attributeName;
 - (NSArray*) attributeInstanceDataForList:(NSArray*)attributes;
 - (TypeInstanceData*) typeInstanceData;
@@ -63,4 +64,6 @@ insertIntoResourceContext:(ResourceContext *)context;
 + (id)          createInstanceOfTypeFromJSONString:(NSString*)jsonString;
 + (id)          createInstanceOfTypeFromJSONString:(NSString*)jsonString 
                                withResourceContext:(ResourceContext*)context;
+
+
 @end

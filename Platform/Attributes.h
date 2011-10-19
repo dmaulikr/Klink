@@ -54,3 +54,6 @@ extern NSString* const USERID;
 extern NSString* const CREATEDRESOURCES;
 extern NSString* const MODIFIEDRESOURCE;
 extern NSString* const SECONDARYRESULTS;
+extern NSString* const CALLBACKRESULT;
+
+extern NSString* const an_USER; 

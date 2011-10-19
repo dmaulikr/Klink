@@ -14,10 +14,13 @@
 #import "ResourceContext.h"
 #import "Attributes.h"
 #import "TypeInstanceData.h"
+#import "Macros.h"
+#import "Request.h"
+#import "Types.h"
 
 @implementation Resource
-@dynamic resourceid;
-@dynamic resourcetype;
+@dynamic objectid;
+@dynamic objecttype;
 @dynamic datecreated;
 @dynamic datemodified;
 @dynamic attributeinstancedata;
@@ -32,25 +35,28 @@
 
 - (void) commonInitWith:(ResourceContext*)resourceContext {
     if (resourceContext != nil) {
-        //we need to create a set of attribute description objects upon initialization 
         NSEntityDescription* entity = [self entity];
-        NSDictionary* attributes = [entity attributesByName];
-        NSMutableArray* attributeInstanceData = [[NSMutableArray alloc]init];
-        for (NSString* attribute in attributes) {
-            //create a new attribute type description object
-            AttributeInstanceData* attributeMetadata = [AttributeInstanceData attributeInstanceDataFor:self.resourcetype withResourceContext:resourceContext forAttribute:attribute ];
-            
-            
-            //add it to the internal attribute store
-            [attributeInstanceData addObject:attributeMetadata];
-        }
-        self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
-        [attributeInstanceData release];
-        
         
         //we need to populate the type data for the object
-        self.typeinstancedata = [TypeInstanceData typeForType:self.resourcetype withResourceContext:resourceContext];
+        self.typeinstancedata = [TypeInstanceData typeForType:self.objecttype withResourceContext:resourceContext];
+
+        //we only need attribute instance values for types which are sync'ing to the cloud
+        if (self.typeinstancedata.iscloudtype) {
+            NSDictionary* attributes = [entity attributesByName];
+            NSMutableArray* attributeInstanceData = [[NSMutableArray alloc]init];
+            for (NSString* attribute in attributes) {
+                //create a new attribute type description object
+                AttributeInstanceData* attributeMetadata = [AttributeInstanceData attributeInstanceDataFor:self.objecttype withResourceContext:resourceContext forAttribute:attribute ];
+                
+                
+                //add it to the internal attribute store
+                [attributeInstanceData addObject:attributeMetadata];
+            }
+            self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
+            [attributeInstanceData release];
+        }
         
+                
     }
 
 }
@@ -61,7 +67,9 @@
     self = [super initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     if (self) {
         //TODO: need to generate resource id here
-        self.resourcetype = [entity name];
+        self.objecttype = [entity name];
+        self.attributeinstancedata = nil;
+        self.typeinstancedata = nil;
         [self commonInitWith:context];
     }
     
@@ -98,19 +106,41 @@
 //Extracts values from a apassed in JSON instance and populates attributes
 //on this object accordingly
 - (void) readAttributesFromJSONDictionary:(NSDictionary*)jsonDictionary {
+    NSString* activityName = @"Resource.readAttributesFromJSONDictionary:";
     NSEntityDescription* entityDescription = [self entity];
-    NSDictionary* attributes = [entityDescription attributesByName];
+
+    NSArray* attributeDescriptions = [entityDescription properties];
     
-    for (NSAttributeDescription* attributeDescription in attributes) {
-        if ([attributeDescription isKindOfClass:[NSAttributeDescription class]]) {
-            NSString* attributeName = [attributeDescription name];
-            
-            if ([jsonDictionary valueForKey:attributeName] != nil) {
-                id value = [jsonDictionary valueForKey:attributeName];
-                [self setValue:value forKey:attributeName];
+    for (NSAttributeDescription* attrDesc in attributeDescriptions) {
+        if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
+              id value = [jsonDictionary valueForKey:[attrDesc name]];
+            //its an attribute description object
+            if (value != nil && value != [NSNull null]) {
+                NSAttributeType attrType = [attrDesc attributeType];
+                if (attrType == NSBooleanAttributeType ||
+                    attrType == NSInteger64AttributeType) {
+                    [self setValue:value forKey:[attrDesc name]];
+                    
+                }
+                else if (attrType == NSDoubleAttributeType) {
+                    [self setValue:value  forKey:[attrDesc name]];
+                }
+                else if (attrType == NSStringAttributeType) {
+                    if ([value isKindOfClass:[NSString class]]) {
+                        [self setValue:value forKey:[attrDesc name]];
+                    }
+                    else {
+                        [self setValue:[value stringValue] forKey:[attrDesc name]];
+                    }
+                }
+                else {
+                    //unsupported attribute type
+                    LOG_RESOURCE(1,@"%@Unsupported attribute type in JSON string: %d",activityName,attrType);
+                }
             }
         }
     }
+
     
 }
 
@@ -127,7 +157,7 @@
     }
     
     if (self)  {
-        self.resourcetype = [entity name];
+        self.objecttype = [entity name];
          [self commonInitWith:resourceContext];
         
         //check to ensure json conforms to the schema
@@ -143,7 +173,44 @@
 }
 
 #pragma mark - Metadata accessors and setters
-- (BOOL) isResourceSynchronizedToCloud {
+- (BOOL) shouldResourceBeSynchronizedToCloud {
+    //evaluates whether this is a cloud type, and if it is, and if this instance 
+    //is not one that was created by a download of json by the web service, then it will return true
+    BOOL retVal = NO;
+    
+    if (self.typeinstancedata == nil ||
+        self.attributeinstancedata == nil) {
+        retVal = NO;
+        return retVal;
+    }
+    
+    //if it is a synchronized type, then the answer to this question is always no
+    if (!self.typeinstancedata.iscloudtype) {
+        retVal = NO;
+        return retVal;
+    }
+    
+    //if the object has been marked not to sync to the cloud, then
+    //the return value can only be no
+    if (!self.typeinstancedata.shouldsynctocloud) {
+        retVal = NO;
+        return retVal;
+    }
+    
+    //at this point, we check all of the attributes of this object
+    //and if there are dirty attributes, we then return YES
+    for (AttributeInstanceData* aid in self.attributeinstancedata) {
+        if (aid.isdirty) {
+            retVal = YES;
+            return retVal;
+        }
+    }
+    
+    return retVal;
+    
+    
+}
+- (BOOL) isResourceTypeSynchronizedToCloud {
     return [self.typeinstancedata.iscloudtype boolValue];
 }
 
@@ -227,9 +294,24 @@
 #pragma mark - IJSONSerializable Methods
 - (NSString*) toJSON {
     NSString* activityName = [NSString stringWithFormat:@"%@.JSONString:",[self componentName]];
-    NSDictionary* attributeValues = [self dictionaryFrom];
+    
+    NSEntityDescription* entity = [self entity];
+    NSArray* attributeDescriptions = [entity properties];
+    NSMutableDictionary* objectAsDictionary = [[NSMutableDictionary alloc]init];
+    
+    for (NSAttributeDescription* attrDesc in attributeDescriptions) {
+        if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
+            SEL selector = NSSelectorFromString([attrDesc name]);
+            if ([self respondsToSelector:selector]) {
+                id attrValue = [self performSelector:selector];
+                [objectAsDictionary setValue:attrValue forKey:[attrDesc name]];
+            }
+        }
+    }
    
-
+    //we now have a dictionary of all attribute values for this object
+    
+    
     
   
     
@@ -238,7 +320,7 @@
     
     //we need to iterate through the object's attributes and compose a dictionary
     //of key-value pairs for attributes and references
-    NSString* retVal = [attributeValues JSONStringWithOptions:JKSerializeOptionNone error:&error];
+    NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
     
     if (error != nil) {
         //error in json serialization
@@ -290,7 +372,7 @@
 }
 
 - (NSString*) componentName {
-    return self.resourcetype;
+    return self.objecttype;
 }
 
 
@@ -300,10 +382,10 @@
 #pragma mark - Static Initializers
 + (NSString*)   typeNameFromJSON:(NSDictionary*)jsonDictionary {
     NSString* retVal = nil;
-    
-    if ([jsonDictionary valueForKey:RESOURCETYPE] != nil) {
+      if ([jsonDictionary valueForKey:RESOURCETYPE] != nil) {
         retVal = [jsonDictionary valueForKey:RESOURCETYPE];
-    }
+   }
+
     return retVal;
 }
 
@@ -323,7 +405,10 @@
 
 }
 
+
+
 //creates a new instance of a Resource based off of a JSON representation
+//returns the object in a non-syncable form
 + (id) createInstanceOfTypeFromJSON:(NSDictionary*)jsonDictionary 
                 withResourceContext:(ResourceContext*)resourceContext {
     
@@ -351,12 +436,17 @@
         //now we need to initialize it from the JSON string passed in
       
         Resource* obj = [[[Resource alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entityDescription insertIntoResourceContext:resourceContext]autorelease];
+        
+        //the object is being created from JSON, which means it was brought down from the service, marking it as not needing sync'ing
+        
         return obj;
     }
     
     
+    
+    
 }
-
+//objects created from JSON are not inserted into any managed contexts
 + (id) createInstanceOfTypeFromJSON:(NSDictionary*)jsonDictionary {
     return [self createInstanceOfTypeFromJSON:jsonDictionary withResourceContext:nil];
 }

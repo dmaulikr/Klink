@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "ResourceContext.h"
-
+#import "AuthenticationManager.h"
 @interface BaseViewController : UIViewController {
     
 }
 
 @property (nonatomic, retain) ResourceContext*   resourceContext;
-
+@property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @end

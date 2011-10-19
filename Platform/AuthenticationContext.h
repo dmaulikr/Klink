@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "Resource.h"
+#import "IJSONSerializable.h"
 
-@interface AuthenticationContext : Resource {
+@interface AuthenticationContext : NSManagedObject <IJSONSerializable> {
 
 @private
 }
@@ -26,9 +27,12 @@
 @property (nonatomic, retain) NSString* wpusername;
 @property (nonatomic, retain) NSString* wppassword;
 
-//- (NSString*) toJSON;
+- (NSString*) toJSON;
+- (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary;
 - (BOOL) hasWordpress;
 - (BOOL) hasFacebook;
 
++ (id)          createInstanceOfAuthenticationContext;
++ (id)          createInstanceOfAuthenticationContextFromJSON:(NSDictionary*)jsonDictionary;
 
 @end
