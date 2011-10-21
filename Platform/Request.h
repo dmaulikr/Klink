@@ -13,6 +13,7 @@
 typedef enum {
     kCREATE,
     kMODIFY,
+    kMODIFYATTACHMENT,
     kDELETE,
     kENUMERATION,
     kAUTHENTICATE
@@ -40,15 +41,21 @@ typedef enum {
 @property (nonatomic,retain) NSNumber*  targetresourceid;
 @property (nonatomic,retain) NSString*  url;
 @property (nonatomic,retain) NSString*  changedattributes;
-@property (nonatomic,retain) NSArray*   changedAttributesList;
 @property (nonatomic,retain) NSString*  targetresourcetype;
+
+
 - (id) initFor:(NSNumber*)objectid 
+withTargetObjectType:(NSString*)objecttype
  withOperation:(int)opcode 
   withUserInfo:(NSDictionary*)userInfo 
      onSuccess:(Callback*)onSuccessCallback 
      onFailure:(Callback*)onFailureCallback;
 
 
+- (NSArray*)changedAttributesList;
+- (void) setChangedAttributesList:(NSArray*)changedAttributeList;
+
 + (id)          createInstanceOfRequest;
++ (id)          createAttachmentRequestFrom:(Request*)request;
 
 @end

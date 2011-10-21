@@ -126,7 +126,7 @@ static  AuthenticationManager* sharedManager;
         
         if (userObject != nil && currentContext != nil) {
             UIImage* image = [UIImage imageWithData:result];
-            
+            LOG_SECURITY(0,@"%@Download of Facebook profile complete, saving photo to phone",activityName);
             //we need to save this image to the local file system
             ImageManager* imageManager = [ImageManager getInstance];
             NSString* path = [imageManager saveImage:image withFileName:currentContext.facebookuserid];
@@ -167,7 +167,14 @@ static  AuthenticationManager* sharedManager;
 }
 - (AuthenticationContext*) contextForLoggedInUser {
     //TODO implement authentication manager methods;
-    return nil;
+    if (self.m_LoggedInUserID != nil &&
+        ![self.m_LoggedInUserID isEqualToNumber:[NSNumber numberWithInt:0]]) {
+        
+        return [self contextForUserWithID:self.m_LoggedInUserID];
+    }
+    else {
+        return nil;
+    };
 }
 
 #pragma mark - Login/Logoff Methods
@@ -231,8 +238,10 @@ static  AuthenticationManager* sharedManager;
     if (currentUser != nil && (currentUser.thumbnailurl == nil ||
                                [currentUser.thumbnailurl isEqualToString:@""])) {
         
+        
         //since we logged in successfully, now lets grab the profile photo                    
         self.fbPictureRequest = [self.facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+        LOG_SECURITY(0,@"%@User %@ doesnt have a profile picture, downloading from Facebook...",activityName,currentUser.objectid);
     }
     
     //now we emit the system wide notification to tell people the user has logged in
@@ -291,7 +300,7 @@ static  AuthenticationManager* sharedManager;
     }
     else {
         //need to insert the new user into the resource context
-        [resourceContext.managedObjectContext insertObject:returnedUser];
+        [resourceContext insert:returnedUser];
     }
     [resourceContext save:YES onFinishCallback:nil];
     

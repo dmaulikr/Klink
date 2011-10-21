@@ -39,4 +39,8 @@
                        withName:(NSString*)name 
         withFacebookAccessToken:(NSString*)facebookAccessToken 
         withFacebookTokenExpiry:(NSDate*)date;
+
++ (NSURL*) urlForPutObject:(NSNumber*)objectid 
+            withObjectType:(NSString*)objectType 
+ withAuthenticationContext:(id)authenticationContext;
 @end

@@ -17,7 +17,7 @@ in the local persistence store */
 
 @property (nonatomic,retain) NSString* typename;
 @property (nonatomic,retain) NSNumber* iscloudtype;
-@property (nonatomic,retain) NSNumber* shouldsynctocloud;
+
 
 + (TypeInstanceData*) typeForType:(NSString*)typeName withResourceContext:(ResourceContext*)context;
 @end

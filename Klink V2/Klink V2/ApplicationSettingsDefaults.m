@@ -12,8 +12,8 @@
 //NSString* const stng_BASEURL = @"baseurl";
 //NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
 //NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
-//NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
-NSString* const default_BASEURL = @"http://oscial.com/service";
+NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
+//NSString* const default_BASEURL = @"http://oscial.com/service";
 //NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=10;
 //int const pageSize_PHOTOSINTHEME = 10;
@@ -29,6 +29,7 @@ int const maxsize_FEEDDOWNLOAD = 50;
 int const batchSize_CAPTION=20;
 int const batchSize_THEME=20;
 int const size_NUMLINKEDOBJECTSTOTRETURN=5;
+int const timeout_HTTP = 60;
 //NSString* const cell_TEXTCAPTION =@"textCaptionCell";
 //NSString* const cell_IMAGECAPTION=@"imageCaptionCell";
 //

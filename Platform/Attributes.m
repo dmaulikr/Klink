@@ -54,3 +54,5 @@ NSString* const SECONDARYRESULTS        =@"secondaryresults";
 NSString* const CALLBACKRESULT          =@"callbackresult";
 
 NSString* const an_USER                 =@"user";
+NSString* const IMAGEURL                =@"imageurl";
+NSString* const THUMBNAILURL           =@"thumbnailurl";

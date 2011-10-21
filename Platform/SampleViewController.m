@@ -15,6 +15,10 @@
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "EnumerationResponse.h"
+#import "Photo.h"
+#import "ImageManager.h"
+
+
 
 @implementation SampleViewController
 @synthesize toJSONButton    =m_toJSONButton;
@@ -26,6 +30,14 @@
 @synthesize enumerationResponse = m_enumerationResponse;
 @synthesize loginButton     =m_loginButton;
 @synthesize logoutButton    =m_logoutButton;
+@synthesize createPhotoButton    =m_createPhotoButton;
+@synthesize createPhotoStatus   =m_createPhotoStatus;
+@synthesize objectID    = m_objectID;
+@synthesize attributeName   =m_attributeName;
+@synthesize attributeValue  =m_attributeValue;
+@synthesize commitChangesButton =m_commitChangesButton;
+@synthesize objectType  =m_objectType;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -130,4 +142,69 @@
     [self.authenticationManager logoff];
 }
 
+- (IBAction)createUser:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
+    Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+    photo.descr = @"test photo";
+    photo.imageurl = @"testiomageurl";
+    photo.thumbnailurl = @"testthumbnailurl";
+    photo.numberofvotes = [NSNumber numberWithInt:0];
+    photo.creatorid = context.userid;
+    photo.themeid = [NSNumber numberWithLongLong:634535212720410463];
+    //insert
+    [resourceContext insert:photo];
+    
+    [resourceContext save:YES onFinishCallback:nil];
+}
+
+- (IBAction) commitChanges:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    NSString* attributeName = @"thumbnailurl";
+    NSString* attributeValue = self.attributeValue.text;
+    NSString* objectid = @"122604833";
+    NSString* objecttype = @"user";
+    
+    
+    ImageManager* imageManager= [ImageManager getInstance];
+    NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
+    
+    NSData* data = [NSData dataWithContentsOfURL:url]   ; 
+    UIImage* image = [UIImage imageWithData:data];
+    NSNumber* file = [NSNumber numberWithLongLong:[[NSDate date]timeIntervalSince1970]];
+    NSString* fileName = [NSString stringWithFormat:@"%@.jpg",file];
+    
+    NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
+AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
+    
+    Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+    photo.descr = @"test photo";
+   // photo.imageurl = @"testiomageurl";
+    photo.thumbnailurl = fullPath;
+    photo.numberofvotes = [NSNumber numberWithInt:0];
+    photo.creatorid = context.userid;
+    photo.themeid = [NSNumber numberWithLongLong:634535212720410463];
+    
+    
+    
+//    
+//    Resource* resource = [resourceContext resourceWithType:objecttype   withID:objectid];
+//    
+//    
+//    
+//    SEL selector = NSSelectorFromString(attributeName);
+//    [resource setValue:fullPath forKey:attributeName];
+    
+    [resourceContext save:YES onFinishCallback:nil];
+    
+    
+    
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
 @end

@@ -12,7 +12,7 @@
 #import "Resource.h"
 #import "IJSONSerializable.h"
 
-@interface PutResponse : Response {
+@interface PutResponse : Response <IJSONSerializable> {
     id      m_modifiedResource;
     NSArray *m_secondaryResults;
 }

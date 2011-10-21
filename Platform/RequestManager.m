@@ -23,6 +23,9 @@
 #import "Macros.h"
 #import "GetAuthenticatorResponse.h"
 #import "Response.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+#import "ApplicationSettingsDefaults.h"
 
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
@@ -45,8 +48,8 @@ static RequestManager* sharedInstance;
 - (id) init {
     self = [super init];
     if (self) {
-        self.enumerationQueue = [[NSOperationQueue alloc]init];
-        self.operationQueue = [[NSOperationQueue alloc]init];
+        self.enumerationQueue = [[OperationQueue alloc]init];
+        self.operationQueue = [[OperationQueue alloc]init];
     }
     return self;
 }
@@ -54,21 +57,26 @@ static RequestManager* sharedInstance;
 - (ASIHTTPRequest*) requestFor:(RequestOperation)opcode 
                        withURL:(NSString*)url 
                   withUserInfo:(NSDictionary*)userInfo {
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    
     if (opcode == kCREATE) {
         ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         httpRequest.delegate = self;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
-        
+        httpRequest.userInfo = userInfo;
+        httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
         return httpRequest;
     }
-    else if (opcode == kMODIFY) {
-        ASIHTTPRequest* httpRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    else if (opcode == kMODIFY ||
+             opcode == kMODIFYATTACHMENT) {
+        ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"POST";
         httpRequest.userInfo = userInfo;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
+        httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
         return httpRequest;                           
                                    
     }
@@ -80,6 +88,7 @@ static RequestManager* sharedInstance;
         httpRequest.userInfo = userInfo;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
+        httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
         return httpRequest; 
         
     }
@@ -89,6 +98,7 @@ static RequestManager* sharedInstance;
 
 
 - (void) processAttachmentFor:(NSString*)attribute associatedWith:(Request*)request {
+    NSString* activityName = @"RequestManager.processAttachmentFor:";
     //will take the initial target object id
     //and upload the file location that is contained
     //within the attribute passed in
@@ -105,15 +115,27 @@ static RequestManager* sharedInstance;
         AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
         NSURL* url = [UrlManager urlForUploadAttachment:resource.objectid withObjectType:resource.objecttype forAttributeName:attribute withAuthenticationContext:authenticationContext];
         
-        ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:url];
+        request.url = [url absoluteString];
+        [request setChangedAttributesList:[NSArray arrayWithObject:attribute]];
+        [request retain];
+        
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:request forKey:kREQUEST];
+        ASIFormDataRequest* httpRequest = (ASIFormDataRequest*) [self requestFor:kMODIFYATTACHMENT withURL:[url absoluteString] withUserInfo:userInfo];
         [httpRequest setFile:value forKey:@"attachment"];
         httpRequest.delegate = self;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
-        httpRequest.userInfo = nil;
         
+        LOG_REQUEST(0, @"%@Executing upload attachment request for ID:%@ of Type:%@ for Attribute:%@",activityName,resource.objectid,resource.objecttype,attribute);
         [self.operationQueue addOperation:httpRequest];
     }
+}
+
+//called by creatre and put responses to process attachment attributes after the fact
+- (void) processModifyAttachment:(Request*) request {
+    NSArray* changedAttributes = [request changedAttributesList];
+    NSString* attributeName = [changedAttributes objectAtIndex:0];
+    [self processAttachmentFor:attributeName associatedWith:request];
 }
 
 - (void) processDelete:(Request*) request {
@@ -121,40 +143,33 @@ static RequestManager* sharedInstance;
 }
 
 - (void) processModify:(Request*) request {
-    
+    NSString* activityName = @"RequestManager.processModify:";
     ResourceContext* resourceContext = [ResourceContext instance];
     Resource* resource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
     
-    NSArray* changedAttributes = request.changedAttributesList;
+    //TODO: we need to optimize to only send the JSON fragments which changed
+    //for now we will send the whole object
+    NSString* json = [resource toJSON];
     
-    NSString* json = [resource toJSON:changedAttributes];
-    
-    //now we have the json representation of all the attributes that changed
-    
-    //we need to know which attributes are attachment types, as they will need to 
-    //be uploaded seperately after the initial set are done
-    NSArray* attributeInstanceDataList = [resource attributeInstanceDataForList:changedAttributes];
-    
-    NSMutableArray* urlAttachmentsList = [[NSMutableArray alloc]init];
-    
-    for (AttributeInstanceData* aid in attributeInstanceDataList) {
-        if ([aid.isurlattachment boolValue]) {
-            //the attribute is a url attachment
-            //we need to upload it seperately
-            [urlAttachmentsList addObject:aid.attributename];
-        }
-    }
-    
-    //we now have a list of all attachments that need to be processed
-    //we attach it as userinfo to the original request
+
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
     [userInfo setObject:request forKey:kREQUEST];
-    [userInfo setObject:urlAttachmentsList forKey:kATTACHMENTLIST];
+    [request retain];
+    
+    //prior to making the call, we lock attachment attributes that need to be uploaded
+    //after the update, so that they are not over-written by the update operation
+    NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
+    [resource lockAttributes:attachmentAttributesInRequest];
+    LOG_REQUEST(0,@"%@Locking %d attachment attributes until Put completes",activityName,[attachmentAttributesInRequest count]);
+    
+    [resourceContext save:YES onFinishCallback:nil];
     
     //we submit the initial put operation with the request
     //the attachments will be processed on the return leg
     ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kMODIFY withURL:request.url withUserInfo:userInfo];
     [httpRequest setPostValue:json forKey:@""];
+      
+    LOG_REQUEST(0, @"%@Executing put request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
     
     [self.operationQueue addOperation:httpRequest];
 }
@@ -162,23 +177,35 @@ static RequestManager* sharedInstance;
 
 - (void) processCreates:(NSArray*) requests {
     //bulk create in one shot
-    
+    NSString* activityName = @"RequestManager.processCreates:";
     NSMutableArray* resourcesToCreate = [[NSMutableArray alloc]init];
     
     ResourceContext* resourceContext = [ResourceContext instance];
 
     NSString* url = nil;
+    int attachmentCount = 0;
     
     for (Request* request in requests) {
         Resource* resource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
         NSString* resourceJSON = [resource toJSON];
         [resourcesToCreate addObject:resourceJSON];
-        
+        [request retain];
         if (url == nil) {
             //need to pull out one of the URLs, it is
             //assumed that all elements have the same URL
             url = request.url;
         }
+        
+        //note: there is no attachment processing for a bulk create request
+        if ([requests count] == 1) {
+            NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+            [resource lockAttributes:attachmentAttributes];
+            
+            attachmentCount = [attachmentAttributes count];
+                LOG_REQUEST(0,@"%@Locking %d attachment attributes until Create completes",activityName,[attachmentAttributes count]);
+        }
+        [resourceContext save:YES onFinishCallback:nil];
+        
     }
     
     //we now have a json representation of each resource
@@ -190,29 +217,45 @@ static RequestManager* sharedInstance;
 
     ASIFormDataRequest* httpRequest =(ASIFormDataRequest*) [self requestFor:kCREATE withURL:url withUserInfo:userInfo];
     [httpRequest setPostValue:json forKey:@""];
+    
+    
+    //following code for generating log message
+    LOG_REQUEST(0, @"%@Executing bulk create request for %d objects with %d attachments to be processed after",activityName,[requests count],attachmentCount);
     [self.operationQueue addOperation:httpRequest];
     
     
 }
 - (void) processCreate:(Request*) request {
     //single shot creates
+    NSString* activityName = @"RequestManager.Create:";
     ResourceContext* resourceContext = [ResourceContext instance];
     Resource* resource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
     NSString* json = [resource toJSON];
     
     if (resource != nil) {
+        //prior to making the call, we lock attachment attributes that need to be uploaded
+        //after the create, so that they are not over-written by the create operation
+        NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
+        [resource lockAttributes:attachmentAttributesInRequest];
+        LOG_REQUEST(0,@"%@Locking %d attachment attributes until Create completes",activityName,[attachmentAttributesInRequest count]);
+        
+        [resourceContext save:YES onFinishCallback:nil];
+        
         
         NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
         [userInfo setObject:request forKey:kREQUEST];
-        
+        [request retain];
         ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
         [httpRequest setPostValue:json forKey:@""];
+        
+        LOG_REQUEST(0, @"%@Executing create request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
+        
         [self.operationQueue addOperation:httpRequest];
         
         
     }
     else {
-        //TODO: log an error for a missing object
+        LOG_REQUEST(1,@"%@Could not find resource with ID:%@ of Type:%@ to create in cloud",activityName,resource.objectid,resource.objecttype);
     }
 }
 
@@ -222,6 +265,30 @@ static RequestManager* sharedInstance;
     ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
     [self.enumerationQueue addOperation:httpRequest];
 }
+
+//returns all changed attributes on the request that are also attachments
+- (NSArray*) attachmentAttributesInRequest:(Request*)request {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* changedAttributes = [request changedAttributesList];
+    Resource* resource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
+    
+    NSArray* attributeInstanceDataList = [resource attributeInstanceDataForList:changedAttributes];
+    
+    NSMutableArray* attachmentAttributeNames = [[[NSMutableArray alloc]init]autorelease];
+    
+    //create a list of attributes that are attachments which need to be uploaded
+    for (AttributeInstanceData* aid in attributeInstanceDataList) {
+        if ([aid.isurlattachment boolValue]) {
+            //the attribute is a url attachment
+            //we need to upload it seperately
+            [attachmentAttributeNames addObject:aid.attributename];
+        }
+    }
+    
+    return attachmentAttributeNames;
+
+}
+
 #pragma mark - Public interface
 - (void) submitRequest:(Request*)request {
         //take in a request
@@ -235,6 +302,9 @@ static RequestManager* sharedInstance;
     }
     else if ([request.operationcode intValue] == kMODIFY) {
         [self processModify:request];
+    }
+    else if ([request.operationcode intValue] == kMODIFYATTACHMENT) {
+        [self processModifyAttachment:request];
     }
     else if ([request.operationcode intValue] == kENUMERATION ||
              [request.operationcode intValue] == kAUTHENTICATE) {
@@ -270,18 +340,7 @@ static RequestManager* sharedInstance;
    
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
     EnumerationResponse* response = [[EnumerationResponse alloc]initFromJSONDictionary:jsonDictionary];
-//    
-//    if (response.didSucceed) {
-//        LOG_REQUEST(0,@"@%@%", activityName,@"Enumeration request completed successfully");
-//        [request.onSuccessCallback fireWithResponse:response];
-//        
-//        
-//    }
-//    else {
-//        //log failure
-//        LOG_REQUEST(1,@"%@Enumeration request failed due to %@",activityName,response.errorMessage);
-//        [request.onFailCallback fire];
-//    }
+
     return response;
 }
 
@@ -294,58 +353,151 @@ static RequestManager* sharedInstance;
         LOG_REQUEST(1, @"@%Could not deserialize response into JSON object: %@",activityName,error);
     }
     GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
-    
-//    if (response.didSucceed) {
-//        LOG_REQUEST(0,@"@%@%", activityName,@"Authenticate request completed successfully");
-//        [request.onSuccessCallback fireWithResponse:response];
-//        
-//        
-//    }
-//    else {
-//        //log failure
-//        LOG_REQUEST(1,@"%@Authenticate request failed due to %@",activityName,response.errorMessage);
-//        [request.onFailCallback fire];
-//    }
+
     return response;
     
 }
 
-- (Response*) processModifyResponse:(NSString*)responseString withRequest:(Request*)request {
+- (void) processAttachmentsForRequest:(Request*)request {
+    NSString* activityName = @"RequestManager.processAttachmentsForRequest:";
+    NSArray* attachmentAttributeNames = [self attachmentAttributesInRequest:request];
+    
+    //we create a new request to handle attachment processing
+    Request* newRequest = [Request createAttachmentRequestFrom:request];
+    
+    for (NSString* attachmentAttributeName in attachmentAttributeNames) {
+        //submit the attachment for processing
+        LOG_REQUEST(0,@"%@Processing Request attachment upload for attribute %@",activityName,attachmentAttributeName);
+        [self processAttachmentFor:attachmentAttributeName associatedWith:newRequest];
+    }
+
+}
+
+- (Response*) processModifyAttachmentResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSString* activityName = @"RequestManager.processModifyAttachmentResponse:";
+
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
     
     PutResponse* putResponse = [[PutResponse alloc] initFromJSONDictionary:jsonDictionary];
     
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Resource* modifiedResource = putResponse.modifiedResource;
-    Resource* existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
-
-    [existingResource refreshWith:modifiedResource];
-    
-    
-    for (Resource* resource in putResponse.secondaryResults) {
-        existingResource = nil;
-        existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
-        [existingResource refreshWith:resource];
+    if ([putResponse.didSucceed boolValue]) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Resource* modifiedResource = putResponse.modifiedResource;
+        Resource* existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
+        
+        //we need to unlock the attachment attributes
+        //so it can be overwritten
+        NSArray* changedAttributeList = [request changedAttributesList];
+        [existingResource unlockAttributes:changedAttributeList];
+        
+        
+        [existingResource refreshWith:modifiedResource];
+        
+        
+        for (Resource* resource in putResponse.secondaryResults) {
+            existingResource = nil;
+            existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+            
+            if (existingResource != nil) {
+                [existingResource refreshWith:resource];
+            }
+            else {
+                //new object , need to create it
+                [resourceContext insert:resource];
+            }
+        }
+        
+        
+        [resourceContext save:YES onFinishCallback:nil];
     }
+    else {
+        LOG_REQUEST(1, @"%Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
+    }
+    return putResponse;
+}
+
+- (Response*) processModifyResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSString* activityName = @"RequestManager.processModifyResponse:";
+    NSDictionary* jsonDictionary = [responseString objectFromJSONString];
     
-    [resourceContext save:YES onFinishCallback:nil];
+    PutResponse* putResponse = [[PutResponse alloc] initFromJSONDictionary:jsonDictionary];
+    
+    if ([putResponse.didSucceed boolValue]) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Resource* modifiedResource = putResponse.modifiedResource;
+        Resource* existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
+        
+        [existingResource refreshWith:modifiedResource];
+        
+        
+        for (Resource* resource in putResponse.secondaryResults) {
+            existingResource = nil;
+            existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+            
+            if (existingResource != nil) {
+                [existingResource refreshWith:resource];
+            }
+            else {
+                //new object , need to create it
+                [resourceContext insert:resource];
+            }
+        }
+        
+        //we need to unlock any attachment attributes that are still pending processing
+        //on this original request
+        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+        [existingResource unlockAttributes:attachmentAttributes];
+        
+        
+        [resourceContext save:YES onFinishCallback:nil];
+        
+        [self processAttachmentsForRequest:request];
+        
+    }
+    else {
+         LOG_REQUEST(1, @"%Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
+    }
     return putResponse;
     
 }
 
 - (Response*) processCreateResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSString* activityName = @"RequestManager.processCreateResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
     
     //create a create response handler
     CreateResponse* createResponse = [[CreateResponse alloc] initFromJSONDictionary:jsonDictionary];
     
-    ResourceContext* resourceContext = [ResourceContext instance];
-    for (Resource* createdResource in createResponse.createdResources)  {
-        Resource* existingResource = [resourceContext resourceWithType:createdResource.objecttype withID:createdResource.objectid];
-        [existingResource refreshWith:createdResource];
-      
+    if ([createResponse.didSucceed boolValue]) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        LOG_REQUEST(0,@"%@Create request completed with %d objects created",activityName,[createResponse.createdResources count]);
+        
+        for (Resource* createdResource in createResponse.createdResources)  {
+            Resource* existingResource = [resourceContext resourceWithType:createdResource.objecttype withID:createdResource.objectid];
+            //we refresh the local copy wioth the values returned from the server
+            [existingResource refreshWith:createdResource];
+            
+            //if this was a single create request, we know there may be attachments
+            //unlokc those attributes
+            if ([createResponse.createdResources count]  == 1) {
+                NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+                LOG_REQUEST(0,@"%@Unlocking %d attachment attributes",activityName,[attachmentAttributes count]);
+                [existingResource unlockAttributes:attachmentAttributes];
+            }
+        }
+        
+        
+        [resourceContext save:YES onFinishCallback:nil];
+        
+        if ([createResponse.createdResources count] == 1) {
+
+            [self processAttachmentsForRequest:request];
+        }
     }
-    [resourceContext save:YES onFinishCallback:nil];
+    else {
+        LOG_REQUEST(1, @"%@Create request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,createResponse.errorMessage);
+    }
     return createResponse;
 }
 
@@ -364,6 +516,10 @@ static RequestManager* sharedInstance;
         else if ([request.operationcode intValue] == kMODIFY) {
             //processing a modify response
             responseObj = [self processModifyResponse:response withRequest:request];
+        }
+        else if ([request.operationcode intValue] == kMODIFYATTACHMENT) {
+            //processing a modify attachment response
+            responseObj = [self processModifyAttachmentResponse:response withRequest:request];
         }
         else if ([request.operationcode intValue] == kDELETE) {
             //TODO: implement response handling for deletes
@@ -403,28 +559,34 @@ static RequestManager* sharedInstance;
     }
 
 }
-- (void) onRequestFailed:(ASIHTTPRequest*)request {
-    NSDictionary* userInfo = request.userInfo;
+- (void) onRequestFailed:(ASIHTTPRequest*)httpRequest {
+    NSString* activityName = @"RequestManager.onRequestFailed:";
+    NSDictionary* userInfo = httpRequest.userInfo;
     
     NSObject* obj = [userInfo objectForKey:kREQUEST];
+    
+    LOG_HTTP(1, @"%@HTTP request failed",activityName);
     
     if ([obj isKindOfClass:[NSArray class]]) {
         //it was a bulk operation that failed
         NSArray* requests = [userInfo objectForKey:kREQUEST];
-        for (Request* request in requests) {
-            [self processRequestResponse:request withResponse:nil withSuccessFlag:NO];
+        for (Request* req in requests) {
+            [self processRequestResponse:req withResponse:[httpRequest responseString]  withSuccessFlag:NO];
         }
     }
     else {
         //it was a single resource operation that failed
-        Request* request = [userInfo objectForKey:kREQUEST];
-        [self processRequestResponse:request withResponse:nil withSuccessFlag:NO];
+        Request* req = [userInfo objectForKey:kREQUEST];
+        [self processRequestResponse:req withResponse:[httpRequest responseString] withSuccessFlag:NO];
     }
 }
 
-- (void) onRequestSucceeded:(ASIHTTPRequest*)request {
-    NSDictionary* userInfo = request.userInfo;
-    NSString* response = [request responseString];
+- (void) onRequestSucceeded:(ASIHTTPRequest*)httpRequest {
+    NSString* activityName = @"RequestManager.onRequestSucceededß:";
+    NSDictionary* userInfo = httpRequest.userInfo;
+    NSString* response = [httpRequest responseString];
+    
+    LOG_HTTP(1, @"%@HTTP request succeeded",activityName);
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
         

@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "OperationQueue.h"
 @class Request;
 @interface RequestManager : NSObject {
-    NSOperationQueue* m_operationQueue;
-    NSOperationQueue* m_enumerationQueue;
+    OperationQueue* m_operationQueue;
+    OperationQueue* m_enumerationQueue;
 }
 
-@property (nonatomic,retain) NSOperationQueue* operationQueue;
-@property (nonatomic,retain) NSOperationQueue* enumerationQueue;
+@property (nonatomic,retain) OperationQueue* operationQueue;
+@property (nonatomic,retain) OperationQueue* enumerationQueue;
 + (RequestManager*)instance;
-
+- (NSArray*)    attachmentAttributesInRequest:(Request*)request;
 - (void) submitRequest:(Request*)request;
 - (void) submitRequests:(NSArray*)requests;
 @end

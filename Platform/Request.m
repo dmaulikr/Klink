@@ -13,7 +13,7 @@
 @synthesize onFailCallback      = m_onFailCallback;
 @synthesize onSuccessCallback   = m_onSuccessCallback;
 @synthesize userInfo            = m_userInfo;
-@synthesize changedAttributesList   = __changedAttributesList;
+
 @dynamic targetresourceid;
 @dynamic operationcode;
 @dynamic statuscode;
@@ -23,15 +23,6 @@
 
 #define kDelimeter @","
 
-#pragma mark - Properties
-- (NSArray*) changedAttributesList {
-    if (__changedAttributesList != nil) {
-        return __changedAttributesList;
-    }
-    
-    __changedAttributesList = [self.changedattributes componentsSeparatedByString:kDelimeter];
-    return __changedAttributesList;
-}
 
 #pragma initializers
 - (id) initWithEntity:(NSEntityDescription*)entity insertIntoResourceContext:(ResourceContext*)resourceContext {
@@ -42,16 +33,18 @@
     }
     return self;
 }
-- (id) initFor:(NSNumber *)objectid 
+- (id) initFor:(NSNumber *)objectid
+withTargetObjectType:(NSString*)objecttype
  withOperation:(int)opcode 
   withUserInfo:(NSDictionary *)userInfo 
      onSuccess:(Callback *)onSuccessCallback 
      onFailure:(Callback *)onFailureCallback {
    
-    self = [super init];
+    
     if (self) {
         //initialize the request to be pending
         self.statuscode = [NSNumber numberWithInt:kPENDING];
+        self.targetresourcetype = objecttype;
         self.targetresourceid = objectid;
         self.operationcode = [NSNumber numberWithInt:opcode];
         self.onFailCallback = onFailureCallback;
@@ -61,11 +54,42 @@
     return self;
 }
 
+- (NSArray*)changedAttributesList {
+    return [self.changedattributes componentsSeparatedByString:kDelimeter];
+}
+- (void) setChangedAttributesList:(NSArray*)changedAttributeList {
+    self.changedattributes =  @"";
+    
+    for (int i = 0; i < [changedAttributeList count]; i++) {
+        self.changedattributes = [NSString stringWithFormat:@"%@%@",self.changedattributes,[changedAttributeList objectAtIndex:i]];
+        
+        if (i < [changedAttributeList count]-1) {
+            self.changedattributes = [NSString stringWithFormat:@"%@%@",self.changedattributes,kDelimeter];
+        }
+    }
+    
+
+}
+
+#pragma mark - Static Initializers
+
 + (id) createInstanceOfRequest {
     ResourceContext* resourceContext = [ResourceContext instance];
     NSEntityDescription* entity = [NSEntityDescription entityForName:REQUEST inManagedObjectContext:resourceContext.managedObjectContext];
     Request* retVal = [[Request alloc]initWithEntity:entity insertIntoResourceContext:nil];
     [retVal autorelease];
     return retVal;
+}
+
++ (id) createAttachmentRequestFrom:(Request *)request {
+    Request* newRequest = [Request createInstanceOfRequest];
+    newRequest.onFailCallback = request.onFailCallback;
+    newRequest.onSuccessCallback = request.onSuccessCallback;
+    newRequest.operationcode =[NSNumber numberWithInt:kMODIFYATTACHMENT];
+    newRequest.targetresourceid = request.targetresourceid;
+    newRequest.targetresourcetype = request.targetresourcetype;
+    newRequest.statuscode =[NSNumber numberWithInt:kPENDING];
+    return newRequest;
+    
 }
 @end

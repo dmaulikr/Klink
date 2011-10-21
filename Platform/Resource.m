@@ -26,7 +26,7 @@
 @dynamic attributeinstancedata;
 @dynamic typeinstancedata;
 @synthesize resourceContext = m_resourceContext;
-
+@synthesize iswebservicerepresentation = m_iswebservicerepresentation;
 
 - (void) dealloc {
     [super dealloc];
@@ -35,26 +35,10 @@
 
 - (void) commonInitWith:(ResourceContext*)resourceContext {
     if (resourceContext != nil) {
-        NSEntityDescription* entity = [self entity];
-        
-        //we need to populate the type data for the object
-        self.typeinstancedata = [TypeInstanceData typeForType:self.objecttype withResourceContext:resourceContext];
-
-        //we only need attribute instance values for types which are sync'ing to the cloud
-        if (self.typeinstancedata.iscloudtype) {
-            NSDictionary* attributes = [entity attributesByName];
-            NSMutableArray* attributeInstanceData = [[NSMutableArray alloc]init];
-            for (NSString* attribute in attributes) {
-                //create a new attribute type description object
-                AttributeInstanceData* attributeMetadata = [AttributeInstanceData attributeInstanceDataFor:self.objecttype withResourceContext:resourceContext forAttribute:attribute ];
-                
-                
-                //add it to the internal attribute store
-                [attributeInstanceData addObject:attributeMetadata];
-            }
-            self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
-            [attributeInstanceData release];
-        }
+        [self createTypeInstanceData:resourceContext];
+        [self createAttributeInstanceData:resourceContext];
+       
+       
         
                 
     }
@@ -69,6 +53,7 @@
         //TODO: need to generate resource id here
         self.objecttype = [entity name];
         self.attributeinstancedata = nil;
+        self.iswebservicerepresentation = NO;
         self.typeinstancedata = nil;
         [self commonInitWith:context];
     }
@@ -158,6 +143,7 @@
     
     if (self)  {
         self.objecttype = [entity name];
+        self.iswebservicerepresentation = YES;
          [self commonInitWith:resourceContext];
         
         //check to ensure json conforms to the schema
@@ -176,7 +162,7 @@
 - (BOOL) shouldResourceBeSynchronizedToCloud {
     //evaluates whether this is a cloud type, and if it is, and if this instance 
     //is not one that was created by a download of json by the web service, then it will return true
-    BOOL retVal = NO;
+    BOOL retVal = YES;
     
     if (self.typeinstancedata == nil ||
         self.attributeinstancedata == nil) {
@@ -184,27 +170,18 @@
         return retVal;
     }
     
+    if (self.iswebservicerepresentation) {
+        //if the object was inserted due to being downloaded from the cloud
+        //then by definition it shouldnt be sync'ed back up
+        retVal = NO;
+        return retVal;
+    }
     //if it is a synchronized type, then the answer to this question is always no
     if (!self.typeinstancedata.iscloudtype) {
         retVal = NO;
         return retVal;
     }
-    
-    //if the object has been marked not to sync to the cloud, then
-    //the return value can only be no
-    if (!self.typeinstancedata.shouldsynctocloud) {
-        retVal = NO;
-        return retVal;
-    }
-    
-    //at this point, we check all of the attributes of this object
-    //and if there are dirty attributes, we then return YES
-    for (AttributeInstanceData* aid in self.attributeinstancedata) {
-        if (aid.isdirty) {
-            retVal = YES;
-            return retVal;
-        }
-    }
+ 
     
     return retVal;
     
@@ -225,12 +202,30 @@
     
 }
 
+- (void) markAsDirty:(NSArray*)changedAttributes {
+    
+    for (NSString* changedAttribute in changedAttributes) {
+        AttributeInstanceData* aid = [self attributeInstanceDataFor:changedAttribute];
+        if (aid != nil) {
+            aid.isdirty = [NSNumber numberWithBool:YES];
+        }
+    }
+    
+}
+
 - (void) markAsClean {
     //go through each attribute description and mark it clean
     NSArray* attributeInstanceData = [self.attributeinstancedata allObjects];
     for (int i = 0; i < [attributeInstanceData count]; i++) {
         AttributeInstanceData* attributeInstance = [attributeInstanceData objectAtIndex:i];
         attributeInstance.isdirty = [NSNumber numberWithBool:NO];
+    }
+}
+
+- (void) markAsClean:(NSArray *)cleanedAttributes {
+    for (NSString* attribute in cleanedAttributes) {
+        AttributeInstanceData* aid = [self attributeInstanceDataFor:attribute];
+        aid.isdirty = [NSNumber numberWithBool:NO];
     }
 }
 
@@ -264,8 +259,133 @@
                               
 }
 
+- (void) lockAttributes:(NSArray *)attributes {
+    for (NSString* attribute in attributes) {
+        AttributeInstanceData* aid = [self attributeInstanceDataFor:attribute];
+        aid.islocked = [NSNumber numberWithBool:YES];
+    }
+}
+
+- (void) unlockAttributes:(NSArray*)attributes {
+    for (NSString* attribute in attributes) {
+        AttributeInstanceData* aid = [self attributeInstanceDataFor:attribute];
+        aid.islocked = [NSNumber numberWithBool:NO];
+    }
+}
+
+- (void) createAttributeInstanceData:(ResourceContext*)resourceContext {
+    //creates an empty set of attribute instance data for this object
+    //we only need attribute instance values for types which are sync'ing to the cloud
+    NSEntityDescription* entity = [self entity];
+    
+    if (self.typeinstancedata.iscloudtype) {
+        NSDictionary* attributes = [entity attributesByName];
+        NSMutableArray* attributeInstanceData = [[NSMutableArray alloc]init];
+        for (NSString* attribute in attributes) {
+            //create a new attribute type description object
+            AttributeInstanceData* attributeMetadata = [AttributeInstanceData attributeInstanceDataFor:self.objecttype withResourceContext:resourceContext forAttribute:attribute ];
+            
+            
+            //add it to the internal attribute store
+            [attributeInstanceData addObject:attributeMetadata];
+        }
+        self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
+        [attributeInstanceData release];
+    }
+}
+
+- (void) createTypeInstanceData:(ResourceContext*)resourceContext {
+    //creates an default type instance data object for this object
+  
+    self.typeinstancedata = [TypeInstanceData typeForType:self.objecttype withResourceContext:resourceContext];
+
+}
+
+- (BOOL) shouldCopyAttributeValue:(id)value forAttribute:(NSAttributeDescription*)attributeDescription {
+    BOOL retVal = NO;
+    
+    NSAttributeType attrType = [attributeDescription attributeType];
+    SEL selector = NSSelectorFromString([attributeDescription name]);
+    
+    if ([self respondsToSelector:selector]) {
+        id currVal = [self valueForKey:[attributeDescription name]];
+        AttributeInstanceData* attributeMetadata = [self attributeInstanceDataFor:[attributeDescription name]];
+        
+        if (attrType == NSBooleanAttributeType ||
+            attrType == NSInteger64AttributeType ||
+            attrType == NSDoubleAttributeType) {
+            
+            NSNumber* currNumberValue = (NSNumber*)currVal;
+            NSNumber* otherNumberValue = (NSNumber*)value;
+            
+            if (![currNumberValue isEqualToNumber:otherNumberValue] &&
+                ![attributeMetadata.islocked boolValue]) {
+                //the values differ and the local value is not locked
+                retVal = YES;
+                
+            }
+            else {
+                retVal = NO;
+            }
+          
+            
+        }
+      
+        else if (attrType == NSStringAttributeType) {
+            NSString* currStringValue = (NSString*)currVal;
+            NSString* otherStringValue = (NSString*)value;
+                  
+            if (currStringValue == nil && otherStringValue != nil) {
+                retVal = YES;
+            }
+            else if (![currStringValue isEqualToString:otherStringValue] &&
+                     ![attributeMetadata.islocked boolValue]) {
+                retVal = YES;
+            }
+            else {
+                retVal = NO;
+            }
+        
+        
+        }
+
+    }
+    else {
+        //this object doesnt have a value, so a value should be copied into it
+        retVal = YES;
+    }
+    return retVal;
+}
+
+- (NSArray*) copyFrom:(Resource*)resource {
+    NSEntityDescription* entity = [self entity];
+    NSArray* attributes = [entity properties];
+    NSMutableArray* attributesCopied = [[NSMutableArray alloc]init];
+    
+    for (NSAttributeDescription* attrDesc in attributes) {
+        if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
+            //see if the passed in object has a value for this attribute
+            SEL selector = NSSelectorFromString([attrDesc name]);
+            if ([resource respondsToSelector:selector]) {
+                //other object has a value for this selector
+                id val = [resource performSelector:selector];
+                if ([self shouldCopyAttributeValue:val forAttribute:attrDesc]) {
+                    [self setValue:val forKey:[attrDesc name]];
+                    [attributesCopied addObject:[attrDesc name]];
+                }
+            }
+        }
+    }
+    return attributesCopied;
+}
+
 - (void)refreshWith:(Resource *)newResource {
-    //TODO: implement refresh resource code
+    //refreshes the object with the server provided values
+    NSArray* attributesCopied = [self copyFrom:newResource];
+    
+    //marks the objects as being clean
+    [self markAsClean:attributesCopied];
+    
 }
     
 
@@ -293,7 +413,7 @@
 
 #pragma mark - IJSONSerializable Methods
 - (NSString*) toJSON {
-    NSString* activityName = [NSString stringWithFormat:@"%@.JSONString:",[self componentName]];
+    
     
     NSEntityDescription* entity = [self entity];
     NSArray* attributeDescriptions = [entity properties];
@@ -323,12 +443,11 @@
     NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
     
     if (error != nil) {
-        //error in json serialization
-        LogMessage(activityName, 0, [error description]);
+       
         return nil;
     }
     else {
-        LogMessage(activityName, 1, @"object serialized to JSON");
+        
         return retVal;
     }
     
@@ -375,7 +494,54 @@
     return self.objecttype;
 }
 
+//returns a list of all attribute names that have a non-nil value in this object
+- (NSArray*) attributesWithValues {
+    NSEntityDescription* entity = [self entity];
+    NSArray* properties = [entity properties];
+    NSMutableArray* retVal = [[NSMutableArray alloc]init];
+    
+    for (NSAttributeDescription* attrDesc in properties) {
+        if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
+            //get the value on the object
+            NSString* attributeName = [attrDesc name];
+            SEL selector = NSSelectorFromString(attributeName);
+            if ([self respondsToSelector:selector]) {
+                id value = [self performSelector:selector];
+                if (value != nil) {
+                    [retVal addObject:attributeName];
+                }
+            }
+        }
+    }
+    return retVal;
 
+}
+
+//returns a list of all attribues that have been changed ont his object
+//and that should be sync'ed to the cloud
+- (NSArray*)changedAttributesToSynchronizeToCloud {
+    NSMutableArray* retVal = [[NSMutableArray alloc]init] ;
+    NSDictionary* changedValues = [self changedValues];
+    
+    
+    if (changedValues != nil &&
+        [self shouldResourceBeSynchronizedToCloud]) {
+        for (NSString* attrName in changedValues) {     
+            //we will not include NIL or NULL attributes
+            SEL sel = NSSelectorFromString(attrName);
+            id val = [self performSelector:sel];
+            
+            AttributeInstanceData* aid = [self attributeInstanceDataFor:attrName];
+            
+            if (val != nil && [aid.isdirty boolValue]) {
+                [retVal addObject:attrName]; 
+            }
+           
+        }
+    }
+    
+    return retVal;
+}
 
 
 

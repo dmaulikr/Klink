@@ -12,28 +12,36 @@
 @implementation PutResponse
 @synthesize modifiedResource = m_modifiedResource;
 @synthesize secondaryResults = m_secondaryResults;
+
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
 
     
     self = [super initFromJSONDictionary:jsonDictionary]; 
     
-    if (self != nil) {
-        self.modifiedResource = [[[Resource alloc ]initWithDictionary:[jsonDictionary objectForKey:MODIFIEDRESOURCE]]autorelease];
-        NSArray* secondaryResultsJSON = [jsonDictionary objectForKey:SECONDARYRESULTS];
+    if (self != nil && 
+        [self.didSucceed boolValue] == YES) {
+        
+        NSDictionary* modifiedResourceJSONDictionary = [jsonDictionary valueForKey:MODIFIEDRESOURCE];
+        self.modifiedResource = [Resource createInstanceOfTypeFromJSON:modifiedResourceJSONDictionary];
+        
+        //each put response can contain a secondary set of objects that are updated
+        //or relevant to the request
+        NSArray* secondaryResultsJSON = [jsonDictionary valueForKey:SECONDARYRESULTS];
         
         
-        if (secondaryResultsJSON != nil) {
+        if (secondaryResultsJSON != nil && secondaryResultsJSON != [NSNull null]) {
             NSMutableArray* secondaryResults = [[NSMutableArray alloc]init];
             
             
             for (int i = 0; i < [secondaryResultsJSON count]; i++) {
-                NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];        
-                id resource = [[Resource alloc]initFromJSONDictionary:obj_i];
-                [secondaryResults insertObject:resource atIndex:i];
-                [resource release];
+                NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];
+                id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
+                [secondaryResults addObject:resource];
+              
                 
             }
             self.secondaryResults = secondaryResults;
+            [secondaryResults release];
         }
     }
     return self;

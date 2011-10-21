@@ -112,7 +112,6 @@
 }
 
 - (NSString*) toJSON {
-    NSString* activityName = @"AuthenticationContext.toJSON:";
     
     NSEntityDescription* entity = [self entity];
     NSArray* attributeDescriptions = [entity properties];
@@ -143,11 +142,10 @@
     
     if (error != nil) {
         //error in json serialization
-        LogMessage(activityName, 0, [error description]);
+   
         return nil;
     }
     else {
-        LogMessage(activityName, 1, @"object serialized to JSON");
         return retVal;
     }
     

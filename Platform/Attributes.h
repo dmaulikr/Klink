@@ -57,3 +57,5 @@ extern NSString* const SECONDARYRESULTS;
 extern NSString* const CALLBACKRESULT;
 
 extern NSString* const an_USER; 
+extern NSString* const IMAGEURL;
+extern NSString* const THUMBNAILURL;

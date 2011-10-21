@@ -22,6 +22,8 @@
 #import "GetAuthenticatorResponse.h"
 #import "Macros.h"
 #import "Types.h"
+#import "IDGenerator.h"
+#import "DateTimeHelper.h"
 
 #define kCallback   @"callback";
 @implementation ResourceContext
@@ -55,12 +57,21 @@ static ResourceContext* sharedInstance;
     return NO;
 }
 
-- (Request*) requestFor:(Resource*)resource forOperation:(RequestOperation*)opcode onFinishCallback:(Callback*)callback {
+- (Request*) requestFor:(Resource*)resource forOperation:(RequestOperation)opcode onFinishCallback:(Callback*)callback {
  
     Request* request = [Request createInstanceOfRequest];
-    [[request initFor:resource.objectid withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback]autorelease];
+    [[request initFor:resource.objectid withTargetObjectType:resource.objecttype withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback]autorelease];
     
     return request;
+}
+
+- (void) insert:(Resource *)resource {
+    [self.managedObjectContext insertObject:resource];
+    
+    if (!resource.iswebservicerepresentation) {
+        //mark the object as being completely dirty
+        [resource markAsDirty];
+    }
 }
 
 //saves all pending changes to the local persistence store
@@ -68,14 +79,16 @@ static ResourceContext* sharedInstance;
 - (void) save:(BOOL)saveToCloud 
      onFinishCallback:(Callback *)callback {
     
+    NSString* activityName = @"ResourceContext.save:";
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
+    NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
     
-    NSMutableArray* resourcesToUpdateInCloud = [[NSMutableArray alloc]init];
+    
     NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
     
     NSMutableArray* createRequests = [[NSMutableArray alloc]init];
-    
+    NSMutableArray* putRequests = [[NSMutableArray alloc]init];
     
     //get all pending changes
     NSSet* insertedObjects = [self.managedObjectContext insertedObjects];
@@ -89,14 +102,49 @@ static ResourceContext* sharedInstance;
         Resource* resource = [insertedObjectsArray objectAtIndex:i];
         //mark the object as being "dirty"
         if ([resource isKindOfClass:[Resource class]]) {
+            
+            //generate objectid,datecreated and datemodified attributes for the objects
+            if (resource.objectid == nil ||
+                [resource.objectid isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                
+                resource.objectid = [IDGenerator generateNewId:resource.objecttype];
+            }
+            
+            NSDate* currentDate = [NSDate date];
+            if (resource.datecreated == nil||
+                [resource.datecreated isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                resource.datecreated = [NSNumber numberWithDouble:[DateTimeHelper convertDateToDouble:currentDate]];
+            }
+            
+            if (resource.datemodified == nil ||
+                [resource.datemodified isEqualToNumber:[NSNumber numberWithInt:0]]) {
+                resource.datemodified = [NSNumber numberWithDouble:[DateTimeHelper convertDateToDouble:currentDate]];
+            }
+            
+            if (resource.typeinstancedata == nil) {
+                [resource createTypeInstanceData:self];
+            }
+            
+            if (resource.attributeinstancedata == nil ||
+                [resource.attributeinstancedata count] == 0) {
+                [resource createAttributeInstanceData:self];
+            }
+            
+            
+            //determine which, if any of the newly created objects should be synchronized
             if ([resource shouldResourceBeSynchronizedToCloud]) {
                 [resourcesToCreateInCloud addObject:resource];
+                [resourceIDsToCreateInCloud addObject:resource.objectid];
                 [resourceTypesToCreateInCloud addObject:resource.objecttype];
                
                 //mark newly created object as being dirty, will become clean when
                 //it has been successfully created on the server
                 [resource markAsDirty];
             }
+            
+            
+            
+
         }
     }
     
@@ -105,12 +153,50 @@ static ResourceContext* sharedInstance;
     for (int i = 0; i < [updatedObjectsArray count]; i++) {
         Resource* resource = [updatedObjectsArray objectAtIndex:i];
         
-        
-        if ([resource shouldResourceBeSynchronizedToCloud]) {
-            [resourcesToUpdateInCloud addObject:resource];
-            [resource markAsDirty];
-           
+        if ([resource isKindOfClass:[Resource class]]) {
+            if ([resource shouldResourceBeSynchronizedToCloud]) {
+                //get a list of attributes that are changed on the object
+                NSArray* changedAttributes = [resource changedAttributesToSynchronizeToCloud];
+                Request* request = nil;
+                
+                //is this Put-Attachment request?
+                if ([changedAttributes count] == 1) {
+                    //if the one changed attribute is an attachment type, then this is
+                    //a Put-Attachment request
+                    NSString* changedAttribute = [changedAttributes objectAtIndex:0];
+                    AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
+                    if (aid.isurlattachment) {
+                        //yes, it is an attachment
+                        request = [self requestFor:resource forOperation:kMODIFYATTACHMENT onFinishCallback:callback];
+                        
+                    }
+                    else {
+                        //no it is not an attachment
+                        request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
+                    }
+                }
+                else if ([changedAttributes count] > 1) {
+                    //must be a put modify operation since there are more than 1 changed attributes
+                    request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
+                }
+                else {
+                    //no changed attribute values to sync
+                    //do nothing
+                    request = nil;
+                }
+                
+                
+                if (request != nil) {
+                    //we append the changed attribute names to the request
+                    [request setChangedAttributesList:changedAttributes];
+                    
+                    [putRequests addObject:request];
+                }
+                                
+            } 
         }
+        
+        
     }
     
     
@@ -129,29 +215,64 @@ static ResourceContext* sharedInstance;
     [self.managedObjectContext save:&error];
     
     if (error != nil) {
-        //todo: log error on saving the context
-    }
-    
-    
-    AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
-    RequestManager* requestManager = [RequestManager instance];
-    if (authenticationContext != nil) {
-        if ([resourcesToCreateInCloud count] > 0) {
-            //we create a bulk set of create requests
-            NSURL* url = [UrlManager urlForCreateObjects:resourcesToCreateInCloud withObjectTypes:resourceTypesToCreateInCloud withAuthenticationContext:authenticationContext];
-            for (Resource* resource in resourcesToCreateInCloud) {
-                Request* request = [self requestFor:resource forOperation:kCREATE onFinishCallback:callback];
-                
-                //we set each requessts url to be the same
-                request.url = [url absoluteString];
-                
-                [createRequests addObject:request];
-            }
-            [requestManager submitRequests:createRequests];
-        }
+        LOG_RESOURCECONTEXT(1, @"%@Error when saving data to persistence store:%@",activityName,error);
+        
     }
     else {
-        //TODO: log warning that skipping cloud upload because of unauthenticated state
+        
+        int numberOfCreates = [resourcesToCreateInCloud count];
+        int numberOfUpdates = [putRequests count];
+        
+        LOG_RESOURCECONTEXT(0, @"%@Saved changes to persistence store successfully, which resulted in  %d create operations, and %d put operations with the cloud",activityName,numberOfCreates,numberOfUpdates);
+        
+        //process  requests
+        AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
+        RequestManager* requestManager = [RequestManager instance];
+        
+        if (authenticationContext != nil) {
+            
+            //process creates
+            if ([resourcesToCreateInCloud count] > 0) {
+                //we create a bulk set of create requests
+                NSURL* url = [UrlManager urlForCreateObjects:resourceIDsToCreateInCloud withObjectTypes:resourceTypesToCreateInCloud withAuthenticationContext:authenticationContext];
+                for (Resource* resource in resourcesToCreateInCloud) {
+                    Request* request = [self requestFor:resource forOperation:kCREATE onFinishCallback:callback];
+                    
+                    //we need to add the attributes that were created on the object
+                    NSArray* changedAttributes = [resource attributesWithValues];
+                    [request setChangedAttributesList:changedAttributes];
+                    
+                    //we set each requessts url to be the same
+                    request.url = [url absoluteString];
+                    
+                    [createRequests addObject:request];
+                }
+                [requestManager submitRequests:createRequests];
+            }
+            
+            //process updates
+            if ([putRequests count] > 0) {
+                //TODO:implement bulk processing for updates
+                for (Request* request in putRequests) {
+                    //generate a URL for the put request
+                    if (request.operationcode ==[NSNumber numberWithInt:kMODIFY]) {
+                        request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAuthenticationContext:authenticationContext] absoluteString];
+                    }
+                    else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
+                        NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
+                        request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
+                    }
+                    
+                    //we submit put requests one at a time, since the server doesnt support
+                    //a bulk put protocol as of yet
+                    [requestManager submitRequest:request];
+                }
+            }
+        }
+        else {
+            
+            LOG_RESOURCECONTEXT(1, @"%@Skipping upload of  objects to cloud as the user is unauthenticated",activityName);
+        }
     }
     
     //TODO: need to put in code to upload updates and deletes to the cloud
@@ -232,6 +353,7 @@ static ResourceContext* sharedInstance;
 
 #pragma mark - Data Access Methods
 - (Resource*)resourceWithType:(NSString *)typeName withID:(NSNumber *)resourceID {
+    NSString* activityName = @"ResourceContext.resourceWithType:";
     Resource* retVal = nil;
     NSEntityDescription* entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:self.managedObjectContext];
     
@@ -239,12 +361,13 @@ static ResourceContext* sharedInstance;
         NSFetchRequest *request = [[NSFetchRequest alloc] init] ;
         [request setEntity:entityDescription];
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%@=%@",RESOURCEID, resourceID];    
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",RESOURCEID, resourceID];    
         [request setPredicate:predicate];
         
         NSError* error = nil;
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
 
+        
         if (results != nil && [results count] > 0) {
             retVal = [results objectAtIndex:0];
         }
@@ -255,7 +378,7 @@ static ResourceContext* sharedInstance;
     }
     else {
         //TODO: log an error message here
-        //error condition, type doesn't exist
+        LOG_RESOURCECONTEXT(1,@"%@Could not find object with ID:%@ and Type:%@",activityName,typeName,resourceID);
         
     }
     return retVal;
@@ -296,8 +419,7 @@ static ResourceContext* sharedInstance;
     
     [resource markAsClean];
     
-    [self save:YES onFinishCallback:nil];
-    
+        
 }
 
 - (void) markResourcesAsBeingSynchronized:(NSArray *)resources withResourceTypes:(NSArray*)resourceTypes {
@@ -308,7 +430,7 @@ static ResourceContext* sharedInstance;
         Resource* resource = [self resourceWithType:resourceType withID:resourceid];
         [resource markAsClean];
     }
-    [self save:YES onFinishCallback:nil];
+
 }
 
 

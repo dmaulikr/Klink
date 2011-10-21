@@ -20,6 +20,7 @@
 
 - (void) save:(BOOL)saveToCloudAfter
 onFinishCallback:(Callback*)callback;
+- (void) insert:(Resource*)resource;
 
 //enumeration methods
 - (void) enumerate:(Query*)query

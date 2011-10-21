@@ -7,8 +7,8 @@
 //
 
 #import "CreateResponse.h"
-
-
+#import "JSONKit.h"
+#import "Resource.h"
 @implementation CreateResponse
 @synthesize createdResources;
 
@@ -19,11 +19,14 @@
     
     self = [super initFromJSONDictionary:jsonDictionary]; 
     
-    if (self != nil) {                 
-        NSArray* jsonCreatedResource = [jsonDictionary objectForKey:CREATEDRESOURCES];
+    if (self != nil &&
+        [self.didSucceed boolValue] == YES) {
+        
+        NSArray* jsonCreatedResource = [jsonDictionary valueForKey:CREATEDRESOURCES];
         NSMutableArray *newObjects = [[NSMutableArray alloc]initWithCapacity:[jsonCreatedResource count]];
         for (int i = 0; i < [jsonCreatedResource count];i++) {
-            Resource *object = [[Resource alloc]initFromJSONDictionary:[jsonCreatedResource objectAtIndex:i]];
+            id obj = [jsonCreatedResource objectAtIndex:i];
+            Resource *object = [Resource createInstanceOfTypeFromJSON:obj];
             [newObjects insertObject:object atIndex:i];
         }
         self.createdResources = newObjects;

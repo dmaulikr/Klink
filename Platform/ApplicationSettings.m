@@ -18,5 +18,5 @@
 @dynamic numberoflinkedobjectstoreturn;
 @dynamic base_url;
 @dynamic fb_app_id;
-
+@dynamic http_timeout_seconds;
 @end

@@ -16,7 +16,7 @@
 @class ResourceContext;
 @interface Resource : NSManagedObject <IJSONSerializable> {
     ResourceContext*    m_resourceContext;
-  
+    BOOL                m_iswebservicerepresentation;
 }
 @property   (nonatomic,retain)  TypeInstanceData*   typeinstancedata;
 @property   (nonatomic,retain)  NSNumber*           objectid;
@@ -26,6 +26,7 @@
 @property   (nonatomic,retain)  NSSet*              attributeinstancedata;
 @property   (nonatomic,retain)  ResourceContext*    resourceContext;
 
+@property                       BOOL                iswebservicerepresentation;
 
 - (id) initWithEntity:(NSEntityDescription *)entity 
 insertIntoResourceContext:(ResourceContext *)context;
@@ -43,13 +44,22 @@ insertIntoResourceContext:(ResourceContext *)context;
 
 //Utility Methods
 - (void)        markAsDirty;
+- (void)        markAsDirty:(NSArray*)changedAttributes;
 - (void)        markAsClean;
+- (void)        markAsClean:(NSArray*)cleanedAttributes;
 - (BOOL)        shouldResourceBeSynchronizedToCloud;
 - (BOOL)        isResourceTypeSynchronizedToCloud;
 - (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)attributeName;
 - (NSArray*) attributeInstanceDataForList:(NSArray*)attributes;
 - (TypeInstanceData*) typeInstanceData;
 - (void)        refreshWith:(Resource*)newResource;
+- (void)        lockAttributes:(NSArray*)attributes;
+- (void)        unlockAttributes:(NSArray*)attributes;
+- (void)        createAttributeInstanceData:(ResourceContext*)resourceContext;
+- (void)        createTypeInstanceData:(ResourceContext*)resourceContext;
+
+- (NSArray*) changedAttributesToSynchronizeToCloud;
+- (NSArray*) attributesWithValues;
 
 //Used for logging
 - (NSString*)   componentName;

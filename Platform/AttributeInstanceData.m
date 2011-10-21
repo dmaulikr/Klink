@@ -9,6 +9,7 @@
 #import "AttributeInstanceData.h"
 #import "Types.h"
 #import "ResourceContext.h"
+#import "Attributes.h"
 
 @implementation AttributeInstanceData
 @dynamic attributename;
@@ -39,9 +40,22 @@ insertIntoResourceContext:(ResourceContext *)context
     //this method takes the type name and attribute name and creates an attribute description object for it
     NSEntityDescription* entityDescription = [NSEntityDescription entityForName:ATTRIBUTEINSTANCEDATA inManagedObjectContext:context.managedObjectContext];
     AttributeInstanceData* retVal = [[AttributeInstanceData alloc]initWithEntity:entityDescription insertIntoResourceContext:context forAttributeName:attribute];
-    retVal.isdirty = NO;
-    retVal.islocked = NO;
-    retVal.isurlattachment = NO;
+    retVal.isdirty = [NSNumber numberWithBool:NO];
+    retVal.islocked = [NSNumber numberWithBool:NO];
+    retVal.isurlattachment = [NSNumber numberWithBool:NO];
+    
+    //if this attribute is a datemodified or datecreated, we lock it so its not overwritten by the service
+    NSString* lowerCaseName = [attribute lowercaseString];
+    if ([lowerCaseName isEqualToString:DATECREATED] ||
+        [lowerCaseName isEqualToString:DATEMODIFIED]) {
+        
+        retVal.islocked = [NSNumber numberWithBool:YES];
+    }
+    
+    if ([lowerCaseName isEqualToString:IMAGEURL] ||
+        [lowerCaseName isEqualToString:THUMBNAILURL]) {
+        retVal.isurlattachment = [NSNumber numberWithBool:YES];
+    }
     return retVal;
     
     

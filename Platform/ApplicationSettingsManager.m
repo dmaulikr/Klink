@@ -71,7 +71,7 @@ static ApplicationSettingsManager* instance;
     settings.caption_maxnumtodownload = [NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
     settings.numberoflinkedobjectstoreturn = [NSNumber numberWithInt:size_NUMLINKEDOBJECTSTOTRETURN];
     settings.pagesize = [NSNumber numberWithInt:pageSize_PHOTO];
-    
+    settings.http_timeout_seconds = [NSNumber numberWithInt:timeout_HTTP];
     
     [self.resourceContext save:YES onFinishCallback:nil];
     

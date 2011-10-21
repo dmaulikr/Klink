@@ -25,7 +25,7 @@ extern int const pageSize_THEMELINKEDOBJECTS;
 extern int const pageSize_CAPTION;
 extern int const pageSize_FEED;
 extern int const size_NUMLINKEDOBJECTSTOTRETURN;
-
+extern int const timeout_HTTP;
 //extern NSString* const cell_TEXTCAPTION;
 //extern NSString* const cell_IMAGECAPTION;
 //

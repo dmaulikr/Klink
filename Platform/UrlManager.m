@@ -74,6 +74,8 @@
     
 }
 
+
+
 + (NSURL*) urlForCreateObjects:(NSArray*)objectids 
                withObjectTypes:(NSArray*)objectTypes 
      withAuthenticationContext:(id)authenticationContext {
@@ -125,6 +127,34 @@
     NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
     return url;
 
+    
+}
+
++ (NSURL*) urlForPutObject:(NSNumber*)objectid 
+            withObjectType:(NSString*)objectType 
+ withAuthenticationContext:(id)authenticationContext {
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+
+    NSString* verbName = verb_UPDATEOBJECT;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* objectIDParamName = param_OBJECTID;
+    [parameters appendFormat:@"%@=%@",objectIDParamName,objectid];
+    
+    NSString* objectTypeParamName = param_OBJECTTYPE;
+    [parameters appendFormat:@"&%@=%@",objectTypeParamName,objectType];
+    
+    
+    NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
     
 }
 
