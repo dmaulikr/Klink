@@ -18,10 +18,10 @@
 - (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(id)context {
     self = [super init];
     if (self) {
-        m_target = target;
+        m_target = [target retain];
         m_selector = selector;
        
-        m_context = context;
+        m_context = [context retain];
         
     }
     return self;

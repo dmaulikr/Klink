@@ -32,7 +32,10 @@
     self = [super initFromJSONDictionary:jsonDictionary]; 
     
     if (self != nil) {
-        self.enumerationContext = [[EnumerationContext alloc]initFromJSONDictionary:[jsonDictionary objectForKey:ENUMERATIONCONTEXT]];
+        NSDictionary *enumerationContextDictionary = [jsonDictionary valueForKey:ENUMERATIONCONTEXT];
+        if (enumerationContextDictionary != [NSNull null]) {
+            self.enumerationContext = [[EnumerationContext alloc]initFromJSONDictionary:[jsonDictionary objectForKey:ENUMERATIONCONTEXT]];
+        }
 
         NSNumber* dateInSecondsSinceEpoch = [jsonDictionary objectForKey:DATE];
         self.date = [[NSDate alloc]initWithTimeIntervalSince1970:[dateInSecondsSinceEpoch doubleValue]];

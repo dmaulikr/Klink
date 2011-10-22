@@ -485,6 +485,17 @@ static RequestManager* sharedInstance;
                 LOG_REQUEST(0,@"%@Unlocking %d attachment attributes",activityName,[attachmentAttributes count]);
                 [existingResource unlockAttributes:attachmentAttributes];
             }
+            
+            //since this is a create response, we need to mark the entire object (outside of locked and attachment attributes) being synchronized at this point
+            //except for attachment attributes
+            NSArray* attributes = [existingResource attributesWithValues];
+            for (NSString* attribute in attributes) {
+                AttributeInstanceData* aid = [existingResource attributeInstanceDataFor:attribute];
+                if (![aid.islocked boolValue] && ![aid.isurlattachment boolValue]) {
+                    //mark this attribute as clean
+                    aid.isdirty = [NSNumber numberWithBool:NO];
+                }
+            }
         }
         
         
@@ -501,8 +512,8 @@ static RequestManager* sharedInstance;
     return createResponse;
 }
 
-- (void) processRequestResponse:(Request*)request withResponse:(NSString*)response withSuccessFlag:(BOOL)successflag {
-    
+- (void) processRequestResponse:(Request*)request withResponse:(NSString*)response  {
+    NSString* activityName = @"RequestManager.processRequestResponse:";
     ResourceContext* context = [ResourceContext instance];
     Response* responseObj = nil;
     if (response != nil) {
@@ -533,30 +544,34 @@ static RequestManager* sharedInstance;
         
     }
     
-    if (successflag && responseObj.didSucceed) {
+    if ([responseObj.didSucceed boolValue]) {
         //mark the request being completed
         request.statuscode = [NSNumber numberWithInt:kCOMPLETED];
-        
+        LOG_REQUEST(0,@"%@Request completed successfully",activityName);
         //execute the success selector on each request
         if (request.onSuccessCallback != nil) {
             [request.onSuccessCallback fireWithResponse:responseObj];
         }
+        
+        //if this was a modification request (create/put), 
+        //we need to mark an object as having been successfully "synchronized" to the cloud    
+//        if ([request.operationcode intValue] != kENUMERATION &&
+//            [request.operationcode intValue] != kAUTHENTICATE) {
+//            [context markResourceAsBeingSynchronized:request.targetresourceid withResourceType:request.targetresourcetype];
+//        }
     }
     else {
         //mark the request being failed
         request.statuscode = [NSNumber numberWithInt:kFAILED];
+        
+        LOG_REQUEST(0,@"%@Request failed",activityName);
         //execute the failure selector on each request
         if (request.onFailCallback != nil) {
             [request.onFailCallback fireWithResponse:responseObj];
         }
     }
     
-    //if this was a modification request (create/put), 
-    //we need to mark an object as having been successfully "synchronized" to the cloud    
-    if ([request.operationcode intValue] != kENUMERATION &&
-        [request.operationcode intValue] != kAUTHENTICATE) {
-        [context markResourceAsBeingSynchronized:request.targetresourceid withResourceType:request.targetresourcetype];
-    }
+
 
 }
 - (void) onRequestFailed:(ASIHTTPRequest*)httpRequest {
@@ -571,13 +586,20 @@ static RequestManager* sharedInstance;
         //it was a bulk operation that failed
         NSArray* requests = [userInfo objectForKey:kREQUEST];
         for (Request* req in requests) {
-            [self processRequestResponse:req withResponse:[httpRequest responseString]  withSuccessFlag:NO];
+            req.statuscode = [NSNumber numberWithInt:kFAILED];
+            if (req.onFailCallback != nil) {
+                [req.onFailCallback fire];
+            }
         }
     }
     else {
         //it was a single resource operation that failed
         Request* req = [userInfo objectForKey:kREQUEST];
-        [self processRequestResponse:req withResponse:[httpRequest responseString] withSuccessFlag:NO];
+        if (req.onFailCallback != nil) {
+            req.statuscode = [NSNumber numberWithInt:kFAILED];
+            [req.onFailCallback fire];
+        }
+       
     }
 }
 
@@ -597,14 +619,14 @@ static RequestManager* sharedInstance;
             NSArray* requests = [userInfo objectForKey:kREQUEST];
             
             for (Request* request in requests) {
-                [self processRequestResponse:request withResponse:response withSuccessFlag:YES];
+                [self processRequestResponse:request withResponse:response];
                 
             }
         }
         else {
             //it was a single resource operation that succeeded
             Request* request = [userInfo objectForKey:kREQUEST];
-            [self processRequestResponse:request withResponse:response withSuccessFlag:YES];
+            [self processRequestResponse:request withResponse:response];
                       
             //we need to process any attachments (if any)
             if ([userInfo valueForKey:kATTACHMENTLIST] != nil) {

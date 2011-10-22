@@ -17,7 +17,7 @@
 #import "EnumerationResponse.h"
 #import "Photo.h"
 #import "ImageManager.h"
-
+#import "CloudEnumerator.h"
 
 
 @implementation SampleViewController
@@ -161,6 +161,11 @@
 
 - (IBAction) commitChanges:(id)sender {
     ResourceContext* resourceContext = [ResourceContext instance];
+    NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
+    
+   // CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForPhotos:themeid];
+   // [enumeratorForPhotos enumerateUntilEnd];
+    
     
     NSString* attributeName = @"thumbnailurl";
     NSString* attributeValue = self.attributeValue.text;
@@ -177,11 +182,11 @@
     NSString* fileName = [NSString stringWithFormat:@"%@.jpg",file];
     
     NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
-AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
+    AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
     
     Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
     photo.descr = @"test photo";
-   // photo.imageurl = @"testiomageurl";
+    photo.imageurl = @"testiomageurl";
     photo.thumbnailurl = fullPath;
     photo.numberofvotes = [NSNumber numberWithInt:0];
     photo.creatorid = context.userid;
@@ -189,15 +194,15 @@ AuthenticationContext* context = [self.authenticationManager contextForLoggedInU
     
     
     
-//    
-//    Resource* resource = [resourceContext resourceWithType:objecttype   withID:objectid];
-//    
-//    
-//    
-//    SEL selector = NSSelectorFromString(attributeName);
-//    [resource setValue:fullPath forKey:attributeName];
     
-    [resourceContext save:YES onFinishCallback:nil];
+    Resource* resource = [resourceContext resourceWithType:objecttype   withID:objectid];
+    
+    
+    
+    SEL selector = NSSelectorFromString(attributeName);
+    [resource setValue:fullPath forKey:attributeName];
+    
+   [resourceContext save:YES onFinishCallback:nil];
     
     
     

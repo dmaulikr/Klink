@@ -11,7 +11,7 @@
 
 @implementation CallbackResult
 @synthesize context = m_context;
-@synthesize response;
+@synthesize response = m_response;
 
 - (id) init {
     self = [super init];
