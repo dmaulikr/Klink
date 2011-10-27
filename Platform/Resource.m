@@ -112,7 +112,11 @@
                 }
                 else if (attrType == NSStringAttributeType) {
                     if ([value isKindOfClass:[NSString class]]) {
-                        [self setValue:value forKey:[attrDesc name]];
+                        
+                        if (![[attrDesc name]isEqualToString:RESOURCETYPE]) {
+                            [self setValue:value forKey:[attrDesc name]];
+                        }
+                        
                     }
                     else {
                         [self setValue:[value stringValue] forKey:[attrDesc name]];
@@ -550,6 +554,11 @@
     NSString* retVal = nil;
       if ([jsonDictionary valueForKey:RESOURCETYPE] != nil) {
         retVal = [jsonDictionary valueForKey:RESOURCETYPE];
+          
+        //TODO: remove when "Theme" changed to "Page" on server
+          if ([retVal isEqualToString:@"theme"]) {
+              retVal = PAGE;
+          }
    }
 
     return retVal;

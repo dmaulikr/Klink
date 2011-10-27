@@ -29,7 +29,7 @@
 
 + (EnumerationContext*) contextForFeeds:        (NSNumber*)userid;
 + (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid;
-+ (EnumerationContext*) contextForThemes;
++ (EnumerationContext*) contextForPages;
 + (EnumerationContext*) contextForCaptions:     (NSNumber*)photoid;
 - (id) init;
 - (NSString*) toJSON;

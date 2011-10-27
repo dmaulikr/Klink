@@ -128,7 +128,7 @@ static  AuthenticationManager* sharedManager;
             UIImage* image = [UIImage imageWithData:result];
             LOG_SECURITY(0,@"%@Download of Facebook profile complete, saving photo to phone",activityName);
             //we need to save this image to the local file system
-            ImageManager* imageManager = [ImageManager getInstance];
+            ImageManager* imageManager = [ImageManager instance];
             NSString* path = [imageManager saveImage:image withFileName:currentContext.facebookuserid];
             
             //save the path on the user object and commit            

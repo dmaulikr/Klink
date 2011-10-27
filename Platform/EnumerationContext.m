@@ -87,11 +87,11 @@
 }
 
 //Returns an enumeration context to pull down the next theme if we run out in the main theme browser view controller
-+ (EnumerationContext*) contextForThemes {
++ (EnumerationContext*) contextForPages {
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize = settingsObject.pagesize;
-    enumerationContext.maximumNumberOfResults = settingsObject.theme_maxnumtodownload;    
+    enumerationContext.maximumNumberOfResults = settingsObject.page_maxnumtodownload;    
     return enumerationContext;
 }
 

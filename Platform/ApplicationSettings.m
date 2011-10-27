@@ -13,11 +13,14 @@
 @dynamic pagesize;
 @dynamic feed_maxnumtodownload;
 @dynamic photo_maxnumtodownload;
-@dynamic theme_maxnumtodownload;
+@dynamic page_maxnumtodownload;
 @dynamic caption_maxnumtodownload;
 @dynamic numberoflinkedobjectstoreturn;
 @dynamic base_url;
 @dynamic fb_app_id;
 @dynamic http_timeout_seconds;
 @dynamic feed_enumeration_timegap;
+@dynamic caption_enumeration_timegap;
+@dynamic page_size_linkedobjects;
+@dynamic page_enumeration_timegap;
 @end

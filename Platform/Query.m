@@ -115,4 +115,29 @@
     
     return query;
 }
+
++ (Query*)queryPages {
+    Query* query =  [[[Query alloc] init]autorelease];
+    //TODO: change "theme" to "page" when implemented on the server
+    query.filterObjectType = @"theme";
+    
+    return query;
+}
+
+
++ (Query*)queryCaptionsForPhoto:(NSNumber*)photoID {
+    Query* query = [[[Query alloc]init ]autorelease];
+    query.filterObjectType = CAPTION;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = PHOTOID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [photoID stringValue];
+    
+    NSArray* expressions = [NSArray arrayWithObject:queryExpression];
+    query.attributeExpressions = expressions;
+    
+    [queryExpression release];
+    return query;
+}
 @end

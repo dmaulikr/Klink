@@ -38,4 +38,6 @@
 +(QueryOptions*)queryForPhotos;
 +(QueryOptions*)queryForPhotosInTheme;
 +(QueryOptions*)queryForFeedsForUser:(NSNumber*)userID;
++(QueryOptions*)queryForCaptions:(NSNumber*)photoID;
++(QueryOptions*)queryForPages;
 @end

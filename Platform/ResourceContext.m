@@ -401,12 +401,18 @@ static ResourceContext* sharedInstance;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
-    [request setPredicate:predicate];
+    if (attributeName != nil && 
+        value != nil) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
+        [request setPredicate:predicate];
+    }
     
-    NSSortDescriptor* sortDescription = [[NSSortDescriptor alloc]initWithKey:sortByAttribute ascending:sortAscending];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescription]];
+    NSSortDescriptor* sortDescription = nil;
     
+    if (sortByAttribute != nil) {
+        NSSortDescriptor* sortDescription = [[NSSortDescriptor alloc]initWithKey:sortByAttribute ascending:sortAscending];
+        [request setSortDescriptors:[NSArray arrayWithObject:sortDescription]];
+    }
     NSError* error = nil;
     NSArray* results = [appContext executeFetchRequest:request error:&error];
     
@@ -420,7 +426,10 @@ static ResourceContext* sharedInstance;
         retVal = results;
     }
     [request release];
-    [sortDescription release];
+    
+    if (sortDescription != nil) {
+        [sortDescription release];
+    }
     return retVal; 
 
     

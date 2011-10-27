@@ -26,13 +26,16 @@
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "ApplicationSettingsDefaults.h"
-
+#import "ImageManager.h"
+#import "ImageDownloadResponse.h"
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
 
 @implementation RequestManager
 @synthesize operationQueue = m_operationQueue;
 @synthesize enumerationQueue = m_enumerationQueue;
+@synthesize imageCache  = m_imageCache;
+
 static RequestManager* sharedInstance;
 
 + (RequestManager*) instance {
@@ -50,6 +53,7 @@ static RequestManager* sharedInstance;
     if (self) {
         self.enumerationQueue = [[OperationQueue alloc]init];
         self.operationQueue = [[OperationQueue alloc]init];
+        self.imageCache = [[ASIDownloadCache alloc]init];
     }
     return self;
 }
@@ -91,6 +95,19 @@ static RequestManager* sharedInstance;
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
         return httpRequest; 
         
+    }
+    else if (opcode == kIMAGEDOWNLOAD) {
+        ASIHTTPRequest* httpRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];      
+        httpRequest.delegate = self;
+        httpRequest.requestMethod = @"GET";
+        httpRequest.userInfo = userInfo;
+        httpRequest.didFailSelector = @selector(onRequestFailed:);
+        httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
+        httpRequest.timeOutSeconds = 5;
+        httpRequest.numberOfTimesToRetryOnTimeout = 3;
+        httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+        return httpRequest;
+
     }
     return nil;
 }
@@ -266,6 +283,21 @@ static RequestManager* sharedInstance;
     [self.enumerationQueue addOperation:httpRequest];
 }
 
+- (void) processImageDownload:(Request*)request  {
+    NSString* activityName = @"RequestManager.processImageDownload:";
+    NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+    [userInfo setObject:request forKey:kREQUEST];
+    ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    
+    NSDictionary* requestUserInfo = request.userInfo;
+    NSString* downloadPath = [requestUserInfo valueForKey:IMAGEPATH];
+    httpRequest.downloadDestinationPath = downloadPath;
+    
+    LOG_REQUEST(0,@"%@Beginning download of image at: %@ to local location %@",activityName,request.url,downloadPath);
+    
+    [self.enumerationQueue addOperation:httpRequest];
+}
+
 //returns all changed attributes on the request that are also attachments
 - (NSArray*) attachmentAttributesInRequest:(Request*)request {
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -309,6 +341,9 @@ static RequestManager* sharedInstance;
     else if ([request.operationcode intValue] == kENUMERATION ||
              [request.operationcode intValue] == kAUTHENTICATE) {
         [self processEnumeration:request];
+    }
+    else if ([request.operationcode intValue] == kIMAGEDOWNLOAD) {
+        [self processImageDownload:request];
     }
         
 }
@@ -511,10 +546,41 @@ static RequestManager* sharedInstance;
     }
     return createResponse;
 }
+
+- (Response*)processImageDownloadResponse:(NSString*)responseString withRequest:(Request*)request {
+    //we creare the response manually since there is no JSON to deserialize into an instance
+    NSString* activityName = @"RequestManager.processImageDownloadResponse:";
+    ImageDownloadResponse* response = [[ImageDownloadResponse alloc]init];
+    
+    
+    //here we verify that the image downloaded successfully
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = request.userInfo;
+    NSString* imagePath = [userInfo valueForKey:IMAGEPATH];
+    UIImage* image = [imageManager downloadImage:imagePath withUserInfo:nil atCallback:nil];
+    if (image == nil) {
+        //image download failed
+        response.didSucceed = [NSNumber numberWithBool:NO];
+        response.image = nil;
+        response.path = nil;
+        
+        LOG_REQUEST(1, @"%@Image download failed, photo doesn't exist at specified path %@",activityName,imagePath);
+    }
+    else {
+        response.didSucceed = [NSNumber numberWithBool:YES];
+         response.path = imagePath;
+        response.errorMessage = nil;
+         LOG_REQUEST(1, @"%@Image downloaded successfully to location %@",activityName,imagePath);
+    }
+    
+    return response;
+    
+    
+}
  
 - (void) processRequestResponse:(Request*)request withResponse:(NSString*)response  {
     NSString* activityName = @"RequestManager.processRequestResponse:";
-    ResourceContext* context = [ResourceContext instance];
+    
     Response* responseObj = nil;
     if (response != nil) {
         //we only execute this leg if there was a successful response received, in the caase of a HTTP failure and there is no response
@@ -541,7 +607,11 @@ static RequestManager* sharedInstance;
         else if ([request.operationcode intValue] == kAUTHENTICATE) {
             responseObj = [self processAuthenticateResponse:response withRequest:request];
         }
+  
         
+    }
+    else if ([request.operationcode intValue] == kIMAGEDOWNLOAD) {
+         responseObj = [self processImageDownloadResponse:response withRequest:request];
     }
     
     if ([responseObj.didSucceed boolValue]) {

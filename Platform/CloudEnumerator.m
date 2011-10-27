@@ -87,10 +87,23 @@
     return request;
 }
 
+- (void) enumerate:(BOOL)enumerateSinglePage {
+    AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
+    NSURL* url = [UrlManager urlForQuery:self.query withEnumerationContext:self.enumerationContext withAuthenticationContext:authenticationContext];
+    
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:enumerateSinglePage] forKey:kEnumerateSinglePage];
+    
+    
+    Request* request = [self requestFor:url forOperation:kENUMERATION withUserInfo:userInfo];
+    
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+
+}
 
 - (void) enumerateNextPage {
     
-    AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
+    
      
     BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
     
@@ -100,15 +113,7 @@
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
-        NSURL* url = [UrlManager urlForQuery:self.query withEnumerationContext:self.enumerationContext withAuthenticationContext:authenticationContext];
-        
-        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:kEnumerateSinglePage];
-        
-            
-        Request* request = [self requestFor:url forOperation:kENUMERATION withUserInfo:userInfo];
-        
-        RequestManager* requestManager = [RequestManager instance];
-        [requestManager submitRequest:request];
+        [self enumerate:YES];
     }
     
     
@@ -116,9 +121,7 @@
 
 
 - (void) enumerateUntilEnd {
-    
-    AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];    
-    BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+        BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
     
 
     if (!m_isEnumerationPending &&
@@ -126,13 +129,7 @@
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
-        NSURL* url = [UrlManager urlForQuery:self.query withEnumerationContext:self.enumerationContext withAuthenticationContext:authenticationContext];
-        
-        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:kEnumerateSinglePage];
-        
-        Request* request = [self requestFor:url forOperation:kENUMERATION withUserInfo:userInfo];
-        RequestManager* requestManager = [RequestManager instance];
-        [requestManager submitRequest:request];
+        [self enumerate:NO];
     
     }
 }
@@ -194,18 +191,28 @@
             
             if (!shouldEnumerateSinglePage) {
                 //should continue enumeration till end
-                [self enumerateUntilEnd];
+                LOG_ENUMERATION(0, @"%@Enumeration context remains open, enumerating next page",activityName);
+                [self enumerate:NO];
+            }
+            else {
+                LOG_ENUMERATION(0, @"%@Enumerate sinlge page complete, enumeration context remains open",activityName);
+                m_isEnumerationPending = NO;
+                [self.delegate onEnumerateComplete];
             }
         }
         else {
-            LOG_ENUMERATION(0, @"%@Enumeration is complete",activityName);
+            LOG_ENUMERATION(0, @"%@Enumeration context is complete",activityName);
+            m_isEnumerationPending = NO;
+            [self.delegate onEnumerateComplete];
         }
     }
     else {
         //enumeration failed
         LOG_ENUMERATION(1,@"%@Enumeration failed due to error: %@",activityName,response.errorMessage);
+        m_isEnumerationPending = NO;
+        [self.delegate onEnumerateComplete];
     }
-    m_isEnumerationPending = NO;
+  
 }
 
 
@@ -223,21 +230,21 @@
     enumerator.secondsBetweenConsecutiveSearches = [settings.feed_enumeration_timegap intValue];
     return enumerator;
 }
-//
-//+ (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
-//    
-//    Query* query = [Query queryCaptionsForPhoto:photoid];
-//    QueryOptions* queryOptions = [QueryOptions queryForCaptions:photoid];
-//    EnumerationContext* enumerationContext = [EnumerationContext contextForCaptions:photoid];
-//    query.queryoptions = queryOptions;
-//  
-//    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
-//    enumerator.identifier = [photoid stringValue];
-//    enumerator.secondsBetweenConsecutiveSearches = threshold_CAPTION_ENUMERATION_TIME_GAP;
-//    return enumerator;
-//    
-//}
-//
+
++ (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryCaptionsForPhoto:photoid];
+    QueryOptions* queryOptions = [QueryOptions queryForCaptions:photoid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForCaptions:photoid];
+    query.queryOptions = queryOptions;
+  
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [photoid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.caption_enumeration_timegap intValue];
+    return enumerator;
+    
+}
+
 + (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid {
     Query* query = [Query queryPhotosWithTheme:themeid];
     QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
@@ -249,17 +256,18 @@
     enumerator.secondsBetweenConsecutiveSearches = 60;
     return enumerator;
 }
-//
-//+ (CloudEnumerator*) enumeratorForThemes {
-//    Query* query = [Query queryThemes];
-//    QueryOptions* queryOptions = [QueryOptions queryForThemes];
-//    EnumerationContext* enumerationContext = [EnumerationContext contextForThemes];
-//    query.queryoptions = queryOptions;
-//    
-//    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
-//    enumerator.secondsBetweenConsecutiveSearches = threshold_THEME_ENUMERATION_TIME_GAP;
-//    return enumerator;
-//}
+
++ (CloudEnumerator*) enumeratorForPages {
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryPages];
+    QueryOptions* queryOptions = [QueryOptions queryForPages];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForPages];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
+    return enumerator;
+}
 
 
 @end

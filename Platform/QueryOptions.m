@@ -97,6 +97,20 @@
     
 }
 
++(QueryOptions*)queryForPages {
+     ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance]settings];
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.referencingattribute=THEMEID;
+    newQuery.referencingobjecttype = PHOTO;
+    newQuery.includelinkedobjects = YES;
+    newQuery.maxlinksreturnedperobject = [settingsObjects.page_size_linkedobjects intValue];
+    newQuery.linked_results_sortAscending = NO;
+    newQuery.linked_results_sortattribute = DATECREATED;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATECREATED;
+    return newQuery;
+}
+
 +(QueryOptions*)queryForFeedsForUser:(NSNumber *)userID {
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
     newQuery.includelinkedobjects = NO;
@@ -106,4 +120,11 @@
     return newQuery;
 }
 
++(QueryOptions*)queryForCaptions:(NSNumber*)photoID{
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = NUMBEROFVOTES;
+    return newQuery;
+}
 @end

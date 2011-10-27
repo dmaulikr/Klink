@@ -15,9 +15,9 @@
 NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
 //NSString* const default_BASEURL = @"http://oscial.com/service";
 //NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
-int const pageSize_PHOTO=10;
+int const pageSize_PHOTO=1;
 //int const pageSize_PHOTOSINTHEME = 10;
-int const pageSize_THEME = 5;
+int const pageSize_THEME = 1;
 //int const pageSize_THEMELINKEDOBJECTS = 5;
 //int const pageSize_CAPTION = 10;
 //int const pageSize_FEED = 10;
@@ -31,6 +31,9 @@ int const batchSize_THEME=20;
 int const size_NUMLINKEDOBJECTSTOTRETURN=5;
 int const timeout_HTTP = 60;
 int const threshold_FEED_ENUMERATION_TIME_GAP=60;
+int const threshold_CAPTION_ENUMERATION_TIME_GAP=60;
+int const threshold_PAGE_ENUMERATION_TIME_GAP=60;
+int const page_size_LINKEDOBJECTS = 5;
 //NSString* const cell_TEXTCAPTION =@"textCaptionCell";
 //NSString* const cell_IMAGECAPTION=@"imageCaptionCell";
 //

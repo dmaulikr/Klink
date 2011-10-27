@@ -18,13 +18,9 @@
     NSEntityDescription* entity = [NSEntityDescription entityForName:TYPEINSTANCEDATA inManagedObjectContext:context.managedObjectContext];
     TypeInstanceData* newType = [[TypeInstanceData alloc]initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     
-    //Request objects are not sync'able
-    if ([typeName isEqualToString:REQUEST]) {
-        newType.iscloudtype = [NSNumber numberWithBool:NO];
-            }
-    else {
-        newType.iscloudtype = [NSNumber numberWithBool:YES];
-    }
+    newType.typename = typeName;
+    newType.iscloudtype = [NSNumber numberWithBool:YES];
+    
     
 
     

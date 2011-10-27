@@ -8,13 +8,17 @@
 
 #import "ImageManager.h"
 #import "PlatformAppDelegate.h"
-
+#import "CallbackResult.h"
+#import "ImageDownloadResponse.h"
+#import "Macros.h"
+#import "Request.h"
+#import "RequestManager.h"
 @implementation ImageManager
 @synthesize imageCache;
 @synthesize queue;
 static  ImageManager* sharedManager;  
 
-+ (ImageManager*) getInstance {
++ (ImageManager*) instance {
 //    NSString* activityName = @"ImageManager.getInstance:";
     @synchronized(self)
     {
@@ -42,7 +46,7 @@ static  ImageManager* sharedManager;
 }
 
 
-- (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback {
+- (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback {
     //check to see if the url is a file reference or a url reference
     if ([NSURL isValidURL:url]) {
         //its a url
@@ -56,9 +60,43 @@ static  ImageManager* sharedManager;
     
 }
 
+- (void) imageMovedFrom:(NSString *)originalFilePath toDestination:(NSURL *)destinationURL {
+    //this method will take the image located aqt the original filePath, and move it to a path
+    //such that the URL addressed in the second parameter will correctly hit the cache whenever it is requested
+    NSString* activityName = @"ImageManager.imageMovedFrom:";
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    if ([fileManager fileExistsAtPath:originalFilePath]) {
+        //file exists
+        NSString* fileName = [destinationURL lastPathComponent];
+        NSString* directory = [appDelegate getImageCacheStorageDirectory];
+        NSString* path = [NSString stringWithFormat:@"%@/%@",directory,fileName];
+        
+        NSError* error = nil;
+        
+        if (![fileManager fileExistsAtPath:path]) {
+            [fileManager copyItemAtPath:originalFilePath toPath:path error:&error];
+            
+            if (error != nil) {
+                LOG_IMAGE(1,@"%@Failed to copy image from %@ to %@ due to %@",activityName,originalFilePath,path,[error userInfo]);
+            }
+            else {
+                LOG_IMAGE(0,@"%@Successfully copied image from %@ to %@",activityName,originalFilePath,path);
+            }
+        }
+        else {
+            LOG_IMAGE(0,@"%@Skipping image copy as image already exists at destination path %@",activityName,path);
+        }
+        
+    }
+    else {
+        LOG_IMAGE(1, @"%@No file exists at path %@",activityName,originalFilePath);
+    }
+}
 
-- (id)downloadImageFromFile:(NSString*) fileName withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback{
-         
+- (id)downloadImageFromFile:(NSString*) fileName withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback{
+    NSString* activityName = @"ImageManager.downloadImageFromFile:";     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     if ([fileManager fileExistsAtPath:fileName]) {
@@ -66,13 +104,13 @@ static  ImageManager* sharedManager;
          return image;
     }
     else {
-               // [BLLog e:activityName withMessage:message];
+        LOG_IMAGE(1,@"%@Unable to find image on filesystem at %@",activityName,fileName);
     }
     return nil;
 }
 
-- (id)downloadImageFromURL:(NSString*) url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback {
-
+- (id)downloadImageFromURL:(NSString*) url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback {
+    NSString* activityName = @"ImageManager.downloadImageFromURL:";
     NSURL *urlObject = [NSURL URLWithString:url];
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -84,59 +122,39 @@ static  ImageManager* sharedManager;
     if ([fileManager fileExistsAtPath:path]) {
 
         UIImage* retVal = [UIImage imageWithContentsOfFile:path];
+        LOG_IMAGE(0,@"%@Image retrieved from existing file stored at %@, no need to download from cloud",activityName,path);
+        
         return retVal;
     }
     
-    if (callback != nil) {
+    
+        Request* request = [Request createInstanceOfRequest];
+        request.url = url;
         
-        NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-        [requestUserInfo setValue:url forKey:@"url"];
-        [requestUserInfo setValue:userInfo forKey:@"callbackdata"];
-        [requestUserInfo setObject:callback forKey:@"callback"];
-        
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:urlObject];    
+        NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithObject:path forKey:IMAGEPATH];
         request.userInfo = requestUserInfo;
-        request.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-        request.delegate = self;
-        request.timeOutSeconds = 5;
-        [request setNumberOfTimesToRetryOnTimeout:3];
-        
-        request.downloadDestinationPath = path;
-        request.downloadCache = imageCache;
-        [request setDidFinishSelector:@selector(onImageDownloaded:)];
-        [request setDidFailSelector:@selector(onImageDownloadFail:)] ;
-        [self.queue addOperation:request];
-    }
+    request.operationcode = [NSNumber numberWithInt:kIMAGEDOWNLOAD];
+    request.statuscode = [NSNumber numberWithInt:kPENDING];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    RequestManager* requestManager = [RequestManager instance];
+        [requestManager submitRequest:request];
+    
     return nil;
 }
 
 #pragma mark - ASIHTTPRequest Delegate Handlers
-- (void)onImageDownloaded:(ASIHTTPRequest*)request {
-   
+- (void) onImageDownloadComplete:(CallbackResult*)result {
+    NSString* activityName = @"ImageManager.onImageDownloadComplete:";
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
     
-    NSDictionary* requestUserInfo = request.userInfo;
-  
-    NSDictionary* callbackUserInfo = [requestUserInfo valueForKey:@"callbackdata"];
-    
-    id<ImageDownloadCallback> callback = [requestUserInfo objectForKey:@"callback"];
-    
-    NSString* downloadedImagePath = request.downloadDestinationPath;
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    
-    if ([fileManager fileExistsAtPath:downloadedImagePath]) {
-        UIImage* image = [UIImage imageWithContentsOfFile:downloadedImagePath];        
-        [callback onImageDownload:image withUserInfo:callbackUserInfo];
+    if (response.didSucceed) {
+        LOG_IMAGE(0,@"%@Image download succeeded with image stored at %@",activityName,response.path);
     }
-    else {        
-       //TODO: log an image file path that doesn't exist
+    else {
+        LOG_IMAGE(1,@"%@Image download failed due to %@",activityName,response.errorMessage);
     }
 }
-
-- (void)onImageDownloadFail:(ASIHTTPRequest*)request {
-    //TODO: log a message on image download fail
-    
-}
-
 
 
 //Saves the picture on the hard disk in teh cache folder and returns the full path

@@ -16,7 +16,8 @@ typedef enum {
     kMODIFYATTACHMENT,
     kDELETE,
     kENUMERATION,
-    kAUTHENTICATE
+    kAUTHENTICATE,
+    kIMAGEDOWNLOAD
 } RequestOperation;
 
 typedef enum {

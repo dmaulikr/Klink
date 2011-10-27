@@ -67,13 +67,18 @@ static ApplicationSettingsManager* instance;
     settings.base_url = default_BASEURL;
     settings.feed_maxnumtodownload =[NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
     settings.photo_maxnumtodownload = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];
-    settings.theme_maxnumtodownload = [NSNumber numberWithInt:maxsize_THEMEDOWNLOAD];
+    settings.page_maxnumtodownload = [NSNumber numberWithInt:maxsize_THEMEDOWNLOAD];
     settings.caption_maxnumtodownload = [NSNumber numberWithInt:maxsize_CAPTIONDOWNLOAD];
     settings.numberoflinkedobjectstoreturn = [NSNumber numberWithInt:size_NUMLINKEDOBJECTSTOTRETURN];
     settings.pagesize = [NSNumber numberWithInt:pageSize_PHOTO];
     settings.http_timeout_seconds = [NSNumber numberWithInt:timeout_HTTP];
     settings.feed_enumeration_timegap = [NSNumber numberWithInt:threshold_FEED_ENUMERATION_TIME_GAP];
+    settings.caption_enumeration_timegap = [NSNumber numberWithInt:threshold_CAPTION_ENUMERATION_TIME_GAP];
     
+    settings.page_size_linkedobjects = [NSNumber numberWithInt:page_size_LINKEDOBJECTS];
+    
+    
+    settings.page_enumeration_timegap = [NSNumber numberWithInt:threshold_PAGE_ENUMERATION_TIME_GAP];
     [self.resourceContext save:YES onFinishCallback:nil];
     
     return settings;

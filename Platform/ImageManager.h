@@ -12,7 +12,7 @@
 #import "ASIDownloadCache.h"
 #import "Attributes.h"
 
-#import "ImageDownloadProtocol.h"
+#import "Callback.h"
 #import "NSURLCategory.h"
 
 @interface ImageManager : NSObject {
@@ -27,15 +27,15 @@
 //- (UIImage*) getImage:(NSNumber*)photoID withURL:(NSString*)url;
 //- (NSString*)getFilePathFrom:(NSNumber*)photoID withURL:(NSString*)url;
 
-+ (ImageManager*) getInstance;
++ (ImageManager*) instance;
 
 
 
-- (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
+- (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
+- (void)imageMovedFrom:(NSString*)originalFilePath toDestination:(NSURL*)destinationURL;
 
-
-- (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
-- (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(id<ImageDownloadCallback>)callback;
+- (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
+- (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (NSString*)saveImage:(UIImage*)image withFileName:(NSString*)fileNameWithoutExtension;
 
 

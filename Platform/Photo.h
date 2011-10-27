@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Resource.h"
 
 @interface Photo : Resource {
     

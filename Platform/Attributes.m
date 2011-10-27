@@ -58,3 +58,4 @@ NSString* const IMAGEURL                =@"imageurl";
 NSString* const THUMBNAILURL            =@"thumbnailurl";
 NSString* const HASREAD                 =@"hasread";
 NSString* const DATEEXPIRE              =@"dateexpire";
+NSString* const IMAGEPATH               =@"imagepath";

@@ -24,15 +24,19 @@
 
 //Feed settings
 @property (nonatomic,retain) NSNumber* feed_maxnumtodownload;
-@property (nonatomic,retain) NSNumber*feed_enumeration_timegap;
+@property (nonatomic,retain) NSNumber* feed_enumeration_timegap;
 
 //Photo settings
 @property (nonatomic,retain) NSNumber* photo_maxnumtodownload;
 
-//Theme settings
-@property (nonatomic,retain) NSNumber* theme_maxnumtodownload;
+//Page settings
+@property (nonatomic,retain) NSNumber* page_maxnumtodownload;
+@property (nonatomic,retain) NSNumber* page_size_linkedobjects;
+@property (nonatomic,retain) NSNumber*
+ page_enumeration_timegap;
 
 //Caption settings
 @property (nonatomic,retain) NSNumber* caption_maxnumtodownload;
+@property (nonatomic,retain) NSNumber* caption_enumeration_timegap;
 
 @end

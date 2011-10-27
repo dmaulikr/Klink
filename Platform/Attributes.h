@@ -61,4 +61,4 @@ extern NSString* const IMAGEURL;
 extern NSString* const THUMBNAILURL;
 extern NSString* const HASREAD;
 extern NSString* const DATEEXPIRE;
-
+extern NSString* const IMAGEPATH;

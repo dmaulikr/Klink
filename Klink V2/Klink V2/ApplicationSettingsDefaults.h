@@ -26,6 +26,7 @@ extern int const pageSize_CAPTION;
 extern int const pageSize_FEED;
 extern int const size_NUMLINKEDOBJECTSTOTRETURN;
 extern int const timeout_HTTP;
+extern int const page_size_LINKEDOBJECTS;
 //extern NSString* const cell_TEXTCAPTION;
 //extern NSString* const cell_IMAGECAPTION;
 //
@@ -37,9 +38,9 @@ extern int const timeout_HTTP;
 //extern int const threshold_LOADMORECAPTIONS;
 //
 ////governs how often a cloud enumerator can execute an enum against the service (in seconds)
-//extern long const threshold_CAPTION_ENUMERATION_TIME_GAP;
+extern int const threshold_CAPTION_ENUMERATION_TIME_GAP;
 //extern long const threshold_PHOTO_ENUMERATION_TIME_GAP;
-//extern long const threshold_THEME_ENUMERATION_TIME_GAP;
+extern int const threshold_PAGE_ENUMERATION_TIME_GAP;
 extern int const threshold_FEED_ENUMERATION_TIME_GAP;
 //
 ////opcodes for query operations

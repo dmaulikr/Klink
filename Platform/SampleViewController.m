@@ -19,7 +19,7 @@
 #import "ImageManager.h"
 #import "CloudEnumerator.h"
 #import "FeedManager.h"
-
+#import "Page.h"
 @implementation SampleViewController
 @synthesize toJSONButton    =m_toJSONButton;
 @synthesize fromJSONButton  =m_fromJSONButton;
@@ -197,6 +197,33 @@
     
 }
 
+- (void) test_imageDownload {
+    ImageManager* imageManager = [ImageManager instance];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];
+    
+    for (Photo* photo in photos) {
+        if (photo.imageurl != nil) {
+            [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:nil];
+        }
+    }
+}
+
+- (void) test_enumeratePhotosForTheme:(NSNumber*)themeid {
+    CloudEnumerator* photoEnumerator = [CloudEnumerator enumeratorForPhotos:themeid];
+    [photoEnumerator enumerateUntilEnd];
+}
+
+- (void) test_enumeratePhotosForAllThemes {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* themes = [resourceContext resourcesWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];
+    Page* firstPage = [themes objectAtIndex:0];
+    
+    [self test_enumeratePhotosForTheme:firstPage.objectid];
+    
+    //at this point we should have launched all download requests
+}
+
 - (IBAction) test_enumerateObjects {
         ResourceContext* resourceContext = [ResourceContext instance];
         NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
@@ -224,8 +251,53 @@
     [feedManager refreshFeed];
 }
 
+- (IBAction) test_enumeratePages {
+    CloudEnumerator* pageEnumerator = [CloudEnumerator enumeratorForPages];
+    [pageEnumerator enumerateUntilEnd];
+}
+
+- (IBAction) test_enumerateCaptions {
+    CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForCaptions:[NSNumber numberWithInt:1313483158]];
+    [enumeratorForPhotos enumerateUntilEnd];
+    
+}
+
+- (void) test_createAndUploadPhoto {
+        NSString* attributeName = @"thumbnailurl";
+        NSString* attributeValue = self.attributeValue.text;
+        NSString* objectid = @"122604833";
+        NSString* objecttype = @"user";
+        
+        
+        ImageManager* imageManager= [ImageManager instance];
+        NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
+        
+        NSData* data = [NSData dataWithContentsOfURL:url]   ; 
+        UIImage* image = [UIImage imageWithData:data];
+        NSNumber* file = [NSNumber numberWithLongLong:[[NSDate date]timeIntervalSince1970]];
+        NSString* fileName = [NSString stringWithFormat:@"%@.jpg",file];
+        
+        NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
+        AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+        photo.descr = @"test photo";
+        photo.imageurl = fullPath;
+        photo.thumbnailurl = fullPath;
+        photo.numberofvotes = [NSNumber numberWithInt:0];
+        photo.creatorid = context.userid;
+        photo.themeid = [NSNumber numberWithLongLong:634535212720410463];
+        
+    
+    [resourceContext save:YES onFinishCallback:nil];
+
+}
+
+
+
 - (IBAction) commitChanges:(id)sender {
-    [self test_enumerateFeed];
+    [self test_createAndUploadPhoto];
 //    ResourceContext* resourceContext = [ResourceContext instance];
 //    NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
 //    
