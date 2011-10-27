@@ -72,6 +72,7 @@ static ApplicationSettingsManager* instance;
     settings.numberoflinkedobjectstoreturn = [NSNumber numberWithInt:size_NUMLINKEDOBJECTSTOTRETURN];
     settings.pagesize = [NSNumber numberWithInt:pageSize_PHOTO];
     settings.http_timeout_seconds = [NSNumber numberWithInt:timeout_HTTP];
+    settings.feed_enumeration_timegap = [NSNumber numberWithInt:threshold_FEED_ENUMERATION_TIME_GAP];
     
     [self.resourceContext save:YES onFinishCallback:nil];
     

@@ -25,4 +25,5 @@
 
 //static initializers
 + (id) queryPhotosWithTheme:(NSNumber*)themeID;
++ (id) queryFeedsForUser:(NSNumber*)userID;
 @end

@@ -41,6 +41,11 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
 //data access methods
 - (Resource*) resourceWithType:(NSString*)typeName withID:(NSNumber*)resourceID;
 - (Resource*) singletonResourceWithType:(NSString*)typeName;
+- (NSArray*)  resourcesWithType:(NSString*)typeName 
+                 withValueEqual:(NSString*)value 
+                   forAttribute:(NSString*)attribute 
+                         sortBy:(NSString*)sortAttribute 
+                  sortAscending:(BOOL)sortAscending;
 
 //utility methods
 - (void) markResourcesAsBeingSynchronized:(NSArray*)resources withResourceTypes:(NSArray*)resourceTypes;

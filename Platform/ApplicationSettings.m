@@ -19,4 +19,5 @@
 @dynamic base_url;
 @dynamic fb_app_id;
 @dynamic http_timeout_seconds;
+@dynamic feed_enumeration_timegap;
 @end

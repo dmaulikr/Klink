@@ -14,8 +14,13 @@
 }
 
 
-- (void) raiseUserLoggedInEvent:(NSDictionary*)userInfo;
-- (void) raiseUserLoggedOutEvent: (NSDictionary*)userInfo;
-- (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo;
+- (void) raiseUserLoggedInEvent     :(NSDictionary*)userInfo;
+- (void) raiseUserLoggedOutEvent    :(NSDictionary*)userInfo;
+- (void) raiseUserLoginFailedEvent  :(NSDictionary*)userInfo;
+- (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo;
+- (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo;
+- (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo;
+- (void) raiseFeedItemReadEvent     :(NSDictionary*)userInfo;
+- (void) raiseFeedRefreshedEvent    :(NSDictionary*)userInfo;
 + (EventManager*)instance;
 @end

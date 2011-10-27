@@ -59,3 +59,6 @@ extern NSString* const CALLBACKRESULT;
 extern NSString* const an_USER; 
 extern NSString* const IMAGEURL;
 extern NSString* const THUMBNAILURL;
+extern NSString* const HASREAD;
+extern NSString* const DATEEXPIRE;
+

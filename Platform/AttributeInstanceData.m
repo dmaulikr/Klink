@@ -46,13 +46,16 @@ insertIntoResourceContext:(ResourceContext *)context
     
     //if this attribute is a datemodified or datecreated, we lock it so its not overwritten by the service
     NSString* lowerCaseName = [attribute lowercaseString];
-    if ([lowerCaseName isEqualToString:DATECREATED] ||
-        [lowerCaseName isEqualToString:DATEMODIFIED]) {
+    if ([lowerCaseName isEqualToString:DATECREATED]     ||
+        [lowerCaseName isEqualToString:DATEMODIFIED]    ||
+        [lowerCaseName isEqualToString:HASREAD]) {
         
         retVal.islocked = [NSNumber numberWithBool:YES];
     }
     
-    if ([lowerCaseName isEqualToString:IMAGEURL] ||
+   
+    
+    if ([lowerCaseName isEqualToString:IMAGEURL]        ||
         [lowerCaseName isEqualToString:THUMBNAILURL]) {
         retVal.isurlattachment = [NSNumber numberWithBool:YES];
     }

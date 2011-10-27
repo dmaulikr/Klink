@@ -12,7 +12,8 @@
 #import "Types.h"
 #import "OpCodes.h"
 #import "JSONKit.h"
-
+#import "Feed.h"
+#import "ResourceContext.h"
 @implementation Query
 @synthesize filterObjectType        = m_filterObjectType;
 @synthesize attributeExpressions    = m_attributeExpressions;
@@ -76,6 +77,41 @@
     
     //query.queryOptions = [QueryOptions queryForPhotosInTheme];
     [queryExpression release];
+    
+    return query;
+}
+
++ (Query*)queryFeedsForUser : (NSNumber*)userID {
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = FEED;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userID stringValue];
+    
+    NSMutableArray* expressions = [NSMutableArray arrayWithObject:queryExpression];
+    [queryExpression release];
+    
+    //we need to query the database to find the feed object with the highest id for this user
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* feedItems = [resourceContext resourcesWithType:FEED withValueEqual:[userID stringValue] forAttribute:USERID sortBy:DATECREATED sortAscending:NO];
+  
+    
+    if ([feedItems count] > 0) {
+        QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+        queryExpression2.attributeName = ID;
+        queryExpression2.opCode = opcode_QUERYGREATERTHAN;
+        Feed* feedItem = [feedItems objectAtIndex:0];
+        queryExpression2.value = [feedItem.objectid stringValue];
+        [expressions addObject:queryExpression2];
+        [queryExpression2 release];
+    }
+    
+    
+    query.attributeExpressions = expressions;
+    
+    
     
     return query;
 }

@@ -16,6 +16,9 @@
 #import "CallbackResult.h"
 #import "EnumerationResponse.h"
 #import "Macros.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+
 #define kEnumerateSinglePage    @"enumerateSinglePage"
 
 @implementation CloudEnumerator
@@ -152,7 +155,8 @@
         //process the returned results
         if (response.primaryResults != nil) {
             for (Resource* resource in response.primaryResults) {
-                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                
+                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid] ;
                 
                 if (exisitingResource == nil) {
                     //this is a new object
@@ -168,7 +172,8 @@
         //process any secondary objects
         if (response.secondaryResults != nil) {
             for (Resource* resource in response.secondaryResults) {
-                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+             
+                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid] ;
                 
                 if (exisitingResource == nil) {
                     //this is a new object
@@ -206,17 +211,18 @@
 
 #pragma mark - Static initializers
 
-//+ (CloudEnumerator*) enumeratorForFeeds:(NSNumber *)userid {
-//    Query* query = [Query queryFeedsForUser:userid];
-//    QueryOptions* queryOptions = [QueryOptions queryForFeedsForUser:userid];
-//    EnumerationContext* enumerationContext = [EnumerationContext contextForFeeds:userid];
-//    query.queryoptions = queryOptions;
-//    
-//    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
-//    enumerator.identifier = [userid stringValue];
-//    enumerator.secondsBetweenConsecutiveSearches = threshold_FEED_ENUMERATION_TIME_GAP;
-//    return enumerator;
-//}
++ (CloudEnumerator*) enumeratorForFeeds:(NSNumber *)userid {
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryFeedsForUser:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForFeedsForUser:userid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForFeeds:userid];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [userid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.feed_enumeration_timegap intValue];
+    return enumerator;
+}
 //
 //+ (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid {
 //    

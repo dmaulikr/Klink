@@ -24,6 +24,7 @@
 
 //Feed settings
 @property (nonatomic,retain) NSNumber* feed_maxnumtodownload;
+@property (nonatomic,retain) NSNumber*feed_enumeration_timegap;
 
 //Photo settings
 @property (nonatomic,retain) NSNumber* photo_maxnumtodownload;

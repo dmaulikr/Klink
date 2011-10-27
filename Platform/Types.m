@@ -9,12 +9,14 @@
 #import "Types.h"
 
 
-NSString* const USER    = @"user";
-NSString* const QUERY   = @"query";
-NSString* const ATTRIBUTEINSTANCEDATA = @"AttributeInstanceData";
-NSString* const CAPTION = @"caption";
-NSString* const APPLICATIONSETTINGS = @"applicationsettings";
-NSString* const PHOTO   = @"photo";
-NSString* const TYPEINSTANCEDATA = @"TypeInstanceData";
-NSString* const REQUEST = @"request";
-NSString* const AUTHENTICATIONCONTEXT=@"authenticationcontext";
+NSString* const USER                        = @"user";
+NSString* const QUERY                       = @"query";
+NSString* const ATTRIBUTEINSTANCEDATA       = @"AttributeInstanceData";
+NSString* const CAPTION                     = @"caption";
+NSString* const APPLICATIONSETTINGS         = @"applicationsettings";
+NSString* const PHOTO                       = @"photo";
+NSString* const TYPEINSTANCEDATA            = @"TypeInstanceData";
+NSString* const REQUEST                     = @"request";
+NSString* const AUTHENTICATIONCONTEXT       =@"authenticationcontext";
+NSString* const PAGE                        =@"page";
+NSString* const FEED                        =@"feed";

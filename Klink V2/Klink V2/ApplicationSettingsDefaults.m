@@ -30,6 +30,7 @@ int const batchSize_CAPTION=20;
 int const batchSize_THEME=20;
 int const size_NUMLINKEDOBJECTSTOTRETURN=5;
 int const timeout_HTTP = 60;
+int const threshold_FEED_ENUMERATION_TIME_GAP=60;
 //NSString* const cell_TEXTCAPTION =@"textCaptionCell";
 //NSString* const cell_IMAGECAPTION=@"imageCaptionCell";
 //

@@ -20,11 +20,11 @@
 @synthesize maximumNumberOfResults  = m_maximumNumberOfResults;
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
-    self.pageSize                   = [jsonDictionary objectForKey:PAGESIZE];
-    self.pageNumber                 = [jsonDictionary objectForKey:PAGENUMBER];
-    self.numberOfResultsReturned    = [jsonDictionary objectForKey:NUMBEROFRESULTSRETURNED];
-    self.isDone                     = [jsonDictionary objectForKey:ISDONE];
-    self.maximumNumberOfResults     = [jsonDictionary objectForKey:MAXIMUMNUMBEROFRESULTS];
+    self.pageSize                   = [jsonDictionary valueForKey:PAGESIZE];
+    self.pageNumber                 = [jsonDictionary valueForKey:PAGENUMBER];
+    self.numberOfResultsReturned    = [jsonDictionary valueForKey:NUMBEROFRESULTSRETURNED];
+    self.isDone                     = [jsonDictionary valueForKey:ISDONE];
+    self.maximumNumberOfResults     = [jsonDictionary valueForKey:MAXIMUMNUMBEROFRESULTS];
     
     return self;
 }
@@ -80,7 +80,7 @@
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize =settingsObject.pagesize;
-    enumerationContext.maximumNumberOfResults = settingsObject.photo_maxnumtodownload;
+    enumerationContext.maximumNumberOfResults =  [NSNumber numberWithInt:6]; //settingsObject.photo_maxnumtodownload;
     enumerationContext.pageNumber = [NSNumber numberWithInt:0];
     
     return enumerationContext;

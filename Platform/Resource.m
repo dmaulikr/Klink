@@ -587,11 +587,11 @@
     
     NSEntityDescription* entityDescription;
     if (resourceContext != nil) {
-        entityDescription = [[NSEntityDescription entityForName:type inManagedObjectContext:resourceContext.managedObjectContext]autorelease];
+        entityDescription = [[NSEntityDescription entityForName:type inManagedObjectContext:resourceContext.managedObjectContext]retain];
     }
     else {
         NSManagedObjectContext* context = [[ResourceContext instance] managedObjectContext];
-        entityDescription = [[NSEntityDescription entityForName:type inManagedObjectContext:context]autorelease]; 
+        entityDescription = [[NSEntityDescription entityForName:type inManagedObjectContext:context]retain]; 
     }
     
     if (!entityDescription) {

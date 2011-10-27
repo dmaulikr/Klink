@@ -37,4 +37,5 @@
 //static initializers
 +(QueryOptions*)queryForPhotos;
 +(QueryOptions*)queryForPhotosInTheme;
++(QueryOptions*)queryForFeedsForUser:(NSNumber*)userID;
 @end

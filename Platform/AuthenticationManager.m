@@ -108,7 +108,7 @@ static  AuthenticationManager* sharedManager;
     ResourceContext* resourceContext = [ResourceContext instance];
     
     if (request == self.fbProfileRequest) {
-        LOG_SECURITY(0, @"@%@%",activityName,@"Facebook profile downloaded for logged in user");
+        LOG_SECURITY(0, @"%@%@",activityName,@"Facebook profile downloaded for logged in user");
         NSString* facebookIDString = [result valueForKey:ID];
         NSNumber* facebookID = [facebookIDString numberValue];
         NSString* displayName = [result valueForKey:NAME];
@@ -151,7 +151,7 @@ static  AuthenticationManager* sharedManager;
     if (jsonRepresentation != nil) {
         
         if (error != nil) {
-            LOG_SECURITY(1, @"@%Could not deserialize stored authentication context:@%",activityName,error);
+            LOG_SECURITY(1, @"%@Could not deserialize stored authentication context:@%",activityName,error);
             
         }
         else {
@@ -200,7 +200,7 @@ static  AuthenticationManager* sharedManager;
     [SFHFKeychainUtils storeUsername:[userID stringValue] andPassword:json forServiceName:kKeyChainServiceName updateExisting:YES error:&error];
     
     if (error != nil) {
-        LOG_SECURITY(1, @"@%Couldn't persist authentication token to keychain: %@",activityName,error);
+        LOG_SECURITY(1, @"%@Couldn't persist authentication token to keychain: %@",activityName,error);
         
     }
     else {
@@ -222,11 +222,11 @@ static  AuthenticationManager* sharedManager;
         self.facebook.accessToken = context.facebookaccesstoken;
         
         if (![self.facebook isSessionValid]) {            
-            LOG_SECURITY(1, @"@%Facebook session is invalid with token @%",activityName,self.facebook.accessToken);
+            LOG_SECURITY(1, @"%@Facebook session is invalid with token %@",activityName,self.facebook.accessToken);
         }
     }
     else {
-        LOG_SECURITY(1, @"@%%@",activityName,@"No facebook token returned in authenticator");
+        LOG_SECURITY(1, @"%@%@",activityName,@"No facebook token returned in authenticator");
     }
     //set the current user id
     self.m_LoggedInUserID = userID;
@@ -247,7 +247,7 @@ static  AuthenticationManager* sharedManager;
     //now we emit the system wide notification to tell people the user has logged in
     EventManager* eventManager = [EventManager instance];
     [eventManager raiseUserLoggedInEvent:nil];
-    LOG_SECURITY(0,@"@%User @% successfully logged into application",activityName,self.m_LoggedInUserID);
+    LOG_SECURITY(0,@"%@User %@ successfully logged into application",activityName,self.m_LoggedInUserID);
     
 }
 
@@ -274,7 +274,7 @@ static  AuthenticationManager* sharedManager;
         //we emit a system wide event to notify any listeners that the user has logged out
         EventManager* eventManager = [EventManager instance];
         [eventManager raiseUserLoggedOutEvent:nil];
-        LOG_SECURITY(0,@"@%User has been logged out of application",activityName);
+        LOG_SECURITY(0,@"%@User has been logged out of application",activityName);
     }
 
 }

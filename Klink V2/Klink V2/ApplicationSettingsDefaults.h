@@ -40,7 +40,7 @@ extern int const timeout_HTTP;
 //extern long const threshold_CAPTION_ENUMERATION_TIME_GAP;
 //extern long const threshold_PHOTO_ENUMERATION_TIME_GAP;
 //extern long const threshold_THEME_ENUMERATION_TIME_GAP;
-//extern long const threshold_FEED_ENUMERATION_TIME_GAP;
+extern int const threshold_FEED_ENUMERATION_TIME_GAP;
 //
 ////opcodes for query operations
 //extern int const opcode_QUERYEQUALITY;

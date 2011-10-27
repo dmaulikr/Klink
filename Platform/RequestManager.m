@@ -511,7 +511,7 @@ static RequestManager* sharedInstance;
     }
     return createResponse;
 }
-
+ 
 - (void) processRequestResponse:(Request*)request withResponse:(NSString*)response  {
     NSString* activityName = @"RequestManager.processRequestResponse:";
     ResourceContext* context = [ResourceContext instance];

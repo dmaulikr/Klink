@@ -17,7 +17,7 @@ NSString* const ERRORMESSAGE=@"errornessage";
 NSString* const DIDSUCCEED  =@"didsucceed";
 NSString* const PAGESIZE       =@"pagesize";
 NSString* const PAGENUMBER     =@"pagenumber";
-NSString* const ISDONE         =@"isDone";
+NSString* const ISDONE         =@"isdone";
 NSString* const NUMBEROFRESULTSRETURNED =@"numberofresultsreturned";
 NSString* const MAXIMUMNUMBEROFRESULTS  =@"maxnumberofresults";
 NSString* const ENUMERATIONCONTEXT      =@"enumerationcontext";
@@ -55,4 +55,6 @@ NSString* const CALLBACKRESULT          =@"callbackresult";
 
 NSString* const an_USER                 =@"user";
 NSString* const IMAGEURL                =@"imageurl";
-NSString* const THUMBNAILURL           =@"thumbnailurl";
+NSString* const THUMBNAILURL            =@"thumbnailurl";
+NSString* const HASREAD                 =@"hasread";
+NSString* const DATEEXPIRE              =@"dateexpire";

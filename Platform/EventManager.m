@@ -34,4 +34,21 @@ static EventManager* sharedInstance;
 - (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo {
     
 }
+
+- (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo {
+    
+}
+- (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo {
+    
+}
+- (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo {
+    
+}
+- (void) raiseFeedItemReadEvent     :(NSDictionary*)userInfo {
+    
+}
+
+- (void) raiseFeedRefreshedEvent:(NSDictionary *)userInfo {
+    
+}
 @end

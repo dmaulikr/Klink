@@ -18,7 +18,7 @@
 #import "Photo.h"
 #import "ImageManager.h"
 #import "CloudEnumerator.h"
-
+#import "FeedManager.h"
 
 @implementation SampleViewController
 @synthesize toJSONButton    =m_toJSONButton;
@@ -159,23 +159,13 @@
     [resourceContext save:YES onFinishCallback:nil];
 }
 
-- (IBAction) commitChanges:(id)sender {
+- (void) test_create2objectsatonce {
     ResourceContext* resourceContext = [ResourceContext instance];
     NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
     
-   // CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForPhotos:themeid];
-   // [enumeratorForPhotos enumerateUntilEnd];
-    
-    
-    NSString* attributeName = @"thumbnailurl";
-    NSString* attributeValue = self.attributeValue.text;
-    NSString* objectid = @"122604833";
-    NSString* objecttype = @"user";
-    
-    
     ImageManager* imageManager= [ImageManager getInstance];
     NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
-    
+
     NSData* data = [NSData dataWithContentsOfURL:url]   ; 
     UIImage* image = [UIImage imageWithData:data];
     NSNumber* file = [NSNumber numberWithLongLong:[[NSDate date]timeIntervalSince1970]];
@@ -184,6 +174,7 @@
     NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
     AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
     
+    //photo 1
     Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
     photo.descr = @"test photo";
     photo.imageurl = @"testiomageurl";
@@ -191,18 +182,96 @@
     photo.numberofvotes = [NSNumber numberWithInt:0];
     photo.creatorid = context.userid;
     photo.themeid = [NSNumber numberWithLongLong:634535212720410463];
+
+    //photo 2
+
+    Photo* photo2 = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+    photo2.descr = @"test photo 2";
+    photo2.imageurl = @"testiomageurl";
+    photo2.thumbnailurl = fullPath;
+    photo2.numberofvotes = [NSNumber numberWithInt:0];
+    photo2.creatorid = context.userid;
+    photo2.themeid = [NSNumber numberWithLongLong:634535212720410463];
+    
+    [resourceContext save:YES onFinishCallback:nil];
+    
+}
+
+- (IBAction) test_enumerateObjects {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
+        
+              
+           
+        
+        CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForPhotos:themeid];
+        [enumeratorForPhotos enumerateUntilEnd];
+}
+
+- (IBAction) test_enumerateObjects2 {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        NSNumber* themeid = [NSNumber numberWithLongLong:634534350173075578];
     
     
     
     
-    Resource* resource = [resourceContext resourceWithType:objecttype   withID:objectid];
+        CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForPhotos:themeid];
+        [enumeratorForPhotos enumerateUntilEnd];    
+}
+
+- (IBAction) test_enumerateFeed {
+    FeedManager* feedManager = [FeedManager instance];
+    [feedManager refreshFeed];
+}
+
+- (IBAction) commitChanges:(id)sender {
+    [self test_enumerateFeed];
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
+//    
+//          
+//       
+//    
+//    CloudEnumerator* enumeratorForPhotos = [CloudEnumerator enumeratorForPhotos:themeid];
+//    [enumeratorForPhotos enumerateUntilEnd];
     
-    
-    
-    SEL selector = NSSelectorFromString(attributeName);
-    [resource setValue:fullPath forKey:attributeName];
-    
-   [resourceContext save:YES onFinishCallback:nil];
+//    
+//    NSString* attributeName = @"thumbnailurl";
+//    NSString* attributeValue = self.attributeValue.text;
+//    NSString* objectid = @"122604833";
+//    NSString* objecttype = @"user";
+//    
+//    
+//    ImageManager* imageManager= [ImageManager getInstance];
+//    NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
+//    
+//    NSData* data = [NSData dataWithContentsOfURL:url]   ; 
+//    UIImage* image = [UIImage imageWithData:data];
+//    NSNumber* file = [NSNumber numberWithLongLong:[[NSDate date]timeIntervalSince1970]];
+//    NSString* fileName = [NSString stringWithFormat:@"%@.jpg",file];
+//    
+//    NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
+//    AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
+//    
+//    Photo* photo = [Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+//    photo.descr = @"test photo";
+//    photo.imageurl = @"testiomageurl";
+//    photo.thumbnailurl = fullPath;
+//    photo.numberofvotes = [NSNumber numberWithInt:0];
+//    photo.creatorid = context.userid;
+//    photo.themeid = [NSNumber numberWithLongLong:634535212720410463];
+//    
+//    
+//    
+//    
+//    Resource* resource = [resourceContext resourceWithType:objecttype   withID:objectid];
+//    
+//    
+//    
+//    SEL selector = NSSelectorFromString(attributeName);
+//    [resource setValue:fullPath forKey:attributeName];
+//    
+//   [resourceContext save:YES onFinishCallback:nil];
     
     
     
