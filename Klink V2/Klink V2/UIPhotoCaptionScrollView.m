@@ -298,7 +298,7 @@
      
 
         
-        //[self showHideVotingSharingButtons];
+        [self enableDisableSharingButtons];
         [self enableDisableVotingButton];
         
         //register for global events
@@ -383,7 +383,7 @@
             [self.captionCloudEnumerator enumerateNextPage];
         }
     }
-    //[self showHideVotingSharingButtons];
+    [self enableDisableSharingButtons];
     [self enableDisableVotingButton];
 }
 
@@ -412,22 +412,22 @@
         [self.captionScrollView goTo:index];
     }
     
-    //[self showHideVotingSharingButtons];
+    [self enableDisableSharingButtons];
     [self enableDisableVotingButton];
     
 }
 
 #pragma mark - System Event Handlers
 -(void)onUserLoggedIn:(NSNotification*)notification {
-    //[self showHideVotingSharingButtons];
+    [self enableDisableSharingButtons];
 }
 
 -(void)onUserLoggedOut:(NSNotification*)notification {
-    //[self showHideVotingSharingButtons];
+    [self enableDisableSharingButtons];
 }
 
 #pragma mark - Button helpers
-- (void) showHideVotingSharingButtons {
+- (void) enableDisableSharingButtons {
     AuthenticationManager* authenticationManager = [AuthenticationManager getInstance];
     AuthenticationContext* authenticationContext = [authenticationManager getAuthenticationContext];
     
@@ -440,21 +440,6 @@
         [self showShareButton];
     }
     
-    if (captionCount > 0) {
-        Caption* currentCaption = [[self.frc_captions fetchedObjects]objectAtIndex:[self.captionScrollView getPageIndex]];
-        [self showVotingButton];
-        if ([currentCaption.user_hasvoted boolValue] == YES) {
-            [self disableVotingButton];
-        }
-        else {
-            [self enableVotingButton];
-        }
-       
-    }
-    else {
-        [self disableVotingButton];
-        [self hideVotingButton];
-    }
 }
 
 - (void) enableDisableVotingButton {
@@ -503,7 +488,7 @@
     
     if (type == NSFetchedResultsChangeInsert) {
         [self.captionScrollView onNewItemInsertedAt:newIndexPath.row];
-        //[self showHideVotingSharingButtons];
+        [self enableDisableSharingButtons];
     }
 
 }
@@ -562,6 +547,9 @@
     self.shareButton.hidden = YES;
     self.shareButton.enabled = NO;
     
+    self.photoViewController.tb_facebookButton.enabled = NO;
+    self.photoViewController.tb_twitterButton.enabled = NO;
+    
     //[photoViewController release];
 }
 
@@ -570,6 +558,9 @@
     //photoViewController.tb_shareButton.enabled = YES;
     //self.shareButton.hidden = NO;
     //self.shareButton.enabled = YES;
+    
+    self.photoViewController.tb_facebookButton.enabled = YES;
+    self.photoViewController.tb_twitterButton.enabled = YES;
     
     //[photoViewController release];
 }
