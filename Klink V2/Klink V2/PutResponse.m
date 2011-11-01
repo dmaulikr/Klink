@@ -13,13 +13,13 @@
 @synthesize modifiedResource = m_modifiedResource;
 @synthesize secondaryResults = m_secondaryResults;
 - (id) initFromDictionary:(NSDictionary*)jsonDictionary {
-
+    
     
     self = [super initFromDictionary:jsonDictionary]; 
     
     if (self != nil) {
-        self.modifiedResource = [[[Resource alloc ]initWithDictionary:[jsonDictionary objectForKey:MODIFIEDRESOURCE]]autorelease];
-        NSArray* secondaryResultsJSON = [jsonDictionary objectForKey:SECONDARYRESULTS];
+        self.modifiedResource = [ServerManagedResource from:[jsonDictionary objectForKey:an_MODIFIEDRESOURCE]];
+        NSArray* secondaryResultsJSON = [jsonDictionary objectForKey:an_SECONDARYRESULTS];
         
         
         if (secondaryResultsJSON != nil) {
@@ -28,9 +28,8 @@
             
             for (int i = 0; i < [secondaryResultsJSON count]; i++) {
                 NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];        
-                id resource = [[Resource alloc]initFromJSONDictionary:obj_i];
+                id resource = [ServerManagedResource from:obj_i];
                 [secondaryResults insertObject:resource atIndex:i];
-                [resource release];
                 
             }
             self.secondaryResults = secondaryResults;
