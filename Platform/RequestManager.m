@@ -106,6 +106,7 @@ static RequestManager* sharedInstance;
         httpRequest.timeOutSeconds = 5;
         httpRequest.numberOfTimesToRetryOnTimeout = 3;
         httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+        httpRequest.downloadCache = self.imageCache;
         return httpRequest;
 
     }
@@ -291,8 +292,8 @@ static RequestManager* sharedInstance;
     
     NSDictionary* requestUserInfo = request.userInfo;
     NSString* downloadPath = [requestUserInfo valueForKey:IMAGEPATH];
+  
     httpRequest.downloadDestinationPath = downloadPath;
-    
     LOG_REQUEST(0,@"%@Beginning download of image at: %@ to local location %@",activityName,request.url,downloadPath);
     
     [self.enumerationQueue addOperation:httpRequest];
@@ -557,7 +558,7 @@ static RequestManager* sharedInstance;
     ImageManager* imageManager = [ImageManager instance];
     NSDictionary* userInfo = request.userInfo;
     NSString* imagePath = [userInfo valueForKey:IMAGEPATH];
-    UIImage* image = [imageManager downloadImage:imagePath withUserInfo:nil atCallback:nil];
+    UIImage* image = [imageManager downloadImageFromFile:imagePath withUserInfo:nil atCallback:nil];
     if (image == nil) {
         //image download failed
         response.didSucceed = [NSNumber numberWithBool:NO];
@@ -678,7 +679,7 @@ static RequestManager* sharedInstance;
     NSDictionary* userInfo = httpRequest.userInfo;
     NSString* response = [httpRequest responseString];
     
-    LOG_HTTP(1, @"%@HTTP request succeeded",activityName);
+    LOG_HTTP(0, @"%@HTTP request succeeded",activityName);
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
         

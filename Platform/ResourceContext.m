@@ -384,6 +384,22 @@ static ResourceContext* sharedInstance;
     return retVal;
 }
 
+- (Resource*) resourceWithType:(NSString*)typeName 
+                withValueEqual:(NSString*)value 
+                  forAttribute:(NSString*)attributeName 
+                        sortBy:(NSString*)sortByAttribute 
+                 sortAscending:(BOOL)sortAscending {
+    Resource* retVal = nil;
+    NSArray* retValues = [self resourcesWithType:typeName withValueEqual:value forAttribute:attributeName sortBy:sortByAttribute sortAscending:sortAscending];
+    
+    if (retValues != nil && [retValues count] > 0) {
+        retVal = [retValues objectAtIndex:0];
+    }
+    return retVal;
+    
+    
+}
+
 - (NSArray*)  resourcesWithType:(NSString*)typeName 
                  withValueEqual:(NSString*)value 
                    forAttribute:(NSString*)attributeName 

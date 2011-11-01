@@ -1,40 +1,15 @@
 //
-//  BaseViewController.m
+//  TableOfContentsViewController.m
 //  Platform
 //
-//  Created by Bobby Gill on 10/7/11.
+//  Created by Bobby Gill on 10/28/11.
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "BaseViewController.h"
-#import "PlatformAppDelegate.h"
-
-@implementation BaseViewController
-
-@synthesize authenticationManager = __authenticationManager;
-@synthesize toolbar = m_toolbar;
-@synthesize managedObjectContext    =__managedObjectContext;
-#pragma mark - Properties
-
-- (NSManagedObjectContext*)managedObjectContext {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
-    }
-    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication] delegate];
-    __managedObjectContext = appDelegate.managedObjectContext;
-    return __managedObjectContext;
-    
-}
-
-- (AuthenticationManager*) authenticationManager {
-    if (__authenticationManager != nil) {
-        return __authenticationManager;
-    }
-    __authenticationManager = [AuthenticationManager instance];
-    return __authenticationManager;
-}
+#import "TableOfContentsViewController.h"
 
 
+@implementation TableOfContentsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

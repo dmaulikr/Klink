@@ -95,6 +95,7 @@ static  ImageManager* sharedManager;
     }
 }
 
+
 - (id)downloadImageFromFile:(NSString*) fileName withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback{
     NSString* activityName = @"ImageManager.downloadImageFromFile:";     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -122,23 +123,29 @@ static  ImageManager* sharedManager;
     if ([fileManager fileExistsAtPath:path]) {
 
         UIImage* retVal = [UIImage imageWithContentsOfFile:path];
-        LOG_IMAGE(0,@"%@Image retrieved from existing file stored at %@, no need to download from cloud",activityName,path);
         
-        return retVal;
+        if (retVal == nil) {
+            LOG_IMAGE(1, @"%@Could not deserialize stored data at %@ into image object. Redownloading from cloud",activityName,path);
+        }
+        else {
+            LOG_IMAGE(0,@"%@Image retrieved from existing file stored at %@, no need to download from cloud",activityName,path);
+            return retVal;
+        }
+        
     }
     
     
-        Request* request = [Request createInstanceOfRequest];
-        request.url = url;
-        
-        NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithObject:path forKey:IMAGEPATH];
-        request.userInfo = requestUserInfo;
+    Request* request = [Request createInstanceOfRequest];
+    request.url = url;
+    
+    NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithObject:path forKey:IMAGEPATH];
+    request.userInfo = requestUserInfo;
     request.operationcode = [NSNumber numberWithInt:kIMAGEDOWNLOAD];
     request.statuscode = [NSNumber numberWithInt:kPENDING];
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
     RequestManager* requestManager = [RequestManager instance];
-        [requestManager submitRequest:request];
+    [requestManager submitRequest:request];
     
     return nil;
 }

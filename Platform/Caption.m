@@ -10,8 +10,9 @@
 
 
 @implementation Caption
-@dynamic caption;
+@dynamic caption1;
 @dynamic creatorid;
 @dynamic creatorname;
 @dynamic numberofvotes;
+@dynamic photoid;
 @end

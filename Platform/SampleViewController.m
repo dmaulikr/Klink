@@ -67,10 +67,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    ResourceContext* testResourceContext = self.resourceContext;
+    ResourceContext* testResourceContext = [ResourceContext instance];
   
     
-    ApplicationSettings* applicationSettings = [[ApplicationSettingsManager instance]settings];
     
        
         
@@ -161,9 +160,8 @@
 
 - (void) test_create2objectsatonce {
     ResourceContext* resourceContext = [ResourceContext instance];
-    NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
+   
     
-    ImageManager* imageManager= [ImageManager getInstance];
     NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
 
     NSData* data = [NSData dataWithContentsOfURL:url]   ; 
@@ -171,6 +169,7 @@
     NSNumber* file = [NSNumber numberWithLongLong:[[NSDate date]timeIntervalSince1970]];
     NSString* fileName = [NSString stringWithFormat:@"%@.jpg",file];
     
+    ImageManager* imageManager = [ImageManager instance];
     NSString* fullPath = [imageManager saveImage:image withFileName:fileName];
     AuthenticationContext* context = [self.authenticationManager contextForLoggedInUser];
     
@@ -263,11 +262,7 @@
 }
 
 - (void) test_createAndUploadPhoto {
-        NSString* attributeName = @"thumbnailurl";
-        NSString* attributeValue = self.attributeValue.text;
-        NSString* objectid = @"122604833";
-        NSString* objecttype = @"user";
-        
+   
         
         ImageManager* imageManager= [ImageManager instance];
         NSURL* url = [NSURL URLWithString:@"http://www.oscial.com/wp-content/uploads/2011/10/Gadaffi-fist-pump.jpg"];
@@ -297,7 +292,7 @@
 
 
 - (IBAction) commitChanges:(id)sender {
-    [self test_createAndUploadPhoto];
+    [self test_enumeratePages];
 //    ResourceContext* resourceContext = [ResourceContext instance];
 //    NSNumber* themeid = [NSNumber numberWithLongLong:634535212720410463];
 //    

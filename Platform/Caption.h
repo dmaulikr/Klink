@@ -12,8 +12,9 @@
 @interface Caption : Resource {
     
 }
-@property (nonatomic,retain) NSString* caption;
+@property (nonatomic,retain) NSString* caption1;
 @property (nonatomic,retain) NSNumber* creatorid;
 @property (nonatomic,retain) NSString* creatorname;
 @property (nonatomic,retain) NSNumber* numberofvotes;
+@property (nonatomic,retain) NSNumber* photoid;
 @end

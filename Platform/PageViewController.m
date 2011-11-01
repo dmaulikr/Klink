@@ -1,0 +1,234 @@
+//
+//  PageViewController.m
+//  Platform
+//
+//  Created by Bobby Gill on 10/28/11.
+//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//
+
+#import "PageViewController.h"
+#import "Macros.h"
+#import "Page.h"
+#import "UIPageView.h"
+
+
+#define kWIDTH 320
+#define kHEIGHT 375
+#define kSPACING 0
+
+@implementation PageViewController
+@synthesize pageID              = m_pageID;
+@synthesize frc_published_pages = __frc_published_pages;
+@synthesize pagedViewSlider     = m_pagedViewSlider;
+
+#pragma mark - Properties
+//this NSFetchedResultsController will query for all published pages
+- (NSFetchedResultsController*) frc_published_pages {
+    NSString* activityName = @"PageViewController.frc_published_pages:";
+    if (__frc_published_pages != nil) {
+        return __frc_published_pages;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:self.managedObjectContext];
+    
+    //TODO: change this to sort on DATECREATED when the server supports it
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    
+    //add predicate to test for being published
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kPUBLISHED];
+    
+    //TODO: commenting these out temporarily since there are no published pages on the server
+    
+    //[fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setEntity:entityDescription];
+    [fetchRequest setFetchBatchSize:20];
+    
+    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    
+    controller.delegate = self;
+    self.frc_published_pages = controller;
+    
+    
+    NSError* error = nil;
+    [controller performFetch:&error];
+  	if (error != nil)
+    {
+        LOG_PAGEVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+    }
+    
+    [controller release];
+    [fetchRequest release];
+    
+    return __frc_published_pages;
+    
+}
+
+#pragma mark - Frames
+- (CGRect) frameForSlider {
+    return CGRectMake(0, 42, 320, 375);
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        self.pageID = nil;
+        CGRect frameForSlider = [self frameForSlider];
+        self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
+        self.pagedViewSlider.delegate = self;
+        self.pagedViewSlider.backgroundColor = [UIColor orangeColor];
+        self.pagedViewSlider.tableView.pagingEnabled = YES;
+        [self.view addSubview:self.pagedViewSlider];
+        [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [super dealloc];
+    [self.pagedViewSlider release];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+
+/*
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView
+{
+}
+*/
+
+
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+}
+
+- (int) indexOfPageWithID:(NSNumber*)pageid {
+    //returns the index location with thin the frc_published_photos for the photo with the id specified
+    int retVal = 0;
+    
+    NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
+    int index = 0;
+    for (Page* page in fetchedObjects) {
+        if ([page.objectid isEqualToNumber:pageid]) {
+            retVal = index;
+            break;
+        }
+        index++;
+    }
+    return index;
+}
+
+- (void) renderPage {
+    NSString* activityName = @"PageViewController.renderPage:";
+    //retrieves and draws the layout for the current page
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (currentPage != nil) {
+        int indexOfPage = [self indexOfPageWithID:self.pageID];
+        //we instruct the page view slider to move to the index of the page which is specified
+        [self.pagedViewSlider goTo:indexOfPage withAnimation:NO];
+    }
+    else {
+        //error state
+        LOG_PAGEVIEWCONTROLLER(1,@"%@Could not find page with id: %@ in local store",activityName,self.pageID);
+    }
+    
+}
+- (void) viewWillAppear:(BOOL)animated {
+    NSString* activityName = @"PageViewController.viewWillAppear:";
+    [super viewWillAppear:animated];
+    
+    //render the page ID specified as a parameter
+    if (self.pageID != nil && [self.pageID intValue] != 0) {
+        //render the page specified by the ID passed in
+        [self renderPage];
+    }
+    else {
+        //need to find the latest page
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
+        self.pageID = page.objectid;
+        [self renderPage];
+    }
+}
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - UIPagedViewSlider2 Delegate Methods
+- (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
+           selectIndex:        (int)                   index {
+    
+}
+
+- (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
+     cellForRowAtIndex:          (int)                   index 
+             withFrame:          (CGRect)                frame {
+    
+    //render a page in its own view and return it using the coordinates passed in for its frame
+    int count = [[self.frc_published_pages fetchedObjects]count];
+    if (index < count) {
+        UIPageView* view = [[UIPageView alloc]initWithFrame:frame];
+        [self viewSlider:viewSlider configure:view forRowAtIndex:index withFrame:frame];
+        return view;
+    }
+    else {
+        return nil;
+    }
+    
+}
+
+
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
+             isAtIndex:          (int)                   index 
+    withCellsRemaining: (int)                   numberOfCellsToEnd {
+    
+}
+
+
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
+             configure:          (UIView*)               existingCell
+         forRowAtIndex:          (int)                   index
+             withFrame:          (CGRect)                frame {
+    
+    int count = [[self.frc_published_pages fetchedObjects]count];
+    if (index < count) {
+        Page* page  = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
+        existingCell.frame = frame;
+        UIPageView* pageView = (UIPageView*)existingCell;
+        [pageView renderPageWithID:page.objectid];
+    }
+}
+
+
+
+- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
+    return [[self.frc_published_pages fetchedObjects]count];
+}
+
+@end

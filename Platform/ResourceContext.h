@@ -39,7 +39,15 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
 - (BOOL) doesExistInLocalStore:(NSNumber*)resourceID;
 
 //data access methods
-- (Resource*) resourceWithType:(NSString*)typeName withID:(NSNumber*)resourceID;
+- (Resource*) resourceWithType:(NSString*)typeName 
+                        withID:(NSNumber*)resourceID;
+
+- (Resource*) resourceWithType:(NSString*)typeName 
+                withValueEqual:(NSString*)value 
+                  forAttribute:(NSString*)attributeName 
+                        sortBy:(NSString*)sortByAttribute 
+                 sortAscending:(BOOL)sortAscending;
+
 - (Resource*) singletonResourceWithType:(NSString*)typeName;
 - (NSArray*)  resourcesWithType:(NSString*)typeName 
                  withValueEqual:(NSString*)value 
