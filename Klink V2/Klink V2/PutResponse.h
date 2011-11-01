@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "Response.h"
-#import "Attributes.h"
-#import "Resource.h"
+#import "AttributeNames.h"
+#import "ServerManagedResource.h"
 
 @interface PutResponse : Response {
     id      m_modifiedResource;
