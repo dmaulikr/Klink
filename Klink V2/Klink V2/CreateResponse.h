@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Resource.h"
-#import "Response.h"
-#import "Attributes.h"
-#import "IJSONSerializable.h"
-@interface CreateResponse : Response <IJSONSerializable> {
+#import "ServerManagedResource.h"
+#import "AttributeNames.h"
+
+@interface CreateResponse : Response {
     NSArray* createdResources;
 }
 
