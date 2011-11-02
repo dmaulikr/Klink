@@ -10,7 +10,7 @@
 #import "Macros.h"
 #import "Page.h"
 #import "UIPageView.h"
-
+#import "CloudEnumeratorFactory.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -20,6 +20,7 @@
 @synthesize pageID              = m_pageID;
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pagedViewSlider     = m_pagedViewSlider;
+@synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all published pages
@@ -70,19 +71,27 @@
     return CGRectMake(0, 42, 320, 375);
 }
 
+- (id) commonInit {
+    // Custom initialization
+    self.pageID = nil;
+    CGRect frameForSlider = [self frameForSlider];
+    self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
+    self.pagedViewSlider.delegate = self;
+    
+    self.pagedViewSlider.tableView.pagingEnabled = YES;
+    [self.view addSubview:self.pagedViewSlider];
+    [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
+    self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
+    return self;
+}
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.pageID = nil;
-        CGRect frameForSlider = [self frameForSlider];
-        self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
-        self.pagedViewSlider.delegate = self;
-        self.pagedViewSlider.backgroundColor = [UIColor orangeColor];
-        self.pagedViewSlider.tableView.pagingEnabled = YES;
-        [self.view addSubview:self.pagedViewSlider];
-        [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
+        self =  [self commonInit];
+        
     }
     return self;
 }
@@ -163,8 +172,17 @@
         //need to find the latest page
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
-        self.pageID = page.objectid;
-        [self renderPage];
+        if (page != nil) {
+            //local store does contain pages to enumerate
+            self.pageID = page.objectid;
+            [self renderPage];
+        }
+        else {
+            //empty page store, will need to thow up a progress dialog to show user of download
+            [self.pageCloudEnumerator enumerateUntilEnd];
+            //TODO: need to make a call to a centrally hosted busy indicator view
+        }
+
     }
 }
 - (void)viewDidUnload
@@ -230,5 +248,26 @@
 - (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
     return [[self.frc_published_pages fetchedObjects]count];
 }
+
+#pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controller:(NSFetchedResultsController *)controller 
+    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
+      forChangeType:(NSFetchedResultsChangeType)type 
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    if (type == NSFetchedResultsChangeInsert) {
+        //insertion of a new page
+        [self.pagedViewSlider onNewItemInsertedAt:[indexPath row]];
+    }
+    
+}
+
+#pragma mark - Static Initializers
++ (PageViewController*) createInstance {
+    PageViewController* pageViewController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];
+    [pageViewController autorelease];
+    return pageViewController;
+}
+
 
 @end

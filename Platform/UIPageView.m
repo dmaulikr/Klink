@@ -63,7 +63,6 @@
         self.lbl_caption.text = @"caption";
         
         self.img_photo = [[UIImageView alloc]initWithFrame:imageFrame];
-        self.backgroundColor = [UIColor yellowColor];
         [self addSubview:self.lbl_caption];
         [self addSubview:self.lbl_captionby];
         [self addSubview:self.lbl_photoby];
@@ -133,7 +132,10 @@
     if ([response.didSucceed boolValue] == YES) {
         if ([pid isEqualToNumber:self.pageID]) {
             //we only draw the image if this view hasnt been repurposed for another Page
-            self.img_photo.image = (UIImage*)result.response;
+            LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+            [self.img_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+//            self.img_photo.image = (UIImage*)response.image;
+            [self setNeedsDisplay];
         }
     }
     else {

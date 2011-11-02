@@ -10,7 +10,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <Foundation/Foundation.h>
-
+#import "UIViewCategory.h"
 
 #define degreesToRadians(x) (M_PI * x / 180.0)
 

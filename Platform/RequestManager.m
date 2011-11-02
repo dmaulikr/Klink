@@ -105,8 +105,8 @@ static RequestManager* sharedInstance;
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = 5;
         httpRequest.numberOfTimesToRetryOnTimeout = 3;
-        httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
-        httpRequest.downloadCache = self.imageCache;
+        //httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
+        //httpRequest.downloadCache = self.imageCache;
         return httpRequest;
 
     }
@@ -570,6 +570,7 @@ static RequestManager* sharedInstance;
     else {
         response.didSucceed = [NSNumber numberWithBool:YES];
          response.path = imagePath;
+        response.image = image;
         response.errorMessage = nil;
          LOG_REQUEST(1, @"%@Image downloaded successfully to location %@",activityName,imagePath);
     }

@@ -40,7 +40,7 @@
     
     //transformation to flip the table view on its side
     //self.tableView.layer.anchorPoint = CGPointMake(0, 0);
-    //[self.tableView setAnchorPoint:CGPointMake(0,0)];
+    [self.tableView setAnchorPoint:CGPointMake(0,0)];
     CGAffineTransform rotateTable = CGAffineTransformMakeRotation(degreesToRadians(-90));
     int y = self.tableView.frame.size.width;
     self.tableView.transform = CGAffineTransformTranslate(rotateTable, -y, 0);

@@ -16,7 +16,7 @@
 @synthesize enumeratorsForFeeds = m_enumeratorsForFeeds;
 static CloudEnumeratorFactory* sharedManager;
 
-+ (CloudEnumeratorFactory*)getInstance {
++ (CloudEnumeratorFactory*)instance {
     @synchronized (self) {
         if (!sharedManager) {
             sharedManager = [[CloudEnumeratorFactory alloc]init];
@@ -111,7 +111,7 @@ static CloudEnumeratorFactory* sharedManager;
     return retVal;
 }
 
-- (CloudEnumerator*) enumeratorForThemes {
+- (CloudEnumerator*) enumeratorForPages {
     CloudEnumerator* retVal = nil;
     
     NSArray* arrayOfEnumerators = [self.enumeratorsForThemes allObjects];
@@ -124,7 +124,7 @@ static CloudEnumeratorFactory* sharedManager;
     
     if (retVal == nil) {
         //could not find an existing enumerator to return, create a new one
-        CloudEnumerator* newEnumerator = [CloudEnumerator enumeratorForThemes];
+        CloudEnumerator* newEnumerator = [CloudEnumerator enumeratorForPages];
         [self.enumeratorsForThemes addObject:newEnumerator];
         retVal = newEnumerator;
     }

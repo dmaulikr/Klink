@@ -21,10 +21,10 @@
 @property (nonatomic,retain) NSMutableSet* enumeratorsForThemes;
 @property (nonatomic,retain) NSMutableSet* enumeratorsForFeeds;
 
-+ (CloudEnumeratorFactory*) getInstance;
++ (CloudEnumeratorFactory*) instance;
 
 - (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid;
 - (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
-- (CloudEnumerator*) enumeratorForThemes;
+- (CloudEnumerator*) enumeratorForPages;
 - (CloudEnumerator*) enumeratorForFeeds;
 @end
