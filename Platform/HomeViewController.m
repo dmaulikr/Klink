@@ -43,6 +43,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    
 }
 
 - (void)viewDidUnload
@@ -50,6 +52,21 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if ([self.authenticationManager isUserAuthenticated]) {
+        [self.loginButton setTitle:@"Logoff" forState:UIControlStateNormal];
+        [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+                [self.loginButton addTarget:self action:@selector(onLogoffButtonClicked:) forControlEvents:UIControlEventAllEvents];
+    }
+    else {
+        [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
+        [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+        [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventAllEvents];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -81,6 +98,10 @@
         //no user is logged in currently
         [self.authenticationManager authenticate];
     }
+}
+
+- (IBAction) onLogoffButtonClicked:(id)sender {
+    
 }
 
 @end
