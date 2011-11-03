@@ -1,6 +1,5 @@
 # Xcode
 build/*
-.DS_Store
 *.pbxuser
 *.pbxproj
 !default.pbxuser
@@ -15,5 +14,3 @@ build/*
 xcuserdata
 profile
 *.moved-aside
-.xcodeproj/
-!*.xcodeproj/project.pbxproj
