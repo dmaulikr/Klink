@@ -13,6 +13,7 @@
 @implementation HomeViewController
 @synthesize contributeButton    = m_contributeButton;
 @synthesize readButton          = m_readButton;
+@synthesize loginButton         = m_loginButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,6 +74,13 @@
 
 - (IBAction) onContributeButtonClicked:(id)sender {
     
+}
+
+- (IBAction) onLoginButtonClicked:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //no user is logged in currently
+        [self.authenticationManager authenticate];
+    }
 }
 
 @end

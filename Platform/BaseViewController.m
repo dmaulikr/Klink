@@ -12,7 +12,7 @@
 @implementation BaseViewController
 
 @synthesize authenticationManager = __authenticationManager;
-@synthesize toolbar = m_toolbar;
+
 @synthesize managedObjectContext    =__managedObjectContext;
 #pragma mark - Properties
 

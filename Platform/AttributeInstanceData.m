@@ -48,7 +48,8 @@ insertIntoResourceContext:(ResourceContext *)context
     NSString* lowerCaseName = [attribute lowercaseString];
     if ([lowerCaseName isEqualToString:DATECREATED]     ||
         [lowerCaseName isEqualToString:DATEMODIFIED]    ||
-        [lowerCaseName isEqualToString:HASREAD]) {
+        [lowerCaseName isEqualToString:HASSEEN]         ||
+        [lowerCaseName isEqualToString:HASOPENED]) {
         
         retVal.islocked = [NSNumber numberWithBool:YES];
     }

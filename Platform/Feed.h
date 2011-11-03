@@ -14,7 +14,8 @@
 }
 
 
-@property (nonatomic,retain) NSNumber* hasread;
+@property (nonatomic,retain) NSNumber* hasopened;
+@property (nonatomic,retain) NSNumber* hasseen;
 @property (nonatomic,retain) NSString* message;
 @property (nonatomic,retain) NSNumber* type;
 @property (nonatomic,retain) NSNumber* targetobjectid;

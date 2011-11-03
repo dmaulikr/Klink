@@ -11,10 +11,10 @@
 #import "ResourceContext.h"
 #import "AuthenticationManager.h"
 @interface BaseViewController : UIViewController {
-    UIToolbar* m_toolbar;
+    
 }
 
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
-@property (nonatomic, retain) IBOutlet  UIToolbar*  toolbar;
+
 @end

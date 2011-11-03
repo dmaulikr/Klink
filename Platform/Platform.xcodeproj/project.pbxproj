@@ -21,6 +21,13 @@
 		C55EC754145FA3B000BA66FA /* Platform-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C55EC750145FA3B000BA66FA /* Platform-Info.plist */; };
 		C55EC75D145FA50800BA66FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC75F145FA50800BA66FA /* main.m */; };
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
+		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
+		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
+		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
+		C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */; };
+		C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */; };
+		C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1B1462ECDA00E14199 /* icon-facebook.png */; };
+		C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */; };
 		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
 		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; };
@@ -35,7 +42,6 @@
 		C593F84D143EBE18008D25A7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C593F832143EBE18008D25A7 /* README.md */; };
 		C593FBA3143EC41B008D25A7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA2143EC41B008D25A7 /* CFNetwork.framework */; };
 		C593FBA5143EC427008D25A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */; };
-		C593FBBE143EC54D008D25A7 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBBC143EC54D008D25A7 /* LoggerClient.m */; };
 		C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC1143EC81A008D25A7 /* BaseViewController.m */; };
 		C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC5143EC98B008D25A7 /* SampleViewController.m */; };
 		C593FBC8143EC98B008D25A7 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C593FBC6143EC98B008D25A7 /* SampleViewController.xib */; };
@@ -137,6 +143,17 @@
 		C55EC750145FA3B000BA66FA /* Platform-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Platform-Info.plist"; sourceTree = "<group>"; };
 		C55EC751145FA3B000BA66FA /* Platform-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Platform-Prefix.pch"; sourceTree = "<group>"; };
 		C55EC75E145FA50800BA66FA /* en */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = en; path = en.lproj/main.m; sourceTree = "<group>"; };
+		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
+		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
+		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
+		C56F8A041462D3C700E14199 /* UINotificationIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationIcon.h; sourceTree = "<group>"; };
+		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
+		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
+		C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalLogViewController.h; sourceTree = "<group>"; };
+		C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalLogViewController.m; sourceTree = "<group>"; };
+		C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalLogViewController.xib; sourceTree = "<group>"; };
+		C56F8A1B1462ECDA00E14199 /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
+		C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		C593F7BF143EB191008D25A7 /* Platform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Platform.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C593F7C3143EB191008D25A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C593F7C5143EB191008D25A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,9 +173,6 @@
 		C593F832143EBE18008D25A7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		C593FBA2143EC41B008D25A7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		C593FBBB143EC54D008D25A7 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerCommon.h; path = "../../dev/NSLogger/Client Logger/iOS/LoggerCommon.h"; sourceTree = "<group>"; };
-		C593FBBC143EC54D008D25A7 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoggerClient.m; path = "../../dev/NSLogger/Client Logger/iOS/LoggerClient.m"; sourceTree = "<group>"; };
-		C593FBBD143EC54D008D25A7 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoggerClient.h; path = "../../dev/NSLogger/Client Logger/iOS/LoggerClient.h"; sourceTree = "<group>"; };
 		C593FBC0143EC81A008D25A7 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		C593FBC1143EC81A008D25A7 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		C593FBC4143EC98B008D25A7 /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
@@ -363,9 +377,45 @@
 			name = Application;
 			sourceTree = "<group>";
 		};
+		C56F880114620EFB00E14199 /* NSLogger */ = {
+			isa = PBXGroup;
+			children = (
+				C56F883614620EFB00E14199 /* Client Logger */,
+			);
+			path = NSLogger;
+			sourceTree = "<group>";
+		};
+		C56F883614620EFB00E14199 /* Client Logger */ = {
+			isa = PBXGroup;
+			children = (
+				C56F883714620EFB00E14199 /* iOS */,
+			);
+			path = "Client Logger";
+			sourceTree = "<group>";
+		};
+		C56F883714620EFB00E14199 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C56F884614620EFB00E14199 /* LoggerClient.h */,
+				C56F884714620EFB00E14199 /* LoggerClient.m */,
+				C56F884814620EFB00E14199 /* LoggerCommon.h */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		C56F8A1A1462EC9F00E14199 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C56F8A1B1462ECDA00E14199 /* icon-facebook.png */,
+				C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				C56F8A1A1462EC9F00E14199 /* Resources */,
 				C5DB5A59144FAF3700D6D6AE /* Utilities */,
 				C5C83AF7144B92A900AF38CF /* Security.framework */,
 				C5C83AF0144B857F00AF38CF /* Categories */,
@@ -447,10 +497,10 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				C56F880114620EFB00E14199 /* NSLogger */,
 				C5C83AF9144B930200AF38CF /* Keychain */,
 				C5C83AC614480DCF00AF38CF /* Facebook */,
 				C593FBF0143ED6B3008D25A7 /* ASIHttp */,
-				C593FBBA143EC518008D25A7 /* NSLogger */,
 				C593F807143EBE18008D25A7 /* JSONKit */,
 			);
 			name = Externals;
@@ -485,16 +535,6 @@
 				C593F832143EBE18008D25A7 /* README.md */,
 			);
 			path = JSONKit;
-			sourceTree = "<group>";
-		};
-		C593FBBA143EC518008D25A7 /* NSLogger */ = {
-			isa = PBXGroup;
-			children = (
-				C593FBBB143EC54D008D25A7 /* LoggerCommon.h */,
-				C593FBBC143EC54D008D25A7 /* LoggerClient.m */,
-				C593FBBD143EC54D008D25A7 /* LoggerClient.h */,
-			);
-			name = NSLogger;
 			sourceTree = "<group>";
 		};
 		C593FBBF143EC7F0008D25A7 /* Controllers */ = {
@@ -691,6 +731,9 @@
 				C5C76C81145B92C100BA69B8 /* HomeViewController.h */,
 				C5C76C82145B92C100BA69B8 /* HomeViewController.m */,
 				C5C76C83145B92C200BA69B8 /* HomeViewController.xib */,
+				C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */,
+				C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */,
+				C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -719,6 +762,9 @@
 				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
 				C5C76C98145BB4D800BA69B8 /* UIPageView.h */,
 				C5C76C99145BB4D800BA69B8 /* UIPageView.m */,
+				C56F8A041462D3C700E14199 /* UINotificationIcon.h */,
+				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
+				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -856,6 +902,10 @@
 				C5C76C97145BB3EC00BA69B8 /* UIPageView.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
 				C55EC754145FA3B000BA66FA /* Platform-Info.plist in Resources */,
+				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
+				C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */,
+				C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */,
+				C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -872,7 +922,6 @@
 				C593F803143EB6DA008D25A7 /* Attributes.m in Sources */,
 				C593F806143EBCE3008D25A7 /* User.m in Sources */,
 				C593F84C143EBE18008D25A7 /* JSONKit.m in Sources */,
-				C593FBBE143EC54D008D25A7 /* LoggerClient.m in Sources */,
 				C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */,
 				C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */,
 				C593FBCB143ECB69008D25A7 /* Types.m in Sources */,
@@ -948,6 +997,9 @@
 				C55EC740145FA0E600BA66FA /* UIViewCategory.m in Sources */,
 				C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */,
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
+				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
+				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
+				C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@
 #import "Page.h"
 #import "UIPageView.h"
 #import "CloudEnumeratorFactory.h"
+#import "UINotificationIcon.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -37,9 +38,10 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
     
     //add predicate to test for being published
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kPUBLISHED];
+     //TODO: commenting these out temporarily since there are no published pages on the server
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kPUBLISHED];
     
-    //TODO: commenting these out temporarily since there are no published pages on the server
+   
     
     //[fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -68,7 +70,55 @@
 
 #pragma mark - Frames
 - (CGRect) frameForSlider {
-    return CGRectMake(0, 42, 320, 375);
+    return CGRectMake(0, 0, 320, 375);
+}
+
+#pragma mark - Navigationbar buttons
+- (NSArray*) navigationBarButtonsForViewController {
+    //retrurns an array with the navigation bar buttons for this view controller
+    return nil;
+}
+
+#pragma mark - Toolbar buttons
+- (NSArray*) toolbarButtonsForViewController {
+    //returns an array with the toolbar buttons for this view controller
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    //add facebook button
+    UIBarButtonItem* facebookButton = [[UIBarButtonItem alloc]
+                                       initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
+                                       style:UIBarButtonItemStylePlain
+                                       target:self
+                                       action:@selector(onFacebookButtonPressed:)];
+    [retVal addObject:facebookButton];
+    
+    //add twitter button
+    UIBarButtonItem* twitterButton = [[UIBarButtonItem alloc]
+                            initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
+                            style:UIBarButtonItemStylePlain
+                            target:self
+                            action:@selector(onTwitterButtonPressed:)];
+    [retVal addObject:twitterButton];
+
+    //add bookmark button
+    UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
+                                       initWithTitle:@"bkmark" 
+                                       style:UIBarButtonItemStylePlain 
+                                       target:self 
+                                       action:@selector(onBookmarkButtonPressed:)];
+    [retVal addObject:bookmarkButton];
+    
+    //check to see if the user is logged in or not
+    if ([self.authenticationManager isUserAuthenticated]) {
+        //we only add a notification icon for user's that have logged in
+        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
+        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
+        
+        [retVal addObject:notificationBarItem];
+    }
+    
+
+    return retVal;
 }
 
 - (id) commonInit {
@@ -80,8 +130,12 @@
     
     self.pagedViewSlider.tableView.pagingEnabled = YES;
     [self.view addSubview:self.pagedViewSlider];
+    
     [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
+    
+ 
+       
     return self;
 }
 
@@ -160,7 +214,7 @@
     
 }
 - (void) viewWillAppear:(BOOL)animated {
-    NSString* activityName = @"PageViewController.viewWillAppear:";
+    //NSString* activityName = @"PageViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     //render the page ID specified as a parameter
@@ -184,6 +238,9 @@
         }
 
     }
+    //we update the toolbar items each tgime the view controller is shown
+    NSArray* toolbarItems = [self toolbarButtonsForViewController];
+    [self setToolbarItems:toolbarItems];
 }
 - (void)viewDidUnload
 {
@@ -262,6 +319,18 @@
     
 }
 
+#pragma mark - Event Handlers
+- (void) onFacebookButtonPressed:(id)sender {
+    
+}
+
+- (void) onTwitterButtonPressed:(id)sender {
+    
+}
+
+- (void) onBookmarkButtonPressed:(id)sender {
+    
+}
 #pragma mark - Static Initializers
 + (PageViewController*) createInstance {
     PageViewController* pageViewController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];

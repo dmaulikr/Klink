@@ -15,6 +15,7 @@
 @dynamic message;
 @dynamic type;
 @dynamic userid;
-@dynamic hasread;
+@dynamic hasopened;
+@dynamic hasseen;
 
 @end
