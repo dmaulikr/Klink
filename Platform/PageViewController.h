@@ -24,4 +24,5 @@
 @property (nonatomic,retain) CloudEnumerator*      pageCloudEnumerator;
 
 + (PageViewController*) createInstance;
+
 @end

@@ -12,8 +12,9 @@
 @implementation BaseViewController
 
 @synthesize authenticationManager = __authenticationManager;
-
 @synthesize managedObjectContext    =__managedObjectContext;
+@synthesize loggedInUser = __loggedInUser;
+
 #pragma mark - Properties
 
 - (NSManagedObjectContext*)managedObjectContext {
@@ -34,6 +35,15 @@
     return __authenticationManager;
 }
 
+- (User*) loggedInUser {    
+    if ([self.authenticationManager isUserAuthenticated]) {    
+        //retrieves the current logged in user
+        ResourceContext* resourceContext = [ResourceContext instance];
+        return (User*)[resourceContext resourceWithType:USER withID:self.authenticationManager.m_LoggedInUserID];
+    } else {
+        return nil;
+    }
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

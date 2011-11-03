@@ -213,6 +213,7 @@
     }
     
 }
+
 - (void) viewWillAppear:(BOOL)animated {
     //NSString* activityName = @"PageViewController.viewWillAppear:";
     [super viewWillAppear:animated];
@@ -242,6 +243,7 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -331,6 +333,7 @@
 - (void) onBookmarkButtonPressed:(id)sender {
     
 }
+
 #pragma mark - Static Initializers
 + (PageViewController*) createInstance {
     PageViewController* pageViewController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];

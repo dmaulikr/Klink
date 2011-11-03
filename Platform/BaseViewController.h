@@ -10,11 +10,13 @@
 #import <CoreData/CoreData.h>
 #import "ResourceContext.h"
 #import "AuthenticationManager.h"
+#import "User.h"
 @interface BaseViewController : UIViewController {
     
 }
 
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
+@property (nonatomic, retain) User*                     loggedInUser;
 
 @end

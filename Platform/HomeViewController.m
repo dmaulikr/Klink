@@ -8,6 +8,8 @@
 
 #import "HomeViewController.h"
 #import "PageViewController.h"
+#import "DraftViewController.h"
+
 
 
 @implementation HomeViewController
@@ -90,7 +92,15 @@
 }
 
 - (IBAction) onContributeButtonClicked:(id)sender {
+    //called when the contribute button is pressed
+    DraftViewController* draftController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
     
+    //TODO: calculate the page ID which the view controller should open to
+    NSNumber* pageID = [NSNumber numberWithInt:0];
+    draftController.pageID = pageID;
+    
+    [self.navigationController pushViewController:draftController animated:YES];
+    [draftController release];
 }
 
 - (IBAction) onLoginButtonClicked:(id)sender {

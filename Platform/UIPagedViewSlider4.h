@@ -29,17 +29,18 @@ enum DIRECTION {
 @protocol UIPagedViewSlider2Delegate <NSObject>
 @optional
 
-- (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
-           selectIndex:        (int)                   index;
+- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider  
+           selectIndex:          (int)                   index;
 
-- (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
-     cellForRowAtIndex:  (int)                   index 
+
+- (UIView*) viewSlider:          (UIPagedViewSlider2*)   viewSlider 
+     cellForRowAtIndex:          (int)                   index 
              withFrame:          (CGRect)                frame;
 
 
 - (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
              isAtIndex:          (int)                   index 
-    withCellsRemaining: (int)                   numberOfCellsToEnd;
+    withCellsRemaining:          (int)                   numberOfCellsToEnd;
 
 
 - (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
@@ -48,11 +49,7 @@ enum DIRECTION {
              withFrame:          (CGRect)                frame;
 
 
-
 - (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider;
-
-
-
 
 @end
 
