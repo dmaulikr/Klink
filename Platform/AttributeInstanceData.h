@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSNumber* isdirty;
 @property (nonatomic, retain) NSNumber* islocked;
 @property (nonatomic, retain) NSNumber* isurlattachment;
+@property (nonatomic, retain) NSNumber* islocal;
 
 - (id) initWithEntity:(NSEntityDescription *)entity 
 insertIntoResourceContext:(ResourceContext *)context 

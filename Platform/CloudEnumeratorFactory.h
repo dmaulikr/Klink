@@ -26,5 +26,5 @@
 - (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid;
 - (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
 - (CloudEnumerator*) enumeratorForPages;
-- (CloudEnumerator*) enumeratorForFeeds;
+- (CloudEnumerator*) enumeratorForFeeds:(NSNumber*)userid;
 @end

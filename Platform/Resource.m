@@ -537,7 +537,10 @@
             
             AttributeInstanceData* aid = [self attributeInstanceDataFor:attrName];
             
-            if (val != nil && [aid.isdirty boolValue]) {
+            if (val != nil 
+                && [aid.isdirty boolValue] 
+                && ![aid.islocal boolValue]) 
+            {
                 [retVal addObject:attrName]; 
             }
            
