@@ -13,5 +13,6 @@ build/*
 !default.xcworkspace
 xcuserdata
 *.xcuserstate
+*.xcbkptlist
 profile
 *.moved-aside
