@@ -15,7 +15,7 @@
 }
 
 @property (nonatomic,retain) NSDictionary* context;
-@property (nonatomic,retain) id  response;
+@property (nonatomic,retain) id  response; 
 
 
 + (CallbackResult*) resultForCallback:(Callback*)callback;

@@ -17,5 +17,6 @@
 @dynamic userid;
 @dynamic hasopened;
 @dynamic hasseen;
-
+@dynamic title;
+@dynamic imageurl;
 @end

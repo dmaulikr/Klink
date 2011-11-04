@@ -74,13 +74,7 @@
     int unseenNotificationCount = [[self.frc_notifications fetchedObjects]count];
     self.lbl_numberOfNotifications.text = [NSString stringWithFormat:@"%d",unseenNotificationCount];
     
-    if (unseenNotificationCount == 0) {
-        //if there are no unseen notifications we disable the button
-        self.btn_showNotifications.enabled = NO;
-    }
-    else {
-        self.btn_showNotifications.enabled = YES;
-    }
+  
 }
 #pragma mark - Frames
 - (CGRect) frameForShowNotificationButton {
@@ -127,9 +121,10 @@
 
 - (void)dealloc
 {
-    [super dealloc];
     [self.lbl_numberOfNotifications release];
     [self.btn_showNotifications release];
+    [super dealloc];
+
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate

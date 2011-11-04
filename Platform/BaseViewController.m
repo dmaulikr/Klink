@@ -8,12 +8,16 @@
 
 #import "BaseViewController.h"
 #import "PlatformAppDelegate.h"
+#import "EventManager.h"
+#import "CallbackResult.h"
 
 @implementation BaseViewController
 
 @synthesize authenticationManager = __authenticationManager;
-@synthesize managedObjectContext    =__managedObjectContext;
 @synthesize loggedInUser = __loggedInUser;
+@synthesize feedManager           = __feedManager;
+@synthesize managedObjectContext    =__managedObjectContext;
+@synthesize eventManager          = __eventManager;
 
 #pragma mark - Properties
 
@@ -25,6 +29,22 @@
     __managedObjectContext = appDelegate.managedObjectContext;
     return __managedObjectContext;
     
+}
+
+- (EventManager*) eventManager {
+    if (__eventManager != nil) {
+        return __eventManager;
+    }
+    __eventManager = [EventManager instance];
+    return __eventManager;
+}
+
+- (FeedManager*)feedManager {
+    if (__feedManager != nil) {
+        return __feedManager;
+    }
+    __feedManager = [FeedManager instance];
+    return __feedManager;
 }
 
 - (AuthenticationManager*) authenticationManager {
@@ -77,13 +97,22 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
+    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];
+    
+    [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
+    [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
+    
+    [loginCallback release];
+    [logoutCallback release];
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -96,6 +125,15 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+- (void) onUserLoggedIn:(CallbackResult*)result {
+    
+}
+
+- (void) onUserLoggedOut:(CallbackResult*)result {
+    
 }
 
 @end

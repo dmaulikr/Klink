@@ -22,10 +22,11 @@
 }
 
 @property (nonatomic, retain) NSDictionary* context;
+@property (nonatomic, retain) id            target;
 
 - (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(NSDictionary*)context;
 - (id) initWithTarget:(id)target withSelector:(SEL)selector;
 - (void) fire;
 - (void) fireWithResponse:(Response*)response; 
-
+- (void) fireWithUserInfo:(NSDictionary*)userInfo;
 @end

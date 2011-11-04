@@ -16,6 +16,7 @@
 @dynamic isdirty;
 @dynamic islocked;
 @dynamic isurlattachment;
+@dynamic islocal;
 
 - (id) initWithEntity:(NSEntityDescription *)entity 
 insertIntoResourceContext:(ResourceContext *)context 
@@ -27,7 +28,7 @@ insertIntoResourceContext:(ResourceContext *)context
         self.islocked = [NSNumber numberWithBool:NO];
         self.attributename = attributeName;
         self.isurlattachment = [NSNumber numberWithBool:NO];
-        
+        self.islocal = [NSNumber numberWithBool:NO];
         //TODO: need to create initializers to isURLAttahcment to true for url data types
     }
     return self;
@@ -43,6 +44,7 @@ insertIntoResourceContext:(ResourceContext *)context
     retVal.isdirty = [NSNumber numberWithBool:NO];
     retVal.islocked = [NSNumber numberWithBool:NO];
     retVal.isurlattachment = [NSNumber numberWithBool:NO];
+    retVal.islocal = [NSNumber numberWithBool:NO];
     
     //if this attribute is a datemodified or datecreated, we lock it so its not overwritten by the service
     NSString* lowerCaseName = [attribute lowercaseString];
@@ -55,10 +57,16 @@ insertIntoResourceContext:(ResourceContext *)context
     }
     
    
-    
+    //imageurl and thumbnail url attributes are attachments
     if ([lowerCaseName isEqualToString:IMAGEURL]        ||
         [lowerCaseName isEqualToString:THUMBNAILURL]) {
         retVal.isurlattachment = [NSNumber numberWithBool:YES];
+    }
+    
+    //we mark hasopened hasseen as local only attributes
+    if ([lowerCaseName isEqualToString:HASSEEN]        ||
+        [lowerCaseName isEqualToString:HASOPENED]) {
+        retVal.islocal = [NSNumber numberWithBool:YES];
     }
     return retVal;
     

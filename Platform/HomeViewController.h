@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
-
+@class CloudEnumerator;
 @interface HomeViewController : BaseViewController {
     UIButton*   m_readButton;
     UIButton*   m_contributeButton;
     UIButton*   m_loginButton;
+    
 }
 
 @property (nonatomic,retain) IBOutlet UIButton* readButton;

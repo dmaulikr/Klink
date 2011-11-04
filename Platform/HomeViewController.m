@@ -9,7 +9,7 @@
 #import "HomeViewController.h"
 #import "PageViewController.h"
 #import "DraftViewController.h"
-
+#import "CallbackResult.h"
 
 
 @implementation HomeViewController
@@ -46,6 +46,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    //let's refresh the feed
+    [self.feedManager refreshFeed];
     
 }
 
@@ -62,12 +64,12 @@
     if ([self.authenticationManager isUserAuthenticated]) {
         [self.loginButton setTitle:@"Logoff" forState:UIControlStateNormal];
         [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-                [self.loginButton addTarget:self action:@selector(onLogoffButtonClicked:) forControlEvents:UIControlEventAllEvents];
+        [self.loginButton addTarget:self action:@selector(onLogoffButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     else {
         [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
         [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-        [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventAllEvents];
+        [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -76,6 +78,24 @@
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#pragma mark - System Event Handlers 
+- (void) onUserLoggedIn:(CallbackResult*)result {
+    [super onUserLoggedIn:result];
+    
+    [self.loginButton setTitle:@"Logoff" forState:UIControlStateNormal];
+    [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    [self.loginButton addTarget:self action:@selector(onLogoffButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) onUserLoggedOut:(CallbackResult*)result {
+    [super onUserLoggedOut:result];
+    
+    [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
+    [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+    [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 
 #pragma mark UI Event Handlers
 - (IBAction) onReadButtonClicked:(id)sender {
@@ -111,7 +131,9 @@
 }
 
 - (IBAction) onLogoffButtonClicked:(id)sender {
-    
+    if ([self.authenticationManager isUserAuthenticated]) {
+        [self.authenticationManager logoff];
+    }
 }
 
 @end

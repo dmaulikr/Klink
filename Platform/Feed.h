@@ -21,4 +21,6 @@
 @property (nonatomic,retain) NSNumber* targetobjectid;
 @property (nonatomic,retain) NSString* targetobjecttype;
 @property (nonatomic,retain) NSNumber* userid;
+@property (nonatomic,retain) NSString* imageurl;
+@property (nonatomic,retain) NSString* title;
 @end

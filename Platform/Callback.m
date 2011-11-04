@@ -14,7 +14,7 @@
 
 @implementation Callback
 @synthesize context = m_context;
-
+@synthesize target = m_target;
 - (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(id)context {
     self = [super init];
     if (self) {
@@ -50,6 +50,12 @@
     callbackResult.response = response;
     [self fireWithResult:callbackResult];
     
+}
+
+- (void) fireWithUserInfo:(NSDictionary*)userInfo {
+    CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
+    callbackResult.response = userInfo;
+    [self fireWithResult:callbackResult];
 }
 
 @end

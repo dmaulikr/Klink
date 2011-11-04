@@ -12,19 +12,16 @@
 
 
 @interface FeedManager : NSObject <NSFetchedResultsControllerDelegate,CloudEnumeratorDelegate>{
-    
+   
 }
 
-@property (nonatomic, retain) NSFetchedResultsController* frc_feed_photovotes;
-@property (nonatomic, retain) NSFetchedResultsController* frc_feed_captionvotes;
-@property (nonatomic, retain) NSFetchedResultsController* frc_feed_captions;
-@property (nonatomic, retain) NSNumber* numberOfNewCaptionVotesInFeed;
-@property (nonatomic, retain) NSNumber* numberOfNewPhotoVotesInFeed;
-@property (nonatomic, retain) NSNumber* numberOfNewCaptionsInFeed;
 @property (nonatomic, retain) CloudEnumerator* feedEnumerator;
 
 - (void) refreshFeed;
 - (BOOL) isRefreshingFeed;
+
+
+//Static initializer
 + (FeedManager*) instance;
 
 
