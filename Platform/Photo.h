@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Caption.h"
 #import "Resource.h"
 
 @interface Photo : Resource {
@@ -25,4 +26,7 @@
 @property (nonatomic, retain) NSString* creatorname;
 @property (nonatomic, retain) NSNumber * themeid;
 @property (nonatomic, retain) NSNumber * numberofvotes;
+
+- (Caption*) captionWithHighestVotes;
+
 @end

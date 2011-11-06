@@ -8,22 +8,97 @@
 
 #import "UIDraftView.h"
 
+#define kPAGEID     @"pageid"
 
 @implementation UIDraftView
-@synthesize listData;
+@synthesize listData = m_listData;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+@synthesize tableView = m_tableView;
+@synthesize pageID = m_pageID;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithFrame:frame];
     if (self) {
         // Custom initialization
+        self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.bounces = TRUE;
+        
+        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
+        self.listData = array;
+        [array release];
+        
+        [self.tableView reloadData];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)enCoder {
+    [super encodeWithCoder:enCoder];
+    
+    //[enCoder encodeObject:self.listData forKey:@"kListData_KEY"];
+    //[enCoder encodeObject:self.tableview forKey:@"kTableView_KEY"];
+    
+    // Similarly for the other instance variables.
+    
+}
+
+-(id) initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        //self.listData = [[aDecoder decodeObjectForKey:@"kListData_KEY"] retain];
+        //self.tableView = [[aDecoder decodeObjectForKey:@"kTableView_KEY"] retain];
+        
+        //self.tableView.style = UITableViewStylePlain;
+        
+        NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
+        
+        UIView* draftView = [bundle objectAtIndex:0];
+        [self addSubview:draftView];
+        
+        self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.bounces = TRUE;
+        
+        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
+        self.listData = array;
+        [array release];
+        
+        [self.tableView reloadData];
+        
+    }
+    return self;
+}
+
+
+- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style {
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Custom initialization        
+        self.tableView = [[UITableView alloc] initWithFrame:frame style:style];
+        self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.bounces = TRUE;
+        
+        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
+        self.listData = array;
+        [array release];
+        
+        [self.tableView reloadData];
+        [self addSubview:self.tableView];
+
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [listData release];
+    [self.listData release];
+    [self.tableView release];
     [super dealloc];
 }
 
@@ -75,7 +150,7 @@
                  reuseIdentifier:SimpleTableIdentifier] autorelease];
     }
     NSUInteger row = [indexPath row];
-    cell.textLabel.text = [listData objectAtIndex:row];
+    cell.textLabel.text = [self.listData objectAtIndex:row];
     return cell;
 }
 

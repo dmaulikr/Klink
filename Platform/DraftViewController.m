@@ -19,9 +19,10 @@
 
 @implementation DraftViewController
 @synthesize pageID              = m_pageID;
-@synthesize frc_draft_pages = __frc_draft_pages;
+@synthesize frc_draft_pages     = __frc_draft_pages;
 @synthesize pagedViewSlider     = m_pagedViewSlider;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
+
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all draft pages
@@ -70,7 +71,7 @@
 
 #pragma mark - Frames
 - (CGRect) frameForSlider {
-    return CGRectMake(0, 0, 320, 375);
+    return CGRectMake(0, 0, 320, 480);
 }
 
 #pragma mark - Navigationbar buttons
@@ -134,9 +135,8 @@
     self.pagedViewSlider.tableView.pagingEnabled = YES;
     [self.view addSubview:self.pagedViewSlider];
     
-    [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
+    [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"draft"];
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
-    
     
     
     return self;
@@ -272,9 +272,30 @@
     //render a page in its own view and return it using the coordinates passed in for its frame
     int count = [[self.frc_draft_pages fetchedObjects]count];
     if (index < count) {
+        //UITableView* tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+        //tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        //tableView.delegate = self;
+        //tableView.dataSource = self;
+        //tableView.bounces = TRUE;
+        //tableView.bouncesZoom = TRUE;
+        //[tableView reloadData];
+        //[self viewSlider:viewSlider configure:tableView forRowAtIndex:index withFrame:frame];
+        //return tableView;
         
-        //TODO: Create a UIDraftView and then use it here
-        UIDraftView* draftView = [[UIDraftView alloc]initWithFrame:frame];
+        //UIDraftView* draftView = [[UIDraftView alloc] initWithCoder:nil];
+        //NSArray* nibContents = nil;
+        //nibContents = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:draftView options:nil];
+        //if (nibContents == nil) {
+        //    NSLog(@"Error! Could not load UIDraftView file.\n");
+        //    return nil;
+        //}
+        //UIDraftView* draftView = [nibContents objectAtIndex:0];
+        
+        //UIDraftView* draftView = [[UIDraftView alloc] init];
+        //UIDraftView* draftView = [[UIDraftView alloc] initWithNibName:@"UIDraftView" bundle:nil withFrame:frame];
+        
+        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain];
+        [draftView.tableView reloadData];
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
     }
@@ -296,19 +317,21 @@
          forRowAtIndex:          (int)                   index
              withFrame:          (CGRect)                frame {
     
-    //int count = [[self.frc_draft_pages fetchedObjects]count];
-    //if (index < count) {
+    int count = [[self.frc_draft_pages fetchedObjects]count];
+    if (index < count) {
         //Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
-        //existingCell.frame = frame;
         
-        //TODO: Create a UIDraftView and then use it here
-        //UIDraftView* draftView = (UIDraftView*)existingCell;
-        //[self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
-        //[draftView renderPageWithID:page.objectid];
-    //}
+        existingCell.frame = frame;
+        
+        //UITableView* tableView = (UITableView*)existingCell;
+        //[tableView reloadData];
+        
+        UIDraftView* draftView = (UIDraftView*)existingCell;
+        [draftView.tableView reloadData];
+    }
 }
 
-- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
+- (int)   itemCountFor:          (UIPagedViewSlider2*)   viewSlider {
     return [[self.frc_draft_pages fetchedObjects]count];
 }
 

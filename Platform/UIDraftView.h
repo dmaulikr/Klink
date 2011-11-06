@@ -10,9 +10,18 @@
 
 
 @interface UIDraftView : UIView <UITableViewDelegate, UITableViewDataSource> {
-    NSArray *listData;
+    NSArray* m_listData;
+   
+    NSNumber* m_pageID;
+    UITableView* m_tableView;
 }
 
 @property (nonatomic, retain) NSArray *listData;
+
+@property (nonatomic,retain) NSNumber* pageID;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+
+- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame;
 
 @end
