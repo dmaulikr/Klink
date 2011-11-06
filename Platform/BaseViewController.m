@@ -14,10 +14,12 @@
 @implementation BaseViewController
 
 @synthesize authenticationManager = __authenticationManager;
+@synthesize loggedInUser = __loggedInUser;
 @synthesize feedManager           = __feedManager;
 @synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
 @synthesize cameraActionSheet     = m_cameraActionSheet;
+
 #pragma mark - Properties
 
 - (NSManagedObjectContext*)managedObjectContext {
@@ -54,6 +56,15 @@
     return __authenticationManager;
 }
 
+- (User*) loggedInUser {    
+    if ([self.authenticationManager isUserAuthenticated]) {    
+        //retrieves the current logged in user
+        ResourceContext* resourceContext = [ResourceContext instance];
+        return (User*)[resourceContext resourceWithType:USER withID:self.authenticationManager.m_LoggedInUserID];
+    } else {
+        return nil;
+    }
+}
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
