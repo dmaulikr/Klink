@@ -13,6 +13,10 @@
 #import "Macros.h"
 #import "Request.h"
 #import "RequestManager.h"
+
+#define kScale 2
+
+
 @implementation ImageManager
 @synthesize imageCache;
 @synthesize queue;
@@ -148,6 +152,68 @@ static  ImageManager* sharedManager;
     [requestManager submitRequest:request];
     
     return nil;
+}
+
+static inline double radians (double degrees) {
+    return degrees * M_PI/180;
+}
+
+- (UIImage*)shrinkImage:(UIImage *)original toSize:(CGSize)size {
+    //CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat scale = kScale;
+    
+    CGFloat targetWidth = size.width * scale;
+    CGFloat targetHeight = size.height * scale;
+    CGImageRef imageRef = [original CGImage];
+    
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+    CGColorSpaceRef colorSpaceInfo = CGColorSpaceCreateDeviceRGB();
+    
+    if (bitmapInfo == kCGImageAlphaNone) {
+        bitmapInfo = kCGImageAlphaNoneSkipLast;
+    }
+    
+    CGContextRef context;
+    
+    // For images taken in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when building the CG context
+   
+    context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+       
+    // We need to rotate the CG context before drawing the image.
+    // In the right or left cases, we need to switch targetWidth and targetHeight, and also the origin point
+    if (original.imageOrientation == UIImageOrientationLeft || original.imageOrientation == UIImageOrientationLeftMirrored) {
+        CGContextRotateCTM (context, radians(90));
+        CGContextTranslateCTM (context, 0, -targetWidth);
+    } else if (original.imageOrientation == UIImageOrientationRight || original.imageOrientation == UIImageOrientationRightMirrored) {
+        CGContextRotateCTM (context, radians(-90));
+        CGContextTranslateCTM (context, -targetHeight, 0);
+    } else if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationUpMirrored) {
+        // NOTHING
+    } else if (original.imageOrientation == UIImageOrientationDown || original.imageOrientation == UIImageOrientationDownMirrored) {
+        CGContextTranslateCTM (context, targetWidth, targetHeight);
+        CGContextRotateCTM (context, radians(-180));
+    }
+    
+    // For images to be presented in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when drawing the new image
+    if (original.imageOrientation == UIImageOrientationUp || original.imageOrientation == UIImageOrientationDown || original.imageOrientation == UIImageOrientationUpMirrored  || original.imageOrientation == UIImageOrientationDownMirrored) {
+
+        CGContextDrawImage(context, CGRectMake(0, 0, targetWidth, targetHeight), imageRef);
+        
+    } else {
+        CGContextDrawImage(context, CGRectMake(0, 0, targetHeight, targetWidth), imageRef);
+    }
+    
+    
+    CGImageRef shrunken = CGBitmapContextCreateImage(context);
+    
+    UIImage* shrunkenImage = [UIImage imageWithCGImage:shrunken];
+    
+    
+    CGContextRelease(context);
+    CGImageRelease(shrunken);
+    
+    return shrunkenImage;
+
 }
 
 #pragma mark - ASIHTTPRequest Delegate Handlers

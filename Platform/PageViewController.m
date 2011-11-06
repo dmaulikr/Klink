@@ -12,6 +12,8 @@
 #import "UIPageView.h"
 #import "CloudEnumeratorFactory.h"
 #import "UINotificationIcon.h"
+#import "Photo.h"
+#import "UICameraActionSheet.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -100,6 +102,16 @@
                             action:@selector(onTwitterButtonPressed:)];
     [retVal addObject:twitterButton];
 
+    
+    //add camera button
+    //TODO: hack, this shouldn't be here
+    UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
+                                          initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
+                                          style:UIBarButtonItemStylePlain
+                                          target:self
+                                          action:@selector(onCameraButtonPressed:)];
+    [retVal addObject:cameraButton];
+    
     //add bookmark button
     UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
                                        initWithTitle:@"bkmark" 
@@ -319,6 +331,17 @@
     
 }
 
+#pragma mark - Photo handling methods 
+- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
+    
+    [resourceContext save:YES onFinishCallback:nil];
+}
+
+
 #pragma mark - Event Handlers
 - (void) onFacebookButtonPressed:(id)sender {
     
@@ -331,6 +354,17 @@
 - (void) onBookmarkButtonPressed:(id)sender {
     
 }
+
+- (void) onCameraButtonPressed : (id) sender {
+    if (self.cameraActionSheet != nil) {
+        [self.cameraActionSheet release];
+    }
+    
+   self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
+   [self.cameraActionSheet showInView:self.view];
+   
+}
+
 #pragma mark - Static Initializers
 + (PageViewController*) createInstance {
     PageViewController* pageViewController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];

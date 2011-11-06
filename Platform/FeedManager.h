@@ -12,12 +12,13 @@
 
 
 @interface FeedManager : NSObject <NSFetchedResultsControllerDelegate,CloudEnumeratorDelegate>{
-   
+    Callback* m_onRefreshCallback;
 }
 
 @property (nonatomic, retain) CloudEnumerator* feedEnumerator;
+@property (nonatomic, retain) Callback* onRefreshCallback;
 
-- (void) refreshFeed;
+- (void) refreshFeedOnFinish:(Callback*)callback;
 - (BOOL) isRefreshingFeed;
 
 

@@ -387,10 +387,13 @@ static RequestManager* sharedInstance;
     
     if (error != nil) {
         LOG_REQUEST(1, @"@%Could not deserialize response into JSON object: %@",activityName,error);
+        return nil;
     }
-    GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
-
-    return response;
+    else {
+        GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
+        return response;
+    }
+    
     
 }
 
@@ -447,7 +450,7 @@ static RequestManager* sharedInstance;
         [resourceContext save:YES onFinishCallback:nil];
     }
     else {
-        LOG_REQUEST(1, @"%Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
+        LOG_REQUEST(1, @"%@Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
     }
     return putResponse;
 }
@@ -616,7 +619,8 @@ static RequestManager* sharedInstance;
          responseObj = [self processImageDownloadResponse:response withRequest:request];
     }
     
-    if ([responseObj.didSucceed boolValue]) {
+    if (responseObj != nil &&
+        [responseObj.didSucceed boolValue]) {
         //mark the request being completed
         request.statuscode = [NSNumber numberWithInt:kCOMPLETED];
         LOG_REQUEST(0,@"%@Request completed successfully",activityName);
@@ -624,14 +628,7 @@ static RequestManager* sharedInstance;
         if (request.onSuccessCallback != nil) {
             [request.onSuccessCallback fireWithResponse:responseObj];
         }
-        
-        //if this was a modification request (create/put), 
-        //we need to mark an object as having been successfully "synchronized" to the cloud    
-//        if ([request.operationcode intValue] != kENUMERATION &&
-//            [request.operationcode intValue] != kAUTHENTICATE) {
-//            [context markResourceAsBeingSynchronized:request.targetresourceid withResourceType:request.targetresourcetype];
-//        }
-    }
+      }
     else {
         //mark the request being failed
         request.statuscode = [NSNumber numberWithInt:kFAILED];

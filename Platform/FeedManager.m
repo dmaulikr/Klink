@@ -20,6 +20,7 @@
 
 @implementation FeedManager
 @synthesize feedEnumerator = __feedEnumerator;
+@synthesize onRefreshCallback = m_onRefreshCallback;
 
 static FeedManager* sharedManager;
 
@@ -50,7 +51,8 @@ static FeedManager* sharedManager;
     if ([authNManager isUserAuthenticated]) {
      
         NSNumber* loggedInUserID = [authNManager m_LoggedInUserID];
-        __feedEnumerator = [[[CloudEnumeratorFactory instance] enumeratorForFeeds:loggedInUserID]retain];        
+        __feedEnumerator = [CloudEnumerator enumeratorForFeeds:loggedInUserID];
+             
         __feedEnumerator.delegate = self;
         
     }
@@ -59,11 +61,13 @@ static FeedManager* sharedManager;
 }
 
 #pragma mark - Instance methods
-- (void) refreshFeed  {
+- (void) refreshFeedOnFinish:(Callback *)callback  {
         
     //we nil out the current feed enumerator so we are able to create a new instance
     //which will query from the start of the feed again
     self.feedEnumerator = nil;
+    
+    self.onRefreshCallback = callback;
     
     //enumerate feed until the end
     [self.feedEnumerator enumerateUntilEnd];
@@ -110,9 +114,13 @@ static FeedManager* sharedManager;
 
 #pragma mark - CloudCallbackDelegate
 - (void) onEnumerateComplete {
+    NSString* activityName = @"FeedManager.onEnumerateComplete:";
     //called when an refresh for the feed has completed
     //raise a system event for feed refresh complete
-
+    LOG_FEEDMANAGER(0,@"%@Finished enumerating user's notification feed",activityName);
+    if (self.onRefreshCallback != nil) {
+        [self.onRefreshCallback fire];
+    }
   
 }
 

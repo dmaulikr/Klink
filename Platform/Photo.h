@@ -25,4 +25,9 @@
 @property (nonatomic, retain) NSString* creatorname;
 @property (nonatomic, retain) NSNumber * themeid;
 @property (nonatomic, retain) NSNumber * numberofvotes;
+
+//static initializers
++ (Photo*) createPhotoInPage:(NSNumber*)pageid 
+          withThumbnailImage:(UIImage*)thumbnailImage 
+                   withImage:(UIImage*)image;
 @end

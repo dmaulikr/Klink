@@ -28,7 +28,7 @@
 #define kCallback   @"callback";
 @implementation ResourceContext
 @synthesize managedObjectContext = __managedObjectContext;
-
+@synthesize lastIDGenerated = m_lastIDGenerated;
 static ResourceContext* sharedInstance;
 + (id) instance {
     @synchronized (self) {
@@ -51,7 +51,29 @@ static ResourceContext* sharedInstance;
                                                             
 }
 
- 
+- (NSNumber*)nextID{
+    
+    int int_secondsSinceEpoch = (int)[[NSDate date]timeIntervalSince1970];
+    NSNumber* secondsSinceEpoch = [NSNumber numberWithInt:int_secondsSinceEpoch];
+    
+    NSString* idString = [NSString stringWithFormat:@"%@",secondsSinceEpoch];
+    
+    NSNumberFormatter *f = [[NSNumberFormatter alloc]init];
+    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSNumber* retVal = [f numberFromString:idString] ;
+    [f release];
+    
+    if (self.lastIDGenerated != nil) {
+        while ([retVal isEqualToNumber:self.lastIDGenerated]) {
+            
+            retVal = [NSNumber numberWithLongLong:[self.lastIDGenerated longLongValue] + 1];
+        }
+    }
+       
+    self.lastIDGenerated = retVal;
+    return retVal;
+}
   
 - (BOOL) doesExistInLocalStore:(NSNumber *)resourceID {
     return NO;

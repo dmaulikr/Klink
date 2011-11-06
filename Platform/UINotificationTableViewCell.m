@@ -46,6 +46,7 @@
     if (notification != nil) {
         self.lbl_notificationTitle.text = notification.title;
         self.lbl_notificationMessage.text = notification.message;
+        self.img_notificationImage.image = nil;
         
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:notification.objectid forKey:kNOTIFICATIONID];

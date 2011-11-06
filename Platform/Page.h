@@ -25,12 +25,15 @@ typedef enum {
 @property (nonatomic,retain) NSString* creatorname;
 @property (nonatomic,retain) NSString* thumbnailurl;
 @property (nonatomic,retain) NSString* imageurl;
-@property (nonatomic,retain) NSNumber* dateexpire;
+
 @property (nonatomic,retain) NSString* descr;
 @property (nonatomic,retain) NSString* displayname;
 @property (nonatomic,retain) NSString* hashtags;
 @property (nonatomic,retain) NSNumber* state; //Published? Draft?
 @property (nonatomic,retain) NSNumber* datepublished; //if state==published, this is the date it was added to the book
+@property (nonatomic,retain) NSNumber* numberofpublishvotes;
+@property (nonatomic,retain) NSNumber* finishedcaptionid;
+@property (nonatomic,retain) NSNumber* datedraftexpires;
 
 - (NSArray*) hashtagList;
 - (Photo*) photoWithHighestVotes;

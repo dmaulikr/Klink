@@ -8,6 +8,11 @@
 
 #import "Photo.h"
 #import "ImageManager.h"
+#import "AuthenticationManager.h"
+#import "User.h"
+#import "ResourceContext.h"
+#import "Resource.h"
+#import "DateTimeHelper.h"
 
 @implementation Photo
 @dynamic descr;
@@ -55,5 +60,38 @@
         
     }
     [super refreshWith:newResource];
+}
+
+#pragma mark - Static Initializers
++ (Photo*) createPhotoInPage:(NSNumber *)pageid 
+          withThumbnailImage:(UIImage *)thumbnailImage 
+                   withImage:(UIImage *)image {
+   
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    ImageManager* imageManager = [ImageManager instance];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Photo* retVal = (Photo*)[Resource createInstanceOfType:PHOTO withResourceContext:resourceContext];
+    
+    User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    
+    retVal.creatorid = user.objectid;
+    retVal.creatorname = user.displayname;
+    retVal.descr = [NSString stringWithFormat:@"By %@ on %@", user.displayname, [DateTimeHelper formatShortDate:[NSDate date]]];
+    retVal.themeid = pageid;
+    
+    // Save thumbnail image
+    NSString* thumbnailFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-tb"];
+    
+    retVal.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFileName];
+    
+    // Save fullscreen image
+    NSString* fullscreenFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-fs"];
+    retVal.imageurl = [imageManager saveImage:image withFileName:fullscreenFileName];
+    
+    
+    return retVal;
+    
 }
 @end

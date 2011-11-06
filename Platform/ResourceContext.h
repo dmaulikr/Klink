@@ -14,8 +14,10 @@
 @class EnumerationContext;
 
 @interface ResourceContext : NSObject {
-    
+    NSNumber* m_lastIDGenerated;
 }
+
+@property (nonatomic,retain) NSNumber* lastIDGenerated;
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 
 - (void) save:(BOOL)saveToCloudAfter
@@ -54,6 +56,10 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                    forAttribute:(NSString*)attribute 
                          sortBy:(NSString*)sortAttribute 
                   sortAscending:(BOOL)sortAscending;
+
+
+//Generates a unique identifier for a new entity
+-(NSNumber*) nextID;
 
 //utility methods
 - (void) markResourcesAsBeingSynchronized:(NSArray*)resources withResourceTypes:(NSArray*)resourceTypes;
