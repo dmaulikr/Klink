@@ -454,7 +454,6 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-
 				3D5B84DD1463067300FD0F50 /* icon-camera2.png */,
 				3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */,
 				C56F8A1B1462ECDA00E14199 /* icon-facebook.png */,
