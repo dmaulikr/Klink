@@ -14,6 +14,13 @@
 @dynamic displayname;
 @dynamic numberofvotes;
 @dynamic thumbnailurl;
+@dynamic numberofcaptionslw;
+@dynamic numberofdraftscreatedlw;
+@dynamic numberofdraftsparticipated;
+@dynamic numberofpagespublished;
+@dynamic numberofphotoslw;
+@dynamic iseditor;
+@dynamic datebecameeditor;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];

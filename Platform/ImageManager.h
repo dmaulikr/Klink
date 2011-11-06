@@ -33,6 +33,8 @@
 
 - (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (void)imageMovedFrom:(NSString*)originalFilePath toDestination:(NSURL*)destinationURL;
+- (UIImage*)shrinkImage:(UIImage*)image toSize:(CGSize)size;
+
 
 - (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;

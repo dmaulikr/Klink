@@ -15,17 +15,22 @@
 
 #import "FeedManager.h"
 #import "EventManager.h"
+
+@class UICameraActionSheet;
 @class CallbackResult;
 
 @interface BaseViewController : UIViewController {
-    
+    UICameraActionSheet*    m_cameraActionSheet;
 }
 @property (nonatomic, retain) FeedManager*              feedManager;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) EventManager*             eventManager;
 @property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
+@property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
 @property (nonatomic, retain) User*                     loggedInUser;
 
+- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+                          withFullImage:(UIImage*)image;
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
 @end

@@ -46,11 +46,14 @@
 }
 
 
+
+
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoResourceContext:(ResourceContext *)context {
     
     self = [super initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     if (self) {
         //TODO: need to generate resource id here
+        self.objectid = [context nextID];
         self.objecttype = [entity name];
         self.attributeinstancedata = nil;
         self.iswebservicerepresentation = NO;

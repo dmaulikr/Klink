@@ -29,4 +29,9 @@
 
 - (Caption*) captionWithHighestVotes;
 
+//static initializers
++ (Photo*) createPhotoInPage:(NSNumber*)pageid 
+          withThumbnailImage:(UIImage*)thumbnailImage 
+                   withImage:(UIImage*)image;
+
 @end

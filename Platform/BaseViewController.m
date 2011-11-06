@@ -18,6 +18,7 @@
 @synthesize feedManager           = __feedManager;
 @synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
+@synthesize cameraActionSheet     = m_cameraActionSheet;
 
 #pragma mark - Properties
 
@@ -127,6 +128,9 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+    
+}
 
 - (void) onUserLoggedIn:(CallbackResult*)result {
     

@@ -40,10 +40,10 @@
     return [[[NSDate alloc]init ]autorelease];
 }
 
-+ (NSDate*) parseWebServiceDateDouble:(id)datePointer {
++ (NSDate*) parseWebServiceDateDouble:(NSNumber*)datePointer {
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber * dateInSeconds = [f numberFromString:datePointer];
+    NSNumber * dateInSeconds = [f numberFromString:[datePointer stringValue]];
     NSDate* retVal  = [[NSDate alloc] initWithTimeIntervalSince1970:[dateInSeconds doubleValue]];
     [retVal autorelease];
     return retVal;

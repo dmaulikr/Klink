@@ -16,13 +16,15 @@
 @dynamic hashtags;
 @dynamic displayname;
 @dynamic descr;
-@dynamic dateexpire;
+@dynamic datedraftexpires;
 @dynamic imageurl;
 @dynamic thumbnailurl;
 @dynamic creatorid;
 @dynamic creatorname;
 @dynamic state;
 @dynamic datepublished;
+@dynamic numberofpublishvotes;
+@dynamic finishedcaptionid;
 
 #pragma mark - Instance Methods
 - (NSArray*) hashtagList {

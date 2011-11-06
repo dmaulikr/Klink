@@ -47,7 +47,7 @@
     // Do any additional setup after loading the view from its nib.
     
     //let's refresh the feed
-    [self.feedManager refreshFeed];
+    [self.feedManager refreshFeedOnFinish:nil];
     
 }
 

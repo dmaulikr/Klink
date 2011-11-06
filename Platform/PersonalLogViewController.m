@@ -11,11 +11,20 @@
 #import "Feed.h"
 #import "UINotificationTableViewCell.h"
 #import "User.h"
+#import "DateTimeHelper.h"
 
+
+#define kRefreshHeaderHeight    100
 @implementation PersonalLogViewController
 @synthesize lbl_title           = m_lbl_title;
 @synthesize tbl_notifications   = m_tbl_notifications;
 @synthesize frc_notifications   = __frc_notifications;
+@synthesize lbl_since           = m_lbl_since;
+@synthesize lbl_numphotoslw     = m_lbl_numphotoslw;
+@synthesize lbl_numcaptionslw   = m_lbl_numcaptionslw;
+@synthesize lbl_currentLevel    = m_lbl_currentLevel;
+@synthesize refreshHeader       = m_refreshHeader;
+
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_notifications {
     NSString* activityName = @"PersonalLogViewController.frc_notifications:";
@@ -71,6 +80,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+       
+        
         
    
     }
@@ -110,6 +121,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notifications.bounds.size.height, self.tbl_notifications.bounds.size.width, self.tbl_notifications.bounds.size.height);
+    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader.delegate = self;
+    [self.tbl_notifications addSubview:self.refreshHeader];
+    [self.refreshHeader refreshLastUpdatedDate];
 }
 
 - (void)viewDidUnload
@@ -130,6 +146,24 @@
         ResourceContext* resourceContext = [ResourceContext instance];
         User* user = (User*)[resourceContext resourceWithType:USER withID:self.authenticationManager.m_LoggedInUserID];
         self.lbl_title.text = [NSString stringWithFormat:@"%@'s Log",user.displayname];
+        
+        NSDateFormatter* format = [[NSDateFormatter alloc]init];
+        [format setDateFormat:@"MMM dd, yyyy"];
+        
+        if ([user.iseditor boolValue]) {
+            self.lbl_currentLevel.text = @"editor";
+            NSDate* dateBecameEditor =  [DateTimeHelper parseWebServiceDateDouble:user.datebecameeditor];
+            self.lbl_since.text = [format stringFromDate:dateBecameEditor];
+        }
+        else {
+            self.lbl_currentLevel.text = @"lack";
+            NSDate* dateJoined = [DateTimeHelper parseWebServiceDateDouble:user.datecreated];
+            self.lbl_since.text = [format stringFromDate:dateJoined];
+        }
+        
+        self.lbl_numcaptionslw.text = [user.numberofcaptionslw stringValue];
+        self.lbl_numphotoslw.text = [user.numberofphotoslw stringValue];
+        
     }
     
 }
@@ -144,6 +178,14 @@
 #pragma mark - UITableViewDelegate methods
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 131;
+}
+
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark - UITableDataSource methods
@@ -191,6 +233,29 @@ numberOfRowsInSection:(NSInteger)section
     }
     
 }
+
+#pragma mark - EgoRefreshTableHeaderDelegate
+- (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    FeedManager* feedManager = [FeedManager instance];
+    
+    Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onFeedFinishedRefresh:)];
+    [feedManager refreshFeedOnFinish:callback];
+}
+
+- (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    FeedManager* feedManager = [FeedManager instance];
+    return [feedManager isRefreshingFeed];
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    return [NSDate date];
+}
+
+#pragma mark - Async Callback Handlers
+- (void) onFeedFinishedRefresh:(CallbackResult*)result {
+     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_notifications];
+}
+
 
 #pragma mark - Static Initializers
 + (PersonalLogViewController*)createInstance {
