@@ -284,7 +284,7 @@
         
         //UIDraftView* draftView = [[UIDraftView alloc] initWithCoder:nil];
         //NSArray* nibContents = nil;
-        //nibContents = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:draftView options:nil];
+        //nibContents = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:nil options:nil];
         //if (nibContents == nil) {
         //    NSLog(@"Error! Could not load UIDraftView file.\n");
         //    return nil;
@@ -294,8 +294,9 @@
         //UIDraftView* draftView = [[UIDraftView alloc] init];
         //UIDraftView* draftView = [[UIDraftView alloc] initWithNibName:@"UIDraftView" bundle:nil withFrame:frame];
         
-        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain withPageID:self.pageID];
-        //[draftView.tbl_draftTableView reloadData];
+        //UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
+        
+        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain];
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
     }
@@ -322,13 +323,9 @@
         Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
         
         existingCell.frame = frame;
-        
-        //UITableView* tableView = (UITableView*)existingCell;
-        //[tableView reloadData];
-        
+             
         UIDraftView* draftView = (UIDraftView*)existingCell;
         [draftView renderDraftWithID:page.objectid];
-        //[draftView.tbl_draftTableView reloadData];
     }
 }
 

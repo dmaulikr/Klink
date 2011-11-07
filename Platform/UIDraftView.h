@@ -10,19 +10,19 @@
 
 
 @interface UIDraftView : UIView <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate> {
-    NSArray* m_listData;
-   
     NSNumber* m_pageID;
     UITableView* m_tbl_draftTableView;
 }
-
-@property (nonatomic, retain) NSArray *listData;
 
 @property (nonatomic,retain) NSNumber* pageID;
 @property (nonatomic,retain) IBOutlet UITableView* tbl_draftTableView;
 @property (nonatomic,retain) NSFetchedResultsController* frc_photos;
 
-- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style withPageID:(NSNumber*)pageID;
+- (void) renderDraftWithID:(NSNumber *)pageID;
+
+//- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style withPageID:(NSNumber*)pageID;
+- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame;
+- (id)initWithCoder:(NSCoder *)aDecoder;
 
 @end
