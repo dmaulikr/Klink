@@ -62,6 +62,14 @@
     [super refreshWith:newResource];
 }
 
+- (Caption*)captionWithHighestVotes {
+    //returns the caption object associated with this photo with the highest number of votes
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Caption* topCaption = (Caption*)[resourceContext resourceWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PHOTOID sortBy:NUMBEROFVOTES sortAscending:NO];
+    return topCaption;
+    
+}
+
 #pragma mark - Static Initializers
 + (Photo*) createPhotoInPage:(NSNumber *)pageid 
           withThumbnailImage:(UIImage *)thumbnailImage 
@@ -94,4 +102,5 @@
     return retVal;
     
 }
+
 @end

@@ -14,6 +14,12 @@
 		3D5B84E91463498700FD0F50 /* UIDraftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5B84E71463498700FD0F50 /* UIDraftView.m */; };
 		3D5B84EA1463498700FD0F50 /* UIDraftView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E81463498700FD0F50 /* UIDraftView.xib */; };
 		3D5B84EC1463527600FD0F50 /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84EB1463527600FD0F50 /* DraftViewController.xib */; };
+		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */; };
+		3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */; };
+		3DCFE8E01464633400D6587D /* icon-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DC1464633400D6587D /* icon-compose.png */; };
+		3DCFE8E11464633400D6587D /* icon-compose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DD1464633400D6587D /* icon-compose@2x.png */; };
+		3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DE1464633400D6587D /* icon-thumbUp.png */; };
+		3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
 		C507BC811459857F004D9359 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC801459857F004D9359 /* FeedTypes.m */; };
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
@@ -172,6 +178,13 @@
 		3D5B84E71463498700FD0F50 /* UIDraftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftView.m; sourceTree = "<group>"; };
 		3D5B84E81463498700FD0F50 /* UIDraftView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftView.xib; sourceTree = "<group>"; };
 		3D5B84EB1463527600FD0F50 /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
+		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCellLeft.h; sourceTree = "<group>"; };
+		3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftTableViewCellLeft.m; sourceTree = "<group>"; };
+		3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellLeft.xib; sourceTree = "<group>"; };
+		3DCFE8DC1464633400D6587D /* icon-compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose.png"; sourceTree = "<group>"; };
+		3DCFE8DD1464633400D6587D /* icon-compose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose@2x.png"; sourceTree = "<group>"; };
+		3DCFE8DE1464633400D6587D /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
+		3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
 		C507BC7C1459811A004D9359 /* FeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedManager.h; sourceTree = "<group>"; };
 		C507BC7D1459811A004D9359 /* FeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedManager.m; sourceTree = "<group>"; };
 		C507BC7F1459857F004D9359 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
@@ -544,6 +557,10 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3DCFE8DC1464633400D6587D /* icon-compose.png */,
+				3DCFE8DD1464633400D6587D /* icon-compose@2x.png */,
+				3DCFE8DE1464633400D6587D /* icon-thumbUp.png */,
+				3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */,
 				3D5B84DD1463067300FD0F50 /* icon-camera2.png */,
 				3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */,
 				C56F8A1B1462ECDA00E14199 /* icon-facebook.png */,
@@ -918,6 +935,7 @@
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
 				C5C76C98145BB4D800BA69B8 /* UIPageView.h */,
 				C5C76C99145BB4D800BA69B8 /* UIPageView.m */,
+				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
 				C56F8A041462D3C700E14199 /* UINotificationIcon.h */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
 				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
@@ -927,6 +945,9 @@
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
 				C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */,
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
+				3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */,
+				3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */,
+				3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1219,6 +1240,11 @@
 				3D5B84EA1463498700FD0F50 /* UIDraftView.xib in Resources */,
 				3D5B84EC1463527600FD0F50 /* DraftViewController.xib in Resources */,
 				C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */,
+				3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */,
+				3DCFE8E01464633400D6587D /* icon-compose.png in Resources */,
+				3DCFE8E11464633400D6587D /* icon-compose@2x.png in Resources */,
+				3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */,
+				3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */,
 				C5A82D74146665B300E77675 /* icon-camera2.png in Resources */,
 				C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */,
 				C5D9AA631466EB6C009AA3D8 /* blackArrow@2x.png in Resources */,
@@ -1329,6 +1355,7 @@
 				3D5B84E91463498700FD0F50 /* UIDraftView.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
+				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */,
 				C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */,
 				C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */,
 				C5C9E2571466FDA100838934 /* MBProgressHUD.m in Sources */,

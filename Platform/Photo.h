@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Caption.h"
 #import "Resource.h"
 
 @interface Photo : Resource {
@@ -26,8 +27,11 @@
 @property (nonatomic, retain) NSNumber * themeid;
 @property (nonatomic, retain) NSNumber * numberofvotes;
 
+- (Caption*) captionWithHighestVotes;
+
 //static initializers
 + (Photo*) createPhotoInPage:(NSNumber*)pageid 
           withThumbnailImage:(UIImage*)thumbnailImage 
                    withImage:(UIImage*)image;
+
 @end
