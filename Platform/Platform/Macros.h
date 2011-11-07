@@ -22,6 +22,7 @@
 #define LOG_NOTIFICATIONICON(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"notificationicon",level,__VA_ARGS__)
 #define LOG_EVENTMANAGER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"eventmanager",level,__VA_ARGS__)
 #define LOG_FEEDMANAGER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"feedmanager",level,__VA_ARGS__)
+#define LOG_LOGINVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"loginviewcontroller",level,__VA_ARGS__)
 
 #else
 #define LOG_NETWORK(...)    do{}while(0)

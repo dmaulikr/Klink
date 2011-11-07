@@ -7,13 +7,15 @@
 //
 
 #import "LoginViewController.h"
-#import "BLLog.h"
+
 #import "SA_OAuthTwitterEngine.h"
 #import "ApplicationSettings.h"
 #import "AuthenticationManager.h"
 #import "FBConnect.h"
 #import "NSStringGUIDCategory.h"
 #import "User.h"
+#import "ApplicationSettingsManager.h"
+#import "Macros.h"
 
 #define kMinimumBusyWaitTime    1
 #define kMaximumBusyWaitTimePutAuthenticator    6
@@ -30,14 +32,18 @@
 @synthesize progressIndicator       = m_progressIndicator;
 @synthesize isBusy                  = m_isBusy;
 @synthesize isProgressBarShowing    = m_isProgressBarShowing;
+@synthesize fbPictureRequest        = m_fbProfileRequest;
+@synthesize fbProfileRequest        = m_fbPictureRequest;
+
 #pragma mark - Properties
 - (SA_OAuthTwitterEngine*) twitterEngine {
     if (__twitterEngine != nil) {
         return __twitterEngine;
     }
+    ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance] settings];
     __twitterEngine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
-	__twitterEngine.consumerKey = twitter_CONSUMERKEY;
-	__twitterEngine.consumerSecret = twitter_CONSUMERSECRET;
+	__twitterEngine.consumerKey = settingsObjects.twitter_consumerkey;
+	__twitterEngine.consumerSecret = settingsObjects.twitter_consumersecret;
     
     return __twitterEngine;
     
@@ -102,7 +108,7 @@
             //error condition, somethind has gone wrong and we have timed out
             shouldContinueWaiting = NO;
             NSString* message =[NSString stringWithFormat:@"Progress indicator has exceeded maximum threshold time of %d",[maximumDisplayTime intValue]];
-            [BLLog e:activityName withMessage:message];
+            LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
         }
         currentTime = nil;
     }
@@ -175,16 +181,16 @@
     User* user = [[userInfo objectForKey:an_USER]retain];
     
     NSString* message = [NSString stringWithFormat:@"Authentication context received from server, logging in user: %@",newContext.userid];
-    [BLLog v:activityName withMessage:message];
+     LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
     
     //save the user object that is returned to us in the database
     [ServerManagedResource refreshWithServerVersion:user];
     
     //now we instruct the AuthenticationManager to login the user within our app
-    AuthenticationManager* authnManager = [AuthenticationManager getInstance];
+    AuthenticationManager* authnManager = [AuthenticationManager instance];
     [authnManager loginUser:newContext.userid withAuthenticationContext:newContext];
     
-    AuthenticationContext* context = [authnManager getAuthenticationContext];
+    AuthenticationContext* context = [authnManager contextForLoggedInUser];
     
     //we have to wait for the progress bar to disappear
     self.isBusy = NO;
@@ -233,14 +239,14 @@
     //we check to see if the user has supplied their Twitter accessToken, if not, then we move to the next page
     //and display a twitter authn screen
     NSString* activityName = @"LoginViewController.beginTwitterAuthentication:";
-    AuthenticationContext* newContext = [[AuthenticationManager getInstance]getAuthenticationContext];
+    AuthenticationContext* newContext = [[AuthenticationManager instance]contextForLoggedInUser];
     
     
     if (newContext != nil && ![newContext hasTwitter]) 
     {
         
         NSString* message = [NSString stringWithFormat:@"User's twitter data missing, starting  twitter authentication"];
-        [BLLog v:activityName withMessage:message];
+         LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
         
         UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine: self.twitterEngine delegate: self];
         
@@ -258,7 +264,8 @@
 -(void) beginFacebookAuthentication {
     //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    Facebook* facebook = [AuthenticationManager getInstance].facebook;
+    
+    Facebook* facebook = self.authenticationManager.facebook;
     
     if (![facebook isSessionValid]) {
        
@@ -287,12 +294,7 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-//    [super viewWillAppear:animated];
-//    
-//    self.navigationController.navigationBar.translucent = NO;
-//    self.navigationController.navigationBar.tintColor = nil;
-//    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+
     self.progressIndicator = [[MBProgressHUD alloc]initWithView:self.view];
     self.progressIndicator.delegate = self;
     [self.view addSubview:self.progressIndicator]; 
@@ -308,8 +310,8 @@
     //everytime the view appears, we check to see if the user is logged in, if not, then we begin
     //the login sequence starting with facebook
     if (self.doFacebookAuth) {
-        AuthenticationManager* authnManager = [AuthenticationManager getInstance];
-        if (![authnManager isUserLoggedIn]) {
+        AuthenticationManager* authnManager = [AuthenticationManager instance];
+        if (![authnManager isUserAuthenticated]) {
             //authenticate with facebook
             [self beginFacebookAuthentication];
         }
@@ -318,9 +320,9 @@
         }
     }
     else if (self.doTwitterAuth) {
-        AuthenticationManager* authnManager = [AuthenticationManager getInstance];
-        if ([authnManager isUserLoggedIn]) {
-            AuthenticationContext* context = [authnManager getAuthenticationContext];
+        AuthenticationManager* authnManager = [AuthenticationManager instance];
+        if ([authnManager isUserAuthenticated]) {
+            AuthenticationContext* context = [authnManager contextForLoggedInUser];
             if (![context hasTwitter]) {
                 //authenticate with twitter 
                 [self beginTwitterAuthentication];
@@ -418,38 +420,52 @@
 #pragma mark - FBRequestDelegate
 - (void) request:(FBRequest *)request didLoad:(id)result {
     NSString* activityName = @"LoginViewController.request:didLoad:";
-    Facebook* facebook = [AuthenticationManager getInstance].facebook;
-    WS_EnumerationManager *enumerationManager = [WS_EnumerationManager getInstance];
-    NSString* facebookIDString = [result valueForKey:an_ID];
-    NSNumber* facebookID = [facebookIDString numberValue];
-    NSString* displayName = [result valueForKey:an_NAME];
-    NSString* notificationID = [NSString GetGUID];
+    Facebook* facebook = self.authenticationManager.facebook;
+    ResourceContext* resourceContext = [ResourceContext instance];
     
-    //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
-    
-    //Add an observer so that we can listen in for when authentication is complete
-    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self selector:@selector(onGetAuthenticationContextDownloaded:) name:notificationID object:nil];
-    
-    
-    NSString* nm = [NSString stringWithFormat:@"Returned facebook token: %@",facebook.accessToken];
-    [BLLog v:activityName withMessage:nm];
-    [enumerationManager getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate onFinishNotify:notificationID];
+    if (request == self.fbProfileRequest) {
+        LOG_SECURITY(0, @"%@%@",activityName,@"Facebook profile downloaded for logged in user");
+        NSString* facebookIDString = [result valueForKey:ID];
+        NSNumber* facebookID = [facebookIDString numberValue];
+        NSString* displayName = [result valueForKey:NAME];
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+        //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
+        
+        LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
+        [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate onFinishNotify:callback];
+        
+    }
+    else if (request == self.fbPictureRequest) {
+        User* userObject = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID];
+        
+        AuthenticationContext* currentContext = [self.authenticationManager contextForLoggedInUser];
+        
+        if (userObject != nil && currentContext != nil) {
+            UIImage* image = [UIImage imageWithData:result];
+            LOG_SECURITY(0,@"%@Download of Facebook profile complete, saving photo to phone",activityName);
+            //we need to save this image to the local file system
+            ImageManager* imageManager = [ImageManager instance];
+            NSString* path = [imageManager saveImage:image withFileName:currentContext.facebookuserid];
+            
+            //save the path on the user object and commit            
+            userObject.thumbnailurl = path;
+            [resourceContext save:YES onFinishCallback:nil];
+        }
+    }
 }
 
 #pragma mark - FBSessionDelegate
 - (void) fbDidLogin {
     NSString* activityName = @"AuthenticationManager.fbDidLogin:";
-    Facebook* facebook = [AuthenticationManager getInstance].facebook;
+    Facebook* facebook = self.authenticationManager.facebook;
     
     //this method is called upon the completion of the authorize operation
     NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",facebook.accessToken,facebook.expirationDate];    
-    [BLLog v:activityName withMessage:message];
-        
+     LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
     
     [self showProgressBar:@"Getting Facebook data..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimeFacebookLogin]];
     //the user has authorized our app, now we get his user object to complete authentication
-    [facebook requestWithGraphPath:@"me" andDelegate:self];
+    self.fbProfileRequest = [facebook requestWithGraphPath:@"me" andDelegate:self];
     
 
 

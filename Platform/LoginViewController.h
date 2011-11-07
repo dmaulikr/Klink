@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "SA_OAuthTwitterController.h"
-#import "KlinkBaseViewController.h"
+#import "BaseViewController.h"
 #import "FBConnect.h"
 #import "SA_OAuthTwitterEngine.h"
 #import "MBProgressHUD.h"
 
 @class SA_OAuthTwitterEngine;
 
-@interface LoginViewController : KlinkBaseViewController <SA_OAuthTwitterControllerDelegate, FBSessionDelegate,SA_OAuthTwitterEngineDelegate, FBRequestDelegate, MBProgressHUDDelegate> {
+@interface LoginViewController : BaseViewController <SA_OAuthTwitterControllerDelegate, FBSessionDelegate,SA_OAuthTwitterEngineDelegate, FBRequestDelegate, MBProgressHUDDelegate> {
  
     MBProgressHUD*  m_progressIndicator;
     SEL             m_selPerformOnFinish;
@@ -24,6 +24,8 @@
     id              m_callbackTarget;
     BOOL            m_isBusy;
     BOOL            m_isProgressBarShowing;
+    FBRequest*      m_fbProfileRequest;
+    FBRequest*      m_fbPictureRequest;
 }
 
 @property (nonatomic,retain)    SA_OAuthTwitterEngine*  twitterEngine;
@@ -31,6 +33,8 @@
 @property (nonatomic,retain)    MBProgressHUD*          progressIndicator;
 @property                       BOOL                    isBusy;
 @property                       BOOL                    isProgressBarShowing;
+@property (nonatomic, retain)   FBRequest*    fbProfileRequest;
+@property (nonatomic, retain)   FBRequest*    fbPictureRequest;
 
 @property SEL   selPerformOnFinish;
 @property BOOL  doFacebookAuth;

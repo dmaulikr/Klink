@@ -34,6 +34,9 @@ int const threshold_FEED_ENUMERATION_TIME_GAP=60;
 int const threshold_CAPTION_ENUMERATION_TIME_GAP=60;
 int const threshold_PAGE_ENUMERATION_TIME_GAP=60;
 int const page_size_LINKEDOBJECTS = 5;
+
+NSString* const twitter_CONSUMERKEY=@"oy2bDqBeASOP7fXXwqOAQ";
+NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBHgQ";
 //NSString* const cell_TEXTCAPTION =@"textCaptionCell";
 //NSString* const cell_IMAGECAPTION=@"imageCaptionCell";
 //

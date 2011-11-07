@@ -77,6 +77,8 @@ static ApplicationSettingsManager* instance;
     
     settings.page_size_linkedobjects = [NSNumber numberWithInt:page_size_LINKEDOBJECTS];
     
+    settings.twitter_consumerkey = twitter_CONSUMERKEY;
+    settings.twitter_consumersecret = twitter_CONSUMERSECRET;
     
     settings.page_enumeration_timegap = [NSNumber numberWithInt:threshold_PAGE_ENUMERATION_TIME_GAP];
     [self.resourceContext save:YES onFinishCallback:nil];

@@ -24,7 +24,7 @@
 @dynamic wppassword;
 @dynamic wpusername;
 @dynamic wordpressurl;
-
+@dynamic twitteraccesstokensecret;
 
 
 - (BOOL) hasWordpress {
@@ -40,6 +40,17 @@
     BOOL retVal = NO;
     
     if (self.facebookuserid != nil && self.facebookaccesstoken != nil) {
+        retVal = YES;
+    }
+    return retVal;
+}
+
+- (BOOL) hasTwitter {
+    BOOL retVal = NO;
+    
+    if (self.twitteruserid != nil && ![self.twitteruserid isEqual:[NSNull null]]  
+        && self.twitteraccesstokensecret != nil && ![self.twitteraccesstokensecret isEqual:[NSNull null]] 
+        && self.twitteraccesstoken != nil && ![self.twitteraccesstoken isEqual:[NSNull null]]) {
         retVal = YES;
     }
     return retVal;
