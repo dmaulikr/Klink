@@ -28,18 +28,35 @@
 @synthesize lbl_numVotes = m_lbl_numVotes;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
 
-#pragma mark - Instance Methods
 
-- (void) render {
+#pragma mark - Frames
+- (CGRect) frameForImageView {
+    return CGRectMake(20, 18, 120, 78);
+}
+
+- (CGRect) frameForCaptionLabel {
+    return CGRectMake(148, 18, 152, 48);
+}
+
+- (CGRect) frameForNumVotesLabel {
+    return CGRectMake(150, 75, 44, 21);
+}
+
+- (CGRect) frameForNumCaptionsLabel {
+    return CGRectMake(228, 75, 44, 21);
+}
+
+#pragma mark - Instance Methods
+- (void)render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
     Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
     
-    if (photo != nil && caption!= nil) {
+    if (photo != nil || caption!= nil) {
         self.lbl_caption.text = caption.caption1;
-        self.lbl_numVotes.text = (NSString*)photo.numberofvotes;
-        self.lbl_numCaptions.text = (NSString*)photo.numberofcaptions;
+        self.lbl_numVotes.text = [photo.numberofvotes stringValue];
+        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
         
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:kPHOTOID];
@@ -57,7 +74,7 @@
     }
 }
 
-- (void) renderWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID {
+- (void)renderWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID {
     self.photoID = photoID;
     self.captionID = captionID;
     [self render];
@@ -69,6 +86,24 @@
         // Initialization code
         self.photoID = photoID;
         self.captionID = captionID;
+        
+        CGRect frameForImageView = [self frameForImageView];
+        self.img_photo = [[UIImageView alloc]initWithFrame:frameForImageView];
+        //self.img_photo.backgroundColor = [UIColor blackColor];
+        
+        CGRect frameForCaptionLabel = [self frameForCaptionLabel];
+        self.lbl_caption = [[UILabel alloc]initWithFrame:frameForCaptionLabel];
+        
+        CGRect frameForNumVotesLabel = [self frameForNumVotesLabel];
+        self.lbl_numVotes = [[UILabel alloc]initWithFrame:frameForNumVotesLabel];
+        
+        CGRect frameForNumCaptionsLabel = [self frameForNumCaptionsLabel];
+        self.lbl_numCaptions = [[UILabel alloc]initWithFrame:frameForNumCaptionsLabel];
+        
+        [self.contentView addSubview:self.img_photo];
+        [self.contentView addSubview:self.lbl_caption];
+        [self.contentView addSubview:self.lbl_numVotes];
+        [self.contentView addSubview:self.lbl_numCaptions];
         
     }
     return self;
@@ -93,7 +128,7 @@
 }
                                                                                              
 #pragma mark - Async callbacks
-- (void) onImageDownloadComplete:(CallbackResult*)result {
+- (void)onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"UIDraftTableViewCellLeft.onImageDownloadComplete:";
     NSDictionary* userInfo = result.context;
     NSNumber* nid = [userInfo valueForKey:kPHOTOID];

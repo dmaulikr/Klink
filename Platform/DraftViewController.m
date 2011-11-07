@@ -294,8 +294,8 @@
         //UIDraftView* draftView = [[UIDraftView alloc] init];
         //UIDraftView* draftView = [[UIDraftView alloc] initWithNibName:@"UIDraftView" bundle:nil withFrame:frame];
         
-        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain];
-        [draftView.tableView reloadData];
+        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain withPageID:self.pageID];
+        //[draftView.tbl_draftTableView reloadData];
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
     }
@@ -319,7 +319,7 @@
     
     int count = [[self.frc_draft_pages fetchedObjects]count];
     if (index < count) {
-        //Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
+        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
         
         existingCell.frame = frame;
         
@@ -327,7 +327,8 @@
         //[tableView reloadData];
         
         UIDraftView* draftView = (UIDraftView*)existingCell;
-        [draftView.tableView reloadData];
+        [draftView renderDraftWithID:page.objectid];
+        //[draftView.tbl_draftTableView reloadData];
     }
 }
 
