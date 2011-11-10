@@ -16,6 +16,7 @@
 #import "Attributes.h"
 #import "Photo.h"
 #import "Page.h"
+#import "FullScreenPhotoViewController.h"
 
 #define kPAGEID @"pageid"
 
@@ -23,6 +24,10 @@
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
 @synthesize pageID = m_pageID;
 @synthesize frc_photos = __frc_photos;
+
+@synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
+
+@synthesize navigationController = m_navigationController;
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
@@ -98,6 +103,19 @@
     return self;
 }
 
+- (BOOL)loadMyNibFile
+{
+    NSArray* topLevelObjs = nil;
+    
+    topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
+    if (topLevelObjs == nil)
+    {
+        NSLog(@"Error! Could not load UIDraftView.xib file.\n");
+        return NO;
+    }
+    return YES;
+}
+
 - (void)encodeWithCoder:(NSCoder *)enCoder {
     [super encodeWithCoder:enCoder];
     
@@ -135,14 +153,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        NSArray* topLevelObjs = nil;
-        
-        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
-        if (topLevelObjs == nil)
-        {
-            NSLog(@"Error! Could not load UIDraftView.xib file.\n");
-            return nil;
-        }
+        [self loadMyNibFile];
     }
     return self;
 }
@@ -181,8 +192,28 @@
 
 #pragma mark -
 #pragma mark Table View Delegate methods
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 113;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    // Set up navigation bar back button
+    self.navigationController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                                             style:UIBarButtonItemStyleBordered
+                                                                                            target:nil
+                                                                                            action:nil] autorelease];
+    
+    Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+    FullScreenPhotoViewController* photoViewController = [[FullScreenPhotoViewController alloc]init];
+    //FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstance];
+    photoViewController.photoID = selectedPhoto.objectid;
+    photoViewController.pageID = selectedPhoto.themeid;
+    
+    [self.navigationController pushViewController:photoViewController animated:YES];
+    [photoViewController release];
 }
 
  
@@ -203,6 +234,7 @@
         if (cell == nil) 
         {
             cell = [[[UIDraftTableViewCellLeft alloc] initWithPhotoID:photo.objectid withCaptionID:topCaption.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
+            //cell = [[UIDraftTableViewCellLeft alloc] loadCell];
         }
         
         [cell renderWithPhotoID:photo.objectid withCaptionID:topCaption.objectid];

@@ -220,6 +220,14 @@
     //NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
+    // Set status bar style to non-translucent
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    
+    // Set Navigation bar style to to non-translucent
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = nil;
+    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    
     //render the page ID specified as a parameter
     if (self.pageID != nil && [self.pageID intValue] != 0) {
         //render the page specified by the ID passed in
@@ -297,6 +305,7 @@
         //UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
         
         UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain];
+        draftView.navigationController = self.navigationController;
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
     }

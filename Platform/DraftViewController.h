@@ -11,7 +11,7 @@
 #import "UIPagedViewSlider4.h"
 #import "CloudEnumerator.h"
 
-@interface DraftViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, UITableViewDelegate, UITableViewDataSource> {
+@interface DraftViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate> {
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     UIPagedViewSlider2* m_pagedViewSlider; //will use to flip between pages
     CloudEnumerator*    m_pageCloudEnumerator;    
