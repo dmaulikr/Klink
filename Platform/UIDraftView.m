@@ -17,11 +17,9 @@
 #import "Photo.h"
 #import "Page.h"
 
-#define kPAGEID     @"pageid"
+#define kPAGEID @"pageid"
 
 @implementation UIDraftView
-@synthesize listData = m_listData;
-
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
 @synthesize pageID = m_pageID;
 @synthesize frc_photos = __frc_photos;
@@ -79,12 +77,12 @@
     if (page != nil) {
         
         self.pageID = page.objectid;
+        [self.tbl_draftTableView reloadData];
         
     }
 }
 
-
-
+#pragma mark - Init
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -95,10 +93,6 @@
         self.tbl_draftTableView.dataSource = self;
         self.tbl_draftTableView.bounces = TRUE;
         
-        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
-        self.listData = array;
-        [array release];
-        
         [self.tbl_draftTableView reloadData];
     }
     return self;
@@ -107,7 +101,6 @@
 - (void)encodeWithCoder:(NSCoder *)enCoder {
     [super encodeWithCoder:enCoder];
     
-    //[enCoder encodeObject:self.listData forKey:@"kListData_KEY"];
     //[enCoder encodeObject:self.tableview forKey:@"kTableView_KEY"];
     
     // Similarly for the other instance variables.
@@ -122,32 +115,43 @@
         
         //self.tableView.style = UITableViewStylePlain;
         
-        NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
+        //NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
         
-        UIView* draftView = [bundle objectAtIndex:0];
-        [self addSubview:draftView];
+        //UIView* draftView = [bundle objectAtIndex:0];
+        //[self addSubview:draftView];
         
-        self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        self.tbl_draftTableView.delegate = self;
-        self.tbl_draftTableView.dataSource = self;
-        self.tbl_draftTableView.bounces = TRUE;
+        //self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        //self.tbl_draftTableView.delegate = self;
+        //self.tbl_draftTableView.dataSource = self;
+        //self.tbl_draftTableView.bounces = TRUE;
         
-        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
-        self.listData = array;
-        [array release];
-        
-        [self.tbl_draftTableView reloadData];
+        //[self.tbl_draftTableView reloadData];
         
     }
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        NSArray* topLevelObjs = nil;
+        
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
+        if (topLevelObjs == nil)
+        {
+            NSLog(@"Error! Could not load UIDraftView.xib file.\n");
+            return nil;
+        }
+    }
+    return self;
+}
 
-- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style withPageID:(NSNumber*)pageID {
+- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style {
     self = [super initWithFrame:frame];
     if (self) {
         // Custom initialization
-        self.pageID = pageID;
+        //self.pageID = pageID;
         
         self.tbl_draftTableView = [[UITableView alloc] initWithFrame:frame style:style];
         self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -155,11 +159,6 @@
         self.tbl_draftTableView.dataSource = self;
         self.tbl_draftTableView.bounces = TRUE;
         
-        NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
-        self.listData = array;
-        [array release];
-        
-        [self.tbl_draftTableView reloadData];
         [self addSubview:self.tbl_draftTableView];
 
     }
@@ -168,38 +167,10 @@
 
 - (void)dealloc
 {
-    [self.listData release];
     [self.tbl_draftTableView release];
     [self.frc_photos release];
     [self.pageID release];
     [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    NSArray *array = [[NSArray alloc] initWithObjects:@"Sleepy", @"Sneezy", @"Bashful", @"Happy", @"Doc", @"Grumpy", @"Dopey", @"Thorin", @"Dorin", @"Nori", @"Ori", @"Balin", @"Dwalin", @"Fili", @"Kili", @"Oin", @"Gloin", @"Bifur", @"Bofur", @"Bombur", nil];
-    self.listData = array;
-    [array release];
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-}
-
-- (void)viewDidUnload
-{
-    self.listData = nil;
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -214,52 +185,33 @@
     return 113;
 }
 
-/* Old one using listData placeholder
  
- #pragma mark Table View Data Source Methods
+#pragma mark Table View Data Source Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.listData count];
+    return [[self.frc_photos fetchedObjects]count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *SimpleTableIdentifier = @"SimpleTableIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: SimpleTableIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc]
-                 initWithStyle:UITableViewCellStyleDefault
-                 reuseIdentifier:SimpleTableIdentifier] autorelease];
+    int photoCount = [[self.frc_photos fetchedObjects]count];
+    if ([indexPath row] < photoCount) 
+    {
+        Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+        Caption* topCaption = [photo captionWithHighestVotes];
+        
+        UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:[UIDraftTableViewCellLeft cellIdentifier]];
+        
+        if (cell == nil) 
+        {
+            cell = [[[UIDraftTableViewCellLeft alloc] initWithPhotoID:photo.objectid withCaptionID:topCaption.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
+        }
+        
+        [cell renderWithPhotoID:photo.objectid withCaptionID:topCaption.objectid];
+        return cell;
     }
-    NSUInteger row = [indexPath row];
-    cell.textLabel.text = [self.listData objectAtIndex:row];
-    return cell;
+    else {
+        return nil;
+    }
 }
-*/
- 
- #pragma mark Table View Data Source Methods
- - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     return [[self.frc_photos fetchedObjects]count];
- }
- 
- - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     int photoCount = [[self.frc_photos fetchedObjects]count];
-     if ([indexPath row] < photoCount) 
-     {
-         Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
-         Caption* topCaption = [photo captionWithHighestVotes];
-         UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:[UIDraftTableViewCellLeft cellIdentifier]];
-         
-         if (cell == nil) 
-         {
-             cell = [[[UIDraftTableViewCellLeft alloc] initWithPhotoID:photo.objectid withCaptionID:topCaption.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
-         }
-         
-         [cell renderWithPhotoID:photo.objectid withCaptionID:topCaption.objectid];
-         return cell;
-     }
-     else {
-         return nil;
-     }
- }
 
 #pragma mark - NSFetchedResultsControllerDelegate
 - (void) controller:(NSFetchedResultsController *)controller 

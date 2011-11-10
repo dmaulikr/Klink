@@ -63,7 +63,7 @@
 }
 
 - (Caption*)captionWithHighestVotes {
-    //returns the caption object associated with this photo with the highest number of votes
+    //returns the caption object with the highest number of votes associated with this photo
     ResourceContext* resourceContext = [ResourceContext instance];
     Caption* topCaption = (Caption*)[resourceContext resourceWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PHOTOID sortBy:NUMBEROFVOTES sortAscending:NO];
     return topCaption;
