@@ -38,6 +38,12 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
     withFacebookTokenExpiry:(NSDate*)date 
                 onFinishNotify:(Callback*)callback;
 
+- (void) updateAuthenticatorWithTwitter:(NSString*)twitterUserID 
+                      withAccessToken:(NSString*)twitterAccessToken
+                withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                       withExpiryDate:(NSString*)twitterTokenExpiry
+                       onFinishNotify:(Callback*)callback;
+
 - (BOOL) doesExistInLocalStore:(NSNumber*)resourceID;
 
 //data access methods

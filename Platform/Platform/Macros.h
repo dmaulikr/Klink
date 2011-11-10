@@ -6,6 +6,9 @@
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
+#define kMessage    @"message"
+#define kCustomView @"customview"
+#define kMaximumTimeInSeconds @"maximumtimeinseconds"
 #ifdef DEBUG
 #define LOG_SECURITY(level, ...)    LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"security",level,__VA_ARGS__)
 #define LOG_REQUEST(level, ...)    LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"request",level,__VA_ARGS__)
@@ -23,7 +26,14 @@
 #define LOG_NOTIFICATIONICON(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"notificationicon",level,__VA_ARGS__)
 #define LOG_EVENTMANAGER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"eventmanager",level,__VA_ARGS__)
 #define LOG_FEEDMANAGER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"feedmanager",level,__VA_ARGS__)
+
+#define LOG_LOGINVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"loginviewcontroller",level,__VA_ARGS__)
+
+#define LOG_OVERLAYVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"overlayviewcontroller",level,__VA_ARGS__)
+
 #define LOG_UIDRAFTVIEW(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"uidraftview",level,__VA_ARGS__)
+
+#define LOG_BASEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"baseviewcontroller",level,__VA_ARGS__)
 
 #else
 #define LOG_NETWORK(...)    do{}while(0)

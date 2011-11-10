@@ -20,6 +20,7 @@
 #import "CloudEnumerator.h"
 #import "FeedManager.h"
 #import "Page.h"
+#import "AuthenticationContext.h"
 @implementation SampleViewController
 @synthesize toJSONButton    =m_toJSONButton;
 @synthesize fromJSONButton  =m_fromJSONButton;

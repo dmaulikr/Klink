@@ -66,7 +66,7 @@
     [controller release];
     [fetchRequest release];
     
-    int count = [[self.frc_published_pages fetchedObjects]count];
+    
     
     return __frc_published_pages;
     

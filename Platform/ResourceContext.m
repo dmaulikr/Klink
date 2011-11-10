@@ -373,6 +373,38 @@ static ResourceContext* sharedInstance;
     
 }
 
+
+- (void) updateAuthenticatorWithTwitter:(NSString*)twitterUserID 
+                        withAccessToken:(NSString*)twitterAccessToken
+                  withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                         withExpiryDate:(NSString*)twitterTokenExpiry
+                         onFinishNotify:(Callback*)callback 
+{
+     NSString* activityName = @"ResourceContext.updateAuthenticatorWithTwitter:";
+    
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    
+    
+    request.statuscode =[NSNumber numberWithInt:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kUPDATEAUTHENTICATOR];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    AuthenticationContext* context = [[AuthenticationManager instance]contextForLoggedInUser];
+    
+    NSURL* url = [UrlManager urlForUpdateAuthenticatorURL:twitterUserID withToken:twitterAccessToken withTokenSecret:twitterAccessTokenSecret withExpiry:twitterTokenExpiry withAuthenticationContext:context];
+    
+   
+    
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting update authentication request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+
+    
+}
+
 #pragma mark - Data Access Methods
 - (Resource*)resourceWithType:(NSString *)typeName withID:(NSNumber *)resourceID {
     NSString* activityName = @"ResourceContext.resourceWithType:";

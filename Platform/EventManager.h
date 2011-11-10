@@ -16,7 +16,9 @@ typedef enum {
     kNEWPHOTOVOTE,
     kNEWCAPTION,
     kDRAFTFINISHED,
-    kDRAFTPUBLISHED
+    kDRAFTPUBLISHED,
+    kSHOWPROGRESS,
+    kHIDEPROGRESS
 } SystemEvent;
 
 @interface EventManager : NSObject {
@@ -36,6 +38,9 @@ typedef enum {
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo;
 - (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo;
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo;
-
+- (void) raiseShowProgressViewEvent :(NSString*)message 
+                      withCustomView:(UIView*)view 
+              withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds;
+- (void) raiseHideProgressViewEvent;
 + (EventManager*)instance;
 @end

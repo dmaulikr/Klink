@@ -12,7 +12,9 @@
 #import "UIDraftView.h"
 #import "CloudEnumeratorFactory.h"
 #import "UINotificationIcon.h"
-
+#import "UICameraActionSheet.h"
+#import "Photo.h"
+#import "User.h"
 #define kWIDTH 320
 #define kHEIGHT 375
 #define kSPACING 0
@@ -355,13 +357,29 @@
     
 }
 
+#pragma mark - Photo handling methods 
+- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Photo* photo = [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
+    
+    [resourceContext save:YES onFinishCallback:nil];
+}
+
+
 #pragma mark - Event Handlers
 - (void) onUsernameButtonPressed:(id)sender {
     
 }
 
 - (void) onCameraButtonPressed:(id)sender {
+    if (self.cameraActionSheet != nil) {
+        [self.cameraActionSheet release];
+    }
     
+    self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
+    [self.cameraActionSheet showInView:self.view];
 }
 
 - (void) onBookmarkButtonPressed:(id)sender {

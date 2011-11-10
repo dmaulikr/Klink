@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AuthenticationContext.h"
 #import "FBConnect.h"
+
+@class SA_OAuthTwitterEngine;
 @interface AuthenticationManager : NSObject <FBSessionDelegate, FBRequestDelegate> {
     NSNumber*   m_LoggedInUserID;
     Facebook*   facebook;
@@ -26,10 +28,16 @@
 
 - (id) init;
 - (void) authenticate;
+
 - (AuthenticationContext*) contextForLoggedInUser;
 - (AuthenticationContext*) contextForUserWithID:(NSNumber*)userid;
 - (BOOL) isUserAuthenticated;
-- (void) loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
+
+- (void) loginUser:(NSNumber*)userID 
+withAuthenticationContext:(AuthenticationContext*)context;
+
+
+- (BOOL)saveAuthenticationContextToKeychainForUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
 - (void) logoff;
 + (id) instance;
 

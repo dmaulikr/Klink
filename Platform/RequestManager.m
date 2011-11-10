@@ -73,7 +73,8 @@ static RequestManager* sharedInstance;
         return httpRequest;
     }
     else if (opcode == kMODIFY ||
-             opcode == kMODIFYATTACHMENT) {
+             opcode == kMODIFYATTACHMENT ||
+             opcode == kUPDATEAUTHENTICATOR) {
         ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"POST";
@@ -192,6 +193,22 @@ static RequestManager* sharedInstance;
     [self.operationQueue addOperation:httpRequest];
 }
 
+- (void) processUpdateAuthenticator:(Request*)request {
+    NSString* activityName = @"RequestManager.processUpdateAuthenticator:";
+    
+    NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+    [userInfo setObject:request forKey:kREQUEST];
+    [request retain];
+    
+    ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kUPDATEAUTHENTICATOR withURL:request.url withUserInfo:userInfo];
+    [httpRequest setPostValue:@"" forKey:@""];
+    
+    
+    LOG_REQUEST(0, @"%@Executing update authenticator request",activityName);
+    
+    [self.operationQueue addOperation:httpRequest];
+    
+}
 
 - (void) processCreates:(NSArray*) requests {
     //bulk create in one shot
@@ -277,6 +294,8 @@ static RequestManager* sharedInstance;
     }
 }
 
+
+
 - (void) processEnumeration:(Request*)request {
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
     [userInfo setObject:request forKey:kREQUEST];
@@ -298,6 +317,8 @@ static RequestManager* sharedInstance;
     
     [self.enumerationQueue addOperation:httpRequest];
 }
+
+
 
 //returns all changed attributes on the request that are also attachments
 - (NSArray*) attachmentAttributesInRequest:(Request*)request {
@@ -345,6 +366,10 @@ static RequestManager* sharedInstance;
     }
     else if ([request.operationcode intValue] == kIMAGEDOWNLOAD) {
         [self processImageDownload:request];
+    }
+    else if ([request.operationcode intValue] == kUPDATEAUTHENTICATOR) {
+        [self processUpdateAuthenticator:request];
+
     }
         
 }
@@ -500,6 +525,24 @@ static RequestManager* sharedInstance;
     
 }
 
+- (Response*) processUpdateAuthenticatorResponse:(NSString*)responseString 
+                                     withRequest:(Request*)request {
+    
+    NSString* activityName = @"RequestManager.processUpdateAuthenticatorResponse:";
+    NSError* error = nil;
+    NSDictionary* jsonDictionary = [responseString objectFromJSONStringWithParseOptions:JKParseOptionNone error:&error];
+    
+    if (error != nil) {
+        LOG_REQUEST(1, @"@%Could not deserialize response into JSON object: %@",activityName,error);
+        return nil;
+    }
+    else {
+        GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
+        return response;
+    }
+
+}
+
 - (Response*) processCreateResponse:(NSString*)responseString withRequest:(Request*)request {
     NSString* activityName = @"RequestManager.processCreateResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
@@ -611,6 +654,9 @@ static RequestManager* sharedInstance;
         }
         else if ([request.operationcode intValue] == kAUTHENTICATE) {
             responseObj = [self processAuthenticateResponse:response withRequest:request];
+        }
+        else if ([request.operationcode intValue] == kUPDATEAUTHENTICATOR) {
+            responseObj = [self processUpdateAuthenticatorResponse:response withRequest:request];
         }
   
         

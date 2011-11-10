@@ -24,3 +24,7 @@ extern NSString* const param_FACEBOOKACCESSTOKENEXPIRY;
 extern NSString* const param_VALUE;
 extern NSString* const param_OPCODE;
 extern NSString* const param_SHARINGOPTIONS;
+extern NSString* const param_TWITTERUSERID;
+extern NSString* const param_TWITTERACCESSTOKEN;
+extern NSString* const param_TWITTERACCESSTOKENEXPIRY;
+extern NSString* const param_TWITTERACCESSTOKENSECRET;

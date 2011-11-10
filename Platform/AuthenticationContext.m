@@ -24,7 +24,7 @@
 @dynamic wppassword;
 @dynamic wpusername;
 @dynamic wordpressurl;
-
+@dynamic twitteraccesstokensecret;
 
 
 - (BOOL) hasWordpress {
@@ -45,6 +45,16 @@
     return retVal;
 }
 
+- (BOOL) hasTwitter {
+    BOOL retVal = NO;
+    
+    if (self.twitteruserid != nil && ![self.twitteruserid isEqual:[NSNull null]]  
+        && self.twitteraccesstokensecret != nil && ![self.twitteraccesstokensecret isEqual:[NSNull null]] 
+        && self.twitteraccesstoken != nil && ![self.twitteraccesstoken isEqual:[NSNull null]]) {
+        retVal = YES;
+    }
+    return retVal;
+}
 
 //Extracts values from a apassed in JSON instance and populates attributes
 //on this object accordingly

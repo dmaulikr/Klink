@@ -11,11 +11,12 @@
 #import "DraftViewController.h"
 #import "CallbackResult.h"
 
-
+#import "AuthenticationManager.h"
 @implementation HomeViewController
 @synthesize contributeButton    = m_contributeButton;
 @synthesize readButton          = m_readButton;
 @synthesize loginButton         = m_loginButton;
+@synthesize loginTwitterButton  = m_loginTwitterButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -71,6 +72,7 @@
         [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
         [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -126,14 +128,26 @@
 - (IBAction) onLoginButtonClicked:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
         //no user is logged in currently
-        [self.authenticationManager authenticate];
+        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
+        
     }
-}
+   }
 
 - (IBAction) onLogoffButtonClicked:(id)sender {
     if ([self.authenticationManager isUserAuthenticated]) {
         [self.authenticationManager logoff];
     }
+    
+    
+}
+
+- (IBAction) onLoginTwitterButtonClicked:(id)sender {
+    [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
+
+}
++ (HomeViewController*)createInstance {
+    HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
+    return homeViewController;
 }
 
 @end

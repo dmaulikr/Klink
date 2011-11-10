@@ -45,7 +45,11 @@
  withAuthenticationContext:(id)authenticationContext;
 
 
-
++ (NSURL*) urlForUpdateAuthenticatorURL:(NSString *)twitterID 
+                              withToken:(NSString *)twitterAccessToken 
+                        withTokenSecret:(NSString*)twitterAccessTokenSecret
+                             withExpiry:(NSString*)twitterAccessTokenExpiry 
+              withAuthenticationContext:(id)context; 
 
 
 @end
