@@ -11,7 +11,7 @@
 #import "Resource.h"
 #import "ApplicationSettingsDefaults.h"
 #import "Macros.h"
-
+#import "EventManager.h"
 @implementation ApplicationSettingsManager
 @synthesize resourceContext = m_resourceContext;
 @synthesize settings = __settings;

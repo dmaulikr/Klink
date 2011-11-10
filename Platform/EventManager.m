@@ -74,6 +74,8 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kNEWCAPTIONVOTE];
     [self registerCallback:callback forSystemEvent:kNEWPHOTOVOTE];
     [self registerCallback:callback forSystemEvent:kNEWCAPTION];
+    [self registerCallback:callback forSystemEvent:kSHOWPROGRESS];
+    [self registerCallback:callback forSystemEvent:kHIDEPROGRESS];
 }
 
 - (NSArray*)registeredHandlersForEventType:(int)systemEventType {
@@ -135,6 +137,20 @@ static EventManager* sharedInstance;
 }
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo {
      [self raiseEvent:kNEWCAPTION withUserInfo:userInfo];
+}
+
+- (void) raiseShowProgressViewEvent:(NSString *)message withCustomView:(UIView *)view withMaximumDisplayTime:(NSNumber *)maximumTimeInSeconds {
+  
+    NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+    [userInfo setValue:message forKey:kMessage];
+    [userInfo setValue:view forKey:kCustomView];
+    [userInfo setValue:maximumTimeInSeconds forKey:kMaximumTimeInSeconds];
+    [self raiseEvent:kSHOWPROGRESS withUserInfo:userInfo];
+    [userInfo release];
+}
+
+- (void) raiseHideProgressViewEvent {
+    [self raiseEvent:kHIDEPROGRESS withUserInfo:nil];
 }
 
 @end

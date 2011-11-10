@@ -24,6 +24,7 @@
 		C507BC811459857F004D9359 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC801459857F004D9359 /* FeedTypes.m */; };
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
 		C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */; };
+		C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5156A20146B4A2A00D1FC0B /* UILoginView.m */; };
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
 		C554DEF5144CABE000CD6E85 /* PutResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF3144CABE000CD6E85 /* PutResponse.m */; };
@@ -125,8 +126,6 @@
 		C5C83AF8144B92A900AF38CF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C83AF7144B92A900AF38CF /* Security.framework */; };
 		C5C83AFC144B931B00AF38CF /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C83AFB144B931B00AF38CF /* SFHFKeychainUtils.m */; };
 		C5C9E2571466FDA100838934 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2561466FDA100838934 /* MBProgressHUD.m */; };
-		C5C9E25C1466FFF000838934 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E25A1466FFF000838934 /* LoginViewController.m */; };
-		C5C9E25D1466FFF000838934 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E25B1466FFF000838934 /* LoginViewController.xib */; };
 		C5C9E29A146700C300838934 /* jQueryInject.txt in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E260146700C300838934 /* jQueryInject.txt */; };
 		C5C9E29B146700C300838934 /* jQueryInjectLandscape.txt in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E261146700C300838934 /* jQueryInjectLandscape.txt */; };
 		C5C9E29C146700C300838934 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C9E262146700C300838934 /* libOAuth.a */; };
@@ -149,6 +148,10 @@
 		C5C9E2AD146700C400838934 /* twitter_load.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E299146700C300838934 /* twitter_load.png */; };
 		C5C9E2AF146700F600838934 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C9E2AE146700F600838934 /* libxml2.2.dylib */; };
 		C5C9E2B11467019000838934 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C9E2B01467019000838934 /* libz.1.2.3.dylib */; };
+		C5C9E2BD1467986C00838934 /* UpdateAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */; };
+		C5C9E2CD1468957500838934 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CC1468957500838934 /* 37x-Checkmark.png */; };
+		C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */; };
+		C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */; };
 		C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */; };
 		C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA591466EB6C009AA3D8 /* blackArrow.png */; };
 		C5D9AA631466EB6C009AA3D8 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA5A1466EB6C009AA3D8 /* blackArrow@2x.png */; };
@@ -193,6 +196,8 @@
 		C507BC8314599455004D9359 /* Caption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Caption.m; sourceTree = "<group>"; };
 		C507BC851459AA0C004D9359 /* ImageDownloadResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownloadResponse.h; sourceTree = "<group>"; };
 		C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadResponse.m; sourceTree = "<group>"; };
+		C5156A1F146B4A2A00D1FC0B /* UILoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoginView.h; sourceTree = "<group>"; };
+		C5156A20146B4A2A00D1FC0B /* UILoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoginView.m; sourceTree = "<group>"; };
 		C554DEE9144C941900CD6E85 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		C554DEED144CA93C00CD6E85 /* GetAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAuthenticatorResponse.h; sourceTree = "<group>"; };
 		C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAuthenticatorResponse.m; sourceTree = "<group>"; };
@@ -380,9 +385,6 @@
 		C5C83AFB144B931B00AF38CF /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = "../Klink V2/Klink V2/SFHFKeychainUtils.m"; sourceTree = "<group>"; };
 		C5C9E2551466FDA100838934 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		C5C9E2561466FDA100838934 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		C5C9E2591466FFF000838934 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		C5C9E25A1466FFF000838934 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		C5C9E25B1466FFF000838934 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C5C9E260146700C300838934 /* jQueryInject.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jQueryInject.txt; sourceTree = "<group>"; };
 		C5C9E261146700C300838934 /* jQueryInjectLandscape.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jQueryInjectLandscape.txt; sourceTree = "<group>"; };
 		C5C9E262146700C300838934 /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOAuth.a; sourceTree = "<group>"; };
@@ -440,6 +442,12 @@
 		C5C9E299146700C300838934 /* twitter_load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter_load.png; sourceTree = "<group>"; };
 		C5C9E2AE146700F600838934 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		C5C9E2B01467019000838934 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
+		C5C9E2BB1467986C00838934 /* UpdateAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateAuthenticatorResponse.h; sourceTree = "<group>"; };
+		C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateAuthenticatorResponse.m; sourceTree = "<group>"; };
+		C5C9E2CC1468957500838934 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "../Klink V2/Klink V2/37x-Checkmark.png"; sourceTree = "<group>"; };
+		C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProgressHUDView.xib; sourceTree = "<group>"; };
+		C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProgressHUDView.h; sourceTree = "<group>"; };
+		C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProgressHUDView.m; sourceTree = "<group>"; };
 		C5D9AA561466EB6C009AA3D8 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		C5D9AA591466EB6C009AA3D8 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -557,6 +565,7 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5C9E2CC1468957500838934 /* 37x-Checkmark.png */,
 				3DCFE8DC1464633400D6587D /* icon-compose.png */,
 				3DCFE8DD1464633400D6587D /* icon-compose@2x.png */,
 				3DCFE8DE1464633400D6587D /* icon-thumbUp.png */,
@@ -828,6 +837,8 @@
 				C5DB5A4E144F3D9C00D6D6AE /* OperationQueue.m */,
 				C507BC851459AA0C004D9359 /* ImageDownloadResponse.h */,
 				C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */,
+				C5C9E2BB1467986C00838934 /* UpdateAuthenticatorResponse.h */,
+				C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -884,9 +895,6 @@
 		C5C76C6B145B8FE800BA69B8 /* Bonobo */ = {
 			isa = PBXGroup;
 			children = (
-				C5C9E2591466FFF000838934 /* LoginViewController.h */,
-				C5C9E25A1466FFF000838934 /* LoginViewController.m */,
-				C5C9E25B1466FFF000838934 /* LoginViewController.xib */,
 				C5C76C70145B912000BA69B8 /* PageViewController.h */,
 				C5C76C71145B912000BA69B8 /* PageViewController.m */,
 				C5C76C8E145B986800BA69B8 /* PageViewController.xib */,
@@ -923,6 +931,9 @@
 			children = (
 				C5C76C92145BAF9500BA69B8 /* UIPagedViewSlider4.h */,
 				C5C76C93145BAF9500BA69B8 /* UIPagedViewSlider4.m */,
+				C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */,
+				C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */,
+				C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -948,6 +959,8 @@
 				3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */,
 				3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */,
 				3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */,
+				C5156A1F146B4A2A00D1FC0B /* UILoginView.h */,
+				C5156A20146B4A2A00D1FC0B /* UILoginView.m */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1254,10 +1267,11 @@
 				C5D9AA671466EB6C009AA3D8 /* grayArrow@2x.png in Resources */,
 				C5D9AA681466EB6C009AA3D8 /* whiteArrow.png in Resources */,
 				C5D9AA691466EB6C009AA3D8 /* whiteArrow@2x.png in Resources */,
-				C5C9E25D1466FFF000838934 /* LoginViewController.xib in Resources */,
 				C5C9E29A146700C300838934 /* jQueryInject.txt in Resources */,
 				C5C9E29B146700C300838934 /* jQueryInjectLandscape.txt in Resources */,
 				C5C9E2AD146700C400838934 /* twitter_load.png in Resources */,
+				C5C9E2CD1468957500838934 /* 37x-Checkmark.png in Resources */,
+				C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1359,7 +1373,6 @@
 				C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */,
 				C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */,
 				C5C9E2571466FDA100838934 /* MBProgressHUD.m in Sources */,
-				C5C9E25C1466FFF000838934 /* LoginViewController.m in Sources */,
 				C5C9E29D146700C400838934 /* MGTwitterEngine.m in Sources */,
 				C5C9E29E146700C400838934 /* MGTwitterHTTPURLConnection.m in Sources */,
 				C5C9E29F146700C400838934 /* MGTwitterLibXMLParser.m in Sources */,
@@ -1376,6 +1389,9 @@
 				C5C9E2AA146700C400838934 /* NSString+UUID.m in Sources */,
 				C5C9E2AB146700C400838934 /* SA_OAuthTwitterController.m in Sources */,
 				C5C9E2AC146700C400838934 /* SA_OAuthTwitterEngine.m in Sources */,
+				C5C9E2BD1467986C00838934 /* UpdateAuthenticatorResponse.m in Sources */,
+				C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */,
+				C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

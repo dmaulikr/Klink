@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "CloudEnumerator.h"
-
-
-
 @interface FeedManager : NSObject <NSFetchedResultsControllerDelegate,CloudEnumeratorDelegate>{
     Callback* m_onRefreshCallback;
 }

@@ -23,6 +23,8 @@
 #import "EventManager.h"
 #import "Macros.h"
 #import "GetAuthenticatorResponse.h"
+#import "SA_OAuthTwitterController.h"
+#import "SA_OAuthTwitterEngine.h"
 
 #define kKeyChainServiceName    @"Aardvark"
 #define kUser                   @"User"
@@ -47,7 +49,6 @@ static  AuthenticationManager* sharedManager;
 }
 
 #pragma mark - Properties
-
 
 - (Facebook*) facebook {
     if (__facebook != nil) {
@@ -98,6 +99,7 @@ static  AuthenticationManager* sharedManager;
     NSString* activityName = @"AuthenticationManager.fbDidLogin:";
     LOG_SECURITY(0,@"%@%@", activityName,@" completed facebook authentication, beginning download os user profile from Facebook");
     //get the user object
+    [[EventManager instance]raiseShowProgressViewEvent:@"Getting Facebook data" withCustomView:nil withMaximumDisplayTime:nil];
     
     self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];        
 }
@@ -113,6 +115,7 @@ static  AuthenticationManager* sharedManager;
         NSNumber* facebookID = [facebookIDString numberValue];
         NSString* displayName = [result valueForKey:NAME];
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+        
         //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
         
         LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,self.facebook.accessToken);
@@ -178,6 +181,7 @@ static  AuthenticationManager* sharedManager;
 }
 
 #pragma mark - Login/Logoff Methods
+
 -(void) authenticate {
     NSString* activityName = @"AuthenticationManager.authenticate:";
     //now we need to grab their facebook authentication data, and then log them into our app    
@@ -287,13 +291,15 @@ static  AuthenticationManager* sharedManager;
 - (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
     ResourceContext* resourceContext = [ResourceContext instance];
     GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
-    
+    EventManager* eventManager = [EventManager instance];
     
     AuthenticationContext* newContext = response.authenticationcontext;
     User* returnedUser = response.user;
     
     Resource* existingUser = [resourceContext resourceWithType:USER withID:returnedUser.objectid];
-        
+     
+    
+    [eventManager raiseHideProgressViewEvent];
     //save the user object that is returned to us in the database
     if (existingUser != nil) {
         [existingUser refreshWith:returnedUser];
@@ -313,7 +319,7 @@ static  AuthenticationManager* sharedManager;
         //unable to login user due to inability to save the credential to key chain
         //raise global error
         
-        EventManager* eventManager = [EventManager instance];
+        
         [eventManager raiseUserLoginFailedEvent:nil];
     }
     

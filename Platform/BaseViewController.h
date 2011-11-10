@@ -8,29 +8,49 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "ResourceContext.h"
+#import "UIViewCategory.h"
+#import "UIProgressHUDView.h"
+
 #import "AuthenticationManager.h"
-
 #import "User.h"
-
+#import "UILoginView.h"
 #import "FeedManager.h"
 #import "EventManager.h"
+#import "CallbackResult.h"
+
 
 @class UICameraActionSheet;
-@class CallbackResult;
-
+@class ResourceContext;
 @interface BaseViewController : UIViewController {
     UICameraActionSheet*    m_cameraActionSheet;
+    UIProgressHUDView*      m_progressView;
+    UILoginView*            m_loginView;
 }
+
 @property (nonatomic, retain) FeedManager*              feedManager;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) EventManager*             eventManager;
 @property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
 @property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
 @property (nonatomic, retain) User*                     loggedInUser;
+@property (nonatomic, retain) UIProgressHUDView*        progressView;
+@property (nonatomic, retain) UILoginView*              loginView;
+
+- (void) authenticate:(BOOL)facebook 
+          withTwitter:(BOOL)twitter 
+     onFinishSelector:(SEL)sel 
+       onTargetObject:(id)targetObject 
+           withObject:(id)parameter;
 
 - (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
                           withFullImage:(UIImage*)image;
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
+
+- (void) showProgressBar: (NSString*)message 
+          withCustomView:(UIView*)view 
+  withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
+
+
+- (void) hideProgressBar;
 @end

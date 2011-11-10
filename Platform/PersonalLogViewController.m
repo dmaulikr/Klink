@@ -12,6 +12,7 @@
 #import "UINotificationTableViewCell.h"
 #import "User.h"
 #import "DateTimeHelper.h"
+#import "AuthenticationManager.h"
 
 
 #define kRefreshHeaderHeight    100

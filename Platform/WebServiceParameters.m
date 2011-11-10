@@ -25,4 +25,8 @@ NSString* const param_FACEBOOKACCESSTOKENEXPIRY=@"facebookaccesstokenexpirydate"
 NSString* const param_VALUE=@"value";
 NSString* const param_OPCODE=@"operationcode";
 NSString* const param_SHARINGOPTIONS = @"sharingoptions";
+NSString* const param_TWITTERUSERID=@"twitterid";
+NSString* const param_TWITTERACCESSTOKEN=@"twitteraccesstoken";
+NSString* const param_TWITTERACCESSTOKENEXPIRY=@"twitteraccesstokenexpiry";
+NSString* const param_TWITTERACCESSTOKENSECRET=@"twitteraccesstokensecret";
 

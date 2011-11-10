@@ -14,7 +14,7 @@
 #import "UINotificationIcon.h"
 #import "UICameraActionSheet.h"
 #import "Photo.h"
-
+#import "User.h"
 #define kWIDTH 320
 #define kHEIGHT 375
 #define kSPACING 0
