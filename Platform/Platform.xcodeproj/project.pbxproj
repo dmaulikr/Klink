@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D51CB8B146C7149002E0FD4 /* ContributeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D51CB89146C7149002E0FD4 /* ContributeViewController.m */; };
+		3D51CB8C146C7149002E0FD4 /* ContributeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */; };
 		3D5B84DF1463067300FD0F50 /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84DD1463067300FD0F50 /* icon-camera2.png */; };
 		3D5B84E01463067300FD0F50 /* icon-camera2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */; };
 		3D5B84E41463068100FD0F50 /* icon-facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */; };
@@ -174,6 +176,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D51CB88146C7149002E0FD4 /* ContributeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContributeViewController.h; sourceTree = "<group>"; };
+		3D51CB89146C7149002E0FD4 /* ContributeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContributeViewController.m; sourceTree = "<group>"; };
+		3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContributeViewController.xib; sourceTree = "<group>"; };
 		3D5B84DD1463067300FD0F50 /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
 		3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2@2x.png"; sourceTree = "<group>"; };
 		3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook@2x.png"; sourceTree = "<group>"; };
@@ -916,6 +921,9 @@
 				C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */,
 				C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */,
 				C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */,
+				3D51CB88146C7149002E0FD4 /* ContributeViewController.h */,
+				3D51CB89146C7149002E0FD4 /* ContributeViewController.m */,
+				3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1276,6 +1284,7 @@
 				C5C9E2AD146700C400838934 /* twitter_load.png in Resources */,
 				C5C9E2CD1468957500838934 /* 37x-Checkmark.png in Resources */,
 				C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */,
+				3D51CB8C146C7149002E0FD4 /* ContributeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1396,6 +1405,7 @@
 				C5C9E2BD1467986C00838934 /* UpdateAuthenticatorResponse.m in Sources */,
 				C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */,
 				C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */,
+				3D51CB8B146C7149002E0FD4 /* ContributeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1441,7 +1451,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1455,7 +1465,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
@@ -1478,6 +1488,7 @@
 					"$(SRC_MGTwitterEngine)",
 				);
 				INFOPLIST_FILE = "Platform/Platform-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
@@ -1499,6 +1510,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Platform/Platform-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",

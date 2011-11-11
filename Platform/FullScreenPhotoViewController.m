@@ -250,6 +250,7 @@
     
     self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
     self.captionCloudEnumerator.delegate = self;
+    [self.captionCloudEnumerator enumerateUntilEnd];
 }
 
 - (void)viewDidUnload
@@ -311,16 +312,16 @@
         }
     }
     else if (viewSlider == self.captionViewSlider) {
-        int captionCount = [[self.frc_captions fetchedObjects]count];
+        //int captionCount = [[self.frc_captions fetchedObjects]count];
         
-        if (captionCount > 0 && index < captionCount) {
+        //if (captionCount > 0 && index < captionCount) {
             UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
             [self viewSlider:viewSlider configure:lbl_caption forRowAtIndex:index withFrame:frame];
             return lbl_caption;
-        }
-        else {
-            return nil;
-        }
+        //}
+        //else {
+        //    return nil;
+        //}
     }
 }
 
@@ -361,9 +362,9 @@
         }
     }
     else if (viewSlider == self.captionViewSlider) {
-        int captionCount = [[self.frc_captions fetchedObjects]count];
+        //int captionCount = [[self.frc_captions fetchedObjects]count];
         
-        if (captionCount > 0 && index < captionCount) {
+        //if (captionCount > 0 && index < captionCount) {
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
             existingCell.frame = frame;
@@ -378,7 +379,7 @@
                 lbl_caption.text = @"CAPTION WAS NIL";
             }
             [self.captionViewSlider addSubview:lbl_caption];
-        }
+        //}
     }
     
     /*CGRect frameForCaptionSlider = [self frameForCaptionSlider];

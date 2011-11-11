@@ -12,6 +12,7 @@
 #import "CallbackResult.h"
 #import "Macros.h"
 #import "UICameraActionSheet.h"
+#import "ContributeViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -232,7 +233,7 @@
 
 #pragma mark - Async Handlers
 - (void) onLoginComplete:(CallbackResult*)result {
-        NSString* activityName = @"BaseViewController.onLoginComplete:";
+    NSString* activityName = @"BaseViewController.onLoginComplete:";
         
     Response* response = result.response;
     
@@ -264,7 +265,11 @@
 }
 
 - (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+    //ContributeViewController* contributeViewController = [[ContributeViewController alloc] init];
+    //contributeViewController.img_photo = image;
     
+    //[self.navigationController pushViewController:contributeViewController animated:YES];
+    //[contributeViewController release];
 }
 
 - (void) onUserLoggedIn:(CallbackResult*)result {

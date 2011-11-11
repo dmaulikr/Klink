@@ -15,6 +15,8 @@
 #import "UICameraActionSheet.h"
 #import "Photo.h"
 #import "User.h"
+#import "ContributeViewController.h"
+
 #define kWIDTH 320
 #define kHEIGHT 375
 #define kSPACING 0
@@ -281,17 +283,7 @@
     
     //render a page in its own view and return it using the coordinates passed in for its frame
     int count = [[self.frc_draft_pages fetchedObjects]count];
-    if (index < count) {
-        //UITableView* tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-        //tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        //tableView.delegate = self;
-        //tableView.dataSource = self;
-        //tableView.bounces = TRUE;
-        //tableView.bouncesZoom = TRUE;
-        //[tableView reloadData];
-        //[self viewSlider:viewSlider configure:tableView forRowAtIndex:index withFrame:frame];
-        //return tableView;
-        
+    if (index < count) {    
         //UIDraftView* draftView = [[UIDraftView alloc] initWithCoder:nil];
         //NSArray* nibContents = nil;
         //nibContents = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:nil options:nil];
@@ -362,9 +354,16 @@
     [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
     
     ResourceContext* resourceContext = [ResourceContext instance];
-    Photo* photo = [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
+    //Photo* photo = [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
     
-    [resourceContext save:YES onFinishCallback:nil];
+    //[resourceContext save:YES onFinishCallback:nil];
+    
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc] init];
+    //ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.img_photo = image;
+    
+    [self.navigationController pushViewController:contributeViewController animated:YES];
+    [contributeViewController release];
 }
 
 
