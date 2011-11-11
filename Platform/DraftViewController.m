@@ -354,12 +354,17 @@
     [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
     
     ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
     //Photo* photo = [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
     
     //[resourceContext save:YES onFinishCallback:nil];
     
-    ContributeViewController* contributeViewController = [[ContributeViewController alloc] init];
-    //ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    //ContributeViewController* contributeViewController = [[ContributeViewController alloc] init];
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.configurationType = PHOTO;
+    contributeViewController.draftTitle = currentPage.displayname;
     contributeViewController.img_photo = image;
     
     [self.navigationController pushViewController:contributeViewController animated:YES];

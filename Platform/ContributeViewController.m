@@ -7,6 +7,7 @@
 //
 
 #import "ContributeViewController.h"
+#import "Macros.h"
 
 
 @implementation ContributeViewController
@@ -14,16 +15,24 @@
 @synthesize activeTextView = m_activeTextView;
 @synthesize activeTextField = m_activeTextField;
 
+@synthesize configurationType;
+
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
+@synthesize draftTitle = m_draftTitle;
 @synthesize tf_newDraftTitle = m_tf_newDraftTitle;
 @synthesize lbl_titleRequired = m_lbl_titleRequired;
+//@synthesize titleRequired = m_titleRequired;
 
 @synthesize iv_photo = m_iv_photo;
 @synthesize img_photo = m_img_photo;
 @synthesize lbl_photoOptional = m_lbl_photoOptional;
+@synthesize lbl_photoRequired = m_lbl_photoRequired;
+//@synthesize photoOptional = m_photoRequired;
 
 @synthesize tv_caption = m_tv_caption;
 @synthesize lbl_captionOptional = m_lbl_captionOptional;
+@synthesize lbl_captionRequired = m_lbl_captionRequired;
+//@synthesize captionRequired = m_captionRequired;
 
 @synthesize lbl_deadline = m_lbl_deadline;
 
@@ -77,10 +86,70 @@
 {
     [super viewWillAppear:animated];
     
+    NSString* activityName = @"ContributeViewController.viewWillAppear:";
+    
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
      
-    self.iv_photo.image = self.img_photo;
+    
+    // Set up the view for the appropriate configuration type
+    if (self.configurationType == PAGE) {
+        // New Draft
+        self.navigationItem.title = @"New Draft";
+        self.lbl_draftTitle.hidden = YES;
+        self.tf_newDraftTitle.hidden = NO;
+        self.tf_newDraftTitle.enabled = YES;
+        self.lbl_titleRequired.hidden = NO;
+        
+        // Photo is optional because user is creating a new draft
+        self.lbl_photoOptional.hidden = NO;
+        self.lbl_photoRequired.hidden = YES;
+        self.iv_photo.image = [UIColor lightGrayColor];
+
+        // Caption is optional because user is creating a new draft
+        self.lbl_captionOptional.hidden = NO;
+        self.lbl_captionRequired.hidden = YES;
+    }
+    else if (self.configurationType == PHOTO) {
+        // New Photo
+        self.navigationItem.title = @"New Photo";
+        self.lbl_photoOptional.hidden = YES;
+        self.lbl_photoRequired.hidden = NO;
+        self.iv_photo.image = self.img_photo;
+        
+        // Show existing draft title since user is adding a photo
+        self.lbl_draftTitle.text = self.draftTitle;
+        self.lbl_draftTitle.hidden = NO;
+        self.tf_newDraftTitle.hidden = YES;
+        self.tf_newDraftTitle.enabled = NO;
+        self.lbl_titleRequired.hidden = YES;
+        
+        // Caption is optional because user is adding a new photo
+        self.lbl_captionOptional.hidden = NO;
+        self.lbl_captionRequired.hidden = YES;
+    }
+    else if (self.configurationType == CAPTION) {
+        // New Caption
+        self.navigationItem.title = @"New Caption";
+        self.lbl_captionOptional.hidden = YES;
+        self.lbl_captionRequired.hidden = NO;
+        
+        // Show existing draft title since user is adding a caption
+        self.lbl_draftTitle.text = self.draftTitle;
+        self.lbl_draftTitle.hidden = NO;
+        self.tf_newDraftTitle.hidden = YES;
+        self.tf_newDraftTitle.enabled = NO;
+        self.lbl_titleRequired.hidden = YES;
+
+        // Show existing photo since user is adding a caption
+        self.lbl_photoOptional.hidden = YES;
+        self.lbl_photoRequired.hidden = YES;
+        self.iv_photo.image = self.img_photo;
+    }
+    else {
+        // error state - Configuration type not specified
+        LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
+    }
 
     //[self.view setNeedsDisplay];
 }
