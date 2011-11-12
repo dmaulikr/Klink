@@ -9,11 +9,13 @@
 #import "HomeViewController.h"
 #import "PageViewController.h"
 #import "DraftViewController.h"
+#import "ContributeViewController.h"
 #import "CallbackResult.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
 @synthesize contributeButton    = m_contributeButton;
+@synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
 @synthesize loginButton         = m_loginButton;
 @synthesize loginTwitterButton  = m_loginTwitterButton;
@@ -123,6 +125,16 @@
     
     [self.navigationController pushViewController:draftController animated:YES];
     [draftController release];
+}
+
+- (IBAction) onNewDraftButtonClicked:(id)sender {
+    //called when the new draft button is pressed
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+
+    contributeViewController.configurationType = PAGE;
+    
+    [self.navigationController pushViewController:contributeViewController animated:YES];
+    [contributeViewController release];
 }
 
 - (IBAction) onLoginButtonClicked:(id)sender {

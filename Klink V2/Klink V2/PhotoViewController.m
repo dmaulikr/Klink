@@ -19,10 +19,8 @@
 #import "LoginViewController.h"
 
 
-#define kPictureWidth_landscape     480
 #define kPictureWidth               320
 #define kPictureHeight              480
-#define kPictureHeight_landscape    320
 #define kPictureSpacing             0
 
 

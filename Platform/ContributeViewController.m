@@ -8,6 +8,10 @@
 
 #import "ContributeViewController.h"
 #import "Macros.h"
+#import "UICameraActionSheet.h"
+#import "Page.h"
+#import "Photo.h"
+#import "Caption.h"
 
 
 @implementation ContributeViewController
@@ -15,24 +19,26 @@
 @synthesize activeTextView = m_activeTextView;
 @synthesize activeTextField = m_activeTextField;
 
-@synthesize configurationType;
+@synthesize configurationType = m_configurationType;
+@synthesize pageID = m_pageID;
+@synthesize photoID = m_photoID;
 
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
 @synthesize draftTitle = m_draftTitle;
 @synthesize tf_newDraftTitle = m_tf_newDraftTitle;
 @synthesize lbl_titleRequired = m_lbl_titleRequired;
-//@synthesize titleRequired = m_titleRequired;
 
+@synthesize btn_cameraButton = m_btn_cameraButton;
 @synthesize iv_photo = m_iv_photo;
 @synthesize img_photo = m_img_photo;
+@synthesize img_thumbnail = m_img_thumbnail;
 @synthesize lbl_photoOptional = m_lbl_photoOptional;
 @synthesize lbl_photoRequired = m_lbl_photoRequired;
-//@synthesize photoOptional = m_photoRequired;
 
 @synthesize tv_caption = m_tv_caption;
+@synthesize caption = m_caption;
 @synthesize lbl_captionOptional = m_lbl_captionOptional;
 @synthesize lbl_captionRequired = m_lbl_captionRequired;
-//@synthesize captionRequired = m_captionRequired;
 
 @synthesize lbl_deadline = m_lbl_deadline;
 
@@ -52,6 +58,31 @@
 - (void)dealloc
 {
     [super dealloc];
+    
+  /*  
+    [self.scrollView dealloc];
+    [self.activeTextView dealloc];
+    [self.activeTextField dealloc];
+    
+    [self.configurationType dealloc];
+    
+    [self.lbl_draftTitle dealloc];
+    [self.draftTitle dealloc];
+    [self.tf_newDraftTitle dealloc];
+    [self.lbl_titleRequired dealloc];
+    
+    [self.btn_cameraButton dealloc];
+    [self.iv_photo dealloc];
+    [self.img_photo dealloc];
+    [self.lbl_photoOptional dealloc];
+    [self.lbl_photoRequired dealloc];
+    
+    [self.tv_caption dealloc];
+    [self.lbl_captionOptional dealloc];
+    [self.lbl_captionRequired dealloc];
+    
+    [self.lbl_deadline dealloc];
+  */
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,6 +104,8 @@
     // Keeps the text of the caption textview aligned to the vertical center of the textview frame
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
+    // Navigation Bar Buttons
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
 }
 
 - (void)viewDidUnload
@@ -80,6 +113,31 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+  /*  
+    self.scrollView = nil;
+    self.activeTextView = nil;
+    self.activeTextField = nil;
+    
+    self.configurationType = nil;
+    
+    self.lbl_draftTitle = nil;
+    self.draftTitle = nil;
+    self.tf_newDraftTitle = nil;
+    self.lbl_titleRequired = nil;
+    
+    self.btn_cameraButton = nil;
+    self.iv_photo = nil;
+    self.img_photo = nil;
+    self.lbl_photoOptional = nil;
+    self.lbl_photoRequired = nil;
+    
+    self.tv_caption = nil;
+    self.lbl_captionOptional = nil;
+    self.lbl_captionRequired = nil;
+    
+    self.lbl_deadline = nil;
+  */
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -102,9 +160,11 @@
         self.lbl_titleRequired.hidden = NO;
         
         // Photo is optional because user is creating a new draft
+        self.btn_cameraButton.hidden = NO;
+        self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = NO;
         self.lbl_photoRequired.hidden = YES;
-        self.iv_photo.image = [UIColor lightGrayColor];
+        //self.iv_photo.backgroundColor = [UIColor lightGrayColor];
 
         // Caption is optional because user is creating a new draft
         self.lbl_captionOptional.hidden = NO;
@@ -113,6 +173,8 @@
     else if (self.configurationType == PHOTO) {
         // New Photo
         self.navigationItem.title = @"New Photo";
+        self.btn_cameraButton.hidden = NO;
+        self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = YES;
         self.lbl_photoRequired.hidden = NO;
         self.iv_photo.image = self.img_photo;
@@ -141,14 +203,16 @@
         self.tf_newDraftTitle.enabled = NO;
         self.lbl_titleRequired.hidden = YES;
 
-        // Show existing photo since user is adding a caption
+        // Show existing photo but disabled cameraButton since user is adding a caption
+        self.btn_cameraButton.hidden = YES;
+        self.btn_cameraButton.enabled = NO;
         self.lbl_photoOptional.hidden = YES;
         self.lbl_photoRequired.hidden = YES;
         self.iv_photo.image = self.img_photo;
     }
     else {
         // error state - Configuration type not specified
-        LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
+        //LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
     }
 
     //[self.view setNeedsDisplay];
@@ -174,22 +238,55 @@
 {
     self.activeTextView = textView;
     
-    // Clear the default text of a texview upon editing
-    [self.activeTextView setText:@""];
+    // Prevent interaction with the cameraButton on the photo
+    self.btn_cameraButton.hidden = YES;
+    self.btn_cameraButton.enabled = NO;
+    
+    // Clear the default text of the caption textview upon startin to edit
+    if ([self.activeTextView.text isEqualToString:@"caption"]) {
+        [self.activeTextView setText:@""];
+        self.activeTextView.textColor = [UIColor blackColor];
+    }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    // Add default text back if caption was left empty
+    if ([self.activeTextView.text isEqualToString:@""] || [self.activeTextView.text isEqualToString:@"caption"]) {
+        self.activeTextView.textColor = [UIColor lightGrayColor];
+        [self.activeTextView setText:@"caption"];
+    }
+    else {
+        // caption is acceptable
+        self.caption = [self.activeTextView getText];
+    }
+    
+    // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
+    if (self.configurationType != CAPTION) {
+        self.btn_cameraButton.hidden = NO;
+        self.btn_cameraButton.enabled = YES;
+    }
+    
     self.activeTextView = nil;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.activeTextField = textField;
+    
+    // Prevent interaction with the cameraButton on the photo
+    self.btn_cameraButton.hidden = YES;
+    self.btn_cameraButton.enabled = NO;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
+    if (self.configurationType != CAPTION) {
+        self.btn_cameraButton.hidden = NO;
+        self.btn_cameraButton.enabled = YES;
+    }
+    
     self.activeTextField = nil;
 }
 
@@ -271,6 +368,38 @@
 {
     [self.activeTextView resignFirstResponder];
     [self.activeTextField resignFirstResponder];
+}
+
+#pragma mark - Button Handlers
+#pragma mark Photo "Camera" button handler
+- (IBAction)onCameraButtonPressed:(id)sender {    
+    if (self.cameraActionSheet != nil) {
+        [self.cameraActionSheet release];
+    }
+    
+    self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
+    [self.cameraActionSheet showInView:self.view];
+}
+
+- (void)onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
+    
+    self.img_photo = image;
+    self.img_thumbnail = thumbnailImage;
+    
+    self.iv_photo.image = self.img_photo;
+
+}
+
+#pragma mark Submit button handler
+- (void)onSubmitButtonPressed:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    if (self.configurationType == PHOTO && self.img_photo) {
+        [Photo createPhotoInPage:self.pageID withThumbnailImage:self.img_thumbnail withImage:self.img_photo];
+    }
+    
+    [resourceContext save:YES onFinishCallback:nil];
 }
 
 #pragma mark - Static Initializers

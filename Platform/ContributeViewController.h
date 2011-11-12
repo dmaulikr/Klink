@@ -15,24 +15,27 @@
     UITextView*     m_activeTextView;
     UITextField*    m_activeTextField;
     
+    
     NSString*       m_configurationType;
+    NSNumber*       m_pageID; //represents the ID of the page that a new photo can be added to
+    NSNumber*       m_photoID; //represents the ID of the photo that a new caption can be added to
     
     UILabel*        m_lbl_draftTitle;
     NSString*       m_draftTitle;
     UITextField*    m_tf_newDraftTitle;
     UILabel*        m_lbl_titleRequired;
-//    BOOL            m_titleRequired;
     
+    UIButton*       m_btn_cameraButton; //handles when the photo is touched to launch the camera
     UIImageView*    m_iv_photo;
     UIImage*        m_img_photo;
+    UIImage*        m_img_thumbnail;
     UILabel*        m_lbl_photoOptional;
     UILabel*        m_lbl_photoRequired;
-//    BOOL            m_photoRequired;
     
     UITextView*     m_tv_caption;
+    NSString*       m_caption;    
     UILabel*        m_lbl_captionOptional;
     UILabel*        m_lbl_captionRequired;
-//    BOOL            m_captionRequired;
     
     UILabel*        m_lbl_deadline;
 }
@@ -42,29 +45,32 @@
 @property (nonatomic, retain) UITextField*              activeTextField;
 
 @property (nonatomic, retain) NSString*                 configurationType;
+@property (nonatomic, retain) NSNumber*                 pageID;
+@property (nonatomic, retain) NSNumber*                 photoID;
 
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_draftTitle;
 @property (nonatomic, retain) NSString*                 draftTitle;
 @property (nonatomic, retain) IBOutlet UITextField*     tf_newDraftTitle;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_titleRequired;
-//@property (nonatomic, retain) BOOL                      titleRequired;
 
+@property (nonatomic, retain) IBOutlet UIButton*        btn_cameraButton;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
 @property (nonatomic, retain) UIImage*                  img_photo;
+@property (nonatomic, retain) UIImage*                  img_thumbnail;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_photoOptional;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_photoRequired;
-//@property (nonatomic, retain) BOOL                      photoOptional;
 
 @property (nonatomic, retain) IBOutlet UITextView*      tv_caption;
+@property (nonatomic, retain) NSString*                 caption;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionOptional;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionRequired;
-//@property (nonatomic, retain) BOOL                      captionRequired;
 
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_deadline;
 
 
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;
+- (IBAction)onCameraButtonPressed:(id)sender;
 
 + (ContributeViewController*) createInstance;
 

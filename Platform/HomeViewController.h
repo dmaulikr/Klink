@@ -13,17 +13,20 @@
 @interface HomeViewController : BaseViewController {
     UIButton*   m_readButton;
     UIButton*   m_contributeButton;
+    UIButton*   m_newDraftButton;
     UIButton*   m_loginButton;
     UIButton*   m_loginTwitterButton;
 }
 
 @property (nonatomic,retain) IBOutlet UIButton* readButton;
 @property (nonatomic,retain) IBOutlet UIButton* contributeButton;
+@property (nonatomic,retain) IBOutlet UIButton* newDraftButton;
 @property (nonatomic,retain) IBOutlet UIButton* loginButton;
 @property (nonatomic,retain) IBOutlet UIButton* loginTwitterButton;
 
 - (IBAction) onReadButtonClicked:(id)sender;
 - (IBAction) onContributeButtonClicked:(id)sender;
+- (IBAction) onNewDraftButtonClicked:(id)sender;
 - (IBAction) onLoginButtonClicked:(id)sender;
 
 + (HomeViewController*) createInstance;
