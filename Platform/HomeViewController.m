@@ -9,11 +9,13 @@
 #import "HomeViewController.h"
 #import "PageViewController.h"
 #import "DraftViewController.h"
+#import "ContributeViewController.h"
 #import "CallbackResult.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
 @synthesize contributeButton    = m_contributeButton;
+@synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
 @synthesize loginButton         = m_loginButton;
 @synthesize loginTwitterButton  = m_loginTwitterButton;
@@ -125,6 +127,20 @@
     [draftController release];
 }
 
+- (IBAction) onNewDraftButtonClicked:(id)sender {
+    //called when the new draft button is pressed
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.delegate = self;
+    contributeViewController.configurationType = PAGE;
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    [contributeViewController release];
+}
+
 - (IBAction) onLoginButtonClicked:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
         //no user is logged in currently
@@ -145,6 +161,12 @@
     [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
 
 }
+
+#pragma mark - ConrtibuteViewControllerDelegate methods
+- (void)onSubmitButtonPressed:(id)sender {
+    
+}
+
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
     return homeViewController;

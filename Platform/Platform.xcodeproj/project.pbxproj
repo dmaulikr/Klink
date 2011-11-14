@@ -16,6 +16,8 @@
 		3D5B84E91463498700FD0F50 /* UIDraftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5B84E71463498700FD0F50 /* UIDraftView.m */; };
 		3D5B84EA1463498700FD0F50 /* UIDraftView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E81463498700FD0F50 /* UIDraftView.xib */; };
 		3D5B84EC1463527600FD0F50 /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84EB1463527600FD0F50 /* DraftViewController.xib */; };
+		3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */; };
+		3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D683161146E245F007B4432 /* image-photoCameraButton.png */; };
 		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */; };
 		3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */; };
 		3DCFE8E01464633400D6587D /* icon-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DC1464633400D6587D /* icon-compose.png */; };
@@ -35,7 +37,6 @@
 		C55EC740145FA0E600BA66FA /* UIViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC73F145FA0E600BA66FA /* UIViewCategory.m */; };
 		C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC743145FA1C900BA66FA /* PlatformAppDelegate.m */; };
 		C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74D145FA3B000BA66FA /* InfoPlist.strings */; };
-		C55EC754145FA3B000BA66FA /* Platform-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C55EC750145FA3B000BA66FA /* Platform-Info.plist */; };
 		C55EC75D145FA50800BA66FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC75F145FA50800BA66FA /* main.m */; };
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
@@ -96,7 +97,6 @@
 		C5A04A8D14434F620037FA7B /* AuthenticationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A8C14434F620037FA7B /* AuthenticationContext.m */; };
 		C5A04A901443557E0037FA7B /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A8F1443557E0037FA7B /* Request.m */; };
 		C5A04A93144356CA0037FA7B /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A92144356CA0037FA7B /* RequestManager.m */; };
-		C5A82D74146665B300E77675 /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A82D73146665B300E77675 /* icon-camera2.png */; };
 		C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A82D761466667E00E77675 /* UICameraActionSheet.m */; };
 		C5B3003C1447AE0A00236F52 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */; };
 		C5C298D0144B9CE100206D07 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C298CF144B9CE100206D07 /* EventManager.m */; };
@@ -187,6 +187,8 @@
 		3D5B84E71463498700FD0F50 /* UIDraftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftView.m; sourceTree = "<group>"; };
 		3D5B84E81463498700FD0F50 /* UIDraftView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftView.xib; sourceTree = "<group>"; };
 		3D5B84EB1463527600FD0F50 /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
+		3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		3D683161146E245F007B4432 /* image-photoCameraButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton.png"; sourceTree = "<group>"; };
 		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCellLeft.h; sourceTree = "<group>"; };
 		3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftTableViewCellLeft.m; sourceTree = "<group>"; };
 		3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellLeft.xib; sourceTree = "<group>"; };
@@ -328,7 +330,6 @@
 		C5A04A91144356CA0037FA7B /* RequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestManager.h; sourceTree = "<group>"; };
 		C5A04A92144356CA0037FA7B /* RequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestManager.m; sourceTree = "<group>"; };
 		C5A82D671465ABD900E77675 /* PageState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageState.h; sourceTree = "<group>"; };
-		C5A82D73146665B300E77675 /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
 		C5A82D751466667E00E77675 /* UICameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICameraActionSheet.h; sourceTree = "<group>"; };
 		C5A82D761466667E00E77675 /* UICameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICameraActionSheet.m; sourceTree = "<group>"; };
 		C5B3003A1447AE0A00236F52 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
@@ -449,7 +450,6 @@
 		C5C9E298146700C300838934 /* SA_OAuthTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SA_OAuthTwitterEngine.m; sourceTree = "<group>"; };
 		C5C9E299146700C300838934 /* twitter_load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter_load.png; sourceTree = "<group>"; };
 		C5C9E2AE146700F600838934 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		C5C9E2B01467019000838934 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
 		C5C9E2BB1467986C00838934 /* UpdateAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateAuthenticatorResponse.h; sourceTree = "<group>"; };
 		C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateAuthenticatorResponse.m; sourceTree = "<group>"; };
 		C5C9E2CC1468957500838934 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "../Klink V2/Klink V2/37x-Checkmark.png"; sourceTree = "<group>"; };
@@ -492,7 +492,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
+
+				3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */,
+
 				C5C9E2AF146700F600838934 /* libxml2.2.dylib in Frameworks */,
 				C55EC6E4145C98A500BA66FA /* QuartzCore.framework in Frameworks */,
 				C5C83AF8144B92A900AF38CF /* Security.framework in Frameworks */,
@@ -573,6 +577,7 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3D683161146E245F007B4432 /* image-photoCameraButton.png */,
 				C5C9E2CC1468957500838934 /* 37x-Checkmark.png */,
 				3DCFE8DC1464633400D6587D /* icon-compose.png */,
 				3DCFE8DD1464633400D6587D /* icon-compose@2x.png */,
@@ -591,8 +596,10 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+
 				C5C9D2F914712942008E3B51 /* libz.1.1.3.dylib */,
 				C5C9E2B01467019000838934 /* libz.1.2.3.dylib */,
+				3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */,
 				C5C9E2AE146700F600838934 /* libxml2.2.dylib */,
 				C56F8A1A1462EC9F00E14199 /* Resources */,
 				C5DB5A59144FAF3700D6D6AE /* Utilities */,
@@ -1220,6 +1227,7 @@
 		C593F7B6143EB191008D25A7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Blue Label Solutions LLC";
 			};
 			buildConfigurationList = C593F7B9143EB191008D25A7 /* Build configuration list for PBXProject "Platform" */;
@@ -1254,7 +1262,6 @@
 				C5C76C8F145B986900BA69B8 /* PageViewController.xib in Resources */,
 				C5C76C97145BB3EC00BA69B8 /* UIPageView.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
-				C55EC754145FA3B000BA66FA /* Platform-Info.plist in Resources */,
 				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
 				C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */,
 				C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */,
@@ -1271,7 +1278,6 @@
 				3DCFE8E11464633400D6587D /* icon-compose@2x.png in Resources */,
 				3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */,
 				3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */,
-				C5A82D74146665B300E77675 /* icon-camera2.png in Resources */,
 				C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */,
 				C5D9AA631466EB6C009AA3D8 /* blackArrow@2x.png in Resources */,
 				C5D9AA641466EB6C009AA3D8 /* blueArrow.png in Resources */,
@@ -1287,6 +1293,7 @@
 				C5C9E2CD1468957500838934 /* 37x-Checkmark.png in Resources */,
 				C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */,
 				3D51CB8C146C7149002E0FD4 /* ContributeViewController.xib in Resources */,
+				3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1481,6 +1488,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Platform/Platform-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(SRC_MGTwitterEngine)",
@@ -1507,6 +1515,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Platform/Platform-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(SRC_MGTwitterEngine)",
 					"$(SDKROOT)/usr/include/libxml2",

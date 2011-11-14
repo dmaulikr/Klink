@@ -92,6 +92,9 @@
             [self getMediaFromSource:UIImagePickerControllerSourceTypePhotoLibrary];
         }
     }
+    else {
+        [self.viewController onCancelButtonPressed:self];
+    }
 }
 
 #pragma mark - UIImagePickerController delegate methods
@@ -142,8 +145,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage* fullscreenImage = [imageManager shrinkImage:chosenImage toSize:newFullscreenSize];
     
     [self.viewController onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
-    
-    
     
     CGImageRelease(croppedThumbnailImage);
     
