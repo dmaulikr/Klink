@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
+@protocol ContributeViewControllerDelegate <NSObject>
+
+- (void)onSubmitButtonPressed:(id)sender;
+
+@end
 
 @interface ContributeViewController : BaseViewController <UITextViewDelegate> {
+    id<ContributeViewControllerDelegate> m_delegate;
+    
     UIScrollView*   m_scrollView;
     UITextView*     m_activeTextView;
     UITextField*    m_activeTextField;
@@ -39,6 +46,8 @@
     
     UILabel*        m_lbl_deadline;
 }
+
+@property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
 
 @property (nonatomic, retain) IBOutlet UIScrollView*    scrollView;
 @property (nonatomic, retain) UITextView*               activeTextView;
@@ -71,6 +80,7 @@
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;
 - (IBAction)onCameraButtonPressed:(id)sender;
+- (void)onCancelButtonPressed:(id)sender;
 
 + (ContributeViewController*) createInstance;
 

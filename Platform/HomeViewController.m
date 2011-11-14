@@ -130,10 +130,14 @@
 - (IBAction) onNewDraftButtonClicked:(id)sender {
     //called when the new draft button is pressed
     ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
-
+    contributeViewController.delegate = self;
     contributeViewController.configurationType = PAGE;
     
-    [self.navigationController pushViewController:contributeViewController animated:YES];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
     [contributeViewController release];
 }
 
@@ -157,6 +161,12 @@
     [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
 
 }
+
+#pragma mark - ConrtibuteViewControllerDelegate methods
+- (void)onSubmitButtonPressed:(id)sender {
+    
+}
+
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
     return homeViewController;

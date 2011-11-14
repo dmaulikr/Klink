@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "ContributeViewController.h"
 
 @class CloudEnumerator;
-@interface HomeViewController : BaseViewController {
+@interface HomeViewController : BaseViewController < ContributeViewControllerDelegate > {
     UIButton*   m_readButton;
     UIButton*   m_contributeButton;
     UIButton*   m_newDraftButton;

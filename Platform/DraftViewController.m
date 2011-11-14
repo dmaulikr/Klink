@@ -15,7 +15,6 @@
 #import "UICameraActionSheet.h"
 #import "Photo.h"
 #import "User.h"
-#import "ContributeViewController.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -26,6 +25,9 @@
 @synthesize frc_draft_pages     = __frc_draft_pages;
 @synthesize pagedViewSlider     = m_pagedViewSlider;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
+
+@synthesize thumbnailImage      = m_thumbnailImage;
+@synthesize fullImage           = m_fullImage;
 
 
 #pragma mark - Properties
@@ -349,7 +351,12 @@
     
 }
 
-#pragma mark - Photo handling methods 
+#pragma mark - ConrtibuteViewControllerDelegate methods
+- (void)onSubmitButtonPressed:(id)sender {
+    
+}
+
+#pragma mark - UICameraActionSheetDelegate methods 
 - (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
     [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
     
@@ -361,13 +368,22 @@
     
     //[resourceContext save:YES onFinishCallback:nil];
     
-    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    /*ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.delegate = self;
     contributeViewController.configurationType = PHOTO;
     contributeViewController.draftTitle = currentPage.displayname;
     contributeViewController.img_photo = image;
     
-    [self.navigationController pushViewController:contributeViewController animated:YES];
-    [contributeViewController release];
+    //[self.navigationController pushViewController:contributeViewController animated:YES];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    //[self presentModalViewController:contributeViewController animated:YES];
+    
+    [navigationController release];
+    [contributeViewController release];*/
 }
 
 
@@ -377,12 +393,35 @@
 }
 
 - (void) onCameraButtonPressed:(id)sender {
-    if (self.cameraActionSheet != nil) {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    //[Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
+    
+    //[resourceContext save:YES onFinishCallback:nil];
+    
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.delegate = self;
+    contributeViewController.configurationType = PHOTO;
+    contributeViewController.draftTitle = currentPage.displayname;
+    //contributeViewController.img_photo = image;
+    
+    //[self.navigationController pushViewController:contributeViewController animated:YES];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    //[navigationController release];
+    //[contributeViewController release];
+    
+    /*if (self.cameraActionSheet != nil) {
         [self.cameraActionSheet release];
     }
     
     self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
-    [self.cameraActionSheet showInView:self.view];
+    [self.cameraActionSheet showInView:self.navigationController.view];*/
 }
 
 - (void) onBookmarkButtonPressed:(id)sender {

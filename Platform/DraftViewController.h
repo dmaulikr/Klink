@@ -10,17 +10,25 @@
 #import "BaseViewController.h"
 #import "UIPagedViewSlider4.h"
 #import "CloudEnumerator.h"
+#import "ContributeViewController.h"
 
-@interface DraftViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate> {
+@interface DraftViewController : BaseViewController < ContributeViewControllerDelegate, NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate > {
+    
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     UIPagedViewSlider2* m_pagedViewSlider; //will use to flip between pages
-    CloudEnumerator*    m_pageCloudEnumerator;    
+    CloudEnumerator*    m_pageCloudEnumerator;
+    
+    UIImage*            m_thumbnailImage;
+    UIImage*            m_fullImage;
 }
 
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_draft_pages;
 @property (nonatomic,retain) UIPagedViewSlider2*            pagedViewSlider;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
+
+@property (nonatomic,retain) UIImage*                       thumbnailImage;
+@property (nonatomic,retain) UIImage*                       fullImage;
 
 + (DraftViewController*) createInstance;
 

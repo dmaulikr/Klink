@@ -15,6 +15,8 @@
 
 
 @implementation ContributeViewController
+@synthesize delegate = m_delegate;
+
 @synthesize scrollView = m_scrollview;
 @synthesize activeTextView = m_activeTextView;
 @synthesize activeTextField = m_activeTextField;
@@ -106,6 +108,8 @@
     
     // Navigation Bar Buttons
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancelButtonPressed:)];
+
 }
 
 - (void)viewDidUnload
@@ -177,7 +181,7 @@
         self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = YES;
         self.lbl_photoRequired.hidden = NO;
-        self.iv_photo.image = self.img_photo;
+        //self.iv_photo.image = self.img_photo;
         
         // Show existing draft title since user is adding a photo
         self.lbl_draftTitle.text = self.draftTitle;
@@ -189,6 +193,11 @@
         // Caption is optional because user is adding a new photo
         self.lbl_captionOptional.hidden = NO;
         self.lbl_captionRequired.hidden = YES;
+        
+        if (!self.img_photo) {
+            // ContributeViewController was just lanuched from user pressing the camera button from the draft view, immidiately launch cameraActionSheet
+            [self onCameraButtonPressed:nil];
+        }
     }
     else if (self.configurationType == CAPTION) {
         // New Caption
@@ -258,7 +267,7 @@
     }
     else {
         // caption is acceptable
-        self.caption = [self.activeTextView getText];
+        //self.caption = [self.activeTextView getText];
     }
     
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
@@ -391,15 +400,35 @@
 
 }
 
-#pragma mark Submit button handler
+#pragma mark Navigation Bar button handler
 - (void)onSubmitButtonPressed:(id)sender {
-    ResourceContext* resourceContext = [ResourceContext instance];
+    //ResourceContext* resourceContext = [ResourceContext instance];
     
-    if (self.configurationType == PHOTO && self.img_photo) {
-        [Photo createPhotoInPage:self.pageID withThumbnailImage:self.img_thumbnail withImage:self.img_photo];
+    //if (self.configurationType == PHOTO && self.img_photo) {
+    //    [Photo createPhotoInPage:self.pageID withThumbnailImage:self.img_thumbnail withImage:self.img_photo];
+    //}
+    
+    //[resourceContext save:YES onFinishCallback:nil];
+    
+    [self.delegate onSubmitButtonPressed:sender];
+    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)onCancelButtonPressed:(id)sender {    
+    //[self.delegate onCancelButtonPressed:sender];
+    
+    if (self.configurationType == PHOTO && !self.img_photo) {
+        // User just pressed 'Cancel' button on cameraActionSheet right after they first pressed the camera button from the draft view
+        [self dismissModalViewControllerAnimated:YES];
     }
-    
-    [resourceContext save:YES onFinishCallback:nil];
+    else if (sender == self.navigationItem.leftBarButtonItem) {
+        // User pressed navigation bar 'Cancel' button 
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else {
+        // Do nothing, user just pressed 'Cancel' button on cameraActionSheet after having already taken a photo
+    }
 }
 
 #pragma mark - Static Initializers
