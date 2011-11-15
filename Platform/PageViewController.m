@@ -229,7 +229,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    //NSString* activityName = @"PageViewController.viewWillAppear:";
+    NSString* activityName = @"PageViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     //render the page ID specified as a parameter
@@ -248,6 +248,7 @@
         }
         else {
             //empty page store, will need to thow up a progress dialog to show user of download
+            LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
             [self.pageCloudEnumerator enumerateUntilEnd];
             //TODO: need to make a call to a centrally hosted busy indicator view
         }
@@ -361,12 +362,13 @@
 
 
 - (void) onCameraButtonPressed : (id) sender {
-    if (self.cameraActionSheet != nil) {
-        [self.cameraActionSheet release];
-    }
-    
-   self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
-   [self.cameraActionSheet showInView:self.view];
+    //TODO: need to implement using the ContributeViewController
+//    if (self.cameraActionSheet != nil) {
+//        [self.cameraActionSheet release];
+//    }
+//    
+//   self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
+//   [self.cameraActionSheet showInView:self.view];
    
 }
 

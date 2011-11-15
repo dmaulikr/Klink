@@ -51,7 +51,7 @@ extern int const threshold_FEED_ENUMERATION_TIME_GAP;
 //
 //extern int const pageSize_PHOTOSINTHEME;
 //
-extern NSString* const facebook_APPID;
+//extern NSString* const facebook_APPID;
 //extern double  const facebook_MAXDATE;
 //extern NSString* const sn_KEYCHAINSERVICENAME;
 //

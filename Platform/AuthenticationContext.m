@@ -56,6 +56,7 @@
     return retVal;
 }
 
+#define kFACEBOOKMAXDATE    64092211200
 //Extracts values from a apassed in JSON instance and populates attributes
 //on this object accordingly
 - (void) readAttributesFromJSONDictionary:(NSDictionary*)jsonDictionary {
@@ -86,6 +87,20 @@
                         [self setValue:[value stringValue] forKey:[attrDesc name]];
                     }
                 }
+                //TODO: research support for NSDate in JSON KIT, we can then uncomment this type of section and introduced NSDates into our datamodel
+//                else if (attrType == NSDateAttributeType) {
+//                    //we need to parse from the double description in the web service
+//                    //package to a NSDate
+//                    NSNumber* doubleDateValue = (NSNumber*)value;
+//                    NSDate* convertedDate = nil;
+//                    if ([doubleDateValue doubleValue] != 0) {
+//                        convertedDate = [NSDate dateWithTimeIntervalSince1970:[doubleDateValue doubleValue]];
+//                    }
+//                    else {
+//                        convertedDate = [NSDate dateWithTimeIntervalSince1970:kFACEBOOKMAXDATE];
+//                    }
+//                    [self setValue:convertedDate forKey:[attrDesc name]];
+//                }
                 else {
                     //unsupported attribute type
                     LOG_RESOURCE(1,@"%@Unsupported attribute type in JSON string: %d",activityName,attrType);
@@ -109,7 +124,11 @@
     
     if (self)  {
 
-        [self readAttributesFromJSONDictionary:jsonDictionary];       
+        [self readAttributesFromJSONDictionary:jsonDictionary];     
+        
+       
+        
+
     }
     return self;
 }
@@ -123,7 +142,7 @@
 }
 
 - (NSString*) toJSON {
-    
+    NSString* activityName = @"AuthenticationContext.toJSON:";
     NSEntityDescription* entity = [self entity];
     NSArray* attributeDescriptions = [entity properties];
     NSMutableDictionary* objectAsDictionary = [[NSMutableDictionary alloc]init];
@@ -139,11 +158,6 @@
     }
     
     //we now have a dictionary of all attribute values for this object
-    
-    
-    
-    
-    
     NSError* error = nil;
     
     
@@ -153,7 +167,7 @@
     
     if (error != nil) {
         //error in json serialization
-   
+        LOG_SECURITY(1,@"%@Failure to serialize context object to JSON due to %@",activityName,[error userInfo]);
         return nil;
     }
     else {

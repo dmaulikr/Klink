@@ -63,7 +63,7 @@ static ApplicationSettingsManager* instance;
     ApplicationSettings* settings = (ApplicationSettings*) [Resource createInstanceOfType:APPLICATIONSETTINGS withResourceContext:self.resourceContext];
     //here we need to set up the defaults according to whats in the 
     //ApplicationSettingsDefaults.h file
-    settings.fb_app_id = facebook_APPID;
+    //settings.fb_app_id = facebook_APPID;
     settings.base_url = default_BASEURL;
     settings.feed_maxnumtodownload =[NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
     settings.photo_maxnumtodownload = [NSNumber numberWithInt:maxsize_PHOTODOWNLOAD];

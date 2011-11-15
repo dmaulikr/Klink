@@ -18,6 +18,7 @@
 @interface ContributeViewController : BaseViewController <UITextViewDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;
     
+    UICameraActionSheet*    m_cameraActionSheet;
     UIScrollView*   m_scrollView;
     UITextView*     m_activeTextView;
     UITextField*    m_activeTextField;
@@ -48,6 +49,8 @@
 }
 
 @property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
+
+@property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
 
 @property (nonatomic, retain) IBOutlet UIScrollView*    scrollView;
 @property (nonatomic, retain) UITextView*               activeTextView;

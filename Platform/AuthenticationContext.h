@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSDate * expirydate;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSString* facebookaccesstoken;
-@property (nonatomic, retain) NSDate*   facebookaccesstokenexpirydate;
+@property (nonatomic, retain) NSNumber* facebookaccesstokenexpirydate;
 @property (nonatomic, retain) NSString* facebookuserid;
 @property (nonatomic, retain) NSString* twitteraccesstoken;
 @property (nonatomic, retain) NSString* twitteruserid;

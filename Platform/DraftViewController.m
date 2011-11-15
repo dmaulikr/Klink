@@ -407,11 +407,11 @@
     contributeViewController.draftTitle = currentPage.displayname;
     //contributeViewController.img_photo = image;
     
-    //[self.navigationController pushViewController:contributeViewController animated:YES];
+    [self.navigationController pushViewController:contributeViewController animated:YES];
     
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
+    //UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:self.navigationController animated:YES];
     
     //[navigationController release];
     //[contributeViewController release];

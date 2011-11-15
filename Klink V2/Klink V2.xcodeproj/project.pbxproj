@@ -102,6 +102,7 @@
 		C53F283E13EB3C040038C8F0 /* UIImageViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283B13EB3C040038C8F0 /* UIImageViewTap.m */; };
 		C53F283F13EB3C040038C8F0 /* UIViewTap.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F283D13EB3C040038C8F0 /* UIViewTap.m */; };
 		C53F284213EB3D000038C8F0 /* CloudEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C53F284113EB3D000038C8F0 /* CloudEnumerator.m */; };
+		C55E074A1472411800EC35C3 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E07491472411800EC35C3 /* libz.1.2.5.dylib */; };
 		C561275713CA4EB5005E5731 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C561275613CA4EB5005E5731 /* QuartzCore.framework */; };
 		C561275C13CB4B7F005E5731 /* HomeScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = C561275A13CB4B7F005E5731 /* HomeScreenController.m */; };
 		C561275D13CB4B7F005E5731 /* HomeScreenController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C561275B13CB4B7F005E5731 /* HomeScreenController.xib */; };
@@ -243,7 +244,6 @@
 		C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808F713C3851F001E16F3 /* CFNetwork.framework */; };
 		C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FA13C3852C001E16F3 /* SystemConfiguration.framework */; };
 		C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FC13C38537001E16F3 /* MobileCoreServices.framework */; };
-		C5F808FF13C38556001E16F3 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C5F808FE13C38556001E16F3 /* libz.1.2.3.dylib */; };
 		C5F8091213C38892001E16F3 /* Test_Project_2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C5F8091013C38892001E16F3 /* Test_Project_2.xcdatamodeld */; };
 		C5F8091613C388D8001E16F3 /* SystemDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C5F8091413C388D8001E16F3 /* SystemDataModel.xcdatamodeld */; };
 		C5F8092113C4B4D7001E16F3 /* ImageGallerySlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F8092013C4B4D7001E16F3 /* ImageGallerySlider.xib */; };
@@ -419,6 +419,7 @@
 		C53F283D13EB3C040038C8F0 /* UIViewTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewTap.m; sourceTree = "<group>"; };
 		C53F284013EB3D000038C8F0 /* CloudEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumerator.h; sourceTree = "<group>"; };
 		C53F284113EB3D000038C8F0 /* CloudEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumerator.m; sourceTree = "<group>"; };
+		C55E07491472411800EC35C3 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		C561275613CA4EB5005E5731 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C561275913CB4B7F005E5731 /* HomeScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScreenController.h; sourceTree = "<group>"; };
 		C561275A13CB4B7F005E5731 /* HomeScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeScreenController.m; sourceTree = "<group>"; };
@@ -703,6 +704,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C55E074A1472411800EC35C3 /* libz.1.2.5.dylib in Frameworks */,
 				C5F5F4221406954E0067084D /* libicucore.dylib in Frameworks */,
 				C5F5F411140693430067084D /* libFlurry.a in Frameworks */,
 				C5F5F0EA140684F60067084D /* libtidy.dylib in Frameworks */,
@@ -715,7 +717,6 @@
 				C5F5F0691405B1C60067084D /* libxml2.2.dylib in Frameworks */,
 				C5CCDFF113D9B67400ABE747 /* Security.framework in Frameworks */,
 				C561275713CA4EB5005E5731 /* QuartzCore.framework in Frameworks */,
-				C5F808FF13C38556001E16F3 /* libz.1.2.3.dylib in Frameworks */,
 				C5F808FD13C38537001E16F3 /* MobileCoreServices.framework in Frameworks */,
 				C5F808FB13C3852C001E16F3 /* SystemConfiguration.framework in Frameworks */,
 				C5F808F813C3851F001E16F3 /* CFNetwork.framework in Frameworks */,
@@ -763,6 +764,7 @@
 		C5190A0F13C18C0C0077EECA = {
 			isa = PBXGroup;
 			children = (
+				C55E07491472411800EC35C3 /* libz.1.2.5.dylib */,
 				C5F5F4211406954E0067084D /* libicucore.dylib */,
 				C5F5F410140693430067084D /* libFlurry.a */,
 				C5F5F0E9140684F50067084D /* libtidy.dylib */,

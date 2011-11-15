@@ -62,7 +62,7 @@ static FeedManager* sharedManager;
 
 #pragma mark - Instance methods
 - (void) refreshFeedOnFinish:(Callback *)callback  {
-        
+    NSString* activityName = @"FeedManager.refreshFeedOnFinish:";
     //we nil out the current feed enumerator so we are able to create a new instance
     //which will query from the start of the feed again
     self.feedEnumerator = nil;
@@ -70,6 +70,8 @@ static FeedManager* sharedManager;
     self.onRefreshCallback = callback;
     
     //enumerate feed until the end
+    LOG_FEEDMANAGER(0, @"%@Beginning to enumerate entire contents of user's feed",activityName);
+      
     [self.feedEnumerator enumerateUntilEnd];
     
     

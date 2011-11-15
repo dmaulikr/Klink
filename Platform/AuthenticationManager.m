@@ -25,7 +25,7 @@
 #import "GetAuthenticatorResponse.h"
 #import "SA_OAuthTwitterController.h"
 #import "SA_OAuthTwitterEngine.h"
-
+#import "DateTimeHelper.h"
 #define kKeyChainServiceName    @"Aardvark"
 #define kUser                   @"User"
 
@@ -33,7 +33,7 @@ static  AuthenticationManager* sharedManager;
 
 @implementation AuthenticationManager
 @synthesize m_LoggedInUserID;
-@synthesize facebook = __facebook;
+
 @synthesize fbPictureRequest = m_fbPictureRequest;
 @synthesize fbProfileRequest = m_fbProfileRequest;
 
@@ -48,16 +48,6 @@ static  AuthenticationManager* sharedManager;
     }
 }
 
-#pragma mark - Properties
-
-- (Facebook*) facebook {
-    if (__facebook != nil) {
-        return __facebook;
-    }
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
-    __facebook = appDelegate.facebook;
-    return __facebook;
-}
 
 #pragma mark - initializers
 - (id) init {
@@ -67,20 +57,28 @@ static  AuthenticationManager* sharedManager;
     
     NSString* lastUserID = [defaults valueForKey:USERID];
     
+       
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterNoStyle];
     NSNumber * lastLoggedInUserID = [f numberFromString:lastUserID];
     [f release];
     
+    //create the instance to have no user logged in, by setting it to 0
+    self.m_LoggedInUserID = [NSNumber numberWithInt:0];
     
     if (lastLoggedInUserID != 0) {
         AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
         if (storedContext != nil) {
-            [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
-            LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
+            BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
+            if (result) {
+                LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
+            }
+            else {
+                LOG_SECURITY(1, @"%@%@",activityName,@" Unable to login with stored credentials");
+            }
         }
         else {
-      
+            LOG_SECURITY(1, @"%@%@",activityName,@" No stored user context found, will require re-authentication");
         }
     }
     else {
@@ -101,7 +99,10 @@ static  AuthenticationManager* sharedManager;
     //get the user object
     [[EventManager instance]raiseShowProgressViewEvent:@"Getting Facebook data" withCustomView:nil withMaximumDisplayTime:nil];
     
-    self.fbProfileRequest = [self.facebook requestWithGraphPath:@"me" andDelegate:self];        
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
+
+    self.fbProfileRequest = [facebook requestWithGraphPath:@"me" andDelegate:self];        
 }
 
 #pragma mark -- FBRequestDelegate
@@ -117,9 +118,11 @@ static  AuthenticationManager* sharedManager;
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
         
         //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
+        PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+        Facebook* facebook = appDelegate.facebook;
         
-        LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,self.facebook.accessToken);
-        [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:self.facebook.accessToken withFacebookTokenExpiry:self.facebook.expirationDate onFinishNotify:callback];
+        LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
+        [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate onFinishNotify:callback];
           
     }
     else if (request == self.fbPictureRequest) {
@@ -186,9 +189,13 @@ static  AuthenticationManager* sharedManager;
     NSString* activityName = @"AuthenticationManager.authenticate:";
     //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    if (![self.facebook isSessionValid]) {
+    
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
+    
+    if (![facebook isSessionValid]) {
         LOG_SECURITY(0,@"%@%@",activityName, @"Beginning facebook authentication sequencce");
-        [self.facebook authorize:permissions delegate:self];
+        [facebook authorize:permissions delegate:self];
     }
     
 }
@@ -217,20 +224,26 @@ static  AuthenticationManager* sharedManager;
     return retVal;
 }
 
-- (void)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
+- (BOOL)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
     NSString* activityName = @"AuthenticationManager.loginUser:";
     ResourceContext* resourceContext = [ResourceContext instance];
     
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
     //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
     if (context.facebookaccesstoken) {
-        self.facebook.accessToken = context.facebookaccesstoken;
         
-        if (![self.facebook isSessionValid]) {            
-            LOG_SECURITY(1, @"%@Facebook session is invalid with token %@",activityName,self.facebook.accessToken);
+        facebook.accessToken = context.facebookaccesstoken;
+        facebook.expirationDate =[DateTimeHelper parseWebServiceDateDouble:context.facebookaccesstokenexpirydate];
+        if (![facebook isSessionValid]) {            
+            LOG_SECURITY(1, @"%@Facebook session is invalid with token %@",activityName,facebook.accessToken);
+            //need to begin re-authentication procedure
+            return NO;
         }
     }
     else {
         LOG_SECURITY(1, @"%@%@",activityName,@"No facebook token returned in authenticator");
+        return NO;
     }
     //set the current user id
     self.m_LoggedInUserID = userID;
@@ -244,7 +257,7 @@ static  AuthenticationManager* sharedManager;
         
         
         //since we logged in successfully, now lets grab the profile photo                    
-        self.fbPictureRequest = [self.facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+        self.fbPictureRequest = [facebook requestWithGraphPath:@"me/picture" andDelegate:self];
         LOG_SECURITY(0,@"%@User %@ doesnt have a profile picture, downloading from Facebook...",activityName,currentUser.objectid);
     }
     
@@ -252,6 +265,7 @@ static  AuthenticationManager* sharedManager;
     EventManager* eventManager = [EventManager instance];
     [eventManager raiseUserLoggedInEvent:nil];
     LOG_SECURITY(0,@"%@User %@ successfully logged into application",activityName,self.m_LoggedInUserID);
+    return YES;
     
 }
 
@@ -272,8 +286,9 @@ static  AuthenticationManager* sharedManager;
         
         self.m_LoggedInUserID = 0;
         //at this point the user is logged off
-        
-        [self.facebook logout:self];
+        PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+        Facebook* facebook = appDelegate.facebook;
+        [facebook logout:self];
         
         //we emit a system wide event to notify any listeners that the user has logged out
         EventManager* eventManager = [EventManager instance];
@@ -289,6 +304,7 @@ static  AuthenticationManager* sharedManager;
 
 #pragma mark - Async Callback Handlers
 - (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
+    NSString* activityName = @"AuthenticationManager.onGetAuthenticationContextDownloaded:";
     ResourceContext* resourceContext = [ResourceContext instance];
     GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
     EventManager* eventManager = [EventManager instance];
@@ -313,12 +329,20 @@ static  AuthenticationManager* sharedManager;
     BOOL contextSavedToKeyChain = [self saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
     
     if (contextSavedToKeyChain) {
-        [self loginUser:newContext.userid withAuthenticationContext:newContext];
+        BOOL result = [self loginUser:newContext.userid withAuthenticationContext:newContext];
+        if (result) {
+            LOG_SECURITY(0,@"%@Login completed successfully");
+                         
+        }
+        else {
+            LOG_SECURITY(1,@"%@Login failed for unknown reasons");
+        }
     }
     else {
         //unable to login user due to inability to save the credential to key chain
         //raise global error
-        
+        LOG_SECURITY(1, @"%@Could not complete login due to failure in saving credential to key chain",activityName);
+                     
         
         [eventManager raiseUserLoginFailedEvent:nil];
     }

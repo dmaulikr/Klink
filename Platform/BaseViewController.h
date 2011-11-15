@@ -22,7 +22,7 @@
 @class UICameraActionSheet;
 @class ResourceContext;
 @interface BaseViewController : UIViewController {
-    UICameraActionSheet*    m_cameraActionSheet;
+
     UIProgressHUDView*      m_progressView;
     UILoginView*            m_loginView;
 }
@@ -31,7 +31,7 @@
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) EventManager*             eventManager;
 @property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
-@property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
+
 @property (nonatomic, retain) User*                     loggedInUser;
 @property (nonatomic, retain) UIProgressHUDView*        progressView;
 @property (nonatomic, retain) UILoginView*              loginView;

@@ -9,7 +9,7 @@
 #import "PlatformAppDelegate.h"
 
 #import "SampleViewController.h"
-
+#import "AuthenticationManager.h"
 #import "ApplicationSettings.h"
 @implementation PlatformAppDelegate
 
@@ -32,6 +32,7 @@
 
 @synthesize facebook = __facebook;
 
+#define     kFACEBOOKAPPID  @"168077769927457"
 
 #pragma mark - Properties
 - (ApplicationSettingsManager*)applicationSettingsManager {
@@ -45,8 +46,8 @@
     if (__facebook != nil) {
         return __facebook;
     }
-    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
-    __facebook = [[Facebook alloc]initWithAppId:settingsObject.fb_app_id];
+
+    __facebook = [[Facebook alloc]initWithAppId:kFACEBOOKAPPID];
     
     return __facebook;
     
@@ -62,7 +63,7 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     // obtain facebook instance ref
-    return [self.authenticationManager.facebook handleOpenURL:url];
+    return [self.facebook handleOpenURL:url];
     
 }
 
@@ -70,6 +71,11 @@
 {
     // Override point for customization after application launch.
     // Add the navigation controller's view to the window and display.
+    
+    //we trigger the instantiation of the authentication manager 
+    //and other singletons
+    [self.applicationSettingsManager settings];    
+    [AuthenticationManager instance];
     
     self.window.rootViewController = self.navigationController;
  

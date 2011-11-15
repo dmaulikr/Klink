@@ -102,18 +102,19 @@
 }
 
 - (void) enumerateNextPage {
-    
-    
-     
+    NSString* activityName = @"CloudEnumerator.enumerateNextPage:"; 
     BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
     
     if (!m_isEnumerationPending &&
         hasEnoughTimeLapsedBetweenConsecutiveSearches) {
-        
+        LOG_ENUMERATION(0, @"%@Beginning to enumerate a single page of results",activityName);
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
         [self enumerate:YES];
+    }
+    else {
+        LOG_ENUMERATION(1, @"%@Could not execute enumerate either because an existing enumeration is pending or not enough time has lapsed to run the next enumeration",activityName);
     }
     
     
@@ -121,16 +122,22 @@
 
 
 - (void) enumerateUntilEnd {
-        BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+    NSString* activityName = @"CloudEnumerator.enumerateUntilEnd:";
+    BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
     
-
+    
     if (!m_isEnumerationPending &&
-        hasEnoughTimeLapsedBetweenConsecutiveSearches) {        
+        hasEnoughTimeLapsedBetweenConsecutiveSearches) {
+        LOG_ENUMERATION(0, @"%@Beginning to enumerate until all results of the query are downloaded",activityName);
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
         [self enumerate:NO];
     
+    }
+    else {
+        //no execute case
+        LOG_ENUMERATION(1, @"%@Could not execute enumerate either because an existing enumeration is pending or not enough time has lapsed to run the next enumeration",activityName);
     }
 }
 

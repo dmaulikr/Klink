@@ -62,3 +62,5 @@ NSString* const DATEEXPIRE              =@"dateexpire";
 NSString* const IMAGEPATH               =@"imagepath";
 NSString* const DATEPUBLISHED           =@"datepublished";
 NSString* const STATE                   =@"state";
+
+NSString* const FACEBOOKTOKENEXPIRYDATE = @"facebookaccesstokenexpirydate";

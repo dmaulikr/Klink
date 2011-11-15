@@ -184,7 +184,7 @@
         return retVal;
     }
     //if it is a synchronized type, then the answer to this question is always no
-    if (!self.typeinstancedata.iscloudtype) {
+    if (![self.typeinstancedata.iscloudtype boolValue]) {
         retVal = NO;
         return retVal;
     }

@@ -16,7 +16,7 @@
 #import "ImageManager.h"
 #import "AuthenticationManager.h"
 #import "BaseViewController.h"
-
+#import "PlatformAppDelegate.h"
 #define kMinimumBusyWaitTime    1
 #define kMaximumBusyWaitTimePutAuthenticator    6
 #define kMaximumBusyWaitTimeFacebookLogin       6
@@ -121,11 +121,12 @@
     
     NSString* activityName = @"UILoginView.checkStatusAndDismiss:";
     BOOL result = YES;
-    AuthenticationManager* authnManager = [AuthenticationManager instance];
-    //AuthenticationContext* context = [authnManager contextForLoggedInUser];
+   
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
     
     if (self.authenticateWithFacebook) {
-        Facebook* facebook = authnManager.facebook;
+        
         if (![facebook isSessionValid]) {
             //we need to dismiss with failure since we were unable to login into facebok
             LOG_LOGINVIEWCONTROLLER(1, @"%@Login with Facebook failed.",activityName);
@@ -148,8 +149,8 @@
     NSString* activityName = @"UILoginView.beginFacebookAuthentication:";
     //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-     AuthenticationManager* authnManager = [AuthenticationManager instance];
-    Facebook* facebook = authnManager.facebook;
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
     
     if (![facebook isSessionValid]) {
         [facebook authorize:permissions delegate:self];
@@ -257,7 +258,8 @@
     NSString* activityName = @"LoginViewController.request:didLoad:";
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
-    Facebook* facebook = authenticationManager.facebook;
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
     ResourceContext* resourceContext = [ResourceContext instance];
     
     if (request == self.fbProfileRequest) {
@@ -294,9 +296,8 @@
 #pragma mark - FBSessionDelegate
 - (void) fbDidLogin {
     NSString* activityName = @"UILoginView.fbDidLogin:";
-    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-
-    Facebook* facebook = authenticationManager.facebook;
+    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    Facebook* facebook = appDelegate.facebook;
     
     //this method is called upon the completion of the authorize operation
     NSString* message = [NSString stringWithFormat:@"Facebook login successful, accessToken:%@, expiryDate:%@",facebook.accessToken,facebook.expirationDate];    

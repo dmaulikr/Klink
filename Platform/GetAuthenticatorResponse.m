@@ -23,8 +23,7 @@
         NSDictionary* authenticationContextDictionary = [jsonDictionary objectForKey:AUTHENTICATIONCONTEXT];
         self.authenticationcontext = [AuthenticationContext createInstanceOfAuthenticationContextFromJSON:authenticationContextDictionary];
         
-        
-        
+               
         NSDictionary* userDictionary = [jsonDictionary valueForKey:an_USER];
         if (userDictionary != nil) {
             self.user = [Resource createInstanceOfTypeFromJSON:userDictionary];

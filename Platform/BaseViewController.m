@@ -24,7 +24,7 @@
 @synthesize feedManager           = __feedManager;
 @synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
-@synthesize cameraActionSheet     = m_cameraActionSheet;
+
 @synthesize progressView          = m_progressView;
 @synthesize loginView             = m_loginView;
 

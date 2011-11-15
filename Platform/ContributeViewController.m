@@ -17,6 +17,7 @@
 @implementation ContributeViewController
 @synthesize delegate = m_delegate;
 
+@synthesize cameraActionSheet     = m_cameraActionSheet;
 @synthesize scrollView = m_scrollview;
 @synthesize activeTextView = m_activeTextView;
 @synthesize activeTextField = m_activeTextField;

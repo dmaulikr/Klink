@@ -50,7 +50,7 @@ NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBH
 //int const opcode_QUERYEQUALITY=1;
 //int const opcode_QUERYGREATERTHAN=2;
 //
-NSString* const facebook_APPID=@"168077769927457";
+//NSString* const facebook_APPID=@"168077769927457";
 //double const facebook_MAXDATE=64092211200;
 //NSString* const sn_KEYCHAINSERVICENAME=@"Aardvark";
 //
