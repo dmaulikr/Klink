@@ -32,9 +32,9 @@
     if (__frc_published_pages != nil) {
         return __frc_published_pages;
     }
-    
+    ResourceContext* resourceContext = [ResourceContext instance];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
     //TODO: change this to sort on DATECREATED when the server supports it
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
@@ -50,7 +50,7 @@
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     controller.delegate = self;
     self.frc_published_pages = controller;

@@ -40,8 +40,9 @@
     }
     else {
         
+        ResourceContext* resourceContext = [ResourceContext instance];
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:FEED inManagedObjectContext:self.managedObjectContext];
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:FEED inManagedObjectContext:resourceContext.managedObjectContext];
         
         
         NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
@@ -55,7 +56,7 @@
         [fetchRequest setEntity:entityDescription];
         [fetchRequest setFetchBatchSize:20];
         
-        NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
         
         controller.delegate = self;
         self.frc_notifications = controller;

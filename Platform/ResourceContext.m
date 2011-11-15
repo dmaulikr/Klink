@@ -27,14 +27,17 @@
 
 #define kCallback   @"callback";
 @implementation ResourceContext
+
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize lastIDGenerated = m_lastIDGenerated;
 static ResourceContext* sharedInstance;
+static NSMutableDictionary* managedObjectContexts;
+
 + (id) instance {
     @synchronized (self) {
         if (!sharedInstance) {
             sharedInstance = [[super allocWithZone:NULL]init];
-           
+            managedObjectContexts = [[NSMutableDictionary allocWithZone:NULL]init];
         }
         return sharedInstance;
     }
@@ -46,8 +49,30 @@ static ResourceContext* sharedInstance;
         return __managedObjectContext;
     }
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    __managedObjectContext = appDelegate.managedObjectContext;
-    return __managedObjectContext;
+    
+    
+    NSThread* thread = [NSThread currentThread];
+    
+    if ([thread isMainThread]) {
+        return appDelegate.managedObjectContext;
+    }
+    else {
+        //created from background thread
+        // a key to cache the context for the given thread
+        NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
+        
+        if ( [managedObjectContexts objectForKey:threadKey] == nil ) {
+            // create a context for this thread
+            NSManagedObjectContext *threadContext = [[[NSManagedObjectContext alloc] init] autorelease];
+            [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
+            // cache the context for this thread
+            [managedObjectContexts setObject:threadContext forKey:threadKey];
+        }
+        
+        return [managedObjectContexts objectForKey:threadKey];
+    }
+    
+    
                                                             
 }
 

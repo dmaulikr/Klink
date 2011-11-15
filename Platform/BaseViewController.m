@@ -22,23 +22,23 @@
 @synthesize authenticationManager = __authenticationManager;
 @synthesize loggedInUser = __loggedInUser;
 @synthesize feedManager           = __feedManager;
-@synthesize managedObjectContext    =__managedObjectContext;
+//@synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
 
 @synthesize progressView          = m_progressView;
 @synthesize loginView             = m_loginView;
 
 #pragma mark - Properties
-
-- (NSManagedObjectContext*)managedObjectContext {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
-    }
-    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication] delegate];
-    __managedObjectContext = appDelegate.managedObjectContext;
-    return __managedObjectContext;
-    
-}
+//
+//- (NSManagedObjectContext*)managedObjectContext {
+//    if (__managedObjectContext != nil) {
+//        return __managedObjectContext;
+//    }
+//    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication] delegate];
+//    __managedObjectContext = appDelegate.managedObjectContext;
+//    return __managedObjectContext;
+//    
+//}
 
 - (EventManager*) eventManager {
     if (__eventManager != nil) {

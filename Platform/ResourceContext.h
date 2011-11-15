@@ -13,6 +13,7 @@
 @class Query;
 @class EnumerationContext;
 
+
 @interface ResourceContext : NSObject {
     NSNumber* m_lastIDGenerated;
 }

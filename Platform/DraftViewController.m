@@ -39,7 +39,9 @@
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:self.managedObjectContext];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
     //TODO: change this to sort on DATECREATED when the server supports it
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
@@ -55,7 +57,7 @@
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     
     controller.delegate = self;
     self.frc_draft_pages = controller;
@@ -160,8 +162,10 @@
 
 - (void)dealloc
 {
+     [self.pagedViewSlider release];
+    [self.frc_draft_pages release];
     [super dealloc];
-    [self.pagedViewSlider release];
+   
 }
 
 - (void)didReceiveMemoryWarning
@@ -343,10 +347,12 @@
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 
        newIndexPath:(NSIndexPath *)newIndexPath {
-    
+    NSString* activityName = @"DraftViewController.controller.didChangeObject:";
     if (type == NSFetchedResultsChangeInsert) {
         //insertion of a new page
-        [self.pagedViewSlider onNewItemInsertedAt:[indexPath row]];
+        Resource* resource = (Resource*)anObject;
+        LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
+        [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
     }
     
 }
@@ -407,11 +413,12 @@
     contributeViewController.draftTitle = currentPage.displayname;
     //contributeViewController.img_photo = image;
     
-    [self.navigationController pushViewController:contributeViewController animated:YES];
     
-    //UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-    self.navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:self.navigationController animated:YES];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+    [navigationController pushViewController:contributeViewController animated:YES];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
     
     //[navigationController release];
     //[contributeViewController release];

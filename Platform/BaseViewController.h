@@ -30,7 +30,7 @@
 @property (nonatomic, retain) FeedManager*              feedManager;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) EventManager*             eventManager;
-@property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
+//@property (nonatomic, retain) NSManagedObjectContext*   managedObjectContext;
 
 @property (nonatomic, retain) User*                     loggedInUser;
 @property (nonatomic, retain) UIProgressHUDView*        progressView;
