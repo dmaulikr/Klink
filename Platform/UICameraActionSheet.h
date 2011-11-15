@@ -25,6 +25,8 @@
 
 
 @property (nonatomic,assign) id<UICameraActionSheetDelegate>    a_delegate;
-- (id) init;
+
+
++ (UICameraActionSheet*) createCameraActionSheet;
 
 @end

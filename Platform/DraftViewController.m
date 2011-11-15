@@ -15,6 +15,7 @@
 #import "UICameraActionSheet.h"
 #import "Photo.h"
 #import "User.h"
+#import "ContributeViewController.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -358,7 +359,25 @@
 }
 
 #pragma mark - ConrtibuteViewControllerDelegate methods
-- (void)onSubmitButtonPressed:(id)sender {
+- (void)submitChangesForController:(ContributeViewController*)controller {
+    //this method will persist changes that are returned from the contribute controller
+    if (controller.configurationType == PHOTO) {
+        //this is a new photo being added to a draft page
+        [Photo createPhotoInPage:self.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+    }
+    else if (controller.configurationType == PAGE) {
+         [Page createNewDraftPage];
+        
+        //need to generate phot and caption for a page
+    }
+    else if (controller.configurationType == CAPTION) {
+        
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    [resourceContext save:YES onFinishCallback:nil];
     
 }
 

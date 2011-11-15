@@ -38,4 +38,7 @@ typedef enum {
 - (NSArray*) hashtagList;
 - (Photo*) photoWithHighestVotes;
 - (Caption*) captionWithHighestVotes;
+
+//static initializers
++ (Page*)createNewDraftPage;
 @end

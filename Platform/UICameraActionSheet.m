@@ -36,9 +36,9 @@
 @implementation UICameraActionSheet
 @synthesize a_delegate = m_delegate;
 
-- (id) init {
+- (id) initWithTitle:(NSString *)title delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... {
     
-    self = [super initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
+    self = [super initWithTitle:title delegate:delegate cancelButtonTitle:cancelButtonTitle destructiveButtonTitle:destructiveButtonTitle otherButtonTitles:otherButtonTitles, nil];
     
     if (self) {
         
@@ -154,6 +154,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     CGImageRelease(croppedThumbnailImage);
     
     [picker dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - Static Initializers
++ (UICameraActionSheet*)createCameraActionSheet {
+    UICameraActionSheet* retVal = [[UICameraActionSheet alloc]initWithTitle:nil delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
+    retVal.delegate = retVal;
+    [retVal autorelease];
+    return retVal;
+    
 }
 
 @end

@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
-
+@class ContributeViewController;
 @protocol ContributeViewControllerDelegate <NSObject>
 
-- (void)persistContribution:(id)sender;
+- (void)submitChangesForController:(ContributeViewController*)controller;
 
 @end
 

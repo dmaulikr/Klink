@@ -9,6 +9,9 @@
 #import "Page.h"
 #import "Caption.h"
 #import "Photo.h"
+#import "ImageManager.h"
+#import "User.h"
+#import "AuthenticationManager.h"
 
 #define kDELIMETER  @","
 
@@ -48,6 +51,18 @@
 }
 
 
-
+//static initializer
++ (Page*)createNewDraftPage {
+    ImageManager* imageManager = [ImageManager instance];    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    Page* retVal = (Page*) [Resource createInstanceOfType:PAGE withResourceContext:resourceContext];
+    
+    User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    
+    retVal.creatorid = user.objectid;
+    retVal.creatorname = user.displayname;
+    return retVal;
+}
 
 @end

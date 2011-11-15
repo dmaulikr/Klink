@@ -383,12 +383,8 @@
 #pragma mark - Button Handlers
 #pragma mark Photo "Camera" button handler
 - (IBAction)onCameraButtonPressed:(id)sender {    
-    if (self.cameraActionSheet != nil) {
-        [self.cameraActionSheet release];
-    }
-    
-    self.cameraActionSheet = [[UICameraActionSheet alloc]init];
-    self.cameraActionSheet.a_delegate = (id<UICameraActionSheetDelegate>)self;
+    self.cameraActionSheet = [UICameraActionSheet createCameraActionSheet];
+    self.cameraActionSheet.a_delegate = self;
     [self.cameraActionSheet showInView:self.view];
 }
 
@@ -412,10 +408,8 @@
 }
 
 
-
-
-
 #pragma mark Navigation Bar button handler
+
 - (void)onSubmitButtonPressed:(id)sender {
     //ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -425,10 +419,10 @@
     
     //[resourceContext save:YES onFinishCallback:nil];
     
-    [self.delegate persistContribution:sender];
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self.delegate submitChangesForController:self];
 }
+
 
 - (void)onCancelButtonPressed:(id)sender {    
     //[self.delegate onCancelButtonPressed:sender];
