@@ -149,7 +149,7 @@
 {
     [super viewWillAppear:animated];
     
-    NSString* activityName = @"ContributeViewController.viewWillAppear:";
+   // NSString* activityName = @"ContributeViewController.viewWillAppear:";
     
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
@@ -387,19 +387,33 @@
         [self.cameraActionSheet release];
     }
     
-    self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
+    self.cameraActionSheet = [[UICameraActionSheet alloc]init];
+    self.cameraActionSheet.a_delegate = (id<UICameraActionSheetDelegate>)self;
     [self.cameraActionSheet showInView:self.view];
 }
 
-- (void)onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
-    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
-    
+
+#pragma mark - UICameraActionSheetDelegate members
+- (void) displayPicker:(UIImagePickerController*) picker {
+    [self presentModalViewController:picker animated:YES];
+
+}
+- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+                          withFullImage:(UIImage*)image {
+    //we handle back end processing of the image from the camera sheet here
     self.img_photo = image;
     self.img_thumbnail = thumbnailImage;
     
     self.iv_photo.image = self.img_photo;
 
 }
+- (void) onCancel {
+    // we deal with cancel operations from the action sheet here
+}
+
+
+
+
 
 #pragma mark Navigation Bar button handler
 - (void)onSubmitButtonPressed:(id)sender {
@@ -411,7 +425,7 @@
     
     //[resourceContext save:YES onFinishCallback:nil];
     
-    [self.delegate onSubmitButtonPressed:sender];
+    [self.delegate persistContribution:sender];
     
     [self dismissModalViewControllerAnimated:YES];
 }

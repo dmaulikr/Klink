@@ -42,8 +42,8 @@
        onTargetObject:(id)targetObject 
            withObject:(id)parameter;
 
-- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
-                          withFullImage:(UIImage*)image;
+//- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+//                          withFullImage:(UIImage*)image;
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
 

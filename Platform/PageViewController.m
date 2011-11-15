@@ -336,15 +336,6 @@
     
 }
 
-#pragma mark - Photo handling methods 
-- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
-    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
-    
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
-    
-    [resourceContext save:YES onFinishCallback:nil];
-}
 
 
 #pragma mark - Event Handlers

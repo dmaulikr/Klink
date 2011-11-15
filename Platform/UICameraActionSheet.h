@@ -7,14 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BaseViewController.h"
+
+
+@protocol UICameraActionSheetDelegate <NSObject>
+
+- (void) displayPicker:(UIImagePickerController*) picker;
+- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+                          withFullImage:(UIImage*)image;
+- (void) onCancel;
+
+@end
 
 @interface UICameraActionSheet : UIActionSheet <UIActionSheetDelegate, UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
-    BaseViewController* m_viewController;
+    id<UICameraActionSheetDelegate>  m_delegate;
+    
 }
 
-@property (nonatomic,retain) BaseViewController* viewController;
 
-- (id) initWithViewController:(BaseViewController*)viewController;
+@property (nonatomic,assign) id<UICameraActionSheetDelegate>    a_delegate;
+- (id) init;
 
 @end

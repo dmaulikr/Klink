@@ -34,14 +34,14 @@
 #define kScale 2
 
 @implementation UICameraActionSheet
-@synthesize viewController = m_viewController;
+@synthesize a_delegate = m_delegate;
 
-- (id) initWithViewController:(BaseViewController*)vc {
+- (id) init {
     
     self = [super initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
     
     if (self) {
-        self.viewController = vc;
+        
     }
     return self;
 }
@@ -63,8 +63,10 @@
         if (sourceType == UIImagePickerControllerSourceTypeCamera) {
             picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         }
-        
-        [self.viewController presentModalViewController:picker animated:YES];
+        id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
+
+        [del displayPicker:picker];
+       
         [picker release];
     }
     else {
@@ -93,7 +95,8 @@
         }
     }
     else {
-        [self.viewController onCancelButtonPressed:self];
+        id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
+        [del onCancel];
     }
 }
 
@@ -144,7 +147,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     // Make fullscreen image
     UIImage* fullscreenImage = [imageManager shrinkImage:chosenImage toSize:newFullscreenSize];
     
-    [self.viewController onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
+    id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
+
+    [del onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
     
     CGImageRelease(croppedThumbnailImage);
     

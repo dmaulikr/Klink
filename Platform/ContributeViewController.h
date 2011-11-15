@@ -8,14 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "UICameraActionSheet.h"
 
 @protocol ContributeViewControllerDelegate <NSObject>
 
-- (void)onSubmitButtonPressed:(id)sender;
+- (void)persistContribution:(id)sender;
 
 @end
 
-@interface ContributeViewController : BaseViewController <UITextViewDelegate> {
+@interface ContributeViewController : BaseViewController <UITextViewDelegate, UICameraActionSheetDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;
     
     UICameraActionSheet*    m_cameraActionSheet;

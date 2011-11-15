@@ -362,35 +362,35 @@
     
 }
 
-#pragma mark - UICameraActionSheetDelegate methods 
-- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
-    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
-    
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
-    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    
-    //[Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
-    
-    //[resourceContext save:YES onFinishCallback:nil];
-    
-    /*ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
-    contributeViewController.delegate = self;
-    contributeViewController.configurationType = PHOTO;
-    contributeViewController.draftTitle = currentPage.displayname;
-    contributeViewController.img_photo = image;
-    
-    //[self.navigationController pushViewController:contributeViewController animated:YES];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    //[self presentModalViewController:contributeViewController animated:YES];
-    
-    [navigationController release];
-    [contributeViewController release];*/
-}
+//#pragma mark - UICameraActionSheetDelegate methods 
+//- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
+//    [super onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:image];
+//    
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    
+//    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+//    
+//    //[Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
+//    
+//    //[resourceContext save:YES onFinishCallback:nil];
+//    
+//    /*ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+//    contributeViewController.delegate = self;
+//    contributeViewController.configurationType = PHOTO;
+//    contributeViewController.draftTitle = currentPage.displayname;
+//    contributeViewController.img_photo = image;
+//    
+//    //[self.navigationController pushViewController:contributeViewController animated:YES];
+//    
+//    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+//    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    [self presentModalViewController:navigationController animated:YES];
+//    
+//    //[self presentModalViewController:contributeViewController animated:YES];
+//    
+//    [navigationController release];
+//    [contributeViewController release];*/
+//}
 
 
 #pragma mark - Event Handlers
@@ -416,7 +416,7 @@
     
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-    [navigationController pushViewController:contributeViewController animated:YES];
+ //   [navigationController pushViewController:contributeViewController animated:YES];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navigationController animated:YES];
     
