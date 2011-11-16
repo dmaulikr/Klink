@@ -225,7 +225,6 @@
         //LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
     }
 
-    //[self.view setNeedsDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -268,7 +267,7 @@
     }
     else {
         // caption is acceptable
-        //self.caption = [self.activeTextView getText];
+        self.caption = [self.activeTextView text];
     }
     
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
@@ -295,6 +294,16 @@
     if (self.configurationType != CAPTION) {
         self.btn_cameraButton.hidden = NO;
         self.btn_cameraButton.enabled = YES;
+    }
+    
+    if ([self.activeTextField.text isEqualToString:@""] || [self.activeTextField.text isEqualToString:@"#drafttitle"]) {
+        // Add default text back if title was left empty
+        [self.activeTextView setText:@"#drafttitle"];
+    }
+    else {
+        // title is acceptable, add hashtag
+        self.draftTitle = [NSString stringWithFormat:@"#%@", self.activeTextField.text];
+        self.activeTextField.text = self.draftTitle;
     }
     
     self.activeTextField = nil;

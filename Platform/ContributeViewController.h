@@ -16,7 +16,7 @@
 
 @end
 
-@interface ContributeViewController : BaseViewController <UITextViewDelegate, UICameraActionSheetDelegate> {
+@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;
     
     UICameraActionSheet*    m_cameraActionSheet;
