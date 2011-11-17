@@ -53,7 +53,7 @@
 
 //static initializer
 + (Page*)createNewDraftPage {
-    ImageManager* imageManager = [ImageManager instance];    
+   
     ResourceContext* resourceContext = [ResourceContext instance];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     Page* retVal = (Page*) [Resource createInstanceOfType:PAGE withResourceContext:resourceContext];
@@ -62,6 +62,7 @@
     
     retVal.creatorid = user.objectid;
     retVal.creatorname = user.displayname;
+    retVal.state = [NSNumber numberWithInt:kDRAFT];
     return retVal;
 }
 

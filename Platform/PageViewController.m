@@ -40,12 +40,8 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
     
     //add predicate to test for being published
-     //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kPUBLISHED];
-    
-   
-    
-    //[fetchRequest setPredicate:predicate];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",STATE, kPUBLISHED];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
