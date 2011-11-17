@@ -25,6 +25,7 @@
 		3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DE1464633400D6587D /* icon-thumbUp.png */; };
 		3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */; };
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
+		522BE9571473B48900464E2B /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522BE9561473B48900464E2B /* ProductionLogViewController.xib */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
 		C507BC811459857F004D9359 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC801459857F004D9359 /* FeedTypes.m */; };
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
@@ -197,6 +198,7 @@
 		3DCFE8DE1464633400D6587D /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
 		3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
 		3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoViewController.xib; sourceTree = "<group>"; };
+		522BE9561473B48900464E2B /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
 		C507BC7C1459811A004D9359 /* FeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedManager.h; sourceTree = "<group>"; };
 		C507BC7D1459811A004D9359 /* FeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedManager.m; sourceTree = "<group>"; };
 		C507BC7F1459857F004D9359 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
@@ -492,11 +494,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
-
 				3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */,
-
 				C5C9E2AF146700F600838934 /* libxml2.2.dylib in Frameworks */,
 				C55EC6E4145C98A500BA66FA /* QuartzCore.framework in Frameworks */,
 				C5C83AF8144B92A900AF38CF /* Security.framework in Frameworks */,
@@ -596,9 +595,7 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
-
 				C5C9D2F914712942008E3B51 /* libz.1.1.3.dylib */,
-				C5C9E2B01467019000838934 /* libz.1.2.3.dylib */,
 				3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */,
 				C5C9E2AE146700F600838934 /* libxml2.2.dylib */,
 				C56F8A1A1462EC9F00E14199 /* Resources */,
@@ -918,6 +915,7 @@
 				C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */,
 				C5C76C76145B917A00BA69B8 /* ProductionLogViewController.h */,
 				C5C76C77145B917A00BA69B8 /* ProductionLogViewController.m */,
+				522BE9561473B48900464E2B /* ProductionLogViewController.xib */,
 				C5C76C79145B919100BA69B8 /* DraftViewController.h */,
 				C5C76C7A145B919100BA69B8 /* DraftViewController.m */,
 				3D5B84EB1463527600FD0F50 /* DraftViewController.xib */,
@@ -1294,6 +1292,7 @@
 				C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */,
 				3D51CB8C146C7149002E0FD4 /* ContributeViewController.xib in Resources */,
 				3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */,
+				522BE9571473B48900464E2B /* ProductionLogViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

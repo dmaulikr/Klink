@@ -10,6 +10,10 @@
 
 
 @implementation ProductionLogViewController
+@synthesize tbl_productionTableView = m_tbl_productionTableView;
+@synthesize frc_drafts = __frc_drafts;
+@synthesize productionTableViewCell = m_productionTableViewCell;
+@synthesize navigationController = m_navigationController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
