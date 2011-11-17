@@ -7,7 +7,8 @@
 //
 
 #import "Caption.h"
-
+#import "AuthenticationManager.h"
+#import "User.h"
 
 @implementation Caption
 @dynamic caption1;
@@ -15,4 +16,21 @@
 @dynamic creatorname;
 @dynamic numberofvotes;
 @dynamic photoid;
+
++ (Caption*)createCaptionForPhoto:(NSNumber *)photoid withCaption:(NSString *)caption {
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Caption* retVal = (Caption*)[Resource createInstanceOfType:CAPTION withResourceContext:resourceContext];
+    User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    
+    if (user != nil) {
+        retVal.creatorid = user.objectid;
+        retVal.creatorname = user.displayname;
+    }
+    retVal.caption1 = caption;
+    retVal.photoid = photoid;
+
+    return retVal;
+
+}
 @end

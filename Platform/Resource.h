@@ -60,7 +60,7 @@ insertIntoResourceContext:(ResourceContext *)context;
 
 - (NSArray*) changedAttributesToSynchronizeToCloud;
 - (NSArray*) attributesWithValues;
-
+- (NSArray*) attachmentAttributesWithValues;
 //Used for logging
 - (NSString*)   componentName;
 

@@ -28,5 +28,6 @@
 - (id) initWithTarget:(id)target withSelector:(SEL)selector;
 - (void) fire;
 - (void) fireWithResponse:(Response*)response; 
+- (void) fireWithResponse:(Response*)response withContext:(NSDictionary*)context;
 - (void) fireWithUserInfo:(NSDictionary*)userInfo;
 @end

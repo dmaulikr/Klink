@@ -37,6 +37,26 @@
     return self;
 }
 
+//this method will return the representation of a created resource
+//within this response object whcih matches the specified parameters
+-(Resource*) createdResourceWith:(NSNumber*)resourceid 
+          withTargetResourceType:(NSString*)targetresourcetype 
+{   
+    Resource* retVal = nil;
+    
+    
+    for (Resource* createdResource in self.createdResources) {
+        if ([createdResource.objectid isEqualToNumber:resourceid] &&
+            [createdResource.objecttype isEqualToString:targetresourcetype]) {
+            
+            //found a match
+            retVal = createdResource;
+            break;
+        }
+    }
+    
+    return retVal;
+}
 
 
 @end

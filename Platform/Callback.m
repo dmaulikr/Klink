@@ -52,6 +52,15 @@
     
 }
 
+- (void) fireWithResponse:(Response *)response withContext:(NSDictionary *)context {
+    CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
+    callbackResult.response = response;
+    callbackResult.context = context;
+    [self fireWithResult:callbackResult];
+
+    
+}
+
 - (void) fireWithUserInfo:(NSDictionary*)userInfo {
     CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
     callbackResult.response = userInfo;

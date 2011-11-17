@@ -268,7 +268,7 @@
     }
     else {
         // caption is acceptable
-        //self.caption = [self.activeTextView getText];
+        self.caption = self.activeTextView.text;
     }
     
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration

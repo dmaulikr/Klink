@@ -13,6 +13,9 @@
 //NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
 //NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
 //NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
+
+//uncomment this address for G's server
+//NSString* const default_BASEURL = @"http://192.168.1.4/bonobo";
 NSString* const default_BASEURL = @"http://oscial.com/bonobo";
 //NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=1;

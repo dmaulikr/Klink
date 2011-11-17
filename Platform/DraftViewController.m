@@ -358,28 +358,7 @@
     
 }
 
-#pragma mark - ConrtibuteViewControllerDelegate methods
-- (void)submitChangesForController:(ContributeViewController*)controller {
-    //this method will persist changes that are returned from the contribute controller
-    if (controller.configurationType == PHOTO) {
-        //this is a new photo being added to a draft page
-        [Photo createPhotoInPage:self.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
-    }
-    else if (controller.configurationType == PAGE) {
-         [Page createNewDraftPage];
-        
-        //need to generate phot and caption for a page
-    }
-    else if (controller.configurationType == CAPTION) {
-        
-    }
-    
-    [self dismissModalViewControllerAnimated:YES];
-    
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [resourceContext save:YES onFinishCallback:nil];
-    
-}
+
 
 //#pragma mark - UICameraActionSheetDelegate methods 
 //- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {

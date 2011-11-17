@@ -18,10 +18,10 @@
 #import "EventManager.h"
 #import "CallbackResult.h"
 
-
+@protocol ContributeViewControllerDelegate;
 @class UICameraActionSheet;
 @class ResourceContext;
-@interface BaseViewController : UIViewController {
+@interface BaseViewController : UIViewController <ContributeViewControllerDelegate> {
 
     UIProgressHUDView*      m_progressView;
     UILoginView*            m_loginView;
