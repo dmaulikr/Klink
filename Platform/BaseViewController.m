@@ -80,15 +80,8 @@
     return CGRectMake(0, 0, 320, 460);
 }
 
-- (void) commonInit {
-    CGRect frameForLoginView = [self frameForLoginView];
-    self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+- (void) baseInit {
     
-    //self.progressView = [[MBProgressHUD alloc]initWithView:self.view];
-    
-    self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
-    [self.view addSubview:self.progressView];
-   // [self.view addSubview:self.loginView];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -148,8 +141,11 @@
     [showProgressBarCallback release];
     [hideProgressBarCallback release];
     
-    [self commonInit];
-    //setup the progress view
+    CGRect frameForLoginView = [self frameForLoginView];
+    self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+    self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
+    [self.view addSubview:self.progressView];
+    
     
 }
 
@@ -246,6 +242,8 @@
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
             
+            //we set the initial number of captions on the photo
+            photo.numberofcaptions = [NSNumber numberWithInt:1];
         }
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
@@ -258,10 +256,16 @@
         Page* page = [Page createNewDraftPage];
         Photo* photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
         
+        //set the number of photos to 1
+        page.numberofphotos = [NSNumber numberWithInt:1];
+        
         if (controller.caption != nil && 
             ![controller.caption isEqualToString:@""]) {
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+            
+            photo.numberofcaptions = [NSNumber numberWithInt:1];
+            page.numberofcaptions = [NSNumber numberWithInt:1];
         }
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);

@@ -15,7 +15,7 @@
     
     SEL m_selector;
     id  m_target;
-    
+    BOOL m_fireOnMainThread;
     NSDictionary* m_context;
     
     
@@ -23,6 +23,7 @@
 
 @property (nonatomic, retain) NSDictionary* context;
 @property (nonatomic, retain) id            target;
+@property                     BOOL          fireOnMainThread;
 
 - (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(NSDictionary*)context;
 - (id) initWithTarget:(id)target withSelector:(SEL)selector;

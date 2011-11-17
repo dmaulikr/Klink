@@ -110,6 +110,8 @@
     if (self.onFinishCallback != nil) {
         Response* response = [[Response alloc]init];
         response.didSucceed = [NSNumber numberWithBool:result];
+        
+        self.onFinishCallback.fireOnMainThread = YES;
         [self.onFinishCallback fireWithResponse:response];
         [response release];
     }

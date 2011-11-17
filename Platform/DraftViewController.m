@@ -397,34 +397,24 @@
 - (void) onCameraButtonPressed:(id)sender {
     ResourceContext* resourceContext = [ResourceContext instance];
     
-    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    
-    //[Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
-    
-    //[resourceContext save:YES onFinishCallback:nil];
-    
-    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
-    contributeViewController.delegate = self;
-    contributeViewController.configurationType = PHOTO;
-    contributeViewController.draftTitle = currentPage.displayname;
-    //contributeViewController.img_photo = image;
-    
-    
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
- //   [navigationController pushViewController:contributeViewController animated:YES];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    //[navigationController release];
-    //[contributeViewController release];
-    
-    /*if (self.cameraActionSheet != nil) {
-        [self.cameraActionSheet release];
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
     }
-    
-    self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
-    [self.cameraActionSheet showInView:self.navigationController.view];*/
+    else {
+        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        contributeViewController.delegate = self;
+        contributeViewController.configurationType = PHOTO;
+        contributeViewController.draftTitle = currentPage.displayname;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+    }
 }
 
 - (void) onBookmarkButtonPressed:(id)sender {

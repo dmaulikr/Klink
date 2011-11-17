@@ -130,16 +130,23 @@
 
 - (IBAction) onNewDraftButtonClicked:(id)sender {
     //called when the new draft button is pressed
-    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
-    contributeViewController.delegate = self;
-    contributeViewController.configurationType = PAGE;
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
-    [contributeViewController release];
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user needs to authenticate first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onNewDraftButtonClicked:) onTargetObject:self withObject:sender];
+    }
+    else {
+        
+        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        contributeViewController.delegate = self;
+        contributeViewController.configurationType = PAGE;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [contributeViewController release];
+    }
 }
 
 - (IBAction) onLoginButtonClicked:(id)sender {
