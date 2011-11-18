@@ -363,12 +363,11 @@
        newIndexPath:(NSIndexPath *)newIndexPath {
     NSString* activityName = @"DraftViewController.controller.didChangeObject:";
     if (type == NSFetchedResultsChangeInsert) {
-        //insertion of a new page
+        //insertion of a new draft
         Resource* resource = (Resource*)anObject;
         LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
-        //[self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
     }
-    
 }
 
 
