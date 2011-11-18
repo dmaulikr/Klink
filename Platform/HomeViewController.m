@@ -120,7 +120,7 @@
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {
     //called when the production log button is pressed
-    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController2" bundle:nil];
+    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
     
     [self.navigationController pushViewController:productionLogController animated:YES];
     [productionLogController release];
