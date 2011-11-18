@@ -16,6 +16,7 @@
 #import "Photo.h"
 #import "User.h"
 #import "ContributeViewController.h"
+#import "PersonalLogViewController.h"
 
 #define kWIDTH 320
 #define kHEIGHT 375
@@ -92,7 +93,10 @@
 - (NSArray*) toolbarButtonsForViewController {
     //returns an array with the toolbar buttons for this view controller
     NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-       
+
+    //flexible space for button spacing
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];    
+    
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
         //we only add a notification icon for user's that have logged in
@@ -104,6 +108,9 @@
         [retVal addObject:usernameButton];
     }
     
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
     //add camera button
     UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
                                       initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
@@ -112,9 +119,12 @@
                                       action:@selector(onCameraButtonPressed:)];
     [retVal addObject:cameraButton];
     
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
     //add bookmark button
     UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
-                                       initWithTitle:@"bkmark" 
+                                       initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"] 
                                        style:UIBarButtonItemStylePlain 
                                        target:self 
                                        action:@selector(onBookmarkButtonPressed:)];
@@ -123,6 +133,10 @@
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
         //we only add a notification icon for user's that have logged in
+        
+        //add flexible space for button spacing
+        [retVal addObject:flexibleSpace];
+        
         UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
         UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
         
@@ -352,7 +366,7 @@
         //insertion of a new page
         Resource* resource = (Resource*)anObject;
         LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
-        [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        //[self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
     }
     
 }
@@ -390,9 +404,10 @@
 //}
 
 
-#pragma mark - Event Handlers
+#pragma mark - Toolbar Button Event Handlers
 - (void) onUsernameButtonPressed:(id)sender {
-    
+    PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
+    [self.navigationController pushViewController:personalLogViewController animated:YES];
 }
 
 - (void) onCameraButtonPressed:(id)sender {
@@ -411,10 +426,11 @@
         contributeViewController.draftTitle = currentPage.displayname;
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
-        
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:navigationController animated:YES];
         
+        [navigationController release];
+        [contributeViewController release];
     }
 }
 

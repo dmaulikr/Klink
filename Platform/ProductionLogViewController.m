@@ -15,6 +15,8 @@
 #import "ImageDownloadResponse.h"
 #import "DraftViewController.h"
 #import "PageViewController.h"
+#import "UINotificationIcon.h"
+#import "PersonalLogViewController.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -72,6 +74,64 @@
     
 }
 
+#pragma mark - Toolbar buttons
+- (NSArray*) toolbarButtonsForViewController {
+    //returns an array with the toolbar buttons for this view controller
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    //flexible space for button spacing
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    //check to see if the user is logged in or not
+    if ([self.authenticationManager isUserAuthenticated]) {
+        //we only add a notification icon for user's that have logged in
+        UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
+                                           initWithTitle:self.loggedInUser.displayname
+                                           style:UIBarButtonItemStylePlain
+                                           target:self
+                                           action:@selector(onUsernameButtonPressed:)];
+        [retVal addObject:usernameButton];
+    }
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add draft button
+    UIBarButtonItem* draftButton = [[UIBarButtonItem alloc]
+                                     initWithImage:[UIImage imageNamed:@"icon-newPage.png"]
+                                     style:UIBarButtonItemStylePlain
+                                     target:self
+                                     action:@selector(onDraftButtonPressed:)];
+    [retVal addObject:draftButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add bookmark button
+    UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
+                                       initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"]
+                                       style:UIBarButtonItemStylePlain
+                                       target:self 
+                                       action:@selector(onBookmarkButtonPressed:)];
+    [retVal addObject:bookmarkButton];
+    
+    //check to see if the user is logged in or not
+    if ([self.authenticationManager isUserAuthenticated]) {
+        //we only add a notification icon for user's that have logged in
+        
+        //add flexible space for button spacing
+        [retVal addObject:flexibleSpace];
+        
+        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
+        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
+        
+        [retVal addObject:notificationBarItem];
+    }
+    
+    return retVal;
+}
+
+#pragma mark - Initializers
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -115,6 +175,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //we update the toolbar items each tgime the view controller is shown
+    NSArray* toolbarItems = [self toolbarButtonsForViewController];
+    [self setToolbarItems:toolbarItems];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -212,6 +276,38 @@
 }
 */
 
+#pragma mark - Toolbar Button Event Handlers
+- (void) onUsernameButtonPressed:(id)sender {
+    PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
+    [self.navigationController pushViewController:personalLogViewController animated:YES];
+}
+
+- (void) onDraftButtonPressed:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onDraftButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        contributeViewController.delegate = self;
+        contributeViewController.configurationType = PAGE;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [contributeViewController release];
+    }
+}
+
+- (void) onBookmarkButtonPressed:(id)sender {
+    
+}
+
 #pragma mark - Table view delegate
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 70;
@@ -226,6 +322,21 @@
     
     [self.navigationController pushViewController:draftViewController animated:YES];
     [draftViewController release];
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    NSString* activityName = @"ProductionLogViewController.controller.didChangeObject:";
+    if (type == NSFetchedResultsChangeInsert) {
+        //insertion of a new page
+        Resource* resource = (Resource*)anObject;
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
+        [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    }
+    else if (type == NSFetchedResultsChangeDelete) {
+        [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    }
 }
 
 

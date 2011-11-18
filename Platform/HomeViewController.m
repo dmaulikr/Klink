@@ -145,7 +145,6 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onNewDraftButtonClicked:) onTargetObject:self withObject:sender];
     }
     else {
-        
         ContributeViewController* contributeViewController = [ContributeViewController createInstance];
         contributeViewController.delegate = self;
         contributeViewController.configurationType = PAGE;
