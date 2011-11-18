@@ -26,6 +26,8 @@
 @dynamic creatorname;
 @dynamic state;
 @dynamic datepublished;
+@dynamic numberofphotos;
+@dynamic numberofcaptions;
 @dynamic numberofpublishvotes;
 @dynamic finishedcaptionid;
 

@@ -11,9 +11,11 @@
 #import "DraftViewController.h"
 #import "ContributeViewController.h"
 #import "CallbackResult.h"
+#import "ProductionLogViewController.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
+@synthesize productionLogButton = m_productionLogButton;
 @synthesize contributeButton    = m_contributeButton;
 @synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
@@ -114,6 +116,14 @@
     [self.navigationController pushViewController:pageController animated:YES];
     [pageController release];
     
+}
+
+- (IBAction) onProductionLogButtonClicked:(id)sender {
+    //called when the production log button is pressed
+    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController2" bundle:nil];
+    
+    [self.navigationController pushViewController:productionLogController animated:YES];
+    [productionLogController release];
 }
 
 - (IBAction) onContributeButtonClicked:(id)sender {
