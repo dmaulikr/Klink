@@ -273,7 +273,9 @@
     if (self.callbackTarget != nil && self.selPerformOnFinish != nil) {
         [self.callbackTarget performSelector:self.selPerformOnFinish withObject:self];
     }
-    [self.parentViewController dismissModalViewControllerAnimated:YES];
+    
+    [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    //[self.parentViewController dismissModalViewControllerAnimated:NO];
     //[self.navigationController popViewControllerAnimated:YES];
 }
 
