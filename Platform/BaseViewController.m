@@ -270,8 +270,7 @@
         //set the number of photos to 1
         page.numberofphotos = [NSNumber numberWithInt:1];
         
-        if (controller.caption != nil && 
-            ![controller.caption isEqualToString:@""]) {
+        if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
             

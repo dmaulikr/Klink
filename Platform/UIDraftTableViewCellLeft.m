@@ -64,9 +64,9 @@
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:kPHOTOID];
         
-        if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
+        if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-            UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
+            UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
             
             if (image != nil) {
                 self.img_photo.image = image;

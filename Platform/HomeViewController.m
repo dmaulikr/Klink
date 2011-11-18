@@ -11,9 +11,11 @@
 #import "DraftViewController.h"
 #import "ContributeViewController.h"
 #import "CallbackResult.h"
+#import "ProductionLogViewController.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
+@synthesize productionLogButton = m_productionLogButton;
 @synthesize contributeButton    = m_contributeButton;
 @synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
@@ -116,6 +118,14 @@
     
 }
 
+- (IBAction) onProductionLogButtonClicked:(id)sender {
+    //called when the production log button is pressed
+    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController2" bundle:nil];
+    
+    [self.navigationController pushViewController:productionLogController animated:YES];
+    [productionLogController release];
+}
+
 - (IBAction) onContributeButtonClicked:(id)sender {
     //called when the contribute button is pressed
     DraftViewController* draftController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
@@ -135,7 +145,6 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onNewDraftButtonClicked:) onTargetObject:self withObject:sender];
     }
     else {
-        
         ContributeViewController* contributeViewController = [ContributeViewController createInstance];
         contributeViewController.delegate = self;
         contributeViewController.configurationType = PAGE;

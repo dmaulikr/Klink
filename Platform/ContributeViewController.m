@@ -267,9 +267,7 @@
     }
     else {
         // caption is acceptable
-
         self.caption = self.activeTextView.text;
-
     }
     
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
@@ -403,8 +401,8 @@
 #pragma mark - UICameraActionSheetDelegate members
 - (void) displayPicker:(UIImagePickerController*) picker {
     [self presentModalViewController:picker animated:YES];
-
 }
+
 - (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
                           withFullImage:(UIImage*)image {
     //we handle back end processing of the image from the camera sheet here
@@ -412,8 +410,8 @@
     self.img_thumbnail = thumbnailImage;
     
     self.iv_photo.image = self.img_photo;
-
 }
+
 - (void) onCancel {
     // we deal with cancel operations from the action sheet here
 }

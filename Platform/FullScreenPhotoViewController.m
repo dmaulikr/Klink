@@ -363,9 +363,9 @@
         }
     }
     else if (viewSlider == self.captionViewSlider) {
-        //int captionCount = [[self.frc_captions fetchedObjects]count];
+        int captionCount = [[self.frc_captions fetchedObjects]count];
         
-        //if (captionCount > 0 && index < captionCount) {
+        if (captionCount > 0 && index < captionCount) {
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
             existingCell.frame = frame;
@@ -380,7 +380,7 @@
                 lbl_caption.text = @"CAPTION WAS NIL";
             }
             [self.captionViewSlider addSubview:lbl_caption];
-        //}
+        }
     }
     
     /*CGRect frameForCaptionSlider = [self frameForCaptionSlider];

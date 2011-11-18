@@ -1,9 +1,9 @@
 //
-//  ProductionLogViewController.h
+//  ProductionLogViewController2.h
 //  Platform
 //
-//  Created by Bobby Gill on 10/28/11.
-//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//  Created by Jordan Gurrieri on 11/16/11.
+//  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,15 +13,11 @@
     UITableView* m_tbl_productionTableView;
     
     UITableViewCell* m_productionTableViewCell;
-    
-    UINavigationController* m_navigationController;
 }
 
-@property (nonatomic,retain) IBOutlet UITableView* tbl_productionTableView;
-@property (nonatomic,retain) NSFetchedResultsController* frc_drafts;
+@property (nonatomic, retain) IBOutlet UITableView* tbl_productionTableView;
+@property (nonatomic, retain) NSFetchedResultsController* frc_draft_pages;
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* productionTableViewCell;
-
-@property (nonatomic, retain) UINavigationController* navigationController;
 
 @end
