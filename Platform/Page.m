@@ -30,8 +30,7 @@
 @dynamic numberofcaptions;
 @dynamic numberofpublishvotes;
 @dynamic finishedcaptionid;
-@dynamic numberofphotos;
-@dynamic numberofcaptions;
+
 #pragma mark - Instance Methods
 - (NSArray*) hashtagList {
     NSArray* retVal = [self.hashtags componentsSeparatedByString:kDELIMETER];

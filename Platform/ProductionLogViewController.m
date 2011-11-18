@@ -44,9 +44,8 @@
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kDRAFT];
-    
-    
+    //NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
     
     //[fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
