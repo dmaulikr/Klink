@@ -37,7 +37,7 @@
     if (self != nil) {
         self.enumerationContext = enumerationContext;
         self.query = query;
-        
+        self.lastExecutedTime = nil;
         self.queryOptions = queryOptions;
         m_isEnumerationPending = NO;
     }
@@ -53,6 +53,7 @@
         self.query = query;
         self.queryOptions = queryOptions;
          m_isEnumerationPending = NO;
+        self.lastExecutedTime = nil;
     }
     return self;
 }
@@ -62,10 +63,12 @@
     bool hasEnoughTimeLapsedBetweenConsecutiveSearches;
     
     hasEnoughTimeLapsedBetweenConsecutiveSearches = YES;
-    NSDate* currentDate = [NSDate date];
-    secondsSinceLastSearch = [currentDate timeIntervalSinceDate:self.lastExecutedTime];
     
+        
     if (self.lastExecutedTime != nil) {
+        NSDate* currentDate = [NSDate date];
+        secondsSinceLastSearch = [currentDate timeIntervalSinceDate:self.lastExecutedTime];
+
         if (secondsSinceLastSearch > self.secondsBetweenConsecutiveSearches) {
             hasEnoughTimeLapsedBetweenConsecutiveSearches = YES;
         }
@@ -261,6 +264,17 @@
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
     enumerator.identifier = [themeid stringValue];
     enumerator.secondsBetweenConsecutiveSearches = 60;
+    return enumerator;
+}
+
++ (CloudEnumerator*) enumeratorForUser:(NSNumber *)userid {
+    Query* query = [Query queryUser:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForUser:userid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForUser:userid];
+    query.queryOptions = queryOptions;
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.identifier = [userid stringValue];
+    enumerator.secondsBetweenConsecutiveSearches = 5;
     return enumerator;
 }
 

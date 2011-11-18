@@ -574,12 +574,7 @@
     NSString* retVal = nil;
       if ([jsonDictionary valueForKey:RESOURCETYPE] != nil) {
         retVal = [jsonDictionary valueForKey:RESOURCETYPE];
-          
-        //TODO: remove when "Theme" changed to "Page" on server
-          if ([retVal isEqualToString:@"theme"]) {
-              retVal = PAGE;
-          }
-   }
+      }
 
     return retVal;
 }

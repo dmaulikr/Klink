@@ -10,6 +10,7 @@
 #import "ResourceContext.h"
 #import "AuthenticationManager.h"
 #import "ApplicationSettingsManager.h"
+
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
 
 }

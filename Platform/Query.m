@@ -118,9 +118,23 @@
 
 + (Query*)queryPages {
     Query* query =  [[[Query alloc] init]autorelease];
-    //TODO: change "theme" to "page" when implemented on the server
-    query.filterObjectType = @"theme";
+    query.filterObjectType = PAGE;
     
+    return query;
+}
+
++ (Query*)queryUser:(NSNumber*)userid {
+    Query* query = [[[Query alloc]init ]autorelease];
+    query.filterObjectType = USER;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = ID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    
+    [queryExpression release];
     return query;
 }
 

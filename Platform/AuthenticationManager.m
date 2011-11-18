@@ -26,6 +26,9 @@
 #import "SA_OAuthTwitterController.h"
 #import "SA_OAuthTwitterEngine.h"
 #import "DateTimeHelper.h"
+#import "CloudEnumerator.h"
+#import "CloudEnumeratorFactory.h"
+
 #define kKeyChainServiceName    @"Aardvark"
 #define kUser                   @"User"
 
@@ -252,6 +255,14 @@ static  AuthenticationManager* sharedManager;
     //check to see if the profile picture is empty, if so, lets grab it from fb
     User* currentUser = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID]; 
     
+//    if (currentUser == nil) {
+//        //if the user object isnt in the database, we need to fetch it from the web service
+//        CloudEnumerator* userEnumerator = [[CloudEnumeratorFactory instance]enumeratorForUser:m_LoggedInUserID];
+//        LOG_SECURITY(0,@"%@Downloading missing user object for user %@ from the cloud",activityName,m_LoggedInUserID);
+//        //execute the enumerator
+//        [userEnumerator enumerateUntilEnd];
+//    }
+//    
     if (currentUser != nil && (currentUser.thumbnailurl == nil ||
                                [currentUser.thumbnailurl isEqualToString:@""])) {
         

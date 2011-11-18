@@ -53,17 +53,22 @@
 
 
 //static initializer
-+ (Page*)createNewDraftPage {
++ (Page*)createNewDraftPage{
    
     ResourceContext* resourceContext = [ResourceContext instance];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+ 
     Page* retVal = (Page*) [Resource createInstanceOfType:PAGE withResourceContext:resourceContext];
     
-    User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    if ([authenticationManager isUserAuthenticated]) {
+        User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+        retVal.creatorid = user.objectid;
+        retVal.creatorname = user.displayname;
+        retVal.state = [NSNumber numberWithInt:kDRAFT];
+        
+    }
+   
     
-    retVal.creatorid = user.objectid;
-    retVal.creatorname = user.displayname;
-    retVal.state = [NSNumber numberWithInt:kDRAFT];
     return retVal;
 }
 

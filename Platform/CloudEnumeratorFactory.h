@@ -14,17 +14,19 @@
      NSMutableSet* m_enumeratorsForPhotos;
      NSMutableSet* m_enumeratorsForThemes;
     NSMutableSet* m_enumeratorsForFeeds;
+    NSMutableSet* m_enumeratorsForUsers;
 }
 
 @property (nonatomic,retain) NSMutableSet* enumeratorsForCaptions;
 @property (nonatomic,retain) NSMutableSet* enumeratorsForPhotos;
 @property (nonatomic,retain) NSMutableSet* enumeratorsForThemes;
 @property (nonatomic,retain) NSMutableSet* enumeratorsForFeeds;
-
+@property (nonatomic,retain) NSMutableSet* enumeratorsForUsers;
 + (CloudEnumeratorFactory*) instance;
 
 - (CloudEnumerator*) enumeratorForCaptions:(NSNumber*)photoid;
 - (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
 - (CloudEnumerator*) enumeratorForPages;
 - (CloudEnumerator*) enumeratorForFeeds:(NSNumber*)userid;
+- (CloudEnumerator*) enumeratorForUser:(NSNumber*)userid;
 @end

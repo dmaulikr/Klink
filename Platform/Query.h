@@ -28,4 +28,5 @@
 + (id) queryFeedsForUser:(NSNumber*)userID;
 + (id) queryCaptionsForPhoto:(NSNumber*)photoID;
 + (id) queryPages;
++ (id) queryUser:(NSNumber*)userID;
 @end

@@ -31,6 +31,7 @@
 + (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid;
 + (EnumerationContext*) contextForPages;
 + (EnumerationContext*) contextForCaptions:     (NSNumber*)photoid;
++ (EnumerationContext*) contextForUser:         (NSNumber*)userid;
 - (id) init;
 - (NSString*) toJSON;
 @end

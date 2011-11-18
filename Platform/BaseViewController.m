@@ -14,6 +14,7 @@
 #import "UICameraActionSheet.h"
 #import "ContributeViewController.h"
 #import "Page.h"
+#import "ImageManager.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -254,7 +255,17 @@
     }
     else if (controller.configurationType == PAGE) {
         Page* page = [Page createNewDraftPage];
-        Photo* photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+        
+        Photo* photo = nil;
+        if (controller.img_photo != nil && controller.img_thumbnail != nil) {
+            photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+        }
+        
+        page.displayname = controller.draftTitle;
+        page.descr = nil;
+        page.hashtags = controller.draftTitle;
+        
+        
         
         //set the number of photos to 1
         page.numberofphotos = [NSNumber numberWithInt:1];

@@ -11,6 +11,10 @@
 #import "SampleViewController.h"
 #import "AuthenticationManager.h"
 #import "ApplicationSettings.h"
+#import "User.h"
+#import "CloudEnumerator.h"
+#import "CloudEnumeratorFactory.h"
+#import "Macros.h"
 @implementation PlatformAppDelegate
 
 
@@ -69,13 +73,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSString* activityName = @"PlatformAppDelegate.applicationDidiFinishLoading:";
     // Override point for customization after application launch.
     // Add the navigation controller's view to the window and display.
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons
     [self.applicationSettingsManager settings];    
-    [AuthenticationManager instance];
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
     self.window.rootViewController = self.navigationController;
  
@@ -83,6 +88,26 @@
     
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
+    
+    
+    //let us make some checks beginning with the user object
+    if ([authenticationManager isUserAuthenticated]) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        //if the user is logged in, lets check to make sure we have a copy of their user object
+        //check to see if the profile picture is empty, if so, lets grab it from fb
+        User* currentUser = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID]; 
+        
+        if (currentUser == nil) {
+            //if the user object isnt in the database, we need to fetch it from the web service
+            CloudEnumerator* userEnumerator = [[CloudEnumeratorFactory instance]enumeratorForUser:authenticationManager.m_LoggedInUserID];
+            
+            LOG_SECURITY(0,@"%@Downloading missing user object for user %@ from the cloud",activityName,authenticationManager.m_LoggedInUserID);
+            //execute the enumerator
+            [userEnumerator enumerateUntilEnd];
+        }
+
+    }
     return YES;
 }
 

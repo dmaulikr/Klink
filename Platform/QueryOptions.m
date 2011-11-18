@@ -122,9 +122,24 @@
 
 +(QueryOptions*)queryForCaptions:(NSNumber*)photoID{
     QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.referencingattribute=nil;
+    newQuery.referencingobjecttype = nil;
+    newQuery.includelinkedobjects = NO;
+    newQuery.maxlinksreturnedperobject = 0;
+    newQuery.linked_results_sortAscending = NO;
+    newQuery.linked_results_sortattribute = DATECREATED;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATECREATED;
+
+    return newQuery;
+}
+
++ (QueryOptions*)queryForUser:(NSNumber *)userID {
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
     newQuery.includelinkedobjects = NO;
     newQuery.primary_results_sortascending = NO;
-    newQuery.primary_results_sortattribute = NUMBEROFVOTES;
+    newQuery.primary_results_sortattribute = DATECREATED;  
     return newQuery;
+
 }
 @end

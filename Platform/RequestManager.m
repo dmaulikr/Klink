@@ -857,4 +857,9 @@ static RequestManager* sharedInstance;
     
     
 }
+
+#pragma mark - Enumeration Complete Handler
+- (void) onEnumerateComplete:(Callback*)callback {
+    
+}
 @end

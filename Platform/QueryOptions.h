@@ -40,4 +40,5 @@
 +(QueryOptions*)queryForFeedsForUser:(NSNumber*)userID;
 +(QueryOptions*)queryForCaptions:(NSNumber*)photoID;
 +(QueryOptions*)queryForPages;
++(QueryOptions*)queryForUser:(NSNumber*)userID;
 @end

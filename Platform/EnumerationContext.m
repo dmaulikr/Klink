@@ -95,6 +95,16 @@
     return enumerationContext;
 }
 
++ (EnumerationContext*)contextForUser:(NSNumber *)userid {
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = [NSNumber numberWithInt:1];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:1];
+    return enumerationContext;
+
+}
+
+
+
 + (EnumerationContext*) contextForCaptions:(NSNumber *)photoid {
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init]autorelease];

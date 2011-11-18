@@ -72,7 +72,7 @@ static FeedManager* sharedManager;
     //enumerate feed until the end
     LOG_FEEDMANAGER(0, @"%@Beginning to enumerate entire contents of user's feed",activityName);
       
-    [self.feedEnumerator enumerateUntilEnd];
+   [self.feedEnumerator enumerateUntilEnd];
     
     
 }
