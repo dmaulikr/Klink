@@ -8,11 +8,12 @@
 
 #import "BaseViewController.h"
 #import "PlatformAppDelegate.h"
-
+#import "Photo.h"
 #import "CallbackResult.h"
 #import "Macros.h"
 #import "UICameraActionSheet.h"
 #import "ContributeViewController.h"
+#import "Page.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -79,15 +80,8 @@
     return CGRectMake(0, 0, 320, 460);
 }
 
-- (void) commonInit {
-    CGRect frameForLoginView = [self frameForLoginView];
-    self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+- (void) baseInit {
     
-    //self.progressView = [[MBProgressHUD alloc]initWithView:self.view];
-    
-    self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
-    [self.view addSubview:self.progressView];
-   // [self.view addSubview:self.loginView];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -147,8 +141,11 @@
     [showProgressBarCallback release];
     [hideProgressBarCallback release];
     
-    [self commonInit];
-    //setup the progress view
+    CGRect frameForLoginView = [self frameForLoginView];
+    self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+    self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
+    [self.view addSubview:self.progressView];
+    
     
 }
 
@@ -230,8 +227,76 @@
     [self.loginView authenticate:facebook withTwitter:twitter onFinishCallback:callback];
 }
 
+#pragma mark - ConrtibuteViewControllerDelegate methods
+- (void)submitChangesForController:(ContributeViewController*)controller {
+    NSString* activityName = @"BaseViewController.submitChangesForController:";
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //this method will persist changes that are returned from the contribute controller
+    if (controller.configurationType == PHOTO) {
+        //this is a new photo being added to a draft page
+        Photo* photo = [Photo createPhotoInPage:controller.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+        
+        if (controller.caption != nil && 
+            ![controller.caption isEqualToString:@""]) {
+            Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
+            
+            //we set the initial number of captions on the photo
+            photo.numberofcaptions = [NSNumber numberWithInt:1];
+        }
+        else {
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
+            
+        }
+        
+        
+    }
+    else if (controller.configurationType == PAGE) {
+        Page* page = [Page createNewDraftPage];
+        Photo* photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+        
+        //set the number of photos to 1
+        page.numberofphotos = [NSNumber numberWithInt:1];
+        
+        if (controller.caption != nil && 
+            ![controller.caption isEqualToString:@""]) {
+            Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+            
+            photo.numberofcaptions = [NSNumber numberWithInt:1];
+            page.numberofcaptions = [NSNumber numberWithInt:1];
+        }
+        else {
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
+            
+        }
+        
+    }
+    else if (controller.configurationType == CAPTION) {
+        Caption* caption = [Caption createCaptionForPhoto:controller.photoID withCaption:controller.caption];
+        LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new caption with ID:%@ (caption:%@)",activityName,caption.objectid,caption.caption1);
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+    //create callback to this view controller for when the saves are finished
+    Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onSaveComplete:)];
+    [resourceContext save:YES onFinishCallback:callback];
+    
+    [callback release];
+    
+    //after this point, the platforms hould automatically begin syncing the data back to the cloud
+    
+    
+}
 
 #pragma mark - Async Handlers
+- (void) onSaveComplete:(CallbackResult*)result {
+    NSString* activityName = @"BaseViewController.onSaveComplete:";
+    
+    LOG_BASEVIEWCONTROLLER(0, @"%@Save completed successfully",activityName);
+}
+
 - (void) onLoginComplete:(CallbackResult*)result {
     NSString* activityName = @"BaseViewController.onLoginComplete:";
         

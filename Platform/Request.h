@@ -59,5 +59,8 @@ withTargetObjectType:(NSString*)objecttype
 
 + (id)          createInstanceOfRequest;
 + (id)          createAttachmentRequestFrom:(Request*)request;
-
++ (id)          createAttachmentRequestFor:(NSNumber*)resourceid 
+                                withString:(NSString*)resourcetype
+                                onSuccessCallback:(Callback*)onSuccessCallback
+                         onFailureCallback:(Callback*)onFailCallback;
 @end

@@ -15,12 +15,14 @@
 @implementation Callback
 @synthesize context = m_context;
 @synthesize target = m_target;
+@synthesize fireOnMainThread = m_fireOnMainThread;
+
 - (id) initWithTarget:(id)target withSelector:(SEL)selector withContext:(id)context {
     self = [super init];
     if (self) {
         m_target = [target retain];
         m_selector = selector;
-       
+        m_fireOnMainThread = NO;
         m_context = [context retain];
         
     }
@@ -33,7 +35,14 @@
 - (void) fireWithResult:(CallbackResult*)callbackResult {
     if (m_target != nil &&
         [m_target respondsToSelector:m_selector]) {
-        [m_target performSelectorInBackground:m_selector withObject:callbackResult];
+        
+        if (self.fireOnMainThread) {
+            [m_target performSelectorOnMainThread:m_selector withObject:callbackResult waitUntilDone:NO];
+        }
+        else
+        {
+            [m_target performSelectorInBackground:m_selector withObject:callbackResult];
+        }
     }
 }
 
@@ -49,6 +58,15 @@
     CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
     callbackResult.response = response;
     [self fireWithResult:callbackResult];
+    
+}
+
+- (void) fireWithResponse:(Response *)response withContext:(NSDictionary *)context {
+    CallbackResult* callbackResult = [CallbackResult resultForCallback:self];
+    callbackResult.response = response;
+    callbackResult.context = context;
+    [self fireWithResult:callbackResult];
+
     
 }
 

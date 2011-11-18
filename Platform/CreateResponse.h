@@ -17,4 +17,5 @@
 
 @property (nonatomic,retain) NSArray* createdResources;
 
+-(Resource*) createdResourceWith:(NSNumber*)resourceid withTargetResourceType:(NSString*)targetresourcetype;
 @end

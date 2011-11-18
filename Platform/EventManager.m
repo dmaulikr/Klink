@@ -57,11 +57,11 @@ static EventManager* sharedInstance;
 }
 
 - (void) registerCallback:(Callback*)callback forSystemEvent:(SystemEvent)systemEventType {
-    NSString* activityName = @"EventManager.registerCallback:";
+   // NSString* activityName = @"EventManager.registerCallback:";
     if (![self isAlreadyRegistered:callback forSystemEvent:systemEventType]) {
         //register the callback
         [self.registeredHandlers addObject:[RegisteredEventHandler registeredEventHandlerFor:callback withEventType:systemEventType]];
-        LOG_EVENTMANAGER(0, @"%@registered callback for system event %d",activityName,systemEventType);
+     //   LOG_EVENTMANAGER(0, @"%@registered callback for system event %d",activityName,systemEventType);
     }
     
     

@@ -524,6 +524,20 @@
 
 }
 
+//returns a list of all attachment attributes that currently have a value in the data store
+- (NSArray*) attachmentAttributesWithValues {
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init ]autorelease];
+    NSArray* attributesWithValues = [self attributesWithValues];
+    
+    for (NSString* attributeName in attributesWithValues) {
+        AttributeInstanceData* aid = [self attributeInstanceDataFor:attributeName];
+        if ([aid.isurlattachment boolValue]) {
+            [retVal addObject:attributeName];
+        }
+    }
+    return retVal;
+}
+
 //returns a list of all attribues that have been changed ont his object
 //and that should be sync'ed to the cloud
 - (NSArray*)changedAttributesToSynchronizeToCloud {

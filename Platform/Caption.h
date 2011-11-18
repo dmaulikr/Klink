@@ -17,4 +17,7 @@
 @property (nonatomic,retain) NSString* creatorname;
 @property (nonatomic,retain) NSNumber* numberofvotes;
 @property (nonatomic,retain) NSNumber* photoid;
+
+//static initializers
++ (Caption*) createCaptionForPhoto:(NSNumber*)photoid withCaption:(NSString*)caption;
 @end

@@ -81,6 +81,21 @@ withTargetObjectType:(NSString*)objecttype
     return retVal;
 }
 
++ (id) createAttachmentRequestFor:(NSNumber*)resourceid 
+                       withString:(NSString*)resourcetype
+                onSuccessCallback:(Callback*)onSuccessCallback
+                onFailureCallback:(Callback*)onFailCallback
+{
+    Request* newRequest = [Request createInstanceOfRequest];
+    newRequest.onFailCallback = onFailCallback;
+    newRequest.onSuccessCallback = onSuccessCallback;
+    newRequest.operationcode =[NSNumber numberWithInt:kMODIFYATTACHMENT];
+    newRequest.targetresourceid = resourceid;
+    newRequest.targetresourcetype = resourcetype;
+    newRequest.statuscode =[NSNumber numberWithInt:kPENDING];
+    return newRequest;
+}
+
 + (id) createAttachmentRequestFrom:(Request *)request {
     Request* newRequest = [Request createInstanceOfRequest];
     newRequest.onFailCallback = request.onFailCallback;

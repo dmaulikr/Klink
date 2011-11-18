@@ -49,11 +49,9 @@
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@",STATE, kDRAFT];
-    
-    
-    
-    //[fetchRequest setPredicate:predicate];
+    NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
@@ -358,28 +356,7 @@
     
 }
 
-#pragma mark - ConrtibuteViewControllerDelegate methods
-- (void)submitChangesForController:(ContributeViewController*)controller {
-    //this method will persist changes that are returned from the contribute controller
-    if (controller.configurationType == PHOTO) {
-        //this is a new photo being added to a draft page
-        [Photo createPhotoInPage:self.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
-    }
-    else if (controller.configurationType == PAGE) {
-         [Page createNewDraftPage];
-        
-        //need to generate phot and caption for a page
-    }
-    else if (controller.configurationType == CAPTION) {
-        
-    }
-    
-    [self dismissModalViewControllerAnimated:YES];
-    
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [resourceContext save:YES onFinishCallback:nil];
-    
-}
+
 
 //#pragma mark - UICameraActionSheetDelegate methods 
 //- (void) onPhotoTakenWithThumbnailImage:(UIImage *)thumbnailImage withFullImage:(UIImage *)image {
@@ -420,34 +397,24 @@
 - (void) onCameraButtonPressed:(id)sender {
     ResourceContext* resourceContext = [ResourceContext instance];
     
-    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    
-    //[Photo createPhotoInPage:self.pageID withThumbnailImage:thumbnailImage withImage:image];
-    
-    //[resourceContext save:YES onFinishCallback:nil];
-    
-    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
-    contributeViewController.delegate = self;
-    contributeViewController.configurationType = PHOTO;
-    contributeViewController.draftTitle = currentPage.displayname;
-    //contributeViewController.img_photo = image;
-    
-    
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
- //   [navigationController pushViewController:contributeViewController animated:YES];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    //[navigationController release];
-    //[contributeViewController release];
-    
-    /*if (self.cameraActionSheet != nil) {
-        [self.cameraActionSheet release];
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
     }
-    
-    self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
-    [self.cameraActionSheet showInView:self.navigationController.view];*/
+    else {
+        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        contributeViewController.delegate = self;
+        contributeViewController.configurationType = PHOTO;
+        contributeViewController.draftTitle = currentPage.displayname;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+    }
 }
 
 - (void) onBookmarkButtonPressed:(id)sender {
