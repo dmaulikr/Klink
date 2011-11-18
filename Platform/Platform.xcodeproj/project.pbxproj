@@ -25,6 +25,8 @@
 		3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DE1464633400D6587D /* icon-thumbUp.png */; };
 		3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */; };
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
+		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
+		5220101C147713D700C47C00 /* UICaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5220101B147713D700C47C00 /* UICaptionView.xib */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
@@ -204,6 +206,9 @@
 		3DCFE8DE1464633400D6587D /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
 		3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
 		3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoViewController.xib; sourceTree = "<group>"; };
+		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
+		52201018147713BD00C47C00 /* UICaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionView.m; sourceTree = "<group>"; };
+		5220101B147713D700C47C00 /* UICaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionView.xib; sourceTree = "<group>"; };
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
@@ -999,6 +1004,9 @@
 				52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */,
 				52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */,
 				52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */,
+				52201017147713BD00C47C00 /* UICaptionView.h */,
+				52201018147713BD00C47C00 /* UICaptionView.m */,
+				5220101B147713D700C47C00 /* UICaptionView.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1318,6 +1326,7 @@
 				52F9140A1475E3E6007E0016 /* icon-newPage@2x.png in Resources */,
 				52F9140D1475E88E007E0016 /* icon-ribbon2.png in Resources */,
 				52F9140E1475E88E007E0016 /* icon-ribbon2@2x.png in Resources */,
+				5220101C147713D700C47C00 /* UICaptionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1449,7 @@
 				3D51CB8B146C7149002E0FD4 /* ContributeViewController.m in Sources */,
 				5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */,
 				52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */,
+				52201019147713BD00C47C00 /* UICaptionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

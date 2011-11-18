@@ -283,6 +283,11 @@
 {
     self.activeTextField = textField;
     
+    if ([self.activeTextField.text rangeOfString:@"#"].location == NSNotFound) {
+        // add hashtag if not present
+        self.activeTextField.text = [NSString stringWithFormat:@"#%@", self.activeTextField.text];
+    }
+    
     // Prevent interaction with the cameraButton on the photo
     self.btn_cameraButton.hidden = YES;
     self.btn_cameraButton.enabled = NO;
@@ -301,12 +306,33 @@
         [self.activeTextView setText:@"#drafttitle"];
     }
     else {
-        // title is acceptable, add hashtag
-        self.draftTitle = [NSString stringWithFormat:@"#%@", self.activeTextField.text];
+        // title is acceptable
+        if ([self.activeTextField.text rangeOfString:@"#"].location == NSNotFound) {
+            // add hashtag if not present
+            self.draftTitle = [NSString stringWithFormat:@"#%@", self.activeTextField.text];
+        }
+        else {
+            self.draftTitle = self.activeTextField.text;
+        }
         self.activeTextField.text = self.draftTitle;
     }
     
     self.activeTextField = nil;
+}
+
+// Used to prevent spaces and more than one hashtag in the draft title string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)text {    
+    
+    if([text isEqualToString:@" "]) {
+        // no spaces allowed
+        return NO;
+    }
+    else if ([text isEqualToString:@"#"]) {
+        // no hashtags other than at the front allowed
+        return NO;
+    }
+    
+    return YES;
 }
 
 // Handles keyboard Return button pressed while editing a textview to dismiss the keyboard
@@ -414,6 +440,7 @@
 
 - (void) onCancel {
     // we deal with cancel operations from the action sheet here
+    [self onCancelButtonPressed:nil];
 }
 
 

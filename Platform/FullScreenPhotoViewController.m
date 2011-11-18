@@ -12,6 +12,7 @@
 #import "Photo.h"
 #import "ImageManager.h"
 #import "Macros.h"
+#import "UICaptionView.h"
 
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
@@ -122,8 +123,6 @@
     [controller release];
     [fetchRequest release];
     
-    int count = [[self.frc_captions fetchedObjects]count];
-    
     return __frc_captions;
 }
 
@@ -140,14 +139,13 @@
 - (id) commonInit {
     // Custom initialization
     
-    CGRect frameForPhotoSlider = [self frameForPhotoSlider];
+    //CGRect frameForPhotoSlider = [self frameForPhotoSlider];
     //self.photoViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForPhotoSlider];
     self.photoViewSlider.delegate = self;
     self.captionViewSlider.delegate = self;
     
     self.photoViewSlider.tableView.pagingEnabled = YES;
     self.captionViewSlider.tableView.pagingEnabled = YES;
-    //[self.view addSubview:self.photoViewSlider];
     
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
@@ -313,16 +311,16 @@
         }
     }
     else if (viewSlider == self.captionViewSlider) {
-        //int captionCount = [[self.frc_captions fetchedObjects]count];
+        int captionCount = [[self.frc_captions fetchedObjects]count];
         
-        //if (captionCount > 0 && index < captionCount) {
+        if (captionCount > 0 && index < captionCount) {
             UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
             [self viewSlider:viewSlider configure:lbl_caption forRowAtIndex:index withFrame:frame];
             return lbl_caption;
-        //}
-        //else {
-        //    return nil;
-        //}
+        }
+        else {
+            return nil;
+        }
     }
 }
 
@@ -424,8 +422,12 @@
     
 }
 
-#pragma mark NSFetchedResultsControllerDelegate
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+#pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controller:(NSFetchedResultsController *)controller 
+    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
+      forChangeType:(NSFetchedResultsChangeType)type 
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    
     if (type == NSFetchedResultsChangeInsert) {
         [self.photoViewSlider onNewItemInsertedAt:newIndexPath.row];
         
