@@ -36,7 +36,7 @@
 
 @synthesize facebook = __facebook;
 
-#define     kFACEBOOKAPPID  @"168077769927457"
+#define     kFACEBOOKAPPID  @"315632228463614"
 
 #pragma mark - Properties
 - (ApplicationSettingsManager*)applicationSettingsManager {
