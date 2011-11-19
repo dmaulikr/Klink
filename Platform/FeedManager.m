@@ -51,7 +51,7 @@ static FeedManager* sharedManager;
     if ([authNManager isUserAuthenticated]) {
      
         NSNumber* loggedInUserID = [authNManager m_LoggedInUserID];
-        __feedEnumerator = [CloudEnumerator enumeratorForFeeds:loggedInUserID];
+        __feedEnumerator = [[CloudEnumerator enumeratorForFeeds:loggedInUserID]retain];
              
         __feedEnumerator.delegate = self;
         
@@ -79,7 +79,12 @@ static FeedManager* sharedManager;
 
 
 - (BOOL) isRefreshingFeed {
-    return self.feedEnumerator.isLoading;
+    if (self.feedEnumerator != nil) {
+        return self.feedEnumerator.isLoading;
+    }
+    else {
+        return NO;
+    }
 }
 
 #pragma mark - Initializers
