@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIProductionLogTableViewCell : UITableViewCell {
+@interface UIProductionLogTableViewCell : UITableViewCell <NSFetchedResultsControllerDelegate> {
     NSNumber*       m_pageID;
     UITableViewCell* m_productionLogTableViewCell;
     
@@ -17,6 +17,9 @@
     UILabel*        m_lbl_deadline;
     UILabel*        m_lbl_numPhotos;
     UILabel*        m_lbl_numCaptions;
+    
+    NSNumber*       m_topVotedPhotoID;
+    NSFetchedResultsController* m_frc_photo;
 }
 
 @property (nonatomic, retain) NSNumber* pageID;
@@ -27,6 +30,8 @@
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_deadline;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numPhotos;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numCaptions;
+@property (nonatomic, retain) IBOutlet NSFetchedResultsController*     frc_photo;
+@property (nonatomic, retain)          NSNumber*    topVotedPhotoID;
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 + (NSString*) cellIdentifier;

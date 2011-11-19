@@ -37,6 +37,8 @@
 
 #define LOG_BASEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"baseviewcontroller",level,__VA_ARGS__)
 
+#define LOG_UIPRODUCTIONLOGTABLEVIEWCELL(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"uiproductionlogtableviewcell",level,__VA_ARGS__)
+
 #else
 #define LOG_NETWORK(...)    do{}while(0)
 #define LOG_GENERAL(...)    do{}while(0)
