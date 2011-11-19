@@ -244,14 +244,6 @@
     //NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
-    // Set status bar style to non-translucent
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    
-    // Set Navigation bar style to to non-translucent
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.tintColor = nil;
-    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-    
     //render the page ID specified as a parameter
     if (self.pageID != nil && [self.pageID intValue] != 0) {
         //render the page specified by the ID passed in
@@ -273,7 +265,8 @@
         }
         
     }
-    //we update the toolbar items each tgime the view controller is shown
+    
+    // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }
@@ -386,11 +379,8 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];
         contributeViewController.delegate = self;
-        contributeViewController.configurationType = PHOTO;
-        contributeViewController.draftTitle = currentPage.displayname;
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

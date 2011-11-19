@@ -82,10 +82,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-       
-        
-        
-   
     }
     return self;
 }
@@ -140,6 +136,9 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
+    // hide toolbar
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
@@ -168,6 +167,14 @@
         
     }
     
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // show toolbar
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

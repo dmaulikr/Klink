@@ -9,10 +9,12 @@
 #import "FullScreenPhotoViewController.h"
 #import "ImageManager.h"
 #import "CloudEnumeratorFactory.h"
+#import "Page.h"
 #import "Photo.h"
 #import "ImageManager.h"
 #import "Macros.h"
 #import "UICaptionView.h"
+#import "ContributeViewController.h"
 
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
@@ -38,6 +40,7 @@
 
 @synthesize pageID                  = m_pageID;
 @synthesize photoID                 = m_photoID;
+@synthesize captionID               = m_captionID;
 
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
@@ -135,6 +138,32 @@
     return CGRectMake(0, 100, kCaptionWidth, kCaptionHeight);
 }
 
+#pragma mark - Toolbar buttons
+- (NSArray*) toolbarButtonsForViewController {
+    //returns an array with the toolbar buttons for this view controller
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    //flexible space for button spacing
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add draft button
+    UIBarButtonItem* captionButton = [[UIBarButtonItem alloc]
+                                    initWithImage:[UIImage imageNamed:@"icon-compose.png"]
+                                    style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(onCaptionButtonPressed:)];
+    [retVal addObject:captionButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    
+    return retVal;
+}
+
 #pragma mark - Initializers
 - (id) commonInit {
     // Custom initialization
@@ -207,13 +236,21 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
     
-    // Set status bar style to black translucent
+    // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
     
     // Navigation bar
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.navigationBar.tintColor = nil;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
+    
+    // Toolbar
+    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.toolbar setTranslucent:YES];
+    
+    // we update the toolbar items each time the view controller is shown
+    NSArray* toolbarItems = [self toolbarButtonsForViewController];
+    [self setToolbarItems:toolbarItems];
     
     // Render the photo ID specified as a parameter
     if (self.photoID != nil && [self.photoID intValue] != 0) {
@@ -239,6 +276,23 @@
 	// Navigation
 	[self updateNavigation];
 
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+    
+    // Set status bar style to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTintColor:nil];
+    
+    // Toolbar
+    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.toolbar setTranslucent:NO];
+    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -293,6 +347,28 @@
     return retVal;
 }
 
+#pragma mark - Toolbar Button Event Handlers
+- (void) onCaptionButtonPressed:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCaptionButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewCaptionWithPageID:self.pageID withPhotoID:self.photoID];
+        contributeViewController.delegate = self;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [contributeViewController release];
+    }
+}
+
 #pragma mark - UIPagedViewSlider2Delegate
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
      cellForRowAtIndex:         (int)                   index 
@@ -304,6 +380,7 @@
         if (photoCount > 0 && index < photoCount) {
             UIImageView* iv_photo = [[UIImageView alloc] initWithFrame:frame];
             [self viewSlider:viewSlider configure:iv_photo forRowAtIndex:index withFrame:frame];
+            iv_photo.backgroundColor = [UIColor blueColor];
             return iv_photo;
         }
         else {
@@ -315,6 +392,9 @@
         
         if (captionCount > 0 && index < captionCount) {
             UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
+            lbl_caption.backgroundColor = [UIColor blackColor];
+            lbl_caption.textColor = [UIColor whiteColor];
+            lbl_caption.textAlignment = UITextAlignmentCenter;
             [self viewSlider:viewSlider configure:lbl_caption forRowAtIndex:index withFrame:frame];
             return lbl_caption;
         }
@@ -338,7 +418,6 @@
             existingCell.frame = frame;
             
             UIImageView* iv_photo = (UIImageView*)existingCell;
-            iv_photo.backgroundColor = [UIColor blueColor];
             
             ImageManager* imageManager = [ImageManager instance];
             NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:kPHOTOID];
@@ -369,7 +448,6 @@
             existingCell.frame = frame;
             
             UILabel* lbl_caption = (UILabel*)existingCell;
-            lbl_caption.backgroundColor = [UIColor blueColor];
             
             if (caption.caption1 != nil) {
                 lbl_caption.text = caption.caption1;
@@ -381,19 +459,17 @@
         }
     }
     
-    /*CGRect frameForCaptionSlider = [self frameForCaptionSlider];
-    frameForCaptionSlider.origin.x = frame.origin.x;
-    UIPagedViewSlider2* captionViewSlider2 = [[UIPagedViewSlider2 alloc]initWithFrame:frameForCaptionSlider];
-    captionViewSlider2.delegate = self;
-    captionViewSlider2.tableView.pagingEnabled = YES;
-    captionViewSlider2.backgroundColor = [UIColor blueColor];
-    [captionViewSlider2 initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kCaptionSpacing useCellIdentifier:@"caption"];
-    [self.view addSubview:captionViewSlider2];*/
-    
 }
 
 - (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
            selectIndex:         (int)                   index; {
+    
+    if (viewSlider == self.photoViewSlider) {
+        
+    }
+    else if (viewSlider == self.captionViewSlider) {
+        
+    }
     
 }
 
@@ -401,12 +477,25 @@
              isAtIndex:          (int)                   index 
     withCellsRemaining:          (int)                   numberOfCellsToEnd {
      
-    [self updateNavigation];
-
+    if (viewSlider == self.photoViewSlider) {
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+        self.photoID = photo.objectid;
+        [self updateNavigation];
+    }
+    else if (viewSlider == self.captionViewSlider) {
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+        self.captionID = caption.objectid;
+    }
 }
 
 - (int)   itemCountFor:         (UIPagedViewSlider2*)   viewSlider {
-    int count = [[self.frc_photos fetchedObjects]count];
+    int count = 0;
+    if (viewSlider == self.photoViewSlider) {
+        count = [[self.frc_photos fetchedObjects]count];
+    }
+    else if (viewSlider == self.captionViewSlider) {
+        count = [[self.frc_captions fetchedObjects]count];
+    }
     return count;
 }
 
@@ -428,9 +517,20 @@
       forChangeType:(NSFetchedResultsChangeType)type 
        newIndexPath:(NSIndexPath *)newIndexPath {
     
+    NSString* activityName = @"FullScreenPhotoViewController.controller.didChangeObject:";
     if (type == NSFetchedResultsChangeInsert) {
-        [self.photoViewSlider onNewItemInsertedAt:newIndexPath.row];
-        
+        if (controller == self.frc_photos) {
+            //insertion of a new draft
+            Resource* resource = (Resource*)anObject;
+            LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
+            [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        }
+        else if (controller == self.frc_captions) {
+            //insertion of a new draft
+            Resource* resource = (Resource*)anObject;
+            LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
+            [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        }
     }
 }
 

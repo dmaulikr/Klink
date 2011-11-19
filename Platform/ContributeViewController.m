@@ -12,6 +12,12 @@
 #import "Page.h"
 #import "Photo.h"
 #import "Caption.h"
+#import "Types.h"
+#import "ImageManager.h"
+#import "ImageDownloadResponse.h"
+
+#define kPAGEID @"pageid"
+#define kPHOTOID @"photoid"
 
 
 @implementation ContributeViewController
@@ -151,6 +157,8 @@
     
    // NSString* activityName = @"ContributeViewController.viewWillAppear:";
     
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
      
@@ -185,6 +193,8 @@
         //self.iv_photo.image = self.img_photo;
         
         // Show existing draft title since user is adding a photo
+        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        self.draftTitle = currentPage.displayname;
         self.lbl_draftTitle.text = self.draftTitle;
         self.lbl_draftTitle.hidden = NO;
         self.tf_newDraftTitle.hidden = YES;
@@ -207,6 +217,8 @@
         self.lbl_captionRequired.hidden = NO;
         
         // Show existing draft title since user is adding a caption
+        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        self.draftTitle = currentPage.displayname;
         self.lbl_draftTitle.text = self.draftTitle;
         self.lbl_draftTitle.hidden = NO;
         self.tf_newDraftTitle.hidden = YES;
@@ -214,11 +226,27 @@
         self.lbl_titleRequired.hidden = YES;
 
         // Show existing photo but disabled cameraButton since user is adding a caption
+        Photo* currentPhoto = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+
+        ImageManager* imageManager = [ImageManager instance];
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:currentPhoto.objectid forKey:kPHOTOID];
+        
+        if (currentPhoto.imageurl != nil && ![currentPhoto.imageurl isEqualToString:@""]) {
+            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            UIImage* image = [imageManager downloadImage:currentPhoto.imageurl withUserInfo:nil atCallback:callback];
+            
+            if (image != nil) {
+                self.img_photo = image;
+            }
+        }
+        
+        self.iv_photo.image = self.img_photo;
         self.btn_cameraButton.hidden = YES;
         self.btn_cameraButton.enabled = NO;
         self.lbl_photoOptional.hidden = YES;
         self.lbl_photoRequired.hidden = YES;
-        self.iv_photo.image = self.img_photo;
+        
+        [self.view setNeedsDisplay];
     }
     else {
         // error state - Configuration type not specified
@@ -476,9 +504,50 @@
     }
 }
 
+#pragma mark - Async callbacks
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSString* activityName = @"ContributeViewController.onImageDownloadComplete:";
+    NSDictionary* userInfo = result.context;
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        if ([photoID isEqualToNumber:self.photoID]) {
+            //we only draw the image if this view hasnt been repurposed for another photo
+            LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+            [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            
+            [self.view setNeedsDisplay];
+        }
+    }
+    else {
+        self.iv_photo.backgroundColor = [UIColor blackColor];
+        LOG_IMAGE(1,@"%@Image failed to download",activityName);
+    }
+    
+}
+
 #pragma mark - Static Initializers
-+ (ContributeViewController*) createInstance {
++ (ContributeViewController*) createInstanceForNewDraft {
     ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.configurationType = PAGE;
+    [contributeViewController autorelease];
+    return contributeViewController;
+}
+
++ (ContributeViewController*) createInstanceForNewPhotoWithPageID:(NSNumber*)pageID {
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.configurationType = PHOTO;
+    contributeViewController.pageID = pageID;
+    [contributeViewController autorelease];
+    return contributeViewController;
+}
+
++ (ContributeViewController*) createInstanceForNewCaptionWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID {
+    ContributeViewController* contributeViewController = [[ContributeViewController alloc]initWithNibName:@"ContributeViewController" bundle:nil];
+    contributeViewController.configurationType = CAPTION;
+    contributeViewController.pageID = pageID;
+    contributeViewController.photoID = photoID;
     [contributeViewController autorelease];
     return contributeViewController;
 }

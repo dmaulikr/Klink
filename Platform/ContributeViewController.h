@@ -86,6 +86,8 @@
 - (IBAction)onCameraButtonPressed:(id)sender;
 - (void)onCancelButtonPressed:(id)sender;
 
-+ (ContributeViewController*) createInstance;
++ (ContributeViewController*) createInstanceForNewDraft;
++ (ContributeViewController*) createInstanceForNewPhotoWithPageID:(NSNumber*)pageID;
++ (ContributeViewController*) createInstanceForNewCaptionWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;
 
 @end

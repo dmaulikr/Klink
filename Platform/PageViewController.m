@@ -250,7 +250,8 @@
         }
 
     }
-    //we update the toolbar items each tgime the view controller is shown
+    
+    // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }

@@ -13,6 +13,7 @@
 #import "Types.h"
 #import "Attributes.h"
 #import "Macros.h"
+
 @implementation UINotificationIcon
 @synthesize lbl_numberOfNotifications   = m_lbl_numberOfNotifications;
 @synthesize btn_showNotifications       = m_btn_showNotifications;
@@ -93,14 +94,19 @@
         CGRect frameForButton = [self frameForShowNotificationButton];
         CGRect frameForLabel = [self frameForNumberOfNotificationsLabel];
         
-        self.lbl_numberOfNotifications = [[UILabel alloc]initWithFrame:frameForLabel];
         self.btn_showNotifications = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [self.btn_showNotifications setTitle:@"N" forState:UIControlStateNormal];
         self.btn_showNotifications.frame = frameForButton;
+        [self.btn_showNotifications setTitle:@"!" forState:UIControlStateNormal];
+        self.btn_showNotifications.titleLabel.font = [UIFont boldSystemFontOfSize:18];
         [self.btn_showNotifications addTarget:self action:@selector(onShowNotificationsClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.btn_showNotifications.backgroundColor = [UIColor clearColor];
         
+        self.lbl_numberOfNotifications = [[UILabel alloc]initWithFrame:frameForLabel];
         self.lbl_numberOfNotifications.textAlignment = UITextAlignmentCenter;
-        self.backgroundColor = [UIColor yellowColor];
+        self.lbl_numberOfNotifications.textColor = [UIColor whiteColor];
+        self.lbl_numberOfNotifications.backgroundColor = [UIColor clearColor];
+        
+        self.backgroundColor = [UIColor clearColor];
         
         
         [self addSubview:self.lbl_numberOfNotifications];

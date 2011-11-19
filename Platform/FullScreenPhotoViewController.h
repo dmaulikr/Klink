@@ -14,6 +14,7 @@
 @interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate> {
     NSNumber*           m_pageID; //represents the ID of the page whose photos will be shown
     NSNumber*           m_photoID;
+    NSNumber*           m_captionID;
     
     UIPagedViewSlider2* m_photoViewSlider;
     UIPagedViewSlider2* m_captionViewSlider;
@@ -28,6 +29,7 @@
 
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSNumber*                      photoID;
+@property (nonatomic,retain) NSNumber*                      captionID;
 
 // Subviews
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   photoViewSlider;
