@@ -176,7 +176,7 @@
 {
     [super viewWillAppear:animated];
     
-    //we update the toolbar items each tgime the view controller is shown
+    // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }
@@ -283,17 +283,14 @@
 }
 
 - (void) onDraftButtonPressed:(id)sender {
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onDraftButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewDraft];
         contributeViewController.delegate = self;
-        contributeViewController.configurationType = PAGE;
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

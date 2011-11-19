@@ -16,8 +16,8 @@
 #import "AuthenticationManager.h"
 @implementation HomeViewController
 @synthesize productionLogButton = m_productionLogButton;
-@synthesize contributeButton    = m_contributeButton;
-@synthesize newDraftButton      = m_newDraftButton;
+//@synthesize contributeButton    = m_contributeButton;
+//@synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
 @synthesize loginButton         = m_loginButton;
 @synthesize loginTwitterButton  = m_loginTwitterButton;
@@ -126,7 +126,7 @@
     [productionLogController release];
 }
 
-- (IBAction) onContributeButtonClicked:(id)sender {
+/*- (IBAction) onContributeButtonClicked:(id)sender {
     //called when the contribute button is pressed
     DraftViewController* draftController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
     
@@ -136,9 +136,9 @@
     
     [self.navigationController pushViewController:draftController animated:YES];
     [draftController release];
-}
+}*/
 
-- (IBAction) onNewDraftButtonClicked:(id)sender {
+/*- (IBAction) onNewDraftButtonClicked:(id)sender {
     //called when the new draft button is pressed
     if (![self.authenticationManager isUserAuthenticated]) {
         //user needs to authenticate first
@@ -156,7 +156,7 @@
         [navigationController release];
         [contributeViewController release];
     }
-}
+}*/
 
 - (IBAction) onLoginButtonClicked:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {

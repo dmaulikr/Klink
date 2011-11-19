@@ -103,7 +103,7 @@
         [self renderPhoto:topPhoto];
     
     }
-    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 - (void) renderDraftWithID:(NSNumber*)pageID {
@@ -166,7 +166,7 @@
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             
-            [self setNeedsLayout];
+            [self setNeedsDisplay];
         }
     }
     else {
