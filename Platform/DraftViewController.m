@@ -19,7 +19,7 @@
 #import "PersonalLogViewController.h"
 
 #define kWIDTH 320
-#define kHEIGHT 375
+#define kHEIGHT 480
 #define kSPACING 0
 
 @implementation DraftViewController
@@ -149,7 +149,9 @@
 
 - (id) commonInit {
     // Custom initialization
+    
     self.pageID = nil;
+    
     CGRect frameForSlider = [self frameForSlider];
     self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
     self.pagedViewSlider.delegate = self;
@@ -158,6 +160,10 @@
     [self.view addSubview:self.pagedViewSlider];
     
     [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"draft"];
+    
+    self.pagedViewSlider.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor blackColor];
+    
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
     
     
@@ -170,13 +176,17 @@
     if (self) {
         self =  [self commonInit];
         
+        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
+        //self.view.backgroundColor = background;
+        //[background release];
+        
     }
     return self;
 }
 
 - (void)dealloc
 {
-     [self.pagedViewSlider release];
+    [self.pagedViewSlider release];
     [self.frc_draft_pages release];
     [super dealloc];
    
@@ -297,21 +307,7 @@
     //render a page in its own view and return it using the coordinates passed in for its frame
     int count = [[self.frc_draft_pages fetchedObjects]count];
     if (index < count) {    
-        //UIDraftView* draftView = [[UIDraftView alloc] initWithCoder:nil];
-        //NSArray* nibContents = nil;
-        //nibContents = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:nil options:nil];
-        //if (nibContents == nil) {
-        //    NSLog(@"Error! Could not load UIDraftView file.\n");
-        //    return nil;
-        //}
-        //UIDraftView* draftView = [nibContents objectAtIndex:0];
-        
-        //UIDraftView* draftView = [[UIDraftView alloc] init];
-        //UIDraftView* draftView = [[UIDraftView alloc] initWithNibName:@"UIDraftView" bundle:nil withFrame:frame];
-        
-        //UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
-        
-        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame withStyle:UITableViewStylePlain];
+        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
         draftView.navigationController = self.navigationController;
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
@@ -326,6 +322,25 @@
              isAtIndex:          (int)                   index 
     withCellsRemaining:          (int)                   numberOfCellsToEnd {
     
+    
+    NSString* draftTitle = @"Back";
+    int count = [[self.frc_draft_pages fetchedObjects]count];
+    if (index < count) {
+        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
+        if (page != nil) {
+            draftTitle = page.displayname;
+        }
+        else {
+            page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
+        }
+        self.pageID = page.objectid;
+    }
+    
+    // Set up navigation bar back button
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:draftTitle
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                              target:nil
+                                                                              action:nil] autorelease];
 }
 
 

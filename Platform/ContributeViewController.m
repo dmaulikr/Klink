@@ -155,13 +155,20 @@
 {
     [super viewWillAppear:animated];
     
-   // NSString* activityName = @"ContributeViewController.viewWillAppear:";
+    // NSString* activityName = @"ContributeViewController.viewWillAppear:";
     
-    ResourceContext* resourceContext = [ResourceContext instance];
+    // Set status bar style to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
     
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
-     
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
     
     // Set up the view for the appropriate configuration type
     if (self.configurationType == PAGE) {

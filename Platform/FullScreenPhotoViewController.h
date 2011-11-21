@@ -41,6 +41,6 @@
 - (void)    updateNavigation;
 
 // Static Initializer
-+ (FullScreenPhotoViewController*)createInstance;
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;
 
 @end

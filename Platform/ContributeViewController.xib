@@ -43,6 +43,20 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBUIImageView" id="408089821">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{320, 416}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:567</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">page_curled.png</string>
+						</object>
+					</object>
 					<object class="IBUIButton" id="368665952">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
@@ -164,7 +178,7 @@
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="871770688">
+							<object class="NSColorSpace" key="NSCustomColorSpace">
 								<int key="NSID">2</int>
 							</object>
 						</object>
@@ -376,8 +390,7 @@
 				<reference key="NSNextKeyView" ref="368665952"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="871770688"/>
+					<bytes key="NSWhite">MAA</bytes>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
@@ -561,10 +574,11 @@
 							<reference ref="306262154"/>
 							<reference ref="392651360"/>
 							<reference ref="690706120"/>
-							<reference ref="368665952"/>
 							<reference ref="389288571"/>
 							<reference ref="86151623"/>
 							<reference ref="538536479"/>
+							<reference ref="408089821"/>
+							<reference ref="368665952"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -650,6 +664,11 @@
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Button - cameraButton</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="408089821"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -672,6 +691,7 @@
 					<string>34.IBPluginDependency</string>
 					<string>37.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
+					<string>41.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
 				</object>
@@ -682,6 +702,7 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIScrollView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -709,7 +730,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">40</int>
+			<int key="maxID">41</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -875,8 +896,17 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">image-photoCameraButton.png</string>
-			<string key="NS.object.0">{222, 149}</string>
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>image-photoCameraButton.png</string>
+				<string>page_curled.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{222, 149}</string>
+				<string>{320, 480}</string>
+			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>
 	</data>

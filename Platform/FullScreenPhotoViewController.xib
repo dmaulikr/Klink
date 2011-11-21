@@ -4434,7 +4434,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										</object>
 									</object>
 								</object>
-								<object class="NSColor" key="NSColor">
+								<object class="NSColor" key="NSColor" id="212292975">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
@@ -4446,11 +4446,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<object class="IBUIView" id="184562399">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 346}, {320, 90}}</string>
+						<string key="NSFrame">{{0, 346}, {320, 70}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
-						<float key="IBUIAlpha">0.5</float>
+						<reference key="IBUIBackgroundColor" ref="212292975"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>

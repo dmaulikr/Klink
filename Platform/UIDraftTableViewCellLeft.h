@@ -31,10 +31,7 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numVotes;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numCaptions;
 
-- (id)initWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
-- (void) renderWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID;
-
-- (UIDraftTableViewCellLeft*)loadCell;
+- (void) renderWithPhotoID:(NSNumber*)photoID;
 
 + (NSString*) cellIdentifier;
 

@@ -82,6 +82,11 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
+        self.view.backgroundColor = background;
+        [background release];
+        
     }
     return self;
 }

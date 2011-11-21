@@ -15,7 +15,7 @@
 #import "Macros.h"
 #import "UICaptionView.h"
 #import "ContributeViewController.h"
-
+#import "UICaptionView.h"
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "ApplicationSettings.h"
@@ -129,15 +129,6 @@
     return __frc_captions;
 }
 
-#pragma mark - Frames
-- (CGRect) frameForPhotoSlider {
-    return CGRectMake(0, 0, kPictureWidth, kPictureHeight);
-}
-
-- (CGRect) frameForCaptionSlider {
-    return CGRectMake(0, 100, kCaptionWidth, kCaptionHeight);
-}
-
 #pragma mark - Toolbar buttons
 - (NSArray*) toolbarButtonsForViewController {
     //returns an array with the toolbar buttons for this view controller
@@ -168,8 +159,6 @@
 - (id) commonInit {
     // Custom initialization
     
-    //CGRect frameForPhotoSlider = [self frameForPhotoSlider];
-    //self.photoViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForPhotoSlider];
     self.photoViewSlider.delegate = self;
     self.captionViewSlider.delegate = self;
     
@@ -206,6 +195,34 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - Navigation
+- (void)updateNavigation {
+    NSArray* photos = [self.frc_photos fetchedObjects];
+    int index = [self.photoViewSlider getPageIndex];
+    // Navigation Bar Title
+	if (photos.count > 1) {
+		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
+	} else {
+		self.title = nil;
+	}    
+}
+
+- (int) indexOfPhotoWithID:(NSNumber*)photoid {
+    //returns the index location within the frc_photos for the photo with the id specified
+    int retVal = 0;
+    
+    NSArray* fetchedObjects = [self.frc_photos fetchedObjects];
+    int index = 0;
+    for (Photo* photo in fetchedObjects) {
+        if ([photo.objectid isEqualToNumber:photoid]) {
+            retVal = index;
+            break;
+        }
+        index++;
+    }
+    return retVal;
+}
+
 #pragma mark - View lifecycle
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -238,15 +255,6 @@
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
-    
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setTintColor:nil];
-    
-    // Toolbar
-    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:YES];
     
     // we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -284,15 +292,6 @@
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationBar setTintColor:nil];
-    
-    // Toolbar
-    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:NO];
-    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -317,34 +316,6 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-#pragma mark - Navigation
-- (void)updateNavigation {
-    NSArray* photos = [self.frc_photos fetchedObjects];
-    int index = [self.photoViewSlider getPageIndex];
-    // Navigation Bar Title
-	if (photos.count > 1) {
-		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
-	} else {
-		self.title = nil;
-	}    
-}
-
-- (int) indexOfPhotoWithID:(NSNumber*)photoid {
-    //returns the index location within the frc_photos for the photo with the id specified
-    int retVal = 0;
-    
-    NSArray* fetchedObjects = [self.frc_photos fetchedObjects];
-    int index = 0;
-    for (Photo* photo in fetchedObjects) {
-        if ([photo.objectid isEqualToNumber:photoid]) {
-            retVal = index;
-            break;
-        }
-        index++;
-    }
-    return retVal;
 }
 
 #pragma mark - Toolbar Button Event Handlers
@@ -391,16 +362,20 @@
         int captionCount = [[self.frc_captions fetchedObjects]count];
         
         if (captionCount > 0 && index < captionCount) {
-            UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
-            lbl_caption.backgroundColor = [UIColor blackColor];
-            lbl_caption.textColor = [UIColor whiteColor];
-            lbl_caption.textAlignment = UITextAlignmentCenter;
-            [self viewSlider:viewSlider configure:lbl_caption forRowAtIndex:index withFrame:frame];
-            return lbl_caption;
+            //UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
+            //lbl_caption.backgroundColor = [UIColor blackColor];
+            //lbl_caption.textColor = [UIColor whiteColor];
+            //lbl_caption.textAlignment = UITextAlignmentCenter;
+            UICaptionView* v_caption = [[UICaptionView alloc] initWithFrame:frame];
+            [self viewSlider:viewSlider configure:v_caption forRowAtIndex:index withFrame:frame];
+            return v_caption;
         }
         else {
             return nil;
         }
+    }
+    else {
+        return nil;
     }
 }
 
@@ -447,15 +422,15 @@
             
             existingCell.frame = frame;
             
-            UILabel* lbl_caption = (UILabel*)existingCell;
+            //UILabel* lbl_caption = (UILabel*)existingCell;
+            UICaptionView* v_caption = (UICaptionView*)existingCell;
             
             if (caption.caption1 != nil) {
-                lbl_caption.text = caption.caption1;
+                //lbl_caption.text = caption.caption1;
+                [v_caption renderCaptionWithID:caption.objectid];
             }
-            else {
-                lbl_caption.text = @"CAPTION WAS NIL";
-            }
-            [self.captionViewSlider addSubview:lbl_caption];
+            //[self.captionViewSlider addSubview:lbl_caption];
+            [self.captionViewSlider addSubview:v_caption];
         }
     }
     
@@ -480,9 +455,18 @@
     if (viewSlider == self.photoViewSlider) {
         Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         self.photoID = photo.objectid;
+        
+        // reset frc_captions for the new photo
+        self.frc_captions = nil;
+        [self.frc_captions fetchedObjects];
+        [self.captionViewSlider reset];
+        [self.captionViewSlider goTo:0 withAnimation:NO];
+        
+        [self renderPhoto];
+        
         [self updateNavigation];
     }
-    else if (viewSlider == self.captionViewSlider) {
+    else if ((viewSlider == self.captionViewSlider) && ([[self.frc_captions fetchedObjects]count] != 0)) {
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         self.captionID = caption.objectid;
     }
@@ -535,8 +519,10 @@
 }
 
 #pragma mark - Static Initializers
-+ (FullScreenPhotoViewController*)createInstance {
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID {
     FullScreenPhotoViewController* photoViewController = [[FullScreenPhotoViewController alloc]initWithNibName:@"FullScreenPhotoViewController" bundle:nil];
+    photoViewController.pageID = pageID;
+    photoViewController.photoID = photoID;
     [photoViewController autorelease];
     return photoViewController;
 }

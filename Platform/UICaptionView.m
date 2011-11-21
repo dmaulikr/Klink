@@ -7,9 +7,16 @@
 //
 
 #import "UICaptionView.h"
+#import "Caption.h"
+#import "Types.h"
+#import "DateTimeHelper.h"
 
 @implementation UICaptionView
+@synthesize captionID = m_captionID;
 @synthesize view = m_view;
+@synthesize v_background = m_v_background;
+@synthesize lbl_caption = m_lbl_caption;
+@synthesize lbl_metaData = m_lbl_metaData;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -29,6 +36,11 @@
     return self;
 }
 
+//This is where the "by JordanG 2 minutes ago" stirng is created
+- (NSString*) getMetadataStringForCaption:(Caption*)caption {
+    return [NSString stringWithFormat:@"By %@ on %@",caption.creatorname,[DateTimeHelper formatShortDate:[NSDate date]]];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -37,5 +49,23 @@
     // Drawing code
 }
 */
+
+- (void) render {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    if (caption != nil) {
+        self.lbl_caption.text = caption.caption1;
+        self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
+    }
+    //[self setNeedsDisplay];
+}
+
+- (void) renderCaptionWithID:(NSNumber*)captionID {
+    self.captionID = captionID;
+    
+    [self render];
+}
 
 @end

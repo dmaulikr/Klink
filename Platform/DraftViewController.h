@@ -12,7 +12,7 @@
 #import "CloudEnumerator.h"
 #import "ContributeViewController.h"
 
-@interface DraftViewController : BaseViewController < NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate > {
+@interface DraftViewController : BaseViewController < NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     UIPagedViewSlider2* m_pagedViewSlider; //will use to flip between pages
