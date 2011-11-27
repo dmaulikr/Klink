@@ -165,6 +165,9 @@
     self.photoViewSlider.tableView.pagingEnabled = YES;
     self.captionViewSlider.tableView.pagingEnabled = YES;
     
+    self.photoViewSlider.tableView.allowsSelection = NO;
+    self.captionViewSlider.tableView.allowsSelection = NO;
+    
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
     
@@ -362,10 +365,6 @@
         int captionCount = [[self.frc_captions fetchedObjects]count];
         
         if (captionCount > 0 && index < captionCount) {
-            //UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
-            //lbl_caption.backgroundColor = [UIColor blackColor];
-            //lbl_caption.textColor = [UIColor whiteColor];
-            //lbl_caption.textAlignment = UITextAlignmentCenter;
             UICaptionView* v_caption = [[UICaptionView alloc] initWithFrame:frame];
             [self viewSlider:viewSlider configure:v_caption forRowAtIndex:index withFrame:frame];
             return v_caption;
@@ -422,14 +421,11 @@
             
             existingCell.frame = frame;
             
-            //UILabel* lbl_caption = (UILabel*)existingCell;
             UICaptionView* v_caption = (UICaptionView*)existingCell;
             
             if (caption.caption1 != nil) {
-                //lbl_caption.text = caption.caption1;
                 [v_caption renderCaptionWithID:caption.objectid];
             }
-            //[self.captionViewSlider addSubview:lbl_caption];
             [self.captionViewSlider addSubview:v_caption];
         }
     }
@@ -460,7 +456,7 @@
         self.frc_captions = nil;
         [self.frc_captions fetchedObjects];
         [self.captionViewSlider reset];
-        [self.captionViewSlider goTo:0 withAnimation:NO];
+        //[self.captionViewSlider goTo:0 withAnimation:NO];
         
         [self renderPhoto];
         
