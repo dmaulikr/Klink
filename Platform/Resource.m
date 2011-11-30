@@ -125,6 +125,9 @@
                         [self setValue:[value stringValue] forKey:[attrDesc name]];
                     }
                 }
+                else if (attrType == NSTransformableAttributeType) {
+                    [self setValue:value forKey:[attrDesc name]];
+                }
                 else {
                     //unsupported attribute type
                     LOG_RESOURCE(1,@"%@Unsupported attribute type in JSON string: %d",activityName,attrType);
@@ -354,6 +357,9 @@
             }
         
         
+        }
+        else if (attrType == NSTransformableAttributeType) {
+            retVal = YES;
         }
 
     }

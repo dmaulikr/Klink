@@ -143,6 +143,7 @@ static  ImageManager* sharedManager;
     request.url = url;
     
     NSMutableDictionary *requestUserInfo = [NSMutableDictionary dictionaryWithObject:path forKey:IMAGEPATH];
+    [requestUserInfo addEntriesFromDictionary:callback.context];
     request.userInfo = requestUserInfo;
     request.operationcode = [NSNumber numberWithInt:kIMAGEDOWNLOAD];
     request.statuscode = [NSNumber numberWithInt:kPENDING];

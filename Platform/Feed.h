@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Resource.h"
+#import "FeedData.h"
 
 @interface Feed : Resource {
     
@@ -23,4 +24,6 @@
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSString* imageurl;
 @property (nonatomic,retain) NSString* title;
+
+@property (nonatomic,retain) NSArray* feeddata;
 @end

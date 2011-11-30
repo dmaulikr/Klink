@@ -30,6 +30,7 @@
 @dynamic numberofcaptions;
 @dynamic numberofpublishvotes;
 @dynamic finishedcaptionid;
+@dynamic finishedphotoid;
 
 #pragma mark - Instance Methods
 - (NSArray*) hashtagList {

@@ -36,6 +36,7 @@ typedef enum {
 @property (nonatomic,retain) NSNumber* numberofpublishvotes;
 @property (nonatomic,retain) NSNumber* finishedcaptionid;
 @property (nonatomic,retain) NSNumber* datedraftexpires;
+@property (nonatomic,retain) NSNumber* finishedphotoid;
 
 - (NSArray*) hashtagList;
 - (Photo*) photoWithHighestVotes;
