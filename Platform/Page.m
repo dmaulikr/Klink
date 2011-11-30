@@ -12,6 +12,9 @@
 #import "ImageManager.h"
 #import "User.h"
 #import "AuthenticationManager.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+#import "DateTimeHelper.h"
 
 #define kDELIMETER  @","
 
@@ -67,6 +70,15 @@
         retVal.creatorid = user.objectid;
         retVal.creatorname = user.displayname;
         retVal.state = [NSNumber numberWithInt:kDRAFT];
+        
+        //we need to calculate the proper date for expiry
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+        //we get the duration of new pages
+        double currentDateInSeconds =  [DateTimeHelper convertDateToDouble:[NSDate date]];
+        //add the expiry date default
+        retVal.datedraftexpires =[NSNumber numberWithDouble:(currentDateInSeconds + [settings.page_draftexpiry_seconds doubleValue])];
+        
+        
         
     }
    

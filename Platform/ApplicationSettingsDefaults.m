@@ -11,8 +11,8 @@
 
 //NSString* const stng_BASEURL = @"baseurl";
 //NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
-//NSString* const default_BASEURL = @"http://192.168.1.102/KlinkService";
-//NSString* const default_BASEURL = @"http://108.6.2.14/KlinkService";
+//NSString* const default_BASEURL = @"http://192.168.1.102/bonobo";
+//NSString* const default_BASEURL = @"http://108.6.2.14/bonobo";
 
 //uncomment this address for G's server
 //NSString* const default_BASEURL = @"http://192.168.1.4/bonobo";
@@ -37,7 +37,7 @@ int const threshold_FEED_ENUMERATION_TIME_GAP=60;
 int const threshold_CAPTION_ENUMERATION_TIME_GAP=60;
 int const threshold_PAGE_ENUMERATION_TIME_GAP=60;
 int const page_size_LINKEDOBJECTS = 5;
-
+int const page_DRAFTEXPIRES_SECONDS = 86400;
 NSString* const twitter_CONSUMERKEY=@"oy2bDqBeASOP7fXXwqOAQ";
 NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBHgQ";
 //NSString* const cell_TEXTCAPTION =@"textCaptionCell";
