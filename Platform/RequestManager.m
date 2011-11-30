@@ -762,7 +762,9 @@ static RequestManager* sharedInstance;
         LOG_REQUEST(0,@"%@Request completed successfully",activityName);
         //execute the success selector on each request
         if (request.onSuccessCallback != nil) {
-            NSDictionary* context = [NSDictionary dictionaryWithObject:request forKey:kREQUEST];
+            NSMutableDictionary* context = [NSMutableDictionary dictionaryWithObject:request forKey:kREQUEST];
+            //insert the request context into the user dictionary as well
+            [context addEntriesFromDictionary:request.userInfo];
             [request.onSuccessCallback fireWithResponse:responseObj withContext:context];
         }
       }

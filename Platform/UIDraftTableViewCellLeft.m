@@ -24,7 +24,7 @@
 @synthesize photoID = m_photoID;
 @synthesize captionID = m_captionID;
 @synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
-@synthesize img_photo = m_img_photo;
+@synthesize iv_photo = m_iv_photo;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_numVotes = m_lbl_numVotes;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
@@ -51,7 +51,8 @@
             UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
             
             if (image != nil) {
-                self.img_photo.image = image;
+                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_photo.image = image;
             }
         }
         
@@ -98,7 +99,7 @@
     [super dealloc];
     [self.photoID release];
     [self.captionID release];
-    [self.img_photo release];
+    [self.iv_photo release];
     [self.lbl_caption release];
     [self.lbl_numVotes release];
     [self.lbl_numCaptions release];
@@ -108,20 +109,20 @@
 - (void)onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"UIDraftTableViewCellLeft.onImageDownloadComplete:";
     NSDictionary* userInfo = result.context;
-    NSNumber* nid = [userInfo valueForKey:kPHOTOID];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
     
     if ([response.didSucceed boolValue] == YES) {
-        if ([nid isEqualToNumber:self.photoID]) {
+        if ([photoID isEqualToNumber:self.photoID]) {
             //we only draw the image if this view hasnt been repurposed for another photo
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
-            [self.img_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
-            
+            [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             [self setNeedsDisplay];
         }
     }
     else {
-        self.img_photo.backgroundColor = [UIColor blackColor];
+        self.iv_photo.backgroundColor = [UIColor redColor];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 

@@ -319,6 +319,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     // Set up navigation bar back button
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"

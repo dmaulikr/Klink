@@ -48,13 +48,18 @@
 							<object class="IBUIImageView" id="821546511">
 								<reference key="NSNextResponder" ref="157056619"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 18}, {120, 78}}</string>
+								<string key="NSFrame">{{20, 6}, {100, 100}}</string>
 								<reference key="NSSuperview" ref="157056619"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="393585424"/>
+								<int key="IBUIContentMode">4</int>
 								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">icon-pics2@2x.png</string>
+								</object>
 							</object>
 							<object class="IBUILabel" id="393585424">
 								<reference key="NSNextResponder" ref="157056619"/>
@@ -74,7 +79,10 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
 								</object>
-								<nil key="IBUIHighlightedColor"/>
+								<object class="NSColor" key="IBUIHighlightedColor" id="344218479">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">2</int>
@@ -106,7 +114,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">999</string>
 								<reference key="IBUITextColor" ref="696440561"/>
-								<nil key="IBUIHighlightedColor"/>
+								<reference key="IBUIHighlightedColor" ref="344218479"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
@@ -129,6 +137,7 @@
 								<reference key="NSSuperview" ref="157056619"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="597110940"/>
+								<int key="IBUIContentMode">4</int>
 								<int key="IBUITag">5</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -152,7 +161,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">999</string>
 								<reference key="IBUITextColor" ref="696440561"/>
-								<nil key="IBUIHighlightedColor"/>
+								<reference key="IBUIHighlightedColor" ref="344218479"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
@@ -166,6 +175,7 @@
 								<reference key="NSSuperview" ref="157056619"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
+								<int key="IBUIContentMode">4</int>
 								<int key="IBUITag">6</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -214,14 +224,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">img_photo</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="821546511"/>
-					</object>
-					<int key="connectionID">19</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lbl_caption</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="393585424"/>
@@ -243,6 +245,14 @@
 						<reference key="destination" ref="597110940"/>
 					</object>
 					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">iv_photo</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="821546511"/>
+					</object>
+					<int key="connectionID">23</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -358,7 +368,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -371,7 +381,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>draftTableViewCellLeft</string>
-							<string>img_photo</string>
+							<string>iv_photo</string>
 							<string>lbl_caption</string>
 							<string>lbl_numCaptions</string>
 							<string>lbl_numVotes</string>
@@ -390,7 +400,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>draftTableViewCellLeft</string>
-							<string>img_photo</string>
+							<string>iv_photo</string>
 							<string>lbl_caption</string>
 							<string>lbl_numCaptions</string>
 							<string>lbl_numVotes</string>
@@ -402,7 +412,7 @@
 								<string key="candidateClassName">UITableViewCell</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">img_photo</string>
+								<string key="name">iv_photo</string>
 								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -439,11 +449,13 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>icon-compose.png</string>
+				<string>icon-pics2@2x.png</string>
 				<string>icon-thumbUp.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{29, 18}</string>
+				<string>{48, 49}</string>
 				<string>{29, 24}</string>
 			</object>
 		</object>

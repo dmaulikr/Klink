@@ -141,6 +141,17 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - View lifecycle
+- (void) viewWillAppear:(BOOL)animated {
+    //[self.tbl_draftTableView reloadData];
+    //[self.tbl_draftTableView setNeedsDisplay];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    //[self.tbl_draftTableView reloadData];
+    //[self.tbl_draftTableView setNeedsDisplay];
+}
+
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -149,7 +160,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];

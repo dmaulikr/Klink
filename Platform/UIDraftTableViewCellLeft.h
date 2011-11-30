@@ -15,7 +15,7 @@
     
     UITableViewCell* m_draftTableViewCellLeft;
     
-    UIImageView*    m_img_photo;
+    UIImageView*    m_iv_photo;
     UILabel*        m_lbl_caption;
     UILabel*        m_lbl_numVotes;
     UILabel*        m_lbl_numCaptions;
@@ -26,7 +26,7 @@
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* draftTableViewCellLeft;
 
-@property (nonatomic, retain) IBOutlet UIImageView* img_photo;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_photo;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_caption;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numVotes;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numCaptions;

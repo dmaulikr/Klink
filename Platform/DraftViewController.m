@@ -386,8 +386,6 @@
 }
 
 - (void) onCameraButtonPressed:(id)sender {
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
