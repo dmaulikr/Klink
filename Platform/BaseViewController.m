@@ -91,6 +91,8 @@
     if (self) {
         // Custom initialization
         
+       //self.view.backgroundColor = [UIColor blackColor];
+        
     }
     return self;
 }
@@ -158,12 +160,12 @@
     
     // Navigation bar
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setTintColor:nil];
     
     // Toolbar
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:NO];
+    [self.navigationController.toolbar setTranslucent:YES];
 }
 
 

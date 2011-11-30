@@ -144,6 +144,7 @@
     if (newIndex < 0) newIndex =0 ;
     
     if (newIndex > count - 1) newIndex = count - 1;
+    
     int oldIndex = m_index;
     m_index = newIndex;
     
@@ -253,7 +254,7 @@
     if (!withAnimation) {
         //move scroll head position
         int count = [self.delegate itemCountFor:self];
-        if (index < count && index > 0) {
+        if (index < count && index >= 0) {
             self.tableView.contentOffset = [self contentOffsetForPageAtIndex:index];
           
             m_index = index;

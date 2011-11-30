@@ -110,6 +110,16 @@
     
     [self registerForKeyboardNotifications];
     
+    [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.lbl_titleRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.lbl_photoOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.lbl_photoRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.tv_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+    [self.lbl_captionOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.lbl_captionRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    
     // Keeps the text of the caption textview aligned to the vertical center of the textview frame
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
@@ -155,13 +165,20 @@
 {
     [super viewWillAppear:animated];
     
-   // NSString* activityName = @"ContributeViewController.viewWillAppear:";
+    // NSString* activityName = @"ContributeViewController.viewWillAppear:";
     
-    ResourceContext* resourceContext = [ResourceContext instance];
+    // Set status bar style to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
     
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
-     
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
     
     // Set up the view for the appropriate configuration type
     if (self.configurationType == PAGE) {
@@ -177,7 +194,6 @@
         self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = NO;
         self.lbl_photoRequired.hidden = YES;
-        //self.iv_photo.backgroundColor = [UIColor lightGrayColor];
 
         // Caption is optional because user is creating a new draft
         self.lbl_captionOptional.hidden = NO;
@@ -190,7 +206,6 @@
         self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = YES;
         self.lbl_photoRequired.hidden = NO;
-        //self.iv_photo.image = self.img_photo;
         
         // Show existing draft title since user is adding a photo
         Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];

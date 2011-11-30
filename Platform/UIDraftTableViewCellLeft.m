@@ -16,9 +16,7 @@
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
-#import "FullScreenPhotoViewController.h"
 
-#define kCELLNIBNAME    @"UIDraftTableViewCellLeft"
 #define kPHOTOID        @"photoid"
 #define kCAPTIONID      @"captionid"
 
@@ -26,38 +24,22 @@
 @synthesize photoID = m_photoID;
 @synthesize captionID = m_captionID;
 @synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
-@synthesize img_photo = m_img_photo;
+@synthesize iv_photo = m_iv_photo;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_numVotes = m_lbl_numVotes;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
 
-
-#pragma mark - Frames
-- (CGRect) frameForImageView {
-    return CGRectMake(20, 18, 120, 78);
-}
-
-- (CGRect) frameForCaptionLabel {
-    return CGRectMake(148, 18, 152, 48);
-}
-
-- (CGRect) frameForNumVotesLabel {
-    return CGRectMake(150, 75, 44, 21);
-}
-
-- (CGRect) frameForNumCaptionsLabel {
-    return CGRectMake(228, 75, 44, 21);
-}
 
 #pragma mark - Instance Methods
 - (void)render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
     Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
-    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    Caption* topCaption = [photo captionWithHighestVotes];
+    self.captionID = topCaption.objectid;
     
-    if (photo != nil || caption!= nil) {
-        self.lbl_caption.text = caption.caption1;
+    if (photo != nil || topCaption!= nil) {
+        self.lbl_caption.text = topCaption.caption1;
         self.lbl_numVotes.text = [photo.numberofvotes stringValue];
         self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
         
@@ -69,7 +51,8 @@
             UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
             
             if (image != nil) {
-                self.img_photo.image = image;
+                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_photo.image = image;
             }
         }
         
@@ -78,95 +61,27 @@
     [self setNeedsDisplay];
 }
 
-- (void)renderWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID {
+- (void)renderWithPhotoID:(NSNumber*)photoID {
     self.photoID = photoID;
-    self.captionID = captionID;
+    
     [self render];
 }
 
-/*- (id)initWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.photoID = photoID;
-        self.captionID = captionID;
+         
+        NSArray* topLevelObjs = nil;
         
-        CGRect frameForImageView = [self frameForImageView];
-        self.img_photo = [[UIImageView alloc]initWithFrame:frameForImageView];
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftTableViewCellLeft" owner:self options:nil];
+        if (topLevelObjs == nil)
+        {
+            NSLog(@"Error! Could not load UIDraftTableViewCellLeft file.\n");
+        }
         
-        CGRect frameForCaptionLabel = [self frameForCaptionLabel];
-        self.lbl_caption = [[UILabel alloc]initWithFrame:frameForCaptionLabel];
-        
-        CGRect frameForNumVotesLabel = [self frameForNumVotesLabel];
-        self.lbl_numVotes = [[UILabel alloc]initWithFrame:frameForNumVotesLabel];
-        
-        CGRect frameForNumCaptionsLabel = [self frameForNumCaptionsLabel];
-        self.lbl_numCaptions = [[UILabel alloc]initWithFrame:frameForNumCaptionsLabel];
-        
-        [self.contentView addSubview:self.img_photo];
-        [self.contentView addSubview:self.lbl_caption];
-        [self.contentView addSubview:self.lbl_numVotes];
-        [self.contentView addSubview:self.lbl_numCaptions];
-        
-    }
-    return self;
-}*/
-
-- (UIDraftTableViewCellLeft*)loadCell
-{    
-    self = [super init];
-    /*NSArray*	topLevelObjects =*/ [[NSBundle mainBundle] loadNibNamed:kCELLNIBNAME owner:self options:nil];
-    
-	// tableView cell is already autoreleased
-	// return the tableViewCell Outlet, which was set when the nib was loaded
-    
-    //UIDraftTableViewCellLeft* draftTableViewCellLeft;
-    self.draftTableViewCellLeft = (UITableViewCell *)[self.contentView viewWithTag:0];
-    
-    //UIImageView* img_photo;
-    self.img_photo = (UIImageView *)[self.contentView viewWithTag:1];
-    
-    //UILabel* lbl_caption;
-    self.lbl_caption = (UILabel *)[self.contentView viewWithTag:2];
-    
-    //UILabel* lbl_numVotes;
-    self.lbl_numVotes = (UILabel *)[self.contentView viewWithTag:3];
-    
-    //UILabel* lbl_numCaptions;
-    self.lbl_numCaptions = (UILabel *)[self.contentView viewWithTag:4];
-    
-    [self setNeedsDisplay];
-    
-	return self;
-}
-
-- (id)initWithPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    
-    [[NSBundle mainBundle] loadNibNamed:kCELLNIBNAME owner:self options:nil];
-        
-    if (self) {
-        // Initialization code
-        
-        self.photoID = photoID;
-        self.captionID = captionID;
-        
-        CGRect frameForImageView = [self frameForImageView];
-        self.img_photo = [[UIImageView alloc]initWithFrame:frameForImageView];
-        
-        CGRect frameForCaptionLabel = [self frameForCaptionLabel];
-        self.lbl_caption = [[UILabel alloc]initWithFrame:frameForCaptionLabel];
-        
-        CGRect frameForNumVotesLabel = [self frameForNumVotesLabel];
-        self.lbl_numVotes = [[UILabel alloc]initWithFrame:frameForNumVotesLabel];
-        
-        CGRect frameForNumCaptionsLabel = [self frameForNumCaptionsLabel];
-        self.lbl_numCaptions = [[UILabel alloc]initWithFrame:frameForNumCaptionsLabel];
-        
-        [self.contentView addSubview:self.img_photo];
-        [self.contentView addSubview:self.lbl_caption];
-        [self.contentView addSubview:self.lbl_numVotes];
-        [self.contentView addSubview:self.lbl_numCaptions];
+        [self.contentView addSubview:self.draftTableViewCellLeft];
         
     }
     return self;
@@ -184,7 +99,7 @@
     [super dealloc];
     [self.photoID release];
     [self.captionID release];
-    [self.img_photo release];
+    [self.iv_photo release];
     [self.lbl_caption release];
     [self.lbl_numVotes release];
     [self.lbl_numCaptions release];
@@ -194,20 +109,20 @@
 - (void)onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"UIDraftTableViewCellLeft.onImageDownloadComplete:";
     NSDictionary* userInfo = result.context;
-    NSNumber* nid = [userInfo valueForKey:kPHOTOID];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
     
     if ([response.didSucceed boolValue] == YES) {
-        if ([nid isEqualToNumber:self.photoID]) {
+        if ([photoID isEqualToNumber:self.photoID]) {
             //we only draw the image if this view hasnt been repurposed for another photo
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
-            [self.img_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
-            
+            [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             [self setNeedsDisplay];
         }
     }
     else {
-        self.img_photo.backgroundColor = [UIColor blackColor];
+        self.iv_photo.backgroundColor = [UIColor redColor];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 

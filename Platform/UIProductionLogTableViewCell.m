@@ -82,10 +82,11 @@
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
         
         if (image != nil) {
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             self.iv_photo.image = image;
         }
     }
-
+    [self setNeedsDisplay];
 }
 - (void) render {
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -165,12 +166,12 @@
             //we only draw the image if this view hasnt been repurposed for another draft
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
-            
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             [self setNeedsDisplay];
         }
     }
     else {
-        self.iv_photo.backgroundColor = [UIColor blackColor];
+        self.iv_photo.backgroundColor = [UIColor redColor];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
     

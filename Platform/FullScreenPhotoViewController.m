@@ -15,10 +15,12 @@
 #import "Macros.h"
 #import "UICaptionView.h"
 #import "ContributeViewController.h"
-
+#import "UICaptionView.h"
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "ApplicationSettings.h"
+#import "DraftViewController.h"
+#import "UIDraftView.h"
 
 
 #define kPictureWidth               320
@@ -30,6 +32,7 @@
 #define kCaptionSpacing             0
 
 #define kPHOTOID @"photoid"
+#define kIMAGEVIEW @"imageview"
 
 @implementation FullScreenPhotoViewController
 
@@ -42,8 +45,16 @@
 @synthesize photoID                 = m_photoID;
 @synthesize captionID               = m_captionID;
 
+@synthesize draftViewNeedsUpdate    = m_draftViewNeedsUpdate;
+
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
+
+@synthesize tb_facebookButton       = m_tb_facebookButton;
+@synthesize tb_twitterButton        = m_tb_twitterButton;
+@synthesize tb_cameraButton         = m_tb_cameraButton;
+@synthesize tb_voteButton           = m_tb_voteButton;
+@synthesize tb_captionButton        = m_tb_captionButton;
 
 
 #pragma mark - Properties
@@ -55,7 +66,8 @@
     if (self.pageID == nil) {
         return nil;
     }
-      ResourceContext* resourceContext = [ResourceContext instance];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:resourceContext.managedObjectContext];
     
@@ -129,36 +141,63 @@
     return __frc_captions;
 }
 
-#pragma mark - Frames
-- (CGRect) frameForPhotoSlider {
-    return CGRectMake(0, 0, kPictureWidth, kPictureHeight);
-}
-
-- (CGRect) frameForCaptionSlider {
-    return CGRectMake(0, 100, kCaptionWidth, kCaptionHeight);
-}
-
 #pragma mark - Toolbar buttons
 - (NSArray*) toolbarButtonsForViewController {
     //returns an array with the toolbar buttons for this view controller
     NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
     
-    //flexible space for button spacing
+    //add Facebook share button
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    self.tb_facebookButton = [[UIBarButtonItem alloc]
+                              initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(onFacebookButtonPressed:)];
+    [retVal addObject:self.tb_facebookButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add Twitter share button
+    self.tb_twitterButton = [[UIBarButtonItem alloc]
+                             initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
+                             style:UIBarButtonItemStylePlain
+                             target:self
+                             action:@selector(onTwitterButtonPressed:)];
+    [retVal addObject:self.tb_twitterButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+
+    //add camera button
+    self.tb_cameraButton = [[UIBarButtonItem alloc]
+                            initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
+                            style:UIBarButtonItemStylePlain
+                            target:self
+                            action:@selector(onCameraButtonPressed:)];
+    [retVal addObject:self.tb_cameraButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    self.tb_voteButton = [[UIBarButtonItem alloc]
+                          initWithImage:[UIImage imageNamed:@"icon-thumbUp.png"]
+                          style:UIBarButtonItemStylePlain
+                          target:self
+                          action:@selector(onVoteButtonPressed:)];
+    [retVal addObject:self.tb_voteButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
     //add draft button
-    UIBarButtonItem* captionButton = [[UIBarButtonItem alloc]
+    self.tb_captionButton = [[UIBarButtonItem alloc]
                                     initWithImage:[UIImage imageNamed:@"icon-compose.png"]
                                     style:UIBarButtonItemStylePlain
                                     target:self
                                     action:@selector(onCaptionButtonPressed:)];
-    [retVal addObject:captionButton];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
+    [retVal addObject:self.tb_captionButton];
     
     
     return retVal;
@@ -168,13 +207,14 @@
 - (id) commonInit {
     // Custom initialization
     
-    //CGRect frameForPhotoSlider = [self frameForPhotoSlider];
-    //self.photoViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForPhotoSlider];
     self.photoViewSlider.delegate = self;
     self.captionViewSlider.delegate = self;
     
     self.photoViewSlider.tableView.pagingEnabled = YES;
     self.captionViewSlider.tableView.pagingEnabled = YES;
+    
+    self.photoViewSlider.tableView.allowsSelection = NO;
+    self.captionViewSlider.tableView.allowsSelection = NO;
     
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
@@ -204,6 +244,34 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - Navigation
+- (void)updateNavigation {
+    NSArray* photos = [self.frc_photos fetchedObjects];
+    int index = [self.photoViewSlider getPageIndex];
+    // Navigation Bar Title
+	if (photos.count > 1) {
+		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
+	} else {
+		self.title = nil;
+	}    
+}
+
+- (int) indexOfPhotoWithID:(NSNumber*)photoid {
+    //returns the index location within the frc_photos for the photo with the id specified
+    int retVal = 0;
+    
+    NSArray* fetchedObjects = [self.frc_photos fetchedObjects];
+    int index = 0;
+    for (Photo* photo in fetchedObjects) {
+        if ([photo.objectid isEqualToNumber:photoid]) {
+            retVal = index;
+            break;
+        }
+        index++;
+    }
+    return retVal;
 }
 
 #pragma mark - View lifecycle
@@ -238,15 +306,6 @@
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
-    
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setTintColor:nil];
-    
-    // Toolbar
-    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:YES];
     
     // we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -284,14 +343,13 @@
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationBar setTintColor:nil];
-    
-    // Toolbar
-    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:NO];
+    //if something has changed, make sure the draft tableview gets updated before displaying
+    if (self.draftViewNeedsUpdate) {
+        if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
+            DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
+            [draftViewController.pagedViewSlider.tableView reloadData];
+        }
+    }
     
 }
 
@@ -319,38 +377,157 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Navigation
-- (void)updateNavigation {
-    NSArray* photos = [self.frc_photos fetchedObjects];
-    int index = [self.photoViewSlider getPageIndex];
-    // Navigation Bar Title
-	if (photos.count > 1) {
-		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
-	} else {
-		self.title = nil;
-	}    
+#pragma mark - Toolbar Button Helpers
+- (void) disableFacebookButton {
+    self.tb_facebookButton.enabled = NO;
 }
 
-- (int) indexOfPhotoWithID:(NSNumber*)photoid {
-    //returns the index location within the frc_photos for the photo with the id specified
-    int retVal = 0;
+- (void) enableFacebookButton {
+    self.tb_facebookButton.enabled = YES;
+}
+
+- (void) disableTwitterButton {
+    self.tb_twitterButton.enabled = NO;
+}
+
+- (void) enableTwitterButton {
+    self.tb_twitterButton.enabled = YES;
+}
+
+- (void) disableVoteButton {
+    self.tb_voteButton.enabled = NO;
+}
+
+- (void) enableVoteButton {
+    self.tb_voteButton.enabled = YES;
+}
+
+- (void) enableDisableVoteButton {
     
-    NSArray* fetchedObjects = [self.frc_photos fetchedObjects];
-    int index = 0;
-    for (Photo* photo in fetchedObjects) {
-        if ([photo.objectid isEqualToNumber:photoid]) {
-            retVal = index;
-            break;
+    int captionCount = [[self.frc_captions fetchedObjects] count];
+    
+    if (captionCount > 0) {
+        
+        [self enableVoteButton];
+        
+        int index = [self.captionViewSlider getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+      /*  
+        if ([caption.user_hasvoted boolValue] == YES) {
+            [self disableVoteButton];
         }
-        index++;
+        else {
+            [self enableVoteButton];
+        }
+      */  
     }
-    return retVal;
+    else {
+        [self disableVoteButton];
+    }
 }
 
 #pragma mark - Toolbar Button Event Handlers
-- (void) onCaptionButtonPressed:(id)sender {
+- (void) onFacebookButtonPressed:(id)sender {
+    //we check to ensure the user is logged in to Facebook first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+      /*  
+        SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+        int count = [[self.frc_captions fetchedObjects]count];
+        if (count > 0) {
+            [self disableFacebookButton];
+            int index = [self.captionViewSlider getPageIndex];
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            
+            [sharingManager shareCaptionOnFacebook:caption.objectid];
+        }
+      */
+    }
+}
+
+- (void) onTwitterButtonPressed:(id)sender {
+    //we check to ensure the user is logged in to Twitter first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+      /*
+        SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+        int count = [[self.frc_captions fetchedObjects]count];
+        if (count > 0) {
+            [self disableTwitterButton];
+            int index = [self.captionViewSlider getPageIndex];
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            
+            [sharingManager shareCaptionOnFacebook:caption.objectid];
+        }
+      */
+    }
+}
+
+- (void) onCameraButtonPressed:(id)sender {
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];
+        contributeViewController.delegate = self;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [contributeViewController release];
+    }
+}
+
+- (void) onVoteButtonPressed:(id)sender {
+    int photoIndex = [self.photoViewSlider getPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
+    
+    int captionIndex = [self.captionViewSlider getPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
+    
+    photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
+    caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+    //caption.user_hasvoted = [NSNumber numberWithBool:YES];
+    
+    // animate the updating of the votes label
+    /*[UIView animateWithDuration:0.25
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.5, 1.5 );
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:0
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              self.photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", self.photo.numberofvotes];
+                                              self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.0, 1.0 );
+                                          }
+                                          completion:nil];
+                     }];
+    */
+    
+    //now we need to commit to the store
     ResourceContext* resourceContext = [ResourceContext instance];
     
+    [resourceContext save:YES onFinishCallback:nil];
+    
+    self.draftViewNeedsUpdate = YES;
+
+}
+
+- (void) onCaptionButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
@@ -369,6 +546,7 @@
     }
 }
 
+
 #pragma mark - UIPagedViewSlider2Delegate
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
      cellForRowAtIndex:         (int)                   index 
@@ -379,8 +557,8 @@
         
         if (photoCount > 0 && index < photoCount) {
             UIImageView* iv_photo = [[UIImageView alloc] initWithFrame:frame];
+            iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             [self viewSlider:viewSlider configure:iv_photo forRowAtIndex:index withFrame:frame];
-            iv_photo.backgroundColor = [UIColor blueColor];
             return iv_photo;
         }
         else {
@@ -391,16 +569,16 @@
         int captionCount = [[self.frc_captions fetchedObjects]count];
         
         if (captionCount > 0 && index < captionCount) {
-            UILabel* lbl_caption = [[UILabel alloc] initWithFrame:frame];
-            lbl_caption.backgroundColor = [UIColor blackColor];
-            lbl_caption.textColor = [UIColor whiteColor];
-            lbl_caption.textAlignment = UITextAlignmentCenter;
-            [self viewSlider:viewSlider configure:lbl_caption forRowAtIndex:index withFrame:frame];
-            return lbl_caption;
+            UICaptionView* v_caption = [[UICaptionView alloc] initWithFrame:frame];
+            [self viewSlider:viewSlider configure:v_caption forRowAtIndex:index withFrame:frame];
+            return v_caption;
         }
         else {
             return nil;
         }
+    }
+    else {
+        return nil;
     }
 }
 
@@ -420,22 +598,28 @@
             UIImageView* iv_photo = (UIImageView*)existingCell;
             
             ImageManager* imageManager = [ImageManager instance];
-            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:existingCell forKey:kPHOTOID];
+            NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:iv_photo forKey:kIMAGEVIEW];
+            
+            //add the photo id to the context
+            [userInfo setValue:photo.objectid forKey:kPHOTOID];
             
             if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
-                Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownload:withUserInfo:) withContext:userInfo];
-                UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:userInfo atCallback:callback];
+                Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+                UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
                 
                 if (image != nil) {
+                    iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                     iv_photo.image = image;
                 }
                 else {
-                    iv_photo.backgroundColor = [UIColor blueColor];
+                    iv_photo.contentMode = UIViewContentModeCenter;
+                    iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
                 }
             }
             else {
                 iv_photo.backgroundColor = [UIColor redColor];
             }
+            
             [self.photoViewSlider addSubview:iv_photo];
         }
     }
@@ -447,15 +631,12 @@
             
             existingCell.frame = frame;
             
-            UILabel* lbl_caption = (UILabel*)existingCell;
+            UICaptionView* v_caption = (UICaptionView*)existingCell;
             
             if (caption.caption1 != nil) {
-                lbl_caption.text = caption.caption1;
+                [v_caption renderCaptionWithID:caption.objectid];
             }
-            else {
-                lbl_caption.text = @"CAPTION WAS NIL";
-            }
-            [self.captionViewSlider addSubview:lbl_caption];
+            [self.captionViewSlider addSubview:v_caption];
         }
     }
     
@@ -480,12 +661,23 @@
     if (viewSlider == self.photoViewSlider) {
         Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         self.photoID = photo.objectid;
+        
+        // reset frc_captions for the new photo
+        self.frc_captions = nil;
+        [self.frc_captions fetchedObjects];
+        [self.captionViewSlider reset];
+        
+        [self renderPhoto];
+        
         [self updateNavigation];
     }
-    else if (viewSlider == self.captionViewSlider) {
+    else if ((viewSlider == self.captionViewSlider) && ([[self.frc_captions fetchedObjects]count] != 0)) {
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         self.captionID = caption.objectid;
     }
+    
+    [self enableDisableVoteButton];
+    
 }
 
 - (int)   itemCountFor:         (UIPagedViewSlider2*)   viewSlider {
@@ -501,9 +693,31 @@
 
 #pragma mark - Delegates and Protocols
 #pragma mark Image Download Protocol
-- (void)onImageDownload:(UIImage *)image withUserInfo:(NSDictionary *)userInfo {
-    UIImageView* imageView = [userInfo objectForKey:kPHOTOID];
-    imageView.image = image;
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSString* activityName = @"FullScreenPhotoViewController.onImageDownloadComplete:";
+    NSDictionary* userInfo = result.context;
+    UIImageView* imageView = [userInfo valueForKey:kIMAGEVIEW];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        int count = [[self.frc_photos fetchedObjects]count];
+        if (count > 0) {
+            int index = [self.photoViewSlider getPageIndex];
+            if (index == [self indexOfPhotoWithID:photoID]) {
+                //we only draw the image if this view hasnt been repurposed for another draft
+                LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+                [imageView performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+                imageView.contentMode = UIViewContentModeScaleAspectFit;
+                [imageView setNeedsDisplay];
+            }
+        }
+    }
+    else {
+        imageView.backgroundColor = [UIColor redColor];
+        LOG_IMAGE(1,@"%@Image failed to download",activityName);
+    }
 }
 
 #pragma mark CloudEnumeratorDelegate
@@ -520,23 +734,27 @@
     NSString* activityName = @"FullScreenPhotoViewController.controller.didChangeObject:";
     if (type == NSFetchedResultsChangeInsert) {
         if (controller == self.frc_photos) {
-            //insertion of a new draft
+            //insertion of a new photo
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
+            self.draftViewNeedsUpdate = YES;
         }
         else if (controller == self.frc_captions) {
-            //insertion of a new draft
+            //insertion of a new caption
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
+            self.draftViewNeedsUpdate = YES;
         }
     }
 }
 
 #pragma mark - Static Initializers
-+ (FullScreenPhotoViewController*)createInstance {
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID {
     FullScreenPhotoViewController* photoViewController = [[FullScreenPhotoViewController alloc]initWithNibName:@"FullScreenPhotoViewController" bundle:nil];
+    photoViewController.pageID = pageID;
+    photoViewController.photoID = photoID;
     [photoViewController autorelease];
     return photoViewController;
 }

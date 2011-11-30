@@ -132,11 +132,18 @@
 }
 
 #pragma mark - Initializers
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
+        //self.view.backgroundColor = background;
+        //[background release];
+        
+        //self.tbl_productionTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
     }
     return self;
 }
@@ -312,6 +319,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    // Set up navigation bar back button
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil] autorelease];
+    
     DraftViewController* draftViewController = [[DraftViewController alloc] initWithNibName:@"DraftViewController" bundle:nil];
     
     Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];

@@ -16,7 +16,7 @@
 #import "UICameraActionSheet.h"
 
 #define kWIDTH 320
-#define kHEIGHT 375
+#define kHEIGHT 460
 #define kSPACING 0
 
 @implementation PageViewController
@@ -70,7 +70,7 @@
 
 #pragma mark - Frames
 - (CGRect) frameForSlider {
-    return CGRectMake(0, 0, 320, 375);
+    return CGRectMake(0, 0, 320, 460);
 }
 
 #pragma mark - Navigationbar buttons
@@ -228,6 +228,18 @@
     NSString* activityName = @"PageViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
+    // Set status bar style to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
+    
+    // Toolbar
+    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.toolbar setTranslucent:YES];
+    
     //render the page ID specified as a parameter
     if (self.pageID != nil && [self.pageID intValue] != 0) {
         //render the page specified by the ID passed in
@@ -260,6 +272,7 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }
+
 
 - (void)viewDidUnload
 {

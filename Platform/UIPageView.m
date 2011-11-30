@@ -25,19 +25,19 @@
 @synthesize pageID;
 
 - (CGRect) frameForImage {
-    return CGRectMake(37, 90, 236, 158);
+    return CGRectMake(37, 120, 236, 158);
 }
 - (CGRect)frameforCaption {
-    return CGRectMake(37, 263, 236, 21);
+    return CGRectMake(37, 293, 236, 21);
 }
 - (CGRect) frameForCaptionBy {
-    return CGRectMake(37, 321, 236, 21);
+    return CGRectMake(37, 351, 236, 21);
 }
 - (CGRect)frameForPhotoBy {
-    return CGRectMake(37, 92, 236, 21);
+    return CGRectMake(37, 122, 236, 21);
 }
 - (CGRect)frameForTitle {
-    return CGRectMake(37, 30, 236, 21);
+    return CGRectMake(37, 60, 236, 21);
 }
 - (id)initWithFrame:(CGRect)frame
 {

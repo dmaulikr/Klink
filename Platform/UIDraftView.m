@@ -21,9 +21,11 @@
 #define kPAGEID @"pageid"
 
 @implementation UIDraftView
-@synthesize tbl_draftTableView = m_tbl_draftTableView;
-@synthesize pageID = m_pageID;
 @synthesize frc_photos = __frc_photos;
+@synthesize pageID = m_pageID;
+@synthesize view = m_view;
+@synthesize draftTitle = m_draftTitle;
+@synthesize tbl_draftTableView = m_tbl_draftTableView;
 
 @synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
 
@@ -82,95 +84,44 @@
     if (page != nil) {
         
         self.pageID = page.objectid;
+        self.draftTitle.text = page.displayname;
         [self.tbl_draftTableView reloadData];
         
     }
 }
 
-#pragma mark - Init
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Custom initialization
-        self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        self.tbl_draftTableView.delegate = self;
-        self.tbl_draftTableView.dataSource = self;
-        self.tbl_draftTableView.bounces = TRUE;
-        
-        [self.tbl_draftTableView reloadData];
-    }
-    return self;
-}
-
-- (BOOL)loadMyNibFile
-{
-    NSArray* topLevelObjs = nil;
-    
-    topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
-    if (topLevelObjs == nil)
-    {
-        NSLog(@"Error! Could not load UIDraftView.xib file.\n");
-        return NO;
-    }
-    return YES;
-}
-
-- (void)encodeWithCoder:(NSCoder *)enCoder {
-    [super encodeWithCoder:enCoder];
-    
-    //[enCoder encodeObject:self.tableview forKey:@"kTableView_KEY"];
-    
-    // Similarly for the other instance variables.
-    
-}
-
--(id) initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        //self.listData = [[aDecoder decodeObjectForKey:@"kListData_KEY"] retain];
-        //self.tableView = [[aDecoder decodeObjectForKey:@"kTableView_KEY"] retain];
-        
-        //self.tableView.style = UITableViewStylePlain;
-        
-        //NSArray* bundle =  [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
-        
-        //UIView* draftView = [bundle objectAtIndex:0];
-        //[self addSubview:draftView];
-        
-        //self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        //self.tbl_draftTableView.delegate = self;
-        //self.tbl_draftTableView.dataSource = self;
-        //self.tbl_draftTableView.bounces = TRUE;
-        
-        //[self.tbl_draftTableView reloadData];
-        
-    }
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self loadMyNibFile];
-    }
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style {
+#pragma mark - Initialization
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Custom initialization
         //self.pageID = pageID;
         
-        self.tbl_draftTableView = [[UITableView alloc] initWithFrame:frame style:style];
-        self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        self.tbl_draftTableView.delegate = self;
-        self.tbl_draftTableView.dataSource = self;
-        self.tbl_draftTableView.bounces = TRUE;
+        NSArray* topLevelObjs = nil;
         
-        [self addSubview:self.tbl_draftTableView];
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftView" owner:self options:nil];
+        if (topLevelObjs == nil)
+        {
+            NSLog(@"Error! Could not load UIDraftView file.\n");
+        }
+        
+        [self addSubview:self.view];
+        
+        //self.tbl_draftTableView = [[UITableView alloc] initWithFrame:frame style:style];
+        //self.tbl_draftTableView.frame = frame;
+        //self.tbl_draftTableView.style = style;
+        //self.tbl_draftTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        //self.tbl_draftTableView.delegate = self;
+        //self.tbl_draftTableView.dataSource = self;
+        //self.tbl_draftTableView.bounces = TRUE;
+        //self.tbl_draftTableView.backgroundColor = [UIColor clearColor];
+        //self.tbl_draftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        //[self.view addSubview:self.tbl_draftTableView];
+        
+        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
+        //self.view.backgroundColor = background;
+        //[background release];
 
     }
     return self;
@@ -190,6 +141,17 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - View lifecycle
+- (void) viewWillAppear:(BOOL)animated {
+    //[self.tbl_draftTableView reloadData];
+    //[self.tbl_draftTableView setNeedsDisplay];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    //[self.tbl_draftTableView reloadData];
+    //[self.tbl_draftTableView setNeedsDisplay];
+}
+
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -198,19 +160,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    // Set up navigation bar back button
-    self.navigationController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                                             style:UIBarButtonItemStyleBordered
-                                                                                            target:nil
-                                                                                            action:nil] autorelease];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
-    FullScreenPhotoViewController* photoViewController = [[FullScreenPhotoViewController alloc]init];
-    //FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstance];
-    photoViewController.photoID = selectedPhoto.objectid;
-    photoViewController.pageID = selectedPhoto.themeid;
+    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
     [photoViewController release];
@@ -227,17 +180,15 @@
     if ([indexPath row] < photoCount) 
     {
         Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
-        Caption* topCaption = [photo captionWithHighestVotes];
         
         UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:[UIDraftTableViewCellLeft cellIdentifier]];
         
         if (cell == nil) 
         {
-            cell = [[[UIDraftTableViewCellLeft alloc] initWithPhotoID:photo.objectid withCaptionID:topCaption.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
-            //cell = [[UIDraftTableViewCellLeft alloc] loadCell];
+            cell = [[[UIDraftTableViewCellLeft alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
         }
         
-        [cell renderWithPhotoID:photo.objectid withCaptionID:topCaption.objectid];
+        [cell renderWithPhotoID:photo.objectid];
         return cell;
     }
     else {

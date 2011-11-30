@@ -10,27 +10,31 @@
 
 
 @interface UIDraftView : UIView <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate> {
-    NSNumber* m_pageID;
-    UITableView* m_tbl_draftTableView;
+    NSNumber*               m_pageID;
+    UIView*                 m_view;
+    UILabel*                m_draftTitle;
+    UITableView*            m_tbl_draftTableView;
     
-    UITableViewCell* m_draftTableViewCellLeft;
+    UITableViewCell*        m_draftTableViewCellLeft;
     
     UINavigationController* m_navigationController;
 }
 
-@property (nonatomic,retain) NSNumber* pageID;
-@property (nonatomic,retain) IBOutlet UITableView* tbl_draftTableView;
-@property (nonatomic,retain) NSFetchedResultsController* frc_photos;
+@property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
+@property (nonatomic,retain) NSNumber*                      pageID;
+@property (nonatomic,retain) IBOutlet UIView*               view;
+@property (nonatomic,retain) IBOutlet UILabel*              draftTitle;
+@property (nonatomic,retain) IBOutlet UITableView*          tbl_draftTableView;
 
-@property (nonatomic, retain) IBOutlet UITableViewCell* draftTableViewCellLeft;
+@property (nonatomic, retain) IBOutlet UITableViewCell*     draftTableViewCellLeft;
 
-@property (nonatomic, retain) UINavigationController* navigationController;
+@property (nonatomic, retain) UINavigationController*       navigationController;
 
 - (void) renderDraftWithID:(NSNumber *)pageID;
 
 //- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style withPageID:(NSNumber*)pageID;
 - (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style;
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame;
-- (id)initWithCoder:(NSCoder *)aDecoder;
+//- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame;
+//- (id)initWithCoder:(NSCoder *)aDecoder;
 
 @end

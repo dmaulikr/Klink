@@ -16,10 +16,18 @@
     NSNumber*           m_photoID;
     NSNumber*           m_captionID;
     
+    BOOL                m_draftViewNeedsUpdate;
+    
     UIPagedViewSlider2* m_photoViewSlider;
     UIPagedViewSlider2* m_captionViewSlider;
     
     CloudEnumerator*    m_captionCloudEnumerator;
+    
+    UIBarButtonItem*    m_tb_facebookButton;
+    UIBarButtonItem*    m_tb_twitterButton;
+    UIBarButtonItem*    m_tb_cameraButton;
+    UIBarButtonItem*    m_tb_voteButton;
+    UIBarButtonItem*    m_tb_captionButton;
 }
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
@@ -31,9 +39,19 @@
 @property (nonatomic,retain) NSNumber*                      photoID;
 @property (nonatomic,retain) NSNumber*                      captionID;
 
+@property                    BOOL                           draftViewNeedsUpdate;
+
 // Subviews
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   photoViewSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   captionViewSlider;
+
+// Toolbar Buttons
+@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_facebookButton;
+@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_twitterButton;
+@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_cameraButton;
+@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_voteButton;
+@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_captionButton;
+
 
 - (CGRect)  frameForToolbarAtOrientation:(UIInterfaceOrientation)orientation;
 
@@ -41,6 +59,6 @@
 - (void)    updateNavigation;
 
 // Static Initializer
-+ (FullScreenPhotoViewController*)createInstance;
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;
 
 @end
