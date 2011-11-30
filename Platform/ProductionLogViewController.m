@@ -43,8 +43,7 @@
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
-    //TODO: change this to sort on DATECREATED when the server supports it
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server

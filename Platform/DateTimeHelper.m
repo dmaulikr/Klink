@@ -60,23 +60,45 @@
     return retVal;
 }
 
-
 + (NSString *) formatTimeInterval:(NSTimeInterval)interval {
-    unsigned long seconds = interval;
-    unsigned long minutes = seconds / 60;
-    seconds %= 60;
-    unsigned long hours = minutes / 60;
-    minutes %= 60;
     
-    NSMutableString * result = [[NSMutableString new] autorelease];
+    // Get the system calendar
+    NSCalendar *sysCalendar = [NSCalendar currentCalendar];
     
-    if(hours)
-        [result appendFormat: @"%d:", hours];
+    // Create the NSDates
+    NSDate *date1 = [[NSDate alloc] init];
+    NSDate *date2 = [[NSDate alloc] initWithTimeInterval:interval sinceDate:date1]; 
     
-    [result appendFormat: @"%02:", minutes];
-    [result appendFormat: @"%02", seconds];
+    // Get conversion to months, days, hours, minutes
+    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     
-    return result;
+    NSDateComponents *breakdownInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
+    
+    NSString* timeRemaining = [NSString alloc];
+    
+    if ([breakdownInfo hour] > 1) {
+        timeRemaining = [NSString stringWithFormat:@"%dhrs %dmin",[breakdownInfo hour], [breakdownInfo minute]];
+    }
+    else if ([breakdownInfo hour] == 1) {
+        timeRemaining = [NSString stringWithFormat:@"%dhr %dmin",[breakdownInfo hour], [breakdownInfo minute]];
+    }
+    else if ([breakdownInfo minute] > 0) {
+        timeRemaining = [NSString stringWithFormat:@"%dmin %dsec",[breakdownInfo minute], [breakdownInfo second]];
+    }
+    else if ([breakdownInfo second] > 0) {
+        timeRemaining = [NSString stringWithFormat:@"%dseconds",[breakdownInfo second]];
+    }
+    else {
+        timeRemaining = [NSString stringWithFormat:@"closed!"];
+    }
+    
+    return timeRemaining;
+    
+    [date1 release];
+    [date2 release];
+    [sysCalendar release];
+    [breakdownInfo release];
+    [timeRemaining autorelease];
 }
 
 
