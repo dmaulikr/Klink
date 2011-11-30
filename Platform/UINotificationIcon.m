@@ -127,6 +127,7 @@
 
 - (void)dealloc
 {
+    [self.frc_notifications release];
     [self.lbl_numberOfNotifications release];
     [self.btn_showNotifications release];
     [super dealloc];

@@ -67,3 +67,10 @@ extern NSString* const DATEPUBLISHED;
 extern NSString* const STATE;
 
 extern NSString* const FACEBOOKTOKENEXPIRYDATE;
+
+extern NSString* const KEY;
+extern NSString* const OBJECTID;
+extern NSString* const OBJECTTYPE;
+extern NSString* const TARGETID;
+extern NSString* const TARGETOBJECTTYPE;
+extern NSString* const POLLID;

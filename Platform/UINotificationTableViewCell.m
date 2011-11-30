@@ -42,7 +42,8 @@
     ResourceContext* resourceContext = [ResourceContext instance];
         
     Feed* notification = (Feed*)[resourceContext resourceWithType:FEED withID:self.notificationID];
-    
+   
+  
     if (notification != nil) {
         self.lbl_notificationTitle.text = notification.title;
         self.lbl_notificationMessage.text = notification.message;

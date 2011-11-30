@@ -765,6 +765,7 @@ static RequestManager* sharedInstance;
             NSMutableDictionary* context = [NSMutableDictionary dictionaryWithObject:request forKey:kREQUEST];
             //insert the request context into the user dictionary as well
             [context addEntriesFromDictionary:request.userInfo];
+            request.userInfo = nil;
             [request.onSuccessCallback fireWithResponse:responseObj withContext:context];
         }
       }

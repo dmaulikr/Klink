@@ -25,4 +25,5 @@
 @dynamic page_enumeration_timegap;
 @dynamic twitter_consumerkey;
 @dynamic twitter_consumersecret;
+@dynamic page_draftexpiry_seconds;
 @end

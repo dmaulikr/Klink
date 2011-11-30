@@ -113,7 +113,7 @@
 
 +(QueryOptions*)queryForFeedsForUser:(NSNumber *)userID {
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
-    newQuery.includelinkedobjects = NO;
+    newQuery.includelinkedobjects = YES;
     newQuery.primary_results_sortascending = NO;
     newQuery.primary_results_sortattribute = DATECREATED;
     

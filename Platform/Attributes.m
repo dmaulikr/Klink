@@ -62,5 +62,11 @@ NSString* const DATEEXPIRE              =@"dateexpire";
 NSString* const IMAGEPATH               =@"imagepath";
 NSString* const DATEPUBLISHED           =@"datepublished";
 NSString* const STATE                   =@"state";
+NSString* const KEY                     =@"key";
+NSString* const OBJECTID                =@"objectid";
+NSString* const OBJECTTYPE              =@"objecttype";
+NSString* const TARGETID                =@"targetid";
+NSString* const TARGETOBJECTTYPE        =@"targetobjecttype";
+NSString* const POLLID                    =@"poll";
 
 NSString* const FACEBOOKTOKENEXPIRYDATE = @"facebookaccesstokenexpirydate";

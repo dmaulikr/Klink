@@ -133,6 +133,7 @@
         if ([pid isEqualToNumber:self.pageID]) {
             //we only draw the image if this view hasnt been repurposed for another Page
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+           
             [self.img_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
 //            self.img_photo.image = (UIImage*)response.image;
             [self setNeedsDisplay];

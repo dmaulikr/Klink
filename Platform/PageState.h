@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    kDRAFTOPEN,
+    kCLOSED,
     kDRAFT,
     kPUBLISHED
 } PageState;

@@ -58,6 +58,11 @@
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
 		C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */; };
 		C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5156A20146B4A2A00D1FC0B /* UILoginView.m */; };
+		C51729FA1479A072005AE7B0 /* FeedData.m in Sources */ = {isa = PBXBuildFile; fileRef = C51729F91479A072005AE7B0 /* FeedData.m */; };
+		C522FD36147A5D6900F691A4 /* Vote.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD35147A5D6900F691A4 /* Vote.m */; };
+		C522FD3A147A5DDD00F691A4 /* Poll.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD39147A5DDD00F691A4 /* Poll.m */; };
+		C522FD3D147A5EB400F691A4 /* PollData.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3C147A5EB400F691A4 /* PollData.m */; };
+		C522FD40147A612A00F691A4 /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3F147A612900F691A4 /* Bookmark.m */; };
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
 		C554DEF5144CABE000CD6E85 /* PutResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF3144CABE000CD6E85 /* PutResponse.m */; };
@@ -265,6 +270,16 @@
 		C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadResponse.m; sourceTree = "<group>"; };
 		C5156A1F146B4A2A00D1FC0B /* UILoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILoginView.h; sourceTree = "<group>"; };
 		C5156A20146B4A2A00D1FC0B /* UILoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoginView.m; sourceTree = "<group>"; };
+		C51729F81479A072005AE7B0 /* FeedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedData.h; sourceTree = "<group>"; };
+		C51729F91479A072005AE7B0 /* FeedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedData.m; sourceTree = "<group>"; };
+		C522FD34147A5D6900F691A4 /* Vote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vote.h; sourceTree = "<group>"; };
+		C522FD35147A5D6900F691A4 /* Vote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vote.m; sourceTree = "<group>"; };
+		C522FD38147A5DDD00F691A4 /* Poll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Poll.h; sourceTree = "<group>"; };
+		C522FD39147A5DDD00F691A4 /* Poll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Poll.m; sourceTree = "<group>"; };
+		C522FD3B147A5EB400F691A4 /* PollData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollData.h; sourceTree = "<group>"; };
+		C522FD3C147A5EB400F691A4 /* PollData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollData.m; sourceTree = "<group>"; };
+		C522FD3E147A612900F691A4 /* Bookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bookmark.h; sourceTree = "<group>"; };
+		C522FD3F147A612900F691A4 /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		C554DEE9144C941900CD6E85 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		C554DEED144CA93C00CD6E85 /* GetAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAuthenticatorResponse.h; sourceTree = "<group>"; };
 		C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAuthenticatorResponse.m; sourceTree = "<group>"; };
@@ -538,6 +553,7 @@
 		C5ED8AA71458ACB7001AFCA8 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		C5ED8AAA1458ADE2001AFCA8 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
 		C5ED8AAB1458ADE2001AFCA8 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
+		C5F3AE6B1485B3FA00877C5B /* PollState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollState.h; sourceTree = "<group>"; };
 		C5F4630B1444BCA400170835 /* OpCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpCodes.h; sourceTree = "<group>"; };
 		C5F4630C1444BCA400170835 /* OpCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpCodes.m; sourceTree = "<group>"; };
 		C5F4630F1444C0A000170835 /* IJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJSONSerializable.h; sourceTree = "<group>"; };
@@ -586,6 +602,8 @@
 		C507BC7314597F97004D9359 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				C522FD34147A5D6900F691A4 /* Vote.h */,
+				C522FD35147A5D6900F691A4 /* Vote.m */,
 				C593F7FA143EB2CF008D25A7 /* PlatformDataModel.xcdatamodeld */,
 				C593F804143EBCE2008D25A7 /* User.h */,
 				C593F805143EBCE2008D25A7 /* User.m */,
@@ -597,6 +615,14 @@
 				C5ED8AAB1458ADE2001AFCA8 /* Feed.m */,
 				C507BC8214599455004D9359 /* Caption.h */,
 				C507BC8314599455004D9359 /* Caption.m */,
+				C51729F81479A072005AE7B0 /* FeedData.h */,
+				C51729F91479A072005AE7B0 /* FeedData.m */,
+				C522FD38147A5DDD00F691A4 /* Poll.h */,
+				C522FD39147A5DDD00F691A4 /* Poll.m */,
+				C522FD3B147A5EB400F691A4 /* PollData.h */,
+				C522FD3C147A5EB400F691A4 /* PollData.m */,
+				C522FD3E147A612900F691A4 /* Bookmark.h */,
+				C522FD3F147A612900F691A4 /* Bookmark.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -968,6 +994,7 @@
 				C5F4630B1444BCA400170835 /* OpCodes.h */,
 				C5F4630C1444BCA400170835 /* OpCodes.m */,
 				C5A82D671465ABD900E77675 /* PageState.h */,
+				C5F3AE6B1485B3FA00877C5B /* PollState.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -1522,6 +1549,11 @@
 				5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */,
 				52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */,
 				52201019147713BD00C47C00 /* UICaptionView.m in Sources */,
+				C51729FA1479A072005AE7B0 /* FeedData.m in Sources */,
+				C522FD36147A5D6900F691A4 /* Vote.m in Sources */,
+				C522FD3A147A5DDD00F691A4 /* Poll.m in Sources */,
+				C522FD3D147A5EB400F691A4 /* PollData.m in Sources */,
+				C522FD40147A612A00F691A4 /* Bookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

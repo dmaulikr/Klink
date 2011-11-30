@@ -29,6 +29,7 @@ extern int const timeout_HTTP;
 extern int const page_size_LINKEDOBJECTS;
 extern NSString* const twitter_CONSUMERKEY;
 extern NSString* const twitter_CONSUMERSECRET;
+extern int const page_DRAFTEXPIRES_SECONDS;
 //extern NSString* const cell_TEXTCAPTION;
 //extern NSString* const cell_IMAGECAPTION;
 //

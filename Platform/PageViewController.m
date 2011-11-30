@@ -249,6 +249,11 @@
         //need to find the latest page
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
+        
+        LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
+        [self.pageCloudEnumerator enumerateUntilEnd];
+        
+        
         if (page != nil) {
             //local store does contain pages to enumerate
             self.pageID = page.objectid;

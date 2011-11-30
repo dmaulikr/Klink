@@ -274,8 +274,8 @@
         [self.callbackTarget performSelector:self.selPerformOnFinish withObject:self];
     }
     
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
-    //[self.parentViewController dismissModalViewControllerAnimated:NO];
+    //[[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self.parentViewController dismissModalViewControllerAnimated:NO];
     //[self.navigationController popViewControllerAnimated:YES];
 }
 
