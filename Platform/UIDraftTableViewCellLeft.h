@@ -19,6 +19,7 @@
     UILabel*        m_lbl_caption;
     UILabel*        m_lbl_numVotes;
     UILabel*        m_lbl_numCaptions;
+    
 }
 
 @property (nonatomic, retain) NSNumber* photoID;

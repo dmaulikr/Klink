@@ -252,69 +252,87 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     
     //this method will persist changes that are returned from the contribute controller
-    if (controller.configurationType == PHOTO) {
-        //this is a new photo being added to a draft page
-        Photo* photo = [Photo createPhotoInPage:controller.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
-        
-        if (controller.caption != nil && 
-            ![controller.caption isEqualToString:@""]) {
-            Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
-            
-            //we set the initial number of captions on the photo
-            photo.numberofcaptions = [NSNumber numberWithInt:1];
-        }
-        else {
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
-            
-        }
-        
-        
-    }
-    else if (controller.configurationType == PAGE) {
+    if (controller.configurationType == PAGE) {
+        //this is a new draft being added
         Page* page = [Page createNewDraftPage];
-        
-        Photo* photo = nil;
-        if (controller.img_photo != nil && controller.img_thumbnail != nil) {
-            photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
-        }
         
         page.displayname = controller.draftTitle;
         page.descr = nil;
         page.hashtags = controller.draftTitle;
         
+        Photo* photo = nil;
+        if (controller.img_photo != nil && controller.img_thumbnail != nil) {
+            photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+            
+            //we set the initial number of photos to 1
+            page.numberofphotos = [NSNumber numberWithInt:1];
+            
+            //check for caption attached to photo
+            if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
+                Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+                
+                //increment the caption counters
+                photo.numberofcaptions = [NSNumber numberWithInt:([photo.numberofcaptions intValue] + 1)];
+                page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
+                
+                LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+            }
+            else {
+                LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
+            }
+        }
+        else {
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
+        }
         
+    }
+    else if (controller.configurationType == PHOTO) {
+        //this is a new photo being added to a draft page
+        Photo* photo = [Photo createPhotoInPage:controller.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
         
-        //set the number of photos to 1
-        page.numberofphotos = [NSNumber numberWithInt:1];
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:controller.pageID];
+        
+        //increment the photo counter on the page this new photo belongs to
+        page.numberofphotos = [NSNumber numberWithInt:([page.numberofphotos intValue] + 1)];
         
         if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
             
+            //we set the initial number of captions on the photo to 1
             photo.numberofcaptions = [NSNumber numberWithInt:1];
-            page.numberofcaptions = [NSNumber numberWithInt:1];
+            
+            //increment the caption counter on the page this new photo belongs to
+            page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
         }
         else {
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
-            
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
         }
         
     }
     else if (controller.configurationType == CAPTION) {
         Caption* caption = [Caption createCaptionForPhoto:controller.photoID withCaption:controller.caption];
         LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new caption with ID:%@ (caption:%@)",activityName,caption.objectid,caption.caption1);
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:controller.pageID];
+        Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:controller.photoID];
+        
+        //increment the caption counters on the photo and page this new caption belongs to
+        photo.numberofcaptions = [NSNumber numberWithInt:([photo.numberofcaptions intValue] + 1)];
+        page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
     }
     
     [self dismissModalViewControllerAnimated:YES];
+    
     //create callback to this view controller for when the saves are finished
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onSaveComplete:)];
     [resourceContext save:YES onFinishCallback:callback];
     
     [callback release];
     
-    //after this point, the platforms hould automatically begin syncing the data back to the cloud
-    
+    //after this point, the platforms should automatically begin syncing the data back to the cloud
     
 }
 

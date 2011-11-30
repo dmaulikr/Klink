@@ -78,8 +78,10 @@
         //add the expiry date default
         retVal.datedraftexpires =[NSNumber numberWithDouble:(currentDateInSeconds + [settings.page_draftexpiry_seconds doubleValue])];
         
-        
-        
+        //set counters
+        retVal.numberofphotos = [NSNumber numberWithInt:0];
+        retVal.numberofcaptions = [NSNumber numberWithInt:0];
+        retVal.numberofpublishvotes = [NSNumber numberWithInt:0];
     }
    
     

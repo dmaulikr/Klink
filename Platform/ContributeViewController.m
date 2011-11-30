@@ -15,6 +15,10 @@
 #import "Types.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
+#import "ProductionLogViewController.h"
+#import "DraftViewController.h"
+#import "FullScreenPhotoViewController.h"
+#import "DateTimeHelper.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -52,6 +56,13 @@
 @synthesize lbl_deadline = m_lbl_deadline;
 
 
+#pragma mark - Deadline Date Timer
+- (void) updateDeadlineDate:(NSTimer *)timer {
+    NSDate* now = [NSDate date];
+    NSTimeInterval secondsIn24Hours = 24 * 60 * 60;
+    NSDate* deadlineDate = [now dateByAddingTimeInterval:secondsIn24Hours];
+    self.lbl_deadline.text = [DateTimeHelper formatMediumDateWithTime:deadlineDate];
+}
 
 #pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -110,6 +121,13 @@
     
     [self registerForKeyboardNotifications];
     
+    // Set deadline date
+    [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                     target:self
+                                   selector:@selector(updateDeadlineDate:)
+                                   userInfo:nil
+                                    repeats:YES];
+    
     [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_titleRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
@@ -126,6 +144,9 @@
     // Navigation Bar Buttons
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancelButtonPressed:)];
+    
+    // disable Submit button until user has completed all required fields
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 
 }
 
@@ -172,11 +193,14 @@
     
     // Navigation bar
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
     
     // hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    // Set deadline date
+    self.lbl_deadline.text = @"";
     
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -284,10 +308,36 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - Submit button helper
+- (BOOL) okToSubmit {
+    
+    if (self.configurationType == PAGE && self.draftTitle) {    
+        
+        if (self.caption && !self.img_photo) {
+            // user is creating a new draft and has added a caption but photo is empty
+            return NO;
+        }
+        else {
+            return YES;
+        }
+    }
+    else if (self.configurationType == PHOTO && self.img_photo) {
+        return YES;
+    }
+    else if (self.configurationType == CAPTION && self.caption) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+    
+}
 
 #pragma mark - UITextview and TextField Delegate Methods
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    // caption textview editing has begun
+    
     self.activeTextView = textView;
     
     // Prevent interaction with the cameraButton on the photo
@@ -303,14 +353,35 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    // caption textview editing has ended
+    
     // Add default text back if caption was left empty
     if ([self.activeTextView.text isEqualToString:@""] || [self.activeTextView.text isEqualToString:@"caption"]) {
+        self.caption = nil;
         self.activeTextView.textColor = [UIColor lightGrayColor];
         [self.activeTextView setText:@"caption"];
+        
+        // if user is creating a new draft and has left the caption textview blank then a photo is no required
+        if (self.configurationType == PAGE) {
+            self.lbl_photoOptional.hidden = NO;
+            self.lbl_photoRequired.hidden = YES;
+        }
     }
     else {
         // caption is acceptable
-        self.caption = self.activeTextView.text;
+        
+        NSString *trimmedCaption = [self.activeTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        self.caption = trimmedCaption;
+        
+        // if user is creating a new draft and has added a caption then a photo is now also required
+        if (self.configurationType == PAGE && !self.img_photo) {
+            self.lbl_photoOptional.hidden = YES;
+            self.lbl_photoRequired.hidden = NO;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photo Required" message:@"Oops! Did we forget to mention that a caption must be attached to a photo. Please add a photo to your new draft, or, delete the caption before submitting." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
     }
     
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
@@ -319,11 +390,16 @@
         self.btn_cameraButton.enabled = YES;
     }
     
+    // enable Submit button if ok
+    self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
+    
     self.activeTextView = nil;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    // draft title textfield editing has begun
+    
     self.activeTextField = textField;
     
     if ([self.activeTextField.text rangeOfString:@"#"].location == NSNotFound) {
@@ -338,15 +414,19 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    // draft title textfield editing has ended
+    
     // Re-enable interaction with the cameraButton on the photo if not in CAPTION configuration
     if (self.configurationType != CAPTION) {
         self.btn_cameraButton.hidden = NO;
         self.btn_cameraButton.enabled = YES;
     }
     
-    if ([self.activeTextField.text isEqualToString:@""] || [self.activeTextField.text isEqualToString:@"#drafttitle"]) {
+    if ([self.activeTextField.text isEqualToString:@""] || [self.activeTextField.text isEqualToString:@"#"] || [self.activeTextField.text isEqualToString:@"#drafttitle"]) {
         // Add default text back if title was left empty
-        [self.activeTextView setText:@"#drafttitle"];
+        self.draftTitle = nil;
+        [self.activeTextField setText:@""];
+        [self.activeTextField setPlaceholder:@"#drafttitle"];
     }
     else {
         // title is acceptable
@@ -359,6 +439,9 @@
         }
         self.activeTextField.text = self.draftTitle;
     }
+    
+    // enable Submit button if ok
+    self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
     
     self.activeTextField = nil;
 }
@@ -378,7 +461,7 @@
     return YES;
 }
 
-// Handles keyboard Return button pressed while editing a textview to dismiss the keyboard
+// Handles keyboard Return button pressed while editing the caption textview to dismiss the keyboard
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if([text isEqualToString:@"\n"]) {
@@ -389,7 +472,7 @@
     return YES;
 }
 
-// Handles keyboard Return button pressed while editing a textfield to dismiss the keyboard
+// Handles keyboard Return button pressed while editing the draft title textfield to dismiss the keyboard
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return NO;
@@ -479,6 +562,9 @@
     self.img_thumbnail = thumbnailImage;
     
     self.iv_photo.image = self.img_photo;
+    
+    // enable Submit button if ok
+    self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
 }
 
 - (void) onCancel {
@@ -500,6 +586,21 @@
     
     
     [self.delegate submitChangesForController:self];
+    
+    // make sure the parent view contoller's tableview gets updated before displaying
+    if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
+        DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
+        [draftViewController.pagedViewSlider.tableView reloadData];
+    }
+    else if ([self.navigationController.topViewController isKindOfClass:[ProductionLogViewController class]]) {
+        ProductionLogViewController* productionLogViewController = (ProductionLogViewController*)self.navigationController.topViewController;
+        [productionLogViewController.tbl_productionTableView reloadData];
+    }
+    else if ([self.navigationController.topViewController isKindOfClass:[FullScreenPhotoViewController class]]) {
+        FullScreenPhotoViewController* fullScreenPhotoViewController = (FullScreenPhotoViewController*)self.navigationController.topViewController;
+        [fullScreenPhotoViewController.photoViewSlider.tableView reloadData];
+        [fullScreenPhotoViewController.captionViewSlider.tableView reloadData];
+    }
 }
 
 

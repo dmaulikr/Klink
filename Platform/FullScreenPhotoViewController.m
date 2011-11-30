@@ -489,6 +489,10 @@
 }
 
 - (void) onVoteButtonPressed:(id)sender {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
     int photoIndex = [self.photoViewSlider getPageIndex];
     Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
     
@@ -497,6 +501,8 @@
     
     photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+    page.numberofpublishvotes = [NSNumber numberWithInt:([page.numberofpublishvotes intValue] + 1)];
+    
     //caption.user_hasvoted = [NSNumber numberWithBool:YES];
     
     // animate the updating of the votes label
@@ -519,8 +525,6 @@
     */
     
     //now we need to commit to the store
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
     [resourceContext save:YES onFinishCallback:nil];
     
     self.draftViewNeedsUpdate = YES;
@@ -639,6 +643,8 @@
             [self.captionViewSlider addSubview:v_caption];
         }
     }
+    
+    [self enableDisableVoteButton];
     
 }
 

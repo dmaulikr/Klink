@@ -33,6 +33,17 @@
 
 }
 
++ (NSString*) formatMediumDateWithTime:(NSDate*)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    NSString *formattedDate = [dateFormatter stringFromDate:date];
+    
+    [dateFormatter release];
+    return formattedDate;
+    
+}
+
 + (NSTimeInterval) convertDateToDouble:(NSDate*)date {
     return [date timeIntervalSince1970];
 }
@@ -49,6 +60,24 @@
     return retVal;
 }
 
+
++ (NSString *) formatTimeInterval:(NSTimeInterval)interval {
+    unsigned long seconds = interval;
+    unsigned long minutes = seconds / 60;
+    seconds %= 60;
+    unsigned long hours = minutes / 60;
+    minutes %= 60;
+    
+    NSMutableString * result = [[NSMutableString new] autorelease];
+    
+    if(hours)
+        [result appendFormat: @"%d:", hours];
+    
+    [result appendFormat: @"%02:", minutes];
+    [result appendFormat: @"%02", seconds];
+    
+    return result;
+}
 
 
 @end

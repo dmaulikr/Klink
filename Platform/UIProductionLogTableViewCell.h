@@ -20,6 +20,8 @@
     
     NSNumber*       m_topVotedPhotoID;
     NSFetchedResultsController* m_frc_photo;
+    
+    NSDate*         m_deadline;
 }
 
 @property (nonatomic, retain) NSNumber* pageID;
@@ -32,6 +34,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numCaptions;
 @property (nonatomic, retain) IBOutlet NSFetchedResultsController*     frc_photo;
 @property (nonatomic, retain)          NSNumber*    topVotedPhotoID;
+@property (nonatomic, retain)          NSDate*      deadline;
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 + (NSString*) cellIdentifier;

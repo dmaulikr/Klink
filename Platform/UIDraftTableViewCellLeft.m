@@ -35,14 +35,7 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     
     Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
-    Caption* topCaption = [photo captionWithHighestVotes];
-    self.captionID = topCaption.objectid;
-    
-    if (photo != nil || topCaption!= nil) {
-        self.lbl_caption.text = topCaption.caption1;
-        self.lbl_numVotes.text = [photo.numberofvotes stringValue];
-        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
-        
+    if (photo != nil) {        
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:kPHOTOID];
         
@@ -55,9 +48,20 @@
                 self.iv_photo.image = image;
             }
         }
-        
-        
     }
+    
+    Caption* topCaption = [photo captionWithHighestVotes];
+    self.lbl_numVotes.text = @"0";
+    self.lbl_numCaptions.text = @"0";
+    
+    if (topCaption != nil) {
+        self.captionID = topCaption.objectid;
+        self.lbl_caption.textColor = [UIColor blackColor];
+        self.lbl_caption.text = topCaption.caption1;
+        self.lbl_numVotes.text = [photo.numberofvotes stringValue];
+        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
+    }
+    
     [self setNeedsDisplay];
 }
 
