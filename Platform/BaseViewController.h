@@ -44,11 +44,10 @@
 
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
-
 - (void) showProgressBar: (NSString*)message 
           withCustomView:(UIView*)view 
   withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
-
+    
 
 - (void) hideProgressBar;
 @end

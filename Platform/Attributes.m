@@ -70,3 +70,5 @@ NSString* const TARGETOBJECTTYPE        =@"targetobjecttype";
 NSString* const POLLID                    =@"poll";
 
 NSString* const FACEBOOKTOKENEXPIRYDATE = @"facebookaccesstokenexpirydate";
+NSString* const SHAREONFACEBOOK         = @"shareonfacebook";
+NSString* const SHAREONTWITTER          = @"shareontwitter";

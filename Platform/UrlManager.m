@@ -192,8 +192,32 @@
 
 
 
++ (NSURL*) urlForShareObject:(NSNumber *)objectid 
+              withObjectType:(NSString *)objectType 
+                 withOptions:(SharingOptions *)sharingOptions 
+   withAuthenticationContext:(id)authenticationContext {
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    NSString* verbName = verb_SHARE;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* captionIDParamName = param_OBJECTID;
+    NSString* sharingOptionsIDParamName = param_SHARINGOPTIONS;
+    NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+    NSString* jsonSharingOptions = [sharingOptions toJSON];
+    
+    [parameters appendFormat:@"%@=%@",captionIDParamName,objectid];
+    [parameters appendFormat:@"&%@=%@",sharingOptionsIDParamName, jsonSharingOptions];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParameterName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURL* url = [[[NSURL alloc] initWithString:escapedURL]autorelease];
+    [parameters release];
+    return url;
 
-
+}
 
 
 

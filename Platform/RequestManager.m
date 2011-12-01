@@ -111,6 +111,17 @@ static RequestManager* sharedInstance;
         return httpRequest;
 
     }
+    else if (opcode == kSHARE) {
+        ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];      
+        httpRequest.delegate = self;
+        httpRequest.requestMethod = @"POST";
+        httpRequest.userInfo = userInfo;
+        httpRequest.didFailSelector = @selector(onRequestFailed:);
+        httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
+        httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
+        return httpRequest;
+
+    }
     return nil;
 }
 //
@@ -404,6 +415,16 @@ static RequestManager* sharedInstance;
     [self.enumerationQueue addOperation:httpRequest];
 }
 
+- (void) processShare:(Request*)request {
+    NSString* activityName = @"RequestManager.processShare:";
+    NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+    [userInfo setObject:request forKey:kREQUEST];
+    ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    LOG_REQUEST(0,@"%@Beginning http request to share at url:%@",activityName,request.url);
+    
+    [self.operationQueue addOperation:httpRequest];
+
+}
 
 
 //returns all changed attributes on the request that are also attachments
@@ -470,6 +491,11 @@ static RequestManager* sharedInstance;
 
         [self processUpdateAuthenticator:request];
 
+    }
+    else if ([request.operationcode intValue] == kSHARE) {
+        LOG_REQUEST(0, @"%@Share request submitted to Request Manager",activityName);
+        
+        [self processShare:request];
     }
         
 }
@@ -614,6 +640,23 @@ static RequestManager* sharedInstance;
     
 }
 
+- (Response*) processShareResponse:(NSString*)responseString withRequest:(Request*)request {
+    NSString* activityName = @"RequestManager.processShareResponse:";
+    NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    
+    Response* response = [[Response alloc]initFromJSONDictionary:jsonDictionary];
+    
+    if ([response.didSucceed boolValue]) {
+        //when we share, we dont need to do any actions on the response
+        LOG_REQUEST(1, @"%@Share request succeeded",activityName);
+
+    }
+    else {
+        LOG_REQUEST(1, @"%@Share request failed due to Error:%@",activityName,response.errorMessage);
+    }
+    return response;
+}
+
 - (Response*) processUpdateAuthenticatorResponse:(NSString*)responseString 
                                      withRequest:(Request*)request {
     
@@ -747,6 +790,9 @@ static RequestManager* sharedInstance;
         }
         else if ([request.operationcode intValue] == kUPDATEAUTHENTICATOR) {
             responseObj = [self processUpdateAuthenticatorResponse:response withRequest:request];
+        }
+        else if ([request.operationcode intValue] == kSHARE) {
+            responseObj = [self processShareResponse:response withRequest:request];
         }
   
         

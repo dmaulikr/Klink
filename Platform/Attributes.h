@@ -74,3 +74,7 @@ extern NSString* const OBJECTTYPE;
 extern NSString* const TARGETID;
 extern NSString* const TARGETOBJECTTYPE;
 extern NSString* const POLLID;
+
+
+extern NSString* const SHAREONFACEBOOK;
+extern NSString* const SHAREONTWITTER;

@@ -12,7 +12,7 @@
 #import "WebServiceParameters.h"
 #import "AuthenticationContext.h"
 #import "EnumerationContext.h"
-
+#import "SharingOptions.h"
 
 #import "Query.h"
 
@@ -52,4 +52,8 @@
               withAuthenticationContext:(id)context; 
 
 
++ (NSURL*) urlForShareObject:(NSNumber*)objectid 
+              withObjectType:(NSString*)objectType 
+                 withOptions:(SharingOptions*)sharingOptions 
+   withAuthenticationContext:(id)context;
 @end

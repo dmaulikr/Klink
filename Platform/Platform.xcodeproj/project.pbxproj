@@ -202,6 +202,8 @@
 		C5DB5A58144FAF3300D6D6AE /* IDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A56144FAF3300D6D6AE /* IDGenerator.m */; };
 		C5DB5A5C14520DB800D6D6AE /* CloudEnumeratorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A5B14520DB800D6D6AE /* CloudEnumeratorFactory.m */; };
 		C5DB5A5F14520DF300D6D6AE /* CloudEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A5E14520DF300D6D6AE /* CloudEnumerator.m */; };
+		C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E4258F1487017B00BB1264 /* SocialSharingManager.m */; };
+		C5E42594148705E300BB1264 /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E42593148705E300BB1264 /* SharingOptions.m */; };
 		C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AA71458ACB7001AFCA8 /* Page.m */; };
 		C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AAB1458ADE2001AFCA8 /* Feed.m */; };
 		C5F4630D1444BCA400170835 /* OpCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F4630C1444BCA400170835 /* OpCodes.m */; };
@@ -549,6 +551,10 @@
 		C5DB5A5B14520DB800D6D6AE /* CloudEnumeratorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumeratorFactory.m; sourceTree = "<group>"; };
 		C5DB5A5D14520DF300D6D6AE /* CloudEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumerator.h; sourceTree = "<group>"; };
 		C5DB5A5E14520DF300D6D6AE /* CloudEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumerator.m; sourceTree = "<group>"; };
+		C5E4258E1487017B00BB1264 /* SocialSharingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialSharingManager.h; sourceTree = "<group>"; };
+		C5E4258F1487017B00BB1264 /* SocialSharingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialSharingManager.m; sourceTree = "<group>"; };
+		C5E42592148705E300BB1264 /* SharingOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingOptions.h; sourceTree = "<group>"; };
+		C5E42593148705E300BB1264 /* SharingOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingOptions.m; sourceTree = "<group>"; };
 		C5ED8AA61458ACB7001AFCA8 /* Page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Page.h; sourceTree = "<group>"; };
 		C5ED8AA71458ACB7001AFCA8 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		C5ED8AAA1458ADE2001AFCA8 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
@@ -933,6 +939,8 @@
 		C5A04A411443293F0037FA7B /* Transport */ = {
 			isa = PBXGroup;
 			children = (
+				C5E42592148705E300BB1264 /* SharingOptions.h */,
+				C5E42593148705E300BB1264 /* SharingOptions.m */,
 				C554DEF0144CABDF00CD6E85 /* CreateResponse.h */,
 				C554DEF1144CABDF00CD6E85 /* CreateResponse.m */,
 				C554DEF2144CABDF00CD6E85 /* PutResponse.h */,
@@ -961,6 +969,8 @@
 		C5A04A4B144330110037FA7B /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
+				C5E4258E1487017B00BB1264 /* SocialSharingManager.h */,
+				C5E4258F1487017B00BB1264 /* SocialSharingManager.m */,
 				C507BC7C1459811A004D9359 /* FeedManager.h */,
 				C507BC7D1459811A004D9359 /* FeedManager.m */,
 				C5C83AEF144B853D00AF38CF /* ImageDownloadProtocol.h */,
@@ -1554,6 +1564,8 @@
 				C522FD3A147A5DDD00F691A4 /* Poll.m in Sources */,
 				C522FD3D147A5EB400F691A4 /* PollData.m in Sources */,
 				C522FD40147A612A00F691A4 /* Bookmark.m in Sources */,
+				C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */,
+				C5E42594148705E300BB1264 /* SharingOptions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

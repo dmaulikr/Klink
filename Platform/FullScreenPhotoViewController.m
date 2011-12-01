@@ -21,7 +21,7 @@
 #import "ApplicationSettings.h"
 #import "DraftViewController.h"
 #import "UIDraftView.h"
-
+#import "SocialSharingManager.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -410,8 +410,8 @@
         
         [self enableVoteButton];
         
-        int index = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+      //  int index = [self.captionViewSlider getPageIndex];
+      // Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
       /*  
         if ([caption.user_hasvoted boolValue] == YES) {
             [self disableVoteButton];
@@ -427,24 +427,26 @@
 }
 
 #pragma mark - Toolbar Button Event Handlers
+
 - (void) onFacebookButtonPressed:(id)sender {
+    
+       
     //we check to ensure the user is logged in to Facebook first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-      /*  
+      
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
             [self disableFacebookButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-            
-            [sharingManager shareCaptionOnFacebook:caption.objectid];
-        }
-      */
+            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil];
+                   }
+      
     }
 }
 
@@ -455,7 +457,7 @@
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-      /*
+      
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
@@ -463,9 +465,9 @@
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
-            [sharingManager shareCaptionOnFacebook:caption.objectid];
+            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil];
         }
-      */
+      
     }
 }
 
