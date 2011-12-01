@@ -33,7 +33,7 @@
 - (void) renderDraftWithID:(NSNumber *)pageID;
 
 //- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style withPageID:(NSNumber*)pageID;
-- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style;
+//- (id)initWithFrame:(CGRect)frame withStyle:(UITableViewCellStyle)style;
 //- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)frame;
 //- (id)initWithCoder:(NSCoder *)aDecoder;
 

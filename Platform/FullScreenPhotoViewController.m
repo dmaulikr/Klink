@@ -45,7 +45,7 @@
 @synthesize photoID                 = m_photoID;
 @synthesize captionID               = m_captionID;
 
-@synthesize draftViewNeedsUpdate    = m_draftViewNeedsUpdate;
+@synthesize tableViewNeedsUpdate    = m_tableViewNeedsUpdate;
 
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
@@ -344,12 +344,12 @@
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
     //if something has changed, make sure the draft tableview gets updated before displaying
-    if (self.draftViewNeedsUpdate) {
+    /*if (self.tableViewNeedsUpdate) {
         if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
             DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
             [draftViewController.pagedViewSlider.tableView reloadData];
         }
-    }
+    }*/
     
 }
 
@@ -362,6 +362,9 @@
     self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
     self.captionCloudEnumerator.delegate = self;
     [self.captionCloudEnumerator enumerateUntilEnd];
+    
+    // set initial state of parent contollers tableView update observer property to NO
+    self.tableViewNeedsUpdate = NO;
 }
 
 - (void)viewDidUnload
@@ -527,7 +530,7 @@
     //now we need to commit to the store
     [resourceContext save:YES onFinishCallback:nil];
     
-    self.draftViewNeedsUpdate = YES;
+    self.tableViewNeedsUpdate = YES;
 
 }
 
@@ -744,14 +747,14 @@
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
-            self.draftViewNeedsUpdate = YES;
+            self.tableViewNeedsUpdate = YES;
         }
         else if (controller == self.frc_captions) {
             //insertion of a new caption
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
-            self.draftViewNeedsUpdate = YES;
+            self.tableViewNeedsUpdate = YES;
         }
     }
 }
