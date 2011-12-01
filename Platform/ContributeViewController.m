@@ -54,14 +54,21 @@
 @synthesize lbl_captionRequired = m_lbl_captionRequired;
 
 @synthesize lbl_deadline = m_lbl_deadline;
+@synthesize deadline = m_deadline;
 
 
-#pragma mark - Deadline Date Timer
+#pragma mark - Deadline Date Timers
 - (void) updateDeadlineDate:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval secondsIn24Hours = 24 * 60 * 60;
     NSDate* deadlineDate = [now dateByAddingTimeInterval:secondsIn24Hours];
     self.lbl_deadline.text = [DateTimeHelper formatMediumDateWithTime:deadlineDate];
+}
+
+- (void) timeRemaining:(NSTimer *)timer {
+    NSDate* now = [NSDate date];
+    NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
+    self.lbl_deadline.text = [DateTimeHelper formatTimeInterval:remaining];
 }
 
 #pragma mark - Initializers
@@ -121,12 +128,31 @@
     
     [self registerForKeyboardNotifications];
     
-    // Set deadline date
-    [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                     target:self
-                                   selector:@selector(updateDeadlineDate:)
-                                   userInfo:nil
-                                    repeats:YES];
+    // Set deadline
+    if (self.configurationType == PAGE) {
+        // Show a date 24 hours from now
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self
+                                       selector:@selector(updateDeadlineDate:)
+                                       userInfo:nil
+                                        repeats:YES];
+    }
+    else {
+        // Existing draft, show time remaining
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        
+        self.lbl_deadline.text = @"";
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self
+                                       selector:@selector(timeRemaining:)
+                                       userInfo:nil
+                                        repeats:YES];
+    }
     
     [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];

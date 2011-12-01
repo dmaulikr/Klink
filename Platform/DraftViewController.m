@@ -28,6 +28,8 @@
 @synthesize pagedViewSlider     = m_pagedViewSlider;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 
+@synthesize tableViewNeedsUpdate    = m_tableViewNeedsUpdate;
+
 @synthesize thumbnailImage      = m_thumbnailImage;
 @synthesize fullImage           = m_fullImage;
 

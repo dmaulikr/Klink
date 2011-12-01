@@ -47,6 +47,7 @@
     UILabel*        m_lbl_captionRequired;
     
     UILabel*        m_lbl_deadline;
+    NSDate*         m_deadline;
 }
 
 @property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
@@ -79,6 +80,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionRequired;
 
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_deadline;
+@property (nonatomic, retain)          NSDate*          deadline;
 
 
 - (void)registerForKeyboardNotifications;

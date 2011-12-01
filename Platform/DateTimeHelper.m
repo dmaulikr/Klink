@@ -77,16 +77,16 @@
     NSString* timeRemaining = [NSString alloc];
     
     if ([breakdownInfo hour] > 1) {
-        timeRemaining = [NSString stringWithFormat:@"%dhrs %dmin",[breakdownInfo hour], [breakdownInfo minute]];
+        timeRemaining = [NSString stringWithFormat:@"%d hrs %d min",[breakdownInfo hour], [breakdownInfo minute]];
     }
     else if ([breakdownInfo hour] == 1) {
-        timeRemaining = [NSString stringWithFormat:@"%dhr %dmin",[breakdownInfo hour], [breakdownInfo minute]];
+        timeRemaining = [NSString stringWithFormat:@"%d hr %d min",[breakdownInfo hour], [breakdownInfo minute]];
     }
     else if ([breakdownInfo minute] > 0) {
-        timeRemaining = [NSString stringWithFormat:@"%dmin %dsec",[breakdownInfo minute], [breakdownInfo second]];
+        timeRemaining = [NSString stringWithFormat:@"%d min %d sec",[breakdownInfo minute], [breakdownInfo second]];
     }
     else if ([breakdownInfo second] > 0) {
-        timeRemaining = [NSString stringWithFormat:@"%dseconds",[breakdownInfo second]];
+        timeRemaining = [NSString stringWithFormat:@"%d seconds",[breakdownInfo second]];
     }
     else {
         timeRemaining = [NSString stringWithFormat:@"closed!"];

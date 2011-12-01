@@ -273,9 +273,9 @@
             if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
                 Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
                 
-                //increment the caption counters
-                photo.numberofcaptions = [NSNumber numberWithInt:([photo.numberofcaptions intValue] + 1)];
-                page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
+                //set the initial caption counters to 1
+                photo.numberofcaptions = [NSNumber numberWithInt:1];
+                page.numberofcaptions = [NSNumber numberWithInt:1];
                 
                 LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
             }

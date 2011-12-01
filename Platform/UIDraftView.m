@@ -141,17 +141,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - View lifecycle
-- (void) viewWillAppear:(BOOL)animated {
-    //[self.tbl_draftTableView reloadData];
-    //[self.tbl_draftTableView setNeedsDisplay];
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-    //[self.tbl_draftTableView reloadData];
-    //[self.tbl_draftTableView setNeedsDisplay];
-}
-
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -164,6 +153,8 @@
     
     Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
+    
+    [photoViewController addObserver:self forKeyPath:@"tableViewNeedsUpdate" options:NSKeyValueObservingOptionNew context:tableView];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
     [photoViewController release];
@@ -194,6 +185,20 @@
     else {
         return nil;
     }
+}
+
+#pragma mark - KVO-Observer Method
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    
+    //NSObject* changeValue = [change objectForKey:NSKeyValueChangeNewKey];
+    
+    if ([keyPath isEqual:@"tableViewNeedsUpdate"] && (context == self.tbl_draftTableView)) {
+        [self.tbl_draftTableView reloadData];
+    }
+    
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate

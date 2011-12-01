@@ -32,10 +32,10 @@
 
 
 #pragma mark - Deadline Date Timer
-- (void) updateDeadlineDate:(NSTimer *)timer {
+- (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
-    NSTimeInterval timeRemaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadline.text = [DateTimeHelper formatTimeInterval:timeRemaining];
+    NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
+    self.lbl_deadline.text = [DateTimeHelper formatTimeInterval:remaining];
     [self setNeedsDisplay];
 }
 
@@ -107,7 +107,6 @@
     
     if (draft != nil) {
         self.lbl_draftTitle.text =  draft.displayname;
-        //self.lbl_deadline.text = [DateTimeHelper formatMediumDateWithTime:[DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires]];
         self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
         self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
         
@@ -115,12 +114,12 @@
         self.topVotedPhotoID = topPhoto.objectid;
         [self renderPhoto:topPhoto];
         
-        // Set deadline date
+        // Set deadline
         self.lbl_deadline.text = @"";
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self
-                                       selector:@selector(updateDeadlineDate:)
+                                       selector:@selector(timeRemaining:)
                                        userInfo:nil
                                         repeats:YES];
     
@@ -160,18 +159,6 @@
         
     }
     return self;
-}
-
-#pragma mark - View Lifecycle
-- (void)viewDidLoad
-{
-    // Set deadline date
-    //self.lbl_deadline.text = @"";
-    //[NSTimer scheduledTimerWithTimeInterval:1.0f
-    //                                 target:self
-    //                               selector:@selector(updateDeadlineDate:)
-    //                               userInfo:nil
-    //                                repeats:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
