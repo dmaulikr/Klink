@@ -17,5 +17,5 @@ NSString* const verb_DELETE=@"Objects/Delete";
 NSString* const verb_UPLOADATTACHMENT = @"Objects/PutAttachment";
 NSString* const verb_GETAUTHENTICATOR = @"Objects/Users/GetAuthenticator";
 NSString* const verb_UPDATEATTRIBUTE = @"Objects/PutAttribute";
-NSString* const verb_SHARECAPTION = @"Objects/Caption/Share";
+NSString* const verb_SHARE = @"Objects/Share";
 NSString* const verb_UPDATEAUTHENTICATOR = @"Objects/Users/Authenticator/Put";

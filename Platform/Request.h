@@ -18,7 +18,8 @@ typedef enum {
     kENUMERATION,
     kAUTHENTICATE,
     kIMAGEDOWNLOAD,
-    kUPDATEAUTHENTICATOR
+    kUPDATEAUTHENTICATOR,
+    kSHARE
 } RequestOperation;
 
 typedef enum {

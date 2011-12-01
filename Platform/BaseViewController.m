@@ -239,11 +239,13 @@
         [userInfo setValue:parameter forKey:kPARAMETER];
     }
     
-    Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginComplete:) withContext:userInfo];
+    Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginComplete:) withContext:userInfo];
+    Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:) withContext:userInfo];
+    
     [userInfo release];
     
     [self.view addSubview:self.loginView];
-    [self.loginView authenticate:facebook withTwitter:twitter onFinishCallback:callback];
+    [self.loginView authenticate:facebook withTwitter:twitter onSuccessCallback:onSucccessCallback onFailCallback:onFailCallback];
 }
 
 #pragma mark - ConrtibuteViewControllerDelegate methods
@@ -337,6 +339,17 @@
 }
 
 #pragma mark - Async Handlers
+//this method handles a Login attempt that is either cancelled or returned unsuccessfully
+//any view controller subclass can use this as the target for their onFailCallback passed to the
+//UILoginView.h
+- (void) onLoginFailed:(CallbackResult *)result {
+    NSString* activityName = @"BaseViewController.onAuthenticateFailed:";
+    
+    //need to display an error message to the user
+    //TODO: create generic error emssage display
+    LOG_BASEVIEWCONTROLLER(1, @"%@Authentication failed, cannot complete initial request",activityName);
+}
+
 - (void) onSaveComplete:(CallbackResult*)result {
     NSString* activityName = @"BaseViewController.onSaveComplete:";
     

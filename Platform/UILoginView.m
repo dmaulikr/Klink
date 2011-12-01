@@ -27,10 +27,11 @@
 @synthesize parentViewController = m_parentViewController;
 @synthesize authenticateWithFacebook = m_authenticateWithFacebook;
 @synthesize authenticateWithTwitter = m_authenticateWithTwitter;
-@synthesize onFinishCallback = m_onFinishCallback;
+@synthesize onFailCallback = m_onFailCallback;
 @synthesize fbPictureRequest = m_fbPictureRequest;
 @synthesize fbProfileRequest = m_fbProfileRequest;
 @synthesize twitterEngine    = __twitterEngine;
+@synthesize onSuccessCallback = m_onSuccessCallback;
 
 #pragma mark - Properties
 - (SA_OAuthTwitterEngine*) twitterEngine {
@@ -107,14 +108,31 @@
 
 
 - (void) dismissWithResult:(BOOL)result {
-    if (self.onFinishCallback != nil) {
-        Response* response = [[Response alloc]init];
-        response.didSucceed = [NSNumber numberWithBool:result];
-        
-        self.onFinishCallback.fireOnMainThread = YES;
-        [self.onFinishCallback fireWithResponse:response];
-        [response release];
+    if (result) {
+        //authentication action completed successfully
+        if (self.onSuccessCallback != nil) {
+            //fire success callback
+            Response* response = [[Response alloc]init];
+            response.didSucceed = [NSNumber numberWithBool:YES];
+            self.onSuccessCallback.fireOnMainThread = YES;
+            [self.onSuccessCallback fireWithResponse:response];
+            [response release];
+        }
     }
+    else {
+         //authentication action failed
+        if (self.onFailCallback != nil) {
+            //fire fail callback
+            Response* response = [[Response alloc]init];
+            response.didSucceed = [NSNumber numberWithBool:NO];
+            self.onFailCallback.fireOnMainThread = YES;
+            [self.onFailCallback fireWithResponse:response];
+            [response release];
+        }
+       
+    }
+    
+    
     [self removeFromSuperview];
 }
 
@@ -135,11 +153,11 @@
             result = NO;
         }
     }
-    
-    if (self.authenticateWithTwitter) {
+    AuthenticationContext* userContext = [[AuthenticationManager instance]contextForLoggedInUser];
+    if (self.authenticateWithTwitter && ![userContext hasTwitter]) {
         //twitter authentication failed or hasnt happened, we begin twitter auth
         [self performSelectorOnMainThread:@selector(beginTwitterAuthentication) withObject:nil waitUntilDone:NO];
-       
+        
         
     }
     else {
@@ -168,14 +186,16 @@
 #pragma mark - instance methods
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 
-     onFinishCallback:(Callback *)callback 
+     onSuccessCallback:(Callback *)onSuccessCallback 
+    onFailCallback:(Callback *)onFailCallback 
 {
     NSString* activityName = @"UILoginView:authenticate:";
     //we start with facebook authentication
     AuthenticationManager* authnManager = [AuthenticationManager instance];
     self.authenticateWithTwitter = twitter;
     self.authenticateWithFacebook = facebook;
-    self.onFinishCallback = callback;
+    self.onFailCallback = onFailCallback;
+    self.onSuccessCallback = onSuccessCallback;
     
     if (self.authenticateWithFacebook) {
         //authenticate with facebook
@@ -194,8 +214,10 @@
     else if (self.authenticateWithTwitter) {
         if (![authnManager isUserAuthenticated]) {
             //user is not authenticated in our app, cannot proceed with twitter auth
-            LOG_LOGINVIEWCONTROLLER(1,@"%@cannot authenticate with twitter until authenticated with Facebook, skipping twitter authentication",activityName);
-            [self dismissWithResult:NO];
+            LOG_LOGINVIEWCONTROLLER(1,@"%@must first login with Facebook",activityName);
+            self.authenticateWithFacebook = YES;
+            [self beginFacebookAuthentication];
+           
         }
         else {
             //user is authenticated, we can proceed with authentication

@@ -18,7 +18,8 @@
     BaseViewController* m_parentViewController;
     BOOL                m_authenticateWithTwitter;
     BOOL                m_authenticateWithFacebook;
-    Callback*           m_onFinishCallback;
+    Callback*           m_onSuccessCallback;
+    Callback*           m_onFailCallback;
     FBRequest*          m_fbProfileRequest;
     FBRequest*          m_fbPictureRequest;
     
@@ -28,7 +29,8 @@
 - (id)initWithFrame:(CGRect)frame withParent:(BaseViewController*)parentViewController;
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 
-     onFinishCallback:(Callback*)callback;
+     onSuccessCallback:(Callback*)onSuccessCallback
+       onFailCallback:(Callback*)onFailureCallback;
 
 @property (nonatomic,retain)    SA_OAuthTwitterEngine*  twitterEngine;
 @property (nonatomic,retain)    BaseViewController*     parentViewController;
@@ -37,5 +39,6 @@
 
 @property BOOL                                          authenticateWithTwitter;
 @property BOOL                                          authenticateWithFacebook;
-@property (nonatomic,retain)    Callback*               onFinishCallback;
+@property (nonatomic,retain)    Callback*               onSuccessCallback;
+@property (nonatomic,retain)    Callback*               onFailCallback;
 @end

@@ -26,7 +26,6 @@
 
 @property (nonatomic, retain) NSNumber* pageID;
 @property (nonatomic, retain) IBOutlet UITableViewCell* productionLogTableViewCell;
-
 @property (nonatomic, retain) IBOutlet UIImageView* iv_photo;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_draftTitle;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_deadline;
