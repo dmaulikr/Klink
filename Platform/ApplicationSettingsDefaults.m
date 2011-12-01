@@ -9,14 +9,25 @@
 #import "ApplicationSettingsDefaults.h"
 
 
-//NSString* const stng_BASEURL = @"baseurl";
-//NSString* const fieldName_NOTIFICATION_SOURCE_OBJECT=@"notificationsource";
-//NSString* const default_BASEURL = @"http://192.168.1.102/bonobo";
+//this URL is to connect to BOBBY's development environment
 //NSString* const default_BASEURL = @"http://108.6.2.14/bonobo";
 
-//uncomment this address for G's server
+//this URL is to connect to BOBBY's development environment from his internal network
+//NSString* const default_BASEURL = @"http://192.168.1.102/bonobo";
+
+//this URL is to connect to JORDAN's development environment over the internet
+NSString* const default_BASEURL = @"http://216.243.43.184/bonobo";
+
+//this URL is to connect to JORDAN's development environment from his internal network
 //NSString* const default_BASEURL = @"http://192.168.1.4/bonobo";
-NSString* const default_BASEURL = @"http://oscial.com/bonobo";
+
+
+//this URL is to connect to the PRODUCTION environment in the cloud
+//NSString* const default_BASEURL = @"http://oscial.com/bonobo";
+
+
+
+
 //NSString* const cacheName_ROOTVIEWCONTROLLER=@"RootViewController";
 int const pageSize_PHOTO=1;
 //int const pageSize_PHOTOSINTHEME = 10;
