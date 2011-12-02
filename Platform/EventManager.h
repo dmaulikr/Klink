@@ -15,6 +15,7 @@ typedef enum {
     kNEWCAPTIONVOTE,
     kNEWPHOTOVOTE,
     kNEWCAPTION,
+    kNEWPAGE,
     kDRAFTFINISHED,
     kDRAFTPUBLISHED,
     kSHOWPROGRESS,
@@ -42,5 +43,9 @@ typedef enum {
                       withCustomView:(UIView*)view 
               withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds;
 - (void) raiseHideProgressViewEvent;
+
+- (void) raiseEventsForInsertedObject:(NSSet*)insertedObjects;
+- (void) raiseEventsForUpdatedObjects:(NSSet*)updatedObjects;
+- (void) raiseEventsForDeletedObjects:(NSSet*)deletedObjects;
 + (EventManager*)instance;
 @end

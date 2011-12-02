@@ -134,11 +134,14 @@
     
     Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];
     
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
     [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
     [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
-
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    
     [loginCallback release];
     [logoutCallback release];
     [showProgressBarCallback release];
@@ -402,6 +405,10 @@
 
 - (void) onUserLoggedOut:(CallbackResult*)result {
     
+}
+
+- (void) onNewCaption:(CallbackResult*)result {
+
 }
 
 - (void) onShowProgressView:(CallbackResult*)result {

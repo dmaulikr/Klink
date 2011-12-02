@@ -10,6 +10,10 @@
 #import "RegisteredEventHandler.h"
 #import "Callback.h"
 #import "Macros.h"
+#import "Photo.h"
+#import "Page.h"
+#import "Caption.h"
+
 
 @implementation EventManager
 @synthesize registeredHandlers = m_registeredHandlers;
@@ -139,6 +143,10 @@ static EventManager* sharedInstance;
      [self raiseEvent:kNEWCAPTION withUserInfo:userInfo];
 }
 
+- (void) raiseNewPageEvent: (NSDictionary*)userInfo {
+    [self raiseEvent:kNEWPAGE withUserInfo:userInfo];
+}
+
 - (void) raiseShowProgressViewEvent:(NSString *)message withCustomView:(UIView *)view withMaximumDisplayTime:(NSNumber *)maximumTimeInSeconds {
   
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
@@ -153,4 +161,84 @@ static EventManager* sharedInstance;
     [self raiseEvent:kHIDEPROGRESS withUserInfo:nil];
 }
 
+#define kCAPTION    @"caption"
+#define kPHOTO      @"photo"
+#define kPAGE       @"page"
+
+- (void) raiseEventsForInsertedObject:(NSSet*)insertedObjects {
+     //will iterate through each new ly inserted object and raise events corresponding to them
+    NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
+    NSArray* insertedArray = [insertedObjects allObjects];
+    
+    for (NSManagedObject* obj in insertedArray) {
+        //we test for caption,photo, etc...
+        
+        if ([obj isKindOfClass:[Caption class]]) {
+            //it is a caption object
+            LOG_EVENTMANAGER(0, @"%@raising new caption event for new caption",activityName);
+            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
+            [self raiseNewCaptionEvent:userInfo];
+        }
+        else if ([obj isKindOfClass:[Photo class]]) {
+            //it is a photo object
+            LOG_EVENTMANAGER(0, @"%@raising new photo event for new photo",activityName);
+
+            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
+            [self raiseNewPhotoVoteEvent:userInfo];
+
+        }
+        else if ([obj isKindOfClass:[Page class]]) {
+            //it is a page object.
+            LOG_EVENTMANAGER(0, @"%@raising new page event for new page",activityName);
+
+            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPAGE];
+            [self raiseNewPageEvent:userInfo];
+
+        }
+        
+    }
+}
+
+- (void) raiseEventsForUpdatedObjects:(NSSet*)updatedObjects {
+    //iterates through updated objects and raises any pertinent application notifications
+    NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
+    NSArray* insertedArray = [updatedObjects allObjects];
+    
+    for (NSManagedObject* obj in insertedArray) {
+        
+        if ([obj isKindOfClass:[Caption class]]) {
+            //it is a caption object
+            NSDictionary* changedAttributes = [obj changedValues];
+            if ([changedAttributes valueForKey:NUMBEROFVOTES] != nil) {
+                //number of votes has been changed
+                Caption* caption = (Caption*)obj;
+                LOG_EVENTMANAGER(0, @"%@raising new caption vote event for caption %@",activityName,caption.objectid);
+                
+                 NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
+                [self raiseNewCaptionVoteEvent:userInfo];
+            }
+            
+        }
+        else if ([obj isKindOfClass:[Photo class]]) {
+            //it is a photo object
+            NSDictionary* changedAttributes = [obj changedValues];
+            if ([changedAttributes valueForKey:NUMBEROFVOTES] != nil) {
+                //number of votes has been changed
+                Photo* photo = (Photo*)obj;
+                LOG_EVENTMANAGER(0, @"%@raising new photo vote event for photo %@",activityName,photo.objectid);
+                
+                NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
+                [self raiseNewPhotoVoteEvent:userInfo];
+            }
+            
+  
+            
+        }
+
+    }       
+}
+
+- (void) raiseEventsForDeletedObjects:(NSSet*)deletedObjects {
+    
+}
 @end

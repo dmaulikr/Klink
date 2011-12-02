@@ -24,6 +24,7 @@
 #import "Types.h"
 #import "IDGenerator.h"
 #import "DateTimeHelper.h"
+#import "EventManager.h"
 
 #define kCallback   @"callback";
 @implementation ResourceContext
@@ -286,6 +287,12 @@ static NSMutableDictionary* managedObjectContexts;
     }
     
     //now we commit the change to the store
+    //let us raise events
+    EventManager* eventManager = [EventManager instance];
+    [eventManager raiseEventsForInsertedObject:insertedObjects];
+    [eventManager raiseEventsForUpdatedObjects:updatedObjects];
+    [eventManager raiseEventsForDeletedObjects:deletedObjects];
+
     NSError* error = nil;
     [self.managedObjectContext save:&error];
     
@@ -294,7 +301,7 @@ static NSMutableDictionary* managedObjectContexts;
         
     }
     else {
-        
+                
         int numberOfCreates = [resourcesToCreateInCloud count];
         int numberOfUpdates = [putRequests count];
         
