@@ -34,8 +34,7 @@
 //Page settings
 @property (nonatomic,retain) NSNumber* page_maxnumtodownload;
 @property (nonatomic,retain) NSNumber* page_size_linkedobjects;
-@property (nonatomic,retain) NSNumber*
- page_enumeration_timegap;
+@property (nonatomic,retain) NSNumber* page_enumeration_timegap;
 @property (nonatomic,retain) NSNumber* page_draftexpiry_seconds;
 
 //Caption settings

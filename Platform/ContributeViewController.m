@@ -19,6 +19,8 @@
 #import "DraftViewController.h"
 #import "FullScreenPhotoViewController.h"
 #import "DateTimeHelper.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -60,8 +62,10 @@
 #pragma mark - Deadline Date Timers
 - (void) updateDeadlineDate:(NSTimer *)timer {
     NSDate* now = [NSDate date];
-    NSTimeInterval secondsIn24Hours = 24 * 60 * 60;
-    NSDate* deadlineDate = [now dateByAddingTimeInterval:secondsIn24Hours];
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
+    //NSTimeInterval secondsIn24Hours = 24 * 60 * 60;
+    NSDate* deadlineDate = [now dateByAddingTimeInterval:draftExpirySetting];
     self.lbl_deadline.text = [DateTimeHelper formatMediumDateWithTime:deadlineDate];
 }
 
@@ -142,8 +146,6 @@
         ResourceContext* resourceContext = [ResourceContext instance];
         
         Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-        
-        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
         
         self.lbl_deadline.text = @"";
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
@@ -614,7 +616,7 @@
     [self.delegate submitChangesForController:self];
     
     // make sure the parent view contoller's tableview gets updated before displaying
-    if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
+    /*if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
         DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
         [draftViewController.pagedViewSlider.tableView reloadData];
     }
@@ -626,7 +628,7 @@
         FullScreenPhotoViewController* fullScreenPhotoViewController = (FullScreenPhotoViewController*)self.navigationController.topViewController;
         [fullScreenPhotoViewController.photoViewSlider.tableView reloadData];
         [fullScreenPhotoViewController.captionViewSlider.tableView reloadData];
-    }
+    }*/
 }
 
 

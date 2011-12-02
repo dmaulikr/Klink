@@ -248,11 +248,12 @@
 
 #pragma mark - Navigation
 - (void)updateNavigation {
-    NSArray* photos = [self.frc_photos fetchedObjects];
+    int photoCount = [[self.frc_photos fetchedObjects]count];
     int index = [self.photoViewSlider getPageIndex];
+    
     // Navigation Bar Title
-	if (photos.count > 1) {
-		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photos.count];		
+	if (photoCount > 0) {
+		self.title = [NSString stringWithFormat:@"%i of %i", index+1, photoCount];		
 	} else {
 		self.title = nil;
 	}    
@@ -749,6 +750,7 @@
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
+            [self.photoViewSlider goTo:[newIndexPath row] withAnimation:NO];
             self.tableViewNeedsUpdate = YES;
         }
         else if (controller == self.frc_captions) {
@@ -756,6 +758,7 @@
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
+            [self.captionViewSlider goTo:[newIndexPath row] withAnimation:NO];
             self.tableViewNeedsUpdate = YES;
         }
     }

@@ -48,7 +48,7 @@
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
     //TODO: change this to sort on DATECREATED when the server supports it
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server
@@ -216,6 +216,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // set initial state of parent contollers tableView update observer property to NO
+    self.tableViewNeedsUpdate = NO;
 }
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
@@ -311,6 +314,7 @@
     if (index < count) {    
         UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
         draftView.navigationController = self.navigationController;
+        
         [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
         return draftView;
     }
@@ -328,17 +332,27 @@
     NSString* draftTitle = @"Back";
     int count = [[self.frc_draft_pages fetchedObjects]count];
     if (index < count) {
-        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
+        /*Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
         if (page != nil) {
             draftTitle = page.displayname;
         }
         else {
-            page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
+            page = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
         }
+        self.pageID = page.objectid;*/
+        
+        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
+        if (page == nil) {
+            // if desired page no longer there mov to first page
+            page = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
+            [self.pagedViewSlider goTo:0 withAnimation:YES];
+        }
+
         self.pageID = page.objectid;
+        draftTitle = page.displayname;
     }
     
-    // Set up navigation bar back button
+    // Set up navigation bar back button for the currently displayed draft
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:draftTitle
                                                                               style:UIBarButtonItemStyleBordered
                                                                               target:nil
@@ -359,6 +373,12 @@
              
         UIDraftView* draftView = (UIDraftView*)existingCell;
         [draftView renderDraftWithID:page.objectid];
+        
+        // Set up navigation bar back button for the currently displayed draft
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:page.displayname
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                 target:nil
+                                                                                 action:nil] autorelease];
     }
 }
 
@@ -377,6 +397,7 @@
         Resource* resource = (Resource*)anObject;
         LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
         [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        self.tableViewNeedsUpdate = YES;
     }
 }
 

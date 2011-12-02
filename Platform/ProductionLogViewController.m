@@ -18,6 +18,10 @@
 #import "UINotificationIcon.h"
 #import "PersonalLogViewController.h"
 #import "CloudEnumeratorFactory.h"
+#import "DateTimeHelper.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -74,6 +78,30 @@
     
     return __frc_draft_pages;
     
+}
+
+- (void) updateDraftCounterLabels {
+    int numDraftsTotal = [[self.frc_draft_pages fetchedObjects]count];
+    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", numDraftsTotal];
+    
+    //Page* draft = [[Page alloc]init];
+    
+    int numDraftsClosing = 0;
+    NSDate* now = [NSDate date];
+    NSDate* deadline = [[NSDate alloc] init];
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
+    
+    for (int i = 0; i < numDraftsTotal; i++) {
+        Page* draft = [[self.frc_draft_pages fetchedObjects]objectAtIndex:i];
+        deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        NSTimeInterval deadlineIntervalRemaining = [deadline timeIntervalSinceDate:now];
+        if ((deadlineIntervalRemaining < draftExpirySetting) && (deadlineIntervalRemaining > 0)) {
+            numDraftsClosing++;
+        }
+    }
+    
+    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"%d", numDraftsClosing];
 }
 
 #pragma mark - Toolbar buttons
@@ -171,6 +199,7 @@
 {
     [super viewDidLoad];
     
+
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
@@ -178,7 +207,6 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", [self.tbl_productionTableView numberOfRowsInSection:0]];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -201,6 +229,7 @@
     NSString* activityName = @"ProductionLogViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
+
     
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
@@ -210,6 +239,9 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
         [self.cloudDraftEnumerator enumerateUntilEnd];
     }
+    // Update draft counter labels at the top of the view
+    [self updateDraftCounterLabels];
+
     // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
@@ -384,9 +416,13 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
         [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
         [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        // Update draft counter labels at the top of the view
+        [self updateDraftCounterLabels];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        // Update draft counter labels at the top of the view
+        [self updateDraftCounterLabels];
     }
 }
 

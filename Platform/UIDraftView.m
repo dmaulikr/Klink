@@ -152,6 +152,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+        
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
     
     [photoViewController addObserver:self forKeyPath:@"tableViewNeedsUpdate" options:NSKeyValueObservingOptionNew context:tableView];

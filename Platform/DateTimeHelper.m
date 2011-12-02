@@ -47,14 +47,22 @@
 + (NSTimeInterval) convertDateToDouble:(NSDate*)date {
     return [date timeIntervalSince1970];
 }
+
++ (NSTimeInterval) convertDatePointerToDouble:(NSNumber*)datePointer {
+    NSDate* date = [[NSDate alloc] init];
+    date = [DateTimeHelper parseWebServiceDateDouble:datePointer];
+    return [DateTimeHelper convertDateToDouble:date];
+    [date autorelease];
+}
+
 + (NSDate*) parseWebServiceDateString: (NSString*)dateString {
     return [[[NSDate alloc]init ]autorelease];
 }
 
 + (NSDate*) parseWebServiceDateDouble:(NSNumber*)datePointer {
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+    NSNumberFormatter* f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber * dateInSeconds = [f numberFromString:[datePointer stringValue]];
+    NSNumber* dateInSeconds = [f numberFromString:[datePointer stringValue]];
     NSDate* retVal  = [[NSDate alloc] initWithTimeIntervalSince1970:[dateInSeconds doubleValue]];
     [retVal autorelease];
     return retVal;

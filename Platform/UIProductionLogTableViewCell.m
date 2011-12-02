@@ -97,6 +97,10 @@
             self.iv_photo.image = image;
         }
     }
+    else {
+        self.iv_photo.contentMode = UIViewContentModeCenter;
+        self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+    }
     [self setNeedsDisplay];
 }
 
@@ -117,6 +121,12 @@
         // Set deadline
         self.lbl_deadline.text = @"";
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        
+        // CAN DELETE THESE, USED FOR TESTING
+        //NSTimeInterval deadlineInterval = [DateTimeHelper convertDatePointerToDouble:draft.datedraftexpires];
+        //NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:[NSDate date]];
+        //NSString* timeRemaining = [DateTimeHelper formatTimeInterval:remaining];
+        
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
@@ -136,6 +146,8 @@
     
     //we also need to nil the topVotedPhotoID
     self.topVotedPhotoID = nil;
+    self.deadline = nil;
+    
     [self render];
 }
 
