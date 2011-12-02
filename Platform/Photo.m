@@ -91,7 +91,6 @@
     
     // Save thumbnail image
     NSString* thumbnailFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-tb"];
-    
     retVal.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFileName];
     
     // Save fullscreen image

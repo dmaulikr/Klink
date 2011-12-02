@@ -48,6 +48,10 @@
                 self.iv_photo.image = image;
             }
         }
+        else {
+            self.iv_photo.contentMode = UIViewContentModeCenter;
+            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+        }
     }
     
     Caption* topCaption = [photo captionWithHighestVotes];

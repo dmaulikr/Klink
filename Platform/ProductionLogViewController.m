@@ -17,6 +17,9 @@
 #import "PageViewController.h"
 #import "UINotificationIcon.h"
 #import "PersonalLogViewController.h"
+#import "DateTimeHelper.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -47,10 +50,10 @@
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
     
-    //[fetchRequest setPredicate:predicate];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
@@ -73,6 +76,30 @@
     
     return __frc_draft_pages;
     
+}
+
+- (void) updateDraftCounterLabels {
+    int numDraftsTotal = [[self.frc_draft_pages fetchedObjects]count];
+    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", numDraftsTotal];
+    
+    //Page* draft = [[Page alloc]init];
+    
+    int numDraftsClosing = 0;
+    NSDate* now = [NSDate date];
+    NSDate* deadline = [[NSDate alloc] init];
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
+    
+    for (int i = 0; i < numDraftsTotal; i++) {
+        Page* draft = [[self.frc_draft_pages fetchedObjects]objectAtIndex:i];
+        deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        NSTimeInterval deadlineIntervalRemaining = [deadline timeIntervalSinceDate:now];
+        if ((deadlineIntervalRemaining < draftExpirySetting) && (deadlineIntervalRemaining > 0)) {
+            numDraftsClosing++;
+        }
+    }
+    
+    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"%d", numDraftsClosing];
 }
 
 #pragma mark - Toolbar buttons
@@ -163,8 +190,6 @@
 {
     [super viewDidLoad];
     
-    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", [self.tbl_productionTableView numberOfRowsInSection:0]];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -185,6 +210,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Update draft counter labels at the top of the view
+    [self updateDraftCounterLabels];
     
     // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -351,9 +379,13 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
         [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
         [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        // Update draft counter labels at the top of the view
+        [self updateDraftCounterLabels];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        // Update draft counter labels at the top of the view
+        [self updateDraftCounterLabels];
     }
 }
 

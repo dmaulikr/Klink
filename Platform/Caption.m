@@ -29,6 +29,8 @@
     }
     retVal.caption1 = caption;
     retVal.photoid = photoid;
+    
+    retVal.numberofvotes = [NSNumber numberWithInt:0];
 
     return retVal;
 
