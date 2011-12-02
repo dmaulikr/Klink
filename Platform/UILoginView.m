@@ -344,22 +344,9 @@
 }
 
 #pragma mark - Async Event Handlers
-- (void) onUpdateAuthenticatorCompleted:(CallbackResult*)result {
-    //we process this response on a background thread to prevent it from interfering with
-    //the progress indicator
-    [self.parentViewController hideProgressBar];
-    GetAuthenticatorResponse* response = result.response;
-    [self dismissWithResult:[response.didSucceed boolValue]];
-}
-
-- (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
-    NSString* activityName = @"UILoginView.onGetAuthenticationContextDownloaded:";
+- (void) saveAuthenticatorResponse:(GetAuthenticatorResponse*)response {
+    NSString* activityName = @"UILoginView.saveAuthenticatorResponse:";
     ResourceContext* resourceContext = [ResourceContext instance];
-    GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
-    
-    //dismiss the progress bar
-    [self.parentViewController hideProgressBar];
-    
     if (response.didSucceed) {
         AuthenticationManager* authenticationManager = [AuthenticationManager instance];
         
@@ -380,7 +367,7 @@
         
         BOOL contextSavedToKeyChain = [authenticationManager saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
         
-       
+        
         
         if (contextSavedToKeyChain) {
             [authenticationManager loginUser:newContext.userid withAuthenticationContext:newContext];
@@ -397,6 +384,61 @@
         LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bonobo servers failed",activityName);
         [self dismissWithResult:NO];
     }
+
+}
+- (void) onUpdateAuthenticatorCompleted:(CallbackResult*)result {
+    //we process this response on a background thread to prevent it from interfering with
+    //the progress indicator
+    [self.parentViewController hideProgressBar];
+    GetAuthenticatorResponse* response = result.response;
+    [self saveAuthenticatorResponse:response];
+    [self dismissWithResult:[response.didSucceed boolValue]];
+}
+
+- (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
+    GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
+    
+    //dismiss the progress bar
+    [self.parentViewController hideProgressBar];
+    [self saveAuthenticatorResponse:response];
+    
+//    if (response.didSucceed) {
+//        AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+//        
+//        AuthenticationContext* newContext = response.authenticationcontext;
+//        User* returnedUser = response.user;
+//        
+//        Resource* existingUser = [resourceContext resourceWithType:USER withID:returnedUser.objectid];
+//        
+//        //save the user object that is returned to us in the database
+//        if (existingUser != nil) {
+//            [existingUser refreshWith:returnedUser];
+//        }
+//        else {
+//            //need to insert the new user into the resource context
+//            [resourceContext insert:returnedUser];
+//        }
+//        [resourceContext save:YES onFinishCallback:nil];
+//        
+//        BOOL contextSavedToKeyChain = [authenticationManager saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
+//        
+//       
+//        
+//        if (contextSavedToKeyChain) {
+//            [authenticationManager loginUser:newContext.userid withAuthenticationContext:newContext];
+//            [self checkStatusAndDismiss];
+//        }
+//        else {
+//            //unable to login user due to inability to save the credential to key chain
+//            //raise global error
+//            LOG_LOGINVIEWCONTROLLER(1,@"%@Unable to save user credential to key chain, login failure",activityName);
+//            [self dismissWithResult:NO];
+//        }
+//    }
+//    else {
+//        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bonobo servers failed",activityName);
+//        [self dismissWithResult:NO];
+//    }
 }
 
 

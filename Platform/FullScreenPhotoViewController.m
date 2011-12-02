@@ -456,7 +456,8 @@
 
 - (void) onTwitterButtonPressed:(id)sender {
     //we check to ensure the user is logged in to Twitter first
-    if (![self.authenticationManager isUserAuthenticated]) {
+    if (![self.authenticationManager isUserAuthenticated] ||
+         ![[self.authenticationManager contextForLoggedInUser]hasTwitter]) {
         //user is not logged in, must log in first
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
