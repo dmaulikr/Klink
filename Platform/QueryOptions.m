@@ -82,6 +82,19 @@
     
 }
 
++ (QueryOptions*)queryForDrafts {
+    ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance]settings];
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.referencingattribute=THEMEID;
+    newQuery.referencingobjecttype =PHOTO;
+    newQuery.includelinkedobjects = YES;
+    newQuery.maxlinksreturnedperobject = [settingsObjects.numberoflinkedobjectstoreturn intValue];
+    newQuery.linked_results_sortAscending = NO;
+    newQuery.linked_results_sortattribute=NUMBEROFVOTES;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATEDRAFTEXPIRES;
+    return newQuery;
+}
 
 +(QueryOptions*)queryForPhotosInTheme {
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];

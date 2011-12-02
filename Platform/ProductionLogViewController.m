@@ -17,19 +17,20 @@
 #import "PageViewController.h"
 #import "UINotificationIcon.h"
 #import "PersonalLogViewController.h"
+#import "CloudEnumeratorFactory.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
 #define kCELLTITLE @"celltitle"
 
 @implementation ProductionLogViewController
-@synthesize tbl_productionTableView = m_tbl_productionTableView;
-@synthesize frc_draft_pages = __frc_draft_pages;
-@synthesize productionTableViewCell = m_productionTableViewCell;
-@synthesize lbl_numDraftsTotal = m_lbl_numDraftsTotal;
-@synthesize lbl_numDraftsClosing = m_lbl_numDraftsClosing;
-
-
+@synthesize tbl_productionTableView     = m_tbl_productionTableView;
+@synthesize frc_draft_pages             = __frc_draft_pages;
+@synthesize productionTableViewCell     = m_productionTableViewCell;
+@synthesize lbl_numDraftsTotal          = m_lbl_numDraftsTotal;
+@synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
+@synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
+@synthesize refreshHeader               = m_refreshHeader;
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
@@ -47,10 +48,10 @@
     
     //add predicate to test for being published
     //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
     
-    //[fetchRequest setPredicate:predicate];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
@@ -133,6 +134,13 @@
 }
 
 #pragma mark - Initializers
+- (id) commonInit {
+    //common setup for the view controller
+    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator.delegate = self;
+        return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -144,7 +152,7 @@
         //[background release];
         
         //self.tbl_productionTableView.separatorColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"tableviewcell_separator_scetched.png"]];
-        
+        self = [self commonInit];
     }
     return self;
 }
@@ -162,6 +170,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
+    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader.delegate = self;
+    [self.tbl_productionTableView addSubview:self.refreshHeader];
+    [self.refreshHeader refreshLastUpdatedDate];
     
     self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", [self.tbl_productionTableView numberOfRowsInSection:0]];
     
@@ -184,8 +198,18 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSString* activityName = @"ProductionLogViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
+    
+    //here we check to see how many items are in the FRC, if it is 0,
+    //then we initiate a query against the cloud.
+    int count = [[self.frc_draft_pages fetchedObjects] count];
+    if (count == 0) {
+        //there are no objects in local store, update from cloud
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+        [self.cloudDraftEnumerator enumerateUntilEnd];
+    }
     // Toolbar: we update the toolbar items each tgime the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
@@ -319,6 +343,15 @@
     return 70;
 }
 
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -357,5 +390,34 @@
     }
 }
 
+#pragma mark - EgoRefreshTableHeaderDelegate
+- (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    self.cloudDraftEnumerator = nil;
+    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
+    
+    self.cloudDraftEnumerator = [cloudEnumeratorFactory enumeratorForDrafts];
+    self.cloudDraftEnumerator.delegate = self;
+    [self.cloudDraftEnumerator enumerateUntilEnd];
+
+}
+
+- (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    if (self.cloudDraftEnumerator != nil) {
+        return [self.cloudDraftEnumerator isLoading];
+    }
+    else {
+        return NO;
+    }
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    return [NSDate date];
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete {
+    //we tell the ego fresh header that we've stopped loading items
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
+}
 
 @end

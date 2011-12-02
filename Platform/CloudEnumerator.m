@@ -290,5 +290,21 @@
     return enumerator;
 }
 
+//Returns a enumerator to use in trhe ProductionLogViewController
++ (CloudEnumerator*) enumeratorForDrafts {
+    //we need to create an enumeration for all Drafts 
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryDrafts];
+    QueryOptions* queryOptions = [QueryOptions queryForDrafts];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForDrafts];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
+    return enumerator;
 
+    
+    
+    
+}
 @end

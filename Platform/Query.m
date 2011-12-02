@@ -14,6 +14,8 @@
 #import "JSONKit.h"
 #import "Feed.h"
 #import "ResourceContext.h"
+#import "Page.h"
+
 @implementation Query
 @synthesize filterObjectType        = m_filterObjectType;
 @synthesize attributeExpressions    = m_attributeExpressions;
@@ -114,6 +116,22 @@
     
     
     return query;
+}
+
++ (Query*)queryDrafts {
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = PAGE;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = STATE;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [[NSNumber numberWithInt:kDRAFT]stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    
+    [queryExpression release];
+    return query;
+    
 }
 
 + (Query*)queryPages {

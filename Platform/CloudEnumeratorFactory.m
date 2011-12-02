@@ -15,7 +15,7 @@
 @synthesize enumeratorsForCaptions = m_enumeratorsForCaptions;
 @synthesize enumeratorsForFeeds = m_enumeratorsForFeeds;
 @synthesize enumeratorsForUsers = m_enumeratorsForUsers;
-
+@synthesize enumeratorsForDrafts = m_enumeratorsForDrafts;
 static CloudEnumeratorFactory* sharedManager;
 
 + (CloudEnumeratorFactory*)instance {
@@ -37,6 +37,7 @@ static CloudEnumeratorFactory* sharedManager;
         self.enumeratorsForThemes = [[NSMutableSet alloc]init];
         self.enumeratorsForFeeds  = [[NSMutableSet alloc]init];
         self.enumeratorsForUsers = [[NSMutableSet alloc]init];
+        self.enumeratorsForDrafts = [[NSMutableSet alloc]init];
     }
     return self;
 }
@@ -46,6 +47,7 @@ static CloudEnumeratorFactory* sharedManager;
     [self.enumeratorsForThemes release];
     [self.enumeratorsForFeeds  release];
     [self.enumeratorsForUsers release];
+    [self.enumeratorForDrafts release];
 }
 
 #pragma mark - Factory Methods
@@ -160,5 +162,26 @@ static CloudEnumeratorFactory* sharedManager;
         retVal = newEnumerator;
     }
     return retVal;
+}
+
+- (CloudEnumerator*) enumeratorForDrafts {
+    CloudEnumerator* retVal = nil;
+    
+    NSArray* arrayOfEnumerators = [self.enumeratorsForDrafts allObjects];
+    
+    //for themese we can return the first one since there is only enumerator in general
+    if ([arrayOfEnumerators count] > 0) {
+        retVal = [arrayOfEnumerators objectAtIndex:0];
+    }
+    
+    
+    if (retVal == nil) {
+        //could not find an existing enumerator to return, create a new one
+        CloudEnumerator* newEnumerator = [CloudEnumerator enumeratorForDrafts];
+        [self.enumeratorsForThemes addObject:newEnumerator];
+        retVal = newEnumerator;
+    }
+    return retVal;
+ 
 }
 @end

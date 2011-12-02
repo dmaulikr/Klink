@@ -64,4 +64,5 @@
 + (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid;
 + (CloudEnumerator*) enumeratorForPages;
 + (CloudEnumerator*) enumeratorForUser:(NSNumber*)userid;
++ (CloudEnumerator*) enumeratorForDrafts;
 @end

@@ -41,4 +41,5 @@
 +(QueryOptions*)queryForCaptions:(NSNumber*)photoID;
 +(QueryOptions*)queryForPages;
 +(QueryOptions*)queryForUser:(NSNumber*)userID;
++(QueryOptions*)queryForDrafts;
 @end

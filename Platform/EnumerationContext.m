@@ -76,6 +76,16 @@
 
 }
 
++ (EnumerationContext*) contextForDrafts {
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = settingsObject.pagesize;
+    enumerationContext.maximumNumberOfResults = settingsObject.page_maxnumtodownload;    
+    return enumerationContext;
+
+}
+
+
 + (EnumerationContext*) contextForPhotosInTheme:(NSNumber*)themeid {
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];

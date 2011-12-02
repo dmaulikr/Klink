@@ -76,6 +76,34 @@ static NSMutableDictionary* managedObjectContexts;
                                                             
 }
 
+
+- (id) init {
+    self = [super init];
+    if (self) {
+        NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(onContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+    }
+    return self;
+}
+
+- (void) onContextDidSave:(NSNotification*)notification {
+    PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+   
+    //lets propagate the notification to all contexts
+    [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
+    
+    for (NSString* key in managedObjectContexts) {
+        NSManagedObjectContext* context = [managedObjectContexts objectForKey:key];
+        if (context != nil) {
+            [context mergeChangesFromContextDidSaveNotification:notification];
+        }
+    }
+    
+  
+    
+    
+   
+}
 - (NSNumber*)nextID{
     
     int int_secondsSinceEpoch = (int)[[NSDate date]timeIntervalSince1970];
