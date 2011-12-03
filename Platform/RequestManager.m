@@ -332,7 +332,7 @@ static RequestManager* sharedInstance;
         NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
         [resource lockAttributes:attachmentAttributes];
             
-        attachmentCount = [attachmentAttributes count];
+        attachmentCount += [attachmentAttributes count];
         
        
         
@@ -587,7 +587,7 @@ static RequestManager* sharedInstance;
         }
         
         
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil];
     }
     else {
         LOG_REQUEST(1, @"%@Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
@@ -628,13 +628,15 @@ static RequestManager* sharedInstance;
         [existingResource unlockAttributes:attachmentAttributes];
         
         
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil];
         
         [self processAttachmentsForRequest:request];
+        LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@",activityName,request.targetresourceid,request.targetresourcetype);
+
         
     }
     else {
-         LOG_REQUEST(1, @"%Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
+         LOG_REQUEST(1, @"%@Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
     }
     return putResponse;
     
@@ -665,7 +667,7 @@ static RequestManager* sharedInstance;
     NSDictionary* jsonDictionary = [responseString objectFromJSONStringWithParseOptions:JKParseOptionNone error:&error];
     
     if (error != nil) {
-        LOG_REQUEST(1, @"@%Could not deserialize response into JSON object: %@",activityName,error);
+        LOG_REQUEST(1, @"%@Could not deserialize response into JSON object: %@",activityName,error);
         return nil;
     }
     else {
@@ -716,7 +718,7 @@ static RequestManager* sharedInstance;
         }
         
         //we now save the changes we made
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil];
         
         //we now process all of the attachment attributes in the Request
         [self processAttachmentsForRequest:request];

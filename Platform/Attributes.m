@@ -73,3 +73,5 @@ NSString* const POLLID                    =@"poll";
 NSString* const FACEBOOKTOKENEXPIRYDATE = @"facebookaccesstokenexpirydate";
 NSString* const SHAREONFACEBOOK         = @"shareonfacebook";
 NSString* const SHAREONTWITTER          = @"shareontwitter";
+NSString* const NUMBEROFCAPTIONS        = @"numberofcaptions";
+NSString* const NUMBEROFPHOTOS          = @"numberofphotos";

@@ -508,7 +508,7 @@
     
     photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-    page.numberofpublishvotes = [NSNumber numberWithInt:([page.numberofpublishvotes intValue] + 1)];
+    //page.numberofpublishvotes = [NSNumber numberWithInt:([page.numberofpublishvotes intValue] + 1)];
     
     //caption.user_hasvoted = [NSNumber numberWithBool:YES];
     

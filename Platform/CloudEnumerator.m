@@ -194,7 +194,7 @@
 
         }
         
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil];
         
         if (!self.isDone) {
             //enumeration is still open
