@@ -241,7 +241,7 @@ static NSMutableDictionary* managedObjectContexts;
                     //a Put-Attachment request
                     NSString* changedAttribute = [changedAttributes objectAtIndex:0];
                     AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
-                    if (aid.isurlattachment) {
+                    if ([aid.isurlattachment boolValue]) {
                         //yes, it is an attachment
                         request = [self requestFor:resource forOperation:kMODIFYATTACHMENT onFinishCallback:callback];
                         
@@ -250,10 +250,12 @@ static NSMutableDictionary* managedObjectContexts;
                         //no it is not an attachment
                         request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
                     }
+                     [resource markAsDirty:changedAttributes];
                 }
                 else if ([changedAttributes count] > 1) {
                     //must be a put modify operation since there are more than 1 changed attributes
                     request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
+                    [resource markAsDirty:changedAttributes];
                 }
                 else {
                     //no changed attribute values to sync
