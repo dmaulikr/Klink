@@ -78,6 +78,11 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kNEWCAPTIONVOTE];
     [self registerCallback:callback forSystemEvent:kNEWPHOTOVOTE];
     [self registerCallback:callback forSystemEvent:kNEWCAPTION];
+    [self registerCallback:callback forSystemEvent:kNEWPHOTO];
+    [self registerCallback:callback forSystemEvent:kNEWPAGE];
+    //[self registerCallback:callback forSystemEvent:kINSERTEDOBJECTS];
+    //[self registerCallback:callback forSystemEvent:kUPDATEDOBJECTS];
+    //[self registerCallback:callback forSystemEvent:kDELETEDOBJECTS];    
     [self registerCallback:callback forSystemEvent:kSHOWPROGRESS];
     [self registerCallback:callback forSystemEvent:kHIDEPROGRESS];
 }
@@ -120,18 +125,18 @@ static EventManager* sharedInstance;
     [self.registeredHandlers minusSet:handlersToRemove];
     [handlersToRemove release];
 }
+
+
 - (void) raiseUserLoggedInEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGGEDIN withUserInfo:userInfo];
 }
-
-
 - (void) raiseUserLoggedOutEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGGEDOUT withUserInfo:userInfo];
 }
-
 - (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGINFAILED withUserInfo:userInfo];  
 }
+
 
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo {
     [self raiseEvent:kNEWCAPTIONVOTE withUserInfo:userInfo];
@@ -142,7 +147,9 @@ static EventManager* sharedInstance;
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo {
      [self raiseEvent:kNEWCAPTION withUserInfo:userInfo];
 }
-
+- (void) raiseNewPhotoEvent       :(NSDictionary*)userInfo {
+    [self raiseEvent:kNEWPHOTO withUserInfo:userInfo];
+}
 - (void) raiseNewPageEvent: (NSDictionary*)userInfo {
     [self raiseEvent:kNEWPAGE withUserInfo:userInfo];
 }
@@ -165,10 +172,11 @@ static EventManager* sharedInstance;
 #define kPHOTO      @"photo"
 #define kPAGE       @"page"
 
-- (void) raiseEventsForInsertedObject:(NSSet*)insertedObjects {
-     //will iterate through each new ly inserted object and raise events corresponding to them
+- (void) raiseEventsForInsertedObjects:(NSSet*)insertedObjects {
+     //will iterate through each newly inserted object and raise events corresponding to them
     NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
     NSArray* insertedArray = [insertedObjects allObjects];
+    NSDictionary* userInfo = [[NSDictionary alloc] init];
     
     for (NSManagedObject* obj in insertedArray) {
         //we test for caption,photo, etc...
@@ -176,33 +184,34 @@ static EventManager* sharedInstance;
         if ([obj isKindOfClass:[Caption class]]) {
             //it is a caption object
             LOG_EVENTMANAGER(0, @"%@raising new caption event for new caption",activityName);
-            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
+            userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
             [self raiseNewCaptionEvent:userInfo];
         }
         else if ([obj isKindOfClass:[Photo class]]) {
             //it is a photo object
             LOG_EVENTMANAGER(0, @"%@raising new photo event for new photo",activityName);
 
-            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
-            [self raiseNewPhotoVoteEvent:userInfo];
+            userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
+            [self raiseNewPhotoEvent:userInfo];
 
         }
         else if ([obj isKindOfClass:[Page class]]) {
             //it is a page object.
             LOG_EVENTMANAGER(0, @"%@raising new page event for new page",activityName);
 
-            NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPAGE];
+            userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPAGE];
             [self raiseNewPageEvent:userInfo];
 
         }
-        
     }
+    //[self raiseEvent:kINSERTEDOBJECTS withUserInfo:userInfo];
 }
 
 - (void) raiseEventsForUpdatedObjects:(NSSet*)updatedObjects {
     //iterates through updated objects and raises any pertinent application notifications
     NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
     NSArray* insertedArray = [updatedObjects allObjects];
+    NSDictionary* userInfo = [[NSDictionary alloc] init];
     
     for (NSManagedObject* obj in insertedArray) {
         
@@ -214,10 +223,9 @@ static EventManager* sharedInstance;
                 Caption* caption = (Caption*)obj;
                 LOG_EVENTMANAGER(0, @"%@raising new caption vote event for caption %@",activityName,caption.objectid);
                 
-                 NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
+                userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
                 [self raiseNewCaptionVoteEvent:userInfo];
-            }
-            
+            }            
         }
         else if ([obj isKindOfClass:[Photo class]]) {
             //it is a photo object
@@ -227,15 +235,12 @@ static EventManager* sharedInstance;
                 Photo* photo = (Photo*)obj;
                 LOG_EVENTMANAGER(0, @"%@raising new photo vote event for photo %@",activityName,photo.objectid);
                 
-                NSDictionary* userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
+                userInfo = [NSDictionary dictionaryWithObject:obj forKey:kPHOTO];
                 [self raiseNewPhotoVoteEvent:userInfo];
-            }
-            
-  
-            
+            } 
         }
-
-    }       
+    }
+    //[self raiseEvent:kUPDATEDOBJECTS withUserInfo:userInfo];
 }
 
 - (void) raiseEventsForDeletedObjects:(NSSet*)deletedObjects {

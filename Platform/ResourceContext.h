@@ -58,11 +58,17 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                  sortAscending:(BOOL)sortAscending;
 
 - (Resource*) singletonResourceWithType:(NSString*)typeName;
+
 - (NSArray*)  resourcesWithType:(NSString*)typeName 
                  withValueEqual:(NSString*)value 
                    forAttribute:(NSString*)attribute 
-                         sortBy:(NSString*)sortAttribute 
-                  sortAscending:(BOOL)sortAscending;
+                         sortBy:(NSArray*)sortDescriptorArray;
+
+//- (NSArray*)  resourcesWithType:(NSString*)typeName 
+//                 withValueEqual:(NSString*)value 
+//                   forAttribute:(NSString*)attribute 
+//                         sortBy:(NSString*)sortAttribute 
+//                  sortAscending:(BOOL)sortAscending;
 
 
 //Generates a unique identifier for a new entity

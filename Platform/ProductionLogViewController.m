@@ -35,7 +35,17 @@
 @synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
+@synthesize eventManager                = __eventManager;
+
 #pragma mark - Properties
+- (EventManager*) eventManager {
+    if (__eventManager != nil) {
+        return __eventManager;
+    }
+    __eventManager = [EventManager instance];
+    return __eventManager;
+}
+
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"ProductionLogViewController.frc_draft_pages:";
@@ -51,7 +61,6 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to test for being published
-    //TODO: commenting these out temporarily since there are no published pages on the server
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
     
@@ -199,6 +208,21 @@
 {
     [super viewDidLoad];
     
+    // resister callbacks for change events
+    Callback* newPhotoCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhoto:)];
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newPhotoCallback release];
+    [newCaptionCallback release];
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
 
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
@@ -207,6 +231,7 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", [self.tbl_productionTableView numberOfRowsInSection:0]];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -239,6 +264,7 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
         [self.cloudDraftEnumerator enumerateUntilEnd];
     }
+    
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
 
@@ -425,6 +451,24 @@
         [self updateDraftCounterLabels];
     }
 }
+
+#pragma mark - Callback Event Handlers
+- (void) onNewPhoto:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
+- (void) onNewCaption:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
+- (void) onNewPhotoVote:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
+- (void) onNewCaptionVote:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {

@@ -28,13 +28,21 @@
 @synthesize pagedViewSlider     = m_pagedViewSlider;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 
-@synthesize tableViewNeedsUpdate    = m_tableViewNeedsUpdate;
-
 @synthesize thumbnailImage      = m_thumbnailImage;
 @synthesize fullImage           = m_fullImage;
 
+@synthesize eventManager                = __eventManager;
+
 
 #pragma mark - Properties
+- (EventManager*) eventManager {
+    if (__eventManager != nil) {
+        return __eventManager;
+    }
+    __eventManager = [EventManager instance];
+    return __eventManager;
+}
+
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"DraftViewController.frc_draft_pages:";
@@ -47,15 +55,13 @@
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
-    //TODO: change this to sort on DATECREATED when the server supports it
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to test for being published
-    //TODO: commenting these out temporarily since there are no published pages on the server
-    //NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
     
-    //[fetchRequest setPredicate:predicate];
+    [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
@@ -217,8 +223,19 @@
 {
     [super viewDidLoad];
     
-    // set initial state of parent contollers tableView update observer property to NO
-    self.tableViewNeedsUpdate = NO;
+    // resister callbacks for change events
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newCaptionCallback release];
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
+    
 }
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
@@ -397,8 +414,20 @@
         Resource* resource = (Resource*)anObject;
         LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
         [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
-        self.tableViewNeedsUpdate = YES;
     }
+}
+
+#pragma mark - Callback Event Handlers
+- (void) onNewCaption:(CallbackResult*)result {
+    [self.pagedViewSlider.tableView reloadData];
+}
+
+- (void) onNewPhotoVote:(CallbackResult*)result {
+    [self.pagedViewSlider.tableView reloadData];
+}
+
+- (void) onNewCaptionVote:(CallbackResult*)result {
+    [self.pagedViewSlider.tableView reloadData];
 }
 
 

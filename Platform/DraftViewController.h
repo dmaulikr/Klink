@@ -18,8 +18,6 @@
     UIPagedViewSlider2* m_pagedViewSlider; //will use to flip between pages
     CloudEnumerator*    m_pageCloudEnumerator;
     
-    BOOL                m_tableViewNeedsUpdate;
-    
     UIImage*            m_thumbnailImage;
     UIImage*            m_fullImage;
 }
@@ -28,8 +26,6 @@
 @property (nonatomic,retain) NSFetchedResultsController*    frc_draft_pages;
 @property (nonatomic,retain) UIPagedViewSlider2*            pagedViewSlider;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
-
-@property                    BOOL                           tableViewNeedsUpdate;
 
 @property (nonatomic,retain) UIImage*                       thumbnailImage;
 @property (nonatomic,retain) UIImage*                       fullImage;

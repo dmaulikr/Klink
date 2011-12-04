@@ -314,6 +314,10 @@
         self.lbl_photoRequired.hidden = YES;
         
         [self.view setNeedsDisplay];
+        
+        // show keyboard ready for text entry
+        [self.tv_caption becomeFirstResponder];
+
     }
     else {
         // error state - Configuration type not specified

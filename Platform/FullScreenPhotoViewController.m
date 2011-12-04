@@ -45,8 +45,6 @@
 @synthesize photoID                 = m_photoID;
 @synthesize captionID               = m_captionID;
 
-@synthesize tableViewNeedsUpdate    = m_tableViewNeedsUpdate;
-
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
 
@@ -344,14 +342,6 @@
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
-    //if something has changed, make sure the draft tableview gets updated before displaying
-    /*if (self.tableViewNeedsUpdate) {
-        if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
-            DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
-            [draftViewController.pagedViewSlider.tableView reloadData];
-        }
-    }*/
-    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -364,8 +354,6 @@
     self.captionCloudEnumerator.delegate = self;
     [self.captionCloudEnumerator enumerateUntilEnd];
     
-    // set initial state of parent contollers tableView update observer property to NO
-    self.tableViewNeedsUpdate = NO;
 }
 
 - (void)viewDidUnload
@@ -533,8 +521,6 @@
     
     //now we need to commit to the store
     [resourceContext save:YES onFinishCallback:nil];
-    
-    self.tableViewNeedsUpdate = YES;
 
 }
 
@@ -752,7 +738,6 @@
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
             [self.photoViewSlider goTo:[newIndexPath row] withAnimation:NO];
-            self.tableViewNeedsUpdate = YES;
         }
         else if (controller == self.frc_captions) {
             //insertion of a new caption
@@ -760,7 +745,6 @@
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
             [self.captionViewSlider goTo:[newIndexPath row] withAnimation:NO];
-            self.tableViewNeedsUpdate = YES;
         }
     }
 }

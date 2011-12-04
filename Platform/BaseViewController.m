@@ -134,13 +134,13 @@
     
     Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];
     
-    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    //Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
     
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
     [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
     [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
-    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    //[self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
     
     [loginCallback release];
     [logoutCallback release];
@@ -265,6 +265,9 @@
         page.descr = nil;
         page.hashtags = controller.draftTitle;
         
+        //we set the initial number of votes on the page to 0
+        page.numberofpublishvotes = [NSNumber numberWithInt:0];
+        
         Photo* photo = nil;
         if (controller.img_photo != nil && controller.img_thumbnail != nil) {
             photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
@@ -272,9 +275,15 @@
             //we set the initial number of photos to 1
             page.numberofphotos = [NSNumber numberWithInt:1];
             
+            //we set the initial number of votes on the photo to 0
+            photo.numberofvotes = [NSNumber numberWithInt:0];
+            
             //check for caption attached to photo
             if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
                 Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+                
+                //we set the initial number of votes on the caption to 0
+                caption.numberofvotes = [NSNumber numberWithInt:0];
                 
                 //set the initial caption counters to 1
                 photo.numberofcaptions = [NSNumber numberWithInt:1];
@@ -295,6 +304,9 @@
         //this is a new photo being added to a draft page
         Photo* photo = [Photo createPhotoInPage:controller.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
         
+        //we set the initial number of votes on the photo to 0
+        photo.numberofvotes = [NSNumber numberWithInt:0];
+        
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:controller.pageID];
         
@@ -304,6 +316,9 @@
         if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
+            
+            //we set the initial number of votes on the caption to 0
+            caption.numberofvotes = [NSNumber numberWithInt:0];
             
             //we set the initial number of captions on the photo to 1
             photo.numberofcaptions = [NSNumber numberWithInt:1];
@@ -319,6 +334,9 @@
     else if (controller.configurationType == CAPTION) {
         Caption* caption = [Caption createCaptionForPhoto:controller.photoID withCaption:controller.caption];
         LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new caption with ID:%@ (caption:%@)",activityName,caption.objectid,caption.caption1);
+        
+        //we set the initial number of votes on the caption to 0
+        caption.numberofvotes = [NSNumber numberWithInt:0];
         
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:controller.pageID];
@@ -407,9 +425,9 @@
     
 }
 
-- (void) onNewCaption:(CallbackResult*)result {
+/*- (void) onNewCaption:(CallbackResult*)result {
 
-}
+}*/
 
 - (void) onShowProgressView:(CallbackResult*)result {
     NSDictionary* userInfo = result.context;

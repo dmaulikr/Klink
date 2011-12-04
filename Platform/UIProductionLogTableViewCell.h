@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventManager.h"
 
 @interface UIProductionLogTableViewCell : UITableViewCell <NSFetchedResultsControllerDelegate> {
     NSNumber*       m_pageID;
@@ -34,6 +35,8 @@
 @property (nonatomic, retain) IBOutlet NSFetchedResultsController*     frc_photo;
 @property (nonatomic, retain)          NSNumber*    topVotedPhotoID;
 @property (nonatomic, retain)          NSDate*      deadline;
+
+@property (nonatomic, retain) EventManager*         eventManager;
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 + (NSString*) cellIdentifier;

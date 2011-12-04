@@ -200,7 +200,9 @@
 - (void) test_imageDownload {
     ImageManager* imageManager = [ImageManager instance];
     ResourceContext* resourceContext = [ResourceContext instance];
-    NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];
+    
+    //NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];
+    NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:nil forAttribute:nil sortBy:nil];
     
     for (Photo* photo in photos) {
         if (photo.imageurl != nil) {
@@ -216,7 +218,9 @@
 
 - (void) test_enumeratePhotosForAllThemes {
     ResourceContext* resourceContext = [ResourceContext instance];
-    NSArray* themes = [resourceContext resourcesWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];
+
+    //NSArray* themes = [resourceContext resourcesWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:nil sortAscending:NO];    
+    NSArray* themes = [resourceContext resourcesWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:nil];
     Page* firstPage = [themes objectAtIndex:0];
     
     [self test_enumeratePhotosForTheme:firstPage.objectid];

@@ -97,7 +97,12 @@
     
     //we need to query the database to find the feed object with the highest id for this user
     ResourceContext* resourceContext = [ResourceContext instance];
-    NSArray* feedItems = [resourceContext resourcesWithType:FEED withValueEqual:[userID stringValue] forAttribute:USERID sortBy:DATECREATED sortAscending:NO];
+    
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObject:sortDescriptor];
+    
+    //NSArray* feedItems = [resourceContext resourcesWithType:FEED withValueEqual:[userID stringValue] forAttribute:USERID sortBy:DATECREATED sortAscending:NO];
+    NSArray* feedItems = [resourceContext resourcesWithType:FEED withValueEqual:[userID stringValue] forAttribute:USERID sortBy:sortDescriptorArray];
   
     
     if ([feedItems count] > 0) {

@@ -291,7 +291,7 @@ static NSMutableDictionary* managedObjectContexts;
     //now we commit the change to the store
     //let us raise events
     EventManager* eventManager = [EventManager instance];
-    [eventManager raiseEventsForInsertedObject:insertedObjects];
+    [eventManager raiseEventsForInsertedObjects:insertedObjects];
     [eventManager raiseEventsForUpdatedObjects:updatedObjects];
     [eventManager raiseEventsForDeletedObjects:deletedObjects];
 
@@ -506,6 +506,35 @@ static NSMutableDictionary* managedObjectContexts;
                         sortBy:(NSString*)sortByAttribute 
                  sortAscending:(BOOL)sortAscending {
     Resource* retVal = nil;
+    
+    NSSortDescriptor* sortDescriptor = nil;
+    NSMutableArray* sortDescriptorArray = nil;
+    
+    if (sortByAttribute != nil) {
+        sortDescriptor = [[NSSortDescriptor alloc]initWithKey:sortByAttribute ascending:sortAscending];
+        sortDescriptorArray = [NSMutableArray arrayWithObject:sortDescriptor];
+    }
+    
+    NSArray* retValues = [self resourcesWithType:typeName withValueEqual:value forAttribute:attributeName sortBy:sortDescriptorArray];
+    
+    if (retValues != nil && [retValues count] > 0) {
+        retVal = [retValues objectAtIndex:0];
+    }
+    
+    if (sortDescriptor != nil) {
+        [sortDescriptor release];
+    }
+    
+    return retVal;
+    
+}
+
+/*- (Resource*) resourceWithType:(NSString*)typeName 
+                withValueEqual:(NSString*)value 
+                  forAttribute:(NSString*)attributeName 
+                        sortBy:(NSString*)sortByAttribute 
+                 sortAscending:(BOOL)sortAscending {
+    Resource* retVal = nil;
     NSArray* retValues = [self resourcesWithType:typeName withValueEqual:value forAttribute:attributeName sortBy:sortByAttribute sortAscending:sortAscending];
     
     if (retValues != nil && [retValues count] > 0) {
@@ -514,9 +543,68 @@ static NSMutableDictionary* managedObjectContexts;
     return retVal;
     
     
+}*/
+
+- (Resource*) resourceWithType:(NSString*)typeName 
+                withValueEqual:(NSString*)value 
+                  forAttribute:(NSString*)attributeName 
+                        sortBy:(NSArray*)sortDescriptorArray {
+    Resource* retVal = nil;
+    NSArray* retValues = [self resourcesWithType:typeName withValueEqual:value forAttribute:attributeName sortBy:sortDescriptorArray];
+    
+    if (retValues != nil && [retValues count] > 0) {
+        retVal = [retValues objectAtIndex:0];
+    }
+    return retVal;
+    
 }
 
 - (NSArray*)  resourcesWithType:(NSString*)typeName 
+                 withValueEqual:(NSString*)value 
+                   forAttribute:(NSString*)attributeName 
+                         sortBy:(NSArray*)sortDescriptorArray {
+    
+    NSString* activityName = @"ResourceContext.resourcesWithType:";
+    NSArray* retVal = nil;
+    
+    
+    NSManagedObjectContext *appContext = self.managedObjectContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:appContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    if (attributeName != nil && 
+        value != nil) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
+        [request setPredicate:predicate];
+    }
+    
+    if (sortDescriptorArray != nil) {
+        [request setSortDescriptors:sortDescriptorArray];
+    }
+    
+    
+    NSError* error = nil;
+    NSArray* results = [appContext executeFetchRequest:request error:&error];
+    
+    if (error != nil) {
+        
+        LOG_RESOURCECONTEXT(1, @"%@Error fetching results from data layer for attribute:%@ with error:%@",activityName,attributeName,error);
+    }
+    
+    else {
+       
+        retVal = results;
+    }
+    [request release];
+    
+    return retVal; 
+
+}
+
+/*- (NSArray*)  resourcesWithType:(NSString*)typeName 
                  withValueEqual:(NSString*)value 
                    forAttribute:(NSString*)attributeName 
                          sortBy:(NSString*)sortByAttribute 
@@ -554,7 +642,7 @@ static NSMutableDictionary* managedObjectContexts;
     }
     
     else {
-       
+        
         retVal = results;
     }
     [request release];
@@ -563,9 +651,10 @@ static NSMutableDictionary* managedObjectContexts;
         [sortDescription release];
     }
     return retVal; 
-
     
-}
+    
+}*/
+
  
 - (Resource*) singletonResourceWithType:(NSString*)typeName {
     NSString* activityName = @"ResourceContext.singletonResourceWithType:";

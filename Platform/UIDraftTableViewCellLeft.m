@@ -54,10 +54,13 @@
         }
     }
     
-    Caption* topCaption = [photo captionWithHighestVotes];
+    // reset labels to defualt values
     self.lbl_numVotes.text = @"0";
     self.lbl_numCaptions.text = @"0";
+    self.lbl_caption.textColor = [UIColor darkGrayColor];
+    self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
     
+    Caption* topCaption = [photo captionWithHighestVotes];
     if (topCaption != nil) {
         self.captionID = topCaption.objectid;
         self.lbl_caption.textColor = [UIColor blackColor];
@@ -107,11 +110,29 @@
     [super dealloc];
     [self.photoID release];
     [self.captionID release];
+    [self.draftTableViewCellLeft release];
     [self.iv_photo release];
     [self.lbl_caption release];
     [self.lbl_numVotes release];
     [self.lbl_numCaptions release];
 }
+
+#pragma mark - View Lifecycle
+- (void)viewDidUnLoad
+{
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+    
+    self.photoID = nil;
+    self.captionID = nil;
+    self.draftTableViewCellLeft = nil;
+    self.iv_photo = nil;
+    self.lbl_caption = nil;
+    self.lbl_numVotes = nil;
+    self.lbl_numCaptions = nil;
+    
+}
+
                                                                                              
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {

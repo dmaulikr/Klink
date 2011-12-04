@@ -17,6 +17,7 @@
 #import "Photo.h"
 #import "Page.h"
 #import "FullScreenPhotoViewController.h"
+#import "CloudEnumeratorFactory.h"
 
 #define kPAGEID @"pageid"
 
@@ -26,10 +27,12 @@
 @synthesize view = m_view;
 @synthesize draftTitle = m_draftTitle;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
-
+@synthesize cloudPhotoEnumerator = m_cloudPhotoEnumerator;
+@synthesize refreshHeader = m_refreshHeader;
 @synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
 
 @synthesize navigationController = m_navigationController;
+
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
@@ -46,13 +49,16 @@
         
         NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:resourceContext.managedObjectContext];
         
-        NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+        NSSortDescriptor* sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+        NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+        
+        NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
         
         //add predicate to gather only photos for this pageID    
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
         
         [fetchRequest setPredicate:predicate];
-        [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        [fetchRequest setSortDescriptors:sortDescriptorArray];
         [fetchRequest setEntity:entityDescription];
         [fetchRequest setFetchBatchSize:20];
         
@@ -85,6 +91,10 @@
         
         self.pageID = page.objectid;
         self.draftTitle.text = page.displayname;
+        
+        self.cloudPhotoEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPhotos:self.pageID];
+        self.cloudPhotoEnumerator.delegate = self;
+        
         [self.tbl_draftTableView reloadData];
         
     }
@@ -141,10 +151,40 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - View Lifecycle
+- (void)viewDidLoad {
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
+    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader.delegate = self;
+    [self.tbl_draftTableView addSubview:self.refreshHeader];
+    [self.refreshHeader refreshLastUpdatedDate];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    //here we check to see how many items are in the FRC, if it is 0,
+    //then we initiate a query against the cloud.
+    int count = [[self.frc_photos fetchedObjects] count];
+    if (count == 0) {
+        //there are no objects in local store, update from cloud
+        [self.cloudPhotoEnumerator enumerateUntilEnd];
+    }
+}
+
+
+
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 113;
+}
+
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -154,8 +194,6 @@
     Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
-    
-    [photoViewController addObserver:self forKeyPath:@"tableViewNeedsUpdate" options:NSKeyValueObservingOptionNew context:tableView];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
     [photoViewController release];
@@ -188,20 +226,6 @@
     }
 }
 
-#pragma mark - KVO-Observer Method
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-    
-    //NSObject* changeValue = [change objectForKey:NSKeyValueChangeNewKey];
-    
-    if ([keyPath isEqual:@"tableViewNeedsUpdate"] && (context == self.tbl_draftTableView)) {
-        [self.tbl_draftTableView reloadData];
-    }
-    
-}
-
 #pragma mark - NSFetchedResultsControllerDelegate
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject 
@@ -217,7 +241,37 @@
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_draftTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
+}
+
+#pragma mark - EgoRefreshTableHeaderDelegate
+- (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    self.cloudPhotoEnumerator = nil;
+    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
+    
+    self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
+    self.cloudPhotoEnumerator.delegate = self;
+    [self.cloudPhotoEnumerator enumerateUntilEnd];
     
 }
+
+- (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    if (self.cloudPhotoEnumerator != nil) {
+        return [self.cloudPhotoEnumerator isLoading];
+    }
+    else {
+        return NO;
+    }
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    return [NSDate date];
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete {
+    //we tell the ego fresh header that we've stopped loading items
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
+}
+
 
 @end

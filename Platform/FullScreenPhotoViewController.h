@@ -16,8 +16,6 @@
     NSNumber*           m_photoID;
     NSNumber*           m_captionID;
     
-    BOOL                m_tableViewNeedsUpdate;
-    
     UIPagedViewSlider2* m_photoViewSlider;
     UIPagedViewSlider2* m_captionViewSlider;
     
@@ -38,8 +36,6 @@
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSNumber*                      photoID;
 @property (nonatomic,retain) NSNumber*                      captionID;
-
-@property (nonatomic,assign) BOOL                           tableViewNeedsUpdate;
 
 // Subviews
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   photoViewSlider;

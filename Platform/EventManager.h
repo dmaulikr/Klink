@@ -15,7 +15,11 @@ typedef enum {
     kNEWCAPTIONVOTE,
     kNEWPHOTOVOTE,
     kNEWCAPTION,
+    kNEWPHOTO,
     kNEWPAGE,
+    //kINSERTEDOBJECTS,
+    //kUPDATEDOBJECTS,
+    //kDELETEDOBJECTS,
     kDRAFTFINISHED,
     kDRAFTPUBLISHED,
     kSHOWPROGRESS,
@@ -32,20 +36,24 @@ typedef enum {
 - (void) registerCallbackForAllSystemEvents:(Callback*)callback;
 - (void) raiseEvent:(SystemEvent)systemEventType withUserInfo:(NSDictionary*)userInfo;
 
-
 - (void) raiseUserLoggedInEvent     :(NSDictionary*)userInfo;
 - (void) raiseUserLoggedOutEvent    :(NSDictionary*)userInfo;
 - (void) raiseUserLoginFailedEvent  :(NSDictionary*)userInfo;
+
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo;
 - (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo;
+- (void) raiseNewPhotoEvent         :(NSDictionary*)userInfo;
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo;
+- (void) raiseNewPageEvent          :(NSDictionary*)userInfo;
+
 - (void) raiseShowProgressViewEvent :(NSString*)message 
                       withCustomView:(UIView*)view 
               withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds;
 - (void) raiseHideProgressViewEvent;
 
-- (void) raiseEventsForInsertedObject:(NSSet*)insertedObjects;
+- (void) raiseEventsForInsertedObjects:(NSSet*)insertedObjects;
 - (void) raiseEventsForUpdatedObjects:(NSSet*)updatedObjects;
 - (void) raiseEventsForDeletedObjects:(NSSet*)deletedObjects;
+
 + (EventManager*)instance;
 @end

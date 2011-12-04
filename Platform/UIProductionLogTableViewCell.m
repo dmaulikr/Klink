@@ -30,6 +30,17 @@
 @synthesize topVotedPhotoID = m_topVotedPhotoID;
 @synthesize deadline;
 
+@synthesize eventManager = __eventManager;
+
+
+#pragma mark - Properties
+- (EventManager*) eventManager {
+    if (__eventManager != nil) {
+        return __eventManager;
+    }
+    __eventManager = [EventManager instance];
+    return __eventManager;
+}
 
 #pragma mark - Deadline Date Timer
 - (void) timeRemaining:(NSTimer *)timer {
@@ -173,6 +184,18 @@
     return self;
 }
 
+#pragma mark - View Lifecycle
+- (void)viewDidLoad
+{
+    // resister callbacks for newPhotoVote events incase the topPhoto changes
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    
+    [newPhotoVoteCallback release];
+    
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -207,6 +230,18 @@
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
     
+}
+
+- (void) onNewPhotoVote:(CallbackResult*)result {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (draft != nil) {
+        Photo* topPhoto = [draft photoWithHighestVotes];
+        self.topVotedPhotoID = topPhoto.objectid;
+        [self renderPhoto:topPhoto];
+    }
 }
 
 #pragma mark - Statics

@@ -26,4 +26,6 @@
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsTotal;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsClosing;
 
+@property (nonatomic, retain) EventManager*                 eventManager;
+
 @end
