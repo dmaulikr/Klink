@@ -68,6 +68,24 @@ insertIntoResourceContext:(ResourceContext *)context
         [lowerCaseName isEqualToString:HASOPENED]) {
         retVal.islocal = [NSNumber numberWithBool:YES];
     }
+    
+    //we mark numberofvotes attributes on Page and Photo objects local
+    if ([type isEqualToString:PAGE] ||
+        [type isEqualToString:PHOTO]) {
+    
+        if ([lowerCaseName isEqualToString:NUMBEROFVOTES] ||
+            [lowerCaseName isEqualToString:NUMBEROFPHOTOS] ||
+            [lowerCaseName isEqualToString:NUMBEROFCAPTIONS]) {
+            retVal.islocal = [NSNumber numberWithBool:YES];
+        }
+    }
+    
+    //we mark the thumbnail attribute on the user local
+    if ([type isEqualToString:USER]) {
+        if ([lowerCaseName isEqualToString:THUMBNAILURL]) {
+            retVal.islocal = [NSNumber numberWithBool:YES];
+        }
+    }
     return retVal;
     
     

@@ -79,3 +79,5 @@ extern NSString* const POLLID;
 
 extern NSString* const SHAREONFACEBOOK;
 extern NSString* const SHAREONTWITTER;
+extern NSString* const NUMBEROFCAPTIONS;
+extern NSString* const NUMBEROFPHOTOS;
