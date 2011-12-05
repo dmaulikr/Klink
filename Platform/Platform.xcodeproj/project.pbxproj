@@ -66,6 +66,7 @@
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
 		C554DEF5144CABE000CD6E85 /* PutResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF3144CABE000CD6E85 /* PutResponse.m */; };
+		C55BF282148C76B8004ED3A8 /* PutAttributeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C55BF281148C76B8004ED3A8 /* PutAttributeOperation.m */; };
 		C55EC6E4145C98A500BA66FA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55EC6E3145C98A500BA66FA /* QuartzCore.framework */; };
 		C55EC740145FA0E600BA66FA /* UIViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC73F145FA0E600BA66FA /* UIViewCategory.m */; };
 		C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC743145FA1C900BA66FA /* PlatformAppDelegate.m */; };
@@ -289,6 +290,8 @@
 		C554DEF1144CABDF00CD6E85 /* CreateResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateResponse.m; sourceTree = "<group>"; };
 		C554DEF2144CABDF00CD6E85 /* PutResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PutResponse.h; sourceTree = "<group>"; };
 		C554DEF3144CABE000CD6E85 /* PutResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PutResponse.m; sourceTree = "<group>"; };
+		C55BF280148C76B8004ED3A8 /* PutAttributeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PutAttributeOperation.h; sourceTree = "<group>"; };
+		C55BF281148C76B8004ED3A8 /* PutAttributeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PutAttributeOperation.m; sourceTree = "<group>"; };
 		C55EC6E3145C98A500BA66FA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C55EC73E145FA0E600BA66FA /* UIViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewCategory.h; path = "../Klink V2/Klink V2/UIViewCategory.h"; sourceTree = "<group>"; };
 		C55EC73F145FA0E600BA66FA /* UIViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIViewCategory.m; path = "../Klink V2/Klink V2/UIViewCategory.m"; sourceTree = "<group>"; };
@@ -315,7 +318,7 @@
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
 		C56F8A241463447B00E14199 /* RegisteredEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteredEventHandler.h; sourceTree = "<group>"; };
 		C56F8A251463447B00E14199 /* RegisteredEventHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteredEventHandler.m; sourceTree = "<group>"; };
-		C593F7BF143EB191008D25A7 /* Platform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Platform.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C593F7BF143EB191008D25A7 /* bonobo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bonobo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C593F7C3143EB191008D25A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C593F7C5143EB191008D25A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C593F7C7143EB192008D25A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -729,7 +732,7 @@
 		C593F7C0143EB191008D25A7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C593F7BF143EB191008D25A7 /* Platform.app */,
+				C593F7BF143EB191008D25A7 /* bonobo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -962,6 +965,8 @@
 				C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */,
 				C5C9E2BB1467986C00838934 /* UpdateAuthenticatorResponse.h */,
 				C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */,
+				C55BF280148C76B8004ED3A8 /* PutAttributeOperation.h */,
+				C55BF281148C76B8004ED3A8 /* PutAttributeOperation.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -1335,7 +1340,7 @@
 			);
 			name = Platform;
 			productName = Platform;
-			productReference = C593F7BF143EB191008D25A7 /* Platform.app */;
+			productReference = C593F7BF143EB191008D25A7 /* bonobo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1566,6 +1571,7 @@
 				C522FD40147A612A00F691A4 /* Bookmark.m in Sources */,
 				C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */,
 				C5E42594148705E300BB1264 /* SharingOptions.m in Sources */,
+				C55BF282148C76B8004ED3A8 /* PutAttributeOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1654,7 +1660,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = bonobo;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1677,7 +1683,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = bonobo;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

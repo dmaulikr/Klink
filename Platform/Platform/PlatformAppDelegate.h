@@ -12,11 +12,11 @@
 #import "ApplicationSettingsManager.h"
 
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
-
+    NSString* m_deviceToken;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-
+@property (nonatomic, retain) NSString* deviceToken;
 @property (nonatomic, retain) ResourceContext* resourceContext;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;

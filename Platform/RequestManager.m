@@ -261,7 +261,7 @@ static RequestManager* sharedInstance;
     
     //TODO: we need to optimize to only send the JSON fragments which changed
     //for now we will send the whole object
-    NSString* json = [resource toJSON];
+    //NSString* json = [resource toJSON];
     
 
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
@@ -279,7 +279,7 @@ static RequestManager* sharedInstance;
     //we submit the initial put operation with the request
     //the attachments will be processed on the return leg
     ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kMODIFY withURL:request.url withUserInfo:userInfo];
-    [httpRequest setPostValue:json forKey:@""];
+    //[httpRequest setPostValue:json forKey:@""];
       
     LOG_REQUEST(0, @"%@Executing put request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
     
@@ -631,7 +631,7 @@ static RequestManager* sharedInstance;
         [resourceContext save:NO onFinishCallback:nil];
         
         [self processAttachmentsForRequest:request];
-        LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@",activityName,request.targetresourceid,request.targetresourcetype);
+        LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@ along with %d secondary objects",activityName,request.targetresourceid,request.targetresourcetype, [putResponse.secondaryResults count]);
 
         
     }

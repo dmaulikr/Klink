@@ -28,3 +28,7 @@ extern NSString* const param_TWITTERUSERID;
 extern NSString* const param_TWITTERACCESSTOKEN;
 extern NSString* const param_TWITTERACCESSTOKENEXPIRY;
 extern NSString* const param_TWITTERACCESSTOKENSECRET;
+extern NSString* const param_DEVICETOKEN;
+extern NSString* const param_ATTRIBUTENAMES;
+extern NSString* const param_ATTRIBUTEVALUES;
+extern NSString* const param_OPERATIONCODE;

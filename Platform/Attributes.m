@@ -75,3 +75,5 @@ NSString* const SHAREONFACEBOOK         = @"shareonfacebook";
 NSString* const SHAREONTWITTER          = @"shareontwitter";
 NSString* const NUMBEROFCAPTIONS        = @"numberofcaptions";
 NSString* const NUMBEROFPHOTOS          = @"numberofphotos";
+NSString* const NUMBEROFPUBLISHEDVOTES  = @"numberofpublishedvotes";
+NSString* const HASVOTED                = @"hasvoted";

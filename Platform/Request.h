@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Callback.h"
 #import <CoreData/CoreData.h>
+#import "PutAttributeOperation.h"
 
 typedef enum {
     kCREATE,
@@ -53,6 +54,9 @@ withTargetObjectType:(NSString*)objecttype
   withUserInfo:(NSDictionary*)userInfo 
      onSuccess:(Callback*)onSuccessCallback 
      onFailure:(Callback*)onFailureCallback;
+
+
+- (NSDictionary*)putAttributeOperations;
 
 
 - (NSArray*)changedAttributesList;

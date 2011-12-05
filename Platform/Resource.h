@@ -12,6 +12,7 @@
 #import "AttributeInstanceData.h"
 #import "LoggerClient.h"
 #import "IJSONSerializable.h"
+#import "PutAttributeOperation.h"
 
 @class ResourceContext;
 @interface Resource : NSManagedObject <IJSONSerializable> {
@@ -60,6 +61,10 @@ insertIntoResourceContext:(ResourceContext *)context;
 
 - (NSArray*) changedAttributesToSynchronizeToCloud;
 - (NSArray*) attributesWithValues;
+- (NSArray*) attributesFor:(NSArray*)attributeNames;
+
+- (PutAttributeOperation*) putAttributeOperationFor:(NSString*)attribute;
+
 - (NSArray*) attachmentAttributesWithValues;
 //Used for logging
 - (NSString*)   componentName;

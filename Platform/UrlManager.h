@@ -38,10 +38,18 @@
 + (NSURL*) urlForAuthentication:(NSNumber*)facebookID 
                        withName:(NSString*)name 
         withFacebookAccessToken:(NSString*)facebookAccessToken 
-        withFacebookTokenExpiry:(NSDate*)date;
+        withFacebookTokenExpiry:(NSDate*)date
+                withDeviceToken:(NSString*)deviceToken;
 
 + (NSURL*) urlForPutObject:(NSNumber*)objectid 
             withObjectType:(NSString*)objectType 
+ withAuthenticationContext:(id)authenticationContext;
+
++ (NSURL*) urlForPutObject:(NSNumber*)objectid 
+            withObjectType:(NSString*)objectType 
+            withAttributes:(NSArray*)attributeNames
+       withAttributeValues:(NSArray*)attributeValues
+        withOperationCodes:(NSArray*)operationCodes
  withAuthenticationContext:(id)authenticationContext;
 
 

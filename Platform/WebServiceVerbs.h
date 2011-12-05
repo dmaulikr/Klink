@@ -19,3 +19,4 @@ extern NSString* const verb_GETAUTHENTICATOR;
 extern NSString* const verb_UPDATEATTRIBUTE;
 extern NSString* const verb_SHARE;
 extern NSString* const verb_UPDATEAUTHENTICATOR;
+extern NSString* const verb_UPDATEOBJECTATTRIBUTES;

@@ -36,7 +36,8 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
 - (void) getAuthenticatorToken:(NSNumber*)facebookID 
                       withName:(NSString*)displayName 
        withFacebookAccessToken:(NSString*)facebookAccessToken 
-    withFacebookTokenExpiry:(NSDate*)date 
+    withFacebookTokenExpiry:(NSDate*)date
+               withDeviceToken:(NSString*)deviceToken
                 onFinishNotify:(Callback*)callback;
 
 - (void) updateAuthenticatorWithTwitter:(NSString*)twitterUserID 

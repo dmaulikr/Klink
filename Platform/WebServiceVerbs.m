@@ -19,3 +19,4 @@ NSString* const verb_GETAUTHENTICATOR = @"Objects/Users/GetAuthenticator";
 NSString* const verb_UPDATEATTRIBUTE = @"Objects/PutAttribute";
 NSString* const verb_SHARE = @"Objects/Share";
 NSString* const verb_UPDATEAUTHENTICATOR = @"Objects/Users/Authenticator/Put";
+NSString* const verb_UPDATEOBJECTATTRIBUTES=@"Objects/PutAttributes";

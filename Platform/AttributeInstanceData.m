@@ -17,6 +17,7 @@
 @dynamic islocked;
 @dynamic isurlattachment;
 @dynamic islocal;
+@dynamic iscounter;
 
 - (id) initWithEntity:(NSEntityDescription *)entity 
 insertIntoResourceContext:(ResourceContext *)context 
@@ -29,6 +30,7 @@ insertIntoResourceContext:(ResourceContext *)context
         self.attributename = attributeName;
         self.isurlattachment = [NSNumber numberWithBool:NO];
         self.islocal = [NSNumber numberWithBool:NO];
+        self.iscounter = [NSNumber numberWithBool:NO];
         //TODO: need to create initializers to isURLAttahcment to true for url data types
     }
     return self;
@@ -63,10 +65,17 @@ insertIntoResourceContext:(ResourceContext *)context
         retVal.isurlattachment = [NSNumber numberWithBool:YES];
     }
     
-    //we mark hasopened hasseen as local only attributes
-    if ([lowerCaseName isEqualToString:HASSEEN]        ||
-        [lowerCaseName isEqualToString:HASOPENED]) {
+    
+    
+    //we mark hasopened, hasvoted as local only attributes
+    if ([lowerCaseName isEqualToString:HASOPENED] ||
+        [lowerCaseName isEqualToString:HASVOTED]) {
         retVal.islocal = [NSNumber numberWithBool:YES];
+    }
+    
+    //we mark has seen as being a locked value, so it doesnt get overwritten by the server
+    if ([lowerCaseName isEqualToString:HASSEEN]) {
+        retVal.islocked = [NSNumber numberWithBool:YES];
     }
     
     //we mark numberofvotes attributes on Page and Photo objects local
@@ -86,6 +95,15 @@ insertIntoResourceContext:(ResourceContext *)context
             retVal.islocal = [NSNumber numberWithBool:YES];
         }
     }
+    
+    if ([lowerCaseName isEqualToString:NUMBEROFVOTES] ||
+        [lowerCaseName isEqualToString:NUMBEROFCAPTIONS] ||
+        [lowerCaseName isEqualToString:NUMBEROFPHOTOS] ||
+        [lowerCaseName isEqualToString:NUMBEROFPUBLISHEDVOTES]) {
+        //these are all counter variables
+        retVal.iscounter = [NSNumber numberWithBool:YES];
+    }
+        
     return retVal;
     
     

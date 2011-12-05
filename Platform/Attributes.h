@@ -81,3 +81,6 @@ extern NSString* const SHAREONFACEBOOK;
 extern NSString* const SHAREONTWITTER;
 extern NSString* const NUMBEROFCAPTIONS;
 extern NSString* const NUMBEROFPHOTOS;
+extern NSString* const NUMBEROFPUBLISHEDVOTES;
+
+extern NSString* const HASVOTED;

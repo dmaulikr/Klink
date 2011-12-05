@@ -104,7 +104,7 @@
     
 }
 
-+ (NSURL*) urlForAuthentication:(NSNumber *)facebookID withName:(NSString *)name withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date {
++ (NSURL*) urlForAuthentication:(NSNumber *)facebookID withName:(NSString *)name withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date withDeviceToken:(NSString *)deviceToken {
     
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     
@@ -122,6 +122,8 @@
     [parameters appendFormat:@"&%@=%@",facebookAccessTokenParamName,facebookAccessToken];
     NSString* facebookAccessTokenExpiryParamName = param_FACEBOOKACCESSTOKENEXPIRY;
     [parameters appendFormat:@"&%@=%f",facebookAccessTokenExpiryParamName,expiryDateInEpochSeconds];
+    NSString* deviceTokenParamName = param_DEVICETOKEN;
+    [parameters appendFormat:@"&%@=%@",deviceTokenParamName,deviceToken];
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
@@ -190,7 +192,51 @@
 }
 
 
++ (NSURL*)urlForPutObject:(NSNumber*)objectid 
+           withObjectType:(NSString*)objectType 
+           withAttributes:(NSArray*)attributeNames
+      withAttributeValues:(NSArray*)attributeValues
+       withOperationCodes:(NSArray*)operationCodes
+withAuthenticationContext:(id)authenticationContext; 
+{
+ 
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    
+    NSString* verbName = verb_UPDATEOBJECTATTRIBUTES;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+       
+    NSString* jsonAttributeNames = [attributeNames JSONString];
+    NSString* jsonAttributeValues = [attributeValues JSONString];
+    NSString* jsonOperationCodes = [operationCodes JSONString];
+      
+    NSString* objectIDParamName = param_OBJECTID;
+    [parameters appendFormat:@"%@=%@",objectIDParamName,objectid];
+    
+    NSString* objectTypeParamName = param_OBJECTTYPE;
+    [parameters appendFormat:@"&%@=%@",objectTypeParamName,objectType];
 
+    NSString* attributesParamName = param_ATTRIBUTENAMES;
+    [parameters appendFormat:@"&%@=%@",attributesParamName,jsonAttributeNames];
+    
+    NSString* attributesValuesParamName = param_ATTRIBUTEVALUES;
+    [parameters appendFormat:@"&%@=%@",attributesValuesParamName,jsonAttributeValues];
+    
+    NSString* operationCodesParamName = param_OPERATIONCODE;
+    [parameters appendFormat:@"&%@=%@",operationCodesParamName,jsonOperationCodes];
+    
+    NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
+
+
+}
 
 + (NSURL*) urlForShareObject:(NSNumber *)objectid 
               withObjectType:(NSString *)objectType 

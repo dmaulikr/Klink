@@ -29,4 +29,7 @@ NSString* const param_TWITTERUSERID=@"twitterid";
 NSString* const param_TWITTERACCESSTOKEN=@"twitteraccesstoken";
 NSString* const param_TWITTERACCESSTOKENEXPIRY=@"twitteraccesstokenexpiry";
 NSString* const param_TWITTERACCESSTOKENSECRET=@"twitteraccesstokensecret";
-
+NSString* const param_DEVICETOKEN = @"devicetoken";
+NSString* const param_ATTRIBUTENAMES = @"attributenames";
+NSString* const param_ATTRIBUTEVALUES = @"attributevalues";
+NSString* const param_OPERATIONCODE = @"operationcodes";

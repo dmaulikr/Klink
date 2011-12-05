@@ -254,6 +254,8 @@ static NSMutableDictionary* managedObjectContexts;
                             request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
                         }
                         [resource markAsDirty:changedAttributes];
+                        
+                        
                     }
                     else if ([changedAttributes count] > 1) {
                         //must be a put modify operation since there are more than 1 changed attributes
@@ -271,6 +273,31 @@ static NSMutableDictionary* managedObjectContexts;
                         //we append the changed attribute names to the request
                         [request setChangedAttributesList:changedAttributes];
                         
+                        AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
+
+                        //we need to calculate the url for the request
+                        if (request.operationcode ==[NSNumber numberWithInt:kMODIFY]) {
+                            NSDictionary* attributeOperations = [request putAttributeOperations];
+                            NSArray* attributeNames = [attributeOperations allKeys];
+                            NSMutableArray* attributeValues = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+                            NSMutableArray* attributeOperationCodes = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+                            
+                            for (NSString* attributeName in attributeNames) {
+                                PutAttributeOperation* putOperation = [attributeOperations valueForKey:attributeName];
+                                [attributeValues addObject:putOperation.value];
+                                [attributeOperationCodes addObject:[NSNumber numberWithInt:putOperation.operationCode]];
+                            }
+                            
+                            //now all of our arrays are populated we can generate the url
+                            request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAttributes:attributeNames withAttributeValues:attributeValues withOperationCodes:attributeOperationCodes withAuthenticationContext:authenticationContext]absoluteString];
+                            
+                            //                            request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAuthenticationContext:authenticationContext] absoluteString];
+                        }
+                        else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
+                            NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
+                            request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
+                        }
+
                         [putRequests addObject:request];
                     }
                     
@@ -344,14 +371,6 @@ static NSMutableDictionary* managedObjectContexts;
                 if ([putRequests count] > 0) {
                     //TODO:implement bulk processing for updates
                     for (Request* request in putRequests) {
-                        //generate a URL for the put request
-                        if (request.operationcode ==[NSNumber numberWithInt:kMODIFY]) {
-                            request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAuthenticationContext:authenticationContext] absoluteString];
-                        }
-                        else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
-                            NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
-                            request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
-                        }
                         
                         //we submit put requests one at a time, since the server doesnt support
                         //a bulk put protocol as of yet
@@ -425,7 +444,12 @@ static NSMutableDictionary* managedObjectContexts;
 }
 
 #pragma mark - Authentication Enumeration
-- (void) getAuthenticatorToken:(NSNumber *)facebookID withName:(NSString *)displayName withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date onFinishNotify:(Callback *)callback {
+- (void) getAuthenticatorToken:(NSNumber *)facebookID 
+                      withName:(NSString *)displayName 
+       withFacebookAccessToken:(NSString *)facebookAccessToken 
+       withFacebookTokenExpiry:(NSDate *)date 
+                withDeviceToken:(NSString *)deviceToken
+                onFinishNotify:(Callback *)callback {
     NSString* activityName = @"ResourceContext.getAuthenticatorToken:";
    
  
@@ -437,7 +461,7 @@ static NSMutableDictionary* managedObjectContexts;
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
     
-    NSURL* url = [UrlManager urlForAuthentication:facebookID withName:displayName withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date];
+    NSURL* url = [UrlManager urlForAuthentication:facebookID withName:displayName withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date withDeviceToken:deviceToken];
     
     request.url = [url absoluteString];
     

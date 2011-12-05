@@ -370,6 +370,105 @@
     return retVal;
 }
 
+- (id) changedValueFor:(NSString*)attribute {
+    id retVal = nil;
+    NSDictionary* changedValues = [self changedValues];
+    
+    for (NSString* key in changedValues) {
+        if ([key isEqualToString:attribute]) {
+            retVal = [changedValues valueForKey:key];
+        }
+    }
+    
+    return retVal;
+    
+}
+
+//returns an attribute delta representation for the specific attribute name
+- (PutAttributeOperation*)putAttributeOperationFor:(NSString *)attribute {
+    PutAttributeOperation* retVal = nil;
+
+    AttributeInstanceData* aid = [self attributeInstanceDataFor:attribute];
+        
+    NSEntityDescription* entityDescription = [self entity];
+    NSArray* attributeDescriptions = [entityDescription properties];
+    
+    if ([aid.iscounter boolValue]) {
+        //it is a counter variable, so we calculate the delta
+        for (NSAttributeDescription* attributeDescription in attributeDescriptions) {
+            if ([[attributeDescription name] isEqualToString:attribute]) {
+                //we have the right attribute description object
+                NSAttributeType attrType = [attributeDescription attributeType];
+                if (attrType == NSInteger64AttributeType ||
+                    attrType == NSDoubleAttributeType) {
+                    
+                    NSDictionary* committedValues = [self committedValuesForKeys:[NSArray arrayWithObject:attribute]];
+                    NSNumber* currentValue = [committedValues valueForKey:attribute];
+                    NSNumber* newValue = (NSNumber*)[self changedValueFor:attribute];
+                    
+                    if (attrType == NSInteger64AttributeType) {
+                        //its a int
+                        if ([newValue intValue] > [currentValue intValue]) {
+                            //its an add
+                            NSNumber* deltaInt = [NSNumber numberWithInt:([newValue intValue]-[currentValue intValue])];
+                            retVal = [PutAttributeOperation putOperationWithCode:kADD withValue:deltaInt];
+                        }
+                        else {
+                            //its a subtraction
+                            NSNumber* deltaInt = [NSNumber numberWithInt:([currentValue intValue]-[newValue intValue])];
+                            retVal = [PutAttributeOperation putOperationWithCode:kREMOVE withValue:deltaInt];
+                        }
+                    }
+                    else {
+                        //its a double
+                        if ([newValue doubleValue] > [currentValue doubleValue]) {
+                            //its an add
+                            NSNumber* deltaDbl = [NSNumber numberWithDouble:([newValue doubleValue]-[currentValue doubleValue])];
+                            retVal = [PutAttributeOperation putOperationWithCode:kADD withValue:deltaDbl];
+                        }
+                        else {
+                            //its a subtraction
+                            NSNumber* deltaDbl = [NSNumber numberWithDouble:([currentValue doubleValue]-[newValue doubleValue])];
+                            retVal = [PutAttributeOperation putOperationWithCode:kREMOVE withValue:deltaDbl];
+                        }
+
+                    }
+                    
+                }
+                break;
+            }
+        }
+    }
+    else {
+        //if its not a counter attribute then its always a replace with the new value
+        retVal = [PutAttributeOperation putOperationWithCode:kREPLACE withValue:[self changedValueFor:attribute]];
+    }
+    return retVal;
+  
+        
+}
+
+
+
+
+///Returns an array of attribute values for each attribute name passed in
+- (NSArray*)attributesFor:(NSArray *)attributeNames {
+
+    NSMutableArray* retVal = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+    
+    int i = 0;
+    for (NSString* attributeName in attributeNames) {
+        SEL selector = NSSelectorFromString(attributeName);
+        if ([self respondsToSelector:selector]) {
+            id val = [self performSelector:selector];
+            [retVal insertObject:val atIndex:i];
+        }
+        i++;
+    }
+                        
+    return retVal;
+}
+
 - (NSArray*) copyFrom:(Resource*)resource {
     NSEntityDescription* entity = [self entity];
     NSArray* attributes = [entity properties];

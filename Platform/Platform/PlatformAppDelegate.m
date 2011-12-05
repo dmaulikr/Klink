@@ -19,7 +19,7 @@
 
 
 @synthesize window=_window;
-
+@synthesize deviceToken = m_deviceToken;
 @synthesize managedObjectContext=__managedObjectContext;
 
 @synthesize managedObjectModel=__managedObjectModel;
@@ -82,6 +82,15 @@
     [self.applicationSettingsManager settings];    
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
+    
+    //register for push notifications
+    [[UIApplication sharedApplication]
+     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                         UIRemoteNotificationTypeSound |
+                                         UIRemoteNotificationTypeAlert)];
+    
+    
+    
     self.window.rootViewController = self.navigationController;
  
     
@@ -111,6 +120,20 @@
     return YES;
 }
 
+- (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSString* activityName = @"application.didFailToRegisterForRemoteNotificationsWithError:";
+    LOG_SECURITY(1, @"%@Device failed to register for notifications:%@",activityName,[error userInfo]);
+}
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    NSString* activityName = @"application.didRegisterForRemoteNotificationsWithDeviceToken:";
+    self.deviceToken = [[[[deviceToken description]
+                                       stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
+    LOG_SECURITY(0, @"%@Device token is %@",activityName,self.deviceToken);
+        
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     /*

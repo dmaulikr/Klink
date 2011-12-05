@@ -16,6 +16,7 @@
 @dynamic creatorname;
 @dynamic numberofvotes;
 @dynamic photoid;
+@dynamic hasvoted;  
 
 + (Caption*)createCaptionForPhoto:(NSNumber *)photoid withCaption:(NSString *)caption {
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];    
