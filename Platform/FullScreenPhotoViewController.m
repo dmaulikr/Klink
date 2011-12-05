@@ -398,16 +398,6 @@
     self.captionCloudEnumerator.delegate = self;
     [self.captionCloudEnumerator enumerateUntilEnd];
     
-    // resister callbacks for change events
-    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
-    
-    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
-    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
-    
-    [newPhotoVoteCallback release];
-    [newCaptionVoteCallback release];
-    
 }
 
 - (void)viewDidUnload
@@ -531,13 +521,14 @@
         
         [navigationController release];
         [contributeViewController release];
+        [photo release];
     }
 }
 
 - (void) onVoteButtonPressed:(id)sender {
-    ResourceContext* resourceContext = [ResourceContext instance];
+    NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
-    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    ResourceContext* resourceContext = [ResourceContext instance];
     
     int photoIndex = [self.photoViewSlider getPageIndex];
     Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
@@ -547,7 +538,6 @@
     
     photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-    //page.numberofpublishvotes = [NSNumber numberWithInt:([page.numberofpublishvotes intValue] + 1)];
     
     //caption.user_hasvoted = [NSNumber numberWithBool:YES];
     
@@ -572,7 +562,15 @@
     
     //now we need to commit to the store
     [resourceContext save:YES onFinishCallback:nil];
-
+    
+    //update photo and caption metadata views
+    [self.photoMetaData renderMetaDataWithID:photo.objectid];
+    
+    UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+    if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
+        [currentCaptionView renderCaptionWithID:caption.objectid];
+        LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
+    }
 }
 
 - (void) onCaptionButtonPressed:(id)sender {
@@ -595,6 +593,7 @@
         
         [navigationController release];
         [contributeViewController release];
+        [photo release];
     }
 }
 
@@ -835,25 +834,6 @@
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
             [self.captionViewSlider goTo:[newIndexPath row] withAnimation:NO];
         }
-    }
-}
-
-#pragma mark - Callback Event Handlers
-- (void) onNewPhotoVote:(CallbackResult*)result {
-    int index = [self.photoViewSlider getPageIndex];
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
-    [self.photoMetaData renderMetaDataWithID:photo.objectid];
-}
-
-- (void) onNewCaptionVote:(CallbackResult*)result {    
-    int captionCount = [[self.frc_captions fetchedObjects]count];
-    
-    if (captionCount > 0) {
-        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
-        
-        int index = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        [currentCaptionView renderCaptionWithID:caption.objectid];
     }
 }
 

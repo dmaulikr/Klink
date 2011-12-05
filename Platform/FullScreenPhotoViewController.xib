@@ -45,7 +45,7 @@
 						<string key="NSFrameSize">{320, 480}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="237035011"/>
+						<reference key="NSNextKeyView" ref="535959741"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -74,11 +74,10 @@
 						<string key="NSFrame">{{0, 346}, {320, 90}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="212292975"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUIView" id="237035011">
+					<object class="IBUIView" id="535959741">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 44}, {320, 26}}</string>
@@ -142,7 +141,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">photoMetaData</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="237035011"/>
+						<reference key="destination" ref="535959741"/>
 					</object>
 					<int key="connectionID">27</int>
 				</object>
@@ -166,7 +165,7 @@
 							<reference ref="801628129"/>
 							<reference ref="184562399"/>
 							<reference ref="190130701"/>
-							<reference ref="237035011"/>
+							<reference ref="535959741"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -203,7 +202,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
-						<reference key="object" ref="237035011"/>
+						<reference key="object" ref="535959741"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
