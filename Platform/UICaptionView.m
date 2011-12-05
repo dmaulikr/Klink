@@ -10,6 +10,7 @@
 #import "Caption.h"
 #import "Types.h"
 #import "DateTimeHelper.h"
+//#import "CallbackResult.h"
 
 @implementation UICaptionView
 @synthesize captionID = m_captionID;
@@ -17,6 +18,18 @@
 @synthesize v_background = m_v_background;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_metaData = m_lbl_metaData;
+@synthesize lbl_numVotes = m_lbl_numVotes;
+
+//@synthesize eventManager = __eventManager;
+
+/*#pragma mark - Properties
+- (EventManager*) eventManager {
+    if (__eventManager != nil) {
+        return __eventManager;
+    }
+    __eventManager = [EventManager instance];
+    return __eventManager;
+}*/
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -32,13 +45,24 @@
         }
         
         [self addSubview:self.view];
+        
     }
     return self;
 }
 
-//This is where the "by JordanG 2 minutes ago" stirng is created
+//This is where the "by JordanG 2 minutes ago" string is created
 - (NSString*) getMetadataStringForCaption:(Caption*)caption {
-    return [NSString stringWithFormat:@"By %@ on %@",caption.creatorname,[DateTimeHelper formatShortDate:[NSDate date]]];
+    NSDate* now = [NSDate date];
+    NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:caption.datecreated]];
+    NSString* timeSinceCreated = [[NSString alloc] init];
+    if (intervalSinceCreated < 1 ) {
+        timeSinceCreated = @"a moment";
+    }
+    else {
+        timeSinceCreated = [DateTimeHelper formatTimeInterval:intervalSinceCreated];
+    }
+    
+    return [NSString stringWithFormat:@"By %@, %@ ago",caption.creatorname,timeSinceCreated];
 }
 
 /*
@@ -58,8 +82,9 @@
     if (caption != nil) {
         self.lbl_caption.text = caption.caption1;
         self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
+        self.lbl_numVotes.text = [caption.numberofvotes stringValue];
     }
-    //[self setNeedsDisplay];
+    [self setNeedsDisplay];
 }
 
 - (void) renderCaptionWithID:(NSNumber*)captionID {
@@ -67,5 +92,25 @@
     
     [self render];
 }
+
+/*- (void)viewDidLoad
+{
+    // resister callbacks for change events
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newCaptionVoteCallback release];
+    
+}*/
+
+/*#pragma mark - Callback Event Handlers
+- (void) onNewCaptionVote:(CallbackResult*)result {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    self.lbl_numVotes.text = [caption.numberofvotes stringValue];
+}*/
 
 @end

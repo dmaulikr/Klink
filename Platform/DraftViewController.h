@@ -24,12 +24,12 @@
 
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_draft_pages;
-@property (nonatomic,retain) UIPagedViewSlider2*            pagedViewSlider;
+@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   pagedViewSlider;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
 
 @property (nonatomic,retain) UIImage*                       thumbnailImage;
 @property (nonatomic,retain) UIImage*                       fullImage;
 
-+ (DraftViewController*) createInstance;
++ (DraftViewController*) createInstanceWithPageID:(NSNumber*)pageID;
 
 @end
