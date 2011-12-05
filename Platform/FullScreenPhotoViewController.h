@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "UIPagedViewSlider4.h"
+#import "UIPhotoMetaDataView.h"
 #import "CloudEnumerator.h"
 
 @interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate> {
@@ -18,6 +19,7 @@
     
     UIPagedViewSlider2* m_photoViewSlider;
     UIPagedViewSlider2* m_captionViewSlider;
+    UIPhotoMetaDataView*    m_photoMetaData;
     
     CloudEnumerator*    m_captionCloudEnumerator;
     
@@ -40,6 +42,7 @@
 // Subviews
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   photoViewSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   captionViewSlider;
+@property (nonatomic,retain) IBOutlet UIPhotoMetaDataView*  photoMetaData;
 
 // Toolbar Buttons
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_facebookButton;
@@ -47,9 +50,6 @@
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_cameraButton;
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_voteButton;
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_captionButton;
-
-
-- (CGRect)  frameForToolbarAtOrientation:(UIInterfaceOrientation)orientation;
 
 // Navigation
 - (void)    updateNavigation;

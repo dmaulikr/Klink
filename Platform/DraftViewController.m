@@ -31,18 +31,8 @@
 @synthesize thumbnailImage      = m_thumbnailImage;
 @synthesize fullImage           = m_fullImage;
 
-@synthesize eventManager                = __eventManager;
-
 
 #pragma mark - Properties
-- (EventManager*) eventManager {
-    if (__eventManager != nil) {
-        return __eventManager;
-    }
-    __eventManager = [EventManager instance];
-    return __eventManager;
-}
-
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"DraftViewController.frc_draft_pages:";
@@ -158,19 +148,20 @@
 - (id) commonInit {
     // Custom initialization
     
-    self.pageID = nil;
+    //self.pageID = nil;
     
-    CGRect frameForSlider = [self frameForSlider];
-    self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
+    //CGRect frameForSlider = [self frameForSlider];
+    //self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
     self.pagedViewSlider.delegate = self;
     
     self.pagedViewSlider.tableView.pagingEnabled = YES;
-    [self.view addSubview:self.pagedViewSlider];
+    self.pagedViewSlider.tableView.allowsSelection = NO;
+    //[self.view addSubview:self.pagedViewSlider];
     
     [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"draft"];
     
-    self.pagedViewSlider.backgroundColor = [UIColor blackColor];
-    self.view.backgroundColor = [UIColor blackColor];
+    //self.pagedViewSlider.backgroundColor = [UIColor blackColor];
+    //self.view.backgroundColor = [UIColor blackColor];
     
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
     
@@ -182,7 +173,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self =  [self commonInit];
+        //self =  [self commonInit];
         
         //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
         //self.view.backgroundColor = background;
@@ -222,6 +213,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self =  [self commonInit];
     
     // resister callbacks for change events
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
@@ -461,8 +453,9 @@
 }
 
 #pragma mark - Static Initializers
-+ (DraftViewController*) createInstance {
++ (DraftViewController*) createInstanceWithPageID:(NSNumber*)pageID {
     DraftViewController* draftViewController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
+    draftViewController.pageID = pageID;
     [draftViewController autorelease];
     return draftViewController;
 }

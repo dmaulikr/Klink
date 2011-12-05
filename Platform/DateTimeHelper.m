@@ -44,6 +44,17 @@
     
 }
 
++ (NSString*) formatMediumDate:(NSDate*)date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    NSString *formattedDate = [dateFormatter stringFromDate:date];
+    
+    [dateFormatter release];
+    return formattedDate;
+    
+}
+
 + (NSTimeInterval) convertDateToDouble:(NSDate*)date {
     return [date timeIntervalSince1970];
 }

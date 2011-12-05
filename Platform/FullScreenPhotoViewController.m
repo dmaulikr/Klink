@@ -47,6 +47,7 @@
 
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
+@synthesize photoMetaData           = m_photoMetaData;
 
 @synthesize tb_facebookButton       = m_tb_facebookButton;
 @synthesize tb_twitterButton        = m_tb_twitterButton;
@@ -69,13 +70,17 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:resourceContext.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+    
+    NSSortDescriptor* sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+    
+    NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
     
     //add predicate to gather only photos for this pageID    
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
     
     [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setSortDescriptors:sortDescriptorArray];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     
@@ -111,13 +116,18 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:resourceContext.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+    //NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+    
+    NSSortDescriptor* sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+    
+    NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
     
     //add predicate to gather only photos for this pageID    
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", PHOTOID, self.photoID];
     
     [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    [fetchRequest setSortDescriptors:sortDescriptorArray];
     [fetchRequest setEntity:entityDescription];
     [fetchRequest setFetchBatchSize:20];
     
@@ -214,8 +224,15 @@
     self.photoViewSlider.tableView.allowsSelection = NO;
     self.captionViewSlider.tableView.allowsSelection = NO;
     
+    // this setting stops a touch event in the area of the caption view slider from passing through to the photo view slider
+    self.captionViewSlider.exclusiveTouch = YES;
+    
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
+    
+    // add photo metadata view
+    self.photoMetaData = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
+    [self.view addSubview:self.photoMetaData];
     
     return self;
 }
@@ -273,6 +290,22 @@
     return retVal;
 }
 
+- (int) indexOfCaptionWithID:(NSNumber*)captionid {
+    //returns the index location within the frc_photos for the photo with the id specified
+    int retVal = 0;
+    
+    NSArray* fetchedObjects = [self.frc_captions fetchedObjects];
+    int index = 0;
+    for (Caption* caption in fetchedObjects) {
+        if ([caption.objectid isEqualToNumber:captionid]) {
+            retVal = index;
+            break;
+        }
+        index++;
+    }
+    return retVal;
+}
+
 #pragma mark - View lifecycle
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -293,6 +326,17 @@
         //we instruct the page view slider to move to the index of the page which is specified
         [self.photoViewSlider goTo:indexOfPhoto withAnimation:NO];
         [self.captionViewSlider goTo:0 withAnimation:NO];
+        
+        // update the metadata for the current photo being displayed
+        [self.photoMetaData renderMetaDataWithID:self.photoID];
+        
+        int captionCount = [[self.frc_captions fetchedObjects]count];
+        if (captionCount > 0) {
+            int index = [self.captionViewSlider getPageIndex];
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            self.captionID = caption.objectid;
+        }
+        
     }
     else {
         //error state
@@ -353,6 +397,16 @@
     self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
     self.captionCloudEnumerator.delegate = self;
     [self.captionCloudEnumerator enumerateUntilEnd];
+    
+    // resister callbacks for change events
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
     
 }
 
@@ -419,17 +473,13 @@
 }
 
 #pragma mark - Toolbar Button Event Handlers
-
-- (void) onFacebookButtonPressed:(id)sender {
-    
-       
+- (void) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-      
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
@@ -437,8 +487,7 @@
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil];
-                   }
-      
+        }
     }
 }
 
@@ -450,7 +499,6 @@
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-      
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
@@ -460,7 +508,6 @@
             
             [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil];
         }
-      
     }
 }
 
@@ -471,6 +518,10 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        int index = [self.photoViewSlider getPageIndex];
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+        self.photoID = photo.objectid;
+        
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];
         contributeViewController.delegate = self;
         
@@ -531,7 +582,11 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCaptionButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewCaptionWithPageID:self.pageID withPhotoID:self.photoID];
+        int index = [self.photoViewSlider getPageIndex];
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+        self.photoID = photo.objectid;
+        
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewCaptionWithPageID:self.pageID withPhotoID:photo.objectid];
         contributeViewController.delegate = self;
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
@@ -590,6 +645,19 @@
         if (photoCount > 0 && index < photoCount) {
             Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
             
+            self.photoID = photo.objectid;
+            
+            int captionCount = [[self.frc_captions fetchedObjects]count]; 
+            if (captionCount > 0) {
+                self.captionViewSlider.hidden = NO;
+                int index = [self.captionViewSlider getPageIndex];
+                Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+                self.captionID = caption.objectid;
+            }
+            else {
+                self.captionViewSlider.hidden = YES;
+            }
+            
             existingCell.frame = frame;
             
             UIImageView* iv_photo = (UIImageView*)existingCell;
@@ -625,6 +693,8 @@
         
         if (captionCount > 0 && index < captionCount) {
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            
+            self.captionID = caption.objectid;
             
             existingCell.frame = frame;
             
@@ -738,14 +808,52 @@
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.photoViewSlider onNewItemInsertedAt:[newIndexPath row]];
             [self.photoViewSlider goTo:[newIndexPath row] withAnimation:NO];
+
+            // reset frc_captions for the new photo
+            self.frc_captions = nil;
+            
+            // reset caption slider
+            int captionCount = [[self.frc_captions fetchedObjects]count]; 
+            if (captionCount > 0) {
+                self.captionViewSlider.hidden = NO;
+                [self.captionViewSlider reset];
+                int index = [self.captionViewSlider getPageIndex];
+                Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+                self.captionID = caption.objectid;
+            }
+            else {
+                self.captionViewSlider.hidden = YES;
+                self.captionID = nil;
+            }
         }
         else if (controller == self.frc_captions) {
             //insertion of a new caption
+            self.captionViewSlider.hidden = NO;
+            
             Resource* resource = (Resource*)anObject;
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
             [self.captionViewSlider onNewItemInsertedAt:[newIndexPath row]];
             [self.captionViewSlider goTo:[newIndexPath row] withAnimation:NO];
         }
+    }
+}
+
+#pragma mark - Callback Event Handlers
+- (void) onNewPhotoVote:(CallbackResult*)result {
+    int index = [self.photoViewSlider getPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
+    [self.photoMetaData renderMetaDataWithID:photo.objectid];
+}
+
+- (void) onNewCaptionVote:(CallbackResult*)result {    
+    int captionCount = [[self.frc_captions fetchedObjects]count];
+    
+    if (captionCount > 0) {
+        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+        
+        int index = [self.captionViewSlider getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+        [currentCaptionView renderCaptionWithID:caption.objectid];
     }
 }
 

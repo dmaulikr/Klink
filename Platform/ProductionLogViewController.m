@@ -35,17 +35,8 @@
 @synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
-@synthesize eventManager                = __eventManager;
 
 #pragma mark - Properties
-- (EventManager*) eventManager {
-    if (__eventManager != nil) {
-        return __eventManager;
-    }
-    __eventManager = [EventManager instance];
-    return __eventManager;
-}
-
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"ProductionLogViewController.frc_draft_pages:";
@@ -209,16 +200,19 @@
     [super viewDidLoad];
     
     // resister callbacks for change events
+    Callback* newDraftCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewDraft:)];
     Callback* newPhotoCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhoto:)];
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
     Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
     Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
     
+    [self.eventManager registerCallback:newDraftCallback forSystemEvent:kNEWPAGE];
     [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
     [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
     [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
     [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
     
+    [newDraftCallback release];
     [newPhotoCallback release];
     [newCaptionCallback release];
     [newPhotoVoteCallback release];
@@ -420,10 +414,13 @@
                                                                              target:nil
                                                                              action:nil] autorelease];
     
-    DraftViewController* draftViewController = [[DraftViewController alloc] initWithNibName:@"DraftViewController" bundle:nil];
-    
+    //DraftViewController* draftViewController = [[DraftViewController alloc] initWithNibName:@"DraftViewController" bundle:nil];
     Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
-    draftViewController.pageID = draft.objectid;
+    
+    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:draft.objectid];
+    
+    //Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
+    //draftViewController.pageID = draft.objectid;
     
     [self.navigationController pushViewController:draftViewController animated:YES];
     [draftViewController release];
@@ -453,6 +450,10 @@
 }
 
 #pragma mark - Callback Event Handlers
+- (void) onNewDraft:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
 - (void) onNewPhoto:(CallbackResult*)result {
     [self.tbl_productionTableView reloadData];
 }

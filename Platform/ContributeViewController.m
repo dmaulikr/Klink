@@ -90,7 +90,6 @@
 {
     [super dealloc];
     
-  /*  
     [self.scrollView dealloc];
     [self.activeTextView dealloc];
     [self.activeTextField dealloc];
@@ -113,7 +112,6 @@
     [self.lbl_captionRequired dealloc];
     
     [self.lbl_deadline dealloc];
-  */
 }
 
 - (void)didReceiveMemoryWarning
@@ -184,7 +182,6 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
-  /*  
     self.scrollView = nil;
     self.activeTextView = nil;
     self.activeTextField = nil;
@@ -207,7 +204,6 @@
     self.lbl_captionRequired = nil;
     
     self.lbl_deadline = nil;
-  */
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -369,6 +365,9 @@
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     // caption textview editing has begun
+    
+    // disable Submit until text entry complete
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     
     self.activeTextView = textView;
     

@@ -20,6 +20,7 @@
 + (NSTimeInterval) convertDatePointerToDouble:(NSNumber*)datePointer;
 + (NSString*) formatShortDate:(NSDate*)date;
 + (NSString*) formatMediumDateWithTime:(NSDate*)date;
++ (NSString*) formatMediumDate:(NSDate*)date;
 + (NSString *) formatTimeInterval:(NSTimeInterval)interval;
 
 @end

@@ -25,6 +25,8 @@
 		3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DE1464633400D6587D /* icon-thumbUp.png */; };
 		3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */; };
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
+		520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */; };
+		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
 		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
 		5220101C147713D700C47C00 /* UICaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5220101B147713D700C47C00 /* UICaptionView.xib */; };
 		522010251477387700C47C00 /* icon-bulb1.png in Resources */ = {isa = PBXBuildFile; fileRef = 522010211477387700C47C00 /* icon-bulb1.png */; };
@@ -231,6 +233,9 @@
 		3DCFE8DE1464633400D6587D /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
 		3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
 		3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoViewController.xib; sourceTree = "<group>"; };
+		520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPhotoMetaDataView.xib; sourceTree = "<group>"; };
+		520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoMetaDataView.h; sourceTree = "<group>"; };
+		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
 		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
 		52201018147713BD00C47C00 /* UICaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionView.m; sourceTree = "<group>"; };
 		5220101B147713D700C47C00 /* UICaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionView.xib; sourceTree = "<group>"; };
@@ -1072,11 +1077,11 @@
 		C5C76C95145BB3B400BA69B8 /* Bonobo */ = {
 			isa = PBXGroup;
 			children = (
-				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
 				C5A82D751466667E00E77675 /* UICameraActionSheet.h */,
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
 				C5C76C98145BB4D800BA69B8 /* UIPageView.h */,
 				C5C76C99145BB4D800BA69B8 /* UIPageView.m */,
+				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
 				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
 				C56F8A041462D3C700E14199 /* UINotificationIcon.h */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
@@ -1098,6 +1103,9 @@
 				52201017147713BD00C47C00 /* UICaptionView.h */,
 				52201018147713BD00C47C00 /* UICaptionView.m */,
 				5220101B147713D700C47C00 /* UICaptionView.xib */,
+				520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */,
+				520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */,
+				520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1436,6 +1444,7 @@
 				5281EEF91485B32700AB1BF0 /* arrow_right_scetched@2x.png in Resources */,
 				5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */,
 				5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */,
+				520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,6 +1575,7 @@
 				C522FD40147A612A00F691A4 /* Bookmark.m in Sources */,
 				C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */,
 				C5E42594148705E300BB1264 /* SharingOptions.m in Sources */,
+				520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
