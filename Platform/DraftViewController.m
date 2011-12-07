@@ -21,6 +21,7 @@
 #import "User.h"
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
+#import "ProfileViewController.h"
 #import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
@@ -257,6 +258,9 @@
 
 - (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
+    
+    // reset the content inset of the tableview so bottom is not covered by toolbar
+    //[self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -352,6 +356,9 @@
 - (void) onEnumerateComplete {
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
+    
+    // reset the content inset of the tableview so bottom is not covered by toolbar
+    [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
 }
 
 
@@ -370,8 +377,17 @@
 
 #pragma mark - Toolbar Button Event Handlers
 - (void) onUsernameButtonPressed:(id)sender {
-    PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
-    [self.navigationController pushViewController:personalLogViewController animated:YES];
+    //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
+    //[self.navigationController pushViewController:personalLogViewController animated:YES];
+    
+    ProfileViewController* profileViewController = [ProfileViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    [profileViewController release];
 }
 
 - (void) onCameraButtonPressed:(id)sender {

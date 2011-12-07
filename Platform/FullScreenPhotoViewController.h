@@ -23,6 +23,8 @@
     
     CloudEnumerator*    m_captionCloudEnumerator;
     
+    NSTimer*            m_controlVisibilityTimer;
+    
     UIBarButtonItem*    m_tb_facebookButton;
     UIBarButtonItem*    m_tb_twitterButton;
     UIBarButtonItem*    m_tb_cameraButton;
@@ -34,6 +36,8 @@
 @property (nonatomic,retain) NSFetchedResultsController*    frc_captions;
 
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
+
+@property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
 
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSNumber*                      photoID;

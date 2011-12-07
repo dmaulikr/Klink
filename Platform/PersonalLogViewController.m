@@ -299,13 +299,12 @@ numberOfRowsInSection:(NSInteger)section
     PersonalLogViewController* instance = [[[PersonalLogViewController alloc]initWithNibName:@"PersonalLogViewController" bundle:nil]autorelease];
     instance.refreshNotificationFeedOnDownload = NO;
     return instance;
-    
 }
 
 + (PersonalLogViewController*)createInstanceAndRefreshFeedOnAppear {
     PersonalLogViewController* instance = [[[PersonalLogViewController alloc]initWithNibName:@"PersonalLogViewController" bundle:nil]autorelease];
     instance.refreshNotificationFeedOnDownload = YES;
     return instance;
-    
 }
+
 @end

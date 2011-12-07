@@ -15,6 +15,7 @@
 #import "ContributeViewController.h"
 #import "Page.h"
 #import "ImageManager.h"
+#import "NotificationsViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -91,8 +92,6 @@
     if (self) {
         // Custom initialization
         
-       //self.view.backgroundColor = [UIColor blackColor];
-        
     }
     return self;
 }
@@ -133,13 +132,10 @@
     Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
     Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];
     
-    //Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
-    
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
     [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
     [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
-    //[self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
     
     [loginCallback release];
     [logoutCallback release];
@@ -150,10 +146,6 @@
     self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
     self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
     [self.view addSubview:self.progressView];
-    
-    // the notifications tableview that will sit under every view
-    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-    //[self.view sendSubviewToBack:notificationsViewController.view];
     
 }
 
@@ -427,10 +419,6 @@
 - (void) onUserLoggedOut:(CallbackResult*)result {
     
 }
-
-/*- (void) onNewCaption:(CallbackResult*)result {
-
-}*/
 
 - (void) onShowProgressView:(CallbackResult*)result {
     NSDictionary* userInfo = result.context;
