@@ -22,7 +22,10 @@
         [self.didSucceed boolValue] == YES) {
         
         NSDictionary* modifiedResourceJSONDictionary = [jsonDictionary valueForKey:MODIFIEDRESOURCE];
-        self.modifiedResource = [Resource createInstanceOfTypeFromJSON:modifiedResourceJSONDictionary];
+        if (modifiedResourceJSONDictionary != nil && modifiedResourceJSONDictionary != [NSNull null]) {
+        
+            self.modifiedResource = [Resource createInstanceOfTypeFromJSON:modifiedResourceJSONDictionary];
+        }
         
         //each put response can contain a secondary set of objects that are updated
         //or relevant to the request

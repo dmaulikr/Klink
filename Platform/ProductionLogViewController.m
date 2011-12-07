@@ -473,11 +473,8 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    self.cloudDraftEnumerator = nil;
-    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
     
-    self.cloudDraftEnumerator = [cloudEnumeratorFactory enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
+    [self.cloudDraftEnumerator reset];
     [self.cloudDraftEnumerator enumerateUntilEnd];
 
 }

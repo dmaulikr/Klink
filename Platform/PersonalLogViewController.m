@@ -25,6 +25,7 @@
 @synthesize lbl_numcaptionslw   = m_lbl_numcaptionslw;
 @synthesize lbl_currentLevel    = m_lbl_currentLevel;
 @synthesize refreshHeader       = m_refreshHeader;
+@synthesize refreshNotificationFeedOnDownload   =m_refreshNotificationFeedOnDownload;
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_notifications {
@@ -111,11 +112,15 @@
     NSArray* notifications = [self.frc_notifications fetchedObjects];
     ResourceContext* resourceContext = [ResourceContext instance];
     
+    
     for (Feed* notification in notifications) {
         notification.hasseen = [NSNumber numberWithBool:YES];
     }
     
     [resourceContext save:YES onFinishCallback:nil];
+    
+    //we set the badge number to 0
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
 }
 #pragma mark - View lifecycle
@@ -139,6 +144,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    NSString* activityName = @"PersonalLogViewController.viewWillAppear:";
     [super viewWillAppear:YES];
     
     // hide toolbar
@@ -147,6 +153,7 @@
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
+    
     
     if ([self.authenticationManager isUserAuthenticated]) {
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -170,6 +177,14 @@
         self.lbl_numcaptionslw.text = [user.numberofcaptionslw stringValue];
         self.lbl_numphotoslw.text = [user.numberofphotoslw stringValue];
         
+    }
+    
+    //we check to see if this view controller is meant to refresh the feed upon load
+    if (self.refreshNotificationFeedOnDownload) {
+        
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Refreshing notification feed from cloud",activityName);
+        FeedManager* feedManager = [FeedManager instance];
+        [feedManager refreshFeedOnFinish:nil];
     }
     
 }
@@ -240,7 +255,7 @@ numberOfRowsInSection:(NSInteger)section
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
         
-        [self.tbl_notifications insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_notifications insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_notifications deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
@@ -274,8 +289,15 @@ numberOfRowsInSection:(NSInteger)section
 #pragma mark - Static Initializers
 + (PersonalLogViewController*)createInstance {
     PersonalLogViewController* instance = [[[PersonalLogViewController alloc]initWithNibName:@"PersonalLogViewController" bundle:nil]autorelease];
+    instance.refreshNotificationFeedOnDownload = NO;
     return instance;
     
 }
 
++ (PersonalLogViewController*)createInstanceAndRefreshFeedOnAppear {
+    PersonalLogViewController* instance = [[[PersonalLogViewController alloc]initWithNibName:@"PersonalLogViewController" bundle:nil]autorelease];
+    instance.refreshNotificationFeedOnDownload = YES;
+    return instance;
+    
+}
 @end

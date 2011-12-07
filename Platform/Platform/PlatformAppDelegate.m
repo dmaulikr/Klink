@@ -15,6 +15,8 @@
 #import "CloudEnumerator.h"
 #import "CloudEnumeratorFactory.h"
 #import "Macros.h"
+#import "PersonalLogViewController.h"
+
 @implementation PlatformAppDelegate
 
 
@@ -117,6 +119,17 @@
         }
 
     }
+    
+    //check if the application is launching with notifications queued up
+    //if so need to move to the notification window
+    if (launchOptions != nil) {
+        LOG_SECURITY(0, @"%@Application launching with remote notification queued up, moving to download screen",activityName);
+        NSDictionary* notificationDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        
+        //need to instruct the feedmanager to download
+        
+        //need to move to the view controller
+    }
     return YES;
 }
 
@@ -133,6 +146,50 @@
                                      stringByReplacingOccurrencesOfString: @" " withString: @""];
     LOG_SECURITY(0, @"%@Device token is %@",activityName,self.deviceToken);
         
+}
+
+- (void) application:(UIApplication*)application 
+    didReceiveRemoteNotification:(NSDictionary *)userInfo 
+{
+        NSString* activityName = @"application.didReceiveRemoteNotification:";
+    
+    
+    //we need to instruct the feedmanager to download notification with this particular id
+    FeedManager* feedManager = [FeedManager instance];
+    NSNumber* feedID = [userInfo objectForKey:OBJECTID];
+
+    
+    
+    if ( application.applicationState == UIApplicationStateActive ) {
+        // app was already in the foreground
+        // do not move the view controller, just update all the notification feeds
+        LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
+        [feedManager refreshFeedOnFinish:nil];
+    }
+    else {
+            // app was just brought from background to foreground
+        //move to the view controller
+        
+        //check firs to see if the active view controller is the log
+        UIViewController* topViewController = [self.navigationController topViewController];
+        if ([topViewController isKindOfClass:PersonalLogViewController.class]) {
+            //the top view controller is a personal log view controller, do not need to move to it
+            //just initiate a refresh of the feed
+            [feedManager refreshFeedOnFinish:nil];
+        }
+        else {
+            PersonalLogViewController* plvc = [PersonalLogViewController createInstanceAndRefreshFeedOnAppear];
+            [self.navigationController pushViewController:plvc animated:YES];
+        }
+        
+        
+    }
+    
+    //on complete we should adjust the badge number to reflect the current nmber of unseen notification in the database
+}
+
+- (void)onFeedFinishedRefreshing:(CallbackResult*)result {
+    
 }
 - (void)applicationWillResignActive:(UIApplication *)application
 {
