@@ -28,6 +28,7 @@
 @property (nonatomic,retain) IBOutlet UILabel*             lbl_numcaptionslw;
 @property (nonatomic,retain) IBOutlet UILabel*             lbl_numphotoslw;
 @property (nonatomic,retain) EGORefreshTableHeaderView*     refreshHeader;
+
 //Static initializers
 + (PersonalLogViewController*)createInstance;
 @end

@@ -17,6 +17,7 @@
     UILabel* m_lbl_caption;
     UILabel* m_lbl_metaData;
     UILabel* m_lbl_numVotes;
+    UIImageView* m_iv_voteIcon;
 }
 
 @property (nonatomic, retain) NSNumber* captionID;
@@ -26,8 +27,7 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_caption;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_metaData;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numVotes;
-
-//@property (nonatomic, retain) EventManager*         eventManager;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_voteIcon;
 
 - (void) renderCaptionWithID:(NSNumber*)captionID;
 - (void) render;

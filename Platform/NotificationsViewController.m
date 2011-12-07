@@ -1,29 +1,21 @@
 //
-//  PersonalLogViewController.m
+//  NotificationsViewController.m
 //  Platform
 //
-//  Created by Bobby Gill on 11/3/11.
-//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//  Created by Jordan Gurrieri on 12/6/11.
+//  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "PersonalLogViewController.h"
+#import "NotificationsViewController.h"
+#import "UINotificationTableViewCell.h"
+#import "AuthenticationManager.h"
 #import "Macros.h"
 #import "Feed.h"
-#import "UINotificationTableViewCell.h"
 #import "User.h"
 #import "DateTimeHelper.h"
-#import "AuthenticationManager.h"
 
-
-#define kRefreshHeaderHeight    100
-@implementation PersonalLogViewController
-@synthesize lbl_title           = m_lbl_title;
-@synthesize tbl_notifications   = m_tbl_notifications;
+@implementation NotificationsViewController
 @synthesize frc_notifications   = __frc_notifications;
-@synthesize lbl_since           = m_lbl_since;
-@synthesize lbl_numphotoslw     = m_lbl_numphotoslw;
-@synthesize lbl_numcaptionslw   = m_lbl_numcaptionslw;
-@synthesize lbl_currentLevel    = m_lbl_currentLevel;
 @synthesize refreshHeader       = m_refreshHeader;
 
 #pragma mark - Properties
@@ -76,36 +68,6 @@
     }
 }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        
-        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
-        //self.view.backgroundColor = background;
-        //[background release];
-        
-    }
-    return self;
-}
-
-- (void)dealloc
-{
-    [self.frc_notifications release];
-    [self.lbl_title release];
-    [self.tbl_notifications release];
-    [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
 #pragma mark - Instance methods
 - (void) markAllDisplayedNotificationsSeen {
     NSArray* notifications = [self.frc_notifications fetchedObjects];
@@ -116,19 +78,44 @@
     }
     
     [resourceContext save:YES onFinishCallback:nil];
-    
 }
+
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notifications.bounds.size.height, self.tbl_notifications.bounds.size.width, self.tbl_notifications.bounds.size.height);
+    
+    // setup pulldown refresh on tableview
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
-    [self.tbl_notifications addSubview:self.refreshHeader];
+    [self.view addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
@@ -138,56 +125,28 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];
-    
-    // hide toolbar
-    [self.navigationController setToolbarHidden:YES animated:YES];
-    
-    // Set status bar style to black
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationBar setTintColor:nil];
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
-    
-    if ([self.authenticationManager isUserAuthenticated]) {
-        ResourceContext* resourceContext = [ResourceContext instance];
-        User* user = (User*)[resourceContext resourceWithType:USER withID:self.authenticationManager.m_LoggedInUserID];
-        self.lbl_title.text = [NSString stringWithFormat:@"%@'s Log",user.displayname];
-        
-        NSDateFormatter* format = [[NSDateFormatter alloc]init];
-        [format setDateFormat:@"MMM dd, yyyy"];
-        
-        if ([user.iseditor boolValue]) {
-            self.lbl_currentLevel.text = @"editor";
-            NSDate* dateBecameEditor =  [DateTimeHelper parseWebServiceDateDouble:user.datebecameeditor];
-            self.lbl_since.text = [format stringFromDate:dateBecameEditor];
-        }
-        else {
-            self.lbl_currentLevel.text = @"lack";
-            NSDate* dateJoined = [DateTimeHelper parseWebServiceDateDouble:user.datecreated];
-            self.lbl_since.text = [format stringFromDate:dateJoined];
-        }
-        
-        self.lbl_numcaptionslw.text = [user.numberofcaptionslw stringValue];
-        self.lbl_numphotoslw.text = [user.numberofphotoslw stringValue];
-        
-    }
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // show toolbar
-    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -196,12 +155,88 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - Table view data source
 
-#pragma mark - UITableViewDelegate methods
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 131;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Notifications";
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [[self.frc_notifications fetchedObjects]count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int notificationCount = [[self.frc_notifications fetchedObjects]count];
+    if ([indexPath row] < notificationCount) 
+    {
+        Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
+        UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
+    
+        if (cell == nil) {
+            cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+        }
+        
+        // Configure the cell...
+        [cell renderNotificationWithID:notification.objectid];
+        
+        return cell;
+    }
+    else {
+        return nil;
+    }
+}
+
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+#pragma mark - Table view delegate
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
 }
@@ -210,33 +245,22 @@
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
-#pragma mark - UITableDataSource methods
-- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-    int notificationCount = [[self.frc_notifications fetchedObjects]count];
-    if ([indexPath row] < notificationCount) 
-    {
-        Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
-        UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
-        
-        if (cell == nil) 
-        {
-            cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
-        }
-        
-        [cell renderNotificationWithID:notification.objectid];
-        return cell;
-    }
-    else {
-        return nil;
-    }
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 131;
 }
 
-- (int) tableView:(UITableView *)tableView 
-numberOfRowsInSection:(NSInteger)section 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [[self.frc_notifications fetchedObjects]count];
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     [detailViewController release];
+     */
 }
+
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller 
@@ -248,10 +272,10 @@ numberOfRowsInSection:(NSInteger)section
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
         
-        [self.tbl_notifications insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.view insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {
-        [self.tbl_notifications deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.view deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     
 }
@@ -275,15 +299,14 @@ numberOfRowsInSection:(NSInteger)section
 
 #pragma mark - Async Callback Handlers
 - (void) onFeedFinishedRefresh:(CallbackResult*)result {
-     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_notifications];
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self];
 }
 
 
 #pragma mark - Static Initializers
-+ (PersonalLogViewController*)createInstance {
-    PersonalLogViewController* instance = [[[PersonalLogViewController alloc]initWithNibName:@"PersonalLogViewController" bundle:nil]autorelease];
++ (NotificationsViewController*)createInstance {
+    NotificationsViewController* instance = [[[NotificationsViewController alloc]initWithNibName:@"NotificationsViewController" bundle:nil]autorelease];
     return instance;
-    
 }
 
 @end

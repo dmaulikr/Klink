@@ -1,97 +1,93 @@
 //
-//  DraftViewController.m
+//  DraftViewController2.m
 //  Platform
 //
-//  Created by Bobby Gill on 10/28/11.
-//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//  Created by Jordan Gurrieri on 12/6/11.
+//  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
 #import "DraftViewController.h"
 #import "Macros.h"
-#import "Page.h"
-#import "UIDraftView.h"
+#import "UIDraftTableViewCellLeft.h"
+#import "DateTimeHelper.h"
 #import "CloudEnumeratorFactory.h"
+#import "AuthenticationManager.h"
 #import "UINotificationIcon.h"
 #import "UICameraActionSheet.h"
+#import "Types.h"
+#import "Attributes.h"
 #import "Photo.h"
+#import "Page.h"
 #import "User.h"
+#import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "PersonalLogViewController.h"
 
-#define kWIDTH 320
-#define kHEIGHT 480
-#define kSPACING 0
+#define kPAGEID @"pageid"
 
 @implementation DraftViewController
-@synthesize pageID              = m_pageID;
-@synthesize frc_draft_pages     = __frc_draft_pages;
-@synthesize pagedViewSlider     = m_pagedViewSlider;
-@synthesize pageCloudEnumerator = m_pageCloudEnumerator;
-
-@synthesize thumbnailImage      = m_thumbnailImage;
-@synthesize fullImage           = m_fullImage;
+@synthesize frc_photos = __frc_photos;
+@synthesize pageID = m_pageID;
+@synthesize draftTitle = m_draftTitle;
+@synthesize tbl_draftTableView = m_tbl_draftTableView;
+@synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
+@synthesize cloudPhotoEnumerator = m_cloudPhotoEnumerator;
+@synthesize refreshHeader = m_refreshHeader;
 
 
 #pragma mark - Properties
-//this NSFetchedResultsController will query for all draft pages
-- (NSFetchedResultsController*) frc_draft_pages {
-    NSString* activityName = @"DraftViewController.frc_draft_pages:";
-    if (__frc_draft_pages != nil) {
-        return __frc_draft_pages;
+- (NSFetchedResultsController*) frc_photos {
+    NSString* activityName = @"UIDraftView.frc_photos:";
+    
+    if (__frc_photos != nil) {
+        return __frc_photos;
     }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
-    
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
-    
-    //add predicate to test for being published
-    NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
-    
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [fetchRequest setEntity:entityDescription];
-    [fetchRequest setFetchBatchSize:20];
-    
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    
-    controller.delegate = self;
-    self.frc_draft_pages = controller;
-    
-    
-    NSError* error = nil;
-    [controller performFetch:&error];
-  	if (error != nil)
-    {
-        LOG_DRAFTVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+    else {
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:resourceContext.managedObjectContext];
+        
+        NSSortDescriptor* sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+        NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+        
+        NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
+        
+        //add predicate to gather only photos for this pageID    
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
+        
+        [fetchRequest setPredicate:predicate];
+        [fetchRequest setSortDescriptors:sortDescriptorArray];
+        [fetchRequest setEntity:entityDescription];
+        [fetchRequest setFetchBatchSize:20];
+        
+        NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        
+        controller.delegate = self;
+        self.frc_photos = controller;
+        
+        
+        NSError* error = nil;
+        [controller performFetch:&error];
+        if (error != nil)
+        {
+            LOG_UIDRAFTVIEW(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+        }
+        
+        [controller release];
+        [fetchRequest release];
+        
+        return __frc_photos;
     }
-    
-    [controller release];
-    [fetchRequest release];
-    
-    return __frc_draft_pages;
-    
-}
-
-#pragma mark - Frames
-- (CGRect) frameForSlider {
-    return CGRectMake(0, 0, 320, 480);
-}
-
-#pragma mark - Navigationbar buttons
-- (NSArray*) navigationBarButtonsForViewController {
-    //retrurns an array with the navigation bar buttons for this view controller
-    return nil;
 }
 
 #pragma mark - Toolbar buttons
 - (NSArray*) toolbarButtonsForViewController {
     //returns an array with the toolbar buttons for this view controller
     NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-
+    
     //flexible space for button spacing
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];    
     
@@ -111,10 +107,10 @@
     
     //add camera button
     UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
-                                      initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(onCameraButtonPressed:)];
+                                     initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
+                                     style:UIBarButtonItemStylePlain
+                                     target:self
+                                     action:@selector(onCameraButtonPressed:)];
     [retVal addObject:cameraButton];
     
     //add flexible space for button spacing
@@ -145,27 +141,23 @@
     return retVal;
 }
 
+
+#pragma mark - Initializers
 - (id) commonInit {
-    // Custom initialization
+    //common setup for the view controller
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    //self.pageID = nil;
-    
-    //CGRect frameForSlider = [self frameForSlider];
-    //self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
-    self.pagedViewSlider.delegate = self;
-    
-    self.pagedViewSlider.tableView.pagingEnabled = YES;
-    self.pagedViewSlider.tableView.allowsSelection = NO;
-    //[self.view addSubview:self.pagedViewSlider];
-    
-    [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"draft"];
-    
-    //self.pagedViewSlider.backgroundColor = [UIColor blackColor];
-    //self.view.backgroundColor = [UIColor blackColor];
-    
-    self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
-    
-    
+    if (page != nil) {
+        
+        self.draftTitle.text = page.displayname;
+        
+        self.cloudPhotoEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPhotos:self.pageID];
+        self.cloudPhotoEnumerator.delegate = self;
+        
+        //[self.tbl_draftTableView reloadData];
+        
+    }
     return self;
 }
 
@@ -173,22 +165,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        //self =  [self commonInit];
-        
-        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
-        //self.view.backgroundColor = background;
-        //[background release];
-        
+        // Custom initialization
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [self.pagedViewSlider release];
-    [self.frc_draft_pages release];
-    [super dealloc];
-   
 }
 
 - (void)didReceiveMemoryWarning
@@ -199,21 +178,22 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void)dealloc
+{
+    [self.tbl_draftTableView release];
+    [self.frc_photos release];
+    [self.pageID release];
+    [super dealloc];
+}
+
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self =  [self commonInit];
+    // Do any additional setup after loading the view from its nib.
+    
+    self = [self commonInit];
     
     // resister callbacks for change events
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
@@ -228,69 +208,25 @@
     [newPhotoVoteCallback release];
     [newCaptionVoteCallback release];
     
+    // setup pulldown refresh on tableview
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
+    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader.delegate = self;
+    [self.tbl_draftTableView addSubview:self.refreshHeader];
+    [self.refreshHeader refreshLastUpdatedDate];
 }
 
-- (int) indexOfPageWithID:(NSNumber*)pageid {
-    //returns the index location within the frc_draft_pages for the draft with the id specified
-    int retVal = 0;
-    
-    NSArray* fetchedObjects = [self.frc_draft_pages fetchedObjects];
-    int index = 0;
-    for (Page* page in fetchedObjects) {
-        if ([page.objectid isEqualToNumber:pageid]) {
-            retVal = index;
-            break;
-        }
-        index++;
-    }
-    return index;
-}
-
-- (void) renderPage {
-    NSString* activityName = @"DraftViewController.renderPage:";
-    //retrieves and draws the layout for the current page
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    
-    if (currentPage != nil) {
-        int indexOfPage = [self indexOfPageWithID:self.pageID];
-        //we instruct the page view slider to move to the index of the page which is specified
-        [self.pagedViewSlider goTo:indexOfPage withAnimation:NO];
-    }
-    else {
-        //error state
-        LOG_DRAFTVIEWCONTROLLER(1,@"%@Could not find page with id: %@ in local store",activityName,self.pageID);
+- (void)viewWillAppear:(BOOL)animated
+{
+    //here we check to see how many items are in the FRC, if it is 0,
+    //then we initiate a query against the cloud.
+    int count = [[self.frc_photos fetchedObjects] count];
+    if (count == 0) {
+        //there are no objects in local store, update from cloud
+        [self.cloudPhotoEnumerator enumerateUntilEnd];
     }
     
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-    //NSString* activityName = @"DraftViewController.viewWillAppear:";
-    [super viewWillAppear:animated];
-    
-    //render the page ID specified as a parameter
-    if (self.pageID != nil && [self.pageID intValue] != 0) {
-        //render the page specified by the ID passed in
-        [self renderPage];
-    }
-    else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATECREATED sortAscending:NO];
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            [self renderPage];
-        }
-        else {
-            //empty page store, will need to thow up a progress dialog to show user of download
-            [self.pageCloudEnumerator enumerateUntilEnd];
-            //TODO: need to make a call to a centrally hosted busy indicator view
-        }
-        
-    }
-    
-    // Toolbar: we update the toolbar items each tgime the view controller is shown
+    // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }
@@ -308,120 +244,129 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - UIPagedViewSlider2 Delegate Methods
-- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider  
-           selectIndex:          (int)                   index {
-    
+
+#pragma mark -
+#pragma mark Table View Delegate methods
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 113;
 }
 
-- (UIView*) viewSlider:          (UIPagedViewSlider2*)   viewSlider 
-     cellForRowAtIndex:          (int)                   index 
-             withFrame:          (CGRect)                frame {
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    //render a page in its own view and return it using the coordinates passed in for its frame
-    int count = [[self.frc_draft_pages fetchedObjects]count];
-    if (index < count) {    
-        UIDraftView* draftView = [[UIDraftView alloc] initWithFrame:frame];
-        draftView.navigationController = self.navigationController;
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+    
+    // Set up navigation bar back button with draft title
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:page.displayname
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil] autorelease];
+    
+    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
+    
+    [self.navigationController pushViewController:photoViewController animated:YES];
+    [photoViewController release];
+}
+
+
+#pragma mark Table View Data Source Methods
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[self.frc_photos fetchedObjects]count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    int photoCount = [[self.frc_photos fetchedObjects]count];
+    if ([indexPath row] < photoCount) 
+    {
+        Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
-        [self viewSlider:viewSlider configure:draftView forRowAtIndex:index withFrame:frame];
-        return draftView;
+        UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:[UIDraftTableViewCellLeft cellIdentifier]];
+        
+        if (cell == nil) 
+        {
+            cell = [[[UIDraftTableViewCellLeft alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
+        }
+        
+        [cell renderWithPhotoID:photo.objectid];
+        return cell;
     }
     else {
         return nil;
     }
-    
 }
 
-- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
-             isAtIndex:          (int)                   index 
-    withCellsRemaining:          (int)                   numberOfCellsToEnd {
-    
-    
-    NSString* draftTitle = @"Back";
-    int count = [[self.frc_draft_pages fetchedObjects]count];
-    if (index < count) {
-        /*Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
-        if (page != nil) {
-            draftTitle = page.displayname;
-        }
-        else {
-            page = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
-        }
-        self.pageID = page.objectid;*/
-        
-        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
-        if (page == nil) {
-            // if desired page no longer there mov to first page
-            page = [[self.frc_draft_pages fetchedObjects]objectAtIndex:0];
-            [self.pagedViewSlider goTo:0 withAnimation:YES];
-        }
-
-        self.pageID = page.objectid;
-        draftTitle = page.displayname;
-    }
-    
-    // Set up navigation bar back button for the currently displayed draft
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:draftTitle
-                                                                              style:UIBarButtonItemStyleBordered
-                                                                              target:nil
-                                                                              action:nil] autorelease];
-}
-
-
-- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
-             configure:          (UIView*)               existingCell
-         forRowAtIndex:          (int)                   index
-             withFrame:          (CGRect)                frame {
-    
-    int count = [[self.frc_draft_pages fetchedObjects]count];
-    if (index < count) {
-        Page* page  = [[self.frc_draft_pages fetchedObjects]objectAtIndex:index];
-        
-        existingCell.frame = frame;
-             
-        UIDraftView* draftView = (UIDraftView*)existingCell;
-        [draftView renderDraftWithID:page.objectid];
-        
-        // Set up navigation bar back button for the currently displayed draft
-        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:page.displayname
-                                                                                  style:UIBarButtonItemStyleBordered
-                                                                                 target:nil
-                                                                                 action:nil] autorelease];
-    }
-}
-
-- (int)   itemCountFor:          (UIPagedViewSlider2*)   viewSlider {
-    return [[self.frc_draft_pages fetchedObjects]count];
-}
-
-#pragma mark - NSFetchedResultsControllerDelegate methods
+#pragma mark - NSFetchedResultsControllerDelegate
 - (void) controller:(NSFetchedResultsController *)controller 
-    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
+    didChangeObject:(id)anObject 
+        atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 
        newIndexPath:(NSIndexPath *)newIndexPath {
-    NSString* activityName = @"DraftViewController.controller.didChangeObject:";
+    
     if (type == NSFetchedResultsChangeInsert) {
-        //insertion of a new draft
-        Resource* resource = (Resource*)anObject;
-        LOG_DRAFTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
-        [self.pagedViewSlider onNewItemInsertedAt:[newIndexPath row]];
+        //new photo has been downloaded
+        [self.tbl_draftTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_draftTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    else if (type == NSFetchedResultsChangeDelete) {
+        [self.tbl_draftTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
 }
+
+#pragma mark - EgoRefreshTableHeaderDelegate
+- (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    self.cloudPhotoEnumerator = nil;
+    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
+    
+    self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
+    self.cloudPhotoEnumerator.delegate = self;
+    [self.cloudPhotoEnumerator enumerateUntilEnd];
+    
+}
+
+- (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    if (self.cloudPhotoEnumerator != nil) {
+        return [self.cloudPhotoEnumerator isLoading];
+    }
+    else {
+        return NO;
+    }
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    return [NSDate date];
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete {
+    //we tell the ego fresh header that we've stopped loading items
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
+}
+
 
 #pragma mark - Callback Event Handlers
 - (void) onNewCaption:(CallbackResult*)result {
-    [self.pagedViewSlider.tableView reloadData];
+    [self.tbl_draftTableView reloadData];
 }
 
 - (void) onNewPhotoVote:(CallbackResult*)result {
-    [self.pagedViewSlider.tableView reloadData];
+    [self.tbl_draftTableView reloadData];
 }
 
 - (void) onNewCaptionVote:(CallbackResult*)result {
-    [self.pagedViewSlider.tableView reloadData];
+    [self.tbl_draftTableView reloadData];
 }
-
 
 #pragma mark - Toolbar Button Event Handlers
 - (void) onUsernameButtonPressed:(id)sender {
@@ -453,12 +398,11 @@
 }
 
 #pragma mark - Static Initializers
-+ (DraftViewController*) createInstanceWithPageID:(NSNumber*)pageID {
++ (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID {
     DraftViewController* draftViewController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
     draftViewController.pageID = pageID;
     [draftViewController autorelease];
     return draftViewController;
 }
-
 
 @end

@@ -10,7 +10,6 @@
 #import "Caption.h"
 #import "Types.h"
 #import "DateTimeHelper.h"
-//#import "CallbackResult.h"
 
 @implementation UICaptionView
 @synthesize captionID = m_captionID;
@@ -19,17 +18,8 @@
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_metaData = m_lbl_metaData;
 @synthesize lbl_numVotes = m_lbl_numVotes;
+@synthesize iv_voteIcon = m_iv_voteIcon;
 
-//@synthesize eventManager = __eventManager;
-
-/*#pragma mark - Properties
-- (EventManager*) eventManager {
-    if (__eventManager != nil) {
-        return __eventManager;
-    }
-    __eventManager = [EventManager instance];
-    return __eventManager;
-}*/
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -84,6 +74,15 @@
         self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
         self.lbl_numVotes.text = [caption.numberofvotes stringValue];
     }
+    
+    if ([caption.hasvoted boolValue]) {
+        // show highlighted version of thumb icon
+        self.iv_voteIcon.highlighted = YES;
+    }
+    else {
+        self.iv_voteIcon.highlighted = NO;
+    }
+    
     [self setNeedsDisplay];
 }
 
@@ -93,24 +92,5 @@
     [self render];
 }
 
-/*- (void)viewDidLoad
-{
-    // resister callbacks for change events
-    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
-    
-    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
-    
-    [newCaptionVoteCallback release];
-    
-}*/
-
-/*#pragma mark - Callback Event Handlers
-- (void) onNewCaptionVote:(CallbackResult*)result {
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
-    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
-    
-    self.lbl_numVotes.text = [caption.numberofvotes stringValue];
-}*/
 
 @end

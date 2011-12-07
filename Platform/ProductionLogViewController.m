@@ -15,6 +15,7 @@
 #import "ImageDownloadResponse.h"
 #import "DraftViewController.h"
 #import "PageViewController.h"
+#import "ContributeViewController.h"
 #import "UINotificationIcon.h"
 #import "PersonalLogViewController.h"
 #import "CloudEnumeratorFactory.h"
@@ -166,7 +167,7 @@
     //common setup for the view controller
     self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
-        return self;
+    return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -262,7 +263,7 @@
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
 
-    // Toolbar: we update the toolbar items each tgime the view controller is shown
+    // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
 }

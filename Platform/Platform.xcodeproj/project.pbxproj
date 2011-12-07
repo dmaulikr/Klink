@@ -13,9 +13,6 @@
 		3D5B84E01463067300FD0F50 /* icon-camera2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */; };
 		3D5B84E41463068100FD0F50 /* icon-facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */; };
 		3D5B84E51463068100FD0F50 /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */; };
-		3D5B84E91463498700FD0F50 /* UIDraftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5B84E71463498700FD0F50 /* UIDraftView.m */; };
-		3D5B84EA1463498700FD0F50 /* UIDraftView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E81463498700FD0F50 /* UIDraftView.xib */; };
-		3D5B84EC1463527600FD0F50 /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84EB1463527600FD0F50 /* DraftViewController.xib */; };
 		3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */; };
 		3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D683161146E245F007B4432 /* image-photoCameraButton.png */; };
 		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */; };
@@ -27,6 +24,8 @@
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
 		520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */; };
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
+		521EAC0D148D9F84006E29D4 /* icon-thumbUp-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 521EAC0B148D9F84006E29D4 /* icon-thumbUp-highlighted.png */; };
+		521EAC0E148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */; };
 		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
 		5220101C147713D700C47C00 /* UICaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5220101B147713D700C47C00 /* UICaptionView.xib */; };
 		522010251477387700C47C00 /* icon-bulb1.png in Resources */ = {isa = PBXBuildFile; fileRef = 522010211477387700C47C00 /* icon-bulb1.png */; };
@@ -49,6 +48,10 @@
 		5281EEF91485B32700AB1BF0 /* arrow_right_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */; };
 		5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */; };
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
+		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
+		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
+		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
+		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
 		52F914091475E3E6007E0016 /* icon-newPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F914071475E3E6007E0016 /* icon-newPage.png */; };
@@ -139,7 +142,6 @@
 		C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */; };
 		C5C76C72145B912000BA69B8 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C71145B912000BA69B8 /* PageViewController.m */; };
 		C5C76C75145B915300BA69B8 /* TableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */; };
-		C5C76C7B145B919100BA69B8 /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C7A145B919100BA69B8 /* DraftViewController.m */; };
 		C5C76C7E145B922700BA69B8 /* FullScreenPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */; };
 		C5C76C84145B92C200BA69B8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C82145B92C100BA69B8 /* HomeViewController.m */; };
 		C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C76C83145B92C200BA69B8 /* HomeViewController.xib */; };
@@ -220,10 +222,6 @@
 		3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2@2x.png"; sourceTree = "<group>"; };
 		3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook@2x.png"; sourceTree = "<group>"; };
 		3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
-		3D5B84E61463498700FD0F50 /* UIDraftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftView.h; sourceTree = "<group>"; };
-		3D5B84E71463498700FD0F50 /* UIDraftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftView.m; sourceTree = "<group>"; };
-		3D5B84E81463498700FD0F50 /* UIDraftView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftView.xib; sourceTree = "<group>"; };
-		3D5B84EB1463527600FD0F50 /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
 		3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		3D683161146E245F007B4432 /* image-photoCameraButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton.png"; sourceTree = "<group>"; };
 		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCellLeft.h; sourceTree = "<group>"; };
@@ -237,6 +235,8 @@
 		520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPhotoMetaDataView.xib; sourceTree = "<group>"; };
 		520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoMetaDataView.h; sourceTree = "<group>"; };
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
+		521EAC0B148D9F84006E29D4 /* icon-thumbUp-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp-highlighted.png"; sourceTree = "<group>"; };
+		521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp-highlighted@2x.png"; sourceTree = "<group>"; };
 		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
 		52201018147713BD00C47C00 /* UICaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionView.m; sourceTree = "<group>"; };
 		5220101B147713D700C47C00 /* UICaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionView.xib; sourceTree = "<group>"; };
@@ -261,6 +261,12 @@
 		5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_right_scetched@2x.png"; sourceTree = "<group>"; };
 		5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewcell_separator_scetched.png; sourceTree = "<group>"; };
 		5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tableviewcell_separator_scetched@2x.png"; sourceTree = "<group>"; };
+		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
+		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
+		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
+		52E66B72148EC7F50079270A /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
+		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
+		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
@@ -425,8 +431,6 @@
 		C5C76C71145B912000BA69B8 /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		C5C76C73145B915300BA69B8 /* TableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableOfContentsViewController.h; sourceTree = "<group>"; };
 		C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableOfContentsViewController.m; sourceTree = "<group>"; };
-		C5C76C79145B919100BA69B8 /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
-		C5C76C7A145B919100BA69B8 /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		C5C76C7C145B922600BA69B8 /* FullScreenPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPhotoViewController.h; sourceTree = "<group>"; };
 		C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenPhotoViewController.m; sourceTree = "<group>"; };
 		C5C76C81145B92C100BA69B8 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
@@ -698,6 +702,8 @@
 				3DCFE8DD1464633400D6587D /* icon-compose@2x.png */,
 				3DCFE8DE1464633400D6587D /* icon-thumbUp.png */,
 				3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */,
+				521EAC0B148D9F84006E29D4 /* icon-thumbUp-highlighted.png */,
+				521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */,
 				3D5B84DD1463067300FD0F50 /* icon-camera2.png */,
 				3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */,
 				C56F8A1B1462ECDA00E14199 /* icon-facebook.png */,
@@ -1039,9 +1045,9 @@
 				5264A2341474566C00E341BA /* ProductionLogViewController.h */,
 				5264A2351474566C00E341BA /* ProductionLogViewController.m */,
 				5264A2361474566C00E341BA /* ProductionLogViewController.xib */,
-				C5C76C79145B919100BA69B8 /* DraftViewController.h */,
-				C5C76C7A145B919100BA69B8 /* DraftViewController.m */,
-				3D5B84EB1463527600FD0F50 /* DraftViewController.xib */,
+				52E66B6C148EA35B0079270A /* DraftViewController.h */,
+				52E66B6D148EA35B0079270A /* DraftViewController.m */,
+				52E66B6E148EA35B0079270A /* DraftViewController.xib */,
 				C5C76C7C145B922600BA69B8 /* FullScreenPhotoViewController.h */,
 				C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */,
 				3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */,
@@ -1054,6 +1060,9 @@
 				3D51CB88146C7149002E0FD4 /* ContributeViewController.h */,
 				3D51CB89146C7149002E0FD4 /* ContributeViewController.m */,
 				3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */,
+				52E66B72148EC7F50079270A /* NotificationsViewController.h */,
+				52E66B73148EC7F50079270A /* NotificationsViewController.m */,
+				52E66B74148EC7F60079270A /* NotificationsViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1091,9 +1100,6 @@
 				C56F8A041462D3C700E14199 /* UINotificationIcon.h */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
 				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
-				3D5B84E61463498700FD0F50 /* UIDraftView.h */,
-				3D5B84E71463498700FD0F50 /* UIDraftView.m */,
-				3D5B84E81463498700FD0F50 /* UIDraftView.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
 				C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */,
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
@@ -1400,8 +1406,6 @@
 				3D5B84E01463067300FD0F50 /* icon-camera2@2x.png in Resources */,
 				3D5B84E41463068100FD0F50 /* icon-facebook@2x.png in Resources */,
 				3D5B84E51463068100FD0F50 /* icon-twitter-t@2x.png in Resources */,
-				3D5B84EA1463498700FD0F50 /* UIDraftView.xib in Resources */,
-				3D5B84EC1463527600FD0F50 /* DraftViewController.xib in Resources */,
 				C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */,
 				3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */,
 				3DCFE8E01464633400D6587D /* icon-compose.png in Resources */,
@@ -1450,6 +1454,10 @@
 				5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */,
 				5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */,
 				520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */,
+				521EAC0D148D9F84006E29D4 /* icon-thumbUp-highlighted.png in Resources */,
+				521EAC0E148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png in Resources */,
+				52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */,
+				52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1532,7 +1540,6 @@
 				C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */,
 				C5C76C72145B912000BA69B8 /* PageViewController.m in Sources */,
 				C5C76C75145B915300BA69B8 /* TableOfContentsViewController.m in Sources */,
-				C5C76C7B145B919100BA69B8 /* DraftViewController.m in Sources */,
 				C5C76C7E145B922700BA69B8 /* FullScreenPhotoViewController.m in Sources */,
 				C5C76C84145B92C200BA69B8 /* HomeViewController.m in Sources */,
 				C5C76C94145BAF9500BA69B8 /* UIPagedViewSlider4.m in Sources */,
@@ -1543,7 +1550,6 @@
 				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
 				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
 				C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */,
-				3D5B84E91463498700FD0F50 /* UIDraftView.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
 				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */,
@@ -1580,11 +1586,10 @@
 				C522FD40147A612A00F691A4 /* Bookmark.m in Sources */,
 				C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */,
 				C5E42594148705E300BB1264 /* SharingOptions.m in Sources */,
-
-  				C55BF282148C76B8004ED3A8 /* PutAttributeOperation.m in Sources */,
-
+				C55BF282148C76B8004ED3A8 /* PutAttributeOperation.m in Sources */,
 				520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */,
-				5681ce65c2fef209f8b1a724b78dd6994d9239d9
+				52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */,
+				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

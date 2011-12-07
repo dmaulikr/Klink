@@ -1,35 +1,35 @@
 //
-//  DraftViewController.h
+//  DraftViewController2.h
 //  Platform
 //
-//  Created by Bobby Gill on 10/28/11.
-//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//  Created by Jordan Gurrieri on 12/6/11.
+//  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-#import "UIPagedViewSlider4.h"
+#import "EventManager.h"
 #import "CloudEnumerator.h"
-#import "ContributeViewController.h"
+#import "EGORefreshTableHeaderView.h"
 
-@interface DraftViewController : BaseViewController < NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate > {
-    
-    NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
-    UIPagedViewSlider2* m_pagedViewSlider; //will use to flip between pages
-    CloudEnumerator*    m_pageCloudEnumerator;
-    
-    UIImage*            m_thumbnailImage;
-    UIImage*            m_fullImage;
+@interface DraftViewController : BaseViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, CloudEnumeratorDelegate> {
+    NSNumber*               m_pageID;
+    UIView*                 m_view;
+    UILabel*                m_draftTitle;
+    UITableView*            m_tbl_draftTableView;
+    UITableViewCell*        m_draftTableViewCellLeft;
+    CloudEnumerator*        m_cloudPhotoEnumerator;
+    EGORefreshTableHeaderView* m_refreshHeader;
 }
 
-@property (nonatomic,retain) NSNumber*                      pageID;
-@property (nonatomic,retain) NSFetchedResultsController*    frc_draft_pages;
-@property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   pagedViewSlider;
-@property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
+@property (nonatomic, retain) NSFetchedResultsController*    frc_photos;
+@property (nonatomic, retain) NSNumber*                      pageID;
+@property (nonatomic, retain) IBOutlet UILabel*              draftTitle;
+@property (nonatomic, retain) IBOutlet UITableView*          tbl_draftTableView;
+@property (nonatomic, retain) IBOutlet UITableViewCell*      draftTableViewCellLeft;
+@property (nonatomic, retain) CloudEnumerator*               cloudPhotoEnumerator;
+@property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
-@property (nonatomic,retain) UIImage*                       thumbnailImage;
-@property (nonatomic,retain) UIImage*                       fullImage;
-
-+ (DraftViewController*) createInstanceWithPageID:(NSNumber*)pageID;
++ (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;
 
 @end

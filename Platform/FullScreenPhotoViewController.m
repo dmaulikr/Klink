@@ -19,8 +19,6 @@
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "ApplicationSettings.h"
-#import "DraftViewController.h"
-#import "UIDraftView.h"
 #import "SocialSharingManager.h"
 
 #define kPictureWidth               320
@@ -225,7 +223,7 @@
     self.captionViewSlider.tableView.allowsSelection = NO;
     
     // this setting stops a touch event in the area of the caption view slider from passing through to the photo view slider
-    self.captionViewSlider.exclusiveTouch = YES;
+    //self.captionViewSlider.exclusiveTouch = YES;
     
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
@@ -327,15 +325,18 @@
         [self.photoViewSlider goTo:indexOfPhoto withAnimation:NO];
         [self.captionViewSlider goTo:0 withAnimation:NO];
         
-        // update the metadata for the current photo being displayed
-        [self.photoMetaData renderMetaDataWithID:self.photoID];
-        
         int captionCount = [[self.frc_captions fetchedObjects]count];
         if (captionCount > 0) {
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             self.captionID = caption.objectid;
         }
+        else {
+            self.captionID = nil;
+        }
+        
+        // update the metadata for the current photo being displayed
+        [self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
         
     }
     else {
@@ -539,7 +540,7 @@
     photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
     
-    //caption.user_hasvoted = [NSNumber numberWithBool:YES];
+    caption.hasvoted = [NSNumber numberWithBool:YES];
     
     // animate the updating of the votes label
     /*[UIView animateWithDuration:0.25
@@ -564,7 +565,7 @@
     [resourceContext save:YES onFinishCallback:nil];
     
     //update photo and caption metadata views
-    [self.photoMetaData renderMetaDataWithID:photo.objectid];
+    [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
     
     UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
     if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
@@ -654,6 +655,7 @@
                 self.captionID = caption.objectid;
             }
             else {
+                self.captionID = nil;
                 self.captionViewSlider.hidden = YES;
             }
             
@@ -704,6 +706,9 @@
             }
             [self.captionViewSlider addSubview:v_caption];
         }
+        else if (captionCount <= 0) {
+            self.captionID = nil;
+        }
     }
     
     [self enableDisableVoteButton];
@@ -741,7 +746,12 @@
     }
     else if ((viewSlider == self.captionViewSlider) && ([[self.frc_captions fetchedObjects]count] != 0)) {
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        self.captionID = caption.objectid;
+        if ([[self.frc_captions fetchedObjects]count] != 0) {
+            self.captionID = caption.objectid;
+        }
+        else {
+            self.captionID = nil;
+        }
     }
     
     [self enableDisableVoteButton];

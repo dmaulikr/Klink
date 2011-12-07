@@ -12,10 +12,12 @@
 
 @implementation UIPhotoMetaDataView
 @synthesize photoID = m_photoID;
+@synthesize captionID = m_captionID;
 @synthesize view = m_view;
 @synthesize v_background = m_v_background;
 @synthesize lbl_metaData = m_lbl_metaData;
 @synthesize lbl_numVotes = m_lbl_numVotes;
+@synthesize iv_voteIcon = m_iv_voteIcon;
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -70,11 +72,23 @@
         self.lbl_metaData.text = [self getMetadataStringForPhoto:photo];
         self.lbl_numVotes.text = [photo.numberofvotes stringValue];
     }
+    
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    if ([caption.hasvoted boolValue]) {
+        // show highlighted version of thumb icon
+        self.iv_voteIcon.highlighted = YES;
+    }
+    else {
+        self.iv_voteIcon.highlighted = NO;
+    }
+    
     [self setNeedsDisplay];
 }
 
-- (void) renderMetaDataWithID:(NSNumber*)photoID {
+- (void) renderMetaDataWithID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID{
     self.photoID = photoID;
+    self.captionID = captionID;
     
     [self render];
 }

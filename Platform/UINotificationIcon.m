@@ -9,6 +9,7 @@
 #import "UINotificationIcon.h"
 #import "PlatformAppDelegate.h"
 #import "PersonalLogViewController.h"
+#import "NotificationsViewController.h"
 #import "AuthenticationManager.h"
 #import "Types.h"
 #import "Attributes.h"
@@ -145,6 +146,31 @@
     //when the notifications button is clicked we need to move to the profile view controller
     PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
     [self.navigationViewController pushViewController:personalLogViewController animated:YES];
+    
+    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    //[self.navigationViewController pushViewController:notificationsViewController animated:YES];
+
+/* 
+    CGRect destination = self.navigationViewController.topViewController.view.frame;
+    
+    if (destination.origin.x > 0) {
+        destination.origin.x = 0;
+    } else {
+        destination.origin.x -= 254.5;
+    }
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        self.navigationViewController.topViewController.view.frame = destination;        
+        
+    } completion:^(BOOL finished) {
+        
+        self.self.navigationViewController.topViewController.view.userInteractionEnabled = !(destination.origin.x > 0);
+        
+    }];
+    
+    [self.navigationViewController pushViewController:notificationsViewController animated:YES];
+ */
 }
 
 

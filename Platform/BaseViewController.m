@@ -131,7 +131,6 @@
     Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];
     
     Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
-    
     Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];
     
     //Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
@@ -152,6 +151,9 @@
     self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
     [self.view addSubview:self.progressView];
     
+    // the notifications tableview that will sit under every view
+    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    //[self.view sendSubviewToBack:notificationsViewController.view];
     
 }
 
@@ -169,6 +171,7 @@
     // Toolbar
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
     [self.navigationController.toolbar setTranslucent:YES];
+    
 }
 
 
