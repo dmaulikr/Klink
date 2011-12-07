@@ -15,6 +15,7 @@
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
+#import "DateTimeHelper.h"
 
 #define kNOTIFICATIONID     @"notificationid"
 
@@ -29,7 +30,7 @@
 }
 
 - (CGRect) frameForNotificationTitle {
-    return CGRectMake(136, 28, 124, 21);
+    return CGRectMake(0, 0, 240, 21);
 }
 
 - (CGRect) frameForNotificationBody {
@@ -45,7 +46,8 @@
    
   
     if (notification != nil) {
-        self.lbl_notificationTitle.text = notification.title;
+        NSDate* dateSent = [DateTimeHelper parseWebServiceDateDouble:notification.datecreated];
+        self.lbl_notificationTitle.text = [DateTimeHelper formatMediumDateWithTime:dateSent];
         self.lbl_notificationMessage.text = notification.message;
         self.img_notificationImage.image = nil;
         

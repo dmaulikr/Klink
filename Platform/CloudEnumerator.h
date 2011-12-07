@@ -53,7 +53,7 @@
                 (Query *)query 
                 withQueryOptions:(QueryOptions *)queryOptions;
 
-
+- (void) reset;
 - (void) enumerateNextPage;
 - (void) enumerateUntilEnd;
 

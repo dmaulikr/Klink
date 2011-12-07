@@ -45,6 +45,10 @@
     return self;
 }
 
+- (void) dealloc {
+    [self.enumerationContext release];
+}
+
 - (id) initWithQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
@@ -142,6 +146,13 @@
         //no execute case
         LOG_ENUMERATION(1, @"%@Could not execute enumerate either because an existing enumeration is pending or not enough time has lapsed to run the next enumeration",activityName);
     }
+}
+- (void) reset {
+    //resets an enumerator to a default state
+    self.lastExecutedTime = nil;
+    self.enumerationContext.isDone = NO;
+    self.enumerationContext.pageNumber = 0;
+    self.enumerationContext.numberOfResultsReturned = 0;
 }
 
 - (void) onEnumerateComplete:(CallbackResult*)callbackResult {

@@ -19,6 +19,8 @@
     UILabel*        m_lbl_numcaptionslw;
     UILabel*        m_lbl_numphotoslw;
     EGORefreshTableHeaderView*  m_refreshHeader;
+
+    BOOL            m_refreshNotificationFeedOnDownload;
 }
 @property (nonatomic,retain) IBOutlet UILabel*             lbl_title;
 @property (nonatomic,retain) IBOutlet UITableView*         tbl_notifications;
@@ -31,4 +33,5 @@
 
 //Static initializers
 + (PersonalLogViewController*)createInstance;
++ (PersonalLogViewController*)createInstanceAndRefreshFeedOnAppear; 
 @end

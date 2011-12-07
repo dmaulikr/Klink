@@ -50,6 +50,7 @@ static CloudEnumeratorFactory* sharedManager;
     [self.enumeratorForDrafts release];
 }
 
+
 #pragma mark - Factory Methods
 
 - (CloudEnumerator*) enumeratorForFeeds:(NSNumber*)userid {

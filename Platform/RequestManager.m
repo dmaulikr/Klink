@@ -604,22 +604,33 @@ static RequestManager* sharedInstance;
     if ([putResponse.didSucceed boolValue]) {
         ResourceContext* resourceContext = [ResourceContext instance];
         Resource* modifiedResource = putResponse.modifiedResource;
-        Resource* existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
+        Resource* existingResource = nil;
         
-        [existingResource refreshWith:modifiedResource];
-        
-        
-        for (Resource* resource in putResponse.secondaryResults) {
-            existingResource = nil;
-            existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+        if (putResponse.modifiedResource != nil) {
+            existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
             
-            if (existingResource != nil) {
-                [existingResource refreshWith:resource];
+            [existingResource refreshWith:modifiedResource];
+        }
+        else {
+            LOG_REQUEST(0, @"%@ response from cloud did not include a representation of modified object, skipping refresh",activityName);
+        }
+        
+        if (putResponse.secondaryResults != nil) {
+            for (Resource* resource in putResponse.secondaryResults) {
+                existingResource = nil;
+                existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                
+                if (existingResource != nil) {
+                    [existingResource refreshWith:resource];
+                }
+                else {
+                    //new object , need to create it
+                    [resourceContext insert:resource];
+                }
             }
-            else {
-                //new object , need to create it
-                [resourceContext insert:resource];
-            }
+        }
+        else {
+             LOG_REQUEST(0, @"%@ response from cloud did not include any secondary objects, skipping refresh",activityName);
         }
         
         //we need to unlock any attachment attributes that are still pending processing
