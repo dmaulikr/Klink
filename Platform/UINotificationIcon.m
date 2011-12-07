@@ -144,16 +144,23 @@
 #pragma mark - Event Handlers
 - (void) onShowNotificationsClick:(id)sender {
     //when the notifications button is clicked we need to move to the profile view controller
-    PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
-    [self.navigationViewController pushViewController:personalLogViewController animated:YES];
+    //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
+    //[self.navigationViewController pushViewController:personalLogViewController animated:YES];
     
-    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-    //[self.navigationViewController pushViewController:notificationsViewController animated:YES];
-
-/* 
-    CGRect destination = self.navigationViewController.topViewController.view.frame;
+    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
     
-    if (destination.origin.x > 0) {
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.navigationViewController presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    [notificationsViewController release];
+    
+    
+    
+    /*CGRect destination = self.navigationViewController.topViewController.view.frame;
+    
+    if (destination.origin.x < 0) {
         destination.origin.x = 0;
     } else {
         destination.origin.x -= 254.5;
@@ -165,12 +172,10 @@
         
     } completion:^(BOOL finished) {
         
-        self.self.navigationViewController.topViewController.view.userInteractionEnabled = !(destination.origin.x > 0);
+        self.navigationViewController.topViewController.view.userInteractionEnabled = !(destination.origin.x < 0);
         
-    }];
-    
-    [self.navigationViewController pushViewController:notificationsViewController animated:YES];
- */
+    }];*/
+
 }
 
 

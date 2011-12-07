@@ -52,6 +52,8 @@
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
+		52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B7D148F4D210079270A /* ProfileViewController.m */; };
+		52E66B80148F4D210079270A /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B7E148F4D210079270A /* ProfileViewController.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
 		52F914091475E3E6007E0016 /* icon-newPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F914071475E3E6007E0016 /* icon-newPage.png */; };
@@ -267,6 +269,9 @@
 		52E66B72148EC7F50079270A /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
+		52E66B7C148F4D210079270A /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		52E66B7D148F4D210079270A /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		52E66B7E148F4D210079270A /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
@@ -1063,6 +1068,9 @@
 				52E66B72148EC7F50079270A /* NotificationsViewController.h */,
 				52E66B73148EC7F50079270A /* NotificationsViewController.m */,
 				52E66B74148EC7F60079270A /* NotificationsViewController.xib */,
+				52E66B7C148F4D210079270A /* ProfileViewController.h */,
+				52E66B7D148F4D210079270A /* ProfileViewController.m */,
+				52E66B7E148F4D210079270A /* ProfileViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1458,6 +1466,7 @@
 				521EAC0E148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png in Resources */,
 				52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */,
 				52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */,
+				52E66B80148F4D210079270A /* ProfileViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1590,6 +1599,7 @@
 				520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */,
 				52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */,
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
+				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

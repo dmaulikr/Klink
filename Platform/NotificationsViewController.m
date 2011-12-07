@@ -15,8 +15,10 @@
 #import "DateTimeHelper.h"
 
 @implementation NotificationsViewController
+@synthesize tbl_notificationsTableView = m_tbl_notificationsTableVIew;
 @synthesize frc_notifications   = __frc_notifications;
 @synthesize refreshHeader       = m_refreshHeader;
+@synthesize refreshNotificationFeedOnDownload = m_refreshNotificationFeedOnDownload;
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_notifications {
@@ -83,9 +85,10 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
+    //self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -105,12 +108,15 @@
     [super viewDidLoad];
     
     // setup pulldown refresh on tableview
-    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notificationsTableView.bounds.size.height, self.tbl_notificationsTableView.bounds.size.width, self.tbl_notificationsTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
-    [self.view addSubview:self.refreshHeader];
+    [self.tbl_notificationsTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
-
+    
+    // Navigation Bar Buttons
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+                                              
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -128,6 +134,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Set status bar style to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTintColor:nil];
+    
+    // Set the navigationbar title
+    self.navigationItem.title = @"Notifications";
     
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
@@ -161,11 +178,6 @@
 {
     // Return the number of sections.
     return 1;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"Notifications";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -272,10 +284,10 @@
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
         
-        [self.view insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {
-        [self.view deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_notificationsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     
 }
@@ -297,15 +309,27 @@
     return [NSDate date];
 }
 
+#pragma mark - Navigation Bar button handler 
+- (void)onDoneButtonPressed:(id)sender {    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark - Async Callback Handlers
 - (void) onFeedFinishedRefresh:(CallbackResult*)result {
-    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_notificationsTableView];
 }
 
 
 #pragma mark - Static Initializers
 + (NotificationsViewController*)createInstance {
     NotificationsViewController* instance = [[[NotificationsViewController alloc]initWithNibName:@"NotificationsViewController" bundle:nil]autorelease];
+    instance.refreshNotificationFeedOnDownload = NO;
+    return instance;
+}
+
++ (NotificationsViewController*)createInstanceAndRefreshFeedOnAppear {
+    NotificationsViewController* instance = [[[NotificationsViewController alloc]initWithNibName:@"NotificationsViewController" bundle:nil]autorelease];
+    instance.refreshNotificationFeedOnDownload = YES;
     return instance;
 }
 

@@ -112,7 +112,7 @@
 		
 		NSDate *date = [_delegate egoRefreshTableHeaderDataSourceLastUpdated:self];
 		
-		[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehaviorDefault];
+        [NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehaviorDefault];
 		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];

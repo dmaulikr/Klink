@@ -22,6 +22,7 @@
 #import "DateTimeHelper.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
+#import "ProfileViewController.h"
 
 
 #define kPHOTOID @"photoid"
@@ -364,8 +365,17 @@
 
 #pragma mark - Toolbar Button Event Handlers
 - (void) onUsernameButtonPressed:(id)sender {
-    PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
-    [self.navigationController pushViewController:personalLogViewController animated:YES];
+    //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
+    //[self.navigationController pushViewController:personalLogViewController animated:YES];
+    
+    ProfileViewController* profileViewController = [ProfileViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    [profileViewController release];
 }
 
 - (void) onDraftButtonPressed:(id)sender {
@@ -402,6 +412,9 @@
 
 - (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
+    
+    // reset the content inset of the tableview so bottom is not covered by toolbar
+    //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
 }
 
 
@@ -440,11 +453,13 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
         [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
         [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tbl_productionTableView reloadData];
         // Update draft counter labels at the top of the view
         [self updateDraftCounterLabels];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_productionTableView reloadData];
         // Update draft counter labels at the top of the view
         [self updateDraftCounterLabels];
     }
@@ -497,6 +512,9 @@
 - (void) onEnumerateComplete {
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
+    
+    // reset the content inset of the tableview so bottom is not covered by toolbar
+    [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
 }
 
 @end

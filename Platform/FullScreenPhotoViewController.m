@@ -39,6 +39,8 @@
 
 @synthesize captionCloudEnumerator  = m_captionCloudEnumerator;
 
+@synthesize controlVisibilityTimer  = m_controlVisibilityTimer;
+
 @synthesize pageID                  = m_pageID;
 @synthesize photoID                 = m_photoID;
 @synthesize captionID               = m_captionID;
@@ -413,6 +415,83 @@
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#pragma mark Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		[self.controlVisibilityTimer release];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay {
+    [self cancelControlHiding];
+	if (![UIApplication sharedApplication].isStatusBarHidden) {
+		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+	}
+}
+
+- (void)setControlsHidden:(BOOL)hidden {
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+    
+	// Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Status Bar
+	if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
+	}
+	
+	// Get status bar height if visible
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Set navigation bar frame
+	CGRect navBarFrame = self.navigationController.navigationBar.frame;
+	navBarFrame.origin.y = statusBarHeight;
+	self.navigationController.navigationBar.frame = navBarFrame;
+	
+	// Navigation and tool bars
+	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
+    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
+    
+    // Photo and caption view sliders
+    [self.photoViewSlider setAlpha:hidden ? 0 : 1];
+    [self.captionViewSlider setAlpha:hidden ? 0 : 1];
+    
+    // Photo metadata
+    [self.photoMetaData setAlpha:hidden ? 0 : 1];
+    
+    
+	[UIView commitAnimations];
+	
+	// Control hiding timer
+	// Will cancel existing timer but only begin hiding if
+	// they are visible
+	//[self hideControlsAfterDelay];
+	
+}
+
+- (void)hideControls { 
+    [self setControlsHidden:YES]; 
+}
+
+- (void)toggleControls { 
+    [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
+}
+
 
 #pragma mark - Toolbar Button Helpers
 - (void) disableFacebookButton {
