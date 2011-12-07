@@ -30,7 +30,7 @@
 @property (nonatomic,retain) IBOutlet UILabel*             lbl_numcaptionslw;
 @property (nonatomic,retain) IBOutlet UILabel*             lbl_numphotoslw;
 @property (nonatomic,retain) EGORefreshTableHeaderView*     refreshHeader;
-
+@property                    BOOL                           refreshNotificationFeedOnDownload;
 //Static initializers
 + (PersonalLogViewController*)createInstance;
 + (PersonalLogViewController*)createInstanceAndRefreshFeedOnAppear; 
