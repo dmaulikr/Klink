@@ -51,6 +51,8 @@
 @synthesize photoMetaData           = m_photoMetaData;
 @synthesize iv_photo                = m_iv_photo;
 @synthesize iv_photoLandscape       = m_iv_photoLandscape;
+@synthesize iv_leftArrow            = m_iv_leftArrow;
+@synthesize iv_rightArrow           = m_iv_rightArrow;
 
 @synthesize tb_facebookButton       = m_tb_facebookButton;
 @synthesize tb_twitterButton        = m_tb_twitterButton;
@@ -505,6 +507,28 @@
     [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
 }
 
+- (void)showHideArrows {
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         [self.iv_leftArrow setAlpha:1];
+                         [self.iv_rightArrow setAlpha:1];
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:1
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              [self.iv_leftArrow setAlpha:0];
+                                              [self.iv_rightArrow setAlpha:0];
+                                          }
+                                          completion:nil];
+                     }];
+    
+}
+
 #pragma mark - Landscape Photo Rotation Event Handler
 - (void) didRotate {
     if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
@@ -873,6 +897,7 @@
                 [v_caption renderCaptionWithID:caption.objectid];
             }
             [self.captionViewSlider addSubview:v_caption];
+            
         }
         else if (captionCount <= 0) {
             self.captionID = nil;
@@ -915,18 +940,35 @@
         
         [self updateNavigation];
     }
-    else if ((viewSlider == self.captionViewSlider) && ([[self.frc_captions fetchedObjects]count] != 0)) {
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        if ([[self.frc_captions fetchedObjects]count] != 0) {
+    else if (viewSlider == self.captionViewSlider) {
+        int captionCount = [[self.frc_captions fetchedObjects]count];
+        
+        if (captionCount > 0 && index < captionCount) {
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            
             self.captionID = caption.objectid;
+            
+            /*if (index == 0) {
+                [self.iv_leftArrow setAlpha:0];
+                [self.iv_rightArrow setAlpha:1];
+            }
+            if (index == captionCount - 1) {
+                [self.iv_leftArrow setAlpha:1];
+                [self.iv_rightArrow setAlpha:0];
+            }
+            else {
+                [self showHideArrows];
+            }*/
         }
-        else {
+        else if (captionCount <= 0) {
             self.captionID = nil;
+            //[self.iv_leftArrow setAlpha:0];
+            //[self.iv_leftArrow setAlpha:0];
         }
     }
     
     [self enableDisableVoteButton];
-    
+
 }
 
 - (int)   itemCountFor:         (UIPagedViewSlider2*)   viewSlider {

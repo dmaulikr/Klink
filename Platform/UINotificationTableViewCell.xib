@@ -50,6 +50,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{6, 4}, {60, 60}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="503161201"/>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -64,6 +65,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 4}, {214, 40}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="182736235"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -94,6 +96,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{104, 42}, {182, 21}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="704035046"/>
 								<string key="NSReuseIdentifierKey">_NS:328</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -124,8 +127,10 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{296, 21}, {16, 26}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="589169640"/>
 								<string key="NSReuseIdentifierKey">_NS:567</string>
+								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -138,6 +143,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 43}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="491752764"/>
 								<string key="NSReuseIdentifierKey">_NS:567</string>
 								<int key="IBUIContentMode">1</int>
@@ -153,7 +159,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{26, 69}, {267, 4}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:567</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -165,6 +171,7 @@
 						</object>
 						<string key="NSFrameSize">{320, 72}</string>
 						<reference key="NSSuperview" ref="443699583"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="622367528"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="307027147">
 							<int key="NSColorSpace">3</int>
@@ -179,6 +186,7 @@
 				</object>
 				<string key="NSFrameSize">{320, 73}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="317785299"/>
 				<reference key="IBUIBackgroundColor" ref="307027147"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -338,7 +346,72 @@
 			<nil key="sourceID"/>
 			<int key="maxID">16</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">UINotificationTableViewCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iv_notificationImage</string>
+							<string>iv_notificationTypeImage</string>
+							<string>lbl_notificationDate</string>
+							<string>lbl_notificationMessage</string>
+							<string>notificationTableViewCell</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIImageView</string>
+							<string>UIImageView</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UITableViewCell</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iv_notificationImage</string>
+							<string>iv_notificationTypeImage</string>
+							<string>lbl_notificationDate</string>
+							<string>lbl_notificationMessage</string>
+							<string>notificationTableViewCell</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">iv_notificationImage</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">iv_notificationTypeImage</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">lbl_notificationDate</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">lbl_notificationMessage</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">notificationTableViewCell</string>
+								<string key="candidateClassName">UITableViewCell</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UINotificationTableViewCell.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
