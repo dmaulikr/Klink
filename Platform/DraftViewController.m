@@ -25,7 +25,7 @@
 #import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
-#define kDRAFTTABLEVIEWCELLHEIGHT 113
+#define kDRAFTTABLEVIEWCELLHEIGHT 115
 
 @implementation DraftViewController
 @synthesize frc_photos = __frc_photos;
@@ -214,6 +214,7 @@
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
+    self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_draftTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
 }

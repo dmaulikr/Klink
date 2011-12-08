@@ -28,7 +28,7 @@
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
 #define kCELLTITLE @"celltitle"
-#define kPRODUTIONLOGTABLEVIEWCELLHEIGHT 68
+#define kPRODUTIONLOGTABLEVIEWCELLHEIGHT 73
 
 @implementation ProductionLogViewController
 @synthesize tbl_productionTableView     = m_tbl_productionTableView;
@@ -224,6 +224,7 @@
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
+    self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_productionTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
