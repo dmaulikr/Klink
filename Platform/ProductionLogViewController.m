@@ -28,6 +28,7 @@
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
 #define kCELLTITLE @"celltitle"
+#define kPRODUTIONLOGTABLEVIEWCELLHEIGHT 68
 
 @implementation ProductionLogViewController
 @synthesize tbl_productionTableView     = m_tbl_productionTableView;
@@ -403,7 +404,7 @@
 
 #pragma mark - Table view delegate
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 70;
+    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {

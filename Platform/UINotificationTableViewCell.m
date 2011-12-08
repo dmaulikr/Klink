@@ -21,20 +21,26 @@
 
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
-@synthesize lbl_notificationTitle = m_lbl_notificationTitle;
+@synthesize notificationTableViewCell = m_notificationTableViewCell;
+//@synthesize lbl_notificationTitle = m_lbl_notificationTitle;
 @synthesize lbl_notificationMessage = m_lbl_notificationMessage;
-@synthesize img_notificationImage = m_img_notificationImage;
-#pragma mark - Frames
-- (CGRect) frameForImageView {
-    return CGRectMake(20, 28, 108, 83);
-}
+@synthesize lbl_notificationDate = m_lbl_notificationDate;
+@synthesize iv_notificationImage = m_iv_notificationImage;
+@synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
 
-- (CGRect) frameForNotificationTitle {
-    return CGRectMake(0, 0, 240, 21);
-}
 
-- (CGRect) frameForNotificationBody {
-    return CGRectMake(136, 55, 124, 56);
+- (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
+    NSDate* now = [NSDate date];
+    NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:notificationDate];
+    NSString* timeSinceCreated = [[NSString alloc] init];
+    if (intervalSinceCreated < 1 ) {
+        timeSinceCreated = @"a moment";
+    }
+    else {
+        timeSinceCreated = [DateTimeHelper formatTimeInterval:intervalSinceCreated];
+    }
+    
+    return [NSString stringWithFormat:@"%@ ago",timeSinceCreated];
 }
 
 #pragma mark - Instance Methods
@@ -43,13 +49,13 @@
     ResourceContext* resourceContext = [ResourceContext instance];
         
     Feed* notification = (Feed*)[resourceContext resourceWithType:FEED withID:self.notificationID];
-   
   
     if (notification != nil) {
         NSDate* dateSent = [DateTimeHelper parseWebServiceDateDouble:notification.datecreated];
-        self.lbl_notificationTitle.text = [DateTimeHelper formatMediumDateWithTime:dateSent];
+        self.lbl_notificationDate.text = [self getDateStringForNotification:dateSent];
+        //self.lbl_notificationTitle.text = notification.title;
         self.lbl_notificationMessage.text = notification.message;
-        self.img_notificationImage.image = nil;
+        self.iv_notificationImage.image = nil;
         
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:notification.objectid forKey:kNOTIFICATIONID];
@@ -60,12 +66,16 @@
             UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
             
             if (image != nil) {
-                self.img_notificationImage.image = image;
+                self.iv_notificationImage.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_notificationImage.image = image;
+            }
+            else {
+                self.iv_notificationImage.contentMode = UIViewContentModeCenter;
+                self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
             }
         }
-
-        
     }
+    [self setNeedsDisplay];
 }
 
 - (void) renderNotificationWithID:(NSNumber*)notificationID {
@@ -73,29 +83,21 @@
     [self render];
 }
 
--(id)initWithNotificationID:(NSNumber *)notificationID withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.notificationID = notificationID;
         
-        CGRect frameForNotificationMessage = [self frameForNotificationBody];
-        self.lbl_notificationMessage = [[UILabel alloc]initWithFrame:frameForNotificationMessage];
-        self.lbl_notificationMessage.lineBreakMode = UILineBreakModeWordWrap;
-        self.lbl_notificationMessage.numberOfLines = 0;
+        NSArray* topLevelObjs = nil;
         
-        CGRect frameForNotificationTitle = [self frameForNotificationTitle];
-        self.lbl_notificationTitle = [[UILabel alloc]initWithFrame:frameForNotificationTitle];
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UINotificationTableViewCell" owner:self options:nil];
+        if (topLevelObjs == nil)
+        {
+            NSLog(@"Error! Could not load UINotificationTableViewCell file.\n");
+        }
         
-        CGRect frameForImageView = [self frameForImageView];
-        self.img_notificationImage = [[UIImageView alloc]initWithFrame:frameForImageView];
-        self.img_notificationImage.backgroundColor = [UIColor blackColor];
-        [self.contentView addSubview:self.lbl_notificationTitle];
-        [self.contentView addSubview:self.lbl_notificationMessage];
-        [self.contentView addSubview:self.img_notificationImage];
-        
-        
+        [self.contentView addSubview:self.notificationTableViewCell];
     }
     return self;
 }
@@ -123,13 +125,13 @@
         if ([nid isEqualToNumber:self.notificationID]) {
             //we only draw the image if this view hasnt been repurposed for another notification
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
-            [self.img_notificationImage performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
-            
+            [self.iv_notificationImage performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            self.iv_notificationImage.contentMode = UIViewContentModeScaleAspectFit;
             [self setNeedsDisplay];
         }
     }
     else {
-        self.img_notificationImage.backgroundColor = [UIColor blackColor];
+        self.iv_notificationImage.backgroundColor = [UIColor redColor];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 

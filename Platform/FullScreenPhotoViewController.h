@@ -20,6 +20,8 @@
     UIPagedViewSlider2* m_photoViewSlider;
     UIPagedViewSlider2* m_captionViewSlider;
     UIPhotoMetaDataView*    m_photoMetaData;
+    UIImageView*        m_iv_photo;
+    UIImageView*        m_iv_photoLandscape;
     
     CloudEnumerator*    m_captionCloudEnumerator;
     
@@ -47,6 +49,8 @@
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   photoViewSlider;
 @property (nonatomic,retain) IBOutlet UIPagedViewSlider2*   captionViewSlider;
 @property (nonatomic,retain) IBOutlet UIPhotoMetaDataView*  photoMetaData;
+@property (nonatomic,retain)          UIImageView*          iv_photo;
+@property (nonatomic,retain) IBOutlet UIImageView*          iv_photoLandscape;
 
 // Toolbar Buttons
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_facebookButton;

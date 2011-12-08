@@ -14,6 +14,8 @@
 #import "User.h"
 #import "DateTimeHelper.h"
 
+#define kNOTIFICATIONTABLEVIEWCELLHEIGHT 68
+
 @implementation NotificationsViewController
 @synthesize tbl_notificationsTableView = m_tbl_notificationsTableVIew;
 @synthesize frc_notifications   = __frc_notifications;
@@ -195,7 +197,8 @@
         UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
     
         if (cell == nil) {
-            cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            //cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            cell = [[[UINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
         }
         
         // Configure the cell...
@@ -258,7 +261,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 131;
+    return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

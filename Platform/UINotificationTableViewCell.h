@@ -10,22 +10,27 @@
 
 
 @interface UINotificationTableViewCell : UITableViewCell {
-    NSNumber* m_notificationID;
+    NSNumber*           m_notificationID;
+    UITableViewCell*    m_notificationTableViewCell;
     
-    UIImageView* m_img_notificationImage;
-    UILabel*     m_lbl_notificationTitle;
-    UILabel*     m_lbl_notificationMessage;
+    //UILabel*        m_lbl_notificationTitle;
+    UILabel*        m_lbl_notificationMessage;
+    UILabel*        m_lbl_notificationDate;
+    UIImageView*    m_iv_notificationImage;
+    UIImageView*    m_iv_notificationTypeImage;
 }
 
-@property (nonatomic,retain) NSNumber* notificationID;
-@property (nonatomic,retain) UILabel* lbl_notificationTitle;
-@property (nonatomic,retain) UILabel* lbl_notificationMessage;
-@property (nonatomic,retain) UIImageView* img_notificationImage;
+@property (nonatomic,retain) NSNumber*                  notificationID;
+@property (nonatomic,retain) IBOutlet UITableViewCell*  notificationTableViewCell;
 
-- (id)initWithNotificationID:(NSNumber*)notificationID 
-                   withStyle:(UITableViewCellStyle)style 
-             reuseIdentifier:(NSString *)reuseIdentifier;
+//@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationTitle;
+@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationMessage;
+@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationDate;
+@property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationImage;
+@property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationTypeImage;
+
 - (void) renderNotificationWithID:(NSNumber*)notificationID; 
 
 + (NSString*) cellIdentifier;
+
 @end

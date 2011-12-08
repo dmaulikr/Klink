@@ -25,6 +25,7 @@
 #import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
+#define kDRAFTTABLEVIEWCELLHEIGHT 113
 
 @implementation DraftViewController
 @synthesize frc_photos = __frc_photos;
@@ -249,7 +250,7 @@
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 113;
+    return kDRAFTTABLEVIEWCELLHEIGHT;
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {

@@ -24,6 +24,8 @@
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
 		520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */; };
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
+		5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */; };
+		5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */; };
 		521EAC0D148D9F84006E29D4 /* icon-thumbUp-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 521EAC0B148D9F84006E29D4 /* icon-thumbUp-highlighted.png */; };
 		521EAC0E148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */; };
 		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
@@ -237,6 +239,9 @@
 		520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPhotoMetaDataView.xib; sourceTree = "<group>"; };
 		520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoMetaDataView.h; sourceTree = "<group>"; };
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
+		5212F8EC149044A100E334B2 /* LandscapePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapePhotoViewController.h; sourceTree = "<group>"; };
+		5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapePhotoViewController.m; sourceTree = "<group>"; };
+		5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandscapePhotoViewController.xib; sourceTree = "<group>"; };
 		521EAC0B148D9F84006E29D4 /* icon-thumbUp-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp-highlighted.png"; sourceTree = "<group>"; };
 		521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp-highlighted@2x.png"; sourceTree = "<group>"; };
 		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
@@ -1071,6 +1076,9 @@
 				52E66B7C148F4D210079270A /* ProfileViewController.h */,
 				52E66B7D148F4D210079270A /* ProfileViewController.m */,
 				52E66B7E148F4D210079270A /* ProfileViewController.xib */,
+				5212F8EC149044A100E334B2 /* LandscapePhotoViewController.h */,
+				5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */,
+				5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1467,6 +1475,7 @@
 				52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */,
 				52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */,
 				52E66B80148F4D210079270A /* ProfileViewController.xib in Resources */,
+				5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1600,6 +1609,7 @@
 				52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */,
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
+				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
