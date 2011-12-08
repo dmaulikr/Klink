@@ -598,13 +598,15 @@ static RequestManager* sharedInstance;
 - (Response*) processModifyResponse:(NSString*)responseString withRequest:(Request*)request {
     NSString* activityName = @"RequestManager.processModifyResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Resource* existingResource = nil;
     
     PutResponse* putResponse = [[PutResponse alloc] initFromJSONDictionary:jsonDictionary];
     
     if ([putResponse.didSucceed boolValue]) {
-        ResourceContext* resourceContext = [ResourceContext instance];
+        
         Resource* modifiedResource = putResponse.modifiedResource;
-        Resource* existingResource = nil;
+        
         
         if (putResponse.modifiedResource != nil) {
             existingResource = [resourceContext resourceWithType:modifiedResource.objecttype withID:modifiedResource.objectid];
@@ -648,6 +650,14 @@ static RequestManager* sharedInstance;
     }
     else {
          LOG_REQUEST(1, @"%@Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
+        
+        //we need to unlock any attachment attributes that were locked by this request to begin with
+         Resource* existingResource = nil;
+        existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
+        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+        [existingResource unlockAttributes:attachmentAttributes];
+        [resourceContext save:NO onFinishCallback:nil];
+        
     }
     return putResponse;
     
@@ -691,17 +701,19 @@ static RequestManager* sharedInstance;
 - (Response*) processCreateResponse:(NSString*)responseString withRequest:(Request*)request {
     NSString* activityName = @"RequestManager.processCreateResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Resource* existingResource = nil;
     
     //create a create response handler
     CreateResponse* createResponse = [[CreateResponse alloc] initFromJSONDictionary:jsonDictionary];
     
     if ([createResponse.didSucceed boolValue]) {
-        ResourceContext* resourceContext = [ResourceContext instance];
+       
         
         LOG_REQUEST(0,@"%@Create request completed with %d objects created",activityName,[createResponse.createdResources count]);
         
         //we find the target object
-        Resource* existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
+         existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
         
         //we refresh the object with the resource returned by the web service
         Resource* newResource = [createResponse createdResourceWith:request.targetresourceid withTargetResourceType:request.targetresourcetype];
@@ -736,6 +748,13 @@ static RequestManager* sharedInstance;
     }
     else {
         LOG_REQUEST(1, @"%@Create request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,createResponse.errorMessage);
+        
+        //we need to unlock attachment attributes in the case of a failed create
+        NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
+        
+        [existingResource unlockAttributes:attachmentAttributesInRequest];
+        //we now save the changes we made
+        [resourceContext save:NO onFinishCallback:nil];
     }
     return createResponse;
 }

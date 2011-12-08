@@ -322,10 +322,10 @@ static NSMutableDictionary* managedObjectContexts;
     }
     //now we commit the change to the store
     //let us raise events
-   // EventManager* eventManager = [EventManager instance];
-   // [eventManager raiseEventsForInsertedObjects:insertedObjects];
-   // [eventManager raiseEventsForUpdatedObjects:updatedObjects];
-   // [eventManager raiseEventsForDeletedObjects:deletedObjects];
+    EventManager* eventManager = [EventManager instance];
+    [eventManager raiseEventsForInsertedObjects:insertedObjects];
+    [eventManager raiseEventsForUpdatedObjects:updatedObjects];
+    [eventManager raiseEventsForDeletedObjects:deletedObjects];
 
     NSError* error = nil;
     [self.managedObjectContext save:&error];
