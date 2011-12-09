@@ -51,6 +51,7 @@
 @synthesize photoMetaData           = m_photoMetaData;
 @synthesize iv_photo                = m_iv_photo;
 @synthesize iv_photoLandscape       = m_iv_photoLandscape;
+@synthesize pg_captionPageIndicator = m_pg_captionPageIndicator;
 @synthesize iv_leftArrow            = m_iv_leftArrow;
 @synthesize iv_rightArrow           = m_iv_rightArrow;
 
@@ -898,9 +899,16 @@
             }
             [self.captionViewSlider addSubview:v_caption];
             
+            // Update page indicator for captions
+            [self.pg_captionPageIndicator setNumberOfPages:captionCount];
+            [self.pg_captionPageIndicator setCurrentPage:index];
+            
         }
         else if (captionCount <= 0) {
             self.captionID = nil;
+            
+            // Hide page indicator for captions
+            [self.pg_captionPageIndicator setHidden:YES];
         }
     }
     

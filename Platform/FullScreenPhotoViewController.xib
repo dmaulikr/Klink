@@ -12,9 +12,10 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBProxyObject</string>
-			<string>IBUIView</string>
+			<string>IBUIPageControl</string>
 			<string>IBUIImageView</string>
+			<string>IBUIView</string>
+			<string>IBProxyObject</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -123,7 +124,7 @@
 						<string key="NSFrame">{{294, 383}, {16, 26}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="50001318"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -132,6 +133,21 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">arrow_right_scetched.png</string>
 						</object>
+					</object>
+					<object class="IBUIPageControl" id="50001318">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">1316</int>
+						<object class="NSPSMatrix" key="NSFrameMatrix"/>
+						<string key="NSFrame">{{141, 411}, {38, 36}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:660</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUINumberOfPages">3</int>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 480}</string>
@@ -232,6 +248,14 @@
 					</object>
 					<int key="connectionID">33</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">pg_captionPageIndicator</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="50001318"/>
+					</object>
+					<int key="connectionID">35</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -256,6 +280,7 @@
 							<reference ref="957411451"/>
 							<reference ref="533876516"/>
 							<reference ref="245895294"/>
+							<reference ref="50001318"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -317,6 +342,11 @@
 						<reference key="object" ref="533876516"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">34</int>
+						<reference key="object" ref="50001318"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -336,6 +366,7 @@
 					<string>28.IBPluginDependency</string>
 					<string>30.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
+					<string>34.IBPluginDependency</string>
 					<string>7.CustomClassName</string>
 					<string>7.IBPluginDependency</string>
 				</object>
@@ -350,6 +381,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIPhotoMetaDataView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -370,7 +402,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">33</int>
+			<int key="maxID">35</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -394,6 +426,7 @@
 							<string>iv_leftArrow</string>
 							<string>iv_photoLandscape</string>
 							<string>iv_rightArrow</string>
+							<string>pg_captionPageIndicator</string>
 							<string>photoMetaData</string>
 							<string>photoViewSlider</string>
 							<string>tb_cameraButton</string>
@@ -408,6 +441,7 @@
 							<string>UIImageView</string>
 							<string>UIImageView</string>
 							<string>UIImageView</string>
+							<string>UIPageControl</string>
 							<string>UIPhotoMetaDataView</string>
 							<string>UIPagedViewSlider2</string>
 							<string>UIBarButtonItem</string>
@@ -425,6 +459,7 @@
 							<string>iv_leftArrow</string>
 							<string>iv_photoLandscape</string>
 							<string>iv_rightArrow</string>
+							<string>pg_captionPageIndicator</string>
 							<string>photoMetaData</string>
 							<string>photoViewSlider</string>
 							<string>tb_cameraButton</string>
@@ -450,6 +485,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">iv_rightArrow</string>
 								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">pg_captionPageIndicator</string>
+								<string key="candidateClassName">UIPageControl</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">photoMetaData</string>
