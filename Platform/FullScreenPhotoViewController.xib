@@ -124,7 +124,7 @@
 						<string key="NSFrame">{{294, 383}, {16, 26}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="50001318"/>
+						<reference key="NSNextKeyView" ref="448204797"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -134,11 +134,11 @@
 							<string key="NSResourceName">arrow_right_scetched.png</string>
 						</object>
 					</object>
-					<object class="IBUIPageControl" id="50001318">
+					<object class="IBUIPageControl" id="448204797">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">1316</int>
+						<int key="NSvFlags">-2147482332</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{141, 411}, {38, 36}}</string>
+						<string key="NSFrame">{{141, 391}, {38, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -252,7 +252,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">pg_captionPageIndicator</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="50001318"/>
+						<reference key="destination" ref="448204797"/>
 					</object>
 					<int key="connectionID">35</int>
 				</object>
@@ -280,7 +280,7 @@
 							<reference ref="957411451"/>
 							<reference ref="533876516"/>
 							<reference ref="245895294"/>
-							<reference ref="50001318"/>
+							<reference ref="448204797"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -344,7 +344,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">34</int>
-						<reference key="object" ref="50001318"/>
+						<reference key="object" ref="448204797"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
