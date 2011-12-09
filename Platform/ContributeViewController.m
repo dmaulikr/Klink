@@ -604,7 +604,7 @@
 }
 
 
-#pragma mark Navigation Bar button handler
+#pragma mark - Navigation Bar button handler
 
 - (void)onSubmitButtonPressed:(id)sender {
     //ResourceContext* resourceContext = [ResourceContext instance];

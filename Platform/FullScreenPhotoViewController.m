@@ -20,6 +20,7 @@
 #import "ImageDownloadResponse.h"
 #import "ApplicationSettings.h"
 #import "SocialSharingManager.h"
+#import "LandscapePhotoViewController.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -48,6 +49,10 @@
 @synthesize photoViewSlider         = m_photoViewSlider;
 @synthesize captionViewSlider       = m_captionViewSlider;
 @synthesize photoMetaData           = m_photoMetaData;
+@synthesize iv_photo                = m_iv_photo;
+@synthesize iv_photoLandscape       = m_iv_photoLandscape;
+@synthesize iv_leftArrow            = m_iv_leftArrow;
+@synthesize iv_rightArrow           = m_iv_rightArrow;
 
 @synthesize tb_facebookButton       = m_tb_facebookButton;
 @synthesize tb_twitterButton        = m_tb_twitterButton;
@@ -224,9 +229,6 @@
     self.photoViewSlider.tableView.allowsSelection = NO;
     self.captionViewSlider.tableView.allowsSelection = NO;
     
-    // this setting stops a touch event in the area of the caption view slider from passing through to the photo view slider
-    //self.captionViewSlider.exclusiveTouch = YES;
-    
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
     
@@ -242,6 +244,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //self =  [self commonInit];
+        
+        self.wantsFullScreenLayout = YES;
+        
     }
     return self;
 }
@@ -397,6 +402,11 @@
     [super viewDidLoad];    
     self =  [self commonInit];
     
+    // Setup notification for device orientation change
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRotate)
+                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    
     self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
     self.captionCloudEnumerator.delegate = self;
     [self.captionCloudEnumerator enumerateUntilEnd];
@@ -413,10 +423,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES; //(interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark Control Hiding / Showing
+
+#pragma mark - Control Hiding / Showing
 - (void)cancelControlHiding {
 	// If a timer exists then cancel and release
 	if (self.controlVisibilityTimer) {
@@ -426,10 +437,10 @@
 	}
 }
 
-- (void)hideControlsAfterDelay {
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
     [self cancelControlHiding];
 	if (![UIApplication sharedApplication].isStatusBarHidden) {
-		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
 	}
 }
 
@@ -467,8 +478,7 @@
 	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
     [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
     
-    // Photo and caption view sliders
-    [self.photoViewSlider setAlpha:hidden ? 0 : 1];
+    // Caption view slider
     [self.captionViewSlider setAlpha:hidden ? 0 : 1];
     
     // Photo metadata
@@ -488,10 +498,90 @@
     [self setControlsHidden:YES]; 
 }
 
+- (void)showControls { 
+    [self cancelControlHiding];
+    [self setControlsHidden:NO];
+}
+
 - (void)toggleControls { 
     [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
 }
 
+- (void)showHideArrows {
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         [self.iv_leftArrow setAlpha:1];
+                         [self.iv_rightArrow setAlpha:1];
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:1
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              [self.iv_leftArrow setAlpha:0];
+                                              [self.iv_rightArrow setAlpha:0];
+                                          }
+                                          completion:nil];
+                     }];
+    
+}
+
+#pragma mark - Landscape Photo Rotation Event Handler
+- (void) didRotate {
+    if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        
+        // hide all the other controls on the screen, including the photo view slider
+        //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        //[self.navigationController.navigationBar setAlpha:0];
+        //[self.navigationController.toolbar setAlpha:0];
+        [self.photoMetaData setHidden:YES];
+        [self.photoViewSlider setHidden:YES];
+        [self.captionViewSlider setHidden:YES];
+        [self hideControlsAfterDelay:0.25];
+        
+        // set the current image on the landscape image view
+        if (self.iv_photo.image) {
+            self.iv_photoLandscape.image = self.iv_photo.image;
+        }
+        else {
+            self.iv_photoLandscape.backgroundColor = [UIColor redColor];
+        }
+        
+        // unhide the landscape photo view
+        [self.iv_photoLandscape setHidden:NO];
+        
+        /* 
+        //An alternate way using modal view controllers
+        LandscapePhotoViewController* landscapePhotoView = [LandscapePhotoViewController createInstanceWithPhotoID:self.photoID];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:landscapePhotoView];
+        navigationController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+        navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [landscapePhotoView release];
+        */
+        
+    }
+    else {
+        // unhide all the other controls on the screen, including the photo view slider
+        //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        //[self.navigationController.navigationBar setHidden:NO];
+        //[self.navigationController.toolbar setHidden:NO];
+        [self.photoMetaData setHidden:NO];
+        [self.photoViewSlider setHidden:NO];
+        [self.captionViewSlider setHidden:NO];
+        [self showControls];
+        
+        // hide the landscape photo view
+        [self.iv_photoLandscape setHidden:YES];
+    }
+    
+}
 
 #pragma mark - Toolbar Button Helpers
 - (void) disableFacebookButton {
@@ -687,10 +777,25 @@
         int photoCount = [[self.frc_photos fetchedObjects]count];
         
         if (photoCount > 0 && index < photoCount) {
-            UIImageView* iv_photo = [[UIImageView alloc] initWithFrame:frame];
-            iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-            [self viewSlider:viewSlider configure:iv_photo forRowAtIndex:index withFrame:frame];
-            return iv_photo;
+            //setup the photo imageview
+            self.iv_photo = [[UIImageView alloc] initWithFrame:frame];
+            [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
+            
+            // Create gesture recognizer for the photo image view to handle a single tap
+            UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
+            
+            // Set required taps and number of touches
+            [oneFingerTap setNumberOfTapsRequired:1];
+            [oneFingerTap setNumberOfTouchesRequired:1];
+            
+            // Add the gesture to the photo image view
+            [self.iv_photo addGestureRecognizer:oneFingerTap];
+            
+            //enable gesture events on the photo
+            [self.iv_photo setUserInteractionEnabled:YES];            
+            
+            [self viewSlider:viewSlider configure:self.iv_photo forRowAtIndex:index withFrame:frame];
+            return self.iv_photo;
         }
         else {
             return nil;
@@ -740,10 +845,10 @@
             
             existingCell.frame = frame;
             
-            UIImageView* iv_photo = (UIImageView*)existingCell;
+            self.iv_photo = (UIImageView*)existingCell;
             
             ImageManager* imageManager = [ImageManager instance];
-            NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:iv_photo forKey:kIMAGEVIEW];
+            NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.iv_photo forKey:kIMAGEVIEW];
             
             //add the photo id to the context
             [userInfo setValue:photo.objectid forKey:kPHOTOID];
@@ -753,19 +858,27 @@
                 UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
                 
                 if (image != nil) {
-                    iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-                    iv_photo.image = image;
+                    [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
+                    self.iv_photo.image = image;
+                    
+                    //enable gesture events on the photo
+                    [self.iv_photo setUserInteractionEnabled:YES];
                 }
                 else {
-                    iv_photo.contentMode = UIViewContentModeCenter;
-                    iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                    // show the photo placeholder icon
+                    [self.iv_photo setContentMode:UIViewContentModeCenter];
+                    self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                    
+                    //disable gesture events on the photo
+                    [self.iv_photo setUserInteractionEnabled:NO];
                 }
             }
             else {
-                iv_photo.backgroundColor = [UIColor redColor];
+                self.iv_photo.backgroundColor = [UIColor redColor];
+                self.iv_photo.image = nil;
             }
             
-            [self.photoViewSlider addSubview:iv_photo];
+            [self.photoViewSlider addSubview:self.iv_photo];
         }
     }
     else if (viewSlider == self.captionViewSlider) {
@@ -784,6 +897,7 @@
                 [v_caption renderCaptionWithID:caption.objectid];
             }
             [self.captionViewSlider addSubview:v_caption];
+            
         }
         else if (captionCount <= 0) {
             self.captionID = nil;
@@ -819,22 +933,42 @@
         [self.frc_captions fetchedObjects];
         [self.captionViewSlider reset];
         
+        // unhide the controls of the view if hidden
+        [self showControls];
+        
         [self renderPhoto];
         
         [self updateNavigation];
     }
-    else if ((viewSlider == self.captionViewSlider) && ([[self.frc_captions fetchedObjects]count] != 0)) {
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        if ([[self.frc_captions fetchedObjects]count] != 0) {
+    else if (viewSlider == self.captionViewSlider) {
+        int captionCount = [[self.frc_captions fetchedObjects]count];
+        
+        if (captionCount > 0 && index < captionCount) {
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+            
             self.captionID = caption.objectid;
+            
+            /*if (index == 0) {
+                [self.iv_leftArrow setAlpha:0];
+                [self.iv_rightArrow setAlpha:1];
+            }
+            if (index == captionCount - 1) {
+                [self.iv_leftArrow setAlpha:1];
+                [self.iv_rightArrow setAlpha:0];
+            }
+            else {
+                [self showHideArrows];
+            }*/
         }
-        else {
+        else if (captionCount <= 0) {
             self.captionID = nil;
+            //[self.iv_leftArrow setAlpha:0];
+            //[self.iv_leftArrow setAlpha:0];
         }
     }
     
     [self enableDisableVoteButton];
-    
+
 }
 
 - (int)   itemCountFor:         (UIPagedViewSlider2*)   viewSlider {

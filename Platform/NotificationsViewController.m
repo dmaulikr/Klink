@@ -14,6 +14,8 @@
 #import "User.h"
 #import "DateTimeHelper.h"
 
+#define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
+
 @implementation NotificationsViewController
 @synthesize tbl_notificationsTableView = m_tbl_notificationsTableVIew;
 @synthesize frc_notifications   = __frc_notifications;
@@ -111,6 +113,7 @@
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notificationsTableView.bounds.size.height, self.tbl_notificationsTableView.bounds.size.width, self.tbl_notificationsTableView.bounds.size.height);
     self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
     self.refreshHeader.delegate = self;
+    self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_notificationsTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
@@ -195,7 +198,8 @@
         UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
     
         if (cell == nil) {
-            cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            //cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            cell = [[[UINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
         }
         
         // Configure the cell...
@@ -258,7 +262,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 131;
+    return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
