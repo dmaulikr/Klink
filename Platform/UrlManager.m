@@ -127,6 +127,8 @@
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
     return url;
 
     

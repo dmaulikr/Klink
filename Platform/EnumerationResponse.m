@@ -24,9 +24,18 @@
         self.secondaryResults = [[NSArray alloc]init];
         self.date = [NSDate date];
         self.enumerationContext = nil;
+       
     }
     return self;
 }
+
+
+- (void)dealloc {
+    [self.primaryResults release];
+    [self.secondaryResults release];
+    [super dealloc];
+}
+
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
         
     self = [super initFromJSONDictionary:jsonDictionary]; 
@@ -90,10 +99,5 @@
     return retVal;
 }
 
-- (void)dealloc {
-    [self.primaryResults release];
-    [self.secondaryResults release];
-    [super dealloc];
-}
 
 @end

@@ -70,6 +70,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.userInfo = userInfo;
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
+       //	 [httpRequest setValidatesSecureCertificate:NO];
         return httpRequest;
     }
     else if (opcode == kMODIFY ||
@@ -82,6 +83,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
+      //   [httpRequest setValidatesSecureCertificate:NO];
         return httpRequest;                           
                                    
     }
@@ -94,6 +96,8 @@ static RequestManager* sharedInstance;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
+        
+       // [httpRequest setValidatesSecureCertificate:NO];
         return httpRequest; 
         
     }
@@ -108,6 +112,7 @@ static RequestManager* sharedInstance;
         httpRequest.numberOfTimesToRetryOnTimeout = 3;
         //httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
         //httpRequest.downloadCache = self.imageCache;
+         //[httpRequest setValidatesSecureCertificate:NO];
         return httpRequest;
 
     }
@@ -119,6 +124,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
+        // [httpRequest setValidatesSecureCertificate:NO];
         return httpRequest;
 
     }
@@ -671,7 +677,7 @@ static RequestManager* sharedInstance;
     
     if ([response.didSucceed boolValue]) {
         //when we share, we dont need to do any actions on the response
-        LOG_REQUEST(1, @"%@Share request succeeded",activityName);
+        LOG_REQUEST(0, @"%@Share request succeeded",activityName);
 
     }
     else {
@@ -899,6 +905,8 @@ static RequestManager* sharedInstance;
     NSDictionary* userInfo = httpRequest.userInfo;
     NSString* response = [httpRequest responseString];
     
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc]init];
+    
     LOG_HTTP(0, @"%@HTTP request succeeded",activityName);
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
@@ -935,7 +943,7 @@ static RequestManager* sharedInstance;
         }
         
     }
-    
+    [pool drain];
     
 }
 

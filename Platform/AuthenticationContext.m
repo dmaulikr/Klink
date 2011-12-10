@@ -11,49 +11,55 @@
 #import "IJSONSerializable.h"
 #import "Types.h"
 #import "Macros.h"
+#import "NSStringGUIDCategory.h"
 
 @implementation AuthenticationContext
 @dynamic userid;
 @dynamic expirydate;
-@dynamic token;
+@dynamic authenticator;
+@dynamic hastwitter;
+@dynamic hasfacebook;
 @dynamic facebookaccesstoken;
 @dynamic facebookaccesstokenexpirydate;
 @dynamic facebookuserid;
-@dynamic twitteraccesstoken;
-@dynamic twitteruserid;
-@dynamic wppassword;
-@dynamic wpusername;
-@dynamic wordpressurl;
-@dynamic twitteraccesstokensecret;
+//@dynamic twitteraccesstoken;
+//@dynamic twitteruserid;
+//@dynamic wppassword;
+//@dynamic wpusername;
+//@dynamic wordpressurl;
+//@dynamic twitteraccesstokensecret;
 
 
 - (BOOL) hasWordpress {
-    BOOL retVal = NO;
-    
-    if (self.wpusername != nil && self.wordpressurl != nil) {
-        retVal = YES;
-    }
-    return retVal;
+//    BOOL retVal = NO;
+//    
+//    if (self.wpusername != nil && self.wordpressurl != nil) {
+//        retVal = YES;
+//    }
+//    return retVal;
+    return YES;
 }
 
 - (BOOL) hasFacebook {
-    BOOL retVal = NO;
-    
-    if (self.facebookuserid != nil && self.facebookaccesstoken != nil) {
-        retVal = YES;
-    }
-    return retVal;
+//    BOOL retVal = NO;
+//    
+//    if (self.facebookuserid != nil && self.facebookaccesstoken != nil) {
+//        retVal = YES;
+//    }
+//    return retVal;
+    return [self.hasfacebook boolValue];
 }
 
 - (BOOL) hasTwitter {
-    BOOL retVal = NO;
-    
-    if (self.twitteruserid != nil && ![self.twitteruserid isEqual:[NSNull null]]  
-        && self.twitteraccesstokensecret != nil && ![self.twitteraccesstokensecret isEqual:[NSNull null]] 
-        && self.twitteraccesstoken != nil && ![self.twitteraccesstoken isEqual:[NSNull null]]) {
-        retVal = YES;
-    }
-    return retVal;
+//    BOOL retVal = NO;
+//    
+//    if (self.twitteruserid != nil && ![self.twitteruserid isEqual:[NSNull null]]  
+//        && self.twitteraccesstokensecret != nil && ![self.twitteraccesstokensecret isEqual:[NSNull null]] 
+//        && self.twitteraccesstoken != nil && ![self.twitteraccesstoken isEqual:[NSNull null]]) {
+//        retVal = YES;
+//    }
+//    return retVal;
+    return [self.hastwitter boolValue];
 }
 
 #define kFACEBOOKMAXDATE    64092211200
@@ -79,8 +85,14 @@
                 else if (attrType == NSDoubleAttributeType) {
                     [self setValue:value  forKey:[attrDesc name]];
                 }
+                else if (attrType == NSBinaryDataAttributeType) {
+                    //we are passed a base64 encoded string
+                    NSString* base64String = (NSString*)value;
+                    NSData* data = [NSString decodeBase64WithString:base64String];
+                    [self setValue:data forKey:[attrDesc name]];
+                }
                 else if (attrType == NSStringAttributeType) {
-                    if ([value isKindOfClass:[NSString class]]) {
+                     if ([value isKindOfClass:[NSString class]]) {
                         [self setValue:value forKey:[attrDesc name]];
                     }
                     else {
@@ -152,7 +164,15 @@
             SEL selector = NSSelectorFromString([attrDesc name]);
             if ([self respondsToSelector:selector]) {
                 id attrValue = [self performSelector:selector];
-                [objectAsDictionary setValue:attrValue forKey:[attrDesc name]];
+                NSAttributeType attrType = [attrDesc attributeType];
+                if (attrType == NSBinaryDataAttributeType) {
+                    NSData* dataValue = (NSData*)attrValue;
+                    NSString* base64string = [NSString encodeBase64WithData:dataValue];
+                    [objectAsDictionary setValue:base64string forKey:[attrDesc name]];
+                }
+                else {
+                    [objectAsDictionary setValue:attrValue forKey:[attrDesc name]];
+                }
             }
         }
     }
