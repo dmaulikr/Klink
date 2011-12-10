@@ -41,6 +41,10 @@
 		5220103814785B4000C47C00 /* page_curled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103214785B4000C47C00 /* page_curled@2x.png */; };
 		5220103914785B4000C47C00 /* page.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103314785B4000C47C00 /* page.png */; };
 		5220103A14785B4000C47C00 /* page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103414785B4000C47C00 /* page@2x.png */; };
+		5239EEE51492A62E0006FB5D /* PageViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE31492A62E0006FB5D /* PageViewController2.m */; };
+		5239EEE61492A62E0006FB5D /* PageViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController2.xib */; };
+		5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewController.m */; };
+		5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewController.xib */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
@@ -260,6 +264,12 @@
 		5220103214785B4000C47C00 /* page_curled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_curled@2x.png"; sourceTree = "<group>"; };
 		5220103314785B4000C47C00 /* page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page.png; sourceTree = "<group>"; };
 		5220103414785B4000C47C00 /* page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page@2x.png"; sourceTree = "<group>"; };
+		5239EEE21492A62E0006FB5D /* PageViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController2.h; sourceTree = "<group>"; };
+		5239EEE31492A62E0006FB5D /* PageViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController2.m; sourceTree = "<group>"; };
+		5239EEE41492A62E0006FB5D /* PageViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController2.xib; sourceTree = "<group>"; };
+		5239EEE71492B22E0006FB5D /* BookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewController.h; sourceTree = "<group>"; };
+		5239EEE81492B22E0006FB5D /* BookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewController.m; sourceTree = "<group>"; };
+		5239EEE91492B22E0006FB5D /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewController.xib; sourceTree = "<group>"; };
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
@@ -1053,9 +1063,15 @@
 		C5C76C6B145B8FE800BA69B8 /* Bonobo */ = {
 			isa = PBXGroup;
 			children = (
+				5239EEE71492B22E0006FB5D /* BookViewController.h */,
+				5239EEE81492B22E0006FB5D /* BookViewController.m */,
+				5239EEE91492B22E0006FB5D /* BookViewController.xib */,
 				C5C76C70145B912000BA69B8 /* PageViewController.h */,
 				C5C76C71145B912000BA69B8 /* PageViewController.m */,
 				C5C76C8E145B986800BA69B8 /* PageViewController.xib */,
+				5239EEE21492A62E0006FB5D /* PageViewController2.h */,
+				5239EEE31492A62E0006FB5D /* PageViewController2.m */,
+				5239EEE41492A62E0006FB5D /* PageViewController2.xib */,
 				C5C76C73145B915300BA69B8 /* TableOfContentsViewController.h */,
 				C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */,
 				5264A2341474566C00E341BA /* ProductionLogViewController.h */,
@@ -1484,6 +1500,8 @@
 				5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */,
 				521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */,
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
+				5239EEE61492A62E0006FB5D /* PageViewController2.xib in Resources */,
+				5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1618,6 +1636,8 @@
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
 				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
+				5239EEE51492A62E0006FB5D /* PageViewController2.m in Sources */,
+				5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

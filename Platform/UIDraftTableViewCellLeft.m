@@ -17,8 +17,8 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 
-#define kPHOTOID        @"photoid"
-#define kCAPTIONID      @"captionid"
+#define kPHOTOID @"photoid"
+#define kCAPTIONID @"captionid"
 
 @implementation UIDraftTableViewCellLeft
 @synthesize photoID = m_photoID;

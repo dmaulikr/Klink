@@ -17,7 +17,8 @@
 #import "DateTimeHelper.h"
 
 #define kPAGEID @"pageid"
-#define kPHOTOID    @"photoid"
+#define kPHOTOID @"photoid"
+
 @implementation UIProductionLogTableViewCell
 @synthesize pageID = m_pageID;
 @synthesize productionLogTableViewCell = m_productionLogTableViewCell;
@@ -97,6 +98,7 @@
     
     //add the photo id to the context
     [userInfo setValue:photo.objectid forKey:kPHOTOID];
+    
     if (photo.thumbnailurl != nil && 
         ![photo.thumbnailurl isEqualToString:@""]) 
     {

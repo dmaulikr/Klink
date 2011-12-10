@@ -12,6 +12,7 @@
 #import "ContributeViewController.h"
 #import "CallbackResult.h"
 #import "ProductionLogViewController.h"
+#import "BookViewController.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
@@ -107,14 +108,17 @@
 #pragma mark UI Event Handlers
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
-    PageViewController* pageController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];
+    //PageViewController* pageController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];
+    BookViewController* bookController = [BookViewController createInstance];
     
     //TODO: calculate the page ID which the view controller should open to
-    NSNumber* pageID = [NSNumber numberWithInt:0];
-    pageController.pageID = pageID;
+    //NSNumber* pageID = [NSNumber numberWithInt:0];
+    //pageController.pageID = pageID;
     
-    [self.navigationController pushViewController:pageController animated:YES];
-    [pageController release];
+    //[self.navigationController pushViewController:pageController animated:YES];
+    //[pageController release];
+    [self.navigationController pushViewController:bookController animated:YES];
+    [bookController release];
     
 }
 
