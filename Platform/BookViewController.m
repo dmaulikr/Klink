@@ -7,7 +7,7 @@
 //
 
 #import "BookViewController.h"
-#import "PageViewController2.h"
+#import "PageViewController.h"
 #import "Macros.h"
 #import "Page.h"
 #import "CloudEnumeratorFactory.h"
@@ -189,7 +189,7 @@
 
 
 #pragma mark - PageViewController Delegate Methods
-- (PageViewController2 *)viewControllerAtIndex:(int)index
+- (PageViewController *)viewControllerAtIndex:(int)index
 {
     // Return the page view controller for the given index
     int count = [[self.frc_published_pages fetchedObjects]count];
@@ -202,33 +202,21 @@
         
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
-        PageViewController2 * pageViewController = [PageViewController2 createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+        PageViewController * pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
         
         return pageViewController;
     }
     
-   /*  
-    // Return the data view controller for the given index.
-    if (([self.pageContent count] == 0) || (index >= [self.pageContent count])) {
-        return nil;
-    }
-    
-    // Create a new view controller and pass suitable data.
-    PageViewController2 * pageViewController = [[PageViewController2 alloc] initWithNibName:@"PageViewController2" bundle:nil];
-    pageViewController.pageNumber =  [self.pageContent objectAtIndex:index];
-    return pageViewController;
-   */
 }
 
-- (NSUInteger)indexOfViewController:(PageViewController2 *)viewController
+- (NSUInteger)indexOfViewController:(PageViewController *)viewController
 {
-    //return [self.pageContent indexOfObject:viewController.pageNumber];
     return [self indexOfPageWithID:viewController.pageID];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    NSUInteger index = [self indexOfViewController:(PageViewController2 *)viewController];
+    NSUInteger index = [self indexOfViewController:(PageViewController *)viewController];
     if ((index == 0) || (index == NSNotFound)) {
         return nil;
     }
@@ -239,7 +227,7 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    NSUInteger index = [self indexOfViewController:(PageViewController2 *)viewController];
+    NSUInteger index = [self indexOfViewController:(PageViewController *)viewController];
     if (index == NSNotFound) {
         return nil;
     }
@@ -275,7 +263,7 @@
     self.pageController.dataSource = self;
     [self.pageController.view setFrame:[self.view bounds]];
     
-    PageViewController2* initialViewController = [self viewControllerAtIndex:0];
+    PageViewController* initialViewController = [self viewControllerAtIndex:0];
     NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
     [self.pageController setViewControllers:viewControllers  

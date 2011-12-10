@@ -2,168 +2,44 @@
 //  PageViewController.m
 //  Platform
 //
-//  Created by Bobby Gill on 10/28/11.
-//  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+//  Created by Jordan Gurrieri on 12/9/11.
+//  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
 #import "PageViewController.h"
-#import "Macros.h"
 #import "Page.h"
-#import "UIPageView.h"
-#import "CloudEnumeratorFactory.h"
-#import "UINotificationIcon.h"
 #import "Photo.h"
-#import "UICameraActionSheet.h"
+#import "Caption.h"
+#import "ImageManager.h"
+#import "CallbackResult.h"
+#import "ImageDownloadResponse.h"
+#import "Macros.h"
 
-#define kWIDTH 320
-#define kHEIGHT 460
-#define kSPACING 0
+#define kPAGEID @"pageid"
+#define kPHOTOID @"photoid"
 
 @implementation PageViewController
-@synthesize pageID              = m_pageID;
-@synthesize frc_published_pages = __frc_published_pages;
-@synthesize pagedViewSlider     = m_pagedViewSlider;
-@synthesize pageCloudEnumerator = m_pageCloudEnumerator;
-
-#pragma mark - Properties
-//this NSFetchedResultsController will query for all published pages
-- (NSFetchedResultsController*) frc_published_pages {
-    NSString* activityName = @"PageViewController.frc_published_pages:";
-    if (__frc_published_pages != nil) {
-        return __frc_published_pages;
-    }
-    ResourceContext* resourceContext = [ResourceContext instance];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
-    
-    //TODO: change this to sort on DATECREATED when the server supports it
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
-    
-    //add predicate to test for being published
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",STATE, kPUBLISHED];
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [fetchRequest setEntity:entityDescription];
-    [fetchRequest setFetchBatchSize:20];
-    
-    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    
-    controller.delegate = self;
-    self.frc_published_pages = controller;
-    
-    
-    NSError* error = nil;
-    [controller performFetch:&error];
-  	if (error != nil)
-    {
-        LOG_PAGEVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
-    }
-    
-    [controller release];
-    [fetchRequest release];
-    
-    
-    
-    return __frc_published_pages;
-    
-}
-
-#pragma mark - Frames
-- (CGRect) frameForSlider {
-    return CGRectMake(0, 0, 320, 460);
-}
-
-#pragma mark - Navigationbar buttons
-- (NSArray*) navigationBarButtonsForViewController {
-    //retrurns an array with the navigation bar buttons for this view controller
-    return nil;
-}
-
-#pragma mark - Toolbar buttons
-- (NSArray*) toolbarButtonsForViewController {
-    //returns an array with the toolbar buttons for this view controller
-    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-    
-    //add facebook button
-    UIBarButtonItem* facebookButton = [[UIBarButtonItem alloc]
-                                       initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
-                                       style:UIBarButtonItemStylePlain
-                                       target:self
-                                       action:@selector(onFacebookButtonPressed:)];
-    [retVal addObject:facebookButton];
-    
-    //add twitter button
-    UIBarButtonItem* twitterButton = [[UIBarButtonItem alloc]
-                            initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
-                            style:UIBarButtonItemStylePlain
-                            target:self
-                            action:@selector(onTwitterButtonPressed:)];
-    [retVal addObject:twitterButton];
-
-    
-    //add camera button
-    //TODO: hack, this shouldn't be here
-    UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
-                                          initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
-                                          style:UIBarButtonItemStylePlain
-                                          target:self
-                                          action:@selector(onCameraButtonPressed:)];
-    [retVal addObject:cameraButton];
-    
-    //add bookmark button
-    UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
-                                       initWithTitle:@"bkmark" 
-                                       style:UIBarButtonItemStylePlain 
-                                       target:self 
-                                       action:@selector(onBookmarkButtonPressed:)];
-    [retVal addObject:bookmarkButton];
-    
-    //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
-        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
-        
-        [retVal addObject:notificationBarItem];
-    }
-    
-
-    return retVal;
-}
-
-- (id) commonInit {
-    // Custom initialization
-    self.pageID = nil;
-    CGRect frameForSlider = [self frameForSlider];
-    self.pagedViewSlider = [[UIPagedViewSlider2 alloc]initWithFrame:frameForSlider];
-    self.pagedViewSlider.delegate = self;
-    
-    self.pagedViewSlider.tableView.pagingEnabled = YES;
-    [self.view addSubview:self.pagedViewSlider];
-    
-    [self.pagedViewSlider initWithWidth:kWIDTH withHeight:kHEIGHT withSpacing:kSPACING useCellIdentifier:@"page"];
-    self.pageCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForPages];
-    
- 
-       
-    return self;
-}
+@synthesize iv_openBookPageImage = m_iv_openBookPageImage;
+@synthesize pageID = m_pageID;
+@synthesize topVotedPhotoID = m_topVotedPhotoID;
+@synthesize pageNumber = m_pageNumber;
+@synthesize lbl_title = m_lbl_title;
+@synthesize iv_photo = m_iv_photo;
+@synthesize lbl_caption = m_lbl_caption;
+@synthesize lbl_photoby = m_lbl_photoby;
+@synthesize lbl_captionby = m_lbl_captionby;
+@synthesize lbl_publishDate = m_lbl_publishDate;
+@synthesize lbl_pageNumber = m_lbl_pageNumber;
+@synthesize controlVisibilityTimer = m_controlVisibilityTimer;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self =  [self commonInit];
-        
+        // Custom initialization
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [super dealloc];
-    [self.pagedViewSlider release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -174,105 +50,75 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		[self.controlVisibilityTimer release];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
+    [self cancelControlHiding];
+	if (!m_controlsHidden) {
+		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+	}
+}
+
+- (void)setControlsHidden:(BOOL)hidden {
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+	
+	// Navigation and tool bars
+	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
+    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
+    
+	[UIView commitAnimations];
+	
+    // reset the controls hidden flag
+    m_controlsHidden = hidden;
+    
+	// Control hiding timer
+	// Will cancel existing timer but only begin hiding if
+	// they are visible
+	[self hideControlsAfterDelay:5];
+	
+}
+
+- (void)hideControls { 
+    [self setControlsHidden:YES]; 
+}
+
+- (void)showControls { 
+    [self cancelControlHiding];
+    [self setControlsHidden:NO];
+}
+
+- (void)toggleControls {
+    [self setControlsHidden:!m_controlsHidden]; 
+}
+
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-- (int) indexOfPageWithID:(NSNumber*)pageid {
-    //returns the index location with thin the frc_published_photos for the photo with the id specified
-    int retVal = 0;
+    // Do any additional setup after loading the view from its nib.
     
-    NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
-    int index = 0;
-    for (Page* page in fetchedObjects) {
-        if ([page.objectid isEqualToNumber:pageid]) {
-            retVal = index;
-            break;
-        }
-        index++;
-    }
-    return index;
-}
-
-- (void) renderPage {
-    NSString* activityName = @"PageViewController.renderPage:";
-    //retrieves and draws the layout for the current page
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    // Create gesture recognizer for the photo image view to handle a single tap
+    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
     
-    if (currentPage != nil) {
-        int indexOfPage = [self indexOfPageWithID:self.pageID];
-        //we instruct the page view slider to move to the index of the page which is specified
-        [self.pagedViewSlider goTo:indexOfPage withAnimation:NO];
-    }
-    else {
-        //error state
-        LOG_PAGEVIEWCONTROLLER(1,@"%@Could not find page with id: %@ in local store",activityName,self.pageID);
-    }
+    // Set required taps and number of touches
+    [oneFingerTap setNumberOfTapsRequired:1];
+    [oneFingerTap setNumberOfTouchesRequired:1];
+    
+    // Add the gesture to the photo image view
+    [self.iv_openBookPageImage addGestureRecognizer:oneFingerTap];
     
 }
-
-- (void) viewWillAppear:(BOOL)animated {
-    NSString* activityName = @"PageViewController.viewWillAppear:";
-    [super viewWillAppear:animated];
-    
-    // Set status bar style to black
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    
-    // Navigation bar
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setTintColor:nil];
-    
-    // Toolbar
-    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.toolbar setTranslucent:YES];
-    
-    //render the page ID specified as a parameter
-    if (self.pageID != nil && [self.pageID intValue] != 0) {
-        //render the page specified by the ID passed in
-        [self renderPage];
-    }
-    else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd];
-        
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            [self renderPage];
-        }
-        else {
-            //empty page store, will need to thow up a progress dialog to show user of download
-            LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
-            [self.pageCloudEnumerator enumerateUntilEnd];
-            //TODO: need to make a call to a centrally hosted busy indicator view
-        }
-
-    }
-    
-    // Toolbar: we update the toolbar items each tgime the view controller is shown
-    NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    [self setToolbarItems:toolbarItems];
-}
-
 
 - (void)viewDidUnload
 {
@@ -281,109 +127,102 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (page != nil) {
+        Photo* photo = [page photoWithHighestVotes];
+        self.topVotedPhotoID = photo.objectid;
+        
+        Caption* caption = [page captionWithHighestVotes];
+        
+        self.lbl_caption.text = caption.caption1;
+        self.lbl_title.text = page.displayname;
+        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
+        self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
+        self.lbl_pageNumber.text = [NSString stringWithFormat:@"- %@ -", [self.pageNumber stringValue]];
+        
+        ImageManager* imageManager = [ImageManager instance];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:page.objectid forKey:kPAGEID];
+        
+        //add the photo id to the context
+        [userInfo setValue:photo.objectid forKey:kPHOTOID];
+        
+        if (photo.thumbnailurl != nil && 
+            ![photo.thumbnailurl isEqualToString:@""]) 
+        {
+            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
+            
+            if (image != nil) {
+                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_photo.image = image;
+            }
+        }
+        else {
+            self.iv_photo.contentMode = UIViewContentModeCenter;
+            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+        }
+        [self.view setNeedsDisplay];
+        
+    }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self hideControlsAfterDelay:5];
+    
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - UIPagedViewSlider2 Delegate Methods
-- (void)    viewSlider:         (UIPagedViewSlider2*)   viewSlider  
-           selectIndex:        (int)                   index {
+#pragma mark - Async callbacks
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSString* activityName = @"PageViewController.onImageDownloadComplete:";
+    NSDictionary* userInfo = result.context;
+    NSNumber* draftID = [userInfo valueForKey:kPAGEID];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-}
-
-- (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
-     cellForRowAtIndex:          (int)                   index 
-             withFrame:          (CGRect)                frame {
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
     
-    //render a page in its own view and return it using the coordinates passed in for its frame
-    int count = [[self.frc_published_pages fetchedObjects]count];
-    if (index < count) {
-        UIPageView* view = [[UIPageView alloc]initWithFrame:frame];
-        [self viewSlider:viewSlider configure:view forRowAtIndex:index withFrame:frame];
-        return view;
+    if ([response.didSucceed boolValue] == YES) {
+        if ([draftID isEqualToNumber:self.pageID] &&
+            [photoID isEqualToNumber:self.topVotedPhotoID]) {
+            
+            //we only draw the image if this view hasnt been repurposed for another page
+            LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+            [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            [self.view setNeedsDisplay];
+        }
     }
     else {
-        return nil;
+        self.iv_photo.backgroundColor = [UIColor redColor];
+        LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
     
 }
 
-
-- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider 
-             isAtIndex:          (int)                   index 
-    withCellsRemaining: (int)                   numberOfCellsToEnd {
-    
-}
-
-
-- (void)    viewSlider:          (UIPagedViewSlider2*)   viewSlider
-             configure:          (UIView*)               existingCell
-         forRowAtIndex:          (int)                   index
-             withFrame:          (CGRect)                frame {
-    
-    int count = [[self.frc_published_pages fetchedObjects]count];
-    if (index < count) {
-        Page* page  = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
-        existingCell.frame = frame;
-        UIPageView* pageView = (UIPageView*)existingCell;
-        [pageView renderPageWithID:page.objectid];
-    }
-}
-
-
-
-- (int)     itemCountFor:        (UIPagedViewSlider2*)   viewSlider {
-    return [[self.frc_published_pages fetchedObjects]count];
-}
-
-#pragma mark - NSFetchedResultsControllerDelegate methods
-- (void) controller:(NSFetchedResultsController *)controller 
-    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
-      forChangeType:(NSFetchedResultsChangeType)type 
-       newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    if (type == NSFetchedResultsChangeInsert) {
-        //insertion of a new page
-        [self.pagedViewSlider onNewItemInsertedAt:[indexPath row]];
-    }
-    
-}
-
-
-
-#pragma mark - Event Handlers
-- (void) onFacebookButtonPressed:(id)sender {
-    
-}
-
-- (void) onTwitterButtonPressed:(id)sender {
-    
-}
-
-- (void) onBookmarkButtonPressed:(id)sender {
-    
-}
-
-
-- (void) onCameraButtonPressed : (id) sender {
-    //TODO: need to implement using the ContributeViewController
-//    if (self.cameraActionSheet != nil) {
-//        [self.cameraActionSheet release];
-//    }
-//    
-//   self.cameraActionSheet = [[UICameraActionSheet alloc]initWithViewController:self];
-//   [self.cameraActionSheet showInView:self.view];
-   
-}
 
 #pragma mark - Static Initializers
-+ (PageViewController*) createInstance {
-    PageViewController* pageViewController = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];
-    [pageViewController autorelease];
-    return pageViewController;
++ (PageViewController*) createInstanceWithPageID:(NSNumber*)pageID withPageNumber:(NSNumber*)pageNumber {
+    PageViewController* instance = [[PageViewController alloc]initWithNibName:@"PageViewController" bundle:nil];
+    instance.pageID = pageID;
+    instance.pageNumber = pageNumber;
+    [instance autorelease];
+    return instance;
 }
-
 
 @end
