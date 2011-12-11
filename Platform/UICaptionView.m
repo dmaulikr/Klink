@@ -70,10 +70,14 @@
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
     
     if (caption != nil) {
-        self.lbl_caption.text = caption.caption1;
+        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
         self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
         self.lbl_numVotes.text = [caption.numberofvotes stringValue];
     }
+    
+    [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+    [self.lbl_metaData setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
+    [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
     
     if ([caption.hasvoted boolValue]) {
         // show highlighted version of thumb icon

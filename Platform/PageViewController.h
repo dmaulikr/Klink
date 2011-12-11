@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
 
-@interface PageViewController : UIViewController {    
+@interface PageViewController : BaseViewController {    
     NSNumber*       m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*       m_topVotedPhotoID;
     NSNumber*       m_pageNumber;
@@ -25,7 +26,7 @@
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;
-    
+
 }
 
 
@@ -44,8 +45,7 @@
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_publishDate;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_pageNumber;
 
-@property (nonatomic,retain) NSTimer*              controlVisibilityTimer;
-
+@property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
 
 + (PageViewController*) createInstanceWithPageID:(NSNumber*)pageID withPageNumber:(NSNumber*)pageNumber;
 

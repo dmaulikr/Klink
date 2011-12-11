@@ -17,15 +17,20 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 
-#define kPHOTOID @"photoid"
-#define kCAPTIONID @"captionid"
+#define kPHOTOID                    @"photoid"
+#define kCAPTIONID                  @"captionid"
+#define kDRAFTTABLEVIEWCELL_TOP     @"drafttableviewcell_top"
+#define kDRAFTTABLEVIEWCELL_LEFT    @"drafttableviewcell_left"
+#define kDRAFTTABLEVIEWCELL_RIGHT   @"drafttableviewcell_right"
 
 @implementation UIDraftTableViewCellLeft
 @synthesize photoID = m_photoID;
 @synthesize captionID = m_captionID;
-@synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
+@synthesize draftTableViewCell = m_draftTableViewCell;
 @synthesize iv_photo = m_iv_photo;
 @synthesize lbl_caption = m_lbl_caption;
+@synthesize lbl_photoby = m_lbl_photoby;
+@synthesize lbl_captionby = m_lbl_captionby;
 @synthesize lbl_numVotes = m_lbl_numVotes;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
 
@@ -64,10 +69,13 @@
     if (topCaption != nil) {
         self.captionID = topCaption.objectid;
         self.lbl_caption.textColor = [UIColor blackColor];
-        self.lbl_caption.text = topCaption.caption1;
+        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
         self.lbl_numVotes.text = [photo.numberofvotes stringValue];
         self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
     }
+    
+    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
+    self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
     
     [self setNeedsDisplay];
 }
@@ -86,13 +94,28 @@
          
         NSArray* topLevelObjs = nil;
         
-        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftTableViewCellLeft" owner:self options:nil];
-        if (topLevelObjs == nil)
-        {
-            NSLog(@"Error! Could not load UIDraftTableViewCellLeft file.\n");
+        if (reuseIdentifier == kDRAFTTABLEVIEWCELL_TOP) {
+            topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftTableViewCellTop" owner:self options:nil];
+        }
+        else if (reuseIdentifier == kDRAFTTABLEVIEWCELL_LEFT) {
+            topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftTableViewCellLeft" owner:self options:nil];
+        }
+        else if (reuseIdentifier == kDRAFTTABLEVIEWCELL_RIGHT) {
+            topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIDraftTableViewCellRight" owner:self options:nil];
         }
         
-        [self.contentView addSubview:self.draftTableViewCellLeft];
+        if (topLevelObjs == nil)
+        {
+            NSLog(@"Error! Could not load UIDraftTableViewCell nib file for %@.\n", reuseIdentifier);
+        }
+        
+        [self.contentView addSubview:self.draftTableViewCell];
+        
+        [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
+        [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+        [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
         
     }
     return self;
@@ -110,27 +133,11 @@
     [super dealloc];
     [self.photoID release];
     [self.captionID release];
-    [self.draftTableViewCellLeft release];
+    [self.draftTableViewCell release];
     [self.iv_photo release];
     [self.lbl_caption release];
     [self.lbl_numVotes release];
     [self.lbl_numCaptions release];
-}
-
-#pragma mark - View Lifecycle
-- (void)viewDidUnLoad
-{
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    
-    self.photoID = nil;
-    self.captionID = nil;
-    self.draftTableViewCellLeft = nil;
-    self.iv_photo = nil;
-    self.lbl_caption = nil;
-    self.lbl_numVotes = nil;
-    self.lbl_numCaptions = nil;
-    
 }
 
                                                                                              
@@ -158,8 +165,16 @@
 }
 
 #pragma mark - Statics
-+ (NSString*) cellIdentifier {
-    return @"drafttablecell_left";
++ (NSString*) cellIdentifierTop {
+    return kDRAFTTABLEVIEWCELL_TOP;
+}
+
++ (NSString*) cellIdentifierLeft {
+    return kDRAFTTABLEVIEWCELL_LEFT;
+}
+
++ (NSString*) cellIdentifierRight {
+    return kDRAFTTABLEVIEWCELL_RIGHT;
 }
 
 

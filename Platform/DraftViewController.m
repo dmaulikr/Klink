@@ -25,17 +25,26 @@
 #import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
-#define kDRAFTTABLEVIEWCELLHEIGHT 115
+#define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
+#define kDRAFTTABLEVIEWCELLHEIGHT_LEFTRIGHT 115
 
 @implementation DraftViewController
 @synthesize frc_photos = __frc_photos;
 @synthesize pageID = m_pageID;
-@synthesize draftTitle = m_draftTitle;
+@synthesize lbl_draftTitle = m_lbl_draftTitle;
+@synthesize lbl_deadline = m_lbl_deadline;
+@synthesize deadline = m_deadline;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
-@synthesize draftTableViewCellLeft = m_draftTableViewCellLeft;
 @synthesize cloudPhotoEnumerator = m_cloudPhotoEnumerator;
 @synthesize refreshHeader = m_refreshHeader;
 
+
+#pragma mark - Deadline Date Timers
+- (void) timeRemaining:(NSTimer *)timer {
+    NSDate* now = [NSDate date];
+    NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+}
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
@@ -148,16 +157,23 @@
 - (id) commonInit {
     //common setup for the view controller
     ResourceContext* resourceContext = [ResourceContext instance];
-    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    if (page != nil) {
+    if (draft != nil) {
         
-        self.draftTitle.text = page.displayname;
+        self.lbl_draftTitle.text = draft.displayname;
+        
+        // Show time remaining on draft
+        self.lbl_deadline.text = @"";
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self
+                                       selector:@selector(timeRemaining:)
+                                       userInfo:nil
+                                        repeats:YES];
         
         self.cloudPhotoEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPhotos:self.pageID];
         self.cloudPhotoEnumerator.delegate = self;
-        
-        //[self.tbl_draftTableView reloadData];
         
     }
     return self;
@@ -217,6 +233,9 @@
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_draftTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
+    
+    [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -251,7 +270,14 @@
 #pragma mark -
 #pragma mark Table View Delegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kDRAFTTABLEVIEWCELLHEIGHT;
+    if ([indexPath row] == 0) {
+        // leading draft, show version of draft table view cell for the leading draft
+        return kDRAFTTABLEVIEWCELLHEIGHT_TOP;
+    }
+    else {
+        // else, show version of draft table view cell with image on the right
+        return kDRAFTTABLEVIEWCELLHEIGHT_LEFTRIGHT;
+    }
 }
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -298,11 +324,26 @@
     {
         Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
-        UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:[UIDraftTableViewCellLeft cellIdentifier]];
+        NSString* reusableCellIdentifier = [[NSString alloc] init];
+        
+        if ([indexPath row] == 0) {
+            // leading draft, show version of draft table view cell for the leading draft
+            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierTop];
+        }
+        else if ([indexPath row] % 2) {
+            // row is odd, show version of draft table view cell with image on the left
+            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierLeft];
+        }
+        else {
+            // row is even, show version of draft table view cell with image on the right
+            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierRight];
+        }
+        
+        UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:reusableCellIdentifier];
         
         if (cell == nil) 
         {
-            cell = [[[UIDraftTableViewCellLeft alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UIDraftTableViewCellLeft cellIdentifier]]autorelease];
+            cell = [[[UIDraftTableViewCellLeft alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
         }
         
         [cell renderWithPhotoID:photo.objectid];

@@ -14,6 +14,7 @@
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
+#import "DateTimeHelper.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -33,6 +34,7 @@
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
 
 
+#pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -49,6 +51,7 @@
     
     // Release any cached data, images, etc that aren't in use.
 }
+
 
 #pragma mark - Control Hiding / Showing
 - (void)cancelControlHiding {
@@ -101,6 +104,7 @@
     [self setControlsHidden:!m_controlsHidden]; 
 }
 
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -117,6 +121,13 @@
     
     // Add the gesture to the photo image view
     [self.iv_openBookPageImage addGestureRecognizer:oneFingerTap];
+    
+    [self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+    [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
+    [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
+    [self.lbl_publishDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
+    [self.lbl_pageNumber setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
     
 }
 
@@ -141,10 +152,13 @@
         
         Caption* caption = [page captionWithHighestVotes];
         
-        self.lbl_caption.text = caption.caption1;
+        NSDate* datePublished = [DateTimeHelper parseWebServiceDateDouble:photo.datecreated];
+        
         self.lbl_title.text = page.displayname;
+        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
         self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
         self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
+        self.lbl_publishDate.text = [NSString stringWithFormat:@"published: %@", [DateTimeHelper formatMediumDate:datePublished]];
         self.lbl_pageNumber.text = [NSString stringWithFormat:@"- %@ -", [self.pageNumber stringValue]];
         
         ImageManager* imageManager = [ImageManager instance];
@@ -169,9 +183,7 @@
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
         }
         [self.view setNeedsDisplay];
-        
     }
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -11,16 +11,19 @@
 #import "Macros.h"
 #import "Page.h"
 #import "CloudEnumeratorFactory.h"
+#import "UINotificationIcon.h"
+#import "SocialSharingManager.h"
 
 @implementation BookViewController
 @synthesize pageController = m_pageController;
-@synthesize pageContent = m_pageContent;
-
 @synthesize pageID              = m_pageID;
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
-
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
+@synthesize tb_facebookButton       = m_tb_facebookButton;
+@synthesize tb_twitterButton        = m_tb_twitterButton;
+@synthesize tb_bookmarkButton       = m_tb_bookmarkButton;
+@synthesize tb_notificationButton  = m_tb_notificationButton;
 
 
 #pragma mark - Properties
@@ -79,6 +82,136 @@
     return index;
 }
 
+#pragma mark - Toolbar buttons
+- (NSArray*) toolbarButtonsForViewController {
+    //returns an array with the toolbar buttons for this view controller
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    // initialize button spacers
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem* fixedSpace1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem* fixedSpace2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+
+    //add Facebook share button
+    self.tb_facebookButton = [[UIBarButtonItem alloc]
+                              initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(onFacebookButtonPressed:)];
+    [retVal addObject:self.tb_facebookButton];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add Twitter share button
+    self.tb_twitterButton = [[UIBarButtonItem alloc]
+                             initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
+                             style:UIBarButtonItemStylePlain
+                             target:self
+                             action:@selector(onTwitterButtonPressed:)];
+    [retVal addObject:self.tb_twitterButton];
+    
+    //add fixed space for button spacing
+    fixedSpace1.width = 66;
+    [retVal addObject:fixedSpace1];
+    
+    //add bookmark button
+    self.tb_bookmarkButton = [[UIBarButtonItem alloc]
+                                       initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"]
+                                       style:UIBarButtonItemStylePlain
+                                       target:self 
+                                       action:@selector(onBookmarkButtonPressed:)];
+    [retVal addObject:self.tb_bookmarkButton];
+    
+    //add fixed space for button spacing
+    fixedSpace2.width = 13;
+    [retVal addObject:fixedSpace2];
+    
+    //check to see if the user is logged in or not
+    if ([self.authenticationManager isUserAuthenticated]) {
+        //we only add a notification icon for user's that have logged in
+        
+        //add flexible space for button spacing
+        [retVal addObject:flexibleSpace];
+        
+        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
+        self.tb_notificationButton = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
+        
+        [retVal addObject:self.tb_notificationButton];
+    }
+    
+    return retVal;
+}
+
+#pragma mark - Toolbar Button Helpers
+- (void) disableFacebookButton {
+    self.tb_facebookButton.enabled = NO;
+}
+
+- (void) enableFacebookButton {
+    self.tb_facebookButton.enabled = YES;
+}
+
+- (void) disableTwitterButton {
+    self.tb_twitterButton.enabled = NO;
+}
+
+- (void) enableTwitterButton {
+    self.tb_twitterButton.enabled = YES;
+}
+
+
+#pragma mark - Toolbar Button Event Handlers
+- (void) onFacebookButtonPressed:(id)sender {   
+    //we check to ensure the user is logged in to Facebook first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+        SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        
+        if (page != nil) {
+            Caption* caption = [page captionWithHighestVotes];
+            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil];
+            [self disableFacebookButton];
+        }
+    }
+}
+
+- (void) onTwitterButtonPressed:(id)sender {
+    //we check to ensure the user is logged in to Twitter first
+    if (![self.authenticationManager isUserAuthenticated] ||
+        ![[self.authenticationManager contextForLoggedInUser]hasTwitter]) {
+        //user is not logged in, must log in first
+        [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
+    }
+    else {
+        SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        
+        if (page != nil) {
+            Caption* caption = [page captionWithHighestVotes];
+            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil];
+            [self disableTwitterButton];
+        }
+    }
+}
+
+- (void) onBookmarkButtonPressed:(id)sender {
+    
+}
+
+#pragma mark - Frames
+- (CGRect) frameForPageViewController {
+    return CGRectMake(0, 0, 302, 460);
+}
+
 #pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -98,96 +231,6 @@
 }
 
 
-- (void) createContentPages
-{
-    NSMutableArray* pageNumbers = [[NSMutableArray alloc] init];
-    
-    for (int i = 1; i < 11; i++)
-    {
-        NSString *contentString = [[NSString alloc] initWithFormat:@"%d", i];
-        [pageNumbers addObject:contentString];
-    }
-    
-    self.pageContent = [[NSArray alloc] initWithArray:pageNumbers];
-}
-
-
-#pragma mark - Control Hiding / Showing
-- (void)cancelControlHiding {
-	// If a timer exists then cancel and release
-	if (self.controlVisibilityTimer) {
-		[self.controlVisibilityTimer invalidate];
-		[self.controlVisibilityTimer release];
-		self.controlVisibilityTimer = nil;
-	}
-}
-
-- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
-    [self cancelControlHiding];
-	if (![UIApplication sharedApplication].isStatusBarHidden) {
-		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
-	}
-}
-
-- (void)setControlsHidden:(BOOL)hidden {
-    
-    [UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
-    
-	// Get status bar height if visible
-	//CGFloat statusBarHeight = 0;
-	//if (![UIApplication sharedApplication].statusBarHidden) {
-	//	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-	//	statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-	//}
-	
-	// Status Bar
-	//if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-	//	[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
-	//} else {
-	//	[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
-	//}
-	
-	// Get status bar height if visible
-	//if (![UIApplication sharedApplication].statusBarHidden) {
-	//	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-	//	statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-	//}
-	
-	// Set navigation bar frame
-	//CGRect navBarFrame = self.navigationController.navigationBar.frame;
-	//navBarFrame.origin.y = statusBarHeight;
-	//self.navigationController.navigationBar.frame = navBarFrame;
-	
-	// Navigation and tool bars
-	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
-    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
-    
-    
-	[UIView commitAnimations];
-	
-	// Control hiding timer
-	// Will cancel existing timer but only begin hiding if
-	// they are visible
-	//[self hideControlsAfterDelay];
-	
-}
-
-- (void)hideControls { 
-    [self setControlsHidden:YES]; 
-}
-
-- (void)showControls { 
-    [self cancelControlHiding];
-    [self setControlsHidden:NO];
-}
-
-- (void)toggleControls { 
-    [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
-}
-
-
-
 #pragma mark - PageViewController Delegate Methods
 - (PageViewController *)viewControllerAtIndex:(int)index
 {
@@ -199,10 +242,15 @@
     }
     else {
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
+        self.pageID = page.objectid;
         
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
         PageViewController * pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+        
+        // reenable sharing buttons
+        [self enableFacebookButton];
+        [self enableTwitterButton];
         
         return pageViewController;
     }
@@ -233,9 +281,7 @@
     }
     
     index++;
-    //if (index == [self.pageContent count]) {
-    //    return nil;
-    //}
+
     if (index == [[self.frc_published_pages fetchedObjects]count]) {
         return nil;
     }
@@ -251,8 +297,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    //[self createContentPages];
-    
     NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:UIPageViewControllerSpineLocationMin] forKey: UIPageViewControllerOptionSpineLocationKey];
     
     self.pageController = [[UIPageViewController alloc] 
@@ -261,19 +305,23 @@
                            options: options];
     
     self.pageController.dataSource = self;
-    [self.pageController.view setFrame:[self.view bounds]];
+    //[self.pageController.view setFrame:[self.view bounds]];
+    [self.pageController.view setFrame:[self frameForPageViewController]];
     
     PageViewController* initialViewController = [self viewControllerAtIndex:0];
-    NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
     
-    [self.pageController setViewControllers:viewControllers  
-                             direction:UIPageViewControllerNavigationDirectionForward 
-                              animated:NO 
-                            completion:nil];
-    
-    [self addChildViewController:self.pageController];
-    [self.view addSubview:self.pageController.view];
-    [self.pageController didMoveToParentViewController:self];
+    if (initialViewController) {
+        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+        
+        [self.pageController setViewControllers:viewControllers  
+                                      direction:UIPageViewControllerNavigationDirectionForward 
+                                       animated:NO 
+                                     completion:nil];
+        
+        [self addChildViewController:self.pageController];
+        [self.view addSubview:self.pageController.view];
+        [self.pageController didMoveToParentViewController:self];
+    }
 
 }
 
@@ -316,12 +364,11 @@
         }
         
     }
+    */
     
-    // Toolbar: we update the toolbar items each tgime the view controller is shown
+    // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
-     
-    */
 }
 
 

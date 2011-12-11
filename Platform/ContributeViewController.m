@@ -64,15 +64,14 @@
     NSDate* now = [NSDate date];
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
-    //NSTimeInterval secondsIn24Hours = 24 * 60 * 60;
     NSDate* deadlineDate = [now dateByAddingTimeInterval:draftExpirySetting];
-    self.lbl_deadline.text = [DateTimeHelper formatMediumDateWithTime:deadlineDate];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"draft deadline: %@", [DateTimeHelper formatMediumDateWithTime:deadlineDate]];
 }
 
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadline.text = [DateTimeHelper formatTimeInterval:remaining];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"draft deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
 }
 
 #pragma mark - Initializers
@@ -154,6 +153,7 @@
                                         repeats:YES];
     }
     
+    // set custom font on views with text
     [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_titleRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
