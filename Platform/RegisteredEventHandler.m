@@ -17,6 +17,7 @@
     RegisteredEventHandler* retVal = [[RegisteredEventHandler alloc]init];
     retVal.callback = callback;
     retVal.eventID = systemEventType;
+    [retVal autorelease];
     return retVal;
 }
 @end

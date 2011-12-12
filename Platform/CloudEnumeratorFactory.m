@@ -32,22 +32,43 @@ static CloudEnumeratorFactory* sharedManager;
     self = [super init];
     
     if (self) {
-        self.enumeratorsForCaptions = [[NSMutableSet alloc]init];
-        self.enumeratorsForPhotos = [[NSMutableSet alloc]init];
-        self.enumeratorsForThemes = [[NSMutableSet alloc]init];
-        self.enumeratorsForFeeds  = [[NSMutableSet alloc]init];
-        self.enumeratorsForUsers = [[NSMutableSet alloc]init];
-        self.enumeratorsForDrafts = [[NSMutableSet alloc]init];
+        NSMutableSet* cSet = [[NSMutableSet alloc]init];
+        self.enumeratorsForCaptions = cSet;
+        [cSet release];
+        
+        
+        NSMutableSet* pSet = [[NSMutableSet alloc]init];
+        self.enumeratorsForPhotos = pSet;
+        [pSet release];
+       
+        
+        NSMutableSet* tSet = [[NSMutableSet alloc]init];
+        self.enumeratorsForThemes = tSet;
+        [tSet release];
+        
+        
+        NSMutableSet* fSet= [[NSMutableSet alloc]init];
+        self.enumeratorsForFeeds  = fSet;
+        [fSet release];
+        
+        NSMutableSet* uSet = [[NSMutableSet alloc]init];
+        self.enumeratorsForUsers = uSet;
+        [uSet release];
+        
+        NSMutableSet* dSet = [[NSMutableSet alloc]init];
+        self.enumeratorsForDrafts = dSet;
+        [dSet release];
     }
     return self;
 }
 - (void) dealloc {
-    [self.enumeratorsForCaptions release];
-    [self.enumeratorsForPhotos release];
-    [self.enumeratorsForThemes release];
-    [self.enumeratorsForFeeds  release];
-    [self.enumeratorsForUsers release];
-    [self.enumeratorForDrafts release];
+   // [self.enumeratorsForCaptions release];
+   // [self.enumeratorsForPhotos release];
+   // [self.enumeratorsForThemes release];
+   // [self.enumeratorsForFeeds  release];
+   // [self.enumeratorsForUsers release];
+   // [self.enumeratorForDrafts release];
+    [super dealloc];
 }
 
 

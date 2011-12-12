@@ -67,7 +67,7 @@
         
         [controller release];
         [fetchRequest release];
-        
+        [sortDescriptor release];
         return __frc_notifications;
     }
 }
@@ -111,15 +111,20 @@
     
     // setup pulldown refresh on tableview
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notificationsTableView.bounds.size.height, self.tbl_notificationsTableView.bounds.size.width, self.tbl_notificationsTableView.bounds.size.height);
-    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    
+    EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader = erthv;
+    [erthv release];
+    
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_notificationsTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Navigation Bar Buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
-                                              
+    UIBarButtonItem* bi = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = bi;
+    [bi release];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -302,6 +307,7 @@
     
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onFeedFinishedRefresh:)];
     [feedManager refreshFeedOnFinish:callback];
+    [callback release];
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {

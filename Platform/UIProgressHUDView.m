@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-    [self.backgroundView dealloc];
+   
     [super dealloc];
 }
 

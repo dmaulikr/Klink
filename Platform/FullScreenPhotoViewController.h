@@ -12,7 +12,7 @@
 #import "UIPhotoMetaDataView.h"
 #import "CloudEnumerator.h"
 
-@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate> {
+@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, CloudEnumeratorDelegate> {
     NSNumber*           m_pageID; //represents the ID of the page whose photos will be shown
     NSNumber*           m_photoID;
     NSNumber*           m_captionID;

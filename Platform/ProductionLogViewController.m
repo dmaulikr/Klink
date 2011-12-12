@@ -77,7 +77,7 @@
     
     [controller release];
     [fetchRequest release];
-    
+    [sortDescriptor release];
     return __frc_draft_pages;
     
 }
@@ -90,7 +90,7 @@
     
     int numDraftsClosing = 0;
     NSDate* now = [NSDate date];
-    NSDate* deadline = [[NSDate alloc] init];
+    NSDate* deadline = nil;
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
     
@@ -123,10 +123,12 @@
                                            target:self
                                            action:@selector(onUsernameButtonPressed:)];
         [retVal addObject:usernameButton];
+        [usernameButton release];
     }
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
+    
     
     //add draft button
     UIBarButtonItem* draftButton = [[UIBarButtonItem alloc]
@@ -135,6 +137,7 @@
                                      target:self
                                      action:@selector(onDraftButtonPressed:)];
     [retVal addObject:draftButton];
+    [draftButton release];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
@@ -146,7 +149,7 @@
                                        target:self 
                                        action:@selector(onBookmarkButtonPressed:)];
     [retVal addObject:bookmarkButton];
-    
+    [bookmarkButton release];
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
         //we only add a notification icon for user's that have logged in
@@ -159,7 +162,7 @@
         
         [retVal addObject:notificationBarItem];
     }
-    
+    [flexibleSpace release];
     return retVal;
 }
 
@@ -176,12 +179,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"page_curled.png"]];
-        //self.view.backgroundColor = background;
-        //[background release];
-        
-        //self.tbl_productionTableView.separatorColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"tableviewcell_separator_scetched.png"]];
         self = [self commonInit];
     }
     return self;
@@ -221,7 +218,11 @@
     [newCaptionVoteCallback release];
 
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
-    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    
+    EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader = erthv;
+    [erthv release];
+    
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_productionTableView addSubview:self.refreshHeader];
@@ -376,7 +377,7 @@
     [self presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
-    [profileViewController release];
+   
 }
 
 - (void) onDraftButtonPressed:(id)sender {
@@ -438,7 +439,7 @@
     //draftViewController.pageID = draft.objectid;
     
     [self.navigationController pushViewController:draftViewController animated:YES];
-    [draftViewController release];
+   
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods

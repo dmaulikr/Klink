@@ -22,47 +22,22 @@
 @dynamic facebookaccesstoken;
 @dynamic facebookaccesstokenexpirydate;
 @dynamic facebookuserid;
-//@dynamic twitteraccesstoken;
-//@dynamic twitteruserid;
-//@dynamic wppassword;
-//@dynamic wpusername;
-//@dynamic wordpressurl;
-//@dynamic twitteraccesstokensecret;
 
 
-- (BOOL) hasWordpress {
-//    BOOL retVal = NO;
-//    
-//    if (self.wpusername != nil && self.wordpressurl != nil) {
-//        retVal = YES;
-//    }
-//    return retVal;
-    return YES;
-}
+#define kFACEBOOKMAXDATE    64092211200
+
 
 - (BOOL) hasFacebook {
-//    BOOL retVal = NO;
-//    
-//    if (self.facebookuserid != nil && self.facebookaccesstoken != nil) {
-//        retVal = YES;
-//    }
-//    return retVal;
+
     return [self.hasfacebook boolValue];
 }
 
 - (BOOL) hasTwitter {
-//    BOOL retVal = NO;
-//    
-//    if (self.twitteruserid != nil && ![self.twitteruserid isEqual:[NSNull null]]  
-//        && self.twitteraccesstokensecret != nil && ![self.twitteraccesstokensecret isEqual:[NSNull null]] 
-//        && self.twitteraccesstoken != nil && ![self.twitteraccesstoken isEqual:[NSNull null]]) {
-//        retVal = YES;
-//    }
-//    return retVal;
+
     return [self.hastwitter boolValue];
 }
 
-#define kFACEBOOKMAXDATE    64092211200
+
 //Extracts values from a apassed in JSON instance and populates attributes
 //on this object accordingly
 - (void) readAttributesFromJSONDictionary:(NSDictionary*)jsonDictionary {
@@ -184,7 +159,7 @@
     //we need to iterate through the object's attributes and compose a dictionary
     //of key-value pairs for attributes and references
     NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
-    
+    [objectAsDictionary release];
     if (error != nil) {
         //error in json serialization
         LOG_SECURITY(1,@"%@Failure to serialize context object to JSON due to %@",activityName,[error userInfo]);
@@ -199,7 +174,8 @@
 + (id) createInstanceOfAuthenticationContext {
     ResourceContext* resourceContext = [ResourceContext instance];
     NSEntityDescription* entity = [NSEntityDescription entityForName:AUTHENTICATIONCONTEXT inManagedObjectContext:resourceContext.managedObjectContext];
-    AuthenticationContext* retVal = [[AuthenticationContext alloc]initWithEntity:entity insertIntoResourceContext:nil];
+
+    AuthenticationContext* retVal = [[AuthenticationContext alloc]initWithEntity:entity insertIntoManagedObjectContext:nil];
     [retVal autorelease];
     return retVal;    
 }
@@ -208,6 +184,7 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     NSEntityDescription* entity = [NSEntityDescription entityForName:AUTHENTICATIONCONTEXT inManagedObjectContext:resourceContext.managedObjectContext];
     AuthenticationContext* retVal = [[AuthenticationContext alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entity insertIntoResourceContext:nil];
+    [retVal autorelease];
     return retVal;
 }
 @end

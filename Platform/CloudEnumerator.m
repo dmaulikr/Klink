@@ -46,14 +46,18 @@
 }
 
 - (void) dealloc {
-    [self.enumerationContext release];
+    //[self.enumerationContext release];
+    [super dealloc];
 }
 
 - (id) initWithQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
     if (self != nil) {
-        self.enumerationContext = [[EnumerationContext alloc]init];
+        EnumerationContext* ec = [[EnumerationContext alloc]init];
+        self.enumerationContext = ec;
+        [ec release];
+        
         self.query = query;
         self.queryOptions = queryOptions;
          m_isEnumerationPending = NO;
@@ -88,8 +92,15 @@
     request.url = [url absoluteString];
     request.operationcode = [NSNumber numberWithInt:operationCode];
     request.statuscode = [NSNumber numberWithInt:kPENDING];
-    request.onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onEnumerateComplete:) withContext:userInfo];;
-     request.onSuccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onEnumerateComplete:) withContext:userInfo];;
+    Callback* fcb = [[Callback alloc]initWithTarget:self withSelector:@selector(onEnumerateComplete:) withContext:userInfo];
+    request.onFailCallback = fcb;
+    [fcb release];
+    
+    
+    Callback* cb = [[Callback alloc]initWithTarget:self withSelector:@selector(onEnumerateComplete:) withContext:userInfo];
+    request.onSuccessCallback = cb;
+    [cb release];
+    
     request.userInfo = userInfo;
     return request;
 }

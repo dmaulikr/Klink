@@ -44,7 +44,7 @@
 - (NSString*) getMetadataStringForCaption:(Caption*)caption {
     NSDate* now = [NSDate date];
     NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:caption.datecreated]];
-    NSString* timeSinceCreated = [[NSString alloc] init];
+    NSString* timeSinceCreated = nil;
     if (intervalSinceCreated < 1 ) {
         timeSinceCreated = @"a moment";
     }

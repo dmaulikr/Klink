@@ -39,7 +39,9 @@ static EventManager* sharedInstance;
 - (id) init {
     self = [super init];
     if (self) {
-        self.registeredHandlers = [[NSMutableSet alloc]init];
+        NSMutableSet* set = [[NSMutableSet alloc]init];
+        self.registeredHandlers = set;
+        [set release];
     }
     return self;
 }
@@ -176,7 +178,7 @@ static EventManager* sharedInstance;
      //will iterate through each newly inserted object and raise events corresponding to them
     NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
     NSArray* insertedArray = [insertedObjects allObjects];
-    NSDictionary* userInfo = [[NSDictionary alloc] init];
+    NSDictionary* userInfo = nil;
     
     for (NSManagedObject* obj in insertedArray) {
         //we test for caption,photo, etc...
@@ -211,7 +213,7 @@ static EventManager* sharedInstance;
     //iterates through updated objects and raises any pertinent application notifications
     NSString* activityName = @"EventManager.raiseEventsForInsertObject:";
     NSArray* insertedArray = [updatedObjects allObjects];
-    NSDictionary* userInfo = [[NSDictionary alloc] init];
+    NSDictionary* userInfo = nil;
     
     for (NSManagedObject* obj in insertedArray) {
         

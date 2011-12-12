@@ -51,9 +51,17 @@ static RequestManager* sharedInstance;
 - (id) init {
     self = [super init];
     if (self) {
-        self.enumerationQueue = [[OperationQueue alloc]init];
-        self.operationQueue = [[OperationQueue alloc]init];
-        self.imageCache = [[ASIDownloadCache alloc]init];
+        OperationQueue* ec = [[OperationQueue alloc]init];
+        self.enumerationQueue = ec;
+        [ec release];
+        
+        OperationQueue* oq = [[OperationQueue alloc]init];        
+        self.operationQueue = oq;
+        [oq release];
+        
+        ASIDownloadCache *ic = [[ASIDownloadCache alloc]init];
+        self.imageCache = ic;
+        [ic release];
     }
     return self;
 }
@@ -130,50 +138,7 @@ static RequestManager* sharedInstance;
     }
     return nil;
 }
-//
-//
-//- (void) processAttachmentFor:(NSString*)attribute 
-//              forTargetResource:(NSNumber*)targetresourceid 
-//          withTargetResourceType:(NSString*)targetresourcetype
-//            onSuccessCallback:(Callback*)onSuccessCallback
-//            onFailureCallback:(Callback*)onFailureCallback{
-//    
-//    NSString* activityName = @"RequestManager.processAttachmentFor:";
-//    //will take the initial target object id
-//    //and upload the file location that is contained
-//    //within the attribute passed in
-//    ResourceContext* context = [ResourceContext instance];
-//    
-//    Resource* resource = [context resourceWithType:targetresourcetype withID:targetresourceid];
-//    Request* request = [Request createAttachmentRequestFor:targetresourceid 
-//                                                withString:targetresourcetype 
-//                                         onSuccessCallback:onSuccessCallback 
-//                                         onFailureCallback:onFailureCallback];
-//    
-//    SEL selector = NSSelectorFromString(attribute);
-//    
-//    if ([resource respondsToSelector:selector]) {        
-//        NSString* value = [resource performSelector:selector];
-//        
-//        
-//        AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
-//        NSURL* url = [UrlManager urlForUploadAttachment:resource.objectid withObjectType:resource.objecttype forAttributeName:attribute withAuthenticationContext:authenticationContext];
-//        
-//        request.url = [url absoluteString];
-//        [request setChangedAttributesList:[NSArray arrayWithObject:attribute]];
-//        [request retain];
-//        
-//        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:request forKey:kREQUEST];
-//        ASIFormDataRequest* httpRequest = (ASIFormDataRequest*) [self requestFor:kMODIFYATTACHMENT withURL:[url absoluteString] withUserInfo:userInfo];
-//        [httpRequest setFile:value forKey:@"attachment"];
-//        httpRequest.delegate = self;
-//        httpRequest.didFailSelector = @selector(onRequestFailed:);
-//        httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
-//        
-//        LOG_REQUEST(0, @"%@Executing upload attachment request for ID:%@ of Type:%@ for Attribute:%@",activityName,resource.objectid,resource.objecttype,attribute);
-//        [self.operationQueue addOperation:httpRequest];
-//    }  
-//}
+
 
 - (void) processAttachmentFor:(NSString*)attribute associatedWith:(Request*)request {
     NSString* activityName = @"RequestManager.processAttachmentFor:";
@@ -225,29 +190,7 @@ static RequestManager* sharedInstance;
     
 }
 
-//- (void) processAttachmentsForResource:(Resource*)resource 
-//                     onSuccessCallback:(Callback*)onSuccessCallback 
-//                     onFailureCallback:(Callback*)onFailureCallback
-//{
-//    NSString* activityName = @"RequestManager.processAttachmentsForResource:";
-//    NSArray* attachmentAttributes = [resource attachmentAttributesWithValues];
-//    
-//  
-//   
-//    for (NSString* attachmentAttributeName in attachmentAttributes) {
-//        AttributeInstanceData* aid = [resource attributeInstanceDataFor:attachmentAttributeName];
-//        if ([aid.isdirty boolValue]) {
-//            
-//            LOG_REQUEST(0,@"%@Processing Resource attachment upload for attribute %@",activityName,attachmentAttributeName);
-//            [self processAttachmentFor:attachmentAttributeName 
-//                     forTargetResource:resource.objectid 
-//                withTargetResourceType:resource.objecttype 
-//                     onSuccessCallback:onSuccessCallback 
-//                     onFailureCallback:onFailureCallback];
-//        }
-//
-//    }
-//}
+
 
 //called by creatre and put responses to process attachment attributes after the fact
 - (void) processModifyAttachment:(Request*) request {
@@ -288,7 +231,7 @@ static RequestManager* sharedInstance;
     //[httpRequest setPostValue:json forKey:@""];
       
     LOG_REQUEST(0, @"%@Executing put request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
-    
+    [userInfo release];
     [self.operationQueue addOperation:httpRequest];
 }
 
@@ -304,7 +247,7 @@ static RequestManager* sharedInstance;
     
     
     LOG_REQUEST(0, @"%@Executing update authenticator request",activityName);
-    
+    [userInfo release];
     [self.operationQueue addOperation:httpRequest];
     
 }
@@ -359,6 +302,8 @@ static RequestManager* sharedInstance;
     
     //following code for generating log message
     LOG_REQUEST(0, @"%@Executing bulk create request for %d objects with %d attachments to be processed after",activityName,[requests count],attachmentCount);
+    [userInfo release];
+    [resourcesToCreate release];
     [self.operationQueue addOperation:httpRequest];
     
     
@@ -387,7 +332,7 @@ static RequestManager* sharedInstance;
         [httpRequest setPostValue:json forKey:@""];
         
         LOG_REQUEST(0, @"%@Executing create request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
-        
+        [userInfo release];
         [self.operationQueue addOperation:httpRequest];
         
         
@@ -403,6 +348,7 @@ static RequestManager* sharedInstance;
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
     [userInfo setObject:request forKey:kREQUEST];
     ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    [userInfo release];
     [self.enumerationQueue addOperation:httpRequest];
 }
 
@@ -417,7 +363,7 @@ static RequestManager* sharedInstance;
   
     httpRequest.downloadDestinationPath = downloadPath;
     LOG_REQUEST(0,@"%@Beginning download of image at: %@ to local location %@",activityName,request.url,downloadPath);
-    
+    [userInfo release];
     [self.enumerationQueue addOperation:httpRequest];
 }
 
@@ -427,7 +373,7 @@ static RequestManager* sharedInstance;
     [userInfo setObject:request forKey:kREQUEST];
     ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
     LOG_REQUEST(0,@"%@Beginning http request to share at url:%@",activityName,request.url);
-    
+    [userInfo release];
     [self.operationQueue addOperation:httpRequest];
 
 }
@@ -535,7 +481,7 @@ static RequestManager* sharedInstance;
 - (Response*) processEnumerationResponse:(NSString*)responseString withRequest:(Request*)request {
    
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
-    EnumerationResponse* response = [[EnumerationResponse alloc]initFromJSONDictionary:jsonDictionary];
+    EnumerationResponse* response = [[[EnumerationResponse alloc]initFromJSONDictionary:jsonDictionary]autorelease];
 
     return response;
 }
@@ -550,7 +496,7 @@ static RequestManager* sharedInstance;
         return nil;
     }
     else {
-        GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
+        GetAuthenticatorResponse* response = [[[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary]autorelease];
         return response;
     }
     
@@ -598,6 +544,7 @@ static RequestManager* sharedInstance;
     else {
         LOG_REQUEST(1, @"%@Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
     }
+    [putResponse autorelease];
     return putResponse;
 }
 
@@ -665,6 +612,7 @@ static RequestManager* sharedInstance;
         [resourceContext save:NO onFinishCallback:nil];
         
     }
+    [putResponse autorelease];
     return putResponse;
     
 }
@@ -683,6 +631,7 @@ static RequestManager* sharedInstance;
     else {
         LOG_REQUEST(1, @"%@Share request failed due to Error:%@",activityName,response.errorMessage);
     }
+    [response autorelease];
     return response;
 }
 
@@ -699,6 +648,7 @@ static RequestManager* sharedInstance;
     }
     else {
         GetAuthenticatorResponse* response = [[GetAuthenticatorResponse alloc]initFromJSONDictionary:jsonDictionary];
+        [response autorelease];
         return response;
     }
 
@@ -762,6 +712,7 @@ static RequestManager* sharedInstance;
         //we now save the changes we made
         [resourceContext save:NO onFinishCallback:nil];
     }
+    [createResponse autorelease];
     return createResponse;
 }
 
@@ -791,7 +742,7 @@ static RequestManager* sharedInstance;
         response.errorMessage = nil;
          LOG_REQUEST(1, @"%@Image downloaded successfully to location %@",activityName,imagePath);
     }
-    
+    [response autorelease];
     return response;
     
     
@@ -846,11 +797,14 @@ static RequestManager* sharedInstance;
         LOG_REQUEST(0,@"%@Request completed successfully",activityName);
         //execute the success selector on each request
         if (request.onSuccessCallback != nil) {
-            NSMutableDictionary* context = [NSMutableDictionary dictionaryWithObject:request forKey:kREQUEST];
+            NSMutableDictionary* context = [[NSMutableDictionary alloc]init];
+            [context setObject:request forKey:kREQUEST];
+            
             //insert the request context into the user dictionary as well
             [context addEntriesFromDictionary:request.userInfo];
             request.userInfo = nil;
             [request.onSuccessCallback fireWithResponse:responseObj withContext:context];
+            [context release];
         }
       }
     else {
@@ -860,8 +814,12 @@ static RequestManager* sharedInstance;
         LOG_REQUEST(0,@"%@Request failed",activityName);
         //execute the failure selector on each request
         if (request.onFailCallback != nil) {
-            NSDictionary* context = [NSDictionary dictionaryWithObject:request forKey:kREQUEST];
+            NSMutableDictionary* context = [[NSMutableDictionary alloc]init];
+            [context setObject:request forKey:kREQUEST];
+
+            
             [request.onFailCallback fireWithResponse:responseObj withContext:context];
+            [context release];
         }
     }
     

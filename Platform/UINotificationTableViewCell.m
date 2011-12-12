@@ -32,7 +32,7 @@
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
     NSDate* now = [NSDate date];
     NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:notificationDate];
-    NSString* timeSinceCreated = [[NSString alloc] init];
+    NSString* timeSinceCreated = nil;
     if (intervalSinceCreated < 1 ) {
         timeSinceCreated = @"a moment";
     }
@@ -64,6 +64,7 @@
             ![notification.imageurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
+            [callback release];
             
             if (image != nil) {
                 self.iv_notificationImage.contentMode = UIViewContentModeScaleAspectFit;

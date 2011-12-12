@@ -23,16 +23,11 @@
 @property (nonatomic, retain) NSString* facebookaccesstoken;
 @property (nonatomic, retain) NSNumber* facebookaccesstokenexpirydate;
 @property (nonatomic, retain) NSString* facebookuserid;
-//@property (nonatomic, retain) NSString* twitteraccesstoken;
-//@property (nonatomic, retain) NSString* twitteruserid;
-//@property (nonatomic, retain) NSString* twitteraccesstokensecret;
-//@property (nonatomic, retain) NSString* wordpressurl;
-//@property (nonatomic, retain) NSString* wpusername;
-//@property (nonatomic, retain) NSString* wppassword;
+
 
 - (NSString*) toJSON;
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary;
-- (BOOL) hasWordpress;
+
 - (BOOL) hasFacebook;
 - (BOOL) hasTwitter;
 

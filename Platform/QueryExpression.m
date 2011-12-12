@@ -25,7 +25,7 @@
     JKSerializeOptionFlags flags = JKSerializeOptionNone;
     
     NSString *retVal =[newDictionary JSONStringWithOptions:flags error:&error];
-    
+    [newDictionary release];
     return retVal;
 }
 

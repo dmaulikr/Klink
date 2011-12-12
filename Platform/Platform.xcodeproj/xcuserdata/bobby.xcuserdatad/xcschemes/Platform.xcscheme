@@ -64,6 +64,11 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
+            key = "NSAutoreleaseHaltOnFreedObject"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "NSAutoreleaseFreedObjectCheckEnabled"
             value = "YES"
             isEnabled = "YES">

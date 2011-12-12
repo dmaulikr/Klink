@@ -58,20 +58,20 @@
     
     [controller release];
     [fetchRequest release];
-    
+    [sortDescriptor release];
     return __frc_published_pages;
     
 }
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
     //returns the index location with thin the frc_published_photos for the photo with the id specified
-    int retVal = 0;
+  
     
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
     int index = 0;
     for (Page* page in fetchedObjects) {
         if ([page.objectid isEqualToNumber:pageid]) {
-            retVal = index;
+           
             break;
         }
         index++;
@@ -117,7 +117,7 @@
 	// If a timer exists then cancel and release
 	if (self.controlVisibilityTimer) {
 		[self.controlVisibilityTimer invalidate];
-		[self.controlVisibilityTimer release];
+		//[self.controlVisibilityTimer release];
 		self.controlVisibilityTimer = nil;
 	}
 }
@@ -125,7 +125,7 @@
 - (void)hideControlsAfterDelay:(NSTimeInterval)delay {
     [self cancelControlHiding];
 	if (![UIApplication sharedApplication].isStatusBarHidden) {
-		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
 	}
 }
 
@@ -203,7 +203,7 @@
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
         PageViewController * pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
-        
+        [pageNumber release];
         return pageViewController;
     }
     
@@ -255,10 +255,12 @@
     
     NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:UIPageViewControllerSpineLocationMin] forKey: UIPageViewControllerOptionSpineLocationKey];
     
-    self.pageController = [[UIPageViewController alloc] 
+    UIPageViewController* pvc = [[UIPageViewController alloc] 
                            initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl
                            navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                            options: options];
+    self.pageController = pvc;
+    [pvc release];
     
     self.pageController.dataSource = self;
     [self.pageController.view setFrame:[self.view bounds]];

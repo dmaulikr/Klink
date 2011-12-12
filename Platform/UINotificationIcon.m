@@ -59,6 +59,7 @@
         
         [controller release];
         [fetchRequest release];
+        [sortDescriptor release];
         
         return __frc_notifications;
     }
@@ -102,7 +103,10 @@
         [self.btn_showNotifications addTarget:self action:@selector(onShowNotificationsClick:) forControlEvents:UIControlEventTouchUpInside];
         self.btn_showNotifications.backgroundColor = [UIColor clearColor];
         
-        self.lbl_numberOfNotifications = [[UILabel alloc]initWithFrame:frameForLabel];
+        UILabel* lbl = [[UILabel alloc]initWithFrame:frameForLabel];
+        self.lbl_numberOfNotifications = lbl;
+        [lbl release];
+        
         self.lbl_numberOfNotifications.textAlignment = UITextAlignmentCenter;
         self.lbl_numberOfNotifications.textColor = [UIColor whiteColor];
         self.lbl_numberOfNotifications.backgroundColor = [UIColor clearColor];
@@ -128,9 +132,9 @@
 
 - (void)dealloc
 {
-    [self.frc_notifications release];
-    [self.lbl_numberOfNotifications release];
-    [self.btn_showNotifications release];
+  //  [self.frc_notifications release];
+   // [self.lbl_numberOfNotifications release];
+  //  [self.btn_showNotifications release];
     [super dealloc];
 
 }
@@ -154,7 +158,6 @@
     [self.navigationViewController presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
-    [notificationsViewController release];
     
     
     

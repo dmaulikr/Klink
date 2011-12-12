@@ -265,6 +265,7 @@
             [retVal addObject:aid];
         }
     }
+    [retVal autorelease];
     return retVal;
                               
 }
@@ -299,7 +300,9 @@
             //add it to the internal attribute store
             [attributeInstanceData addObject:attributeMetadata];
         }
-        self.attributeinstancedata = [[NSSet alloc]initWithArray:attributeInstanceData];
+        NSSet* aidset = [[NSSet alloc]initWithArray:attributeInstanceData];
+        self.attributeinstancedata = aidset;
+        [aidset release];
         [attributeInstanceData release];
     }
 }
@@ -465,7 +468,7 @@
         }
         i++;
     }
-                        
+    [retVal autorelease];                    
     return retVal;
 }
 
@@ -488,6 +491,7 @@
             }
         }
     }
+   
     return attributesCopied;
 }
 
@@ -497,7 +501,7 @@
     
     //marks the objects as being clean
     [self markAsClean:attributesCopied];
-    
+    [attributesCopied release];
 }
     
 
@@ -553,7 +557,7 @@
     //we need to iterate through the object's attributes and compose a dictionary
     //of key-value pairs for attributes and references
     NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
-    
+    [objectAsDictionary release];
     if (error != nil) {
        
         return nil;
@@ -587,7 +591,7 @@
     //we need to iterate through the object's attributes and compose a dictionary
     //of key-value pairs for attributes and references
     NSString* retVal = [resourceDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
-    
+    [resourceDictionary release];
     if (error != nil) {
         //error in json serialization
        //TODO: log error in json serialization
@@ -625,6 +629,7 @@
             }
         }
     }
+    [retVal autorelease];
     return retVal;
 
 }
@@ -668,7 +673,7 @@
            
         }
     }
-    
+    [retVal autorelease];
     return retVal;
 }
 
@@ -706,7 +711,7 @@
 //returns the object in a non-syncable form
 + (id) createInstanceOfTypeFromJSON:(NSDictionary*)jsonDictionary 
                 withResourceContext:(ResourceContext*)resourceContext {
-    
+    NSString* activityName = @"Resource.createInstanceOfTypeFromJSON:";
     //find the type name
     NSString* type = [Resource typeNameFromJSON:jsonDictionary];
     
@@ -724,7 +729,7 @@
     }
     
     if (!entityDescription) {
-        //TODO: log error message for invalid type
+        LOG_RESOURCE(1, @"%@No valid entity description object found for %@",activityName,type);
         return nil;
     }
     else {
@@ -733,7 +738,7 @@
         Resource* obj = [[[Resource alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entityDescription insertIntoResourceContext:resourceContext]autorelease];
         
         //the object is being created from JSON, which means it was brought down from the service, marking it as not needing sync'ing
-        
+        [entityDescription release];
         return obj;
     }
     

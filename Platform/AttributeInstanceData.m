@@ -42,6 +42,8 @@ insertIntoResourceContext:(ResourceContext *)context
                                        forAttribute:(NSString *)attribute{
     //this method takes the type name and attribute name and creates an attribute description object for it
     NSEntityDescription* entityDescription = [NSEntityDescription entityForName:ATTRIBUTEINSTANCEDATA inManagedObjectContext:context.managedObjectContext];
+    
+   
     AttributeInstanceData* retVal = [[AttributeInstanceData alloc]initWithEntity:entityDescription insertIntoResourceContext:context forAttributeName:attribute];
     retVal.isdirty = [NSNumber numberWithBool:NO];
     retVal.islocked = [NSNumber numberWithBool:NO];
@@ -103,7 +105,8 @@ insertIntoResourceContext:(ResourceContext *)context
         //these are all counter variables
         retVal.iscounter = [NSNumber numberWithBool:YES];
     }
-        
+     
+    [retVal autorelease];
     return retVal;
     
     

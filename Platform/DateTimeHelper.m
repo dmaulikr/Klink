@@ -60,7 +60,7 @@
 }
 
 + (NSTimeInterval) convertDatePointerToDouble:(NSNumber*)datePointer {
-    NSDate* date = [[NSDate alloc] init];
+    NSDate* date = nil;
     date = [DateTimeHelper parseWebServiceDateDouble:datePointer];
     return [DateTimeHelper convertDateToDouble:date];
     [date autorelease];
@@ -75,6 +75,7 @@
     [f setNumberStyle:NSNumberFormatterDecimalStyle];
     NSNumber* dateInSeconds = [f numberFromString:[datePointer stringValue]];
     NSDate* retVal  = [[NSDate alloc] initWithTimeIntervalSince1970:[dateInSeconds doubleValue]];
+    [f release];
     [retVal autorelease];
     return retVal;
 }
@@ -93,7 +94,7 @@
     
     NSDateComponents *breakdownInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
     
-    NSString* timeRemaining = [NSString alloc];
+    NSString* timeRemaining = nil;
     
     if ([breakdownInfo hour] > 1) {
         timeRemaining = [NSString stringWithFormat:@"%d hrs %d min",[breakdownInfo hour], [breakdownInfo minute]];
@@ -111,13 +112,11 @@
         timeRemaining = [NSString stringWithFormat:@"closed!"];
     }
     
-    return timeRemaining;
+    
     
     [date1 release];
     [date2 release];
-    [sysCalendar release];
-    [breakdownInfo release];
-    [timeRemaining autorelease];
+    return timeRemaining;
 }
 
 

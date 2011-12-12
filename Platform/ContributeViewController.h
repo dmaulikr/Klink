@@ -10,11 +10,7 @@
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
 @class ContributeViewController;
-@protocol ContributeViewControllerDelegate <NSObject>
 
-- (void)submitChangesForController:(ContributeViewController*)controller;
-
-@end
 
 @interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;

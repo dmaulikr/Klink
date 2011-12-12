@@ -88,7 +88,8 @@
 //}
 
 - (void) dealloc {
-    [self.frc_photo release];
+   // [self.frc_photo release];
+    [super dealloc];
 }
 
 - (void) renderPhoto:(Photo*)photo {
@@ -104,7 +105,7 @@
     {
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
-        
+        [callback release];
         if (image != nil) {
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             self.iv_photo.image = image;

@@ -55,7 +55,7 @@
 	// If a timer exists then cancel and release
 	if (self.controlVisibilityTimer) {
 		[self.controlVisibilityTimer invalidate];
-		[self.controlVisibilityTimer release];
+		
 		self.controlVisibilityTimer = nil;
 	}
 }
@@ -63,7 +63,7 @@
 - (void)hideControlsAfterDelay:(NSTimeInterval)delay {
     [self cancelControlHiding];
 	if (!m_controlsHidden) {
-		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
 	}
 }
 
@@ -158,6 +158,7 @@
         {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
+            [callback release];
             
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;

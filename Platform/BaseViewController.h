@@ -18,9 +18,15 @@
 #import "EventManager.h"
 #import "CallbackResult.h"
 
-@protocol ContributeViewControllerDelegate;
+@class ContributeViewController;
 @class UICameraActionSheet;
 @class ResourceContext;
+
+@protocol ContributeViewControllerDelegate <NSObject>
+
+- (void)submitChangesForController:(ContributeViewController*)controller;
+
+@end
 @interface BaseViewController : UIViewController <ContributeViewControllerDelegate> {
 
     UIProgressHUDView*      m_progressView;

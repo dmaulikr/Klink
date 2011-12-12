@@ -124,7 +124,7 @@
     //if so need to move to the notification window
     if (launchOptions != nil) {
         LOG_SECURITY(0, @"%@Application launching with remote notification queued up, moving to download screen",activityName);
-        NSDictionary* notificationDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+       
         
         //need to instruct the feedmanager to download
         
