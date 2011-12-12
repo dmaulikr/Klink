@@ -26,6 +26,7 @@
 @synthesize pageNumber = m_pageNumber;
 @synthesize lbl_title = m_lbl_title;
 @synthesize iv_photo = m_iv_photo;
+@synthesize iv_photoFrame = m_iv_photoFrame;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_photoby = m_lbl_photoby;
 @synthesize lbl_captionby = m_lbl_captionby;
@@ -75,9 +76,34 @@
     [UIView beginAnimations:nil context:nil];
 	[UIView setAnimationDuration:0.35];
 	
-	// Navigation and tool bars
-	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
-    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
+	/*// Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Status Bar
+	if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
+	}
+	
+	// Get status bar height if visible
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Set navigation bar frame
+	CGRect navBarFrame = self.navigationController.navigationBar.frame;
+	navBarFrame.origin.y = statusBarHeight;
+	self.navigationController.navigationBar.frame = navBarFrame;*/
+    
+    // Navigation and tool bars
+	[self.parentViewController.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
+    [self.parentViewController.navigationController.toolbar setAlpha:hidden ? 0 : 1];
     
 	[UIView commitAnimations];
 	
@@ -177,6 +203,7 @@
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
+                //self.iv_photoFrame.frame = CGRectMake(((image.size.width/2) - 29), self.iv_photoFrame.frame.origin.y, image.size.width + 58, self.iv_photoFrame.frame.size.height);
             }
         }
         else {
@@ -218,6 +245,7 @@
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            //self.iv_photoFrame.frame = CGRectMake(((response.image.size.width/2) - 29), self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
             [self.view setNeedsDisplay];
         }
     }

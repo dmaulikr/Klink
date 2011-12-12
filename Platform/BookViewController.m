@@ -352,6 +352,7 @@
         [self addChildViewController:self.pageController];
         [self.view addSubview:self.pageController.view];
         [self.pageController didMoveToParentViewController:self];
+        
     }
 
 }
