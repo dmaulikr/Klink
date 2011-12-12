@@ -41,6 +41,10 @@
 		5220103814785B4000C47C00 /* page_curled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103214785B4000C47C00 /* page_curled@2x.png */; };
 		5220103914785B4000C47C00 /* page.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103314785B4000C47C00 /* page.png */; };
 		5220103A14785B4000C47C00 /* page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103414785B4000C47C00 /* page@2x.png */; };
+		5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE31492A62E0006FB5D /* PageViewController.m */; };
+		5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController.xib */; };
+		5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewController.m */; };
+		5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewController.xib */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
@@ -94,7 +98,7 @@
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
-		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; };
+		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
 		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; };
 		C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C9143EB192008D25A7 /* CoreData.framework */; };
@@ -109,8 +113,6 @@
 		C593FBA3143EC41B008D25A7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA2143EC41B008D25A7 /* CFNetwork.framework */; };
 		C593FBA5143EC427008D25A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */; };
 		C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC1143EC81A008D25A7 /* BaseViewController.m */; };
-		C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC5143EC98B008D25A7 /* SampleViewController.m */; };
-		C593FBC8143EC98B008D25A7 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C593FBC6143EC98B008D25A7 /* SampleViewController.xib */; };
 		C593FBCB143ECB69008D25A7 /* Types.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBCA143ECB69008D25A7 /* Types.m */; };
 		C593FBE7143ED69D008D25A7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBD1143ED69C008D25A7 /* Reachability.m */; };
 		C593FBE8143ED69D008D25A7 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBD3143ED69C008D25A7 /* ASINetworkQueue.m */; };
@@ -146,15 +148,11 @@
 		C5B3003C1447AE0A00236F52 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */; };
 		C5C298D0144B9CE100206D07 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C298CF144B9CE100206D07 /* EventManager.m */; };
 		C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */; };
-		C5C76C72145B912000BA69B8 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C71145B912000BA69B8 /* PageViewController.m */; };
 		C5C76C75145B915300BA69B8 /* TableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */; };
 		C5C76C7E145B922700BA69B8 /* FullScreenPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */; };
 		C5C76C84145B92C200BA69B8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C82145B92C100BA69B8 /* HomeViewController.m */; };
 		C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C76C83145B92C200BA69B8 /* HomeViewController.xib */; };
-		C5C76C8F145B986900BA69B8 /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C76C8E145B986800BA69B8 /* PageViewController.xib */; };
 		C5C76C94145BAF9500BA69B8 /* UIPagedViewSlider4.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C93145BAF9500BA69B8 /* UIPagedViewSlider4.m */; };
-		C5C76C97145BB3EC00BA69B8 /* UIPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */; };
-		C5C76C9A145BB4D800BA69B8 /* UIPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C99145BB4D800BA69B8 /* UIPageView.m */; };
 		C5C83AE114480DF600AF38CF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C83ACA14480DF600AF38CF /* Facebook.m */; };
 		C5C83AE214480DF600AF38CF /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C5C83ACC14480DF600AF38CF /* FBDialog.bundle */; };
 		C5C83AE314480DF600AF38CF /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C83ACE14480DF600AF38CF /* FBDialog.m */; };
@@ -260,6 +258,12 @@
 		5220103214785B4000C47C00 /* page_curled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_curled@2x.png"; sourceTree = "<group>"; };
 		5220103314785B4000C47C00 /* page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page.png; sourceTree = "<group>"; };
 		5220103414785B4000C47C00 /* page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page@2x.png"; sourceTree = "<group>"; };
+		5239EEE21492A62E0006FB5D /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
+		5239EEE31492A62E0006FB5D /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
+		5239EEE41492A62E0006FB5D /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
+		5239EEE71492B22E0006FB5D /* BookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewController.h; sourceTree = "<group>"; };
+		5239EEE81492B22E0006FB5D /* BookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewController.m; sourceTree = "<group>"; };
+		5239EEE91492B22E0006FB5D /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewController.xib; sourceTree = "<group>"; };
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
@@ -330,7 +334,6 @@
 		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
 		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
-		C56F8A041462D3C700E14199 /* UINotificationIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationIcon.h; sourceTree = "<group>"; };
 		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
 		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
 		C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalLogViewController.h; sourceTree = "<group>"; };
@@ -364,9 +367,6 @@
 		C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C593FBC0143EC81A008D25A7 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		C593FBC1143EC81A008D25A7 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		C593FBC4143EC98B008D25A7 /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
-		C593FBC5143EC98B008D25A7 /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
-		C593FBC6143EC98B008D25A7 /* SampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleViewController.xib; sourceTree = "<group>"; };
 		C593FBC9143ECB69008D25A7 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
 		C593FBCA143ECB69008D25A7 /* Types.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Types.m; sourceTree = "<group>"; };
 		C593FBCE143ED69C008D25A7 /* README-GHUnit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README-GHUnit"; sourceTree = "<group>"; };
@@ -441,8 +441,6 @@
 		C5C298CF144B9CE100206D07 /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventManager.m; sourceTree = "<group>"; };
 		C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSettingsDefaults.m; sourceTree = "<group>"; };
 		C5C76C59145A123B00BA69B8 /* ApplicationSettingsDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSettingsDefaults.h; sourceTree = "<group>"; };
-		C5C76C70145B912000BA69B8 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
-		C5C76C71145B912000BA69B8 /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		C5C76C73145B915300BA69B8 /* TableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableOfContentsViewController.h; sourceTree = "<group>"; };
 		C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableOfContentsViewController.m; sourceTree = "<group>"; };
 		C5C76C7C145B922600BA69B8 /* FullScreenPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPhotoViewController.h; sourceTree = "<group>"; };
@@ -450,12 +448,8 @@
 		C5C76C81145B92C100BA69B8 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		C5C76C82145B92C100BA69B8 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		C5C76C83145B92C200BA69B8 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
-		C5C76C8E145B986800BA69B8 /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
 		C5C76C92145BAF9500BA69B8 /* UIPagedViewSlider4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPagedViewSlider4.h; sourceTree = "<group>"; };
 		C5C76C93145BAF9500BA69B8 /* UIPagedViewSlider4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPagedViewSlider4.m; sourceTree = "<group>"; };
-		C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPageView.xib; sourceTree = "<group>"; };
-		C5C76C98145BB4D800BA69B8 /* UIPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPageView.h; sourceTree = "<group>"; };
-		C5C76C99145BB4D800BA69B8 /* UIPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPageView.m; sourceTree = "<group>"; };
 		C5C83AC814480DF600AF38CF /* facebook_ios_sdk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_ios_sdk_Prefix.pch; sourceTree = "<group>"; };
 		C5C83AC914480DF600AF38CF /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		C5C83ACA14480DF600AF38CF /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
@@ -866,9 +860,6 @@
 			children = (
 				C5C76C6B145B8FE800BA69B8 /* Bonobo */,
 				C593FBC3143EC91C008D25A7 /* Abstract */,
-				C593FBC4143EC98B008D25A7 /* SampleViewController.h */,
-				C593FBC5143EC98B008D25A7 /* SampleViewController.m */,
-				C593FBC6143EC98B008D25A7 /* SampleViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1053,9 +1044,12 @@
 		C5C76C6B145B8FE800BA69B8 /* Bonobo */ = {
 			isa = PBXGroup;
 			children = (
-				C5C76C70145B912000BA69B8 /* PageViewController.h */,
-				C5C76C71145B912000BA69B8 /* PageViewController.m */,
-				C5C76C8E145B986800BA69B8 /* PageViewController.xib */,
+				5239EEE71492B22E0006FB5D /* BookViewController.h */,
+				5239EEE81492B22E0006FB5D /* BookViewController.m */,
+				5239EEE91492B22E0006FB5D /* BookViewController.xib */,
+				5239EEE21492A62E0006FB5D /* PageViewController.h */,
+				5239EEE31492A62E0006FB5D /* PageViewController.m */,
+				5239EEE41492A62E0006FB5D /* PageViewController.xib */,
 				C5C76C73145B915300BA69B8 /* TableOfContentsViewController.h */,
 				C5C76C74145B915300BA69B8 /* TableOfContentsViewController.m */,
 				5264A2341474566C00E341BA /* ProductionLogViewController.h */,
@@ -1115,11 +1109,6 @@
 			children = (
 				C5A82D751466667E00E77675 /* UICameraActionSheet.h */,
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
-				C5C76C98145BB4D800BA69B8 /* UIPageView.h */,
-				C5C76C99145BB4D800BA69B8 /* UIPageView.m */,
-				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
-				C5C76C96145BB3EC00BA69B8 /* UIPageView.xib */,
-				C56F8A041462D3C700E14199 /* UINotificationIcon.h */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
 				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
@@ -1414,11 +1403,8 @@
 				C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */,
 				C593F84B143EBE18008D25A7 /* CHANGELOG.md in Resources */,
 				C593F84D143EBE18008D25A7 /* README.md in Resources */,
-				C593FBC8143EC98B008D25A7 /* SampleViewController.xib in Resources */,
 				C5C83AE214480DF600AF38CF /* FBDialog.bundle in Resources */,
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
-				C5C76C8F145B986900BA69B8 /* PageViewController.xib in Resources */,
-				C5C76C97145BB3EC00BA69B8 /* UIPageView.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
 				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
 				C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */,
@@ -1484,6 +1470,8 @@
 				5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */,
 				521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */,
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
+				5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */,
+				5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1501,7 +1489,6 @@
 				C593F806143EBCE3008D25A7 /* User.m in Sources */,
 				C593F84C143EBE18008D25A7 /* JSONKit.m in Sources */,
 				C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */,
-				C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */,
 				C593FBCB143ECB69008D25A7 /* Types.m in Sources */,
 				C593FBE7143ED69D008D25A7 /* Reachability.m in Sources */,
 				C593FBE8143ED69D008D25A7 /* ASINetworkQueue.m in Sources */,
@@ -1564,12 +1551,10 @@
 				C507BC8414599455004D9359 /* Caption.m in Sources */,
 				C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */,
 				C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */,
-				C5C76C72145B912000BA69B8 /* PageViewController.m in Sources */,
 				C5C76C75145B915300BA69B8 /* TableOfContentsViewController.m in Sources */,
 				C5C76C7E145B922700BA69B8 /* FullScreenPhotoViewController.m in Sources */,
 				C5C76C84145B92C200BA69B8 /* HomeViewController.m in Sources */,
 				C5C76C94145BAF9500BA69B8 /* UIPagedViewSlider4.m in Sources */,
-				C5C76C9A145BB4D800BA69B8 /* UIPageView.m in Sources */,
 				C55EC740145FA0E600BA66FA /* UIViewCategory.m in Sources */,
 				C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */,
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
@@ -1618,6 +1603,8 @@
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
 				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
+				5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */,
+				5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1710,6 +1697,7 @@
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = bonobo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1733,6 +1721,7 @@
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = bonobo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

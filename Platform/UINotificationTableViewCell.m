@@ -17,7 +17,7 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 
-#define kNOTIFICATIONID     @"notificationid"
+#define kNOTIFICATIONID @"notificationid"
 
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;

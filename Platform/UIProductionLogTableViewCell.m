@@ -17,7 +17,8 @@
 #import "DateTimeHelper.h"
 
 #define kPAGEID @"pageid"
-#define kPHOTOID    @"photoid"
+#define kPHOTOID @"photoid"
+
 @implementation UIProductionLogTableViewCell
 @synthesize pageID = m_pageID;
 @synthesize productionLogTableViewCell = m_productionLogTableViewCell;
@@ -97,6 +98,7 @@
     
     //add the photo id to the context
     [userInfo setValue:photo.objectid forKey:kPHOTOID];
+    
     if (photo.thumbnailurl != nil && 
         ![photo.thumbnailurl isEqualToString:@""]) 
     {
@@ -132,12 +134,6 @@
         // Set deadline
         self.lbl_deadline.text = @"";
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        
-        // CAN DELETE THESE, USED FOR TESTING
-        //NSTimeInterval deadlineInterval = [DateTimeHelper convertDatePointerToDouble:draft.datedraftexpires];
-        //NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:[NSDate date]];
-        //NSString* timeRemaining = [DateTimeHelper formatTimeInterval:remaining];
-        
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
