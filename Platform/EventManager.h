@@ -23,7 +23,8 @@ typedef enum {
     kDRAFTFINISHED,
     kDRAFTPUBLISHED,
     kSHOWPROGRESS,
-    kHIDEPROGRESS
+    kHIDEPROGRESS,
+    kAUTHENTICATIONFAILED
 } SystemEvent;
 
 @interface EventManager : NSObject {
@@ -39,6 +40,7 @@ typedef enum {
 - (void) raiseUserLoggedInEvent     :(NSDictionary*)userInfo;
 - (void) raiseUserLoggedOutEvent    :(NSDictionary*)userInfo;
 - (void) raiseUserLoginFailedEvent  :(NSDictionary*)userInfo;
+- (void) raiseAuthenticationFailedEvent:(NSDictionary*)userInfo;
 
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo;
 - (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo;

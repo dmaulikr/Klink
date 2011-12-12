@@ -28,6 +28,8 @@
 #import "ApplicationSettingsDefaults.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
+#import "ErrorCodes.h"
+#import "EventManager.h"
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
 
@@ -748,6 +750,20 @@ static RequestManager* sharedInstance;
     
 }
  
+- (void) processRequestFailure:(Request*)request withResponse:(Response*)response {
+    NSString* activityName = @"RequestManager.processRequestFailure:";
+    EventManager* eventManager = [EventManager instance];
+    int errorCode = [response.errorCode intValue];
+    
+    if (errorCode == ec_FAILED_AUTHENTICATION) {
+        //if there is a failed authentication
+        NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+        [userInfo setObject:request forKey:kREQUEST];
+        LOG_REQUEST(0,@"%@Raising failed authentication system event",activityName);
+        [eventManager raiseAuthenticationFailedEvent:userInfo];
+        [userInfo release];
+    }
+}
 - (void) processRequestResponse:(Request*)request withResponse:(NSString*)response  {
     NSString* activityName = @"RequestManager.processRequestResponse:";
     
@@ -821,6 +837,9 @@ static RequestManager* sharedInstance;
             [request.onFailCallback fireWithResponse:responseObj withContext:context];
             [context release];
         }
+        
+        //we now do post processing of known errors and raise system events for them
+        [self processRequestFailure:request withResponse:responseObj];
     }
     
 
@@ -831,9 +850,11 @@ static RequestManager* sharedInstance;
 
 - (void) onRequestFailed:(ASIHTTPRequest*)httpRequest {
     NSString* activityName = @"RequestManager.onRequestFailed:";
+     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc]init];
     NSDictionary* userInfo = httpRequest.userInfo;
     
     NSObject* obj = [userInfo objectForKey:kREQUEST];
+   
     
     LOG_HTTP(1, @"%@HTTP request failed",activityName);
     
@@ -856,6 +877,7 @@ static RequestManager* sharedInstance;
         }
        
     }
+    [pool drain];
 }
 
 - (void) onRequestSucceeded:(ASIHTTPRequest*)httpRequest {
