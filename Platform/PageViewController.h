@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
+#define UIPageViewControllerOptionSpineLocationKey @"UIPageViewControllerOptionSpineLocationKey"
 
 @interface PageViewController : BaseViewController {    
     NSNumber*       m_pageID; //represents the ID of the page which the view controller is currently displaying
