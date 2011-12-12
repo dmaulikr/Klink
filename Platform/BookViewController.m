@@ -93,22 +93,26 @@
     UIBarButtonItem* fixedSpace2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 
     //add Facebook share button
-    self.tb_facebookButton = [[UIBarButtonItem alloc]
+   UIBarButtonItem* fb = [[UIBarButtonItem alloc]
                               initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
                               style:UIBarButtonItemStylePlain
                               target:self
                               action:@selector(onFacebookButtonPressed:)];
+    self.tb_facebookButton  = fb;
+    [fb release];
     [retVal addObject:self.tb_facebookButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
     //add Twitter share button
-    self.tb_twitterButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* tb = [[UIBarButtonItem alloc]
                              initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
                              style:UIBarButtonItemStylePlain
                              target:self
                              action:@selector(onTwitterButtonPressed:)];
+    self.tb_twitterButton = tb;
+    [tb release];
     [retVal addObject:self.tb_twitterButton];
     
     //add fixed space for button spacing
@@ -116,11 +120,13 @@
     [retVal addObject:fixedSpace1];
     
     //add bookmark button
-    self.tb_bookmarkButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* bkb = [[UIBarButtonItem alloc]
                                        initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"]
                                        style:UIBarButtonItemStylePlain
                                        target:self 
                                        action:@selector(onBookmarkButtonPressed:)];
+    self.tb_bookmarkButton = bkb;
+    [bkb release];
     [retVal addObject:self.tb_bookmarkButton];
     
     //add fixed space for button spacing
@@ -139,7 +145,9 @@
         
         [retVal addObject:self.tb_notificationButton];
     }
-    
+    [flexibleSpace release];
+    [fixedSpace1 release];
+    [fixedSpace2 release];
     return retVal;
 }
 

@@ -335,7 +335,7 @@
     {
         Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
-        NSString* reusableCellIdentifier = [[NSString alloc] init];
+        NSString* reusableCellIdentifier = nil;
         
         if ([indexPath row] == 0) {
             // leading draft, show version of draft table view cell for the leading draft

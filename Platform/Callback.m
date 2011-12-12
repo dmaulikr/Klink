@@ -41,9 +41,20 @@
         }
         else
         {
-            [m_target performSelectorInBackground:m_selector withObject:callbackResult];
+            //we call our deliver result to target method so we can set up the apporpriate auto release pool
+            [self performSelectorInBackground:@selector(deliverResultToTarget:) withObject:callbackResult];
+           // [m_target performSelectorInBackground:m_selector withObject:callbackResult];
         }
     }
+}
+
+- (void) deliverResultToTarget:(CallbackResult*)result {
+    
+    NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+    
+    [m_target performSelector:m_selector withObject:result];
+    [autorelease drain];
+    [autorelease release];
 }
 
 - (void) fire {
