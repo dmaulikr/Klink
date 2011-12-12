@@ -87,30 +87,32 @@
 
 - (void)dealloc
 {
+    
+    self.scrollView = nil;
+     self.activeTextView=nil;
+        self.activeTextField=nil;
+        
+        self.configurationType=nil;
+        
+        self.lbl_draftTitle =nil;
+        self.draftTitle =nil;
+        self.tf_newDraftTitle=nil;
+        self.lbl_titleRequired=nil;
+        
+        self.btn_cameraButton =nil;
+        self.iv_photo=nil;
+        self.img_photo=nil;
+        self.lbl_photoOptional=nil;
+        self.lbl_photoRequired=nil;
+        
+        self.tv_caption =nil;
+        self.lbl_captionOptional=nil;
+        self.lbl_captionRequired=nil;
+       
+    self.lbl_deadline = nil;
     [super dealloc];
     
-//    [self.scrollView dealloc];
-//    [self.activeTextView dealloc];
-//    [self.activeTextField dealloc];
-//    
-//    [self.configurationType dealloc];
-//    
-//    [self.lbl_draftTitle dealloc];
-//    [self.draftTitle dealloc];
-//    [self.tf_newDraftTitle dealloc];
-//    [self.lbl_titleRequired dealloc];
-//    
-//    [self.btn_cameraButton dealloc];
-//    [self.iv_photo dealloc];
-//    [self.img_photo dealloc];
-//    [self.lbl_photoOptional dealloc];
-//    [self.lbl_photoRequired dealloc];
-//    
-//    [self.tv_caption dealloc];
-//    [self.lbl_captionOptional dealloc];
-//    [self.lbl_captionRequired dealloc];
-//    
-//    [self.lbl_deadline dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -203,6 +203,9 @@
 
 - (void)dealloc
 {
+    self.tbl_draftTableView = nil;
+    self.frc_photos = nil;
+    self.pageID = nil;
     //[self.tbl_draftTableView release];
     //[self.frc_photos release];
     //[self.pageID release];

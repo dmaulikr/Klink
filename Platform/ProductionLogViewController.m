@@ -164,7 +164,10 @@
     [flexibleSpace release];
     return retVal;
 }
-
+- (void) dealloc {
+    self.frc_draft_pages = nil;
+    [super dealloc];
+}
 #pragma mark - Initializers
 - (id) commonInit {
     //common setup for the view controller

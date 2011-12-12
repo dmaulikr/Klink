@@ -132,9 +132,9 @@
 
 - (void)dealloc
 {
-  //  [self.frc_notifications release];
-   // [self.lbl_numberOfNotifications release];
-  //  [self.btn_showNotifications release];
+    self.frc_notifications = nil;
+    self.lbl_numberOfNotifications = nil;
+    self.btn_showNotifications = nil;
     [super dealloc];
 
 }

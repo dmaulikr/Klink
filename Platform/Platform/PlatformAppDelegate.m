@@ -15,7 +15,7 @@
 #import "CloudEnumerator.h"
 #import "CloudEnumeratorFactory.h"
 #import "Macros.h"
-#import "PersonalLogViewController.h"
+#import "NotificationsViewController.h"
 
 @implementation PlatformAppDelegate
 
@@ -173,14 +173,15 @@
         
         //check firs to see if the active view controller is the log
         UIViewController* topViewController = [self.navigationController topViewController];
-        if ([topViewController isKindOfClass:PersonalLogViewController.class]) {
+        if ([topViewController isKindOfClass:NotificationsViewController.class]) {
             //the top view controller is a personal log view controller, do not need to move to it
             //just initiate a refresh of the feed
             [feedManager refreshFeedOnFinish:nil];
         }
         else {
-            PersonalLogViewController* plvc = [PersonalLogViewController createInstanceAndRefreshFeedOnAppear];
-            [self.navigationController pushViewController:plvc animated:YES];
+            NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
+            [self.navigationController pushViewController:nvc animated:YES];
+            
         }
         
         

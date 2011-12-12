@@ -94,6 +94,9 @@
 
 - (void)dealloc
 {
+    self.frc_notifications = nil;
+    self.lbl_title = nil;
+    self.tbl_notifications = nil;
     //[self.frc_notifications release];
     //[self.lbl_title release];
     //[self.tbl_notifications release];

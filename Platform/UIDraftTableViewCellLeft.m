@@ -130,6 +130,13 @@
 
 - (void)dealloc
 {
+    self.photoID = nil;
+    self.captionID = nil;
+    self.draftTableViewCell = nil;
+    self.iv_photo = nil;
+    self.lbl_caption = nil;
+    self.lbl_numVotes = nil;
+    self.lbl_numCaptions = nil;
     [super dealloc];
 
    // [self.photoID release];

@@ -67,7 +67,7 @@
 
 - (void)dealloc
 {
- //   [self.parentViewController release];
+    self.parentViewController = nil;
     [super dealloc];
     
 }

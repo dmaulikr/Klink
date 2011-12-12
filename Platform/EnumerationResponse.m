@@ -40,7 +40,7 @@
 - (void)dealloc {
     //[self.primaryResults release];
     //[self.secondaryResults release];
-    [self.enumerationContext release];
+    //[self.enumerationContext release];
     [super dealloc];
 }
 

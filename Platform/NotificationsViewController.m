@@ -141,6 +141,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSString* activityName = @"NotificationsViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     // Set status bar style to black
@@ -157,6 +158,21 @@
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
+    
+    //we check to see if this view controller is meant to refresh the feed upon load
+    //this is uusually set when the app is being launched in response to a remote notification
+    //and this is the view controller which is brought to the front
+    if (self.refreshNotificationFeedOnDownload) {
+        
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Refreshing notification feed from cloud",activityName);
+        FeedManager* feedManager = [FeedManager instance];
+        [feedManager refreshFeedOnFinish:nil];
+        
+        //we need to clear the application badge icon from the app icon
+        UIApplication* application = [UIApplication sharedApplication];
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
+        application.applicationIconBadgeNumber =0;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -282,6 +298,11 @@
      */
 }
 
+- (void) dealloc {
+    self.frc_notifications = nil;
+    [super dealloc];
+}
+
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller 
@@ -293,7 +314,7 @@
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
         
-        [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_notificationsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];

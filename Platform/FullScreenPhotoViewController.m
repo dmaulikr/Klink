@@ -268,7 +268,8 @@
 
 - (void)dealloc
 {
- 
+    self.photoViewSlider = nil;
+    self.captionViewSlider = nil;
    // [self.photoViewSlider release];
     //[self.captionViewSlider release];
        [super dealloc];

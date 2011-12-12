@@ -88,7 +88,7 @@
 //}
 
 - (void) dealloc {
-   // [self.frc_photo release];
+  
     [super dealloc];
 }
 
