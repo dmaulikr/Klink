@@ -117,7 +117,6 @@
     //[self.navigationController pushViewController:pageController animated:YES];
     //[pageController release];
     [self.navigationController pushViewController:bookController animated:YES];
-    [bookController release];
     
 }
 
@@ -189,6 +188,7 @@
 
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
+    [homeViewController autorelease];
     return homeViewController;
 }
 

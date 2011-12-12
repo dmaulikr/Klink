@@ -38,19 +38,20 @@ withTargetObjectType:(NSString*)objecttype
  withOperation:(int)opcode 
   withUserInfo:(NSDictionary *)userInfo 
      onSuccess:(Callback *)onSuccessCallback 
-     onFailure:(Callback *)onFailureCallback {
+     onFailure:(Callback *)onFailureCallback 
+{
    
     
-    if (self) {
-        //initialize the request to be pending
-        self.statuscode = [NSNumber numberWithInt:kPENDING];
-        self.targetresourcetype = objecttype;
-        self.targetresourceid = objectid;
-        self.operationcode = [NSNumber numberWithInt:opcode];
-        self.onFailCallback = onFailureCallback;
-        self.onSuccessCallback = onSuccessCallback;
-        self.userInfo = userInfo;
-    }
+    
+    //initialize the request to be pending
+    self.statuscode = [NSNumber numberWithInt:kPENDING];
+    self.targetresourcetype = objecttype;
+    self.targetresourceid = objectid;
+    self.operationcode = [NSNumber numberWithInt:opcode];
+    self.onFailCallback = onFailureCallback;
+    self.onSuccessCallback = onSuccessCallback;
+    self.userInfo = userInfo;
+    
     return self;
 }
 

@@ -12,4 +12,8 @@
 @interface NSString (NSStringGUIDCategory)
 + (NSString*) GetGUID;
 - (NSNumber*) numberValue;
++ (NSString *)encodeBase64WithString:(NSString *)strData;
+
++ (NSData *)decodeBase64WithString:(NSString *)strData;
++ (NSString *)encodeBase64WithData:(NSData *)objData;
 @end

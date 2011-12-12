@@ -67,7 +67,7 @@
         
         [controller release];
         [fetchRequest release];
-        
+        [sortDescriptor release];
         return __frc_notifications;
     }
 }
@@ -111,15 +111,20 @@
     
     // setup pulldown refresh on tableview
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notificationsTableView.bounds.size.height, self.tbl_notificationsTableView.bounds.size.width, self.tbl_notificationsTableView.bounds.size.height);
-    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    
+    EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader = erthv;
+    [erthv release];
+    
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_notificationsTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Navigation Bar Buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
-                                              
+    UIBarButtonItem* bi = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = bi;
+    [bi release];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -136,6 +141,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSString* activityName = @"NotificationsViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     // Set status bar style to black
@@ -152,6 +158,21 @@
     //as soon as we open up, we mark all notifications that are currently
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
+    
+    //we check to see if this view controller is meant to refresh the feed upon load
+    //this is uusually set when the app is being launched in response to a remote notification
+    //and this is the view controller which is brought to the front
+    if (self.refreshNotificationFeedOnDownload) {
+        
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Refreshing notification feed from cloud",activityName);
+        FeedManager* feedManager = [FeedManager instance];
+        [feedManager refreshFeedOnFinish:nil];
+        
+        //we need to clear the application badge icon from the app icon
+        UIApplication* application = [UIApplication sharedApplication];
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
+        application.applicationIconBadgeNumber =0;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -277,6 +298,11 @@
      */
 }
 
+- (void) dealloc {
+    self.frc_notifications = nil;
+    [super dealloc];
+}
+
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller 
@@ -288,7 +314,7 @@
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
         
-        [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_notificationsTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
@@ -302,6 +328,7 @@
     
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onFeedFinishedRefresh:)];
     [feedManager refreshFeedOnFinish:callback];
+    [callback release];
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {

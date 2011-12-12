@@ -11,7 +11,7 @@
 #import "AuthenticationContext.h"
 #import "User.h"
 @interface GetAuthenticatorResponse : Response {
-    AuthenticationContext* authenticationcontext;
+    AuthenticationContext* m_authenticationcontext;
     User* user;
 }
 @property (nonatomic,retain) AuthenticationContext* authenticationcontext;

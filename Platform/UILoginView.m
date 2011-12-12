@@ -67,7 +67,7 @@
 
 - (void)dealloc
 {
-    [self.parentViewController release];
+    self.parentViewController = nil;
     [super dealloc];
     
 }
@@ -262,7 +262,7 @@
                                   withAccessTokenSecret:oAuthTokenSecret 
                                          withExpiryDate:@"" 
                                          onFinishNotify:callback];
-        
+        [callback release];
     }
     else {
         //error condition
@@ -296,6 +296,7 @@
         
         LOG_LOGINVIEWCONTROLLER(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
         [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate withDeviceToken:appDelegate.deviceToken onFinishNotify:callback];
+        [callback release];
         
     }
     else if (request == self.fbPictureRequest) {

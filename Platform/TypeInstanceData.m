@@ -29,7 +29,7 @@
     }
     
 
-    
+    [newType autorelease];
     return newType;
 }
 @end

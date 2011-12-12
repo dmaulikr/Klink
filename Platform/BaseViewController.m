@@ -32,16 +32,6 @@
 @synthesize loginView             = m_loginView;
 
 #pragma mark - Properties
-//
-//- (NSManagedObjectContext*)managedObjectContext {
-//    if (__managedObjectContext != nil) {
-//        return __managedObjectContext;
-//    }
-//    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication] delegate];
-//    __managedObjectContext = appDelegate.managedObjectContext;
-//    return __managedObjectContext;
-//    
-//}
 
 - (EventManager*) eventManager {
     if (__eventManager != nil) {
@@ -82,24 +72,12 @@
     return CGRectMake(0, 0, 320, 460);
 }
 
-- (void) baseInit {
-    
-}
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        
-    }
-    return self;
-}
 
 - (void)dealloc
 {
-    [self.loginView release];
-    [self.progressView release];
+    //[self.loginView release];
+   // [self.progressView release];
     [super dealloc];
 }
 
@@ -143,8 +121,14 @@
     [hideProgressBarCallback release];
     
     CGRect frameForLoginView = [self frameForLoginView];
-    self.loginView = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
-    self.progressView = [[UIProgressHUDView alloc]initWithView:self.view];
+    UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+    self.loginView = lv;
+    [lv release];
+    
+    UIProgressHUDView* pv  = [[UIProgressHUDView alloc]initWithView:self.view];
+    self.progressView = pv;
+    [pv release];
+    
     [self.view addSubview:self.progressView];
     
 }
@@ -244,6 +228,8 @@
     
     [self.view addSubview:self.loginView];
     [self.loginView authenticate:facebook withTwitter:twitter onSuccessCallback:onSucccessCallback onFailCallback:onFailCallback];
+    [onSucccessCallback release];
+    [onFailCallback release];
 }
 
 #pragma mark - ConrtibuteViewControllerDelegate methods

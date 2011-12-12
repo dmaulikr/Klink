@@ -87,30 +87,32 @@
 
 - (void)dealloc
 {
+    
+    self.scrollView = nil;
+     self.activeTextView=nil;
+        self.activeTextField=nil;
+        
+        self.configurationType=nil;
+        
+        self.lbl_draftTitle =nil;
+        self.draftTitle =nil;
+        self.tf_newDraftTitle=nil;
+        self.lbl_titleRequired=nil;
+        
+        self.btn_cameraButton =nil;
+        self.iv_photo=nil;
+        self.img_photo=nil;
+        self.lbl_photoOptional=nil;
+        self.lbl_photoRequired=nil;
+        
+        self.tv_caption =nil;
+        self.lbl_captionOptional=nil;
+        self.lbl_captionRequired=nil;
+       
+    self.lbl_deadline = nil;
     [super dealloc];
     
-    [self.scrollView dealloc];
-    [self.activeTextView dealloc];
-    [self.activeTextField dealloc];
-    
-    [self.configurationType dealloc];
-    
-    [self.lbl_draftTitle dealloc];
-    [self.draftTitle dealloc];
-    [self.tf_newDraftTitle dealloc];
-    [self.lbl_titleRequired dealloc];
-    
-    [self.btn_cameraButton dealloc];
-    [self.iv_photo dealloc];
-    [self.img_photo dealloc];
-    [self.lbl_photoOptional dealloc];
-    [self.lbl_photoRequired dealloc];
-    
-    [self.tv_caption dealloc];
-    [self.lbl_captionOptional dealloc];
-    [self.lbl_captionRequired dealloc];
-    
-    [self.lbl_deadline dealloc];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -168,9 +170,13 @@
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
     // Navigation Bar Buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancelButtonPressed:)];
+    UIBarButtonItem* rb = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rb;
+    [rb release];
     
+    UIBarButtonItem* lb = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancelButtonPressed:)];
+    self.navigationItem.leftBarButtonItem  = lb;
+    [lb release];
     // disable Submit button until user has completed all required fields
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
@@ -297,7 +303,7 @@
         if (currentPhoto.imageurl != nil && ![currentPhoto.imageurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             UIImage* image = [imageManager downloadImage:currentPhoto.imageurl withUserInfo:nil atCallback:callback];
-            
+            [callback release];
             if (image != nil) {
                 self.img_photo = image;
             }

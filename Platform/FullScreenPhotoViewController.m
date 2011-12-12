@@ -105,7 +105,8 @@
 	}
     [controller release];
     [fetchRequest release];
-    
+    [sortDescriptor1 release];
+    [sortDescriptor2 release];
     return __frc_photos;
 }
 
@@ -149,6 +150,8 @@
 	}
     [controller release];
     [fetchRequest release];
+    [sortDescriptor1 release];
+    [sortDescriptor2 release];
     
     return __frc_captions;
 }
@@ -161,56 +164,69 @@
     //add Facebook share button
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    self.tb_facebookButton = [[UIBarButtonItem alloc]
-                              initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
-                              style:UIBarButtonItemStylePlain
-                              target:self
-                              action:@selector(onFacebookButtonPressed:)];
+    UIBarButtonItem* fb =  [[UIBarButtonItem alloc]
+                            initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
+                            style:UIBarButtonItemStylePlain
+                            target:self
+                            action:@selector(onFacebookButtonPressed:)];
+    self.tb_facebookButton = fb;
+    [fb release];
+    
     [retVal addObject:self.tb_facebookButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
     //add Twitter share button
-    self.tb_twitterButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* tb = [[UIBarButtonItem alloc]
                              initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
                              style:UIBarButtonItemStylePlain
                              target:self
                              action:@selector(onTwitterButtonPressed:)];
+    self.tb_twitterButton = tb;
+    [tb release];
+    
     [retVal addObject:self.tb_twitterButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
 
     //add camera button
-    self.tb_cameraButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* cb = [[UIBarButtonItem alloc]
                             initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
                             style:UIBarButtonItemStylePlain
                             target:self
                             action:@selector(onCameraButtonPressed:)];
+    self.tb_cameraButton = cb;
+    [cb release];
+    
     [retVal addObject:self.tb_cameraButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
-    self.tb_voteButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* vb = [[UIBarButtonItem alloc]
                           initWithImage:[UIImage imageNamed:@"icon-thumbUp.png"]
                           style:UIBarButtonItemStylePlain
                           target:self
                           action:@selector(onVoteButtonPressed:)];
+    self.tb_voteButton = vb;
+    [vb release];
     [retVal addObject:self.tb_voteButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
     //add draft button
-    self.tb_captionButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* capB = [[UIBarButtonItem alloc]
                                     initWithImage:[UIImage imageNamed:@"icon-compose.png"]
                                     style:UIBarButtonItemStylePlain
                                     target:self
                                     action:@selector(onCaptionButtonPressed:)];
+    self.tb_captionButton = capB;
+    [capB release];
     [retVal addObject:self.tb_captionButton];
-    
+    [flexibleSpace release];
     
     return retVal;
 }
@@ -252,9 +268,11 @@
 
 - (void)dealloc
 {
-    [super dealloc];
-    [self.photoViewSlider release];
-    [self.captionViewSlider release];
+    self.photoViewSlider = nil;
+    self.captionViewSlider = nil;
+   // [self.photoViewSlider release];
+    //[self.captionViewSlider release];
+       [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -431,7 +449,7 @@
 	// If a timer exists then cancel and release
 	if (self.controlVisibilityTimer) {
 		[self.controlVisibilityTimer invalidate];
-		[self.controlVisibilityTimer release];
+		//[self.controlVisibilityTimer release];
 		self.controlVisibilityTimer = nil;
 	}
 }
@@ -439,7 +457,7 @@
 - (void)hideControlsAfterDelay:(NSTimeInterval)delay {
     [self cancelControlHiding];
 	if (![UIApplication sharedApplication].isStatusBarHidden) {
-		self.controlVisibilityTimer = [[NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] retain];
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
 	}
 }
 
@@ -690,7 +708,7 @@
         
         [navigationController release];
         [contributeViewController release];
-        [photo release];
+      
     }
 }
 
@@ -762,7 +780,7 @@
         
         [navigationController release];
         [contributeViewController release];
-        [photo release];
+       
     }
 }
 
@@ -777,7 +795,10 @@
         
         if (photoCount > 0 && index < photoCount) {
             //setup the photo imageview
-            self.iv_photo = [[UIImageView alloc] initWithFrame:frame];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:frame];
+            self.iv_photo = iv;
+            [iv release];
+            
             [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
             
             // Create gesture recognizer for the photo image view to handle a single tap
@@ -804,7 +825,7 @@
         int captionCount = [[self.frc_captions fetchedObjects]count];
         
         if (captionCount > 0 && index < captionCount) {
-            UICaptionView* v_caption = [[UICaptionView alloc] initWithFrame:frame];
+            UICaptionView* v_caption = [[[UICaptionView alloc] initWithFrame:frame]autorelease];
             [self viewSlider:viewSlider configure:v_caption forRowAtIndex:index withFrame:frame];
             return v_caption;
         }
@@ -855,7 +876,7 @@
             if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
                 Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
                 UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
-                
+                [callback release];
                 if (image != nil) {
                     [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
                     self.iv_photo.image = image;

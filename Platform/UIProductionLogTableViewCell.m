@@ -51,6 +51,48 @@
 }
 
 
+#pragma mark - Instance Methods
+//- (NSFetchedResultsController*) new_frc_photo {
+//    NSString* activityName = @"UIProductionLogTableViewCell.new_frc_photo:";
+//    
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    
+//    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PHOTO inManagedObjectContext:resourceContext.managedObjectContext];
+//    
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",THEMEID, self.pageID];
+//    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NUMBEROFVOTES ascending:NO];
+//    
+//    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//    [fetchRequest setPredicate:predicate];
+//    [fetchRequest setEntity:entityDescription];
+//    [fetchRequest setFetchBatchSize:20];
+//    
+//    NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+//    
+//    controller.delegate = self;
+//       
+//    
+//    NSError* error = nil;
+//    [controller performFetch:&error];
+//  	if (error != nil)
+//    {
+//        LOG_UIPRODUCTIONLOGTABLEVIEWCELL(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+//    }
+//    
+//  
+//    [fetchRequest release];
+//    
+//    return controller;
+//    
+//}
+
+- (void) dealloc {
+  
+    [super dealloc];
+}
+
+
 - (void) renderPhoto:(Photo*)photo {
     
     ImageManager* imageManager = [ImageManager instance];
@@ -64,7 +106,7 @@
     {
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
-        
+        [callback release];
         if (image != nil) {
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             self.iv_photo.image = image;

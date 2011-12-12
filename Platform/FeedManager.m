@@ -35,8 +35,10 @@ static FeedManager* sharedManager;
 }
 
 - (void) dealloc {
+     [__feedEnumerator release];
+    
     [super dealloc];
-    [__feedEnumerator release];
+   
 }
 
 

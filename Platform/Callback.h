@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Response.h"
+@class CallbackResult;
 
 @interface Callback : NSObject {
    
@@ -31,4 +32,5 @@
 - (void) fireWithResponse:(Response*)response; 
 - (void) fireWithResponse:(Response*)response withContext:(NSDictionary*)context;
 - (void) fireWithUserInfo:(NSDictionary*)userInfo;
+- (void) deliverResultToTarget:(CallbackResult*)result; 
 @end

@@ -43,7 +43,7 @@
 - (NSString*) getMetadataStringForPhoto:(Photo*)photo {
     NSDate* now = [NSDate date];
     NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:photo.datecreated]];
-    NSString* timeSinceCreated = [[NSString alloc] init];
+    NSString* timeSinceCreated = nil;
     if (intervalSinceCreated < 1 ) {
         timeSinceCreated = @"a moment";
     }

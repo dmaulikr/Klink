@@ -99,11 +99,6 @@ static NSMutableDictionary* managedObjectContexts;
             [context mergeChangesFromContextDidSaveNotification:notification];
         }
     }
-    
-  
-    
-    
-   
 }
 - (NSNumber*)nextID{
     
@@ -136,7 +131,7 @@ static NSMutableDictionary* managedObjectContexts;
 - (Request*) requestFor:(Resource*)resource forOperation:(RequestOperation)opcode onFinishCallback:(Callback*)callback {
  
     Request* request = [Request createInstanceOfRequest];
-    [[request initFor:resource.objectid withTargetObjectType:resource.objecttype withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback]autorelease];
+    [request initFor:resource.objectid withTargetObjectType:resource.objecttype withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback];
     
     return request;
 }
@@ -291,13 +286,14 @@ static NSMutableDictionary* managedObjectContexts;
                             //now all of our arrays are populated we can generate the url
                             request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAttributes:attributeNames withAttributeValues:attributeValues withOperationCodes:attributeOperationCodes withAuthenticationContext:authenticationContext]absoluteString];
                             
-                            //                            request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAuthenticationContext:authenticationContext] absoluteString];
+                            [attributeValues release];
+                            [attributeOperationCodes release];
                         }
                         else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
                             NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
                             request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
                         }
-
+                        
                         [putRequests addObject:request];
                     }
                     
@@ -389,8 +385,12 @@ static NSMutableDictionary* managedObjectContexts;
 
         }
     }
-    
-    //TODO: need to put in code to upload updates and deletes to the cloud
+    [resourcesToDeleteInCloud release];
+    [resourceTypesToCreateInCloud release];
+    [resourcesToCreateInCloud release];
+    [resourceIDsToCreateInCloud release];
+    [putRequests release];
+    [createRequests release];
 }
 
 - (void) executeEnumeration:(NSURL*)url 
@@ -408,8 +408,10 @@ static NSMutableDictionary* managedObjectContexts;
     shouldEnumerateSinglePage:(BOOL)shouldEnumerateSinglePage 
     onFinishNotify:(Callback *)callback {
     
+    BOOL shouldReleaseEnumerationContext = NO;
     if (enumerationContext == nil) {
         enumerationContext = [[EnumerationContext alloc]init];
+        shouldReleaseEnumerationContext = YES;
     }
     
     
@@ -438,7 +440,11 @@ static NSMutableDictionary* managedObjectContexts;
         
         [enumerationContext release];
     }
-
+    
+    if (shouldReleaseEnumerationContext) {
+        [enumerationContext release];
+    }
+    [authenticationContext release];
     
     
 }
@@ -519,7 +525,7 @@ static NSMutableDictionary* managedObjectContexts;
         NSError* error = nil;
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
 
-        
+        [request release];
         if (results != nil && [results count] > 0) {
             retVal = [results objectAtIndex:0];
         }
@@ -565,21 +571,7 @@ static NSMutableDictionary* managedObjectContexts;
     
 }
 
-/*- (Resource*) resourceWithType:(NSString*)typeName 
-                withValueEqual:(NSString*)value 
-                  forAttribute:(NSString*)attributeName 
-                        sortBy:(NSString*)sortByAttribute 
-                 sortAscending:(BOOL)sortAscending {
-    Resource* retVal = nil;
-    NSArray* retValues = [self resourcesWithType:typeName withValueEqual:value forAttribute:attributeName sortBy:sortByAttribute sortAscending:sortAscending];
-    
-    if (retValues != nil && [retValues count] > 0) {
-        retVal = [retValues objectAtIndex:0];
-    }
-    return retVal;
-    
-    
-}*/
+
 
 - (Resource*) resourceWithType:(NSString*)typeName 
                 withValueEqual:(NSString*)value 
@@ -640,56 +632,6 @@ static NSMutableDictionary* managedObjectContexts;
 
 }
 
-/*- (NSArray*)  resourcesWithType:(NSString*)typeName 
-                 withValueEqual:(NSString*)value 
-                   forAttribute:(NSString*)attributeName 
-                         sortBy:(NSString*)sortByAttribute 
-                  sortAscending:(BOOL)sortAscending {
-    
-    NSString* activityName = @"ResourceContext.resourcesWithType:";
-    NSArray* retVal = nil;
-    
-    
-    NSManagedObjectContext *appContext = self.managedObjectContext;
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:appContext];
-    
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    
-    if (attributeName != nil && 
-        value != nil) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K=%@",attributeName,value];    
-        [request setPredicate:predicate];
-    }
-    
-    NSSortDescriptor* sortDescription = nil;
-    
-    if (sortByAttribute != nil) {
-        NSSortDescriptor* sortDescription = [[NSSortDescriptor alloc]initWithKey:sortByAttribute ascending:sortAscending];
-        [request setSortDescriptors:[NSArray arrayWithObject:sortDescription]];
-    }
-    NSError* error = nil;
-    NSArray* results = [appContext executeFetchRequest:request error:&error];
-    
-    if (error != nil) {
-        
-        LOG_RESOURCECONTEXT(1, @"%@Error fetching results from data layer for attribute:%@ with error:%@",activityName,attributeName,error);
-    }
-    
-    else {
-        
-        retVal = results;
-    }
-    [request release];
-    
-    if (sortDescription != nil) {
-        [sortDescription release];
-    }
-    return retVal; 
-    
-    
-}*/
 
  
 - (Resource*) singletonResourceWithType:(NSString*)typeName {
@@ -703,6 +645,7 @@ static NSMutableDictionary* managedObjectContexts;
         
         NSError* error = nil;
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        [request release];
         
         if (results != nil && [results count] == 1) {
             retVal = [results objectAtIndex:0];

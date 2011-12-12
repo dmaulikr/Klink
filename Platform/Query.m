@@ -53,13 +53,19 @@
 }
 
 - (id) initFromJSON:(NSString *)json {
-    NSDictionary* dictionary = [json objectFromJSONString];
-    self.filterObjectType = [dictionary valueForKey:FILTEROBJECTTYPE];
-    self.attributeExpressions = [dictionary valueForKey:ATTRIBUTEEXPRESSIONS];
+    self = [super init];
     
-    NSDictionary* queryOptionsDictionary = [dictionary valueForKey:QUERYOPTIONS];
-    if (queryOptionsDictionary != nil) {
-        self.queryOptions = [[QueryOptions alloc]initFromJSONDictionary:queryOptionsDictionary];
+    if (self) {
+        NSDictionary* dictionary = [json objectFromJSONString];
+        self.filterObjectType = [dictionary valueForKey:FILTEROBJECTTYPE];
+        self.attributeExpressions = [dictionary valueForKey:ATTRIBUTEEXPRESSIONS];
+        
+        NSDictionary* queryOptionsDictionary = [dictionary valueForKey:QUERYOPTIONS];
+        if (queryOptionsDictionary != nil) {
+            QueryOptions* qo = [[QueryOptions alloc]initFromJSONDictionary:queryOptionsDictionary];
+            self.queryOptions = qo;
+            [qo release];
+        }
     }
     return self;
 }
@@ -119,7 +125,7 @@
     query.attributeExpressions = expressions;
     
     
-    
+    [sortDescriptor release];
     return query;
 }
 

@@ -50,6 +50,11 @@
     
 }
 
+- (void) dealloc {
+    
+    [super dealloc];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -75,7 +80,7 @@
     if (currentPhoto.imageurl != nil && ![currentPhoto.imageurl isEqualToString:@""]) {
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         UIImage* image = [imageManager downloadImage:currentPhoto.imageurl withUserInfo:nil atCallback:callback];
-        
+        [callback release];
         if (image != nil) {
             self.iv_landscapePhoto.image = image;
         }

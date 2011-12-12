@@ -22,7 +22,7 @@
         [self.didSucceed boolValue] == YES) {
         
         NSDictionary* modifiedResourceJSONDictionary = [jsonDictionary valueForKey:MODIFIEDRESOURCE];
-        if (modifiedResourceJSONDictionary != nil && modifiedResourceJSONDictionary != [NSNull null]) {
+        if (modifiedResourceJSONDictionary != nil && ! [modifiedResourceJSONDictionary isEqual:[NSNull null]]) {
         
             self.modifiedResource = [Resource createInstanceOfTypeFromJSON:modifiedResourceJSONDictionary];
         }
@@ -32,7 +32,7 @@
         NSArray* secondaryResultsJSON = [jsonDictionary valueForKey:SECONDARYRESULTS];
         
         
-        if (secondaryResultsJSON != nil && secondaryResultsJSON != [NSNull null]) {
+        if (secondaryResultsJSON != nil && ![secondaryResultsJSON isEqual: [NSNull null]]) {
             NSMutableArray* secondaryResults = [[NSMutableArray alloc]init];
             
             

@@ -20,25 +20,46 @@
 - (id) init {
     self = [super init];
     if (self) {
-        self.primaryResults = [[NSArray alloc]init];
-        self.secondaryResults = [[NSArray alloc]init];
+        NSArray* pr = [[NSArray alloc]init];
+        self.primaryResults = pr;
+        [pr release];
+        
+        
+        NSArray* sr = [[NSArray alloc]init];
+        self.secondaryResults = sr;
+        [sr release];
+        
         self.date = [NSDate date];
         self.enumerationContext = nil;
+       
     }
     return self;
 }
+
+
+- (void)dealloc {
+    //[self.primaryResults release];
+    //[self.secondaryResults release];
+    //[self.enumerationContext release];
+    [super dealloc];
+}
+
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
         
     self = [super initFromJSONDictionary:jsonDictionary]; 
     
     if (self != nil) {
         NSDictionary *enumerationContextDictionary = [jsonDictionary valueForKey:ENUMERATIONCONTEXT];
-        if (enumerationContextDictionary != [NSNull null]) {
-            self.enumerationContext = [[EnumerationContext alloc]initFromJSONDictionary:[jsonDictionary objectForKey:ENUMERATIONCONTEXT]];
+        if (![enumerationContextDictionary isEqual:[NSNull null]]) {
+            EnumerationContext* ec = [[EnumerationContext alloc]initFromJSONDictionary:[jsonDictionary objectForKey:ENUMERATIONCONTEXT]];
+            self.enumerationContext = ec;
+            [ec release];
         }
 
         NSNumber* dateInSecondsSinceEpoch = [jsonDictionary objectForKey:DATE];
-        self.date = [[NSDate alloc]initWithTimeIntervalSince1970:[dateInSecondsSinceEpoch doubleValue]];
+        NSDate* date = [[NSDate alloc]initWithTimeIntervalSince1970:[dateInSecondsSinceEpoch doubleValue]];
+        self.date = date;
+        [date release];
         
         NSArray* primaryResultsJSON = [jsonDictionary objectForKey:PRIMARY_RESULTS];
         NSArray* secondaryResultsJSON = [jsonDictionary objectForKey:SECONDARY_RESULTS];                        
@@ -55,6 +76,7 @@
                 
             }
             self.primaryResults = primaryResultsObjects;
+            [primaryResultsObjects release];
         }
         
         if (secondaryResultsJSON != nil) {
@@ -68,6 +90,7 @@
                 
             }
             self.secondaryResults = secondaryResultsObjects;
+            [secondaryResultsObjects release];
         }
 
     }
@@ -87,13 +110,9 @@
         NSString* json = [jsonDictionary JSONString];
         retVal = [NSString stringWithFormat:@"%@%@",responseJSON,json];
     }
+    [jsonDictionary release];
     return retVal;
 }
 
-- (void)dealloc {
-    [self.primaryResults release];
-    [self.secondaryResults release];
-    [super dealloc];
-}
 
 @end

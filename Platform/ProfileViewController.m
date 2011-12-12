@@ -36,7 +36,9 @@
     // Do any additional setup after loading the view from its nib.
     
     // Navigation Bar Buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+    UIBarButtonItem* rb = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rb;
+    [rb release];
 }
 
 - (void)viewDidUnload

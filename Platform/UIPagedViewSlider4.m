@@ -28,7 +28,10 @@
 - (void)commonInit {
     //we need to create a table with the dimensions reversed because we are going to transform that bitch
     CGRect tableFrame = CGRectMake(0, 0, self.frame.size.height, self.frame.size.width);        
-    self.tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    UITableView* tv = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    self.tableView = tv;
+    [tv release];
+    
     self.tableView.pagingEnabled = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -104,31 +107,7 @@
         //check the direction
         //find the nearest index
         //set the motion to that
-//        int nextIndex = 0;
-//        if (m_scrollDirection == RIGHT) {
-//            
-//            nextIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:NO];
-//            int itemCount = [self.delegate itemCountFor:self];
-//            
-//            if (nextIndex >= itemCount) {
-//                nextIndex--;
-//            }
-//            
-//        }
-//        else if (m_scrollDirection == LEFT) {
-//            nextIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
-//            
-//            if (nextIndex == 0) {
-//                nextIndex++;
-//            }
-//        }
-//        
-//        
-//        //we set the scroll view to animate itself to that nextIndex location
-//        CGPoint currentOffset = scrollView.contentOffset;
-//        CGPoint targetOffset = [self contentOffsetForIndex:nextIndex];
-//        CGRect rectWindow = CGRectMake(targetOffset.x,targetOffset.y,m_itemHeight,(m_itemWidth+m_itemSpacing));
-//        [scrollView scrollRectToVisible:rectWindow animated:YES];
+
 
     }
 }

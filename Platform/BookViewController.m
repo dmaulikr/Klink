@@ -61,20 +61,20 @@
     
     [controller release];
     [fetchRequest release];
-    
+    [sortDescriptor release];
     return __frc_published_pages;
     
 }
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
     //returns the index location with thin the frc_published_photos for the photo with the id specified
-    int retVal = 0;
+  
     
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
     int index = 0;
     for (Page* page in fetchedObjects) {
         if ([page.objectid isEqualToNumber:pageid]) {
-            retVal = index;
+           
             break;
         }
         index++;
@@ -93,22 +93,26 @@
     UIBarButtonItem* fixedSpace2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 
     //add Facebook share button
-    self.tb_facebookButton = [[UIBarButtonItem alloc]
+   UIBarButtonItem* fb = [[UIBarButtonItem alloc]
                               initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
                               style:UIBarButtonItemStylePlain
                               target:self
                               action:@selector(onFacebookButtonPressed:)];
+    self.tb_facebookButton  = fb;
+    [fb release];
     [retVal addObject:self.tb_facebookButton];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
     
     //add Twitter share button
-    self.tb_twitterButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* tb = [[UIBarButtonItem alloc]
                              initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
                              style:UIBarButtonItemStylePlain
                              target:self
                              action:@selector(onTwitterButtonPressed:)];
+    self.tb_twitterButton = tb;
+    [tb release];
     [retVal addObject:self.tb_twitterButton];
     
     //add fixed space for button spacing
@@ -116,11 +120,13 @@
     [retVal addObject:fixedSpace1];
     
     //add bookmark button
-    self.tb_bookmarkButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* bkb = [[UIBarButtonItem alloc]
                                        initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"]
                                        style:UIBarButtonItemStylePlain
                                        target:self 
                                        action:@selector(onBookmarkButtonPressed:)];
+    self.tb_bookmarkButton = bkb;
+    [bkb release];
     [retVal addObject:self.tb_bookmarkButton];
     
     //add fixed space for button spacing
@@ -139,7 +145,9 @@
         
         [retVal addObject:self.tb_notificationButton];
     }
-    
+    [flexibleSpace release];
+    [fixedSpace1 release];
+    [fixedSpace2 release];
     return retVal;
 }
 
@@ -160,6 +168,23 @@
     self.tb_twitterButton.enabled = YES;
 }
 
+
+#pragma mark - Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		//[self.controlVisibilityTimer release];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
+    [self cancelControlHiding];
+	if (![UIApplication sharedApplication].isStatusBarHidden) {
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
+	}
+}
 
 #pragma mark - Toolbar Button Event Handlers
 - (void) onFacebookButtonPressed:(id)sender {   
@@ -201,6 +226,7 @@
             [self disableTwitterButton];
         }
     }
+
 }
 
 - (void) onBookmarkButtonPressed:(id)sender {
@@ -247,11 +273,14 @@
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
         PageViewController * pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+
+        [pageNumber release];
+
         
         // reenable sharing buttons
         [self enableFacebookButton];
         [self enableTwitterButton];
-        
+
         return pageViewController;
     }
     
@@ -299,10 +328,12 @@
     
     NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:UIPageViewControllerSpineLocationMin] forKey: UIPageViewControllerOptionSpineLocationKey];
     
-    self.pageController = [[UIPageViewController alloc] 
+    UIPageViewController* pvc = [[UIPageViewController alloc] 
                            initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl
                            navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                            options: options];
+    self.pageController = pvc;
+    [pvc release];
     
     self.pageController.dataSource = self;
     //[self.pageController.view setFrame:[self.view bounds]];

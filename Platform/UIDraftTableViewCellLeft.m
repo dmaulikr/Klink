@@ -47,7 +47,7 @@
         if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
-            
+            [callback release];
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
@@ -130,14 +130,23 @@
 
 - (void)dealloc
 {
+    self.photoID = nil;
+    self.captionID = nil;
+    self.draftTableViewCell = nil;
+    self.iv_photo = nil;
+    self.lbl_caption = nil;
+    self.lbl_numVotes = nil;
+    self.lbl_numCaptions = nil;
     [super dealloc];
-    [self.photoID release];
-    [self.captionID release];
-    [self.draftTableViewCell release];
-    [self.iv_photo release];
-    [self.lbl_caption release];
-    [self.lbl_numVotes release];
-    [self.lbl_numCaptions release];
+
+   // [self.photoID release];
+   // [self.captionID release];
+   // [self.draftTableViewCellLeft release];
+   // [self.iv_photo release];
+  //  [self.lbl_caption release];
+   // [self.lbl_numVotes release];
+   // [self.lbl_numCaptions release];
+
 }
 
                                                                                              

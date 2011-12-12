@@ -11,12 +11,15 @@
 #import "Types.h"
 #import "ResourceContext.h"
 #import "AuthenticationContext.h"
+#import "Macros.h"
+
 @implementation GetAuthenticatorResponse
-@synthesize authenticationcontext;
+@synthesize authenticationcontext = m_authenticationcontext;
 @synthesize user;
 
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
+    NSString* activityName = @"GetAuthenticatorResponse.initFromJSONDictionary:";
     self = [super initFromJSONDictionary:jsonDictionary]; 
     
     if (self != nil) {
@@ -29,7 +32,8 @@
             self.user = [Resource createInstanceOfTypeFromJSON:userDictionary];
         }
         else {
-            //TODO: log an error for missing user object on get authenticator response object
+        
+            LOG_RESPONSE(1,@"%@Missing user object on authenticator response object",activityName);
         }
     }
     return self;
@@ -38,8 +42,8 @@
 
 
 - (void) dealloc {
-    [self.authenticationcontext release];
-    [self.user release];
+  //  [self.authenticationcontext release];
+    //[self.user release];
     [super dealloc];
 }
 @end

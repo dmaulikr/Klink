@@ -23,29 +23,37 @@
 static  ImageManager* sharedManager;  
 
 + (ImageManager*) instance {
-//    NSString* activityName = @"ImageManager.getInstance:";
     @synchronized(self)
     {
         if (!sharedManager) {
             sharedManager = [[ImageManager alloc]init];
         } 
-//        [BLLog v:activityName withMessage:@"completed initialization"];
+
         return sharedManager;
     }
 }
 
 - (id)init{
-    self.queue = [[NSOperationQueue alloc] init];
-    self.imageCache = [[ASIDownloadCache alloc]init];
-    PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.imageCache setStoragePath:[appDelegate getImageCacheStorageDirectory]];
+    self = [super init];
     
+    if (self) {
+        NSOperationQueue* oq = [[NSOperationQueue alloc]init];
+        self.queue = oq;
+        [oq release];
+        
+        ASIDownloadCache* dc = [[ASIDownloadCache alloc]init];
+        self.imageCache = dc;
+        [dc release];
+       
+        PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [self.imageCache setStoragePath:[appDelegate getImageCacheStorageDirectory]];
+    }
     return self;
 }
 
 -(void)dealloc {
-    [self.queue release];
-    [self.imageCache release];
+  //  [self.queue release];
+   // [self.imageCache release];
     [super dealloc];
 }
 
@@ -179,6 +187,7 @@ static inline double radians (double degrees) {
     // For images taken in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when building the CG context
    
     context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
+    CGColorSpaceRelease(colorSpaceInfo);
        
     // We need to rotate the CG context before drawing the image.
     // In the right or left cases, we need to switch targetWidth and targetHeight, and also the origin point

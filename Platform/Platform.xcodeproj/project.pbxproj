@@ -104,7 +104,7 @@
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
-		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; };
+		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
 		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; };
 		C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C9143EB192008D25A7 /* CoreData.framework */; };
@@ -119,8 +119,6 @@
 		C593FBA3143EC41B008D25A7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA2143EC41B008D25A7 /* CFNetwork.framework */; };
 		C593FBA5143EC427008D25A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */; };
 		C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC1143EC81A008D25A7 /* BaseViewController.m */; };
-		C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBC5143EC98B008D25A7 /* SampleViewController.m */; };
-		C593FBC8143EC98B008D25A7 /* SampleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C593FBC6143EC98B008D25A7 /* SampleViewController.xib */; };
 		C593FBCB143ECB69008D25A7 /* Types.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBCA143ECB69008D25A7 /* Types.m */; };
 		C593FBE7143ED69D008D25A7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBD1143ED69C008D25A7 /* Reachability.m */; };
 		C593FBE8143ED69D008D25A7 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C593FBD3143ED69C008D25A7 /* ASINetworkQueue.m */; };
@@ -381,9 +379,6 @@
 		C593FBA4143EC427008D25A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C593FBC0143EC81A008D25A7 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		C593FBC1143EC81A008D25A7 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		C593FBC4143EC98B008D25A7 /* SampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleViewController.h; sourceTree = "<group>"; };
-		C593FBC5143EC98B008D25A7 /* SampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleViewController.m; sourceTree = "<group>"; };
-		C593FBC6143EC98B008D25A7 /* SampleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleViewController.xib; sourceTree = "<group>"; };
 		C593FBC9143ECB69008D25A7 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
 		C593FBCA143ECB69008D25A7 /* Types.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Types.m; sourceTree = "<group>"; };
 		C593FBCE143ED69C008D25A7 /* README-GHUnit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README-GHUnit"; sourceTree = "<group>"; };
@@ -881,9 +876,6 @@
 			children = (
 				C5C76C6B145B8FE800BA69B8 /* Bonobo */,
 				C593FBC3143EC91C008D25A7 /* Abstract */,
-				C593FBC4143EC98B008D25A7 /* SampleViewController.h */,
-				C593FBC5143EC98B008D25A7 /* SampleViewController.m */,
-				C593FBC6143EC98B008D25A7 /* SampleViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1429,7 +1421,6 @@
 				C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */,
 				C593F84B143EBE18008D25A7 /* CHANGELOG.md in Resources */,
 				C593F84D143EBE18008D25A7 /* README.md in Resources */,
-				C593FBC8143EC98B008D25A7 /* SampleViewController.xib in Resources */,
 				C5C83AE214480DF600AF38CF /* FBDialog.bundle in Resources */,
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
@@ -1522,7 +1513,6 @@
 				C593F806143EBCE3008D25A7 /* User.m in Sources */,
 				C593F84C143EBE18008D25A7 /* JSONKit.m in Sources */,
 				C593FBC2143EC81A008D25A7 /* BaseViewController.m in Sources */,
-				C593FBC7143EC98B008D25A7 /* SampleViewController.m in Sources */,
 				C593FBCB143ECB69008D25A7 /* Types.m in Sources */,
 				C593FBE7143ED69D008D25A7 /* Reachability.m in Sources */,
 				C593FBE8143ED69D008D25A7 /* ASINetworkQueue.m in Sources */,
@@ -1685,6 +1675,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1695,11 +1686,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -1728,6 +1721,7 @@
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = bonobo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1751,6 +1745,7 @@
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
 				PRODUCT_NAME = bonobo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

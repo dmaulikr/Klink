@@ -69,7 +69,7 @@
         {
             LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
         }
-        
+        [sortDescriptor release];
         [controller release];
         [fetchRequest release];
         
@@ -94,9 +94,12 @@
 
 - (void)dealloc
 {
-    [self.frc_notifications release];
-    [self.lbl_title release];
-    [self.tbl_notifications release];
+    self.frc_notifications = nil;
+    self.lbl_title = nil;
+    self.tbl_notifications = nil;
+    //[self.frc_notifications release];
+    //[self.lbl_title release];
+    //[self.tbl_notifications release];
     [super dealloc];
 }
 
@@ -130,7 +133,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_notifications.bounds.size.height, self.tbl_notifications.bounds.size.width, self.tbl_notifications.bounds.size.height);
-    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader = erthv;
+    [erthv release];
+    
     self.refreshHeader.delegate = self;
     [self.tbl_notifications addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
@@ -182,6 +188,7 @@
             self.lbl_since.text = [format stringFromDate:dateJoined];
         }
         
+        [format release];
         self.lbl_numcaptionslw.text = [user.numberofcaptionslw stringValue];
         self.lbl_numphotoslw.text = [user.numberofphotoslw stringValue];
         
@@ -277,6 +284,7 @@ numberOfRowsInSection:(NSInteger)section
     
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onFeedFinishedRefresh:)];
     [feedManager refreshFeedOnFinish:callback];
+    [callback release];
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {

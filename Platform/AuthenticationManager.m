@@ -56,40 +56,42 @@ static  AuthenticationManager* sharedManager;
 - (id) init {
     NSString* activityName =@"AuthenticationManager.init:";
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    NSString* lastUserID = [defaults valueForKey:USERID];
-    
-       
-    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-    [f setNumberStyle:NSNumberFormatterNoStyle];
-    NSNumber * lastLoggedInUserID = [f numberFromString:lastUserID];
-    [f release];
-    
-    //create the instance to have no user logged in, by setting it to 0
-    self.m_LoggedInUserID = [NSNumber numberWithInt:0];
-    
-    if (lastLoggedInUserID != 0) {
-        AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
-        if (storedContext != nil) {
-            BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
-            if (result) {
-                LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
+    self = [super init];
+    if (self) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        NSString* lastUserID = [defaults valueForKey:USERID];
+        
+        
+        NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+        [f setNumberStyle:NSNumberFormatterNoStyle];
+        NSNumber * lastLoggedInUserID = [f numberFromString:lastUserID];
+        [f release];
+        
+        //create the instance to have no user logged in, by setting it to 0
+        self.m_LoggedInUserID = [NSNumber numberWithInt:0];
+        
+        if (lastLoggedInUserID != 0) {
+            AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
+            if (storedContext != nil) {
+                BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
+                if (result) {
+                    LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
+                }
+                else {
+                    LOG_SECURITY(1, @"%@%@",activityName,@" Unable to login with stored credentials");
+                }
             }
             else {
-                LOG_SECURITY(1, @"%@%@",activityName,@" Unable to login with stored credentials");
+                LOG_SECURITY(1, @"%@%@",activityName,@" No stored user context found, will require re-authentication");
             }
         }
         else {
-            LOG_SECURITY(1, @"%@%@",activityName,@" No stored user context found, will require re-authentication");
+            LOG_SECURITY(0, @"%@%@",activityName,@" No stored user context found, will require re-authentication");
         }
+        
+        
     }
-    else {
-        LOG_SECURITY(0, @"%@%@",activityName,@" No stored user context found, will require re-authentication");
-    }
-    
-    
-    
     
     return self;
 }
@@ -118,6 +120,7 @@ static  AuthenticationManager* sharedManager;
         NSString* facebookIDString = [result valueForKey:ID];
         NSNumber* facebookID = [facebookIDString numberValue];
         NSString* displayName = [result valueForKey:NAME];
+        
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
         
         //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
@@ -126,6 +129,7 @@ static  AuthenticationManager* sharedManager;
         
         LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
         [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate withDeviceToken:appDelegate.deviceToken onFinishNotify:callback];
+        [callback release];
           
     }
     else if (request == self.fbPictureRequest) {
@@ -172,6 +176,7 @@ static  AuthenticationManager* sharedManager;
         }
     }
     //now we have a context that is populated with the necessary credentials for the user
+    [retVal autorelease];
     return retVal;
 }
 - (AuthenticationContext*) contextForLoggedInUser {

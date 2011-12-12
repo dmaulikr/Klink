@@ -87,6 +87,8 @@
             LOG_UIDRAFTVIEW(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
         }
         
+        [sortDescriptor1 release];
+        [sortDescriptor2 release];
         [controller release];
         [fetchRequest release];
         
@@ -111,6 +113,7 @@
                                            target:self
                                            action:@selector(onUsernameButtonPressed:)];
         [retVal addObject:usernameButton];
+        [usernameButton release];
     }
     
     //add flexible space for button spacing
@@ -123,6 +126,7 @@
                                      target:self
                                      action:@selector(onCameraButtonPressed:)];
     [retVal addObject:cameraButton];
+    [cameraButton release];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
@@ -134,6 +138,7 @@
                                        target:self 
                                        action:@selector(onBookmarkButtonPressed:)];
     [retVal addObject:bookmarkButton];
+    [bookmarkButton release];
     
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
@@ -148,7 +153,7 @@
         [retVal addObject:notificationBarItem];
     }
     
-    
+    [flexibleSpace release];
     return retVal;
 }
 
@@ -198,14 +203,16 @@
 
 - (void)dealloc
 {
-    [self.tbl_draftTableView release];
-    [self.frc_photos release];
-    [self.pageID release];
+    self.tbl_draftTableView = nil;
+    self.frc_photos = nil;
+    self.pageID = nil;
+    //[self.tbl_draftTableView release];
+    //[self.frc_photos release];
+    //[self.pageID release];
     [super dealloc];
 }
 
 #pragma mark - View lifecycle
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -228,7 +235,11 @@
     
     // setup pulldown refresh on tableview
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
-    self.refreshHeader = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    
+    EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
+    self.refreshHeader = erthv;
+    [erthv release];
+    
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_draftTableView addSubview:self.refreshHeader];
@@ -309,7 +320,7 @@
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
-    [photoViewController release];
+  
 }
 
 
@@ -324,7 +335,7 @@
     {
         Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
-        NSString* reusableCellIdentifier = [[NSString alloc] init];
+        NSString* reusableCellIdentifier = nil;
         
         if ([indexPath row] == 0) {
             // leading draft, show version of draft table view cell for the leading draft
@@ -432,7 +443,7 @@
     [self presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
-    [profileViewController release];
+   
 }
 
 - (void) onCameraButtonPressed:(id)sender {
