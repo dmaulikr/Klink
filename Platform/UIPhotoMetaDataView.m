@@ -73,6 +73,9 @@
         self.lbl_numVotes.text = [photo.numberofvotes stringValue];
     }
     
+    [self.lbl_metaData setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
+    [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
+    
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
     
     if ([caption.hasvoted boolValue]) {

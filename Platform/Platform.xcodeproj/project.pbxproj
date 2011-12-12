@@ -45,6 +45,10 @@
 		5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController.xib */; };
 		5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewController.m */; };
 		5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewController.xib */; };
+		523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E414941EB4005BED44 /* open_book_page_turn.png */; };
+		523F22E714941EB4005BED44 /* open_book_page_turn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E514941EB4005BED44 /* open_book_page_turn@2x.png */; };
+		523F22E9149443E3005BED44 /* UIDraftTableViewCellRight.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */; };
+		523F22EB14944A4F005BED44 /* UIDraftTableViewCellTop.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523F22EA14944A4F005BED44 /* UIDraftTableViewCellTop.xib */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
@@ -264,6 +268,10 @@
 		5239EEE71492B22E0006FB5D /* BookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewController.h; sourceTree = "<group>"; };
 		5239EEE81492B22E0006FB5D /* BookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewController.m; sourceTree = "<group>"; };
 		5239EEE91492B22E0006FB5D /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewController.xib; sourceTree = "<group>"; };
+		523F22E414941EB4005BED44 /* open_book_page_turn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open_book_page_turn.png; sourceTree = "<group>"; };
+		523F22E514941EB4005BED44 /* open_book_page_turn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open_book_page_turn@2x.png"; sourceTree = "<group>"; };
+		523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellRight.xib; sourceTree = "<group>"; };
+		523F22EA14944A4F005BED44 /* UIDraftTableViewCellTop.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellTop.xib; sourceTree = "<group>"; };
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
@@ -693,6 +701,8 @@
 				5281EEEC1485945700AB1BF0 /* icon-pics2@2x.png */,
 				5281EEF21485A55C00AB1BF0 /* open_book_page.png */,
 				5220103014785B4000C47C00 /* open_book_page@2x.png */,
+				523F22E414941EB4005BED44 /* open_book_page_turn.png */,
+				523F22E514941EB4005BED44 /* open_book_page_turn@2x.png */,
 				5220103114785B4000C47C00 /* page_curled.png */,
 				5220103214785B4000C47C00 /* page_curled@2x.png */,
 				5220103314785B4000C47C00 /* page.png */,
@@ -1116,7 +1126,9 @@
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
 				3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */,
 				3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */,
+				523F22EA14944A4F005BED44 /* UIDraftTableViewCellTop.xib */,
 				3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */,
+				523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */,
 				C5156A1F146B4A2A00D1FC0B /* UILoginView.h */,
 				C5156A20146B4A2A00D1FC0B /* UILoginView.m */,
 				52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */,
@@ -1472,6 +1484,10 @@
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
 				5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */,
 				5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */,
+				523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */,
+				523F22E714941EB4005BED44 /* open_book_page_turn@2x.png in Resources */,
+				523F22E9149443E3005BED44 /* UIDraftTableViewCellRight.xib in Resources */,
+				523F22EB14944A4F005BED44 /* UIDraftTableViewCellTop.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

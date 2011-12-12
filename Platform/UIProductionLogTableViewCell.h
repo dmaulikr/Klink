@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EventManager.h"
 
-@interface UIProductionLogTableViewCell : UITableViewCell <NSFetchedResultsControllerDelegate> {
+@interface UIProductionLogTableViewCell : UITableViewCell {
     NSNumber*       m_pageID;
     UITableViewCell* m_productionLogTableViewCell;
     
@@ -20,7 +20,6 @@
     UILabel*        m_lbl_numCaptions;
     
     NSNumber*       m_topVotedPhotoID;
-    NSFetchedResultsController* m_frc_photo;
     
     NSDate*         m_deadline;
 }
@@ -32,8 +31,9 @@
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_deadline;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numPhotos;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numCaptions;
-@property (nonatomic, retain) IBOutlet NSFetchedResultsController*     frc_photo;
+
 @property (nonatomic, retain)          NSNumber*    topVotedPhotoID;
+
 @property (nonatomic, retain)          NSDate*      deadline;
 
 @property (nonatomic, retain) EventManager*         eventManager;

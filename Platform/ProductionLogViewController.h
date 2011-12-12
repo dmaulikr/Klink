@@ -14,6 +14,7 @@
     CloudEnumerator* m_cloudDraftEnumerator;
     UITableViewCell* m_productionTableViewCell;
     EGORefreshTableHeaderView* m_refreshHeader;
+    UILabel* m_lbl_title;
     UILabel* m_lbl_numDraftsTotal;
     UILabel* m_lbl_numDraftsClosing;
 }
@@ -23,6 +24,7 @@
 @property (nonatomic, retain) CloudEnumerator*              cloudDraftEnumerator;
 @property (nonatomic, retain) IBOutlet UITableViewCell*     productionTableViewCell;
 @property (nonatomic, retain) EGORefreshTableHeaderView*    refreshHeader;
+@property (nonatomic, retain) IBOutlet UILabel*             lbl_title;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsTotal;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsClosing;
 

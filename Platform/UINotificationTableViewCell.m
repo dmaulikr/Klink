@@ -17,7 +17,7 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 
-#define kNOTIFICATIONID @"notificationid"
+#define kNOTIFICATIONID             @"notificationid"
 
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
@@ -99,6 +99,10 @@
         }
         
         [self.contentView addSubview:self.notificationTableViewCell];
+        
+        [self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_notificationDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
+        
     }
     return self;
 }

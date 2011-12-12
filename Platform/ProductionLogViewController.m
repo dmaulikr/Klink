@@ -33,6 +33,7 @@
 @synthesize tbl_productionTableView     = m_tbl_productionTableView;
 @synthesize frc_draft_pages             = __frc_draft_pages;
 @synthesize productionTableViewCell     = m_productionTableViewCell;
+@synthesize lbl_title                   = m_lbl_title;
 @synthesize lbl_numDraftsTotal          = m_lbl_numDraftsTotal;
 @synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
@@ -84,9 +85,7 @@
 
 - (void) updateDraftCounterLabels {
     int numDraftsTotal = [[self.frc_draft_pages fetchedObjects]count];
-    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", numDraftsTotal];
-    
-    //Page* draft = [[Page alloc]init];
+    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"total drafts: %d", numDraftsTotal];
     
     int numDraftsClosing = 0;
     NSDate* now = [NSDate date];
@@ -103,7 +102,7 @@
         }
     }
     
-    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"%d", numDraftsClosing];
+    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"closing today: %d", numDraftsClosing];
 }
 
 #pragma mark - Toolbar buttons
@@ -228,7 +227,11 @@
     [self.tbl_productionTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
-    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"%d", [self.tbl_productionTableView numberOfRowsInSection:0]];
+    [self updateDraftCounterLabels];
+    
+    [self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.lbl_numDraftsTotal setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_numDraftsClosing setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

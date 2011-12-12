@@ -27,7 +27,6 @@
 @synthesize lbl_deadline = m_lbl_deadline;
 @synthesize lbl_numPhotos = m_lbl_numPhotos;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
-@synthesize frc_photo = m_frc_photo;
 @synthesize topVotedPhotoID = m_topVotedPhotoID;
 @synthesize deadline;
 
@@ -47,9 +46,10 @@
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadline.text = [DateTimeHelper formatTimeInterval:remaining];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
     [self setNeedsDisplay];
 }
+
 
 #pragma mark - Instance Methods
 //- (NSFetchedResultsController*) new_frc_photo {
@@ -91,6 +91,7 @@
    // [self.frc_photo release];
     [super dealloc];
 }
+
 
 - (void) renderPhoto:(Photo*)photo {
     
@@ -148,10 +149,6 @@
 - (void) renderDraftWithID:(NSNumber*)pageID {
     self.pageID = pageID;
     
-    //if we change the page id, we need to nil the fetched results controller
-//    [self.frc_photo release];
-//    self.frc_photo = [self new_frc_photo];
-    
     //we also need to nil the topVotedPhotoID
     self.topVotedPhotoID = nil;
     self.deadline = nil;
@@ -177,20 +174,20 @@
         
         [self.contentView addSubview:self.productionLogTableViewCell];
         
+        // resister callbacks for newPhotoVote events incase the topPhoto changes
+        Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+        
+        [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+        
+        [newPhotoVoteCallback release];
+        
+        [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+        [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_numPhotos setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        
     }
     return self;
-}
-
-#pragma mark - View Lifecycle
-- (void)viewDidLoad
-{
-    // resister callbacks for newPhotoVote events incase the topPhoto changes
-    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-    
-    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
-    
-    [newPhotoVoteCallback release];
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -200,7 +197,6 @@
     // Configure the view for the selected state
 }
 
-#pragma mark - NSFetchedResultsControllerDelegate
 
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {
