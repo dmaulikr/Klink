@@ -75,7 +75,6 @@
 		52F9140D1475E88E007E0016 /* icon-ribbon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F9140B1475E88E007E0016 /* icon-ribbon2.png */; };
 		52F9140E1475E88E007E0016 /* icon-ribbon2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F9140C1475E88E007E0016 /* icon-ribbon2@2x.png */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
-		C507BC811459857F004D9359 /* FeedTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC801459857F004D9359 /* FeedTypes.m */; };
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
 		C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */; };
 		C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5156A20146B4A2A00D1FC0B /* UILoginView.m */; };
@@ -104,7 +103,21 @@
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
+		C58C6C9D1496E8590068CCD6 /* UIVotePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6C9C1496E8590068CCD6 /* UIVotePageView.m */; };
+		C58C6CC814973AF00068CCD6 /* ABNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CA614973AF00068CCD6 /* ABNotice.m */; };
+		C58C6CC914973AF00068CCD6 /* ABNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CA814973AF00068CCD6 /* ABNotifier.m */; };
+		C58C6CCA14973AF00068CCD6 /* ABNotifierFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CAB14973AF00068CCD6 /* ABNotifierFunctions.m */; };
+		C58C6CCB14973AF00068CCD6 /* HTNotifier.strings in Resources */ = {isa = PBXBuildFile; fileRef = C58C6CAC14973AF00068CCD6 /* HTNotifier.strings */; };
+		C58C6CCC14973AF00068CCD6 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CB814973AF00068CCD6 /* DDXMLElementAdditions.m */; };
+		C58C6CCD14973AF00068CCD6 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CBB14973AF00068CCD6 /* NSString+DDXML.m */; };
+		C58C6CCE14973AF00068CCD6 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CBE14973AF00068CCD6 /* DDXMLDocument.m */; };
+		C58C6CCF14973AF00068CCD6 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC014973AF00068CCD6 /* DDXMLElement.m */; };
+		C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC214973AF00068CCD6 /* DDXMLNode.m */; };
+		C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC714973AF00068CCD6 /* GCAlertView.m */; };
+		C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C58C6CD214973B130068CCD6 /* libicucore.dylib */; };
 		C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */; };
+		C5913BB81496CE0A00C8C2F1 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5913BB71496CE0A00C8C2F1 /* EditorialVotingViewController.m */; };
+		C5913BBB1496D1BA00C8C2F1 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5913BBA1496D1B900C8C2F1 /* EditorialVotingViewController.xib */; };
 		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
 		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; };
@@ -308,7 +321,6 @@
 		C507BC7C1459811A004D9359 /* FeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedManager.h; sourceTree = "<group>"; };
 		C507BC7D1459811A004D9359 /* FeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedManager.m; sourceTree = "<group>"; };
 		C507BC7F1459857F004D9359 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
-		C507BC801459857F004D9359 /* FeedTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedTypes.m; sourceTree = "<group>"; };
 		C507BC8214599455004D9359 /* Caption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Caption.h; sourceTree = "<group>"; };
 		C507BC8314599455004D9359 /* Caption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Caption.m; sourceTree = "<group>"; };
 		C507BC851459AA0C004D9359 /* ImageDownloadResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownloadResponse.h; sourceTree = "<group>"; };
@@ -359,8 +371,43 @@
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
 		C56F8A241463447B00E14199 /* RegisteredEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteredEventHandler.h; sourceTree = "<group>"; };
 		C56F8A251463447B00E14199 /* RegisteredEventHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteredEventHandler.m; sourceTree = "<group>"; };
+		C58C6C9B1496E8590068CCD6 /* UIVotePageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIVotePageView.h; sourceTree = "<group>"; };
+		C58C6C9C1496E8590068CCD6 /* UIVotePageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIVotePageView.m; sourceTree = "<group>"; };
+		C58C6CA514973AF00068CCD6 /* ABNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotice.h; sourceTree = "<group>"; };
+		C58C6CA614973AF00068CCD6 /* ABNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotice.m; sourceTree = "<group>"; };
+		C58C6CA714973AF00068CCD6 /* ABNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifier.h; sourceTree = "<group>"; };
+		C58C6CA814973AF00068CCD6 /* ABNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotifier.m; sourceTree = "<group>"; };
+		C58C6CA914973AF00068CCD6 /* ABNotifierDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierDelegate.h; sourceTree = "<group>"; };
+		C58C6CAA14973AF00068CCD6 /* ABNotifierFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierFunctions.h; sourceTree = "<group>"; };
+		C58C6CAB14973AF00068CCD6 /* ABNotifierFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotifierFunctions.m; sourceTree = "<group>"; };
+		C58C6CAD14973AF00068CCD6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CAE14973AF00068CCD6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CAF14973AF00068CCD6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CB014973AF00068CCD6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CB114973AF00068CCD6 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CB214973AF00068CCD6 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CB314973AF00068CCD6 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		C58C6CB414973AF00068CCD6 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/HTNotifier.strings"; sourceTree = "<group>"; };
+		C58C6CB714973AF00068CCD6 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
+		C58C6CB814973AF00068CCD6 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
+		C58C6CBA14973AF00068CCD6 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
+		C58C6CBB14973AF00068CCD6 /* NSString+DDXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDXML.m"; sourceTree = "<group>"; };
+		C58C6CBC14973AF00068CCD6 /* DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXML.h; sourceTree = "<group>"; };
+		C58C6CBD14973AF00068CCD6 /* DDXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLDocument.h; sourceTree = "<group>"; };
+		C58C6CBE14973AF00068CCD6 /* DDXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLDocument.m; sourceTree = "<group>"; };
+		C58C6CBF14973AF00068CCD6 /* DDXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElement.h; sourceTree = "<group>"; };
+		C58C6CC014973AF00068CCD6 /* DDXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElement.m; sourceTree = "<group>"; };
+		C58C6CC114973AF00068CCD6 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLNode.h; sourceTree = "<group>"; };
+		C58C6CC214973AF00068CCD6 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLNode.m; sourceTree = "<group>"; };
+		C58C6CC414973AF00068CCD6 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
+		C58C6CC614973AF00068CCD6 /* GCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCAlertView.h; sourceTree = "<group>"; };
+		C58C6CC714973AF00068CCD6 /* GCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCAlertView.m; sourceTree = "<group>"; };
+		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorCodes.h; sourceTree = "<group>"; };
 		C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorCodes.m; sourceTree = "<group>"; };
+		C5913BB61496CE0A00C8C2F1 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
+		C5913BB71496CE0A00C8C2F1 /* EditorialVotingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditorialVotingViewController.m; sourceTree = "<group>"; };
+		C5913BBA1496D1B900C8C2F1 /* EditorialVotingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorialVotingViewController.xib; sourceTree = "<group>"; };
 		C593F7BF143EB191008D25A7 /* bonobo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bonobo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C593F7C3143EB191008D25A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C593F7C5143EB191008D25A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -605,6 +652,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */,
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
 				3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */,
 				C5C9E2AF146700F600838934 /* libxml2.2.dylib in Frameworks */,
@@ -743,9 +791,87 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		C58C6CA314973AAC0068CCD6 /* Airbrake */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CA414973AF00068CCD6 /* notifier */,
+				C58C6CB514973AF00068CCD6 /* kissxml */,
+				C58C6CC514973AF00068CCD6 /* gcalertview */,
+			);
+			name = Airbrake;
+			sourceTree = "<group>";
+		};
+		C58C6CA414973AF00068CCD6 /* notifier */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CA514973AF00068CCD6 /* ABNotice.h */,
+				C58C6CA614973AF00068CCD6 /* ABNotice.m */,
+				C58C6CA714973AF00068CCD6 /* ABNotifier.h */,
+				C58C6CA814973AF00068CCD6 /* ABNotifier.m */,
+				C58C6CA914973AF00068CCD6 /* ABNotifierDelegate.h */,
+				C58C6CAA14973AF00068CCD6 /* ABNotifierFunctions.h */,
+				C58C6CAB14973AF00068CCD6 /* ABNotifierFunctions.m */,
+				C58C6CAC14973AF00068CCD6 /* HTNotifier.strings */,
+			);
+			path = notifier;
+			sourceTree = "<group>";
+		};
+		C58C6CB514973AF00068CCD6 /* kissxml */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CB614973AF00068CCD6 /* Additions */,
+				C58C6CB914973AF00068CCD6 /* Categories */,
+				C58C6CBC14973AF00068CCD6 /* DDXML.h */,
+				C58C6CBD14973AF00068CCD6 /* DDXMLDocument.h */,
+				C58C6CBE14973AF00068CCD6 /* DDXMLDocument.m */,
+				C58C6CBF14973AF00068CCD6 /* DDXMLElement.h */,
+				C58C6CC014973AF00068CCD6 /* DDXMLElement.m */,
+				C58C6CC114973AF00068CCD6 /* DDXMLNode.h */,
+				C58C6CC214973AF00068CCD6 /* DDXMLNode.m */,
+				C58C6CC314973AF00068CCD6 /* Private */,
+			);
+			path = kissxml;
+			sourceTree = "<group>";
+		};
+		C58C6CB614973AF00068CCD6 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CB714973AF00068CCD6 /* DDXMLElementAdditions.h */,
+				C58C6CB814973AF00068CCD6 /* DDXMLElementAdditions.m */,
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
+		C58C6CB914973AF00068CCD6 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CBA14973AF00068CCD6 /* NSString+DDXML.h */,
+				C58C6CBB14973AF00068CCD6 /* NSString+DDXML.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		C58C6CC314973AF00068CCD6 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CC414973AF00068CCD6 /* DDXMLPrivate.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		C58C6CC514973AF00068CCD6 /* gcalertview */ = {
+			isa = PBXGroup;
+			children = (
+				C58C6CC614973AF00068CCD6 /* GCAlertView.h */,
+				C58C6CC714973AF00068CCD6 /* GCAlertView.m */,
+			);
+			path = gcalertview;
+			sourceTree = "<group>";
+		};
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				C58C6CD214973B130068CCD6 /* libicucore.dylib */,
 				C5C9D2F914712942008E3B51 /* libz.1.1.3.dylib */,
 				3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */,
 				C5C9E2AE146700F600838934 /* libxml2.2.dylib */,
@@ -831,6 +957,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				C58C6CA314973AAC0068CCD6 /* Airbrake */,
 				C5C9E25E1467003000838934 /* Twitter */,
 				C5C9E2581466FDA400838934 /* Hud */,
 				C5D9AA531466EB6C009AA3D8 /* EGOTableViewPullRefresh */,
@@ -1038,7 +1165,6 @@
 				C5C76C59145A123B00BA69B8 /* ApplicationSettingsDefaults.h */,
 				C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */,
 				C507BC7F1459857F004D9359 /* FeedTypes.h */,
-				C507BC801459857F004D9359 /* FeedTypes.m */,
 				C5A04A7714434EA00037FA7B /* WebServiceParameters.h */,
 				C5A04A7814434EA00037FA7B /* WebServiceParameters.m */,
 				C5A04A7914434EA00037FA7B /* WebServiceVerbs.h */,
@@ -1100,6 +1226,9 @@
 				5212F8EC149044A100E334B2 /* LandscapePhotoViewController.h */,
 				5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */,
 				5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */,
+				C5913BB61496CE0A00C8C2F1 /* EditorialVotingViewController.h */,
+				C5913BB71496CE0A00C8C2F1 /* EditorialVotingViewController.m */,
+				C5913BBA1496D1B900C8C2F1 /* EditorialVotingViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1151,6 +1280,8 @@
 				520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */,
 				520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */,
 				520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */,
+				C58C6C9B1496E8590068CCD6 /* UIVotePageView.h */,
+				C58C6C9C1496E8590068CCD6 /* UIVotePageView.m */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1407,6 +1538,13 @@
 			knownRegions = (
 				en,
 				English,
+				de,
+				es,
+				fr,
+				nl,
+				ro,
+				ru,
+				"zh-Hant",
 			);
 			mainGroup = C593F7B4143EB191008D25A7;
 			productRefGroup = C593F7C0143EB191008D25A7 /* Products */;
@@ -1501,6 +1639,8 @@
 				523F22F81495C368005BED44 /* open_book_page@2x.png in Resources */,
 				523F22FB1495C88E005BED44 /* picture_frame.png in Resources */,
 				523F22FC1495C88E005BED44 /* picture_frame@2x.png in Resources */,
+				C5913BBB1496D1BA00C8C2F1 /* EditorialVotingViewController.xib in Resources */,
+				C58C6CCB14973AF00068CCD6 /* HTNotifier.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1576,7 +1716,6 @@
 				C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */,
 				C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */,
 				C507BC7E1459811A004D9359 /* FeedManager.m in Sources */,
-				C507BC811459857F004D9359 /* FeedTypes.m in Sources */,
 				C507BC8414599455004D9359 /* Caption.m in Sources */,
 				C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */,
 				C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */,
@@ -1635,6 +1774,17 @@
 				5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */,
 				5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */,
 				C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */,
+				C5913BB81496CE0A00C8C2F1 /* EditorialVotingViewController.m in Sources */,
+				C58C6C9D1496E8590068CCD6 /* UIVotePageView.m in Sources */,
+				C58C6CC814973AF00068CCD6 /* ABNotice.m in Sources */,
+				C58C6CC914973AF00068CCD6 /* ABNotifier.m in Sources */,
+				C58C6CCA14973AF00068CCD6 /* ABNotifierFunctions.m in Sources */,
+				C58C6CCC14973AF00068CCD6 /* DDXMLElementAdditions.m in Sources */,
+				C58C6CCD14973AF00068CCD6 /* NSString+DDXML.m in Sources */,
+				C58C6CCE14973AF00068CCD6 /* DDXMLDocument.m in Sources */,
+				C58C6CCF14973AF00068CCD6 /* DDXMLElement.m in Sources */,
+				C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */,
+				C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1663,6 +1813,21 @@
 				C55EC75E145FA50800BA66FA /* en */,
 			);
 			name = main.m;
+			sourceTree = "<group>";
+		};
+		C58C6CAC14973AF00068CCD6 /* HTNotifier.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C58C6CAD14973AF00068CCD6 /* de */,
+				C58C6CAE14973AF00068CCD6 /* en */,
+				C58C6CAF14973AF00068CCD6 /* es */,
+				C58C6CB014973AF00068CCD6 /* fr */,
+				C58C6CB114973AF00068CCD6 /* nl */,
+				C58C6CB214973AF00068CCD6 /* ro */,
+				C58C6CB314973AF00068CCD6 /* ru */,
+				C58C6CB414973AF00068CCD6 /* zh-Hant */,
+			);
+			name = HTNotifier.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1713,8 +1878,9 @@
 				GCC_PREFIX_HEADER = "Platform/Platform-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/include/libxml2",
-					"$(SRC_MGTwitterEngine)",
+					"<Multiple",
+					"values>",
+					"/usr/include/libxml2/**",
 				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(SDKROOT)/usr/include/libxml2",
@@ -1740,6 +1906,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Platform/Platform-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"/usr/include/libxml2/**",
+				);
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(SRC_MGTwitterEngine)",
 					"$(SDKROOT)/usr/include/libxml2",

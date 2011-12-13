@@ -90,6 +90,7 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kSHOWPROGRESS];
     [self registerCallback:callback forSystemEvent:kHIDEPROGRESS];
     [self registerCallback:callback forSystemEvent:kAUTHENTICATIONFAILED];
+    [self registerCallback:callback forSystemEvent:kUNKNOWNREQUESTFAILURE];
 }
 
 - (NSArray*)registeredHandlersForEventType:(int)systemEventType {
@@ -144,7 +145,9 @@ static EventManager* sharedInstance;
 - (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGINFAILED withUserInfo:userInfo];  
 }
-
+- (void) raiseUnknownRequestFailureEvent {
+    [self raiseEvent:kUNKNOWNREQUESTFAILURE withUserInfo:nil];
+}
 
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo {
     [self raiseEvent:kNEWCAPTIONVOTE withUserInfo:userInfo];

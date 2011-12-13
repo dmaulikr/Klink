@@ -13,7 +13,7 @@
 
 @protocol CloudEnumeratorDelegate <NSObject> 
 @optional
-- (void) onEnumerateComplete;
+- (void) onEnumerateComplete:(NSDictionary*)userInfo;
 
 @end
 
@@ -29,6 +29,7 @@
     NSDate*                     m_lastExecutedTime;
     long                        m_secondsBetweenConsecutiveSearches;
     NSString*                   m_identifier;
+    NSDictionary*               m_userInfo;
     
 }
 @property (nonatomic,retain) NSString*              identifier;
@@ -37,6 +38,7 @@
 @property (nonatomic,retain) QueryOptions*          queryOptions;
 @property BOOL                                      isDone;
 @property (nonatomic,retain) NSDate*                lastExecutedTime;
+@property (nonatomic,retain) NSDictionary*          userInfo;
 @property long                                      secondsBetweenConsecutiveSearches;
 @property BOOL                                      isLoading;
 @property (nonatomic,retain) id<CloudEnumeratorDelegate>   delegate;
@@ -54,8 +56,8 @@
                 withQueryOptions:(QueryOptions *)queryOptions;
 
 - (void) reset;
-- (void) enumerateNextPage;
-- (void) enumerateUntilEnd;
+- (void) enumerateNextPage:(NSDictionary*)userInfo;
+- (void) enumerateUntilEnd:(NSDictionary*)userInfo;
 
 
 //static initializers
@@ -65,4 +67,6 @@
 + (CloudEnumerator*) enumeratorForPages;
 + (CloudEnumerator*) enumeratorForUser:(NSNumber*)userid;
 + (CloudEnumerator*) enumeratorForDrafts;
++ (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
+                            withTypes:(NSArray*)objectTypes;
 @end

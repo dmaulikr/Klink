@@ -13,6 +13,8 @@
 #import "Feed.h"
 #import "User.h"
 #import "DateTimeHelper.h"
+#import "FeedTypes.h"
+#import "EditorialVotingViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 
@@ -119,6 +121,10 @@
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_notificationsTableView addSubview:self.refreshHeader];
+    self.tbl_notificationsTableView.userInteractionEnabled = YES;
+    self.tbl_notificationsTableView.delegate = self;
+    self.tbl_notificationsTableView.dataSource = self;
+    self.tbl_notificationsTableView.allowsSelection = YES;
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Navigation Bar Buttons
@@ -221,6 +227,7 @@
         if (cell == nil) {
             //cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
             cell = [[[UINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            cell.userInteractionEnabled = YES;
         }
         
         // Configure the cell...
@@ -273,6 +280,8 @@
 }
 */
 
+#define kPOLL   @"poll"
+
 #pragma mark - Table view delegate
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
@@ -286,16 +295,47 @@
     return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
+    //need to get the notification object
+    int index = [indexPath row];
+    int feedCount = [[self.frc_notifications fetchedObjects]count];
+    
+    if (feedCount > 0 && index < feedCount) {
+        Feed* notification = [[self.frc_notifications fetchedObjects]objectAtIndex:index];
+        
+        
+        //now we determine which type of notification it is, and navigate to the appropriate view controller
+        if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_STARTED) {
+            //when the vote has started, we launch into the editorial vote view in normal view with t
+            //3 poll objects there
+            
+            NSArray* feedObjects = notification.feeddata;
+            NSNumber* pollID = nil;
+            
+            for (FeedData* fd in feedObjects) {
+                if ([fd.key isEqualToString:kPOLL]) {
+                    pollID = fd.objectid;
+                    break;
+                }
+            }
+            
+            if (pollID != nil) {
+                EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
+                [self.navigationController pushViewController:editorialBoardViewController animated:YES];
+            }
+            else {
+                //error case
+                LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
+            }
+        }
+    }
+    
 }
 
 - (void) dealloc {

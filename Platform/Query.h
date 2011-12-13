@@ -14,11 +14,15 @@
     NSArray*        m_attributeExpressions;
     NSString*       m_filterObjectType;
     QueryOptions*   m_queryOptions;
+    NSArray*        m_objectIDs;
+    NSArray*        m_objectTypes;
 }
 
 @property (nonatomic,retain) NSArray*       attributeExpressions;
 @property (nonatomic,retain) NSString*      filterObjectType;
 @property (nonatomic,retain) QueryOptions*  queryOptions;
+@property (nonatomic,retain) NSArray*       objectIDs;
+@property (nonatomic,retain) NSArray*       objectTypes;
 
 - (NSString*) toJSON;
 - (id) initFromJSON:(NSString*)json;
@@ -30,4 +34,5 @@
 + (id) queryPages;
 + (id) queryDrafts;
 + (id) queryUser:(NSNumber*)userID;
++ (id) queryForIDs:(NSArray*)objectIDs withTypes:(NSArray*)types;
 @end

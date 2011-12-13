@@ -266,7 +266,7 @@
     if (count == 0) {
         //there are no objects in local store, update from cloud
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        [self.cloudDraftEnumerator enumerateUntilEnd];
+        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
     
     // Update draft counter labels at the top of the view
@@ -499,7 +499,7 @@
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
     
     [self.cloudDraftEnumerator reset];
-    [self.cloudDraftEnumerator enumerateUntilEnd];
+    [self.cloudDraftEnumerator enumerateUntilEnd:nil];
 
 }
 
@@ -517,7 +517,7 @@
 }
 
 #pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete {
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
     

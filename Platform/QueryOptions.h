@@ -42,4 +42,5 @@
 +(QueryOptions*)queryForPages;
 +(QueryOptions*)queryForUser:(NSNumber*)userID;
 +(QueryOptions*)queryForDrafts;
++(QueryOptions*)queryForObjectIDs:(NSArray*)objectIDs withTypes:(NSArray*)objectTypes;
 @end

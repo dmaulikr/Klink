@@ -20,3 +20,5 @@ NSString* const REQUEST                     = @"request";
 NSString* const AUTHENTICATIONCONTEXT       =@"authenticationcontext";
 NSString* const PAGE                        =@"page";
 NSString* const FEED                        =@"feed";
+NSString* const POLL                        =@"poll";
+NSString* const VOTE                        =@"vote";

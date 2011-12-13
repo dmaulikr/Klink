@@ -31,6 +31,8 @@
 @synthesize secondsBetweenConsecutiveSearches = m_secondsBetweenConsecutiveSearches;
 @synthesize identifier = m_identifier;
 @synthesize isLoading = m_isEnumerationPending;
+@synthesize userInfo = m_userInfo;
+
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
@@ -119,13 +121,15 @@
 
 }
 
-- (void) enumerateNextPage {
+- (void) enumerateNextPage:(NSDictionary*)userInfo {
     NSString* activityName = @"CloudEnumerator.enumerateNextPage:"; 
     BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+    
     
     if (!m_isEnumerationPending &&
         hasEnoughTimeLapsedBetweenConsecutiveSearches) {
         LOG_ENUMERATION(0, @"%@Beginning to enumerate a single page of results",activityName);
+        self.userInfo = userInfo;
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
@@ -139,7 +143,7 @@
 }
 
 
-- (void) enumerateUntilEnd {
+- (void) enumerateUntilEnd:(NSDictionary*)userInfo {
     NSString* activityName = @"CloudEnumerator.enumerateUntilEnd:";
     BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
     
@@ -147,6 +151,7 @@
     if (!m_isEnumerationPending &&
         hasEnoughTimeLapsedBetweenConsecutiveSearches) {
         LOG_ENUMERATION(0, @"%@Beginning to enumerate until all results of the query are downloaded",activityName);
+        self.userInfo = userInfo;
         self.lastExecutedTime = [NSDate date];
         m_isEnumerationPending = YES;
         
@@ -229,20 +234,20 @@
             else {
                 LOG_ENUMERATION(0, @"%@Enumerate sinlge page complete, enumeration context remains open",activityName);
                 m_isEnumerationPending = NO;
-                [self.delegate onEnumerateComplete];
+                [self.delegate onEnumerateComplete:self.userInfo];
             }
         }
         else {
             LOG_ENUMERATION(0, @"%@Enumeration context is complete",activityName);
             m_isEnumerationPending = NO;
-            [self.delegate onEnumerateComplete];
+            [self.delegate onEnumerateComplete:self.userInfo];
         }
     }
     else {
         //enumeration failed
         LOG_ENUMERATION(1,@"%@Enumeration failed due to error: %@",activityName,response.errorMessage);
         m_isEnumerationPending = NO;
-        [self.delegate onEnumerateComplete];
+        [self.delegate onEnumerateComplete:self.userInfo];
     }
   
 }
@@ -326,6 +331,24 @@
     return enumerator;
 
     
+    
+    
+}
+
+#pragma mark - Static Initializers for Defined Queries
++ (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
+            withTypes:(NSArray*)objectTypes 
+             
+{
+    Query* query = [Query queryForIDs:objectIDs withTypes:objectTypes];
+    QueryOptions* queryOptions = [QueryOptions queryForObjectIDs:objectIDs withTypes:objectTypes];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForObjectIDs:objectIDs withTypes:objectTypes];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions];
+    [enumerator autorelease];
+    
+    return enumerator;
     
     
 }

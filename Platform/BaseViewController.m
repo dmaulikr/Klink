@@ -112,12 +112,16 @@
     
     Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];
     
+    Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
+    
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
     [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
     [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
     [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
+    [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
     
+    [unknownRequestFailureCallback release];
     [failedAuthenticationCallback release];
     [loginCallback release];
     [logoutCallback release];
@@ -362,6 +366,10 @@
     LOG_BASEVIEWCONTROLLER(0, @"%@Save completed successfully",activityName);
 }
 
+- (void) onUnknownRequestFailure:(CallbackResult*)result {
+    NSString* activityName = @"BaseViewController.onUnknownRequestFailure:";
+    LOG_BASEVIEWCONTROLLER(0,@"%@Unknown request failure",activityName);
+}
 - (void) onAuthenticationFailed:(CallbackResult*)result {
     NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
     //we handle an authentication failed by requiring they authenticate again against facebook

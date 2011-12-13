@@ -256,7 +256,7 @@
     int count = [[self.frc_photos fetchedObjects] count];
     if (count == 0) {
         //there are no objects in local store, update from cloud
-        [self.cloudPhotoEnumerator enumerateUntilEnd];
+        [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
     }
     
     // Toolbar: we update the toolbar items each time the view controller is shown
@@ -391,7 +391,7 @@
     
     self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
     self.cloudPhotoEnumerator.delegate = self;
-    [self.cloudPhotoEnumerator enumerateUntilEnd];
+    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
     
 }
 
@@ -409,7 +409,7 @@
 }
 
 #pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete {
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
     

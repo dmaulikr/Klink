@@ -34,13 +34,18 @@
 #define LOG_OVERLAYVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"overlayviewcontroller",level,__VA_ARGS__)
 
 #define LOG_UIDRAFTVIEW(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"uidraftview",level,__VA_ARGS__)
+#define LOG_UIVOTEPAGEVIEW(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"uivotepageview",level,__VA_ARGS__)
 
 #define LOG_BASEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"baseviewcontroller",level,__VA_ARGS__)
+
+#define LOG_NOTIFICATIONVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"notificationviewcontroller",level,__VA_ARGS__)
 
 #define LOG_UIPRODUCTIONLOGTABLEVIEWCELL(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"uiproductionlogtableviewcell",level,__VA_ARGS__)
 
 #define LOG_SOCIALSHARINGMANAGER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"socialsharingmanager",level,__VA_ARGS__)
 #define LOG_RESPONSE(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"response",level,__VA_ARGS__) 
+
+#define LOG_EDITORVOTEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"editorvotingviewcontroller",level,__VA_ARGS__)
 #else
 #define LOG_NETWORK(...)    do{}while(0)
 #define LOG_GENERAL(...)    do{}while(0)

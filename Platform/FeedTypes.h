@@ -8,10 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-extern int const feed_CAPTION_VOTE;
-extern int const feed_PHOTO_VOTE;
-extern int const feed_CAPTION_ADDED;
 
-extern NSString* const cellid_CAPTION_VOTE;
-extern NSString* const cellid_PHOTO_VOTE;
-extern NSString* const cellid_CAPTION_ADDED;
+typedef enum {
+    kCAPTION_VOTE,
+    kPHOTO_VOTE,
+    kCAPTION_ADDED,
+    kDRAFT_SUBMITTED_TO_EDITORS,
+    kEDITORIAL_BOARD_VOTE_STARTED,
+    kDRAFT_PUBLISHED,
+    kDRAFT_EXPIRED,
+    kPHOTO_ADDED_TO_DRAFT,
+    kPROMOTION_TO_EDITOR,
+    kDEMOTION_FROM_EDITOR,
+    kEDITORIAL_BOARD_VOTE_ENDED,
+    kDRAFT_NOT_PUBLISHED,
+    kEDITORIAL_BOARD_NO_RESULT
+} FeedType;

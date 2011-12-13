@@ -742,7 +742,7 @@ static RequestManager* sharedInstance;
          response.path = imagePath;
         response.image = image;
         response.errorMessage = nil;
-         LOG_REQUEST(1, @"%@Image downloaded successfully to location %@",activityName,imagePath);
+         LOG_REQUEST(0, @"%@Image downloaded successfully to location %@",activityName,imagePath);
     }
     [response autorelease];
     return response;
@@ -753,16 +753,24 @@ static RequestManager* sharedInstance;
 - (void) processRequestFailure:(Request*)request withResponse:(Response*)response {
     NSString* activityName = @"RequestManager.processRequestFailure:";
     EventManager* eventManager = [EventManager instance];
-    int errorCode = [response.errorCode intValue];
     
-    if (errorCode == ec_FAILED_AUTHENTICATION) {
-        //if there is a failed authentication
-        NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
-        [userInfo setObject:request forKey:kREQUEST];
-        LOG_REQUEST(0,@"%@Raising failed authentication system event",activityName);
-        [eventManager raiseAuthenticationFailedEvent:userInfo];
-        [userInfo release];
+    if (response != nil) {
+        int errorCode = [response.errorCode intValue];
+        
+        if (errorCode == ec_FAILED_AUTHENTICATION) {
+            //if there is a failed authentication
+            NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+            [userInfo setObject:request forKey:kREQUEST];
+            LOG_REQUEST(0,@"%@Raising failed authentication system event",activityName);
+            [eventManager raiseAuthenticationFailedEvent:userInfo];
+            [userInfo release];
+        }
     }
+    else {
+        //if response is nil, then it is an unknown error, we raise that event
+        [eventManager raiseUnknownRequestFailureEvent];
+    }
+    
 }
 - (void) processRequestResponse:(Request*)request withResponse:(NSString*)response  {
     NSString* activityName = @"RequestManager.processRequestResponse:";
@@ -866,6 +874,8 @@ static RequestManager* sharedInstance;
             if (req.onFailCallback != nil) {
                 [req.onFailCallback fire];
             }
+            //send an processing of known errors, we send nil since this error is unknown
+            [self processRequestFailure:req withResponse:nil];
         }
     }
     else {
@@ -875,8 +885,13 @@ static RequestManager* sharedInstance;
             req.statuscode = [NSNumber numberWithInt:kFAILED];
             [req.onFailCallback fire];
         }
+        
+        //send an processing of known errors, we send nil since this error is unknown
+        [self processRequestFailure:req withResponse:nil];
        
     }
+    
+    
     [pool drain];
 }
 

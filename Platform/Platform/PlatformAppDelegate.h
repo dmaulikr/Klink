@@ -10,8 +10,8 @@
 #import "ResourceContext.h"
 #import "AuthenticationManager.h"
 #import "ApplicationSettingsManager.h"
-
-@interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
+#import "ABNotifier.h"
+@interface PlatformAppDelegate : NSObject <UIApplicationDelegate, ABNotifierDelegate> {
     NSString* m_deviceToken;
 }
 
