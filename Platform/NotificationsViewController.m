@@ -45,8 +45,11 @@
         
         NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
         
+        NSDate* currentDate = [NSDate date];
+        double currentDateInSeconds = [currentDate timeIntervalSince1970];
+        NSNumber* numDateInSeconds = [NSNumber numberWithDouble:currentDateInSeconds];
         //add predicate to test for unopened feed items    
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@",HASOPENED, [NSNumber numberWithBool:NO], USERID,self.authenticationManager.m_LoggedInUserID];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@ AND %K>%@",HASOPENED, [NSNumber numberWithBool:NO], USERID,self.authenticationManager.m_LoggedInUserID,DATEEXPIRE,numDateInSeconds];
         
         
         [fetchRequest setPredicate:predicate];
@@ -315,6 +318,12 @@
             //when the vote has started, we launch into the editorial vote view in normal view with t
             //3 poll objects there
             
+            //we need to mark the notification object as having been read
+            //TODO: uncomment the below when testing has sufficiently progressed
+//            notification.hasopened = [NSNumber numberWithBool:YES];
+//            ResourceContext* resourceContext = [ResourceContext instance];
+//            [resourceContext save:YES onFinishCallback:nil];
+            
             NSArray* feedObjects = notification.feeddata;
             NSNumber* pollID = nil;
             
@@ -328,6 +337,7 @@
             if (pollID != nil) {
                 EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
                 [self.navigationController pushViewController:editorialBoardViewController animated:YES];
+               
             }
             else {
                 //error case

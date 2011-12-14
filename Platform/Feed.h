@@ -24,6 +24,6 @@
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSString* imageurl;
 @property (nonatomic,retain) NSString* title;
-
+@property (nonatomic,retain) NSNumber* datexpires;
 @property (nonatomic,retain) NSArray* feeddata;
 @end

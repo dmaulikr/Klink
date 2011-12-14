@@ -25,7 +25,9 @@ typedef enum {
     kSHOWPROGRESS,
     kHIDEPROGRESS,
     kAUTHENTICATIONFAILED,
-    kUNKNOWNREQUESTFAILURE
+    kUNKNOWNREQUESTFAILURE,
+    kAPPLICATIONBECAMEACTIVE,
+    kAPPLICATIONWENTTOBACKGROUND
 } SystemEvent;
 
 @interface EventManager : NSObject {
@@ -43,6 +45,10 @@ typedef enum {
 - (void) raiseUserLoginFailedEvent  :(NSDictionary*)userInfo;
 - (void) raiseAuthenticationFailedEvent:(NSDictionary*)userInfo;
 - (void) raiseUnknownRequestFailureEvent;
+
+//application delegate events
+- (void) raiseApplicationDidBecomeActive;
+- (void) raiseApplicationWentToBackground;
 
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo;
 - (void) raiseNewPhotoVoteEvent     :(NSDictionary*)userInfo;

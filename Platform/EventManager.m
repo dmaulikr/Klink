@@ -91,6 +91,8 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kHIDEPROGRESS];
     [self registerCallback:callback forSystemEvent:kAUTHENTICATIONFAILED];
     [self registerCallback:callback forSystemEvent:kUNKNOWNREQUESTFAILURE];
+    [self registerCallback:callback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
+    [self registerCallback:callback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
 }
 
 - (NSArray*)registeredHandlersForEventType:(int)systemEventType {
@@ -134,6 +136,14 @@ static EventManager* sharedInstance;
 
 - (void) raiseAuthenticationFailedEvent:(NSDictionary *)userInfo {
     [self raiseEvent:kAUTHENTICATIONFAILED withUserInfo:userInfo];
+}
+
+- (void) raiseApplicationDidBecomeActive {
+    [self raiseEvent:kAPPLICATIONBECAMEACTIVE withUserInfo:nil];
+}
+
+- (void) raiseApplicationWentToBackground {
+    [self raiseEvent:kAPPLICATIONWENTTOBACKGROUND withUserInfo:nil];
 }
 
 - (void) raiseUserLoggedInEvent:(NSDictionary*)userInfo {

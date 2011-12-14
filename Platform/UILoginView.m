@@ -142,7 +142,7 @@
     NSString* activityName = @"UILoginView.checkStatusAndDismiss:";
     BOOL result = YES;
    
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*) [[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
     if (self.authenticateWithFacebook) {
@@ -169,7 +169,7 @@
     NSString* activityName = @"UILoginView.beginFacebookAuthentication:";
     //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
     if (![facebook isSessionValid]) {
@@ -321,7 +321,7 @@
 #pragma mark - FBSessionDelegate
 - (void) fbDidLogin {
     NSString* activityName = @"UILoginView.fbDidLogin:";
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
     //this method is called upon the completion of the authorize operation
@@ -340,6 +340,8 @@
 
 - (void) fbDidNotLogin:(BOOL)cancelled {
     //authenticate with facebook failed
+    NSString* activityName = @"UILoginView.fbDidNotLogin:";
+    LOG_SECURITY(0, @"%@user did not complete facebook authentication page",activityName);
     [self dismissWithResult:NO];
     
 }

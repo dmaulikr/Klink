@@ -105,8 +105,15 @@
 
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return YES; //(interfaceOrientation == UIInterfaceOrientationLandPortrait);
+}
+
 - (id)commonInit {
     // Custom initialization
+    self.wantsFullScreenLayout = YES;
     self.pagedViewSlider.delegate = self;
     self.pagedViewSlider.tableView.pagingEnabled = YES;
     [self.pagedViewSlider initWithWidth:kITEM_WIDTH withHeight:kITEM_HEIGHT withSpacing:kITEM_SPACING useCellIdentifier:@"photo"]; 
@@ -196,7 +203,7 @@
         
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* targetPage = [[self.frc_pollData fetchedObjects]objectAtIndex:index];
-      [Vote createVoteFor:self.poll_ID forTarget:targetPage.objectid withType:PAGE];
+        [Vote createVoteFor:self.poll_ID forTarget:targetPage.objectid withType:PAGE];
                 //now we have a vote object
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onVoteSavedToCloud:)];
         
@@ -208,6 +215,11 @@
         //lets save that shit to the cloud
         [resourceContext save:YES onFinishCallback:callback];
         [callback release];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else if ([self.poll.hasvoted boolValue]) {
+        LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@User has already voted for this poll, skipping voting",activityName);
     }
 }
 
