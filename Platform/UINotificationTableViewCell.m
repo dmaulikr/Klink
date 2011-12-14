@@ -44,6 +44,14 @@
 }
 
 #pragma mark - Instance Methods
+- (void) touchesEnded: (NSSet *) touches withEvent: (UIEvent *) event 
+{	
+    // If not dragging, send event to next responder
+
+        [self.nextResponder touchesEnded: touches withEvent:event]; 
+
+}
+
 
 - (void) render {
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -99,7 +107,7 @@
         }
         
         [self.contentView addSubview:self.notificationTableViewCell];
-        
+        //self.userInteractionEnabled = YES;
         [self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_notificationDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
         

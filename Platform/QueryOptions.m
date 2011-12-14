@@ -155,4 +155,14 @@
     return newQuery;
 
 }
+
++(QueryOptions*)queryForObjectIDs:(NSArray*)objectIDs 
+                        withTypes:(NSArray*)objectTypes 
+{
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = nil;
+    return newQuery;
+}
 @end

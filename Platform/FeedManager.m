@@ -74,7 +74,7 @@ static FeedManager* sharedManager;
     //enumerate feed until the end
     LOG_FEEDMANAGER(0, @"%@Beginning to enumerate entire contents of user's feed",activityName);
       
-   [self.feedEnumerator enumerateUntilEnd];
+   [self.feedEnumerator enumerateUntilEnd:nil];
     
     
 }
@@ -122,7 +122,7 @@ static FeedManager* sharedManager;
 
 
 #pragma mark - CloudCallbackDelegate
-- (void) onEnumerateComplete {
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
     NSString* activityName = @"FeedManager.onEnumerateComplete:";
     //called when an refresh for the feed has completed
     //raise a system event for feed refresh complete

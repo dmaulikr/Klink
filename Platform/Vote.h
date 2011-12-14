@@ -14,4 +14,6 @@
 @property (nonatomic,retain) NSNumber* pollid;
 @property (nonatomic,retain) NSNumber* targetid;
 @property (nonatomic,retain) NSString* targetobjecttype;
+
++ (Vote*)createVoteFor:(NSNumber*)pollID forTarget:(NSNumber*)objectid withType:(NSString*)type;
 @end

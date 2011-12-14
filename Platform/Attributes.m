@@ -26,6 +26,8 @@ NSString* const PRIMARY_RESULTS         =@"primaryresults";
 NSString* const SECONDARY_RESULTS       =@"secondaryresults";
 NSString* const FILTEROBJECTTYPE        =@"filterobjecttype";
 NSString* const ATTRIBUTEEXPRESSIONS    =@"attributeexpressions";
+NSString* const OBJECTIDS               =@"objectids";
+NSString* const OBJECTTYPES             =@"objecttypes";
 
 NSString* const SHOULDENUMERATESINGLEPAGE   =@"shouldenumerationsinglepage";
 NSString* const QUERYOPTIONS            =@"queryoptions";
@@ -75,5 +77,5 @@ NSString* const SHAREONFACEBOOK         = @"shareonfacebook";
 NSString* const SHAREONTWITTER          = @"shareontwitter";
 NSString* const NUMBEROFCAPTIONS        = @"numberofcaptions";
 NSString* const NUMBEROFPHOTOS          = @"numberofphotos";
-NSString* const NUMBEROFPUBLISHEDVOTES  = @"numberofpublishedvotes";
+NSString* const NUMBEROFPUBLISHVOTES  = @"numberofpublishvotes";
 NSString* const HASVOTED                = @"hasvoted";

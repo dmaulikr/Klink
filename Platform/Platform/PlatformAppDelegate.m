@@ -115,7 +115,7 @@
             
             LOG_SECURITY(0,@"%@Downloading missing user object for user %@ from the cloud",activityName,authenticationManager.m_LoggedInUserID);
             //execute the enumerator
-            [userEnumerator enumerateUntilEnd];
+            [userEnumerator enumerateUntilEnd:nil];
         }
 
     }
@@ -131,6 +131,10 @@
         //need to move to the view controller
     }
     
+    [ABNotifier startNotifierWithAPIKey:@"4293ede2b3ea7ae6cede2af848a57a1a" environmentName:ABNotifierDevelopmentEnvironment useSSL:NO delegate:self];
+    
+    
+     
     return YES;
 }
 

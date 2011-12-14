@@ -15,4 +15,5 @@
 @property (nonatomic,retain) NSNumber* winningobjecttype;
 @property (nonatomic,retain) NSNumber* state;
 @property (nonatomic,retain) NSArray*  polldata;
+@property (nonatomic,retain) NSNumber* hasvoted;
 @end

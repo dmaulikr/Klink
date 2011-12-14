@@ -86,7 +86,8 @@ insertIntoResourceContext:(ResourceContext *)context
     
         if ([lowerCaseName isEqualToString:NUMBEROFVOTES] ||
             [lowerCaseName isEqualToString:NUMBEROFPHOTOS] ||
-            [lowerCaseName isEqualToString:NUMBEROFCAPTIONS]) {
+            [lowerCaseName isEqualToString:NUMBEROFCAPTIONS] ||
+            [lowerCaseName isEqualToString:NUMBEROFPUBLISHVOTES]) {
             retVal.islocal = [NSNumber numberWithBool:YES];
         }
     }
@@ -101,7 +102,7 @@ insertIntoResourceContext:(ResourceContext *)context
     if ([lowerCaseName isEqualToString:NUMBEROFVOTES] ||
         [lowerCaseName isEqualToString:NUMBEROFCAPTIONS] ||
         [lowerCaseName isEqualToString:NUMBEROFPHOTOS] ||
-        [lowerCaseName isEqualToString:NUMBEROFPUBLISHEDVOTES]) {
+        [lowerCaseName isEqualToString:NUMBEROFPUBLISHVOTES]) {
         //these are all counter variables
         retVal.iscounter = [NSNumber numberWithBool:YES];
     }

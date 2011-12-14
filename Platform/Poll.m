@@ -14,6 +14,7 @@
 @dynamic winningobjectid;
 @dynamic winningobjecttype;
 @dynamic state;
+@dynamic hasvoted;
 @synthesize polldata = __polldata;
 
 #pragma mark - Properties

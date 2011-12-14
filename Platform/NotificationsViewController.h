@@ -10,7 +10,7 @@
 #import "BaseViewController.h"
 #import "EGORefreshTableHeaderView.h"
 
-@interface NotificationsViewController : BaseViewController < NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate > {
+@interface NotificationsViewController : BaseViewController < NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, UITableViewDataSource, UITableViewDelegate > {
     UITableView* m_tbl_notificationsTableVIew;
     EGORefreshTableHeaderView*  m_refreshHeader;
     

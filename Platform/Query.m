@@ -20,7 +20,8 @@
 @synthesize filterObjectType        = m_filterObjectType;
 @synthesize attributeExpressions    = m_attributeExpressions;
 @synthesize queryOptions            = m_queryOptions;
-
+@synthesize objectIDs               = m_objectIDs;
+@synthesize objectTypes             = m_objectTypes;
 
 - (NSString*) toJSON {
     NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] init];
@@ -43,6 +44,14 @@
         [newDictionary setValue:queryOptionsDictionary forKey:QUERYOPTIONS];
     }
     
+    if (self.objectIDs != nil) {
+        [newDictionary setValue:self.objectIDs forKey:OBJECTIDS];
+    }
+    
+    if (self.objectTypes != nil) {
+        [newDictionary setValue:self.objectTypes forKey:OBJECTTYPES];
+    }
+    
     NSError* error = nil;
     JKSerializeOptionFlags flags = JKSerializeOptionNone;
     
@@ -59,7 +68,8 @@
         NSDictionary* dictionary = [json objectFromJSONString];
         self.filterObjectType = [dictionary valueForKey:FILTEROBJECTTYPE];
         self.attributeExpressions = [dictionary valueForKey:ATTRIBUTEEXPRESSIONS];
-        
+        self.objectIDs = [dictionary valueForKey:OBJECTIDS];
+        self.objectTypes = [dictionary valueForKey:OBJECTTYPES];
         NSDictionary* queryOptionsDictionary = [dictionary valueForKey:QUERYOPTIONS];
         if (queryOptionsDictionary != nil) {
             QueryOptions* qo = [[QueryOptions alloc]initFromJSONDictionary:queryOptionsDictionary];
@@ -127,6 +137,17 @@
     
     [sortDescriptor release];
     return query;
+}
++ (id) queryForIDs:(NSArray*)objectIDs 
+         withTypes:(NSArray*)types {
+    
+    Query* query = [[[Query alloc]init]autorelease];
+    query.objectIDs = objectIDs;
+    query.objectTypes =types;
+    
+    
+    return query;
+    
 }
 
 + (Query*)queryDrafts {

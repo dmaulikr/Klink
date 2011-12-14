@@ -73,6 +73,8 @@ static EventManager* sharedInstance;
     
 }
 
+
+
 - (void) registerCallbackForAllSystemEvents:(Callback *)callback {
     [self registerCallback:callback forSystemEvent:kUSERLOGGEDIN];
     [self registerCallback:callback forSystemEvent:kUSERLOGGEDOUT];
@@ -87,6 +89,8 @@ static EventManager* sharedInstance;
     //[self registerCallback:callback forSystemEvent:kDELETEDOBJECTS];    
     [self registerCallback:callback forSystemEvent:kSHOWPROGRESS];
     [self registerCallback:callback forSystemEvent:kHIDEPROGRESS];
+    [self registerCallback:callback forSystemEvent:kAUTHENTICATIONFAILED];
+    [self registerCallback:callback forSystemEvent:kUNKNOWNREQUESTFAILURE];
 }
 
 - (NSArray*)registeredHandlersForEventType:(int)systemEventType {
@@ -128,6 +132,9 @@ static EventManager* sharedInstance;
     [handlersToRemove release];
 }
 
+- (void) raiseAuthenticationFailedEvent:(NSDictionary *)userInfo {
+    [self raiseEvent:kAUTHENTICATIONFAILED withUserInfo:userInfo];
+}
 
 - (void) raiseUserLoggedInEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGGEDIN withUserInfo:userInfo];
@@ -138,7 +145,9 @@ static EventManager* sharedInstance;
 - (void) raiseUserLoginFailedEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kUSERLOGINFAILED withUserInfo:userInfo];  
 }
-
+- (void) raiseUnknownRequestFailureEvent {
+    [self raiseEvent:kUNKNOWNREQUESTFAILURE withUserInfo:nil];
+}
 
 - (void) raiseNewCaptionVoteEvent   :(NSDictionary*)userInfo {
     [self raiseEvent:kNEWCAPTIONVOTE withUserInfo:userInfo];

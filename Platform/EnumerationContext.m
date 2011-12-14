@@ -113,6 +113,14 @@
 
 }
 
++ (EnumerationContext*) contextForObjectIDs:(NSArray*)objectIDs 
+                                  withTypes:(NSArray*)objectTypes 
+{
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = [NSNumber numberWithInt:[objectIDs count]];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:[objectIDs count]];
+    return enumerationContext;
+}
 
 
 + (EnumerationContext*) contextForCaptions:(NSNumber *)photoid {

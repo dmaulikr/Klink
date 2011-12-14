@@ -33,6 +33,7 @@
 + (EnumerationContext*) contextForCaptions:     (NSNumber*)photoid;
 + (EnumerationContext*) contextForUser:         (NSNumber*)userid;
 + (EnumerationContext*) contextForDrafts;
++ (EnumerationContext*) contextForObjectIDs:(NSArray*)objectIDs withTypes:(NSArray*)objectTypes;
 - (id) init;
 - (NSString*) toJSON;
 @end

@@ -54,7 +54,7 @@
     
     [m_target performSelector:m_selector withObject:result];
     [autorelease drain];
-    [autorelease release];
+    
 }
 
 - (void) fire {

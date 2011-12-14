@@ -20,4 +20,6 @@ extern NSString* const REQUEST;
 extern NSString* const AUTHENTICATIONCONTEXT;
 extern NSString* const PAGE;
 extern NSString* const FEED;
+extern NSString* const POLL;
+extern NSString* const VOTE;
 

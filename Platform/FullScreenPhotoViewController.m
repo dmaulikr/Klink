@@ -426,7 +426,7 @@
     
     self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
     self.captionCloudEnumerator.delegate = self;
-    [self.captionCloudEnumerator enumerateUntilEnd];
+    [self.captionCloudEnumerator enumerateUntilEnd:nil];
     
 }
 
@@ -1039,7 +1039,7 @@
 }
 
 #pragma mark CloudEnumeratorDelegate
-- (void) onEnumerateComplete {
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
     
 }
 
