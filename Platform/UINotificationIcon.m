@@ -8,7 +8,6 @@
 
 #import "UINotificationIcon.h"
 #import "PlatformAppDelegate.h"
-#import "PersonalLogViewController.h"
 #import "NotificationsViewController.h"
 #import "AuthenticationManager.h"
 #import "Types.h"

@@ -22,7 +22,6 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
-#import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320

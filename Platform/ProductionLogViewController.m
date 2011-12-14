@@ -16,7 +16,6 @@
 #import "DraftViewController.h"
 #import "ContributeViewController.h"
 #import "UINotificationIcon.h"
-#import "PersonalLogViewController.h"
 #import "CloudEnumeratorFactory.h"
 #import "DateTimeHelper.h"
 #import "ApplicationSettings.h"

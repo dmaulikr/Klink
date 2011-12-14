@@ -203,7 +203,18 @@
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
-                //self.iv_photoFrame.frame = CGRectMake(((image.size.width/2) - 29), self.iv_photoFrame.frame.origin.y, image.size.width + 58, self.iv_photoFrame.frame.size.height);
+                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x - 29), self.iv_photoFrame.frame.origin.y, self.iv_photo.frame.size.width + 58, self.iv_photoFrame.frame.size.height);
+                //self.iv_photoFrame.frame = CGRectMake(self.iv_photo.frame.origin.x, self.iv_photoFrame.frame.origin.y, self.iv_photo.frame.size.width + 29, self.iv_photoFrame.frame.size.height);
+                
+                CGFloat aspectRatioX = self.iv_photo.bounds.size.width/self.iv_photo.image.size.width;
+                CGFloat aspectRatioY = self.iv_photo.bounds.size.height/self.iv_photo.image.size.height;
+                if (aspectRatioX < aspectRatioY) {
+                    self.iv_photoFrame.frame = CGRectMake(((self.iv_photo.bounds.size.height - aspectRatioX*self.iv_photo.image.size.height)*0.5f), self.iv_photoFrame.frame.origin.y, self.iv_photo.bounds.size.width, self.iv_photoFrame.frame.size.height);
+                }
+                else {
+                    self.iv_photoFrame.frame = CGRectMake(((self.iv_photo.bounds.size.width - aspectRatioY*self.iv_photo.image.size.width)*0.5f) + 29, self.iv_photoFrame.frame.origin.y, aspectRatioY*self.iv_photo.image.size.width + 29, self.iv_photoFrame.frame.size.height);
+                }
+                
             }
         }
         else {
@@ -245,7 +256,7 @@
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-            //self.iv_photoFrame.frame = CGRectMake(((response.image.size.width/2) - 29), self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
+            self.iv_photoFrame.frame = CGRectMake(0, self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
             [self.view setNeedsDisplay];
         }
     }

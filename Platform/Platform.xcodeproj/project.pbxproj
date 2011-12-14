@@ -97,8 +97,6 @@
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
 		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
 		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
-		C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */; };
-		C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */; };
 		C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1B1462ECDA00E14199 /* icon-facebook.png */; };
 		C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
@@ -348,9 +346,6 @@
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
 		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
 		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
-		C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalLogViewController.h; sourceTree = "<group>"; };
-		C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalLogViewController.m; sourceTree = "<group>"; };
-		C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalLogViewController.xib; sourceTree = "<group>"; };
 		C56F8A1B1462ECDA00E14199 /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
 		C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
@@ -1080,9 +1075,6 @@
 				C5C76C81145B92C100BA69B8 /* HomeViewController.h */,
 				C5C76C82145B92C100BA69B8 /* HomeViewController.m */,
 				C5C76C83145B92C200BA69B8 /* HomeViewController.xib */,
-				C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */,
-				C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */,
-				C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */,
 				3D51CB88146C7149002E0FD4 /* ContributeViewController.h */,
 				3D51CB89146C7149002E0FD4 /* ContributeViewController.m */,
 				3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */,
@@ -1425,7 +1417,6 @@
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
 				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
-				C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */,
 				C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */,
 				C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */,
 				3D5B84DF1463067300FD0F50 /* icon-camera2.png in Resources */,
@@ -1584,7 +1575,6 @@
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
 				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
 				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
-				C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
 				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */,
