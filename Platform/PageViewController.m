@@ -214,7 +214,11 @@
                 
                 // apply the cap insets to the photo frame image
                 UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+                if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
+                    self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+                } else {
+                    self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:photoFrameInsets.left topCapHeight:photoFrameInsets.top];
+                }
                 
                 // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
                 //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
