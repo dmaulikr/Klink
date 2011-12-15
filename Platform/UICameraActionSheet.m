@@ -17,15 +17,13 @@
 #import "Attributes.h"
 #import "Macros.h"
 
-#define kPictureWidth 120
-#define kPictureHeight 120
-#define kPictureWidth_landscape 120
-#define kPictureHeight_landscape 120
+#define kThumbnailWidth 75
+#define kThumbnailHeight 75
 
-#define kThumbnailPortraitWidth 120
-#define kThumbnailPortraitHeight 160
-#define kThumbnailLandscapeWidth 160
-#define kThumbnailLandscapeHeight 120
+#define kThumbnailPortraitWidth 75
+#define kThumbnailPortraitHeight 100
+#define kThumbnailLandscapeWidth 100
+#define kThumbnailLandscapeHeight 75
 #define kFullscreenPortraitWidth 320
 #define kFullscreenPortraitHeight 480
 #define kFullscreenLandscapeWidth 480
@@ -140,7 +138,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Crop the new shrunken thumbnail image to the fit the target frame size
     CGSize thumbnailImageSize = thumbnailImage.size;
-    thumbnailCropRect = CGRectMake((thumbnailImageSize.width - (kPictureWidth * kScale))/2, (thumbnailImageSize.height - (kPictureHeight * kScale))/2, kPictureWidth * kScale, kPictureHeight * kScale);
+    thumbnailCropRect = CGRectMake((thumbnailImageSize.width - (kThumbnailWidth * kScale))/2, (thumbnailImageSize.height - (kThumbnailHeight * kScale))/2, kThumbnailWidth * kScale, kThumbnailHeight * kScale);
     CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([thumbnailImage CGImage], thumbnailCropRect);
     thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
     
