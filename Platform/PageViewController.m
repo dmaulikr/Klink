@@ -15,9 +15,11 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "DateTimeHelper.h"
+#import "UIImageView+UIImageViewCategory.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
+#define kPHOTOFRAMETHICKNESS 30
 
 @implementation PageViewController
 @synthesize iv_openBookPageImage = m_iv_openBookPageImage;
@@ -150,8 +152,8 @@
     
     [self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-    [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-    [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
+    [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
     [self.lbl_publishDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
     [self.lbl_pageNumber setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
     
@@ -203,17 +205,19 @@
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
-                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x - 29), self.iv_photoFrame.frame.origin.y, self.iv_photo.frame.size.width + 58, self.iv_photoFrame.frame.size.height);
-                //self.iv_photoFrame.frame = CGRectMake(self.iv_photo.frame.origin.x, self.iv_photoFrame.frame.origin.y, self.iv_photo.frame.size.width + 29, self.iv_photoFrame.frame.size.height);
                 
-                CGFloat aspectRatioX = self.iv_photo.bounds.size.width/self.iv_photo.image.size.width;
-                CGFloat aspectRatioY = self.iv_photo.bounds.size.height/self.iv_photo.image.size.height;
-                if (aspectRatioX < aspectRatioY) {
-                    self.iv_photoFrame.frame = CGRectMake(((self.iv_photo.bounds.size.height - aspectRatioX*self.iv_photo.image.size.height)*0.5f), self.iv_photoFrame.frame.origin.y, self.iv_photo.bounds.size.width, self.iv_photoFrame.frame.size.height);
-                }
-                else {
-                    self.iv_photoFrame.frame = CGRectMake(((self.iv_photo.bounds.size.width - aspectRatioY*self.iv_photo.image.size.width)*0.5f) + 29, self.iv_photoFrame.frame.origin.y, aspectRatioY*self.iv_photo.image.size.width + 29, self.iv_photoFrame.frame.size.height);
-                }
+                // get the frame for the new scaled image in the Photo ImageView
+                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
+                
+                // create insets to cap the photo frame according to the size of the scaled image
+                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
+                
+                // apply the cap insets to the photo frame image
+                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
+                self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+                
+                // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+                self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
                 
             }
         }
