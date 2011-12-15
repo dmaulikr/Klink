@@ -87,6 +87,10 @@
 
 - (void)dealloc
 {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+    
+    [self.tv_caption removeObserver:self forKeyPath:@"contentSize"];
     
     self.scrollView = nil;
      self.activeTextView=nil;
@@ -205,6 +209,9 @@
     self.lbl_photoOptional = nil;
     self.lbl_photoRequired = nil;
     
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self];
+    [self.tv_caption removeObserver:self forKeyPath:@"contentSize"];
     self.tv_caption = nil;
     self.lbl_captionOptional = nil;
     self.lbl_captionRequired = nil;

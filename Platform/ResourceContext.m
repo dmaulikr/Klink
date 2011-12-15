@@ -1,4 +1,4 @@
-//
+        //
 //  ResourceContext.m
 //  Platform
 //
@@ -88,14 +88,22 @@ static NSMutableDictionary* managedObjectContexts;
 }
 
 - (void) onContextDidSave:(NSNotification*)notification {
+    NSString* activityName = @"ResourceContext.onContextDidSave:";
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-   
-    //lets propagate the notification to all contexts
-    [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
+    NSManagedObjectContext* sender = notification.object;
+    
+    if (appDelegate.managedObjectContext != sender) {
+        //lets propagate the notification to all contexts
+        NSManagedObjectContext* appDelContext = appDelegate.managedObjectContext;
+        LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p on background thread, propagating to context %p on main thread",activityName,sender,appDelContext);
+        [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
+    }
     
     for (NSString* key in managedObjectContexts) {
         NSManagedObjectContext* context = [managedObjectContexts objectForKey:key];
-        if (context != nil) {
+        if (context != nil && 
+            context != sender) {
+            LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
             [context mergeChangesFromContextDidSaveNotification:notification];
         }
     }
