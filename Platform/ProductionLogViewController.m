@@ -307,8 +307,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSString* activityName = @"ProductionLogViewController.numberOfRowsInSection";
+    
+    int retVal = [[self.frc_draft_pages fetchedObjects]count];
     // Return the number of rows in the section.
-    return [[self.frc_draft_pages fetchedObjects]count];
+    LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Number of rows in fetched results controller:%d",activityName,retVal);
+        return retVal;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -454,21 +459,29 @@
        newIndexPath:(NSIndexPath *)newIndexPath {
     
     NSString* activityName = @"ProductionLogViewController.controller.didChangeObject:";
-    if (type == NSFetchedResultsChangeInsert) {
-        //insertion of a new page
-        Resource* resource = (Resource*)anObject;
-        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@",activityName,resource.objecttype,resource.objectid);
-        [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
-        [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        [self.tbl_productionTableView reloadData];
-        // Update draft counter labels at the top of the view
-        [self updateDraftCounterLabels];
+    if (controller == self.frc_draft_pages) {
+        if (type == NSFetchedResultsChangeInsert) {
+            //insertion of a new page
+            Resource* resource = (Resource*)anObject;
+            int count = [[self.frc_draft_pages fetchedObjects]count];
+            LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
+            [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+            LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Scrolling table view to newly created item",activityName);
+            [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            //LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Reloading table",activityName);
+            //[self.tbl_productionTableView reloadData];
+            // Update draft counter labels at the top of the view
+            [self updateDraftCounterLabels];
+        }
+        else if (type == NSFetchedResultsChangeDelete) {
+            [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+            [self.tbl_productionTableView reloadData];
+            // Update draft counter labels at the top of the view
+            [self updateDraftCounterLabels];
+        }
     }
-    else if (type == NSFetchedResultsChangeDelete) {
-        [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
-        [self.tbl_productionTableView reloadData];
-        // Update draft counter labels at the top of the view
-        [self updateDraftCounterLabels];
+    else {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(1, @"%@Received a didChange message from a NSFetchedResultsController that isnt mine. %p",activityName,&controller);
     }
 }
 
