@@ -71,7 +71,7 @@ static RequestManager* sharedInstance;
 
 - (ASIHTTPRequest*) requestFor:(RequestOperation)opcode 
                        withURL:(NSString*)url 
-                  withUserInfo:(NSDictionary*)userInfo {
+                  withUserInfo:(NSMutableDictionary*)userInfo {
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     
     //we put a timer into every request so that we can calculate time on the wire
@@ -169,7 +169,7 @@ static RequestManager* sharedInstance;
         [request setChangedAttributesList:[NSArray arrayWithObject:attribute]];
         [request retain];
         
-        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:request forKey:kREQUEST];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:request forKey:kREQUEST];
         ASIFormDataRequest* httpRequest = (ASIFormDataRequest*) [self requestFor:kMODIFYATTACHMENT withURL:[url absoluteString] withUserInfo:userInfo];
         [httpRequest setFile:value forKey:@"attachment"];
         httpRequest.delegate = self;
@@ -873,7 +873,7 @@ static RequestManager* sharedInstance;
     double currentTime = [[NSDate date]timeIntervalSince1970];
     double timeDifferenceInSeconds = currentTime - timeStarted;
     
-    LOG_HTTP(1, @"%@HTTP request failed after %d seconds",activityName,timeDifferenceInSeconds);
+    LOG_HTTP(1, @"%@HTTP request failed after %f seconds",activityName,timeDifferenceInSeconds);
     
     if ([obj isKindOfClass:[NSArray class]]) {
         //it was a bulk operation that failed
@@ -917,7 +917,7 @@ static RequestManager* sharedInstance;
     double timeDifferenceInSeconds = currentTime - timeStarted;
     
     
-    LOG_HTTP(0, @"%@HTTP request succeeded in %d seconds",activityName,timeDifferenceInSeconds);
+    LOG_HTTP(0, @"%@HTTP request succeeded in %f seconds",activityName,timeDifferenceInSeconds);
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
         

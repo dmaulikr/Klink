@@ -26,7 +26,10 @@
 #import "DateTimeHelper.h"
 #import "EventManager.h"
 
-#define kCallback   @"callback";
+#define kCallback   @"callback"
+#define kTHREAD     @"thread"
+#define kCONTEXT    @"context"
+
 @implementation ResourceContext
 
 @synthesize managedObjectContext = __managedObjectContext;
@@ -67,10 +70,18 @@ static NSMutableDictionary* managedObjectContexts;
             NSManagedObjectContext *threadContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
             // cache the context for this thread
-            [managedObjectContexts setObject:threadContext forKey:threadKey];
+            NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+            [userInfo setValue:thread forKey:kTHREAD];
+            [userInfo setValue:threadContext forKey:kCONTEXT];
+            
+            [managedObjectContexts setObject:userInfo forKey:threadKey];
+            [userInfo release];
+            return threadContext;
         }
-        
-        return [managedObjectContexts objectForKey:threadKey];
+        else {
+            NSDictionary* userInfo = [managedObjectContexts objectForKey:threadKey];
+            return [userInfo objectForKey:kCONTEXT];
+        }
     }
     
     
@@ -91,6 +102,7 @@ static NSMutableDictionary* managedObjectContexts;
     NSString* activityName = @"ResourceContext.onContextDidSave:";
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSManagedObjectContext* sender = notification.object;
+    NSMutableSet* keysToRemove = [[NSMutableSet alloc]init];
     
     if (appDelegate.managedObjectContext != sender) {
         //lets propagate the notification to all contexts
@@ -100,13 +112,33 @@ static NSMutableDictionary* managedObjectContexts;
     }
     
     for (NSString* key in managedObjectContexts) {
-        NSManagedObjectContext* context = [managedObjectContexts objectForKey:key];
-        if (context != nil && 
-            context != sender) {
-            LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
-            [context mergeChangesFromContextDidSaveNotification:notification];
+        NSDictionary* userInfo = [managedObjectContexts objectForKey:key];
+        NSManagedObjectContext* context = [userInfo objectForKey:kCONTEXT];
+        NSThread* thread = [userInfo objectForKey:kTHREAD];
+        
+        //let us first see if the thread is even activ
+        if (thread != nil && !thread.isCancelled) {
+            if (context != nil && 
+                context != sender) {
+                LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
+                [context mergeChangesFromContextDidSaveNotification:notification];
+            }
+        }
+        else {
+            LOG_RESOURCECONTEXT(0, @"%@ Marking managed context for cancelled or deallocated thread %p for deletion",activityName,key);
+            [keysToRemove addObject:key];
         }
     }
+    
+    //at this point we need to remove all of the keys in the NSSet from the NSDictionary
+    int currentNumKeys = [managedObjectContexts count];
+    int numKeysToRemove = [keysToRemove count];
+    LOG_RESOURCECONTEXT(0, @"%@Removing %d managedObjectContexts leaving the system with %d active managedObjectContexts",activityName,numKeysToRemove,(currentNumKeys-numKeysToRemove));
+    
+    for (NSString* keyToRemove in [keysToRemove allObjects]) {
+        [managedObjectContexts removeObjectForKey:keysToRemove];
+    }
+    [keysToRemove release];
 }
 - (NSNumber*)nextID{
     

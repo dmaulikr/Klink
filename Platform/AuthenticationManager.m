@@ -104,7 +104,7 @@ static  AuthenticationManager* sharedManager;
     //get the user object
     [[EventManager instance]raiseShowProgressViewEvent:@"Getting Facebook data" withCustomView:nil withMaximumDisplayTime:nil];
     
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
 
     self.fbProfileRequest = [facebook requestWithGraphPath:@"me" andDelegate:self];        
@@ -124,7 +124,7 @@ static  AuthenticationManager* sharedManager;
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
         
         //we request offline permission, so the FB expiry date isnt needed. we set this to the current date, itsmeaningless
-        PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+        PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         Facebook* facebook = appDelegate.facebook;
         
         LOG_SECURITY(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
@@ -198,7 +198,7 @@ static  AuthenticationManager* sharedManager;
     //now we need to grab their facebook authentication data, and then log them into our app    
     NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
     
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
     if (![facebook isSessionValid]) {
@@ -236,7 +236,7 @@ static  AuthenticationManager* sharedManager;
     NSString* activityName = @"AuthenticationManager.loginUser:";
     ResourceContext* resourceContext = [ResourceContext instance];
     
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
     if (context.facebookaccesstoken) {
@@ -302,7 +302,7 @@ static  AuthenticationManager* sharedManager;
         
         self.m_LoggedInUserID = 0;
         //at this point the user is logged off
-        PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*) [[UIApplication sharedApplication]delegate];
         Facebook* facebook = appDelegate.facebook;
         [facebook logout:self];
         

@@ -282,7 +282,7 @@
     NSString* activityName = @"LoginViewController.request:didLoad:";
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
-    PlatformAppDelegate* appDelegate = [[UIApplication sharedApplication]delegate];
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     ResourceContext* resourceContext = [ResourceContext instance];
     

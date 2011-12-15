@@ -344,6 +344,78 @@
                 LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
             }
         }
+        else if ([notification.type intValue] == kCAPTION_VOTE) 
+        {
+          //someone has voted for this user's caption on a photo
+          //on click, should transition to view of the photo and their caption
+        }
+        else if ([notification.type intValue] == kPHOTO_VOTE) 
+        {
+            //someone has voted for this user's photo in a draft
+            //on click should transition to view of the photo and the newest caption
+        }
+        else if ([notification.type intValue] == kCAPTION_ADDED) 
+        {
+          //a new caption has been added for this user's photo in a draft
+            //on click should transition to view of the new caption and photo
+        }
+        else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS) 
+        {
+            //raised when a draft has expired and been submitted to the editorial board for voting
+            //sent to: creator of draft, and the users of the photo and caption that
+            //are the highest voted in the draft
+        }
+        else if ([notification.type intValue] == kDRAFT_PUBLISHED) 
+        {
+            //raised when a draft has been published in the book
+            //sent to: creator of draft, creator of photo, creator of caption
+            //on click should open page in book to the page published
+        }
+        else if ([notification.type intValue] == kDRAFT_EXPIRED) 
+        {
+            //raised when a draft has expired
+            //sent to the creator of draft, creator of photo, creator of caption
+            //on click should open draft 
+        }
+        else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) 
+        {
+            //raised when a new photo has been added to a draft
+            //sent to the creator of the draft, creator of the photo
+            //on click should open up to the newly added photo
+        }
+        else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) 
+        {
+            //raised when a user has been promoted
+            //sent to user that has been promoted to editorial board
+            //on click should open up profile page
+        }
+        else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) 
+        {
+            //raised when a user has been demoted
+            //sent to user that has been demoted from the editorial board
+            //on click should open up profile page
+        }
+        
+        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED) 
+        {
+            //raised when a editorial board vote has ended
+            //sent to all editors at the end of a poll
+            //on click should open up into Dark Side view which illustrates who the winner is
+        }
+        else if ([notification.type intValue] == kDRAFT_NOT_PUBLISHED) 
+        {
+            //raised when a draft does not win a editorial board election
+            //sent to the page owner, photo creator, caption creator when a draft
+            //submitted to the editorial board does not win
+            //on click should open up into Dark Side view which illustrates which page was the winner
+        }
+        else if ([notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) 
+        {
+            //sent to all editors at the end of a poll where no winner was chosen because
+            //there were no votes
+            //onclick should open up into Dark Side view with vote counts listed for each page
+        }
+        
     }
     
 }
