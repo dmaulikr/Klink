@@ -35,5 +35,6 @@
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;
++ (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID;
 
 @end

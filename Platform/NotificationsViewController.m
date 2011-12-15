@@ -15,6 +15,9 @@
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
 #import "EditorialVotingViewController.h"
+#import "DraftViewController.h"
+#import "FullScreenPhotoViewController.h"
+
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 
@@ -302,6 +305,10 @@
     return indexPath;
 }
 
+#define kCAPTION    @"caption"
+#define kPHOTO      @"photo"
+#define kPAGE       @"page"
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
@@ -348,6 +355,34 @@
         {
           //someone has voted for this user's caption on a photo
           //on click, should transition to view of the photo and their caption
+            NSArray* feedObjects = notification.feeddata;
+            NSNumber* pageID = nil;
+            NSNumber* photoID = nil;
+            NSNumber* captionID = nil;
+            
+            //we retrieve the values for the above variables by iterating
+            //through the feedObjects array
+            for (FeedData* fd in feedObjects) {
+                if ([fd.key isEqualToString:kPAGE])
+                {
+                    pageID = fd.objectid;
+                }
+                else if ([fd.key isEqualToString:kPHOTO]) {
+                    photoID = fd.objectid;
+                }
+                else if ([fd.key isEqualToString:kCAPTION]) {
+                    captionID = fd.objectid;
+                }
+            }
+            
+            //at this point we now have the ids of all the objects we need
+            //to properly render the draft
+            LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@, PhotoID:%@, CaptionID:%@ for new caption vote notification",activityName,pageID,photoID,captionID);
+            
+            FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
+            [self.navigationController pushViewController:fullScreenController animated:YES];
+            
+            
         }
         else if ([notification.type intValue] == kPHOTO_VOTE) 
         {
