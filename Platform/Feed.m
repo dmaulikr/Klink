@@ -18,6 +18,7 @@
 @dynamic hasopened;
 @dynamic hasseen;
 @dynamic title;
+@dynamic datexpires;
 @dynamic imageurl;
 
 @synthesize feeddata = __feeddata;

@@ -105,14 +105,13 @@
     [super viewDidLoad];
     
     Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
-    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];
-    
+    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];    
     Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
-    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];
-    
-    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];
-    
+    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];    
+    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];    
     Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
+    Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
+    Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
     
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
@@ -120,6 +119,8 @@
     [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
     [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
     [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
+    [self.eventManager registerCallback:applicationDidBecomeActiveCallback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
+    [self.eventManager registerCallback:applicationWentToBackgroundCallback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
     
     [unknownRequestFailureCallback release];
     [failedAuthenticationCallback release];
@@ -156,6 +157,17 @@
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
     [self.navigationController.toolbar setTranslucent:YES];
     
+    
+    
+    
+}
+
+
+- (void) viewWillDisappear:(BOOL)animated {
+    //NSString* activityName = @"BaseViewController.viewWillDisappear:";
+    [super viewWillDisappear:animated];
+    
+
 }
 
 
@@ -209,6 +221,25 @@
 
 
 #pragma mark - Instance Methods 
+- (BOOL) isViewControllerActive {
+    //returns a boolean indicating whether this instance is the currently shown view in the application
+    return  ( [self isViewLoaded] && self.view.window);
+}
+
+- (void) clearDisplayedLoginView {
+    NSString* activityName = @"BaseViewController.clearDisplayedLoginView:";
+    //if the login view is showing, we remove it from the super view so we dont lock the screen potentially.
+    if (self.loginView.superview != nil &&
+        self.loginView.superview == self.view) {
+        
+        LOG_BASEVIEWCONTROLLER(0,@"%@Detected login view controller is still showing, clearing the loginview",activityName);
+        //remove from superview
+        [self.loginView removeFromSuperview];
+        
+
+    }
+}
+
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 
      onFinishSelector:(SEL)sel 
@@ -380,6 +411,26 @@
         [authnManager logoff];
         [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:nil withObject:nil];
     }
+}
+
+- (void) onApplicationWentToBackground:(CallbackResult*)result {
+    //this event is raiseda nytime the application to have moved into the background state
+    NSString* activityName = @"BaseViewController.onApplicationWentToBackground:";
+    if ([self isViewControllerActive]) {
+        LOG_BASEVIEWCONTROLLER(0, @"%@Detected application entered background",activityName);
+        
+       // [self clearDisplayedLoginView];
+    }
+}
+- (void) onApplicationDidBecomeActive:(CallbackResult*)result {
+    //this event is raised anytime the application is detected to have moved back into the active state
+    NSString* activityName = @"BaseViewController.onApplicationDidBecomeActive:";
+    if ([self isViewControllerActive]) {
+        LOG_BASEVIEWCONTROLLER(0,@"%@Detected application became active",activityName);
+    
+        [self clearDisplayedLoginView];
+    }
+    
 }
 
 - (void) onLoginComplete:(CallbackResult*)result {
