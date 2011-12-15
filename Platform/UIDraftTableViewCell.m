@@ -1,12 +1,12 @@
 //
-//  UIDraftTableViewCellLeft.m
+//  UIDraftTableViewCell.m
 //  Platform
 //
 //  Created by Jordan Gurrieri on 11/4/11.
 //  Copyright 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "UIDraftTableViewCellLeft.h"
+#import "UIDraftTableViewCell.h"
 #import "Photo.h"
 #import "Caption.h"
 #import "Types.h"
@@ -16,18 +16,22 @@
 #import "CallbackResult.h"
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
+#import "UIImageView+UIImageViewCategory.h"
 
 #define kPHOTOID                    @"photoid"
 #define kCAPTIONID                  @"captionid"
 #define kDRAFTTABLEVIEWCELL_TOP     @"drafttableviewcell_top"
 #define kDRAFTTABLEVIEWCELL_LEFT    @"drafttableviewcell_left"
 #define kDRAFTTABLEVIEWCELL_RIGHT   @"drafttableviewcell_right"
+#define kPHOTOFRAMETHICKNESS        30
 
-@implementation UIDraftTableViewCellLeft
+@implementation UIDraftTableViewCell
 @synthesize photoID = m_photoID;
 @synthesize captionID = m_captionID;
 @synthesize draftTableViewCell = m_draftTableViewCell;
+@synthesize cellType = m_cellType;
 @synthesize iv_photo = m_iv_photo;
+@synthesize iv_photoFrame = m_iv_photoFrame;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_photoby = m_lbl_photoby;
 @synthesize lbl_captionby = m_lbl_captionby;
@@ -44,19 +48,78 @@
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:kPHOTOID];
         
-        if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
+        
+        if (self.cellType == kDRAFTTABLEVIEWCELL_TOP) {
+            if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
+                Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+                UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
+                [callback release];
+                if (image != nil) {
+                    self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                    self.iv_photo.image = image;
+                    
+                    // get the frame for the new scaled image in the Photo ImageView
+                    CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
+                    
+                    // create insets to cap the photo frame according to the size of the scaled image
+                    UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
+                    
+                    // apply the cap insets to the photo frame image
+                    UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
+                    self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+                    
+                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+                    self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
+                }
+            }
+            else {
+                self.iv_photo.contentMode = UIViewContentModeCenter;
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+            }
+        }
+        else {
+            if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
+                Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+                UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
+                [callback release];
+                if (image != nil) {
+                    self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                    self.iv_photo.image = image;
+                }
+            }
+            else {
+                self.iv_photo.contentMode = UIViewContentModeCenter;
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+            }
+        }
+        
+        
+        /*if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
             [callback release];
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
+                
+                // get the frame for the new scaled image in the Photo ImageView
+                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
+                
+                // create insets to cap the photo frame according to the size of the scaled image
+                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
+                
+                // apply the cap insets to the photo frame image
+                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
+                self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+                
+                // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+                self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
             }
         }
         else {
             self.iv_photo.contentMode = UIViewContentModeCenter;
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
-        }
+        }*/
     }
     
     // reset labels to defualt values
@@ -111,6 +174,8 @@
         
         [self.contentView addSubview:self.draftTableViewCell];
         
+        self.cellType = reuseIdentifier;
+        
         [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
         [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
@@ -152,7 +217,7 @@
                                                                                              
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {
-    NSString* activityName = @"UIDraftTableViewCellLeft.onImageDownloadComplete:";
+    NSString* activityName = @"UIDraftTableViewCell.onImageDownloadComplete:";
     NSDictionary* userInfo = result.context;
     NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;

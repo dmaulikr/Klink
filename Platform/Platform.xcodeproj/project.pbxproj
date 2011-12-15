@@ -15,7 +15,7 @@
 		3D5B84E51463068100FD0F50 /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */; };
 		3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */; };
 		3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D683161146E245F007B4432 /* image-photoCameraButton.png */; };
-		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */; };
+		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCell.m */; };
 		3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */; };
 		3DCFE8E01464633400D6587D /* icon-compose.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DC1464633400D6587D /* icon-compose.png */; };
 		3DCFE8E11464633400D6587D /* icon-compose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DD1464633400D6587D /* icon-compose@2x.png */; };
@@ -52,6 +52,9 @@
 		523F22F81495C368005BED44 /* open_book_page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22F61495C368005BED44 /* open_book_page@2x.png */; };
 		523F22FB1495C88E005BED44 /* picture_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22F91495C88E005BED44 /* picture_frame.png */; };
 		523F22FC1495C88E005BED44 /* picture_frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22FA1495C88E005BED44 /* picture_frame@2x.png */; };
+		525362911499581F001F1EB6 /* UIImageView+UIImageViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */; };
+		5253629B14998DF8001F1EB6 /* thumbnail_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 5253629914998DF8001F1EB6 /* thumbnail_frame.png */; };
+		5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5253629A14998DF8001F1EB6 /* thumbnail_frame@2x.png */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
@@ -96,8 +99,6 @@
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
 		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
 		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
-		C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */; };
-		C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */; };
 		C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1B1462ECDA00E14199 /* icon-facebook.png */; };
 		C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
@@ -248,8 +249,8 @@
 		3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
 		3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		3D683161146E245F007B4432 /* image-photoCameraButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton.png"; sourceTree = "<group>"; };
-		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCellLeft.h; sourceTree = "<group>"; };
-		3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftTableViewCellLeft.m; sourceTree = "<group>"; };
+		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCell.h; sourceTree = "<group>"; };
+		3DCFE8D714645EEB00D6587D /* UIDraftTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDraftTableViewCell.m; sourceTree = "<group>"; };
 		3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellLeft.xib; sourceTree = "<group>"; };
 		3DCFE8DC1464633400D6587D /* icon-compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose.png"; sourceTree = "<group>"; };
 		3DCFE8DD1464633400D6587D /* icon-compose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-compose@2x.png"; sourceTree = "<group>"; };
@@ -291,6 +292,10 @@
 		523F22F61495C368005BED44 /* open_book_page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open_book_page@2x.png"; sourceTree = "<group>"; };
 		523F22F91495C88E005BED44 /* picture_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture_frame.png; sourceTree = "<group>"; };
 		523F22FA1495C88E005BED44 /* picture_frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_frame@2x.png"; sourceTree = "<group>"; };
+		5253628F1499581F001F1EB6 /* UIImageView+UIImageViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIImageViewCategory.h"; sourceTree = "<group>"; };
+		525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIImageViewCategory.m"; sourceTree = "<group>"; };
+		5253629914998DF8001F1EB6 /* thumbnail_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail_frame.png; sourceTree = "<group>"; };
+		5253629A14998DF8001F1EB6 /* thumbnail_frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail_frame@2x.png"; sourceTree = "<group>"; };
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
@@ -361,9 +366,6 @@
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
 		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
 		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
-		C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalLogViewController.h; sourceTree = "<group>"; };
-		C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalLogViewController.m; sourceTree = "<group>"; };
-		C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalLogViewController.xib; sourceTree = "<group>"; };
 		C56F8A1B1462ECDA00E14199 /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
 		C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
@@ -774,6 +776,8 @@
 				5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */,
 				523F22F91495C88E005BED44 /* picture_frame.png */,
 				523F22FA1495C88E005BED44 /* picture_frame@2x.png */,
+				5253629914998DF8001F1EB6 /* thumbnail_frame.png */,
+				5253629A14998DF8001F1EB6 /* thumbnail_frame@2x.png */,
 				C5C9E2CC1468957500838934 /* 37x-Checkmark.png */,
 				3DCFE8DC1464633400D6587D /* icon-compose.png */,
 				3DCFE8DD1464633400D6587D /* icon-compose@2x.png */,
@@ -1211,9 +1215,6 @@
 				C5C76C81145B92C100BA69B8 /* HomeViewController.h */,
 				C5C76C82145B92C100BA69B8 /* HomeViewController.m */,
 				C5C76C83145B92C200BA69B8 /* HomeViewController.xib */,
-				C56F8A0D1462E56400E14199 /* PersonalLogViewController.h */,
-				C56F8A0E1462E56400E14199 /* PersonalLogViewController.m */,
-				C56F8A0F1462E56400E14199 /* PersonalLogViewController.xib */,
 				3D51CB88146C7149002E0FD4 /* ContributeViewController.h */,
 				3D51CB89146C7149002E0FD4 /* ContributeViewController.m */,
 				3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */,
@@ -1264,8 +1265,8 @@
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
 				C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */,
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
-				3DCFE8D614645EEB00D6587D /* UIDraftTableViewCellLeft.h */,
-				3DCFE8D714645EEB00D6587D /* UIDraftTableViewCellLeft.m */,
+				3DCFE8D614645EEB00D6587D /* UIDraftTableViewCell.h */,
+				3DCFE8D714645EEB00D6587D /* UIDraftTableViewCell.m */,
 				523F22EA14944A4F005BED44 /* UIDraftTableViewCellTop.xib */,
 				3DCFE8DA14645F1300D6587D /* UIDraftTableViewCellLeft.xib */,
 				523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */,
@@ -1334,6 +1335,8 @@
 				C5C83AF5144B8E8600AF38CF /* NSStringGUIDCategory.m */,
 				C5C83AF1144B859500AF38CF /* NSURLCategory.h */,
 				C5C83AF2144B859500AF38CF /* NSURLCategory.m */,
+				5253628F1499581F001F1EB6 /* UIImageView+UIImageViewCategory.h */,
+				525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1568,7 +1571,6 @@
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
 				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
-				C56F8A111462E56400E14199 /* PersonalLogViewController.xib in Resources */,
 				C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */,
 				C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */,
 				3D5B84DF1463067300FD0F50 /* icon-camera2.png in Resources */,
@@ -1641,6 +1643,8 @@
 				523F22FC1495C88E005BED44 /* picture_frame@2x.png in Resources */,
 				C5913BBB1496D1BA00C8C2F1 /* EditorialVotingViewController.xib in Resources */,
 				C58C6CCB14973AF00068CCD6 /* HTNotifier.strings in Resources */,
+				5253629B14998DF8001F1EB6 /* thumbnail_frame.png in Resources */,
+				5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1728,10 +1732,9 @@
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
 				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
 				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
-				C56F8A101462E56400E14199 /* PersonalLogViewController.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
-				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCellLeft.m in Sources */,
+				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */,
 				C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */,
 				C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */,
 				C5C9E2571466FDA100838934 /* MBProgressHUD.m in Sources */,
@@ -1785,6 +1788,7 @@
 				C58C6CCF14973AF00068CCD6 /* DDXMLElement.m in Sources */,
 				C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */,
 				C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */,
+				525362911499581F001F1EB6 /* UIImageView+UIImageViewCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

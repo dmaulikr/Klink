@@ -8,7 +8,7 @@
 
 #import "DraftViewController.h"
 #import "Macros.h"
-#import "UIDraftTableViewCellLeft.h"
+#import "UIDraftTableViewCell.h"
 #import "DateTimeHelper.h"
 #import "CloudEnumeratorFactory.h"
 #import "AuthenticationManager.h"
@@ -22,7 +22,6 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
-#import "PersonalLogViewController.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -48,7 +47,7 @@
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
-    NSString* activityName = @"UIDraftView.frc_photos:";
+    NSString* activityName = @"UIDraftViewController.frc_photos:";
     
     if (__frc_photos != nil) {
         return __frc_photos;
@@ -339,22 +338,22 @@
         
         if ([indexPath row] == 0) {
             // leading draft, show version of draft table view cell for the leading draft
-            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierTop];
+            reusableCellIdentifier = [UIDraftTableViewCell cellIdentifierTop];
         }
         else if ([indexPath row] % 2) {
             // row is odd, show version of draft table view cell with image on the left
-            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierLeft];
+            reusableCellIdentifier = [UIDraftTableViewCell cellIdentifierLeft];
         }
         else {
             // row is even, show version of draft table view cell with image on the right
-            reusableCellIdentifier = [UIDraftTableViewCellLeft cellIdentifierRight];
+            reusableCellIdentifier = [UIDraftTableViewCell cellIdentifierRight];
         }
         
-        UIDraftTableViewCellLeft* cell = (UIDraftTableViewCellLeft*) [tableView dequeueReusableCellWithIdentifier:reusableCellIdentifier];
+        UIDraftTableViewCell* cell = (UIDraftTableViewCell*) [tableView dequeueReusableCellWithIdentifier:reusableCellIdentifier];
         
         if (cell == nil) 
         {
-            cell = [[[UIDraftTableViewCellLeft alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
+            cell = [[[UIDraftTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
         }
         
         [cell renderWithPhotoID:photo.objectid];
