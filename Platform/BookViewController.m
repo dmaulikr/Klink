@@ -13,7 +13,7 @@
 #import "CloudEnumeratorFactory.h"
 #import "UINotificationIcon.h"
 #import "SocialSharingManager.h"
-
+#import "PageState.h"
 @implementation BookViewController
 @synthesize pageController = m_pageController;
 @synthesize pageID              = m_pageID;
@@ -40,7 +40,7 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to test for being published
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",STATE, kDRAFT];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",STATE, kPUBLISHED];
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];
@@ -73,6 +73,7 @@
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
     int index = 0;
     for (Page* page in fetchedObjects) {
+        
         if ([page.objectid isEqualToNumber:pageid]) {
            
             break;
@@ -339,7 +340,47 @@
     //[self.pageController.view setFrame:[self.view bounds]];
     [self.pageController.view setFrame:[self frameForPageViewController]];
     
-    PageViewController* initialViewController = [self viewControllerAtIndex:0];
+//    PageViewController* initialViewController = [self viewControllerAtIndex:0];
+//    
+//    if (initialViewController) {
+//        NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
+//        
+//        [self.pageController setViewControllers:viewControllers  
+//                                      direction:UIPageViewControllerNavigationDirectionForward 
+//                                       animated:NO 
+//                                     completion:nil];
+//        
+//        [self addChildViewController:self.pageController];
+//        [self.view addSubview:self.pageController.view];
+//        [self.pageController didMoveToParentViewController:self];
+//        
+//    }
+
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    //NSString* activityName = @"BookViewController.viewWillAppear:";
+    [super viewWillAppear:animated];
+   
+    PageViewController* initialViewController = nil;
+    if (self.pageID != nil) {
+        //the page id has been set, we will move to that page
+        int indexForPage = [self indexOfPageWithID:self.pageID];
+        initialViewController = [self viewControllerAtIndex:indexForPage];
+        
+        
+    }
+    else {
+        initialViewController = [self viewControllerAtIndex:0];
+    }
+    
     
     if (initialViewController) {
         NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
@@ -355,19 +396,7 @@
         
     }
 
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-    //NSString* activityName = @"BookViewController.viewWillAppear:";
-    [super viewWillAppear:animated];
-   
+    
     /*
     //render the page ID specified as a parameter
     if (self.pageID != nil && [self.pageID intValue] != 0) {
@@ -416,6 +445,12 @@
     BookViewController* instance = [[BookViewController alloc]initWithNibName:@"BookViewController" bundle:nil];
     [instance autorelease];
     return instance;
+}
+
++ (BookViewController*) createInstanceWithPageID:(NSNumber *)pageID {
+    BookViewController* vc = [BookViewController createInstance];
+    vc.pageID = pageID;
+    return vc;
 }
 
 

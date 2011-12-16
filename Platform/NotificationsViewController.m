@@ -17,7 +17,8 @@
 #import "EditorialVotingViewController.h"
 #import "DraftViewController.h"
 #import "FullScreenPhotoViewController.h"
-
+#import "BookViewController.h"
+#import "ProfileViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 
@@ -308,10 +309,154 @@
 #define kCAPTION    @"caption"
 #define kPHOTO      @"photo"
 #define kPAGE       @"page"
+#define kDRAFT      @"draft"
+
+- (void) processClickOfNewVoteNotification:(Feed*)notification {
+    NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
+    NSArray* feedObjects = notification.feeddata;
+    NSNumber* pageID = nil;
+    NSNumber* photoID = nil;
+    NSNumber* captionID = nil;
+    
+    //we retrieve the values for the above variables by iterating
+    //through the feedObjects array
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kPAGE])
+        {
+            pageID = fd.objectid;
+        }
+        else if ([fd.key isEqualToString:kPHOTO]) {
+            photoID = fd.objectid;
+        }
+        else if ([fd.key isEqualToString:kCAPTION]) {
+            captionID = fd.objectid;
+        }
+    }
+    
+    //at this point we now have the ids of all the objects we need
+    //to properly render the draft
+    LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@, PhotoID:%@, CaptionID:%@ for new caption vote notification",activityName,pageID,photoID,captionID);
+    
+    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
+    [self.navigationController pushViewController:fullScreenController animated:YES];
+}
+
+- (void) processClickOfNewCaptionNotification:(Feed*)notification {
+     //this method has the same logic as the one above it
+    [self processClickOfNewVoteNotification:notification];
+    
+    
+}
+
+- (void) processClickOfNewPhotoNotification:(Feed*)notification {
+    //this method has the same logic as the one 2 above it
+    [self processClickOfNewVoteNotification:notification];
+}
+
+- (void) processClickOfDraftSubmittedToEditorsNotification:(Feed*)notification {
+    //on click this method will move to the draftview controller for this specified page
+    NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
+    NSArray* feedObjects = notification.feeddata;
+    NSNumber* pageID = nil;
+    
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kDRAFT])
+        {
+            pageID = fd.objectid;
+        }
+    }
+       LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ draft submission to editorial board notification",activityName,pageID);
+    
+    //we have th page id, now we launch the draftviewcontroller for this page
+    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:pageID];
+    [self.navigationController pushViewController:draftViewController animated:YES];
+
+}
+
+
+
+- (void) processClickOfEditorialBoardVotingBegin:(Feed*)notification {
+    NSString* activityName = @"NotificationViewController.processClickOfEditorialBoardVotingBegin:";
+    NSArray* feedObjects = notification.feeddata;
+    NSNumber* pollID = nil;
+    
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kPOLL]) {
+            pollID = fd.objectid;
+            break;
+        }
+    }
+    
+    if (pollID != nil) {
+        EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
+        [self.navigationController pushViewController:editorialBoardViewController animated:YES];
+        
+    }
+    else {
+        //error case
+        LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
+    }
+    
+}
+
+- (void) processClickOfEditorialBoardVotingEnding:(Feed*)notification 
+{
+    //this method opens up the same viewcontroller that is used for the editing process
+    [self processClickOfEditorialBoardVotingBegin:notification];
+    
+}
+
+
+- (void) processClickOfDraftPublishedNotification:(Feed*)notification {
+    //this method will open up the BookViewController to the specified pageID
+    NSString* activityName = @"NotificationsViewController.processClickOfDraftPublishedNotification:";
+    
+    NSArray* feedObjects = notification.feeddata;
+    NSNumber* pageID = nil;
+    
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kPAGE])
+        {
+            pageID = fd.objectid;
+        }
+    }
+    LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ that was published notification",activityName,pageID);
+    
+    //we launch the BookViewController and open it up to the page we specified
+    BookViewController* bookViewController = [BookViewController createInstanceWithPageID:pageID];
+    //TODO: need to implement proper logic in bookviewcontroller to open up to a specific page
+    [self.navigationController pushViewController:bookViewController animated:NO];
+}
+
+- (void) processClickOfDraftExpired:(Feed*)notification {
+    //this method is the same as processClickOfDraftSubmittedToEditorNotification
+    [self processClickOfDraftPublishedNotification:notification];
+}
+
+- (void) processClickOfPromotionToEditorNotification:(Feed*)notification 
+{
+        //will open up the user profile page for the user
+    ProfileViewController* profileViewController = [ProfileViewController createInstance];
+    [self.navigationController pushViewController:profileViewController animated:NO];
+}
+
+- (void) processClickOfDemotionFromEditorNotification:(Feed*)notification
+{
+    [self processClickOfPromotionToEditorNotification:notification];
+}
+
+- (void) processClickOfDraftNotPublishedNotification:(Feed*)notification {
+    //we will open up into the voting view
+    [self processClickOfEditorialBoardVotingBegin:notification];
+}
+
+- (void) processClickOfDraftEditorialBoardNoResult:(Feed*)notification {
+    [self processClickOfEditorialBoardVotingBegin:notification];
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
+   // NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
     //need to get the notification object
     int index = [indexPath row];
     int feedCount = [[self.frc_notifications fetchedObjects]count];
@@ -330,125 +475,86 @@
 //            notification.hasopened = [NSNumber numberWithBool:YES];
 //            ResourceContext* resourceContext = [ResourceContext instance];
 //            [resourceContext save:YES onFinishCallback:nil];
-            
-            NSArray* feedObjects = notification.feeddata;
-            NSNumber* pollID = nil;
-            
-            for (FeedData* fd in feedObjects) {
-                if ([fd.key isEqualToString:kPOLL]) {
-                    pollID = fd.objectid;
-                    break;
-                }
-            }
-            
-            if (pollID != nil) {
-                EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
-                [self.navigationController pushViewController:editorialBoardViewController animated:YES];
-               
-            }
-            else {
-                //error case
-                LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
-            }
+            [self processClickOfEditorialBoardVotingBegin:notification];
         }
         else if ([notification.type intValue] == kCAPTION_VOTE) 
         {
           //someone has voted for this user's caption on a photo
           //on click, should transition to view of the photo and their caption
-            NSArray* feedObjects = notification.feeddata;
-            NSNumber* pageID = nil;
-            NSNumber* photoID = nil;
-            NSNumber* captionID = nil;
-            
-            //we retrieve the values for the above variables by iterating
-            //through the feedObjects array
-            for (FeedData* fd in feedObjects) {
-                if ([fd.key isEqualToString:kPAGE])
-                {
-                    pageID = fd.objectid;
-                }
-                else if ([fd.key isEqualToString:kPHOTO]) {
-                    photoID = fd.objectid;
-                }
-                else if ([fd.key isEqualToString:kCAPTION]) {
-                    captionID = fd.objectid;
-                }
-            }
-            
-            //at this point we now have the ids of all the objects we need
-            //to properly render the draft
-            LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@, PhotoID:%@, CaptionID:%@ for new caption vote notification",activityName,pageID,photoID,captionID);
-            
-            FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
-            [self.navigationController pushViewController:fullScreenController animated:YES];
-            
-            
+            [self processClickOfNewVoteNotification:notification];  
         }
         else if ([notification.type intValue] == kPHOTO_VOTE) 
         {
             //someone has voted for this user's photo in a draft
             //on click should transition to view of the photo and the newest caption
+            [self processClickOfNewVoteNotification:notification];
         }
         else if ([notification.type intValue] == kCAPTION_ADDED) 
         {
-          //a new caption has been added for this user's photo in a draft
+          //a new caption has been added for this user's photo in a draft, sent to photo and draft creator
             //on click should transition to view of the new caption and photo
+            [self processClickOfNewCaptionNotification:notification];
         }
         else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS) 
         {
             //raised when a draft has expired and been submitted to the editorial board for voting
             //sent to: creator of draft, and the users of the photo and caption that
             //are the highest voted in the draft
+            [self processClickOfDraftSubmittedToEditorsNotification:notification];
         }
-        else if ([notification.type intValue] == kDRAFT_PUBLISHED) 
+        else if ([notification.type intValue] == kDRAFT_PUBLISHED ) 
         {
             //raised when a draft has been published in the book
             //sent to: creator of draft, creator of photo, creator of caption
             //on click should open page in book to the page published
+            [self processClickOfDraftPublishedNotification:notification];
+        }
+        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED) {
+            [self processClickOfEditorialBoardVotingEnding:notification];
         }
         else if ([notification.type intValue] == kDRAFT_EXPIRED) 
         {
             //raised when a draft has expired
             //sent to the creator of draft, creator of photo, creator of caption
             //on click should open draft 
+            [self processClickOfDraftExpired:notification];
         }
         else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) 
         {
             //raised when a new photo has been added to a draft
             //sent to the creator of the draft, creator of the photo
             //on click should open up to the newly added photo
+            [self processClickOfNewPhotoNotification:notification];
         }
         else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) 
         {
             //raised when a user has been promoted
             //sent to user that has been promoted to editorial board
             //on click should open up profile page
+            [self processClickOfPromotionToEditorNotification:notification];
         }
         else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) 
         {
             //raised when a user has been demoted
             //sent to user that has been demoted from the editorial board
             //on click should open up profile page
+            [self processClickOfDemotionFromEditorNotification:notification];
         }
         
-        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED) 
-        {
-            //raised when a editorial board vote has ended
-            //sent to all editors at the end of a poll
-            //on click should open up into Dark Side view which illustrates who the winner is
-        }
         else if ([notification.type intValue] == kDRAFT_NOT_PUBLISHED) 
         {
             //raised when a draft does not win a editorial board election
             //sent to the page owner, photo creator, caption creator when a draft
             //submitted to the editorial board does not win
             //on click should open up into Dark Side view which illustrates which page was the winner
+            [self processClickOfDraftNotPublishedNotification:notification];
         }
         else if ([notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) 
         {
             //sent to all editors at the end of a poll where no winner was chosen because
             //there were no votes
             //onclick should open up into Dark Side view with vote counts listed for each page
+            [self processClickOfDraftEditorialBoardNoResult:notification];
         }
         
     }

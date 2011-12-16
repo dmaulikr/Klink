@@ -347,16 +347,24 @@
         int indexOfPhoto = [self indexOfPhotoWithID:self.photoID];
         //we instruct the page view slider to move to the index of the page which is specified
         [self.photoViewSlider goTo:indexOfPhoto withAnimation:NO];
-        [self.captionViewSlider goTo:0 withAnimation:NO];
         
-        int captionCount = [[self.frc_captions fetchedObjects]count];
-        if (captionCount > 0) {
-            int index = [self.captionViewSlider getPageIndex];
-            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-            self.captionID = caption.objectid;
+        if (self.captionID == nil) {
+            [self.captionViewSlider goTo:0 withAnimation:NO];
+            
+            int captionCount = [[self.frc_captions fetchedObjects]count];
+            if (captionCount > 0) {
+                int index = [self.captionViewSlider getPageIndex];
+                Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+                self.captionID = caption.objectid;
+            }
+            else {
+                self.captionID = nil;
+            }
         }
         else {
-            self.captionID = nil;
+            //a caption ID has been set, lets scroll to that caption
+            int indexOfCaption = [self indexOfCaptionWithID:self.captionID];
+            [self.captionViewSlider goTo:indexOfCaption withAnimation:NO];
         }
         
         // update the metadata for the current photo being displayed

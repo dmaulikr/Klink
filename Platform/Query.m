@@ -15,7 +15,7 @@
 #import "Feed.h"
 #import "ResourceContext.h"
 #import "Page.h"
-
+#import "PageState.h"
 @implementation Query
 @synthesize filterObjectType        = m_filterObjectType;
 @synthesize attributeExpressions    = m_attributeExpressions;
