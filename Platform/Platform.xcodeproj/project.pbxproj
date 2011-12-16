@@ -40,6 +40,11 @@
 		5220103814785B4000C47C00 /* page_curled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103214785B4000C47C00 /* page_curled@2x.png */; };
 		5220103914785B4000C47C00 /* page.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103314785B4000C47C00 /* page.png */; };
 		5220103A14785B4000C47C00 /* page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103414785B4000C47C00 /* page@2x.png */; };
+		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
+		52323F21149A6F7E0055A933 /* EditorialVotingViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController2.m */; };
+		52323F22149A6F7E0055A933 /* EditorialVotingViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController2.xib */; };
+		52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F2F149AA9050055A933 /* UIEditorialPageView.m */; };
+		52323F32149AA9170055A933 /* UIEditorialPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F31149AA9170055A933 /* UIEditorialPageView.xib */; };
 		5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE31492A62E0006FB5D /* PageViewController.m */; };
 		5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController.xib */; };
 		5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewController.m */; };
@@ -278,6 +283,14 @@
 		5220103214785B4000C47C00 /* page_curled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_curled@2x.png"; sourceTree = "<group>"; };
 		5220103314785B4000C47C00 /* page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page.png; sourceTree = "<group>"; };
 		5220103414785B4000C47C00 /* page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page@2x.png"; sourceTree = "<group>"; };
+		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		52323F1E149A6F7E0055A933 /* EditorialVotingViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController2.h; sourceTree = "<group>"; };
+		52323F1F149A6F7E0055A933 /* EditorialVotingViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditorialVotingViewController2.m; sourceTree = "<group>"; };
+		52323F20149A6F7E0055A933 /* EditorialVotingViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorialVotingViewController2.xib; sourceTree = "<group>"; };
+		52323F2E149AA9050055A933 /* UIEditorialPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditorialPageView.h; sourceTree = "<group>"; };
+		52323F2F149AA9050055A933 /* UIEditorialPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIEditorialPageView.m; sourceTree = "<group>"; };
+		52323F31149AA9170055A933 /* UIEditorialPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIEditorialPageView.xib; sourceTree = "<group>"; };
 		5239EEE21492A62E0006FB5D /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		5239EEE31492A62E0006FB5D /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		5239EEE41492A62E0006FB5D /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
@@ -675,6 +688,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52323F19149A6DFA0055A933 /* iCarousel */ = {
+			isa = PBXGroup;
+			children = (
+				52323F1A149A6DFA0055A933 /* iCarousel.h */,
+				52323F1B149A6DFA0055A933 /* iCarousel.m */,
+			);
+			path = iCarousel;
+			sourceTree = "<group>";
+		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
@@ -961,6 +983,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				52323F19149A6DFA0055A933 /* iCarousel */,
 				C58C6CA314973AAC0068CCD6 /* Airbrake */,
 				C5C9E25E1467003000838934 /* Twitter */,
 				C5C9E2581466FDA400838934 /* Hud */,
@@ -1230,6 +1253,9 @@
 				C5913BB61496CE0A00C8C2F1 /* EditorialVotingViewController.h */,
 				C5913BB71496CE0A00C8C2F1 /* EditorialVotingViewController.m */,
 				C5913BBA1496D1B900C8C2F1 /* EditorialVotingViewController.xib */,
+				52323F1E149A6F7E0055A933 /* EditorialVotingViewController2.h */,
+				52323F1F149A6F7E0055A933 /* EditorialVotingViewController2.m */,
+				52323F20149A6F7E0055A933 /* EditorialVotingViewController2.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1281,6 +1307,9 @@
 				520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */,
 				520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */,
 				520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */,
+				52323F2E149AA9050055A933 /* UIEditorialPageView.h */,
+				52323F2F149AA9050055A933 /* UIEditorialPageView.m */,
+				52323F31149AA9170055A933 /* UIEditorialPageView.xib */,
 				C58C6C9B1496E8590068CCD6 /* UIVotePageView.h */,
 				C58C6C9C1496E8590068CCD6 /* UIVotePageView.m */,
 			);
@@ -1645,6 +1674,8 @@
 				C58C6CCB14973AF00068CCD6 /* HTNotifier.strings in Resources */,
 				5253629B14998DF8001F1EB6 /* thumbnail_frame.png in Resources */,
 				5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */,
+				52323F22149A6F7E0055A933 /* EditorialVotingViewController2.xib in Resources */,
+				52323F32149AA9170055A933 /* UIEditorialPageView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1789,6 +1820,9 @@
 				C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */,
 				C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */,
 				525362911499581F001F1EB6 /* UIImageView+UIImageViewCategory.m in Sources */,
+				52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */,
+				52323F21149A6F7E0055A933 /* EditorialVotingViewController2.m in Sources */,
+				52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
