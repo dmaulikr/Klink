@@ -40,5 +40,5 @@
 
 
 + (BookViewController*) createInstance;
-
++ (BookViewController*) createInstanceWithPageID:(NSNumber*)pageID;
 @end

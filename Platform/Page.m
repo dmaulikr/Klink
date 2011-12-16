@@ -15,7 +15,7 @@
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "DateTimeHelper.h"
-
+#import "PageState.h"
 #define kDELIMETER  @","
 
 @implementation Page

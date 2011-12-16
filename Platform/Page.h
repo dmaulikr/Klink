@@ -9,10 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Resource.h"
 
-typedef enum {
-    kPUBLISHED,
-    kDRAFT
-} PageState;
+
 
 @class Photo;
 @class Caption;

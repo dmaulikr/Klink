@@ -21,7 +21,7 @@
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "ProfileViewController.h"
-
+#import "PageState.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
