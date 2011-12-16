@@ -1096,5 +1096,12 @@
     return photoViewController;
 }
 
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber *)pageID withPhotoID:(NSNumber *)photoID withCaptionID:(NSNumber*)captionID 
+{
+    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID];
+    photoViewController.captionID = captionID;
+    return photoViewController;
+    
+}
 
 @end

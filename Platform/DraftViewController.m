@@ -476,4 +476,13 @@
     return draftViewController;
 }
 
++ (DraftViewController*)createInstanceWithPageID:(NSNumber *)pageID 
+                                     withPhotoID:(NSNumber *)photoID 
+                                   withCaptionID:(NSNumber *)captionID 
+{
+    //this constructor called by notification view controller to
+    //create a draft view controller for the page,photo and caption specified
+    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:pageID];
+    return draftViewController;
+}
 @end
