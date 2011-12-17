@@ -389,8 +389,15 @@
     }
     
     if (pollID != nil) {
-        EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
-        [self.navigationController pushViewController:editorialBoardViewController animated:YES];
+        EditorialVotingViewController2* editorialBoardViewController2 = [EditorialVotingViewController2 createInstanceForPoll:pollID];
+        
+        // Modal naviation
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController2];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
         
     }
     else {
@@ -488,18 +495,12 @@
             }
             
             if (pollID != nil) {
-                //EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
-                //[self.navigationController pushViewController:editorialBoardViewController animated:YES];
-                
-                // New CoverFlow EditorialVotingViewController
                 EditorialVotingViewController2* editorialBoardViewController2 = [EditorialVotingViewController2 createInstanceForPoll:pollID];
                 
-                // Traditional navigation
-                //[self.navigationController pushViewController:editorialBoardViewController2 animated:YES];
-               
                 // Modal naviation
                 UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController2];
                 navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                
                 [self presentModalViewController:navigationController animated:YES];
                 
                 [navigationController release];
