@@ -14,6 +14,7 @@
 #import "UINotificationIcon.h"
 #import "SocialSharingManager.h"
 #import "PageState.h"
+
 @implementation BookViewController
 @synthesize pageController = m_pageController;
 @synthesize pageID              = m_pageID;
@@ -68,8 +69,6 @@
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
     //returns the index location with thin the frc_published_photos for the photo with the id specified
-  
-    
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
     int index = 0;
     for (Page* page in fetchedObjects) {
@@ -240,11 +239,19 @@
 }
 
 #pragma mark - Initializers
+- (id) commonInit {
+    //common setup for the view controller
+    self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
+    self.pageCloudEnumerator.delegate = self;
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self = [self commonInit];
     }
     return self;
 }
@@ -366,19 +373,44 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    //NSString* activityName = @"BookViewController.viewWillAppear:";
+    NSString* activityName = @"BookViewController.viewWillAppear:";
     [super viewWillAppear:animated];
    
     PageViewController* initialViewController = nil;
-    if (self.pageID != nil) {
+    
+    //here we check to see how many items are in the FRC, if it is 0,
+    //then we initiate a query against the cloud.
+    int count = [[self.frc_published_pages fetchedObjects] count];
+    if (count == 0) {
+        //there are no published page objects in local store, update from cloud
+        //will need to thow up a progress dialog to show user of download
+        LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        
+        //TODO: need to make a call to a centrally hosted busy indicator view
+    }
+    
+    if (self.pageID != nil  && [self.pageID intValue] != 0) {
         //the page id has been set, we will move to that page
         int indexForPage = [self indexOfPageWithID:self.pageID];
         initialViewController = [self viewControllerAtIndex:indexForPage];
-        
-        
     }
     else {
-        initialViewController = [self viewControllerAtIndex:0];
+        //need to find the latest page
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
+        
+        if (page != nil) {
+            //local store does contain pages to enumerate
+            self.pageID = page.objectid;
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            initialViewController = [self viewControllerAtIndex:indexForPage];
+        }
+        else {
+            //no published pages
+            initialViewController = [self viewControllerAtIndex:0];
+        }
     }
     
     
@@ -439,6 +471,88 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controller:(NSFetchedResultsController *)controller 
+    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
+      forChangeType:(NSFetchedResultsChangeType)type 
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    NSString* activityName = @"BookViewController.controller.didChangeObject:";
+    if (controller == self.frc_published_pages) {
+        PageViewController* pageViewController = nil;
+        
+        if (self.pageID != nil  && [self.pageID intValue] != 0) {
+            //the page id has been set, we will move to that page
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            pageViewController = [self viewControllerAtIndex:indexForPage];
+        }
+        else {
+            //need to find the latest page
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
+            
+            if (page != nil) {
+                //local store does contain pages to enumerate
+                self.pageID = page.objectid;
+                int indexForPage = [self indexOfPageWithID:self.pageID];
+                pageViewController = [self viewControllerAtIndex:indexForPage];
+            }
+            else {
+                //no published pages
+                pageViewController = [self viewControllerAtIndex:0];
+            }
+        }
+        
+        
+        if (pageViewController) {
+            NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
+            
+            [self.pageController setViewControllers:viewControllers  
+                                          direction:UIPageViewControllerNavigationDirectionForward 
+                                           animated:NO 
+                                         completion:nil];
+        }
+        
+        
+        /*PageViewController* pageViewController = nil;
+        
+        int count = [[self.frc_published_pages fetchedObjects]count];
+        
+        if (type == NSFetchedResultsChangeInsert) {
+            //insertion of a new page
+            Resource* resource = (Resource*)anObject;
+            
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
+            
+            // Uncomment the below line if you want the pageViewController to move to the new page aded
+            //pageViewController = [self viewControllerAtIndex:[newIndexPath row]];
+            
+        }
+        else if (type == NSFetchedResultsChangeDelete) {
+            //deletion of a page
+            //pageViewController = [self viewControllerAtIndex:count-1];
+        }
+        
+        // Uncomment the below line if you want the pageViewController to move to the new page aded
+        if (pageViewController) {
+            NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
+            
+            [self.pageController setViewControllers:viewControllers  
+                                          direction:UIPageViewControllerNavigationDirectionForward 
+                                           animated:NO 
+                                         completion:nil];
+        }*/
+    }
+    else {
+        LOG_BOOKVIEWCONTROLLER(1, @"%@Received a didChange message from a NSFetchedResultsController that isnt mine. %p",activityName,&controller);
+    }
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+
+}
 
 #pragma mark - Static Initializers
 + (BookViewController*) createInstance {
