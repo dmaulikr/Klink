@@ -604,6 +604,13 @@
 
 
 #pragma mark - NSFetchedResultsControllerDelegate 
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_notificationsTableView endUpdates];
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_notificationsTableView beginUpdates];
+}
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject 
         atIndexPath:(NSIndexPath *)indexPath 

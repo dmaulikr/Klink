@@ -22,6 +22,7 @@
 #import "ApplicationSettingsManager.h"
 #import "ProfileViewController.h"
 #import "PageState.h"
+#import "PlatformAppDelegate.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -48,8 +49,8 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     ResourceContext* resourceContext = [ResourceContext instance];
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
+    PlatformAppDelegate* app = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:app.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
@@ -308,7 +309,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSString* activityName = @"ProductionLogViewController.numberOfRowsInSection";
-    
+ 
     int retVal = [[self.frc_draft_pages fetchedObjects]count];
     // Return the number of rows in the section.
     LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Number of rows in fetched results controller:%d",activityName,retVal);
@@ -453,6 +454,12 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+{
+    [self.tbl_productionTableView beginUpdates];
+}
+
+
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 
@@ -467,15 +474,15 @@
             LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
             [self.tbl_productionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
             LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Scrolling table view to newly created item",activityName);
-            [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+           // [self.tbl_productionTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
             //LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Reloading table",activityName);
-            //[self.tbl_productionTableView reloadData];
+           // [self.tbl_productionTableView reloadData];
             // Update draft counter labels at the top of the view
             [self updateDraftCounterLabels];
         }
         else if (type == NSFetchedResultsChangeDelete) {
             [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
-            [self.tbl_productionTableView reloadData];
+           // [self.tbl_productionTableView reloadData];
             // Update draft counter labels at the top of the view
             [self updateDraftCounterLabels];
         }
@@ -483,6 +490,14 @@
     else {
         LOG_PRODUCTIONLOGVIEWCONTROLLER(1, @"%@Received a didChange message from a NSFetchedResultsController that isnt mine. %p",activityName,&controller);
     }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
+{
+    
+    [self.tbl_productionTableView endUpdates];
+    [self.tbl_productionTableView reloadData];
 }
 
 #pragma mark - Callback Event Handlers

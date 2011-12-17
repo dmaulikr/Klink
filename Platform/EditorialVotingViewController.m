@@ -180,6 +180,12 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
+-(void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.pagedViewSlider.tableView beginUpdates];
+}
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.pagedViewSlider.tableView endUpdates];
+}
 -(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
     
     if (type == NSFetchedResultsChangeInsert) {

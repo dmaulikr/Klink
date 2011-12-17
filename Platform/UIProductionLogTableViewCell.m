@@ -212,7 +212,7 @@
             [photoID isEqualToNumber:self.topVotedPhotoID]) {
             
             //we only draw the image if this view hasnt been repurposed for another draft
-            LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
+            LOG_IMAGE(0,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             [self setNeedsDisplay];

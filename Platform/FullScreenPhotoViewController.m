@@ -1052,6 +1052,27 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
+{
+    
+    if (controller == self.frc_photos) {
+        [self.photoViewSlider.tableView beginUpdates];
+    }
+    else {
+        [self.captionViewSlider.tableView beginUpdates];
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+    if (controller == self.frc_photos) {
+        [self.photoViewSlider.tableView endUpdates];
+    }
+    else {
+        [self.captionViewSlider.tableView beginUpdates];
+    }
+}
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 

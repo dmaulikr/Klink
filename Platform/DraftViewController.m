@@ -365,6 +365,15 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
+-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_draftTableView endUpdates];
+    [self.tbl_draftTableView reloadData];
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_draftTableView beginUpdates];
+}
+
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject 
         atIndexPath:(NSIndexPath *)indexPath 
@@ -374,12 +383,12 @@
     if (type == NSFetchedResultsChangeInsert) {
         //new photo has been downloaded
         [self.tbl_draftTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
-        [self.tbl_draftTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        [self.tbl_draftTableView reloadData];
+        //[self.tbl_draftTableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+      
     }
     else if (type == NSFetchedResultsChangeDelete) {
         [self.tbl_draftTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
-        [self.tbl_draftTableView reloadData];
+        //[self.tbl_draftTableView reloadData];
     }
 }
 

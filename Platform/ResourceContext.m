@@ -101,8 +101,21 @@ static ResourceContext* sharedInstance;
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(onContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
         
+        [notificationCenter addObserver:self selector:@selector(onThreadDidExit:) name:NSThreadWillExitNotification object:nil];
+        
     }
     return self;
+}
+
+#pragma mark - NSNotification Handlers
+- (void) onThreadDidExit:(NSNotification*)notification {
+    NSString* activityName = @"ResourceContext.onThreadDidExit:";
+    NSThread* thread = notification.object;
+    NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
+    int threadCount = [self.managedObjectContexts count];
+    LOG_RESOURCECONTEXT(0, @"%@Removing thread managed object context with address %@ leaving %d thread contexts in pool",activityName,threadKey, threadCount-1);
+    
+    [self.managedObjectContexts removeObjectForKey:threadKey];
 }
 
 - (void) onContextDidSave:(NSNotification*)notification {
@@ -115,6 +128,12 @@ static ResourceContext* sharedInstance;
         //lets propagate the notification to all contexts
         NSManagedObjectContext* appDelContext = appDelegate.managedObjectContext;
         LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p on background thread, propagating to context %p on main thread",activityName,sender,appDelContext);
+        
+        NSArray* updates = [[notification.userInfo objectForKey:@"inserted"]allObjects];
+        for (NSInteger i = [updates count]-1;i >=0; i--) {
+            [[appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]]willAccessValueForKey:nil];
+        }
+        
         [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
     }
     
@@ -127,6 +146,12 @@ static ResourceContext* sharedInstance;
         if (thread != nil && !thread.isCancelled) {
             if (context != nil && 
                 context != sender) {
+                
+                NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
+                for (NSInteger i = [updates count]-1;i >=0; i--) {
+                    [[appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]]willAccessValueForKey:nil];
+                }
+                
                 LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
                 [context mergeChangesFromContextDidSaveNotification:notification];
             }
@@ -366,9 +391,9 @@ static ResourceContext* sharedInstance;
     //now we commit the change to the store
     //let us raise events
     EventManager* eventManager = [EventManager instance];
-    [eventManager raiseEventsForInsertedObjects:insertedObjects];
-    [eventManager raiseEventsForUpdatedObjects:updatedObjects];
-    [eventManager raiseEventsForDeletedObjects:deletedObjects];
+  //  [eventManager raiseEventsForInsertedObjects:insertedObjects];
+   // [eventManager raiseEventsForUpdatedObjects:updatedObjects];
+    //[eventManager raiseEventsForDeletedObjects:deletedObjects];
 
     NSError* error = nil;
     [self.managedObjectContext save:&error];
