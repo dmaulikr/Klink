@@ -480,19 +480,30 @@
     NSString* activityName = @"BookViewController.controller.didChangeObject:";
     if (controller == self.frc_published_pages) {
         PageViewController* pageViewController = nil;
-        if (type == NSFetchedResultsChangeInsert) {
-            //insertion of a new page
-            Resource* resource = (Resource*)anObject;
-            int count = [[self.frc_published_pages fetchedObjects]count];
-            
-            LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
-            
-            pageViewController = [self viewControllerAtIndex:[newIndexPath row]];
-            
+        
+        if (self.pageID != nil  && [self.pageID intValue] != 0) {
+            //the page id has been set, we will move to that page
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            pageViewController = [self viewControllerAtIndex:indexForPage];
         }
-        else if (type == NSFetchedResultsChangeDelete) {
-            pageViewController = [self viewControllerAtIndex:0];
+        else {
+            //need to find the latest page
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
+            
+            if (page != nil) {
+                //local store does contain pages to enumerate
+                self.pageID = page.objectid;
+                int indexForPage = [self indexOfPageWithID:self.pageID];
+                pageViewController = [self viewControllerAtIndex:indexForPage];
+            }
+            else {
+                //no published pages
+                pageViewController = [self viewControllerAtIndex:0];
+            }
         }
+        
         
         if (pageViewController) {
             NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
@@ -502,6 +513,36 @@
                                            animated:NO 
                                          completion:nil];
         }
+        
+        
+        /*PageViewController* pageViewController = nil;
+        
+        int count = [[self.frc_published_pages fetchedObjects]count];
+        
+        if (type == NSFetchedResultsChangeInsert) {
+            //insertion of a new page
+            Resource* resource = (Resource*)anObject;
+            
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
+            
+            // Uncomment the below line if you want the pageViewController to move to the new page aded
+            //pageViewController = [self viewControllerAtIndex:[newIndexPath row]];
+            
+        }
+        else if (type == NSFetchedResultsChangeDelete) {
+            //deletion of a page
+            //pageViewController = [self viewControllerAtIndex:count-1];
+        }
+        
+        // Uncomment the below line if you want the pageViewController to move to the new page aded
+        if (pageViewController) {
+            NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
+            
+            [self.pageController setViewControllers:viewControllers  
+                                          direction:UIPageViewControllerNavigationDirectionForward 
+                                           animated:NO 
+                                         completion:nil];
+        }*/
     }
     else {
         LOG_BOOKVIEWCONTROLLER(1, @"%@Received a didChange message from a NSFetchedResultsController that isnt mine. %p",activityName,&controller);
