@@ -67,11 +67,14 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                    forAttribute:(NSString*)attribute 
                          sortBy:(NSArray*)sortDescriptorArray;
 
+- (void) removeThreadManagedObjectContext;
+
 //- (NSArray*)  resourcesWithType:(NSString*)typeName 
 //                 withValueEqual:(NSString*)value 
 //                   forAttribute:(NSString*)attribute 
 //                         sortBy:(NSString*)sortAttribute 
 //                  sortAscending:(BOOL)sortAscending;
+
 
 
 //Generates a unique identifier for a new entity

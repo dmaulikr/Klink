@@ -132,19 +132,19 @@ static ResourceContext* sharedInstance;
             }
         }
         else {
-            LOG_RESOURCECONTEXT(0, @"%@ Marking managed context for cancelled or deallocated thread %p for deletion",activityName,key);
-            [keysToRemove addObject:key];
+//            LOG_RESOURCECONTEXT(0, @"%@ Marking managed context for cancelled or deallocated thread %p for deletion",activityName,key);
+//            [keysToRemove addObject:key];
         }
     }
     
     //at this point we need to remove all of the keys in the NSSet from the NSDictionary
-    int currentNumKeys = [self.managedObjectContexts count];
-    int numKeysToRemove = [keysToRemove count];
-    LOG_RESOURCECONTEXT(0, @"%@Removing %d managedObjectContexts leaving the system with %d active managedObjectContexts",activityName,numKeysToRemove,(currentNumKeys-numKeysToRemove));
-    
-    for (NSString* keyToRemove in [keysToRemove allObjects]) {
-        [self.managedObjectContexts removeObjectForKey:keysToRemove];
-    }
+//    int currentNumKeys = [self.managedObjectContexts count];
+//    int numKeysToRemove = [keysToRemove count];
+//    LOG_RESOURCECONTEXT(0, @"%@Removing %d managedObjectContexts leaving the system with %d active managedObjectContexts",activityName,numKeysToRemove,(currentNumKeys-numKeysToRemove));
+//    
+//    for (NSString* keyToRemove in [keysToRemove allObjects]) {
+//        [self.managedObjectContexts removeObjectForKey:keysToRemove];
+//    }
     [keysToRemove release];
 }
 - (NSNumber*)nextID{
@@ -679,7 +679,20 @@ static ResourceContext* sharedInstance;
 
 }
 
-
+- (void) removeThreadManagedObjectContext 
+{
+    //remove's the executing thread's managed object context from the managedobjectcontexts set
+    NSString* activityName = @"ResourceContext.removeThreadManagedObjectContext:";
+    NSThread* thread = [NSThread currentThread];
+    NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
+    int threadCount = [self.managedObjectContexts count];
+  //  LOG_RESOURCECONTEXT(0, @"%@Removing thread managed object context with address %@ leaving %d thread contexts in pool",activityName,threadKey, threadCount-1);
+    
+  //  [self.managedObjectContexts removeObjectForKey:threadKey];
+    
+    
+    
+}
  
 - (Resource*) singletonResourceWithType:(NSString*)typeName {
     NSString* activityName = @"ResourceContext.singletonResourceWithType:";

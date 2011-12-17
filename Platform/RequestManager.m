@@ -919,7 +919,9 @@ static RequestManager* sharedInstance;
        
     }
     
-    
+    //we also need to remove this thread's managed object context
+    ResourceContext* resourceContext = [ResourceContext instance];
+    [resourceContext removeThreadManagedObjectContext];
     [pool drain];
 }
 
@@ -972,6 +974,9 @@ static RequestManager* sharedInstance;
         }
         
     }
+    //we also need to remove this thread's managed object context
+    ResourceContext* resourceContext = [ResourceContext instance];
+    [resourceContext removeThreadManagedObjectContext];
     [pool drain];
     
 }
