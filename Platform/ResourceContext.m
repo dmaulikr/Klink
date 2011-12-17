@@ -34,14 +34,16 @@
 
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize lastIDGenerated = m_lastIDGenerated;
+@synthesize managedObjectContexts = m_managedObjectContexts;
+
 static ResourceContext* sharedInstance;
-static NSMutableDictionary* managedObjectContexts;
+//static NSMutableDictionary* managedObjectContexts;
 
 + (id) instance {
     @synchronized (self) {
         if (!sharedInstance) {
             sharedInstance = [[super allocWithZone:NULL]init];
-            managedObjectContexts = [[NSMutableDictionary allocWithZone:NULL]init];
+            
         }
         return sharedInstance;
     }
@@ -65,7 +67,7 @@ static NSMutableDictionary* managedObjectContexts;
         // a key to cache the context for the given thread
         NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
         
-        if ( [managedObjectContexts objectForKey:threadKey] == nil ) {
+        if ( [self.managedObjectContexts objectForKey:threadKey] == nil ) {
             // create a context for this thread
             NSManagedObjectContext *threadContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
@@ -74,12 +76,12 @@ static NSMutableDictionary* managedObjectContexts;
             [userInfo setValue:thread forKey:kTHREAD];
             [userInfo setValue:threadContext forKey:kCONTEXT];
             
-            [managedObjectContexts setObject:userInfo forKey:threadKey];
+            [self.managedObjectContexts setObject:userInfo forKey:threadKey];
             [userInfo release];
             return threadContext;
         }
         else {
-            NSDictionary* userInfo = [managedObjectContexts objectForKey:threadKey];
+            NSDictionary* userInfo = [self.managedObjectContexts objectForKey:threadKey];
             return [userInfo objectForKey:kCONTEXT];
         }
     }
@@ -92,8 +94,13 @@ static NSMutableDictionary* managedObjectContexts;
 - (id) init {
     self = [super init];
     if (self) {
+        NSMutableDictionary* d = [[NSMutableDictionary alloc]init];
+        self.managedObjectContexts = d;
+        [d release];
+        
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(onContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+        
     }
     return self;
 }
@@ -111,8 +118,8 @@ static NSMutableDictionary* managedObjectContexts;
         [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
     }
     
-    for (NSString* key in managedObjectContexts) {
-        NSDictionary* userInfo = [managedObjectContexts objectForKey:key];
+    for (NSString* key in self.managedObjectContexts) {
+        NSDictionary* userInfo = [self.managedObjectContexts objectForKey:key];
         NSManagedObjectContext* context = [userInfo objectForKey:kCONTEXT];
         NSThread* thread = [userInfo objectForKey:kTHREAD];
         
@@ -131,12 +138,12 @@ static NSMutableDictionary* managedObjectContexts;
     }
     
     //at this point we need to remove all of the keys in the NSSet from the NSDictionary
-    int currentNumKeys = [managedObjectContexts count];
+    int currentNumKeys = [self.managedObjectContexts count];
     int numKeysToRemove = [keysToRemove count];
     LOG_RESOURCECONTEXT(0, @"%@Removing %d managedObjectContexts leaving the system with %d active managedObjectContexts",activityName,numKeysToRemove,(currentNumKeys-numKeysToRemove));
     
     for (NSString* keyToRemove in [keysToRemove allObjects]) {
-        [managedObjectContexts removeObjectForKey:keysToRemove];
+        [self.managedObjectContexts removeObjectForKey:keysToRemove];
     }
     [keysToRemove release];
 }

@@ -189,16 +189,25 @@
         //process the returned results
         if (response.primaryResults != nil) {
             for (Resource* resource in response.primaryResults) {
+                Resource* existingResource = nil;
+                BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
                 
-                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid] ;
+                if (!isSingletonType) {
+                    existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                }
+                else {
+                    existingResource = [resourceContext singletonResourceWithType:resource.objecttype];
+                }
+
+                //Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid] ;
                 
-                if (exisitingResource == nil) {
+                if (existingResource == nil) {
                     //this is a new object
                     [resourceContext insert:resource];
                 }
                 else {
                     //updating an existing object
-                    [exisitingResource refreshWith:resource];
+                    [existingResource refreshWith:resource];
                 }
             }
         }
@@ -206,16 +215,23 @@
         //process any secondary objects
         if (response.secondaryResults != nil) {
             for (Resource* resource in response.secondaryResults) {
-             
-                Resource* exisitingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid] ;
+                Resource* existingResource = nil;
+                BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
                 
-                if (exisitingResource == nil) {
+                if (!isSingletonType) {
+                    existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                }
+                else {
+                    existingResource = [resourceContext singletonResourceWithType:resource.objecttype];
+                }
+                
+                if (existingResource == nil) {
                     //this is a new object
                     [resourceContext insert:resource];
                 }
                 else {
                     //updating an existing object
-                    [exisitingResource refreshWith:resource];
+                    [existingResource refreshWith:resource];
                 }
             }
 
@@ -333,6 +349,17 @@
     
     
     
+}
++ (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid {
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryApplicationSettings:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForApplicationSettings:userid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForApplicationSettings:userid];
+    query.queryOptions = queryOptions;
+
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
+    return enumerator;
 }
 
 #pragma mark - Static Initializers for Defined Queries

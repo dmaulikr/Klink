@@ -34,6 +34,7 @@
 + (EnumerationContext*) contextForUser:         (NSNumber*)userid;
 + (EnumerationContext*) contextForDrafts;
 + (EnumerationContext*) contextForObjectIDs:(NSArray*)objectIDs withTypes:(NSArray*)objectTypes;
++ (EnumerationContext*) contextForApplicationSettings:(NSNumber*)userid;
 - (id) init;
 - (NSString*) toJSON;
 @end

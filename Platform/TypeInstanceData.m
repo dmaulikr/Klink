@@ -12,6 +12,7 @@
 @implementation TypeInstanceData
 @dynamic iscloudtype;
 @dynamic typename;
+@dynamic issingleton;
 
 
 + (TypeInstanceData*) typeForType:(NSString *)typeName withResourceContext:(ResourceContext*)context {
@@ -23,13 +24,24 @@
     //we mark the ApplicationSettings object as not being a cloud type
     if ([typeName isEqualToString:APPLICATIONSETTINGS]) {
         newType.iscloudtype = [NSNumber numberWithBool:NO];
+        newType.issingleton = [NSNumber numberWithBool:YES];
     }
     else {
         newType.iscloudtype = [NSNumber numberWithBool:YES];
+        newType.issingleton = [NSNumber numberWithBool:NO];
     }
     
-
+    
     [newType autorelease];
     return newType;
+}
+
++ (BOOL) isSingletonType:(NSString *)type {
+    if ([type isEqualToString:APPLICATIONSETTINGS]) {
+        return YES;
+    }
+    else {
+        return NO;
+    }
 }
 @end

@@ -82,6 +82,14 @@
     
 }
 
++ (QueryOptions*)queryForApplicationSettings:(NSNumber *)userid {
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = VERSION;  
+    return newQuery;
+}
+
 + (QueryOptions*)queryForDrafts {
     ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance]settings];
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
@@ -116,7 +124,7 @@
     newQuery.referencingattribute=THEMEID;
     newQuery.referencingobjecttype = PHOTO;
     newQuery.includelinkedobjects = YES;
-    newQuery.maxlinksreturnedperobject = [settingsObjects.page_size_linkedobjects intValue];
+    newQuery.maxlinksreturnedperobject = [settingsObjects.numberoflinkedobjectstoreturn intValue];
     newQuery.linked_results_sortAscending = NO;
     newQuery.linked_results_sortattribute = DATECREATED;
     newQuery.primary_results_sortascending = NO;

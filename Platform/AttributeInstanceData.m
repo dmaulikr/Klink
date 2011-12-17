@@ -106,6 +106,14 @@ insertIntoResourceContext:(ResourceContext *)context
         //these are all counter variables
         retVal.iscounter = [NSNumber numberWithBool:YES];
     }
+    
+    
+    //we mark the baseURL property of the application settings object type
+    //as being a locked attribute
+    if ([lowerCaseName isEqualToString:BASEURL] && 
+        [type isEqualToString:APPLICATIONSETTINGS]) {
+        retVal.islocked = [NSNumber numberWithBool:YES];
+    }
      
     [retVal autorelease];
     return retVal;

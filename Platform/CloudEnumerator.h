@@ -69,4 +69,5 @@
 + (CloudEnumerator*) enumeratorForDrafts;
 + (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
                             withTypes:(NSArray*)objectTypes;
++ (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid;
 @end

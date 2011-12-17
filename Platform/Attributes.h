@@ -86,3 +86,7 @@ extern NSString* const NUMBEROFPUBLISHVOTES;
 extern NSString* const HASVOTED;
 extern NSString* const OBJECTIDS;
 extern NSString* const OBJECTTYPES;
+
+extern NSString* const CREATORID;
+extern NSString* const VERSION;
+extern NSString* const BASEURL;

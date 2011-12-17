@@ -79,3 +79,6 @@ NSString* const NUMBEROFCAPTIONS        = @"numberofcaptions";
 NSString* const NUMBEROFPHOTOS          = @"numberofphotos";
 NSString* const NUMBEROFPUBLISHVOTES  = @"numberofpublishvotes";
 NSString* const HASVOTED                = @"hasvoted";
+NSString* const CREATORID               =@"creatorid";
+NSString* const VERSION                 =@"version";
+NSString* const BASEURL                 =@"base_url";

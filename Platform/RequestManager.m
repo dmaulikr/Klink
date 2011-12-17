@@ -534,12 +534,22 @@ static RequestManager* sharedInstance;
         
         for (Resource* resource in putResponse.secondaryResults) {
             existingResource = nil;
-            existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+            //if it is a singleton object type, then we need to refresh the exisiting instance and not create a new one
+            BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
             
+            if (!isSingletonType) {
+                existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+            }
+            else {
+                existingResource = [resourceContext singletonResourceWithType:resource.objecttype];
+            }
+            
+                        
             if (existingResource != nil) {
                 [existingResource refreshWith:resource];
             }
             else {
+                
                 //new object , need to create it
                 [resourceContext insert:resource];
             }
@@ -580,7 +590,16 @@ static RequestManager* sharedInstance;
         if (putResponse.secondaryResults != nil) {
             for (Resource* resource in putResponse.secondaryResults) {
                 existingResource = nil;
-                existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
+                
+                if (!isSingletonType) {
+                    existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
+                }
+                else {
+                    existingResource = [resourceContext singletonResourceWithType:resource.objecttype];
+                }
+                
+                //existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
                 
                 if (existingResource != nil) {
                     [existingResource refreshWith:resource];
