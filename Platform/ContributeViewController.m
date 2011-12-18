@@ -199,7 +199,7 @@
     //self.configurationType = nil;
     
     self.lbl_draftTitle = nil;
-    self.draftTitle = nil;
+    //self.draftTitle = nil;
     self.tf_newDraftTitle = nil;
     self.lbl_titleRequired = nil;
     
@@ -259,6 +259,8 @@
         // Caption is optional because user is creating a new draft
         self.lbl_captionOptional.hidden = NO;
         self.lbl_captionRequired.hidden = YES;
+        
+        self.tf_newDraftTitle.text = self.draftTitle;
     }
     else if (self.configurationType == PHOTO) {
         // New Photo
