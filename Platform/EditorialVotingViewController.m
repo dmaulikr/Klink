@@ -1,5 +1,5 @@
 //
-//  EditorialVotingViewController2.m
+//  EditorialVotingViewController.m
 //  Platform
 //
 //  Created by Jordan Gurrieri on 12/15/11.
@@ -316,7 +316,7 @@
 
 #pragma mark - Static Initializers
 + (EditorialVotingViewController*) createInstanceForPoll:(NSNumber*)pollID {
-    EditorialVotingViewController* retVal = [[EditorialVotingViewController alloc]initWithNibName:@"EditorialVotingViewController2" bundle:nil];
+    EditorialVotingViewController* retVal = [[EditorialVotingViewController alloc]initWithNibName:@"EditorialVotingViewController" bundle:nil];
     retVal.poll_ID = pollID;
     
     ResourceContext* resourceContext = [ResourceContext instance];
