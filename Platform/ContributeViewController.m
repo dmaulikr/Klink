@@ -196,7 +196,7 @@
     self.activeTextView = nil;
     self.activeTextField = nil;
     
-    self.configurationType = nil;
+    //self.configurationType = nil;
     
     self.lbl_draftTitle = nil;
     self.draftTitle = nil;
