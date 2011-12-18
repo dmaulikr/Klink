@@ -389,30 +389,30 @@
         
         //TODO: need to make a call to a centrally hosted busy indicator view
     }
-    
-    if (self.pageID != nil  && [self.pageID intValue] != 0) {
-        //the page id has been set, we will move to that page
-        int indexForPage = [self indexOfPageWithID:self.pageID];
-        initialViewController = [self viewControllerAtIndex:indexForPage];
-    }
     else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
+        if (self.pageID != nil  && [self.pageID intValue] != 0) {
+            //the page id has been set, we will move to that page
             int indexForPage = [self indexOfPageWithID:self.pageID];
             initialViewController = [self viewControllerAtIndex:indexForPage];
         }
         else {
-            //no published pages
-            initialViewController = [self viewControllerAtIndex:0];
+            //need to find the latest page
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
+            
+            if (page != nil) {
+                //local store does contain pages to enumerate
+                self.pageID = page.objectid;
+                int indexForPage = [self indexOfPageWithID:self.pageID];
+                initialViewController = [self viewControllerAtIndex:indexForPage];
+            }
+            else {
+                //no published pages
+                initialViewController = [self viewControllerAtIndex:0];
+            }
         }
     }
-    
     
     if (initialViewController) {
         NSArray *viewControllers = [NSArray arrayWithObject:initialViewController];
@@ -479,7 +479,7 @@
     
     NSString* activityName = @"BookViewController.controller.didChangeObject:";
     if (controller == self.frc_published_pages) {
-        PageViewController* pageViewController = nil;
+        /*PageViewController* pageViewController = nil;
         
         if (self.pageID != nil  && [self.pageID intValue] != 0) {
             //the page id has been set, we will move to that page
@@ -512,7 +512,7 @@
                                           direction:UIPageViewControllerNavigationDirectionForward 
                                            animated:NO 
                                          completion:nil];
-        }
+        }*/
         
         
         /*PageViewController* pageViewController = nil;
@@ -551,7 +551,45 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
-
+    NSString* activityName = @"BookViewController.controller.onEnumerateComplete:";
+    
+    PageViewController* pageViewController = nil;
+    
+    int count = [[self.frc_published_pages fetchedObjects]count];
+    
+    if (count != 0) {
+        if (self.pageID != nil  && [self.pageID intValue] != 0) {
+            //the page id has been set, we will move to that page
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            pageViewController = [self viewControllerAtIndex:indexForPage];
+        }
+        else {
+            //need to find the latest page
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
+            
+            if (page != nil) {
+                //local store does contain pages to enumerate
+                self.pageID = page.objectid;
+                int indexForPage = [self indexOfPageWithID:self.pageID];
+                pageViewController = [self viewControllerAtIndex:indexForPage];
+            }
+            else {
+                //no published pages
+                pageViewController = [self viewControllerAtIndex:0];
+            }
+        }
+    }
+    
+    if (pageViewController) {
+        NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
+        
+        [self.pageController setViewControllers:viewControllers  
+                                      direction:UIPageViewControllerNavigationDirectionForward 
+                                       animated:NO 
+                                     completion:nil];
+    }
 }
 
 #pragma mark - Static Initializers

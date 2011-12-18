@@ -1,28 +1,35 @@
 //
-//  EditorialVotingViewController.h
+//  EditorialVotingViewController2.h
 //  Platform
 //
-//  Created by Jasjeet Gill on 12/12/11.
+//  Created by Jordan Gurrieri on 12/15/11.
 //  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-#import "UIPagedViewSlider4.h"
 #import "Poll.h"
-@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate,UIPagedViewSlider2Delegate>
+#import "iCarousel.h"
+
+@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate, iCarouselDataSource, iCarouselDelegate>
 {
+    Poll*       m_poll;
+    NSNumber*   m_pollID;
     
-    UIPagedViewSlider2* m_pagedViewSlider;
-    Poll*  m_poll;
-    NSNumber* m_pollID;
+    iCarousel*  m_ic_coverFlowView;
+    UIButton*   m_btn_voteButton;
     
 }
 
-@property (nonatomic, retain) IBOutlet UIPagedViewSlider2*   pagedViewSlider;
-@property (nonatomic, retain) NSFetchedResultsController* frc_pollData;
-@property (nonatomic, retain) NSNumber*             poll_ID;
-@property (nonatomic, retain) Poll*                 poll;
+@property (nonatomic, retain) NSFetchedResultsController*   frc_pollData;
+@property (nonatomic, retain) NSNumber*                     poll_ID;
+@property (nonatomic, retain) Poll*                         poll;
+
+@property (nonatomic, retain) IBOutlet iCarousel*           ic_coverFlowView;
+@property (nonatomic, retain) IBOutlet UIButton*            btn_voteButton;
+
+- (IBAction)voteButtonPressed:(id)sender;
 
 + (EditorialVotingViewController*) createInstanceForPoll:(NSNumber*)pollID;
+
 @end

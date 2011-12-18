@@ -15,7 +15,6 @@
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
 #import "EditorialVotingViewController.h"
-#import "EditorialVotingViewController2.h"
 #import "DraftViewController.h"
 #import "FullScreenPhotoViewController.h"
 #import "BookViewController.h"
@@ -389,10 +388,10 @@
     }
     
     if (pollID != nil) {
-        EditorialVotingViewController2* editorialBoardViewController2 = [EditorialVotingViewController2 createInstanceForPoll:pollID];
+        EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
         
         // Modal naviation
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController2];
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         
         [self presentModalViewController:navigationController animated:YES];
@@ -495,10 +494,10 @@
             }
             
             if (pollID != nil) {
-                EditorialVotingViewController2* editorialBoardViewController2 = [EditorialVotingViewController2 createInstanceForPoll:pollID];
+                EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
                 
                 // Modal naviation
-                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController2];
+                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController];
                 navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
                 
                 [self presentModalViewController:navigationController animated:YES];

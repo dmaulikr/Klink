@@ -91,13 +91,10 @@
                                          UIRemoteNotificationTypeSound |
                                          UIRemoteNotificationTypeAlert)];
     
-    
-    
     self.window.rootViewController = self.navigationController;
  
+    self.window.backgroundColor = [UIColor blackColor];
     
-    
-    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     
     
