@@ -252,11 +252,10 @@
 {
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
-    int count = [[self.frc_photos fetchedObjects] count];
-    if (count == 0) {
-        //there are no objects in local store, update from cloud
-        [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
-    }
+    
+    
+    //we need to enumerate all photos and captions within the specific draft
+    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];

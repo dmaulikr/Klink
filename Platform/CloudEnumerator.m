@@ -299,14 +299,15 @@
 }
 
 + (CloudEnumerator*) enumeratorForPhotos:(NSNumber*)themeid {
+    //ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     Query* query = [Query queryPhotosWithTheme:themeid];
-    QueryOptions* queryOptions = [QueryOptions queryForPhotosInTheme];
+    QueryOptions* queryOptions = [QueryOptions queryForPhotos];
     EnumerationContext* enumerationContext = [EnumerationContext contextForPhotosInTheme:themeid];
     query.queryOptions = queryOptions;
     
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
     enumerator.identifier = [themeid stringValue];
-    enumerator.secondsBetweenConsecutiveSearches = 60;
+    enumerator.secondsBetweenConsecutiveSearches = 0;
     return enumerator;
 }
 

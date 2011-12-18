@@ -172,10 +172,14 @@
     //open on the screen to be read
     [self markAllDisplayedNotificationsSeen];
     
+    //we count the number of notifications
+    int count = [[self.frc_notifications fetchedObjects]count];
+    
     //we check to see if this view controller is meant to refresh the feed upon load
     //this is uusually set when the app is being launched in response to a remote notification
     //and this is the view controller which is brought to the front
-    if (self.refreshNotificationFeedOnDownload) {
+    if (self.refreshNotificationFeedOnDownload ||
+        count == 0) {
         
         LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Refreshing notification feed from cloud",activityName);
         FeedManager* feedManager = [FeedManager instance];
