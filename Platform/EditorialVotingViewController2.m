@@ -22,7 +22,7 @@
 @synthesize ic_coverFlowView    = m_ic_coverFlowView;
 @synthesize btn_voteButton  = m_btn_voteButton;;
 
-#define NUMBER_OF_VISIBLE_ITEMS 3
+#define NUMBER_OF_VISIBLE_ITEMS 6
 //#define ITEM_SPACING 210
 //#define INCLUDE_PLACEHOLDERS YES
 
