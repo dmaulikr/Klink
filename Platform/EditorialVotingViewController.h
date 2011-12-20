@@ -11,13 +11,17 @@
 #import "Poll.h"
 #import "iCarousel.h"
 
-@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate, iCarouselDataSource, iCarouselDelegate>
+@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, iCarouselDataSource, iCarouselDelegate>
 {
     Poll*       m_poll;
     NSNumber*   m_pollID;
     
     iCarousel*  m_ic_coverFlowView;
     UIButton*   m_btn_voteButton;
+    UILabel*    m_lbl_voteStatus;
+    
+    NSDate*     m_deadline;
+    BOOL        m_userJustVoted;
     
 }
 
@@ -27,6 +31,10 @@
 
 @property (nonatomic, retain) IBOutlet iCarousel*           ic_coverFlowView;
 @property (nonatomic, retain) IBOutlet UIButton*            btn_voteButton;
+@property (nonatomic, retain) IBOutlet UILabel*             lbl_voteStatus;
+
+@property (nonatomic, retain)          NSDate*              deadline;
+@property                              BOOL                 userJustVoted;
 
 - (IBAction)voteButtonPressed:(id)sender;
 

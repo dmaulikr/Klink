@@ -8,6 +8,7 @@
 
 #import "Poll.h"
 #import "PollData.h"
+#import "PollState.h"
 
 @implementation Poll
 @dynamic dateexpires;

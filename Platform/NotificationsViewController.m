@@ -468,6 +468,9 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     //need to get the notification object
     int index = [indexPath row];
     int feedCount = [[self.frc_notifications fetchedObjects]count];

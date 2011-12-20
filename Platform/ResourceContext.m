@@ -601,10 +601,6 @@ static ResourceContext* sharedInstance;
         if (results != nil && [results count] > 0) {
             retVal = [results objectAtIndex:0];
         }
-        
-       
-
-        
     }
     else {
         //TODO: log an error message here
@@ -654,6 +650,55 @@ static ResourceContext* sharedInstance;
     
     if (retValues != nil && [retValues count] > 0) {
         retVal = [retValues objectAtIndex:0];
+    }
+    return retVal;
+    
+}
+
+- (Resource*) resourceWithType:(NSString*)typeName 
+               withValuesEqual:(NSArray*)valuesArray 
+                 forAttributes:(NSArray*)attributeNameArray 
+                        sortBy:(NSArray*)sortDescriptorArray {
+    NSString* activityName = @"ResourceContext.resourceWithType:withValuesEqual:forAttributes:sortBy:";
+    Resource* retVal = nil;
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:self.managedObjectContext];
+    
+    if (entityDescription) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entityDescription];
+        
+        //we need to create a predicate string for all the values in the query request array
+        NSString* resourceQuery = nil;
+        for (int i = 0; i < [valuesArray count]; i++) {
+            if (i > 0) {
+                resourceQuery = [NSString stringWithFormat:@"%@ AND %@=%@",resourceQuery,[valuesArray objectAtIndex:i],[attributeNameArray objectAtIndex:i]];
+            }
+            else {
+                resourceQuery = [NSString stringWithFormat:@"%@=%@",[valuesArray objectAtIndex:i],[attributeNameArray objectAtIndex:i]];
+            }
+        }
+        
+        //now we have the query for our predicate
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:resourceQuery];    
+        [request setPredicate:predicate];
+        [request setSortDescriptors:sortDescriptorArray];
+        [request setEntity:entityDescription];
+        
+        NSError* error = nil;
+        NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        
+        [request release];
+        
+        if (results != nil && [results count] > 0) {
+            retVal = [results objectAtIndex:0];
+        }
+        else {
+            LOG_RESOURCECONTEXT(1,@"%@Could not find object with query: %@", activityName, resourceQuery);
+        }
+    }
+    else {
+        LOG_RESOURCECONTEXT(1,@"%@Could not create entity description for type: %@", activityName, typeName);
+        
     }
     return retVal;
     

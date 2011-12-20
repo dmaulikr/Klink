@@ -45,6 +45,7 @@
 }
 
 + (NSString*) formatMediumDate:(NSDate*)date {
+    // Returns a string with format like "Dec 1, 2011"
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];

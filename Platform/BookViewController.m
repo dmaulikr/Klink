@@ -427,41 +427,11 @@
         [self.pageController didMoveToParentViewController:self];
         
     }
-
-    
-    /*
-    //render the page ID specified as a parameter
-    if (self.pageID != nil && [self.pageID intValue] != 0) {
-        //render the page specified by the ID passed in
-        [self renderPage];
-    }
-    else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:nil forAttribute:nil sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd];
-        
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            [self renderPage];
-        }
-        else {
-            //empty page store, will need to thow up a progress dialog to show user of download
-            LOG_PAGEVIEWCONTROLLER(0, @"%@Enumerating pages from cloud",activityName);
-            [self.pageCloudEnumerator enumerateUntilEnd];
-            //TODO: need to make a call to a centrally hosted busy indicator view
-        }
-        
-    }
-    */
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
+    
 }
 
 
@@ -551,7 +521,7 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
-    NSString* activityName = @"BookViewController.controller.onEnumerateComplete:";
+    //NSString* activityName = @"BookViewController.controller.onEnumerateComplete:";
     
     PageViewController* pageViewController = nil;
     

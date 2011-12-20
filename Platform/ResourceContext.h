@@ -60,6 +60,11 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                         sortBy:(NSString*)sortByAttribute 
                  sortAscending:(BOOL)sortAscending;
 
+- (Resource*) resourceWithType:(NSString*)typeName 
+               withValuesEqual:(NSArray*)valuesArray 
+                 forAttributes:(NSArray*)attributeNameArray 
+                        sortBy:(NSArray*)sortDescriptorArray;
+
 - (Resource*) singletonResourceWithType:(NSString*)typeName;
 
 - (NSArray*)  resourcesWithType:(NSString*)typeName 

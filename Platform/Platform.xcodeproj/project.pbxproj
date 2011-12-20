@@ -70,6 +70,23 @@
 		5281EEF91485B32700AB1BF0 /* arrow_right_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */; };
 		5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */; };
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
+		52979AD1149F980100F29ECC /* doubleline_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACD149F980100F29ECC /* doubleline_bottom.png */; };
+		52979AD2149F980100F29ECC /* doubleline_bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACE149F980100F29ECC /* doubleline_bottom@2x.png */; };
+		52979AD3149F980100F29ECC /* doubleline_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACF149F980100F29ECC /* doubleline_top.png */; };
+		52979AD4149F980100F29ECC /* doubleline_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AD0149F980100F29ECC /* doubleline_top@2x.png */; };
+		52979AD7149F9F1D00F29ECC /* singleline_thin.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AD5149F9F1D00F29ECC /* singleline_thin.png */; };
+		52979AD8149F9F1D00F29ECC /* singleline_thin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AD6149F9F1D00F29ECC /* singleline_thin@2x.png */; };
+		52979AE3149FC66200F29ECC /* typewriterframe.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AE1149FC66200F29ECC /* typewriterframe.png */; };
+		52979AE4149FC66200F29ECC /* typewriterframe@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AE2149FC66200F29ECC /* typewriterframe@2x.png */; };
+		52979AE7149FCD4500F29ECC /* UICustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */; };
+		52979AFA14A0128200F29ECC /* progressBar_container.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF214A0128100F29ECC /* progressBar_container.png */; };
+		52979AFB14A0128200F29ECC /* progressBar_container@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF314A0128100F29ECC /* progressBar_container@2x.png */; };
+		52979AFC14A0128200F29ECC /* progressBar_darkfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF414A0128100F29ECC /* progressBar_darkfill.png */; };
+		52979AFD14A0128200F29ECC /* progressBar_darkfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */; };
+		52979AFE14A0128200F29ECC /* progressBar_lightfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF614A0128200F29ECC /* progressBar_lightfill.png */; };
+		52979AFF14A0128200F29ECC /* progressBar_lightfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF714A0128200F29ECC /* progressBar_lightfill@2x.png */; };
+		52979B0014A0128200F29ECC /* progressBar_mediumfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF814A0128200F29ECC /* progressBar_mediumfill.png */; };
+		52979B0114A0128200F29ECC /* progressBar_mediumfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -317,6 +334,24 @@
 		5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_right_scetched@2x.png"; sourceTree = "<group>"; };
 		5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewcell_separator_scetched.png; sourceTree = "<group>"; };
 		5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tableviewcell_separator_scetched@2x.png"; sourceTree = "<group>"; };
+		52979ACD149F980100F29ECC /* doubleline_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doubleline_bottom.png; sourceTree = "<group>"; };
+		52979ACE149F980100F29ECC /* doubleline_bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doubleline_bottom@2x.png"; sourceTree = "<group>"; };
+		52979ACF149F980100F29ECC /* doubleline_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doubleline_top.png; sourceTree = "<group>"; };
+		52979AD0149F980100F29ECC /* doubleline_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doubleline_top@2x.png"; sourceTree = "<group>"; };
+		52979AD5149F9F1D00F29ECC /* singleline_thin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = singleline_thin.png; sourceTree = "<group>"; };
+		52979AD6149F9F1D00F29ECC /* singleline_thin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "singleline_thin@2x.png"; sourceTree = "<group>"; };
+		52979AE1149FC66200F29ECC /* typewriterframe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typewriterframe.png; sourceTree = "<group>"; };
+		52979AE2149FC66200F29ECC /* typewriterframe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriterframe@2x.png"; sourceTree = "<group>"; };
+		52979AE5149FCD4500F29ECC /* UICustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomNavigationBar.h; sourceTree = "<group>"; };
+		52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomNavigationBar.m; sourceTree = "<group>"; };
+		52979AF214A0128100F29ECC /* progressBar_container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_container.png; sourceTree = "<group>"; };
+		52979AF314A0128100F29ECC /* progressBar_container@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_container@2x.png"; sourceTree = "<group>"; };
+		52979AF414A0128100F29ECC /* progressBar_darkfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_darkfill.png; sourceTree = "<group>"; };
+		52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_darkfill@2x.png"; sourceTree = "<group>"; };
+		52979AF614A0128200F29ECC /* progressBar_lightfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_lightfill.png; sourceTree = "<group>"; };
+		52979AF714A0128200F29ECC /* progressBar_lightfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_lightfill@2x.png"; sourceTree = "<group>"; };
+		52979AF814A0128200F29ECC /* progressBar_mediumfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_mediumfill.png; sourceTree = "<group>"; };
+		52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_mediumfill@2x.png"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -761,6 +796,22 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52979AF214A0128100F29ECC /* progressBar_container.png */,
+				52979AF314A0128100F29ECC /* progressBar_container@2x.png */,
+				52979AF414A0128100F29ECC /* progressBar_darkfill.png */,
+				52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */,
+				52979AF614A0128200F29ECC /* progressBar_lightfill.png */,
+				52979AF714A0128200F29ECC /* progressBar_lightfill@2x.png */,
+				52979AF814A0128200F29ECC /* progressBar_mediumfill.png */,
+				52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */,
+				52979AE1149FC66200F29ECC /* typewriterframe.png */,
+				52979AE2149FC66200F29ECC /* typewriterframe@2x.png */,
+				52979AD5149F9F1D00F29ECC /* singleline_thin.png */,
+				52979AD6149F9F1D00F29ECC /* singleline_thin@2x.png */,
+				52979ACD149F980100F29ECC /* doubleline_bottom.png */,
+				52979ACE149F980100F29ECC /* doubleline_bottom@2x.png */,
+				52979ACF149F980100F29ECC /* doubleline_top.png */,
+				52979AD0149F980100F29ECC /* doubleline_top@2x.png */,
 				5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */,
 				5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */,
 				521232C81491437600CC9F93 /* arrow_left_scetched.png */,
@@ -1266,6 +1317,8 @@
 				C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */,
 				C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */,
 				C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */,
+				52979AE5149FCD4500F29ECC /* UICustomNavigationBar.h */,
+				52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -1662,6 +1715,22 @@
 				5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */,
 				52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */,
 				52323F32149AA9170055A933 /* UIEditorialPageView.xib in Resources */,
+				52979AD1149F980100F29ECC /* doubleline_bottom.png in Resources */,
+				52979AD2149F980100F29ECC /* doubleline_bottom@2x.png in Resources */,
+				52979AD3149F980100F29ECC /* doubleline_top.png in Resources */,
+				52979AD4149F980100F29ECC /* doubleline_top@2x.png in Resources */,
+				52979AD7149F9F1D00F29ECC /* singleline_thin.png in Resources */,
+				52979AD8149F9F1D00F29ECC /* singleline_thin@2x.png in Resources */,
+				52979AE3149FC66200F29ECC /* typewriterframe.png in Resources */,
+				52979AE4149FC66200F29ECC /* typewriterframe@2x.png in Resources */,
+				52979AFA14A0128200F29ECC /* progressBar_container.png in Resources */,
+				52979AFB14A0128200F29ECC /* progressBar_container@2x.png in Resources */,
+				52979AFC14A0128200F29ECC /* progressBar_darkfill.png in Resources */,
+				52979AFD14A0128200F29ECC /* progressBar_darkfill@2x.png in Resources */,
+				52979AFE14A0128200F29ECC /* progressBar_lightfill.png in Resources */,
+				52979AFF14A0128200F29ECC /* progressBar_lightfill@2x.png in Resources */,
+				52979B0014A0128200F29ECC /* progressBar_mediumfill.png in Resources */,
+				52979B0114A0128200F29ECC /* progressBar_mediumfill@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1807,6 +1876,7 @@
 				52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */,
 				52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */,
 				52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */,
+				52979AE7149FCD4500F29ECC /* UICustomNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

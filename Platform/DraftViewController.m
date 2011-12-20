@@ -297,7 +297,7 @@
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    //[self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
+    //[self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -421,7 +421,7 @@
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
+    [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
 }
 
 
