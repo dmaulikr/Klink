@@ -9,6 +9,7 @@
 #import "UIProgressHUDView.h"
 #import "Request.h"
 #import "Macros.h"
+#import "PlatformAppDelegate.h"
 
 @implementation UIProgressHUDView
 @synthesize backgroundView = m_backgroundView;
@@ -98,6 +99,8 @@
             self.didSucceed = NO;
             
             self.detailsLabelText = failedRequest.errormessage;
+            
+
         }
         
         //now we pause for 5 seconds before we dismiss

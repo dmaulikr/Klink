@@ -71,6 +71,13 @@ static ResourceContext* sharedInstance;
             // create a context for this thread
             NSManagedObjectContext *threadContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
+            
+            NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
+            [contextUndoManager setLevelsOfUndo:20];
+            threadContext.undoManager = contextUndoManager;
+            [contextUndoManager release];
+
+            
             // cache the context for this thread
             NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
             [userInfo setValue:thread forKey:kTHREAD];
@@ -405,6 +412,16 @@ static ResourceContext* sharedInstance;
     [eventManager raiseEventsForDeletedObjects:deletedObjects];
 
     NSError* error = nil;
+    
+    [self.managedObjectContext processPendingChanges];
+    int undoLevels = [self.managedObjectContext.undoManager groupingLevel];
+    if (undoLevels > 1) {
+
+        LOG_REQUEST(0, @"%@Detected open undo group, closing it and then saving",activityName);
+        [self.managedObjectContext.undoManager endUndoGrouping];
+    }
+    
+    [self.managedObjectContext processPendingChanges];
     [self.managedObjectContext save:&error];
     
     if (error != nil) {

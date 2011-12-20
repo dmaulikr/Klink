@@ -46,6 +46,7 @@
 }
 
 #pragma mark - Properties
+
 - (NSFetchedResultsController*) frc_photos {
     NSString* activityName = @"UIDraftViewController.frc_photos:";
     
@@ -158,29 +159,24 @@
 
 
 #pragma mark - Initializers
-- (id) commonInit {
+- (void) commonInit {
     //common setup for the view controller
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    if (draft != nil) {
-        
-        self.lbl_draftTitle.text = draft.displayname;
-        
-        // Show time remaining on draft
-        self.lbl_deadline.text = @"";
-        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                         target:self
-                                       selector:@selector(timeRemaining:)
-                                       userInfo:nil
-                                        repeats:YES];
-        
-        self.cloudPhotoEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPhotos:self.pageID];
-        self.cloudPhotoEnumerator.delegate = self;
-        
-    }
-    return self;
+    // resister callbacks for change events
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newCaptionCallback release];
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
+    
+    
+     
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -188,6 +184,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [self commonInit];
     }
     return self;
 }
@@ -217,20 +214,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self = [self commonInit];
+  
     
-    // resister callbacks for change events
-    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
-    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
-    
-    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
-    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
-    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
-    
-    [newCaptionCallback release];
-    [newPhotoVoteCallback release];
-    [newCaptionVoteCallback release];
+
     
     // setup pulldown refresh on tableview
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
@@ -246,16 +232,47 @@
     
     [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
-}
+    
+    }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
+    NSString* activityName = @"DraftViewController.viewWillAppear:";
+    [super viewWillAppear:animated];
     
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    //we need to enumerate all photos and captions within the specific draft
-    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
+    if (draft != nil) {
+        
+        self.lbl_draftTitle.text = draft.displayname;
+        
+        // Show time remaining on draft
+        self.lbl_deadline.text = @"";
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self
+                                       selector:@selector(timeRemaining:)
+                                       userInfo:nil
+                                        repeats:YES];
+        
+      
+        int numPhotosInDraft = [draft.numberofphotos intValue];
+        int numPhotosInStore = [[self.frc_photos fetchedObjects]count];
+        
+        if (numPhotosInStore < numPhotosInDraft) {
+            LOG_DRAFTVIEWCONTROLLER(0, @"%@Number of photos in store (%d) is less than number of photos on draft (%d), enumerating from cloud",activityName,numPhotosInStore,numPhotosInDraft);
+            self.cloudPhotoEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+            self.cloudPhotoEnumerator.delegate = self;
+            
+            [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
+        }
+        
+        
+        
+    }
+
+    
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -393,12 +410,17 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    self.cloudPhotoEnumerator = nil;
-    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
-    
-    self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
+    self.cloudPhotoEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
     self.cloudPhotoEnumerator.delegate = self;
+    
     [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
+    
+//    self.cloudPhotoEnumerator = nil;
+//    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
+//    
+//    self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
+//    self.cloudPhotoEnumerator.delegate = self;
+//    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
     
 }
 

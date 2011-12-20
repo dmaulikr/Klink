@@ -64,6 +64,8 @@
 
 
 #pragma mark - Properties
+
+
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
         return __frc_photos;
@@ -233,7 +235,7 @@
 }
 
 #pragma mark - Initializers
-- (id) commonInit {
+- (void) commonInit {
     // Custom initialization
     
     self.photoViewSlider.delegate = self;
@@ -249,10 +251,12 @@
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
     
     // add photo metadata view
-    self.photoMetaData = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
+    UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
+    self.photoMetaData = pmdv;
+    [pmdv release];
     [self.view addSubview:self.photoMetaData];
     
-    return self;
+  
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -336,7 +340,24 @@
 {
 }
 */
+- (void) enumerateCaptionsFromCloudForPhoto:(Photo*)photo 
+{
+    NSString* activityName = @"FullScreenPhotoViewController.enumerateCaptionsFromCloud:";
+    //we need to see how many captions the photo has, if we do not have all of the captions, we execute an enumeration
+    int numCaptionsInPhotos = [photo.numberofcaptions intValue];
+    int numCaptionsInStore = [[self.frc_captions fetchedObjects]count];
+    
+  //  if (numCaptionsInStore < numCaptionsInPhotos) 
+  //  {
+        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photoID];
+        self.captionCloudEnumerator.delegate = self; 
+        LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Number of captions in store %d does not match number of captions specified in photo %d, re-enumerating from cloud",activityName,numCaptionsInStore, numCaptionsInPhotos);
+        [self.captionCloudEnumerator enumerateUntilEnd:nil];
+  //  }
 
+
+    
+}
 - (void) renderPhoto {
     NSString* activityName = @"FullScreenPhotoViewController.renderPhoto:";
     
@@ -349,6 +370,7 @@
         //we instruct the page view slider to move to the index of the page which is specified
         [self.photoViewSlider goTo:indexOfPhoto withAnimation:NO];
         
+        [self enumerateCaptionsFromCloudForPhoto:currentPhoto];
         if (self.captionID == nil) {
             [self.captionViewSlider goTo:0 withAnimation:NO];
             
@@ -379,8 +401,9 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
     
+	[super viewWillAppear:animated];
+        [self commonInit];
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
     
@@ -401,10 +424,11 @@
             //local store does contain photos to enumerate
             self.photoID = photo.objectid;
             [self renderPhoto];
+            
         }
         else {
             //empty photo store, will need to thow up a progress dialog to show user of download
-
+            [self enumerateCaptionsFromCloudForPhoto:photo];
             //TODO: need to make a call to a centrally hosted busy indicator view
         }
     }
@@ -426,16 +450,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];    
-    self =  [self commonInit];
+
     
     // Setup notification for device orientation change
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didRotate)
                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
-    self.captionCloudEnumerator = [[CloudEnumeratorFactory instance] enumeratorForCaptions:self.photoID];
-    self.captionCloudEnumerator.delegate = self;
-    [self.captionCloudEnumerator enumerateUntilEnd:nil];
+
+  
     
 }
 
@@ -1093,7 +1116,7 @@
         [self.photoViewSlider.tableView endUpdates];
     }
     else {
-        [self.captionViewSlider.tableView beginUpdates];
+        [self.captionViewSlider.tableView endUpdates];
     }
 }
 - (void) controller:(NSFetchedResultsController *)controller 

@@ -94,7 +94,7 @@
     //and other singletons
     [self.applicationSettingsManager settings];    
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-    
+    application.applicationSupportsShakeToEdit = NO;
     
     //register for push notifications
     [[UIApplication sharedApplication]
@@ -318,6 +318,12 @@
     if (coordinator != nil)
     {
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        
+        NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
+        [contextUndoManager setLevelsOfUndo:20];
+        __managedObjectContext.undoManager = contextUndoManager;
+        [contextUndoManager release];
+        
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return __managedObjectContext;

@@ -667,13 +667,16 @@
 
 #pragma mark - Async callbacks
 - (void) hudWasHidden {
+    
     //called when the progress view is hidden
-    //we need to dismiss this view
+
+    
      [self hideProgressBar];
     [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void)hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"ContributeViewController.hudWasHidden";
     [self hideProgressBar];
     
     //we dismiss this controller if the operation succeeded
@@ -681,7 +684,21 @@
     if (progressView.didSucceed) {
      [self dismissModalViewControllerAnimated:YES];
     }
-    //otherwise we keep the current view open
+    else {
+        //otherwise we keep the current view open
+        //we need to dismiss this view
+        //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        //PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        //UIProgressHUDView* progressView = delegate.progressView;
+        
+        //we need to undo the operation that was last performed
+        LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+    }
 
 }
 
