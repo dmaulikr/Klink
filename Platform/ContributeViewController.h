@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
+#import "UIProgressHUDView.h"
 @class ContributeViewController;
 
 
-@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate> {
+@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,MBProgressHUDDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;
     
     UICameraActionSheet*    m_cameraActionSheet;

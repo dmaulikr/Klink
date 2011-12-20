@@ -11,8 +11,11 @@
 #import "AuthenticationManager.h"
 #import "ApplicationSettingsManager.h"
 #import "ABNotifier.h"
+#import "UIProgressHUDView.h"
+
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate, ABNotifierDelegate> {
     NSString* m_deviceToken;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -29,4 +32,5 @@
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain)           Facebook    *facebook;
+@property (nonatomic, retain) UIProgressHUDView*    progressView;
 @end

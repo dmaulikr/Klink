@@ -55,10 +55,12 @@ static RequestManager* sharedInstance;
     if (self) {
         OperationQueue* ec = [[OperationQueue alloc]init];
         self.enumerationQueue = ec;
+        //self.enumerationQueue.showAccurateProgress = YES;
         [ec release];
         
         OperationQueue* oq = [[OperationQueue alloc]init];        
         self.operationQueue = oq;
+        //self.enumerationQueue.showAccurateProgress = YES;
         [oq release];
         
         ASIDownloadCache *ic = [[ASIDownloadCache alloc]init];
@@ -84,6 +86,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.userInfo = userInfo;
+        httpRequest.showAccurateProgress = YES;
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
        //	 [httpRequest setValidatesSecureCertificate:NO];
         return httpRequest;
@@ -95,6 +98,7 @@ static RequestManager* sharedInstance;
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"POST";
         httpRequest.userInfo = userInfo;
+        httpRequest.showAccurateProgress = YES;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
@@ -108,6 +112,7 @@ static RequestManager* sharedInstance;
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"GET";
         httpRequest.userInfo = userInfo;
+        httpRequest.showAccurateProgress = YES;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
@@ -124,6 +129,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = 5;
+        httpRequest.showAccurateProgress = YES;
         httpRequest.numberOfTimesToRetryOnTimeout = 3;
         //httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
         //httpRequest.downloadCache = self.imageCache;
@@ -136,6 +142,7 @@ static RequestManager* sharedInstance;
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"POST";
         httpRequest.userInfo = userInfo;
+        httpRequest.showAccurateProgress = YES;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = [settings.http_timeout_seconds intValue];
@@ -173,10 +180,12 @@ static RequestManager* sharedInstance;
         ASIFormDataRequest* httpRequest = (ASIFormDataRequest*) [self requestFor:kMODIFYATTACHMENT withURL:[url absoluteString] withUserInfo:userInfo];
         [httpRequest setFile:value forKey:@"attachment"];
         httpRequest.delegate = self;
+        httpRequest.uploadProgressDelegate = request;
+        httpRequest.downloadProgressDelegate= request;
         httpRequest.didFailSelector = @selector(onRequestFailed:);
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         
-        LOG_REQUEST(0, @"%@Executing upload attachment request for ID:%@ of Type:%@ for Attribute:%@",activityName,resource.objectid,resource.objecttype,attribute);
+        LOG_REQUEST(0, @"%@Executing upload Attachment Request %@ for ID:%@ of Type:%@ for Attribute:%@",activityName,request.objectid,resource.objectid,resource.objecttype,attribute);
         [self.operationQueue addOperation:httpRequest];
     }  
 
@@ -184,17 +193,31 @@ static RequestManager* sharedInstance;
 
 - (void) processAttachmentsForRequest:(Request*)request {
     NSString* activityName = @"RequestManager.processAttachmentsForRequest:";
-    NSArray* attachmentAttributeNames = [self attachmentAttributesInRequest:request];
+//    NSArray* attachmentAttributeNames = [self attachmentAttributesInRequest:request];
+//    
+//    //we create a new request to handle attachment processing
+//    Request* newRequest = [Request createAttachmentRequestFrom:request];
+//    
+//    for (NSString* attachmentAttributeName in attachmentAttributeNames) {
+//        //submit the attachment for processing
+//        LOG_REQUEST(0,@"%@Processing Request attachment upload for attribute %@",activityName,attachmentAttributeName);
+//        [self processAttachmentFor:attachmentAttributeName associatedWith:newRequest];
+//    }
     
-    //we create a new request to handle attachment processing
-    Request* newRequest = [Request createAttachmentRequestFrom:request];
-    
-    for (NSString* attachmentAttributeName in attachmentAttributeNames) {
+    //iterate through the child requests and process them
+    for (Request* childRequest in request.childRequests) {
         //submit the attachment for processing
-        LOG_REQUEST(0,@"%@Processing Request attachment upload for attribute %@",activityName,attachmentAttributeName);
-        [self processAttachmentFor:attachmentAttributeName associatedWith:newRequest];
+        NSArray* attachmentAttributes = [childRequest changedAttributesList];
+        if ([attachmentAttributes count] != 1) {
+            //error condition, have more than one attachment attribute in the request
+            LOG_REQUEST(1, @"%@Child attachment request has more than 1 attachment attribute",activityName);
+        }
+        else {
+            NSString* attachmentAttributeName = [attachmentAttributes objectAtIndex:0];
+            LOG_REQUEST(0,@"%@Processing Attachment Request %@ upload for attribute %@",activityName,childRequest.objectid,attachmentAttributeName);
+            [self processAttachmentFor:attachmentAttributeName associatedWith:childRequest];
+         }
     }
-    
 }
 
 
@@ -230,13 +253,14 @@ static RequestManager* sharedInstance;
     [resource lockAttributes:attachmentAttributesInRequest];
     LOG_REQUEST(0,@"%@Locking %d attachment attributes until Put completes",activityName,[attachmentAttributesInRequest count]);
     
-    [resourceContext save:YES onFinishCallback:nil];
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
     
     //we submit the initial put operation with the request
     //the attachments will be processed on the return leg
     ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kMODIFY withURL:request.url withUserInfo:userInfo];
     //[httpRequest setPostValue:json forKey:@""];
-      
+    httpRequest.uploadProgressDelegate = request;
+    httpRequest.downloadProgressDelegate = request;
     LOG_REQUEST(0, @"%@Executing put request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
     [userInfo release];
     [self.operationQueue addOperation:httpRequest];
@@ -251,8 +275,8 @@ static RequestManager* sharedInstance;
     
     ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kUPDATEAUTHENTICATOR withURL:request.url withUserInfo:userInfo];
     [httpRequest setPostValue:@"" forKey:@""];
-    
-    
+    httpRequest.uploadProgressDelegate = request;
+    httpRequest.downloadProgressDelegate = request;
     LOG_REQUEST(0, @"%@Executing update authenticator request",activityName);
     [userInfo release];
     [self.operationQueue addOperation:httpRequest];
@@ -292,7 +316,7 @@ static RequestManager* sharedInstance;
         
        
         
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
         
     }
     
@@ -306,6 +330,9 @@ static RequestManager* sharedInstance;
     ASIFormDataRequest* httpRequest =(ASIFormDataRequest*) [self requestFor:kCREATE withURL:url withUserInfo:userInfo];
     [httpRequest setPostValue:json forKey:@""];
     
+    
+    httpRequest.uploadProgressDelegate = [requests objectAtIndex:0];
+    httpRequest.downloadProgressDelegate = [requests objectAtIndex:0] ;
     
     //following code for generating log message
     LOG_REQUEST(0, @"%@Executing bulk create request for %d objects with %d attachments to be processed after",activityName,[requests count],attachmentCount);
@@ -329,7 +356,7 @@ static RequestManager* sharedInstance;
         [resource lockAttributes:attachmentAttributesInRequest];
         LOG_REQUEST(0,@"%@Locking %d attachment attributes until Create completes",activityName,[attachmentAttributesInRequest count]);
         
-        [resourceContext save:YES onFinishCallback:nil];
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
         
         
         NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
@@ -337,6 +364,9 @@ static RequestManager* sharedInstance;
         [request retain];
         ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
         [httpRequest setPostValue:json forKey:@""];
+        
+        httpRequest.uploadProgressDelegate = request;
+        httpRequest.downloadProgressDelegate = request;
         
         LOG_REQUEST(0, @"%@Executing create request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
         [userInfo release];
@@ -355,6 +385,8 @@ static RequestManager* sharedInstance;
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
     [userInfo setObject:request forKey:kREQUEST];
     ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    httpRequest.uploadProgressDelegate = request;
+    httpRequest.downloadProgressDelegate = request;
     [userInfo release];
     [self.enumerationQueue addOperation:httpRequest];
 }
@@ -369,6 +401,9 @@ static RequestManager* sharedInstance;
     NSString* downloadPath = [requestUserInfo valueForKey:IMAGEPATH];
   
     httpRequest.downloadDestinationPath = downloadPath;
+    httpRequest.uploadProgressDelegate = request;
+    httpRequest.downloadProgressDelegate = request;
+    
     LOG_REQUEST(0,@"%@Beginning download of image at: %@ to local location %@",activityName,request.url,downloadPath);
     [userInfo release];
     [self.enumerationQueue addOperation:httpRequest];
@@ -379,6 +414,8 @@ static RequestManager* sharedInstance;
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
     [userInfo setObject:request forKey:kREQUEST];
     ASIHTTPRequest* httpRequest = [self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    httpRequest.uploadProgressDelegate = request;
+    httpRequest.downloadProgressDelegate = request;
     LOG_REQUEST(0,@"%@Beginning http request to share at url:%@",activityName,request.url);
     [userInfo release];
     [self.operationQueue addOperation:httpRequest];
@@ -416,43 +453,43 @@ static RequestManager* sharedInstance;
         //get a url
         //create a http request
     if ([request.operationcode intValue] == kCREATE) {
-        LOG_REQUEST(0, @"%@Create request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%@Create Request %@ submitted to Request Manager",activityName,request.objectid);
         [self processCreate:request];
     }
     else if ([request.operationcode intValue] == kDELETE) {
-        LOG_REQUEST(0, @"%Delete request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%Delete Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processDelete:request];
     }
     else if ([request.operationcode intValue] == kMODIFY) {
-        LOG_REQUEST(0, @"%Modify request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%Modify Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processModify:request];
     }
     else if ([request.operationcode intValue] == kMODIFYATTACHMENT) {
-        LOG_REQUEST(0, @"%@Modify request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%@Modify Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processModifyAttachment:request];
     }
     else if ([request.operationcode intValue] == kENUMERATION ||
              [request.operationcode intValue] == kAUTHENTICATE) {
-        LOG_REQUEST(0, @"%@Enumeration request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%@Enumeration Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processEnumeration:request];
     }
     else if ([request.operationcode intValue] == kIMAGEDOWNLOAD) {
-        LOG_REQUEST(0, @"%Image download request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%Image download Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processImageDownload:request];
     }
     else if ([request.operationcode intValue] == kUPDATEAUTHENTICATOR) {
-        LOG_REQUEST(0, @"%@Update authenticator request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%@Update authenticator Request %@ submitted to Request Manager",activityName,request.objectid);
 
         [self processUpdateAuthenticator:request];
 
     }
     else if ([request.operationcode intValue] == kSHARE) {
-        LOG_REQUEST(0, @"%@Share request submitted to Request Manager",activityName);
+        LOG_REQUEST(0, @"%@Share Request %@ submitted to Request Manager",activityName,request.objectid);
         
         [self processShare:request];
     }
@@ -556,7 +593,7 @@ static RequestManager* sharedInstance;
         }
         
         
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     }
     else {
         LOG_REQUEST(1, @"%@Attachment upload request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
@@ -620,7 +657,7 @@ static RequestManager* sharedInstance;
         [existingResource unlockAttributes:attachmentAttributes];
         
         
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
         [self processAttachmentsForRequest:request];
         LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@ along with %d secondary objects",activityName,request.targetresourceid,request.targetresourcetype, [putResponse.secondaryResults count]);
@@ -635,7 +672,7 @@ static RequestManager* sharedInstance;
         existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
         NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
         [existingResource unlockAttributes:attachmentAttributes];
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
     }
     [putResponse autorelease];
@@ -723,7 +760,7 @@ static RequestManager* sharedInstance;
         }
         
         //we now save the changes we made
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
         //we now process all of the attachment attributes in the Request
         [self processAttachmentsForRequest:request];
@@ -736,7 +773,7 @@ static RequestManager* sharedInstance;
         
         [existingResource unlockAttributes:attachmentAttributesInRequest];
         //we now save the changes we made
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     }
     [createResponse autorelease];
     return createResponse;
@@ -841,8 +878,11 @@ static RequestManager* sharedInstance;
     if (responseObj != nil &&
         [responseObj.didSucceed boolValue]) {
         //mark the request being completed
-        request.statuscode = [NSNumber numberWithInt:kCOMPLETED];
-        LOG_REQUEST(0,@"%@Request completed successfully",activityName);
+        
+         [request updateRequestStatus:kCOMPLETED];
+        //request.statuscode = [NSNumber numberWithInt:kCOMPLETED];
+        
+        LOG_REQUEST(0,@"%@Request %@ completed successfully",activityName, request.objectid);
         //execute the success selector on each request
         if (request.onSuccessCallback != nil) {
             NSMutableDictionary* context = [[NSMutableDictionary alloc]init];
@@ -857,9 +897,11 @@ static RequestManager* sharedInstance;
       }
     else {
         //mark the request being failed
-        request.statuscode = [NSNumber numberWithInt:kFAILED];
+         [request updateRequestStatus:kFAILED];
+        request.errormessage = responseObj.errorMessage;
+        //request.statuscode = [NSNumber numberWithInt:kFAILED];
         
-        LOG_REQUEST(0,@"%@Request failed",activityName);
+        LOG_REQUEST(0,@"%@Request %@ failed",activityName, request.objectid);
         //execute the failure selector on each request
         if (request.onFailCallback != nil) {
             NSMutableDictionary* context = [[NSMutableDictionary alloc]init];
@@ -892,13 +934,15 @@ static RequestManager* sharedInstance;
     double currentTime = [[NSDate date]timeIntervalSince1970];
     double timeDifferenceInSeconds = currentTime - timeStarted;
     
-    LOG_HTTP(1, @"%@HTTP request failed after %f seconds",activityName,timeDifferenceInSeconds);
+    LOG_HTTP(1, @"%@HTTP request failed after %f seconds with %qi bytes downloaded and %qi bytes uploaded",activityName,timeDifferenceInSeconds,httpRequest.totalBytesRead,httpRequest.totalBytesSent);
     
     if ([obj isKindOfClass:[NSArray class]]) {
         //it was a bulk operation that failed
         NSArray* requests = [userInfo objectForKey:kREQUEST];
         for (Request* req in requests) {
-            req.statuscode = [NSNumber numberWithInt:kFAILED];
+            [req updateRequestStatus:kFAILED];
+            req.errormessage = [httpRequest.error description];
+            //req.statuscode = [NSNumber numberWithInt:kFAILED];
             if (req.onFailCallback != nil) {
                 [req.onFailCallback fire];
             }
@@ -910,7 +954,9 @@ static RequestManager* sharedInstance;
         //it was a single resource operation that failed
         Request* req = [userInfo objectForKey:kREQUEST];
         if (req.onFailCallback != nil) {
-            req.statuscode = [NSNumber numberWithInt:kFAILED];
+            [req updateRequestStatus:kFAILED];
+            req.errormessage = [httpRequest.error description];
+            //req.statuscode = [NSNumber numberWithInt:kFAILED];
             [req.onFailCallback fire];
         }
         
@@ -919,9 +965,7 @@ static RequestManager* sharedInstance;
        
     }
     
-    //we also need to remove this thread's managed object context
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [resourceContext removeThreadManagedObjectContext];
+
     [pool drain];
 }
 
@@ -938,7 +982,7 @@ static RequestManager* sharedInstance;
     double timeDifferenceInSeconds = currentTime - timeStarted;
     
     
-    LOG_HTTP(0, @"%@HTTP request succeeded in %f seconds",activityName,timeDifferenceInSeconds);
+    LOG_HTTP(0, @"%@HTTP request succeeded in %f seconds with %qi bytes downloaded and %qi bytes sent",activityName,timeDifferenceInSeconds,httpRequest.totalBytesRead,httpRequest.totalBytesSent);
     if (userInfo != nil) {
         NSObject* obj = [userInfo objectForKey:kREQUEST];
         
@@ -974,9 +1018,7 @@ static RequestManager* sharedInstance;
         }
         
     }
-    //we also need to remove this thread's managed object context
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [resourceContext removeThreadManagedObjectContext];
+  
     [pool drain];
     
 }

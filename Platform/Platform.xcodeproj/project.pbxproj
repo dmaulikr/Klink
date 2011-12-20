@@ -255,6 +255,7 @@
 		C5E42594148705E300BB1264 /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E42593148705E300BB1264 /* SharingOptions.m */; };
 		C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AA71458ACB7001AFCA8 /* Page.m */; };
 		C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AAB1458ADE2001AFCA8 /* Feed.m */; };
+		C5F3A56B149EC00E0045EFF6 /* UIRequestTrackingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */; };
 		C5F4630D1444BCA400170835 /* OpCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F4630C1444BCA400170835 /* OpCodes.m */; };
 /* End PBXBuildFile section */
 
@@ -683,6 +684,8 @@
 		C5ED8AA71458ACB7001AFCA8 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		C5ED8AAA1458ADE2001AFCA8 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
 		C5ED8AAB1458ADE2001AFCA8 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
+		C5F3A569149EC00E0045EFF6 /* UIRequestTrackingProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRequestTrackingProgressView.h; sourceTree = "<group>"; };
+		C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIRequestTrackingProgressView.m; sourceTree = "<group>"; };
 		C5F3AE6B1485B3FA00877C5B /* PollState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollState.h; sourceTree = "<group>"; };
 		C5F4630B1444BCA400170835 /* OpCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpCodes.h; sourceTree = "<group>"; };
 		C5F4630C1444BCA400170835 /* OpCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpCodes.m; sourceTree = "<group>"; };
@@ -1352,6 +1355,8 @@
 				52323F2E149AA9050055A933 /* UIEditorialPageView.h */,
 				52323F2F149AA9050055A933 /* UIEditorialPageView.m */,
 				52323F31149AA9170055A933 /* UIEditorialPageView.xib */,
+				C5F3A569149EC00E0045EFF6 /* UIRequestTrackingProgressView.h */,
+				C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";

@@ -93,7 +93,10 @@
     Request* request = [Request createInstanceOfRequest];
     request.url = [url absoluteString];
     request.operationcode = [NSNumber numberWithInt:operationCode];
-    request.statuscode = [NSNumber numberWithInt:kPENDING];
+    
+    [request updateRequestStatus:kPENDING];
+    //request.statuscode = [NSNumber numberWithInt:kPENDING];
+    
     Callback* fcb = [[Callback alloc]initWithTarget:self withSelector:@selector(onEnumerateComplete:) withContext:userInfo];
     request.onFailCallback = fcb;
     [fcb release];
@@ -237,7 +240,7 @@
 
         }
         
-        [resourceContext save:NO onFinishCallback:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
         if (!self.isDone) {
             //enumeration is still open

@@ -23,7 +23,7 @@
 @synthesize window=_window;
 @synthesize deviceToken = m_deviceToken;
 @synthesize managedObjectContext=__managedObjectContext;
-
+@synthesize progressView = __progressView;
 @synthesize managedObjectModel=__managedObjectModel;
 
 @synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
@@ -41,6 +41,17 @@
 #define     kFACEBOOKAPPID  @"315632228463614"
 
 #pragma mark - Properties
+
+- (UIProgressHUDView*)progressView {
+    if (__progressView != nil) {
+        return __progressView;
+    }
+    UIProgressHUDView* pv = [[UIProgressHUDView alloc]initWithWindow:self.window];
+    __progressView = pv;
+    
+    
+    return __progressView;
+}
 - (ApplicationSettingsManager*)applicationSettingsManager {
     if (__applicationSettingsManager != nil) {
         return __applicationSettingsManager;
@@ -97,6 +108,7 @@
     
     [self.window makeKeyAndVisible];
     
+
     
     //let us make some checks beginning with the user object
     if ([authenticationManager isUserAuthenticated]) {
@@ -238,6 +250,7 @@
 
 - (void)dealloc
 {
+    [__progressView release];
     [__resourceContext release];
     [_window release];
     [__managedObjectContext release];

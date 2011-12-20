@@ -200,11 +200,15 @@ static ResourceContext* sharedInstance;
     return NO;
 }
 
-- (Request*) requestFor:(Resource*)resource forOperation:(RequestOperation)opcode onFinishCallback:(Callback*)callback {
+- (Request*) requestFor:(Resource*)resource 
+           forOperation:(RequestOperation)opcode 
+  withChangedAttributes:(NSArray*)changedAttributesList 
+       onFinishCallback:(Callback*)callback 
+      trackProgressWith:(id<RequestProgressDelegate>)delegate {
  
     Request* request = [Request createInstanceOfRequest];
-    [request initFor:resource.objectid withTargetObjectType:resource.objecttype withOperation:(int)opcode withUserInfo:nil onSuccess:callback onFailure:callback];
-    
+    [request initFor:resource.objectid withTargetObjectType:resource.objecttype withOperation:(int)opcode withChangedAttributes:changedAttributesList withUserInfo:nil onSuccess:callback onFailure:callback];
+    request.delegate = delegate;
     return request;
 }
 
@@ -219,10 +223,13 @@ static ResourceContext* sharedInstance;
 
 //saves all pending changes to the local persistence store
 //and then attempts to push all appropriate changes up to the cloud
-- (void) save:(BOOL)saveToCloud 
-     onFinishCallback:(Callback *)callback {
+- (NSArray*) save:(BOOL)saveToCloud 
+     onFinishCallback:(Callback *)callback
+    trackProgressWith:(id<RequestProgressDelegate>)progressDelegate
+{
     
     NSString* activityName = @"ResourceContext.save:";
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
@@ -313,12 +320,13 @@ static ResourceContext* sharedInstance;
                         AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
                         if ([aid.isurlattachment boolValue]) {
                             //yes, it is an attachment
-                            request = [self requestFor:resource forOperation:kMODIFYATTACHMENT onFinishCallback:callback];
+                            request = [self requestFor:resource forOperation:kMODIFYATTACHMENT  withChangedAttributes:changedAttributes  onFinishCallback:callback trackProgressWith:progressDelegate];
                             
                         }
                         else {
                             //no it is not an attachment
-                            request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
+                            request = [self requestFor:resource forOperation:kMODIFY  withChangedAttributes:changedAttributes onFinishCallback:callback
+                                       trackProgressWith:progressDelegate];
                         }
                         [resource markAsDirty:changedAttributes];
                         
@@ -326,7 +334,8 @@ static ResourceContext* sharedInstance;
                     }
                     else if ([changedAttributes count] > 1) {
                         //must be a put modify operation since there are more than 1 changed attributes
-                        request = [self requestFor:resource forOperation:kMODIFY onFinishCallback:callback];
+                        request = [self requestFor:resource forOperation:kMODIFY withChangedAttributes:changedAttributes onFinishCallback:callback
+                            trackProgressWith:progressDelegate];
                         [resource markAsDirty:changedAttributes];
                     }
                     else {
@@ -338,7 +347,7 @@ static ResourceContext* sharedInstance;
                     
                     if (request != nil) {
                         //we append the changed attribute names to the request
-                        [request setChangedAttributesList:changedAttributes];
+                        //[request setChangedAttributesList:changedAttributes];
                         
                         AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
 
@@ -365,7 +374,7 @@ static ResourceContext* sharedInstance;
                             NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
                             request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
                         }
-                        
+                        [retVal addObject:request];
                         [putRequests addObject:request];
                     }
                     
@@ -391,9 +400,9 @@ static ResourceContext* sharedInstance;
     //now we commit the change to the store
     //let us raise events
     EventManager* eventManager = [EventManager instance];
-  //  [eventManager raiseEventsForInsertedObjects:insertedObjects];
-   // [eventManager raiseEventsForUpdatedObjects:updatedObjects];
-    //[eventManager raiseEventsForDeletedObjects:deletedObjects];
+    [eventManager raiseEventsForInsertedObjects:insertedObjects];
+    [eventManager raiseEventsForUpdatedObjects:updatedObjects];
+    [eventManager raiseEventsForDeletedObjects:deletedObjects];
 
     NSError* error = nil;
     [self.managedObjectContext save:&error];
@@ -418,18 +427,22 @@ static ResourceContext* sharedInstance;
                 
                 //process creates
                 if ([resourcesToCreateInCloud count] > 0) {
+                    
                     //we create a bulk set of create requests
                     NSURL* url = [UrlManager urlForCreateObjects:resourceIDsToCreateInCloud withObjectTypes:resourceTypesToCreateInCloud withAuthenticationContext:authenticationContext];
                     for (Resource* resource in resourcesToCreateInCloud) {
-                        Request* request = [self requestFor:resource forOperation:kCREATE onFinishCallback:callback];
-                        
                         //we need to add the attributes that were created on the object
                         NSArray* changedAttributes = [resource attributesWithValues];
-                        [request setChangedAttributesList:changedAttributes];
+                        
+                        Request* request = [self requestFor:resource forOperation:kCREATE withChangedAttributes:changedAttributes onFinishCallback:callback
+                            trackProgressWith:progressDelegate];
+                        
+
+                        //[request setChangedAttributesList:changedAttributes];
                         
                         //we set each requessts url to be the same
                         request.url = [url absoluteString];
-                        
+                        [retVal addObject:request];
                         [createRequests addObject:request];
                     }
                     [requestManager submitRequests:createRequests];
@@ -463,6 +476,9 @@ static ResourceContext* sharedInstance;
     [resourceIDsToCreateInCloud release];
     [putRequests release];
     [createRequests release];
+    
+    [progressDelegate initializeWith:retVal];
+    return retVal;
 }
 
 - (void) executeEnumeration:(NSURL*)url 
@@ -533,8 +549,8 @@ static ResourceContext* sharedInstance;
  
     Request* request = (Request*)[Request createInstanceOfRequest];
    
-    
-    request.statuscode =[NSNumber numberWithInt:kPENDING];
+      [request updateRequestStatus:kPENDING];
+    //request.statuscode =[NSNumber numberWithInt:kPENDING];
     request.operationcode =[NSNumber numberWithInt:kAUTHENTICATE];
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
@@ -560,8 +576,8 @@ static ResourceContext* sharedInstance;
     
     Request* request = (Request*)[Request createInstanceOfRequest];
     
-    
-    request.statuscode =[NSNumber numberWithInt:kPENDING];
+     [request updateRequestStatus:kPENDING];
+    //request.statuscode =[NSNumber numberWithInt:kPENDING];
     request.operationcode =[NSNumber numberWithInt:kUPDATEAUTHENTICATOR];
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
@@ -749,20 +765,7 @@ static ResourceContext* sharedInstance;
 
 }
 
-- (void) removeThreadManagedObjectContext 
-{
-    //remove's the executing thread's managed object context from the managedobjectcontexts set
-    NSString* activityName = @"ResourceContext.removeThreadManagedObjectContext:";
-    NSThread* thread = [NSThread currentThread];
-    NSString *threadKey = [NSString stringWithFormat:@"%p", thread];
-    int threadCount = [self.managedObjectContexts count];
-  //  LOG_RESOURCECONTEXT(0, @"%@Removing thread managed object context with address %@ leaving %d thread contexts in pool",activityName,threadKey, threadCount-1);
-    
-  //  [self.managedObjectContexts removeObjectForKey:threadKey];
-    
-    
-    
-}
+
  
 - (Resource*) singletonResourceWithType:(NSString*)typeName {
     NSString* activityName = @"ResourceContext.singletonResourceWithType:";

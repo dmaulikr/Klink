@@ -29,7 +29,7 @@
 //@synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
 
-@synthesize progressView          = m_progressView;
+//@synthesize progressView          = m_progressView;
 @synthesize loginView             = m_loginView;
 
 #pragma mark - Properties
@@ -129,17 +129,18 @@
     [logoutCallback release];
     [showProgressBarCallback release];
     [hideProgressBarCallback release];
-    
+    [applicationDidBecomeActiveCallback release];
+    [applicationWentToBackgroundCallback release];
     CGRect frameForLoginView = [self frameForLoginView];
     UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
     self.loginView = lv;
     [lv release];
     
-    UIProgressHUDView* pv  = [[UIProgressHUDView alloc]initWithView:self.view];
-    self.progressView = pv;
-    [pv release];
+    //UIProgressHUDView* pv  = [[UIProgressHUDView alloc]initWithView:self.view];
+    //self.progressView = pv;
+    //[pv release];
     
-    [self.view addSubview:self.progressView];
+    //[self.view addSubview:self.progressView];
     
 }
 
@@ -199,38 +200,87 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 #pragma mark - Progress bar management
-
+- (void) showDeterminateProgressBar:(NSString*)message
+                    withCustomView:(UIView*)view
+             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+{
+    NSString* activityName = @"BaseViewController.showDeterminateProgressBar:";
+    
+    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = delegate.progressView;
+    
+    //first check if this view controller is the top level visible controller
+    if (self.navigationController.visibleViewController == self) {
+        progressView.labelText = message;
+        [progressView removeAllSubviews];
+        
+        [self.view addSubview:progressView];
+        if (view != nil) {
+            progressView.customView = view;
+            progressView.mode = MBProgressHUDModeCustomView;
+        }
+        else {
+            progressView.customView = nil;
+            progressView.mode = MBProgressHUDModeDeterminate;
+        }
+        //[progressView hide:NO];
+        
+        
+        LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
+        [progressView show:YES];
+        //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
+    }
+}
 - (void) showProgressBar:(NSString *)message 
           withCustomView:(UIView *)view 
   withMaximumDisplayTime:(NSNumber *)maximumTimeInSeconds 
 {
     NSString* activityName = @"BaseViewController.showProgressBar:";
     
+    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = delegate.progressView;
+
+    
     //first check if this view controller is the top level visible controller
     if (self.navigationController.visibleViewController == self) {
-        self.progressView.labelText = message;
-        [self.progressView removeAllSubviews];
+        progressView.labelText = message;
+        [progressView removeAllSubviews];
+        [self.view addSubview:progressView];
         
         if (view != nil) {
-            self.progressView.customView = view;
-            self.progressView.mode = MBProgressHUDModeCustomView;
+            progressView.customView = view;
+            progressView.mode = MBProgressHUDModeCustomView;
         }
         else {
-            self.progressView.customView = nil;
-            self.progressView.mode = MBProgressHUDModeIndeterminate;
+            progressView.customView = nil;
+            progressView.mode = MBProgressHUDModeIndeterminate;
         }
         
         
-        
-        LOG_OVERLAYVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
-        [self.progressView show:YES];
+       // [progressView hide:NO];
+        LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
+        [progressView show:YES];
         //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
     }
 }
 
 - (void) hideProgressBar {
+    NSString* activityName = @"BaseViewController.hideProgressBar:";
+    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = delegate.progressView;
+
+    
     if (self.navigationController.visibleViewController == self) {
-        [self.progressView hide:YES];
+        LOG_BASEVIEWCONTROLLER(0, @"%@Hiding progress bar and removing it from this view",activityName);
+        [progressView removeFromSuperview];
+        //[progressView hide:YES];
+        if (!progressView.isHidden) {
+            [progressView hide:YES];
+        }
+        progressView.delegate = nil;
+        delegate.progressView = nil;
+        
+        
     }
 }
 
@@ -382,17 +432,21 @@
         page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
     }
     
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
     
     //create callback to this view controller for when the saves are finished
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onSaveComplete:)];
-    [resourceContext save:YES onFinishCallback:callback];
+    
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+
+    [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
     
     [callback release];
-    
-    //after this point, the platforms should automatically begin syncing the data back to the cloud
-    
+   
 }
+
+
 
 #pragma mark - Async Handlers
 //this method handles a Login attempt that is either cancelled or returned unsuccessfully

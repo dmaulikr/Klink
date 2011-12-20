@@ -21,7 +21,8 @@
 #import "DateTimeHelper.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
-
+#import "PlatformAppDelegate.h"
+#import "UIProgressHUDView.h"
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
 
@@ -196,10 +197,10 @@
     self.activeTextView = nil;
     self.activeTextField = nil;
     
-    self.configurationType = nil;
+    //self.configurationType = nil;
     
     self.lbl_draftTitle = nil;
-    self.draftTitle = nil;
+    //self.draftTitle = nil;
     self.tf_newDraftTitle = nil;
     self.lbl_titleRequired = nil;
     
@@ -259,6 +260,8 @@
         // Caption is optional because user is creating a new draft
         self.lbl_captionOptional.hidden = NO;
         self.lbl_captionRequired.hidden = YES;
+        
+        self.tf_newDraftTitle.text = self.draftTitle;
     }
     else if (self.configurationType == PHOTO) {
         // New Photo
@@ -620,31 +623,29 @@
 #pragma mark - Navigation Bar button handler
 
 - (void)onSubmitButtonPressed:(id)sender {
-    //ResourceContext* resourceContext = [ResourceContext instance];
-    
-    //if (self.configurationType == PHOTO && self.img_photo) {
-    //    [Photo createPhotoInPage:self.pageID withThumbnailImage:self.img_thumbnail withImage:self.img_photo];
-    //}
-    
-    //[resourceContext save:YES onFinishCallback:nil];
-    
-    
+    //we call the delegate to instruct it that it should begin committing the changes indicated by this view
     [self.delegate submitChangesForController:self];
     
-    // make sure the parent view contoller's tableview gets updated before displaying
-    /*if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
-        DraftViewController* draftViewController = (DraftViewController*)self.navigationController.topViewController;
-        [draftViewController.pagedViewSlider.tableView reloadData];
+    //after this point, the platforms should automatically begin syncing the data back to the cloud
+    //we now show a progress bar to monitor this background activity
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = delegate.progressView;
+    progressView.delegate = self;
+    
+    NSString* progressIndicatorMessage = nil;
+    if (self.configurationType == PAGE) {
+        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your draft..."];
+                
     }
-    else if ([self.navigationController.topViewController isKindOfClass:[ProductionLogViewController class]]) {
-        ProductionLogViewController* productionLogViewController = (ProductionLogViewController*)self.navigationController.topViewController;
-        [productionLogViewController.tbl_productionTableView reloadData];
+    else if (self.configurationType == PHOTO) {
+        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your photo...",self.draftTitle];
     }
-    else if ([self.navigationController.topViewController isKindOfClass:[FullScreenPhotoViewController class]]) {
-        FullScreenPhotoViewController* fullScreenPhotoViewController = (FullScreenPhotoViewController*)self.navigationController.topViewController;
-        [fullScreenPhotoViewController.photoViewSlider.tableView reloadData];
-        [fullScreenPhotoViewController.captionViewSlider.tableView reloadData];
-    }*/
+    else if (self.configurationType == CAPTION) {
+        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your caption...",self.draftTitle];
+    }
+    [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+
 }
 
 
@@ -665,6 +666,26 @@
 }
 
 #pragma mark - Async callbacks
+- (void) hudWasHidden {
+    //called when the progress view is hidden
+    //we need to dismiss this view
+     [self hideProgressBar];
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)hudWasHidden:(MBProgressHUD *)hud {
+    [self hideProgressBar];
+    
+    //we dismiss this controller if the operation succeeded
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    if (progressView.didSucceed) {
+     [self dismissModalViewControllerAnimated:YES];
+    }
+    //otherwise we keep the current view open
+
+}
+
+
 - (void)onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"ContributeViewController.onImageDownloadComplete:";
     NSDictionary* userInfo = result.context;

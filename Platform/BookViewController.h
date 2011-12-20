@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "CloudEnumerator.h"
-
-@interface BookViewController : BaseViewController < NSFetchedResultsControllerDelegate, UIPageViewControllerDataSource > {
+#import "MBProgressHUD.h"
+@interface BookViewController : BaseViewController < NSFetchedResultsControllerDelegate, UIPageViewControllerDataSource,MBProgressHUDDelegate, CloudEnumeratorDelegate > {
     UIPageViewController* m_pageController;
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying

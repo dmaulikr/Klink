@@ -54,9 +54,7 @@
     
     [m_target performSelector:m_selector withObject:result];
     
-    //we also need to remove this thread's managed object context
-    ResourceContext* resourceContext = [ResourceContext instance];
-    [resourceContext removeThreadManagedObjectContext];
+   
 
     [autorelease drain];
     

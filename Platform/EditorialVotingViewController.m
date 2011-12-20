@@ -437,7 +437,7 @@
         self.userJustVoted = YES;
         
         //lets save that shit to the cloud
-        [resourceContext save:YES onFinishCallback:callback];
+        [resourceContext save:YES onFinishCallback:callback trackProgressWith:nil];
         [callback release];
         
         //notify user that their vote has been casted

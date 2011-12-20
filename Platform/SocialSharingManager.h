@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Request.h"
 #import "Caption.h"
 @interface SocialSharingManager : NSObject {
     
@@ -15,9 +15,15 @@
 
 
 - (id) init;
-- (void) shareCaption:(NSNumber*)captionID onFinish:(Callback*)callback;
-- (void) shareCaptionOnTwitter:(NSNumber*)captionID onFinish:(Callback*)callback;
-- (void) shareCaptionOnFacebook:(NSNumber*)captionID onFinish:(Callback*)callback;
+- (void) shareCaption:(NSNumber*)captionID 
+             onFinish:(Callback*)callback 
+    trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+- (void) shareCaptionOnTwitter:(NSNumber*)captionID 
+                      onFinish:(Callback*)callback 
+             trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+- (void) shareCaptionOnFacebook:(NSNumber*)captionID 
+                       onFinish:(Callback*)callback 
+              trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
 
 + (id) getInstance;
 
