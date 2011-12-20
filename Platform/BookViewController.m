@@ -14,6 +14,9 @@
 #import "UINotificationIcon.h"
 #import "SocialSharingManager.h"
 #import "PageState.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
+#import "PlatformAppDelegate.h"
 
 @implementation BookViewController
 @synthesize pageController = m_pageController;
@@ -201,7 +204,13 @@
         
         if (page != nil) {
             Caption* caption = [page captionWithHighestVotes];
-            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil];
+            
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            progressView.delegate = self;
+
+            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
             [self disableFacebookButton];
         }
     }
@@ -221,8 +230,13 @@
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            progressView.delegate = self;
+            
             Caption* caption = [page captionWithHighestVotes];
-            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil];
+            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
             [self disableTwitterButton];
         }
     }
@@ -264,7 +278,11 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-
+#pragma mark - MBProgressHUD Delegate Methods
+- (void) hudWasHidden:(MBProgressHUD *)hud 
+{
+        //todo: implement this
+}
 #pragma mark - PageViewController Delegate Methods
 - (PageViewController *)viewControllerAtIndex:(int)index
 {
@@ -551,7 +569,7 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
-    NSString* activityName = @"BookViewController.controller.onEnumerateComplete:";
+    //NSString* activityName = @"BookViewController.controller.onEnumerateComplete:";
     
     PageViewController* pageViewController = nil;
     

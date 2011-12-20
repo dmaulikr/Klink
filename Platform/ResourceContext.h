@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "Callback.h"
+@protocol RequestProgressDelegate;
 @class Resource;
 @class Query;
 @class EnumerationContext;
@@ -23,8 +24,11 @@
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic,retain) NSMutableDictionary* managedObjectContexts;
 
-- (void) save:(BOOL)saveToCloudAfter
-onFinishCallback:(Callback*)callback;
+- (NSArray*) save:(BOOL)saveToCloudAfter
+onFinishCallback:(Callback*)callback
+trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+
+
 - (void) insert:(Resource*)resource;
 
 //enumeration methods
@@ -67,7 +71,7 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                    forAttribute:(NSString*)attribute 
                          sortBy:(NSArray*)sortDescriptorArray;
 
-- (void) removeThreadManagedObjectContext;
+
 
 //- (NSArray*)  resourcesWithType:(NSString*)typeName 
 //                 withValueEqual:(NSString*)value 

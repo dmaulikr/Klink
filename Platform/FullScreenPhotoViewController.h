@@ -11,8 +11,9 @@
 #import "UIPagedViewSlider4.h"
 #import "UIPhotoMetaDataView.h"
 #import "CloudEnumerator.h"
+#import "UIProgressHUDView.h"
 
-@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, CloudEnumeratorDelegate> {
+@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, CloudEnumeratorDelegate, MBProgressHUDDelegate> {
     NSNumber*           m_pageID; //represents the ID of the page whose photos will be shown
     NSNumber*           m_photoID;
     NSNumber*           m_captionID;

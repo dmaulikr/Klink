@@ -154,7 +154,10 @@ static  ImageManager* sharedManager;
     [requestUserInfo addEntriesFromDictionary:callback.context];
     request.userInfo = requestUserInfo;
     request.operationcode = [NSNumber numberWithInt:kIMAGEDOWNLOAD];
-    request.statuscode = [NSNumber numberWithInt:kPENDING];
+    
+     [request updateRequestStatus:kPENDING];
+    //request.statuscode = [NSNumber numberWithInt:kPENDING];
+    
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
     RequestManager* requestManager = [RequestManager instance];

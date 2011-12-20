@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "OperationQueue.h"
 #import "ASIDownloadCache.h"
+#import "ASIProgressDelegate.h"
+#import "ASINetworkQueue.h"
 @class Request;
 @interface RequestManager : NSObject {
     OperationQueue* m_operationQueue;

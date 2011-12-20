@@ -143,7 +143,7 @@ static ApplicationSettingsManager* instance;
     settings.page_enumeration_timegap = [NSNumber numberWithInt:threshold_PAGE_ENUMERATION_TIME_GAP];
     settings.page_draftexpiry_seconds = [NSNumber numberWithInt:page_DRAFTEXPIRES_SECONDS];
     settings.version = [NSNumber numberWithInt:0];
-    [self.resourceContext save:YES onFinishCallback:nil];
+    [self.resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
     
     return settings;
 }

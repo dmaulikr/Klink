@@ -43,14 +43,21 @@ static  SocialSharingManager* sharedManager;
     return self;
 }
 
-- (void) share:(NSURL*)url withSharingOptions:(SharingOptions*)sharingOptions onFinish:(Callback*)callback {
+- (void) share:(NSURL*)url 
+withSharingOptions:(SharingOptions*)sharingOptions 
+      onFinish:(Callback*)callback 
+trackProgressWith:(id<RequestProgressDelegate>)progressDelegate 
+{
     Request* request = [Request createInstanceOfRequest];
     request.url = [url absoluteString];
     request.onFailCallback = callback;
     request.onSuccessCallback = callback;
     request.operationcode =[NSNumber numberWithInt:kSHARE];
-    request.statuscode = [NSNumber numberWithInt:kPENDING];
+    request.delegate = progressDelegate;
+     [request updateRequestStatus:kPENDING];
+    //request.statuscode = [NSNumber numberWithInt:kPENDING];
     
+    [progressDelegate initializeWith:[NSArray arrayWithObject:request]];
     RequestManager* requestManager = [RequestManager instance];
     [requestManager submitRequest:request];
 
@@ -59,14 +66,17 @@ static  SocialSharingManager* sharedManager;
 
 #pragma mark - Sharing Methods
 //This method will share a caption on Facebook and Twitter
-- (void) shareCaption:(NSNumber*)captionID onFinish:(Callback*)callback {
+- (void) shareCaption:(NSNumber*)captionID 
+             onFinish:(Callback*)callback 
+    trackProgressWith:(id<RequestProgressDelegate>)progressDelegate 
+{
     NSString* activityName = @"SocialSharingManager.shareCaption:";
     SharingOptions* sharingOptions = [SharingOptions shareOnAll];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
     if ([authenticationManager isUserAuthenticated]) {
         NSURL* url = [UrlManager urlForShareObject:captionID withObjectType:CAPTION withOptions:sharingOptions withAuthenticationContext:[authenticationManager contextForLoggedInUser]];
-        [self share:url withSharingOptions:sharingOptions onFinish:callback];
+        [self share:url withSharingOptions:sharingOptions onFinish:callback trackProgressWith:progressDelegate];
         
     }
     else {
@@ -77,14 +87,17 @@ static  SocialSharingManager* sharedManager;
 }
 
 //This method will share a caption on Facebook 
-- (void) shareCaptionOnFacebook:(NSNumber*)captionID onFinish:(Callback*)callback{
+- (void) shareCaptionOnFacebook:(NSNumber*)captionID 
+                       onFinish:(Callback*)callback 
+              trackProgressWith:(id<RequestProgressDelegate>)progressDelegate
+{
     NSString* activityName = @"SocialSharingManager.shareCaptionOnFacebook:";
     SharingOptions* sharingOptions = [SharingOptions shareOnFacebook];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
     if ([authenticationManager isUserAuthenticated]) {
         NSURL* url = [UrlManager urlForShareObject:captionID withObjectType:CAPTION withOptions:sharingOptions withAuthenticationContext:[authenticationManager contextForLoggedInUser]];
-        [self share:url withSharingOptions:sharingOptions onFinish:callback];
+        [self share:url withSharingOptions:sharingOptions onFinish:callback trackProgressWith:progressDelegate];
         
     }
     else {
@@ -95,14 +108,14 @@ static  SocialSharingManager* sharedManager;
 }
 
 //This method will share a caption on Twitter
-- (void) shareCaptionOnTwitter:(NSNumber*)captionID onFinish:(Callback*)callback {
+- (void) shareCaptionOnTwitter:(NSNumber*)captionID onFinish:(Callback*)callback trackProgressWith:(id<RequestProgressDelegate>)progressDelegate{
     NSString* activityName = @"SocialSharingManager.shareCaptionOnTwitter:";
     SharingOptions* sharingOptions = [SharingOptions shareOnTwitter];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     
     if ([authenticationManager isUserAuthenticated]) {
         NSURL* url = [UrlManager urlForShareObject:captionID withObjectType:CAPTION withOptions:sharingOptions withAuthenticationContext:[authenticationManager contextForLoggedInUser]];
-        [self share:url withSharingOptions:sharingOptions onFinish:callback];
+        [self share:url withSharingOptions:sharingOptions onFinish:callback trackProgressWith:progressDelegate];
         
     }
     else {

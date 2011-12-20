@@ -17,7 +17,7 @@
 #import "FeedManager.h"
 #import "EventManager.h"
 #import "CallbackResult.h"
-
+#import "Request.h"
 @class ContributeViewController;
 @class UICameraActionSheet;
 @class ResourceContext;
@@ -39,7 +39,7 @@
 
 
 @property (nonatomic, retain) User*                     loggedInUser;
-@property (nonatomic, retain) UIProgressHUDView*        progressView;
+//@property (nonatomic, retain) UIProgressHUDView*        progressView;
 @property (nonatomic, retain) UILoginView*              loginView;
 
 - (void) authenticate:(BOOL)facebook 
@@ -53,6 +53,10 @@
 - (void) showProgressBar: (NSString*)message 
           withCustomView:(UIView*)view 
   withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
+
+- (void) showDeterminateProgressBar:(NSString*)message
+                     withCustomView:(UIView*)view
+             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
     
 
 - (void) hideProgressBar;

@@ -280,7 +280,7 @@
         self.poll.hasvoted = [NSNumber numberWithBool:YES];
         
         //lets save that shit to the cloud
-        [resourceContext save:YES onFinishCallback:callback];
+        [resourceContext save:YES onFinishCallback:callback trackProgressWith:nil];
         [callback release];
         
         [self dismissModalViewControllerAnimated:YES];

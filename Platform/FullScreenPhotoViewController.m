@@ -21,6 +21,7 @@
 #import "ApplicationSettings.h"
 #import "SocialSharingManager.h"
 #import "LandscapePhotoViewController.h"
+#import "PlatformAppDelegate.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -665,13 +666,21 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        progressView.delegate = self;
+        
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
             [self disableFacebookButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil];
+            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
+            
+            NSString* message = @"Submitting to Facebook...";
+            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
 }
@@ -684,6 +693,11 @@
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
@@ -691,8 +705,13 @@
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
-            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil];
+            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
+            
+            NSString* message = @"Submitting to Twitter...";
+            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
+        
+      
     }
 }
 
@@ -756,7 +775,7 @@
     */
     
     //now we need to commit to the store
-    [resourceContext save:YES onFinishCallback:nil];
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
     
     //update photo and caption metadata views
     [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
@@ -792,7 +811,11 @@
     }
 }
 
-
+#pragma mark - MBProgressHudDelegate members
+- (void) hudWasHidden:(MBProgressHUD *)hud {
+    //when the hud is hidden we need to remove it from this view
+    [self hideProgressBar];
+}
 #pragma mark - UIPagedViewSlider2Delegate
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
      cellForRowAtIndex:         (int)                   index 

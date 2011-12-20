@@ -7,12 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "MBProgressHUD.h"
-
-@interface UIProgressHUDView : MBProgressHUD {
+#import "Request.h"
+@interface UIProgressHUDView : MBProgressHUD <RequestProgressDelegate>  {
     UIView* m_backgroundView;
+    NSArray* m_requests;
+    BOOL m_didSucceed;
 }
 
 - (id) initWithView:(UIView *)view;
 @property (nonatomic,retain) UIView*    backgroundView;
+@property (nonatomic,retain) NSArray*   requests;
+@property                    BOOL       didSucceed;
 @end

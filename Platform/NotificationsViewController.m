@@ -90,7 +90,7 @@
         notification.hasseen = [NSNumber numberWithBool:YES];
     }
     
-    [resourceContext save:YES onFinishCallback:nil];
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
 }
 
 

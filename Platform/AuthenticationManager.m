@@ -146,7 +146,7 @@ static  AuthenticationManager* sharedManager;
             
             //save the path on the user object and commit            
             userObject.thumbnailurl = path;
-            [resourceContext save:YES onFinishCallback:nil];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
         }
     }
     
@@ -340,7 +340,7 @@ static  AuthenticationManager* sharedManager;
         //need to insert the new user into the resource context
         [resourceContext insert:returnedUser];
     }
-    [resourceContext save:YES onFinishCallback:nil];
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
     
     BOOL contextSavedToKeyChain = [self saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
     
