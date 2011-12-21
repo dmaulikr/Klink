@@ -173,6 +173,28 @@
     //common setup for the view controller
     self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
+    
+    
+    // resister callbacks for change events
+    Callback* newDraftCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewDraft:)];
+    Callback* newPhotoCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhoto:)];
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newDraftCallback forSystemEvent:kNEWPAGE];
+    [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newDraftCallback release];
+    [newPhotoCallback release];
+    [newCaptionCallback release];
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
+    
+    
     return self;
 }
 
@@ -199,25 +221,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // resister callbacks for change events
-    Callback* newDraftCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewDraft:)];
-    Callback* newPhotoCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhoto:)];
-    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
-    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
-    
-    [self.eventManager registerCallback:newDraftCallback forSystemEvent:kNEWPAGE];
-    [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
-    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
-    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
-    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
-    
-    [newDraftCallback release];
-    [newPhotoCallback release];
-    [newCaptionCallback release];
-    [newPhotoVoteCallback release];
-    [newCaptionVoteCallback release];
+
 
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     
@@ -251,6 +255,10 @@
     
     self.tbl_productionTableView = nil;
     self.productionTableViewCell = nil;
+    self.refreshHeader = nil;
+    self.lbl_title = nil;
+    self.lbl_numDraftsTotal = nil;
+    self.lbl_numDraftsClosing = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated

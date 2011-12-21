@@ -68,6 +68,43 @@
     }
 }
 
+- (void) commonInit {
+    
+    Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
+    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];    
+    Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
+    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];    
+    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];    
+    Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
+    Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
+    Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
+    
+    [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
+    [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
+    [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
+    [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
+    [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
+    [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
+    [self.eventManager registerCallback:applicationDidBecomeActiveCallback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
+    [self.eventManager registerCallback:applicationWentToBackgroundCallback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
+    
+    [unknownRequestFailureCallback release];
+    [failedAuthenticationCallback release];
+    [loginCallback release];
+    [logoutCallback release];
+    [showProgressBarCallback release];
+    [hideProgressBarCallback release];
+    [applicationDidBecomeActiveCallback release];
+    [applicationWentToBackgroundCallback release];
+}
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
+}
 #pragma mark - Frames
 - (CGRect) frameForLoginView {
     return CGRectMake(0, 0, 320, 460);
@@ -104,33 +141,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
-    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];    
-    Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
-    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];    
-    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];    
-    Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
-    Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
-    Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
-    
-    [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
-    [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
-    [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
-    [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
-    [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
-    [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
-    [self.eventManager registerCallback:applicationDidBecomeActiveCallback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
-    [self.eventManager registerCallback:applicationWentToBackgroundCallback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
-    
-    [unknownRequestFailureCallback release];
-    [failedAuthenticationCallback release];
-    [loginCallback release];
-    [logoutCallback release];
-    [showProgressBarCallback release];
-    [hideProgressBarCallback release];
-    [applicationDidBecomeActiveCallback release];
-    [applicationWentToBackgroundCallback release];
+
     CGRect frameForLoginView = [self frameForLoginView];
     UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
     self.loginView = lv;
@@ -183,7 +194,7 @@
     //NSString* activityName = @"BaseViewController.viewWillDisappear:";
     [super viewWillDisappear:animated];
     
-
+    
 }
 
 
@@ -192,6 +203,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.loginView = nil;
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -340,10 +353,15 @@
 - (void)submitChangesForController:(ContributeViewController*)controller {
     NSString* activityName = @"BaseViewController.submitChangesForController:";
     ResourceContext* resourceContext = [ResourceContext instance];
+    //we start a new undo group here
+    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
     
     //this method will persist changes that are returned from the contribute controller
     if (controller.configurationType == PAGE) {
         //this is a new draft being added
+        
+       
+        
         Page* page = [Page createNewDraftPage];
         
         page.displayname = controller.draftTitle;
@@ -383,9 +401,13 @@
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
         }
+        //[resourceContext.managedObjectContext.undoManager endUndoGrouping];
         
     }
     else if (controller.configurationType == PHOTO) {
+       
+
+        
         //this is a new photo being added to a draft page
         Photo* photo = [Photo createPhotoInPage:controller.pageID withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
         
@@ -414,9 +436,12 @@
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
         }
-        
+      
     }
     else if (controller.configurationType == CAPTION) {
+        
+    
+
         Caption* caption = [Caption createCaptionForPhoto:controller.photoID withCaption:controller.caption];
         LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new caption with ID:%@ (caption:%@)",activityName,caption.objectid,caption.caption1);
         
@@ -430,6 +455,9 @@
         //increment the caption counters on the photo and page this new caption belongs to
         photo.numberofcaptions = [NSNumber numberWithInt:([photo.numberofcaptions intValue] + 1)];
         page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
+        
+       
+
     }
     
     //[self dismissModalViewControllerAnimated:YES];
@@ -440,9 +468,14 @@
     PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     UIProgressHUDView* progressView = appDelegate.progressView;
 
+    //we start a new undo group here
+   // [resourceContext.managedObjectContext processPendingChanges];
+   // [resourceContext.managedObjectContext.undoManager endUndoGrouping];
     [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
     
     [callback release];
+    
+ 
    
 }
 

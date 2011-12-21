@@ -152,7 +152,8 @@
     
     
     if (!m_isEnumerationPending &&
-        hasEnoughTimeLapsedBetweenConsecutiveSearches) {
+        hasEnoughTimeLapsedBetweenConsecutiveSearches &&
+        self.enumerationContext != nil) {
         LOG_ENUMERATION(0, @"%@Beginning to enumerate until all results of the query are downloaded",activityName);
         self.userInfo = userInfo;
         self.lastExecutedTime = [NSDate date];

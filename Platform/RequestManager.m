@@ -130,7 +130,7 @@ static RequestManager* sharedInstance;
         httpRequest.didFinishSelector = @selector(onRequestSucceeded:);
         httpRequest.timeOutSeconds = 5;
         httpRequest.showAccurateProgress = YES;
-        httpRequest.numberOfTimesToRetryOnTimeout = 3;
+        httpRequest.numberOfTimesToRetryOnTimeout = 1;
         //httpRequest.cacheStoragePolicy = ASICachePermanentlyCacheStoragePolicy;
         //httpRequest.downloadCache = self.imageCache;
          //[httpRequest setValidatesSecureCertificate:NO];
@@ -781,7 +781,7 @@ static RequestManager* sharedInstance;
 
 - (Response*)processImageDownloadResponse:(NSString*)responseString withRequest:(Request*)request {
     //we creare the response manually since there is no JSON to deserialize into an instance
-    NSString* activityName = @"RequestManager.processImageDownloadResponse:";
+ //   NSString* activityName = @"RequestManager.processImageDownloadResponse:";
     ImageDownloadResponse* response = [[ImageDownloadResponse alloc]init];
     
     
@@ -796,14 +796,14 @@ static RequestManager* sharedInstance;
         response.image = nil;
         response.path = nil;
         
-        LOG_REQUEST(1, @"%@Image download failed, photo doesn't exist at specified path %@",activityName,imagePath);
+        //LOG_REQUEST(1, @"%@Image download failed, photo doesn't exist at specified path %@",activityName,imagePath);
     }
     else {
         response.didSucceed = [NSNumber numberWithBool:YES];
          response.path = imagePath;
         response.image = image;
         response.errorMessage = nil;
-         LOG_REQUEST(0, @"%@Image downloaded successfully to location %@",activityName,imagePath);
+         //LOG_REQUEST(0, @"%@Image downloaded successfully to location %@",activityName,imagePath);
     }
     [response autorelease];
     return response;
