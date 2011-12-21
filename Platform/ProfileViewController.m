@@ -118,17 +118,17 @@
     
     // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
     // drafts in the last 7 days
-    float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)kEDITORMINIMUM;
+    float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)progressBarMaxValue;
     //float progressDrafts = (float)3 / (float)progressBarMaxValue;
     self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * progressBarContainerWidth), self.iv_progressDrafts.frame.size.height);
     
     // photos in the last 7 days
-    float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)kEDITORMINIMUM;
+    float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)progressBarMaxValue;
     //float progressPhotos = (float)2 / (float)progressBarMaxValue;
     self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * progressBarContainerWidth), self.iv_progressPhotos.frame.size.height);
     
     // captions in the last 7 days
-    float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)kEDITORMINIMUM;
+    float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)progressBarMaxValue;
     //float progressCaptions = (float)4 / (float)progressBarMaxValue;
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
     
