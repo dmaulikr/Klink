@@ -442,10 +442,10 @@
         
         //notify user that their vote has been casted
         if (self.loggedInUser) {
-            message = [[NSString alloc] initWithFormat:@"Thank you, %@, your vote has be casted.", self.loggedInUser.displayname];
+            message = [[NSString alloc] initWithFormat:@"Thank you, %@, your vote has been cast.", self.loggedInUser.displayname];
         }
         else {
-            message = [[NSString alloc] initWithFormat:@"Thank you, your vote has be casted."];
+            message = [[NSString alloc] initWithFormat:@"Thank you, your vote has been cast."];
         }
         
     }

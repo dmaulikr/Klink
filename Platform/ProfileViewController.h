@@ -21,6 +21,23 @@
     UILabel* m_lbl_votesLabel;
     UILabel* m_lbl_submissionsLabel;
     UILabel* m_lbl_submissionsLast7DaysLabel;
+    UILabel* m_lbl_editorMinimumLabel;
+    UILabel* m_lbl_userBestLabel;
+    UILabel* m_lbl_draftsLast7Days;
+    UILabel* m_lbl_photosLast7Days;
+    UILabel* m_lbl_captionsLast7Days;
+    UILabel* m_lbl_totalLast7Days;
+    UILabel* m_lbl_draftsLabel;
+    UILabel* m_lbl_photosLabel;
+    UILabel* m_lbl_captionsLabel;
+    UILabel* m_lbl_totalLabel;
+    
+    UIImageView* m_iv_progressBarContainer;
+    UIImageView* m_iv_progressDrafts;
+    UIImageView* m_iv_progressPhotos;
+    UIImageView* m_iv_progressCaptions;
+    UIImageView* m_iv_editorMinimumLine;
+    UIImageView* m_iv_userBestLine;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
@@ -34,6 +51,23 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_votesLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLast7DaysLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_editorMinimumLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_userBestLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_draftsLast7Days;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_photosLast7Days;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLast7Days;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_totalLast7Days;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_draftsLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_photosLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_totalLabel;
+
+@property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_progressCaptions;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 
 + (ProfileViewController*)createInstance;
 

@@ -62,6 +62,8 @@
 		5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5253629A14998DF8001F1EB6 /* thumbnail_frame@2x.png */; };
 		5264A2371474566C00E341BA /* ProductionLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264A2351474566C00E341BA /* ProductionLogViewController.m */; };
 		5264A2381474566C00E341BA /* ProductionLogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A2361474566C00E341BA /* ProductionLogViewController.xib */; };
+		526A5AFC14A0F469000DAF58 /* progress_threshold.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFA14A0F469000DAF58 /* progress_threshold.png */; };
+		526A5AFD14A0F469000DAF58 /* progress_threshold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
 		5281EEEE1485945700AB1BF0 /* icon-pics2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEC1485945700AB1BF0 /* icon-pics2@2x.png */; };
 		5281EEF114859A4100AB1BF0 /* image-photoCameraButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */; };
@@ -255,7 +257,6 @@
 		C5E42594148705E300BB1264 /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E42593148705E300BB1264 /* SharingOptions.m */; };
 		C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AA71458ACB7001AFCA8 /* Page.m */; };
 		C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AAB1458ADE2001AFCA8 /* Feed.m */; };
-		C5F3A56B149EC00E0045EFF6 /* UIRequestTrackingProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */; };
 		C5F4630D1444BCA400170835 /* OpCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F4630C1444BCA400170835 /* OpCodes.m */; };
 /* End PBXBuildFile section */
 
@@ -327,6 +328,8 @@
 		5264A2341474566C00E341BA /* ProductionLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductionLogViewController.h; sourceTree = "<group>"; };
 		5264A2351474566C00E341BA /* ProductionLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionLogViewController.m; sourceTree = "<group>"; };
 		5264A2361474566C00E341BA /* ProductionLogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductionLogViewController.xib; sourceTree = "<group>"; };
+		526A5AFA14A0F469000DAF58 /* progress_threshold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_threshold.png; sourceTree = "<group>"; };
+		526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_threshold@2x.png"; sourceTree = "<group>"; };
 		5281EEEB1485945600AB1BF0 /* icon-pics2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-pics2.png"; sourceTree = "<group>"; };
 		5281EEEC1485945700AB1BF0 /* icon-pics2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-pics2@2x.png"; sourceTree = "<group>"; };
 		5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton@2x.png"; sourceTree = "<group>"; };
@@ -799,6 +802,8 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				526A5AFA14A0F469000DAF58 /* progress_threshold.png */,
+				526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */,
 				52979AF214A0128100F29ECC /* progressBar_container.png */,
 				52979AF314A0128100F29ECC /* progressBar_container@2x.png */,
 				52979AF414A0128100F29ECC /* progressBar_darkfill.png */,
@@ -1736,6 +1741,8 @@
 				52979AFF14A0128200F29ECC /* progressBar_lightfill@2x.png in Resources */,
 				52979B0014A0128200F29ECC /* progressBar_mediumfill.png in Resources */,
 				52979B0114A0128200F29ECC /* progressBar_mediumfill@2x.png in Resources */,
+				526A5AFC14A0F469000DAF58 /* progress_threshold.png in Resources */,
+				526A5AFD14A0F469000DAF58 /* progress_threshold@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -427,7 +427,7 @@
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 44.0f, 0.0f)];
+    //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
 }
 
 

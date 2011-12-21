@@ -21,7 +21,153 @@
 @synthesize lbl_votesLabel          = m_lbl_votesLabel;
 @synthesize lbl_submissionsLabel    = m_lbl_submissionsLabel;
 @synthesize lbl_submissionsLast7DaysLabel = m_lbl_submissionsLast7DaysLabel;
+@synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
+@synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
+@synthesize lbl_draftsLast7Days     = m_lbl_draftsLast7Days;
+@synthesize lbl_photosLast7Days     = m_lbl_photosLast7Days;
+@synthesize lbl_captionsLast7Days   = m_lbl_captionsLast7Days;
+@synthesize lbl_totalLast7Days      = m_lbl_totalLast7Days;
+@synthesize lbl_draftsLabel         = m_lbl_draftsLabel;
+@synthesize lbl_photosLabel         = m_lbl_photosLabel;
+@synthesize lbl_captionsLabel       = m_lbl_captionsLabel;
+@synthesize lbl_totalLabel          = m_lbl_totalLabel;
+@synthesize iv_progressBarContainer = m_iv_progressBarContainer;
+@synthesize iv_progressDrafts       = m_iv_progressDrafts;
+@synthesize iv_progressPhotos       = m_iv_progressPhotos;
+@synthesize iv_progressCaptions     = m_iv_progressCaptions;
+@synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
+@synthesize iv_userBestLine         = m_iv_userBestLine;
 
+
+#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
+#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
+#define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
+#define kPROGRESSBARCONTAINERINSETRIGHT 4.0
+
+#define kEDITORMINIMUM 10
+#define kUSERBEST 6
+
+#pragma mark - Progress Bar methods 
+- (void)drawProgressBar {    
+    int totalSubmissionsLast7Days = [self.loggedInUser.numberofdraftscreatedlw intValue]
+    + [self.loggedInUser.numberofphotoslw intValue]
+    + [self.loggedInUser.numberofcaptionslw intValue];
+    
+    float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETRIGHT;
+    float editorMinimumLineMidPoint = (float)self.iv_editorMinimumLine.frame.size.width / (float)2;
+    float editorMinimumLabelMidPoint = (float)self.lbl_editorMinimumLabel.frame.size.width / (float)2;
+    float userBestLineMidPoint = (float)self.iv_userBestLine.frame.size.width / (float)2;
+    float userBestLabelMidPoint = (float)self.lbl_userBestLabel.frame.size.width / (float)2;
+    
+    // TEMP DELETE THE LINE BELOW, USED FOR TESTING
+    //totalSubmissionsLast7Days = 0;
+    
+    // determine which value will set the scale (max value) for the progress bar
+    float progressBarMaxValue = MAX(MAX((float)kUSERBEST, (float)kEDITORMINIMUM), (float)totalSubmissionsLast7Days);
+    
+    if (progressBarMaxValue == kUSERBEST) {
+        // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+        progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
+    }
+    else if (progressBarMaxValue == kEDITORMINIMUM) {
+        // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+        progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM;
+    }
+    else {
+        // let the progress bar container be filled by the users current count of submissions
+    }
+    
+    /*switch (progressBarMaxValue) {
+        case kUSERBEST:
+            // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+            progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
+            break;
+        
+        case kEDITORMINIMUM:
+            // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+            progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM;
+            break;
+            
+        default:
+            // let the progress bar container be filled by the users current count of submissions
+            break;
+    }*/
+    
+    float scaleEditorMinimum = (float)kEDITORMINIMUM / (float)progressBarMaxValue;
+    float scaleUserBest = (float)kUSERBEST / (float)progressBarMaxValue;
+    
+    
+    // move the editor threshold line
+    float editorMinimumLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleEditorMinimum * progressBarContainerWidth) - editorMinimumLineMidPoint);
+    self.iv_editorMinimumLine.frame = CGRectMake(editorMinimumLineXOrigin, self.iv_editorMinimumLine.frame.origin.y, self.iv_editorMinimumLine.frame.size.width, self.iv_editorMinimumLine.frame.size.height);
+    float editorMinimumWidth = (float)self.iv_editorMinimumLine.frame.origin.x + (float)editorMinimumLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
+    
+    // move the editor threshold label
+    float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
+    self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
+    
+    // move the user best threshold line
+    float userBestLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleUserBest * progressBarContainerWidth) - userBestLineMidPoint);
+    self.iv_userBestLine.frame = CGRectMake(userBestLineXOrigin, self.iv_userBestLine.frame.origin.y, self.iv_userBestLine.frame.size.width, self.iv_userBestLine.frame.size.height);
+    float userBestWidth = (float)self.iv_userBestLine.frame.origin.x + (float)userBestLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
+    
+    // move the user best threshold label
+    float userBestLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    self.lbl_userBestLabel.frame = CGRectMake(userBestLabelXOrigin, self.lbl_userBestLabel.frame.origin.y, self.lbl_userBestLabel.frame.size.width, self.lbl_userBestLabel.frame.size.height);
+    
+    
+    // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
+    // drafts in the last 7 days
+    float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)kEDITORMINIMUM;
+    //float progressDrafts = (float)3 / (float)progressBarMaxValue;
+    self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * progressBarContainerWidth), self.iv_progressDrafts.frame.size.height);
+    
+    // photos in the last 7 days
+    float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)kEDITORMINIMUM;
+    //float progressPhotos = (float)2 / (float)progressBarMaxValue;
+    self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * progressBarContainerWidth), self.iv_progressPhotos.frame.size.height);
+    
+    // captions in the last 7 days
+    float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)kEDITORMINIMUM;
+    //float progressCaptions = (float)4 / (float)progressBarMaxValue;
+    self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
+    
+    
+    /*
+    if (totalSubmissionsLast7Days <= kEDITORMINIMUM) {
+        // user hasn't met the minimum required subissions to be an editor,
+        // make the editor threshold line 80% of the progress bar container
+
+        // move the editor threshold line
+        float editorMinimumLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM * progressBarContainerWidth) - editorMinimumLineMidPoint);
+        self.iv_editorMinimumLine.frame = CGRectMake(editorMinimumLineXOrigin, self.iv_editorMinimumLine.frame.origin.y, self.iv_editorMinimumLine.frame.size.width, self.iv_editorMinimumLine.frame.size.height);
+        float editorMinimumWidth = (float)self.iv_editorMinimumLine.frame.origin.x + (float)editorMinimumLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
+        
+        // move the editor threshold label
+        float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
+        self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
+        
+        // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
+        // drafts in the last 7 days
+        //float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)kEDITORMINIMUM;
+        float progressDrafts = (float)3 / (float)kEDITORMINIMUM;
+        self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * editorMinimumWidth), self.iv_progressDrafts.frame.size.height);
+        
+        // photos in the last 7 days
+        //float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)kEDITORMINIMUM;
+        float progressPhotos = (float)3 / (float)kEDITORMINIMUM;
+        self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * editorMinimumWidth), self.iv_progressPhotos.frame.size.height);
+        
+        // captions in the last 7 days
+        //float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)kEDITORMINIMUM;
+        float progressCaptions = (float)4 / (float)kEDITORMINIMUM;
+        self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * editorMinimumWidth), self.iv_progressCaptions.frame.size.height);
+    }
+     */
+    
+}
+
+#pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -64,7 +210,16 @@
     [self.lbl_votesLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
     [self.lbl_submissionsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
     [self.lbl_submissionsLast7DaysLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-    
+    [self.lbl_editorMinimumLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.lbl_userBestLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
+    [self.lbl_draftsLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_photosLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_captionsLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_totalLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_draftsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
+    [self.lbl_photosLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
+    [self.lbl_captionsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
+    [self.lbl_totalLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
     
 }
 
@@ -85,6 +240,22 @@
     self.lbl_votesLabel = nil;
     self.lbl_submissionsLabel = nil;
     self.lbl_submissionsLast7DaysLabel = nil;
+    self.lbl_editorMinimumLabel = nil;
+    self.lbl_userBestLabel = nil;
+    self.lbl_draftsLast7Days = nil;
+    self.lbl_photosLast7Days = nil;
+    self.lbl_captionsLast7Days = nil;
+    self.lbl_totalLast7Days = nil;
+    self.lbl_draftsLabel = nil;
+    self.lbl_photosLabel = nil;
+    self.lbl_captionsLabel = nil;
+    self.lbl_totalLabel = nil;
+    self.iv_progressDrafts = nil;
+    self.iv_progressPhotos = nil;
+    self.iv_progressCaptions = nil;
+    self.iv_editorMinimumLine = nil;
+    self.iv_userBestLine = nil;
+    self.iv_progressBarContainer = nil;
     
 }
 
@@ -116,6 +287,13 @@
                                 + [self.loggedInUser.numberofphotoslw intValue]
                                  + [self.loggedInUser.numberofcaptionslw intValue];
         self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+        
+        self.lbl_draftsLast7Days.text = [self.loggedInUser.numberofdraftscreatedlw stringValue];
+        self.lbl_photosLast7Days.text = [self.loggedInUser.numberofphotoslw stringValue];
+        self.lbl_captionsLast7Days.text = [self.loggedInUser.numberofcaptionslw stringValue];
+        self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+        
+        [self drawProgressBar];
     }
     
 }
