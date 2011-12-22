@@ -298,6 +298,7 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
+    int c = [[self.frc_pollData fetchedObjects]count];
     return [[self.frc_pollData fetchedObjects]count];
 }
 
@@ -455,6 +456,12 @@
             message = [[NSString alloc] initWithFormat:@"Thank you, your vote has been cast."];
         }
         
+        
+        //lets display the progress view
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        [message release];
+        
     }
     else if ([self.poll.hasvoted boolValue]) {
         //notify user that they have already voted in this poll and their new vote has been dismissed
@@ -466,22 +473,20 @@
         }
         
         LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@User has already voted for this poll, skipping voting",activityName);
+        
+        
+            //show vote confirmation alert
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:message 
+                                                           delegate:self 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [alert show];
+            [alert release];
     }
-    
-//    //show vote confirmation alert
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-//                                                    message:message 
-//                                                   delegate:self 
-//                                          cancelButtonTitle:@"OK" 
-//                                          otherButtonTitles:nil];
-//    [alert show];
-//    [alert release];
+
    
-    
-    //lets display the progress view
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-     [message release];
+
     
 }
 

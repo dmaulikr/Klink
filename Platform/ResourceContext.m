@@ -264,7 +264,7 @@ static ResourceContext* sharedInstance;
             if (resource.objectid == nil ||
                 [resource.objectid isEqualToNumber:[NSNumber numberWithInt:0]]) {
                 
-                resource.objectid = [IDGenerator generateNewId:resource.objecttype];
+                resource.objectid = [[IDGenerator instance ]generateNewId:resource.objecttype];
             }
             
             NSDate* currentDate = [NSDate date];

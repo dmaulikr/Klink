@@ -10,8 +10,14 @@
 
 
 @interface IDGenerator : NSObject {
-    
+
+    NSMutableArray* m_knownIDs;
 }
-+ (NSNumber*) generateNewId:(NSString*)objectType;
-+ (NSNumber*) generateNewId:(NSString*)objectType byUser:(NSNumber*)userid;
+
+@property (nonatomic,retain) NSMutableArray* knownIDs;
+
+- (NSNumber*) generateNewId:(NSString*)objectType;
+- (NSNumber*) generateNewId:(NSString*)objectType byUser:(NSNumber*)userid;
+
++ (IDGenerator*)instance;
 @end

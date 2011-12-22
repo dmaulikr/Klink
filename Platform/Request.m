@@ -257,7 +257,7 @@ withChangedAttributes:(NSArray*)changedAttributes
     NSEntityDescription* entity = [NSEntityDescription entityForName:REQUEST inManagedObjectContext:resourceContext.managedObjectContext];
     Request* retVal = [[Request alloc]initWithEntity:entity insertIntoResourceContext:nil];
     //give it an objectid
-    retVal.objectid = [IDGenerator generateNewId:REQUEST];
+    retVal.objectid = [[IDGenerator instance] generateNewId:REQUEST];
     [retVal autorelease];
     return retVal;
 }
