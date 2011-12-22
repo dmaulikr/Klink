@@ -77,21 +77,6 @@
         // let the progress bar container be filled by the users current count of submissions
     }
     
-    /*switch (progressBarMaxValue) {
-        case kUSERBEST:
-            // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
-            progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
-            break;
-        
-        case kEDITORMINIMUM:
-            // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
-            progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM;
-            break;
-            
-        default:
-            // let the progress bar container be filled by the users current count of submissions
-            break;
-    }*/
     
     float scaleEditorMinimum = (float)kEDITORMINIMUM / (float)progressBarMaxValue;
     float scaleUserBest = (float)kUSERBEST / (float)progressBarMaxValue;
