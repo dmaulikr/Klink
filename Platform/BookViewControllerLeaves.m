@@ -189,14 +189,14 @@
     
     
     // Add an invisible button to capture taps to hide/show the controls
-    UIButton* invisibleButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton* invisibleShowHideButton = [UIButton buttonWithType:UIButtonTypeCustom];
     // set the size of the button to fit in the area between the next page and previous page touch areas of the LeavesView
-    invisibleButton.frame = [self frameForShowHideButton];
+    invisibleShowHideButton.frame = [self frameForShowHideButton];
     // add targets and actions
     //[invisibleButton setBackgroundColor:[UIColor redColor]];
-    [invisibleButton addTarget:self action:@selector(toggleControls) forControlEvents:UIControlEventTouchUpInside];
+    [invisibleShowHideButton addTarget:self action:@selector(toggleControls) forControlEvents:UIControlEventTouchUpInside];
     // add to a view
-    [self.view addSubview:invisibleButton];
+    [self.view addSubview:invisibleShowHideButton];
 
     
     if (self.pageID != nil  && [self.pageID intValue] != 0) {
@@ -231,8 +231,11 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self hideControlsAfterDelay:5];
     
 }
 
