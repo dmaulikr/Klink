@@ -123,7 +123,15 @@
     //we assume the call ahs failed if the progress bar ends up stuck
     LOG_REQUEST(0, @"%@Progress bar has exceeded its maximum display timer setting, automatically closing progress bar and failing request",activityName);
     self.didSucceed = NO;
-    [self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
+    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2@2x.png"]];
+    self.customView = iv;
+    [iv release];
+    
+    self.mode = MBProgressHUDModeCustomView;
+    self.labelText = @"Failed!";
+    self.didSucceed = NO;
+
+     [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 }
 
 - (void) show:(BOOL)animated {

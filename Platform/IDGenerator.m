@@ -60,12 +60,14 @@ static IDGenerator* sharedManager;
     
     candidate = arc4random() % LONG_MAX;
    
-    while ([self isIDKnown:candidate]) {
-        candidate = arc4random() % LONG_MAX;
-
+    if (![objectType isEqualToString:REQUEST]) {
+        while ([self isIDKnown:candidate]) {
+            candidate = arc4random() % LONG_MAX;
+            
+        }
+        
+        [self.knownIDs addObject:[NSNumber numberWithLong:candidate]];
     }
-
-    [self.knownIDs addObject:[NSNumber numberWithLong:candidate]];
     return [NSNumber numberWithLong:candidate];
     
     
@@ -79,13 +81,15 @@ static IDGenerator* sharedManager;
     
     candidate = arc4random() % LONG_MAX;
     
-    while ([self isIDKnown:candidate]) {
-        candidate = arc4random() % LONG_MAX;
+    if (![objectType isEqualToString:REQUEST]) {
+        while ([self isIDKnown:candidate]) {
+            candidate = arc4random() % LONG_MAX;
+            
+        }
         
+        [self.knownIDs addObject:[NSNumber numberWithLong:candidate]];
     }
-    
-    [self.knownIDs addObject:[NSNumber numberWithLong:candidate]];
-    return [NSNumber numberWithLong:candidate];
+    return [NSNumber numberWithLong:candidate];;
 
     
 }
