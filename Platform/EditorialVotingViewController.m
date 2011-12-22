@@ -16,6 +16,7 @@
 #import "UIEditorialPageView.h"
 #import "UIDraftTableViewCell.h"
 #import "DateTimeHelper.h"
+#import "PlatformAppDelegate.h"
 
 @implementation EditorialVotingViewController
 @synthesize poll            = m_poll;
@@ -419,9 +420,12 @@
     int index = self.ic_coverFlowView.currentItemIndex;
     
     if (index > 0 && index < count && ![self.poll.hasvoted boolValue]) {
+        
+        
         //create a vote object
         
         ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
         Page* targetPage = [[self.frc_pollData fetchedObjects]objectAtIndex:index];
         
         [Vote createVoteFor:self.poll_ID forTarget:targetPage.objectid withType:PAGE];
@@ -437,7 +441,10 @@
         self.userJustVoted = YES;
         
         //lets save that shit to the cloud
-        [resourceContext save:YES onFinishCallback:callback trackProgressWith:nil];
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+        [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
         [callback release];
         
         //notify user that their vote has been casted
@@ -461,15 +468,53 @@
         LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@User has already voted for this poll, skipping voting",activityName);
     }
     
-    //show vote confirmation alert
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:message 
-                                                   delegate:self 
-                                          cancelButtonTitle:@"OK" 
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
-    [message release];
+//    //show vote confirmation alert
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+//                                                    message:message 
+//                                                   delegate:self 
+//                                          cancelButtonTitle:@"OK" 
+//                                          otherButtonTitles:nil];
+//    [alert show];
+//    [alert release];
+   
+    
+    //lets display the progress view
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+     [message release];
+    
+}
+
+#pragma mark - MBProgressHUDDelegate
+- (void) hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"EditorialVotingViewController.hudWasHidden";
+    //we dismiss this controller if the operation succeeded
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    if (progressView.didSucceed) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else {
+        //otherwise we keep the current view open
+        //we need to undo the operation that was last performed
+        LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+        
+        //now we need to display an alert telling the user their vote couldn't be cast and to try again
+        NSString* message = [NSString stringWithFormat:@"Sorry, there was an error sending your vote to the server. Please try again."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message 
+                                                       delegate:self 
+                                              cancelButtonTitle:@"OK" 
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+
+        
+    }
     
 }
 

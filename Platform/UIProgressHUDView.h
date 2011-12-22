@@ -14,10 +14,14 @@
     UIView* m_backgroundView;
     NSArray* m_requests;
     BOOL m_didSucceed;
+    NSNumber* m_maximumDisplayTime;
+    NSTimer* m_timer;
 }
 
 - (id) initWithView:(UIView *)view;
 @property (nonatomic,retain) UIView*    backgroundView;
 @property (nonatomic,retain) NSArray*   requests;
 @property                    BOOL       didSucceed;
+@property (nonatomic,retain) NSNumber*   maximumDisplayTime;
+@property (nonatomic,retain) NSTimer*   timer;
 @end

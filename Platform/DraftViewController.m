@@ -162,19 +162,7 @@
 - (void) commonInit {
     //common setup for the view controller
     
-    // resister callbacks for change events
-    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
-    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
-    
-    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
-    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
-    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
-    
-    [newCaptionCallback release];
-    [newPhotoVoteCallback release];
-    [newCaptionVoteCallback release];
-    
+       
     
      
 }
@@ -214,7 +202,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-  
+    // resister callbacks for change events
+    Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
+    Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
+    Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
+    [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
+    [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    
+    [newCaptionCallback release];
+    [newPhotoVoteCallback release];
+    [newCaptionVoteCallback release];
+
     
 
     

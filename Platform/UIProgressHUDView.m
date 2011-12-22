@@ -15,6 +15,8 @@
 @synthesize backgroundView = m_backgroundView;
 @synthesize requests = m_requests;
 @synthesize didSucceed = m_didSucceed;
+@synthesize maximumDisplayTime = m_maximumDisplayTime;
+@synthesize timer = m_timer;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -54,6 +56,10 @@
     
     //if we detect that all requests have been completed
     if (self.progress == 1 || [request.statuscode intValue] == kFAILED) {
+        //stop the maximum display timer as we will exit
+        [self.timer invalidate];
+        self.timer = nil;
+        
         //if they have all been successful
         BOOL isSuccess = YES;
         Request* failedRequest = nil;
@@ -107,6 +113,24 @@
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
         //[self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
         
+    }
+}
+
+- (void) onMaximumDisplayTimerExpired {
+    NSString* activityName = @"UIProgressHUDView.onMaximumDisplayTimerExpired";
+    
+    //called when the progress bar needs to be hidden because it has exceeded its display quota
+    //we assume the call ahs failed if the progress bar ends up stuck
+    LOG_REQUEST(0, @"%@Progress bar has exceeded its maximum display timer setting, automatically closing progress bar and failing request",activityName);
+    self.didSucceed = NO;
+    [self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
+}
+
+- (void) show:(BOOL)animated {
+    [super show:animated];
+    //we set a timer to tell us when to hide the progress bar
+    if (self.maximumDisplayTime != nil) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.maximumDisplayTime intValue] target:self selector:@selector(onMaximumDisplayTimerExpired) userInfo:nil repeats:NO];
     }
 }
 

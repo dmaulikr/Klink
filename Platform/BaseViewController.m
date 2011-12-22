@@ -70,32 +70,7 @@
 
 - (void) commonInit {
     
-    Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
-    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];    
-    Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
-    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];    
-    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];    
-    Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
-    Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
-    Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
-    
-    [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
-    [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
-    [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
-    [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
-    [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
-    [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
-    [self.eventManager registerCallback:applicationDidBecomeActiveCallback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
-    [self.eventManager registerCallback:applicationWentToBackgroundCallback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
-    
-    [unknownRequestFailureCallback release];
-    [failedAuthenticationCallback release];
-    [loginCallback release];
-    [logoutCallback release];
-    [showProgressBarCallback release];
-    [hideProgressBarCallback release];
-    [applicationDidBecomeActiveCallback release];
-    [applicationWentToBackgroundCallback release];
+
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -141,6 +116,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
+    Callback* logoutCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedOut:)];    
+    Callback* showProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onShowProgressView:)];
+    Callback* hideProgressBarCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onHideProgressView:)];    
+    Callback* failedAuthenticationCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onAuthenticationFailed:)];    
+    Callback* unknownRequestFailureCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnknownRequestFailure:)];
+    Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
+    Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
+    
+    [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
+    [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
+    [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
+    [self.eventManager registerCallback:hideProgressBarCallback forSystemEvent:kHIDEPROGRESS];
+    [self.eventManager registerCallback:failedAuthenticationCallback forSystemEvent:kAUTHENTICATIONFAILED];
+    [self.eventManager registerCallback:unknownRequestFailureCallback forSystemEvent:kUNKNOWNREQUESTFAILURE];
+    [self.eventManager registerCallback:applicationDidBecomeActiveCallback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
+    [self.eventManager registerCallback:applicationWentToBackgroundCallback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
+    
+    [unknownRequestFailureCallback release];
+    [failedAuthenticationCallback release];
+    [loginCallback release];
+    [logoutCallback release];
+    [showProgressBarCallback release];
+    [hideProgressBarCallback release];
+    [applicationDidBecomeActiveCallback release];
+    [applicationWentToBackgroundCallback release];
 
     CGRect frameForLoginView = [self frameForLoginView];
     UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
@@ -204,7 +206,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.loginView = nil;
-    
+        
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -237,7 +239,7 @@
             progressView.mode = MBProgressHUDModeDeterminate;
         }
         //[progressView hide:NO];
-        
+        progressView.maximumDisplayTime = maximumTimeInSeconds;
         
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
         [progressView show:YES];
@@ -269,6 +271,7 @@
             progressView.mode = MBProgressHUDModeIndeterminate;
         }
         
+        progressView.maximumDisplayTime = maximumTimeInSeconds;
         
        // [progressView hide:NO];
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
