@@ -45,10 +45,17 @@
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
 		52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F2F149AA9050055A933 /* UIEditorialPageView.m */; };
 		52323F32149AA9170055A933 /* UIEditorialPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F31149AA9170055A933 /* UIEditorialPageView.xib */; };
+		5236458514A26D0F007BD882 /* LeavesCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236458014A26D0F007BD882 /* LeavesCache.m */; };
+		5236458614A26D0F007BD882 /* LeavesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236458214A26D0F007BD882 /* LeavesView.m */; };
+		5236458714A26D0F007BD882 /* LeavesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236458414A26D0F007BD882 /* LeavesViewController.m */; };
+		5236458F14A27745007BD882 /* LeavesUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236458E14A27745007BD882 /* LeavesUtilities.m */; };
+		5236459314A28D47007BD882 /* BookViewControllerLeaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236459114A28D46007BD882 /* BookViewControllerLeaves.m */; };
+		5236459E14A38ECE007BD882 /* BookViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236459C14A38EC9007BD882 /* BookViewControllerBase.m */; };
+		5236459F14A38ECE007BD882 /* BookViewControllerBase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5236459D14A38ECB007BD882 /* BookViewControllerBase.xib */; };
 		5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE31492A62E0006FB5D /* PageViewController.m */; };
 		5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController.xib */; };
-		5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewController.m */; };
-		5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewController.xib */; };
+		5239EEEA1492B22E0006FB5D /* BookViewControllerPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */; };
+		5239EEEB1492B22E0006FB5D /* BookViewControllerPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */; };
 		523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E414941EB4005BED44 /* open_book_page_turn.png */; };
 		523F22E714941EB4005BED44 /* open_book_page_turn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E514941EB4005BED44 /* open_book_page_turn@2x.png */; };
 		523F22E9149443E3005BED44 /* UIDraftTableViewCellRight.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */; };
@@ -95,6 +102,7 @@
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
 		52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B7D148F4D210079270A /* ProfileViewController.m */; };
 		52E66B80148F4D210079270A /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B7E148F4D210079270A /* ProfileViewController.xib */; };
+		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
 		52F914091475E3E6007E0016 /* icon-newPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F914071475E3E6007E0016 /* icon-newPage.png */; };
@@ -142,7 +150,7 @@
 		C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */; };
 		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
-		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; };
+		C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C7143EB192008D25A7 /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C9143EB192008D25A7 /* CoreData.framework */; };
 		C593F7D9143EB192008D25A7 /* Platform.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C593F7D7143EB192008D25A7 /* Platform.xcdatamodeld */; };
 		C593F7FC143EB2CF008D25A7 /* PlatformDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C593F7FA143EB2CF008D25A7 /* PlatformDataModel.xcdatamodeld */; };
@@ -307,12 +315,25 @@
 		52323F2E149AA9050055A933 /* UIEditorialPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIEditorialPageView.h; sourceTree = "<group>"; };
 		52323F2F149AA9050055A933 /* UIEditorialPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIEditorialPageView.m; sourceTree = "<group>"; };
 		52323F31149AA9170055A933 /* UIEditorialPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIEditorialPageView.xib; sourceTree = "<group>"; };
+		5236457F14A26D0F007BD882 /* LeavesCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeavesCache.h; sourceTree = "<group>"; };
+		5236458014A26D0F007BD882 /* LeavesCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeavesCache.m; sourceTree = "<group>"; };
+		5236458114A26D0F007BD882 /* LeavesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeavesView.h; sourceTree = "<group>"; };
+		5236458214A26D0F007BD882 /* LeavesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeavesView.m; sourceTree = "<group>"; };
+		5236458314A26D0F007BD882 /* LeavesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeavesViewController.h; sourceTree = "<group>"; };
+		5236458414A26D0F007BD882 /* LeavesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeavesViewController.m; sourceTree = "<group>"; };
+		5236458D14A27745007BD882 /* LeavesUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeavesUtilities.h; sourceTree = "<group>"; };
+		5236458E14A27745007BD882 /* LeavesUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeavesUtilities.m; sourceTree = "<group>"; };
+		5236459014A28D46007BD882 /* BookViewControllerLeaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewControllerLeaves.h; sourceTree = "<group>"; };
+		5236459114A28D46007BD882 /* BookViewControllerLeaves.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerLeaves.m; sourceTree = "<group>"; };
+		5236459B14A38EC8007BD882 /* BookViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewControllerBase.h; sourceTree = "<group>"; };
+		5236459C14A38EC9007BD882 /* BookViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerBase.m; sourceTree = "<group>"; };
+		5236459D14A38ECB007BD882 /* BookViewControllerBase.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerBase.xib; sourceTree = "<group>"; };
 		5239EEE21492A62E0006FB5D /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		5239EEE31492A62E0006FB5D /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		5239EEE41492A62E0006FB5D /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
-		5239EEE71492B22E0006FB5D /* BookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewController.h; sourceTree = "<group>"; };
-		5239EEE81492B22E0006FB5D /* BookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewController.m; sourceTree = "<group>"; };
-		5239EEE91492B22E0006FB5D /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewController.xib; sourceTree = "<group>"; };
+		5239EEE71492B22E0006FB5D /* BookViewControllerPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BookViewControllerPageView.h; sourceTree = "<group>"; };
+		5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerPageView.m; sourceTree = "<group>"; };
+		5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerPageView.xib; sourceTree = "<group>"; };
 		523F22E414941EB4005BED44 /* open_book_page_turn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open_book_page_turn.png; sourceTree = "<group>"; };
 		523F22E514941EB4005BED44 /* open_book_page_turn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open_book_page_turn@2x.png"; sourceTree = "<group>"; };
 		523F22E8149443E2005BED44 /* UIDraftTableViewCellRight.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDraftTableViewCellRight.xib; sourceTree = "<group>"; };
@@ -365,6 +386,7 @@
 		52E66B7C148F4D210079270A /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		52E66B7D148F4D210079270A /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		52E66B7E148F4D210079270A /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
+		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
@@ -730,6 +752,19 @@
 			path = iCarousel;
 			sourceTree = "<group>";
 		};
+		5236457E14A26D0F007BD882 /* Leaves */ = {
+			isa = PBXGroup;
+			children = (
+				5236457F14A26D0F007BD882 /* LeavesCache.h */,
+				5236458014A26D0F007BD882 /* LeavesCache.m */,
+				5236458114A26D0F007BD882 /* LeavesView.h */,
+				5236458214A26D0F007BD882 /* LeavesView.m */,
+				5236458314A26D0F007BD882 /* LeavesViewController.h */,
+				5236458414A26D0F007BD882 /* LeavesViewController.m */,
+			);
+			path = Leaves;
+			sourceTree = "<group>";
+		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,6 +1069,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				5236457E14A26D0F007BD882 /* Leaves */,
 				52323F19149A6DFA0055A933 /* iCarousel */,
 				C58C6CA314973AAC0068CCD6 /* Airbrake */,
 				C5C9E25E1467003000838934 /* Twitter */,
@@ -1269,9 +1305,15 @@
 		C5C76C6B145B8FE800BA69B8 /* Bonobo */ = {
 			isa = PBXGroup;
 			children = (
-				5239EEE71492B22E0006FB5D /* BookViewController.h */,
-				5239EEE81492B22E0006FB5D /* BookViewController.m */,
-				5239EEE91492B22E0006FB5D /* BookViewController.xib */,
+				5236459B14A38EC8007BD882 /* BookViewControllerBase.h */,
+				5236459C14A38EC9007BD882 /* BookViewControllerBase.m */,
+				5236459D14A38ECB007BD882 /* BookViewControllerBase.xib */,
+				5239EEE71492B22E0006FB5D /* BookViewControllerPageView.h */,
+				5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */,
+				5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */,
+				5236459014A28D46007BD882 /* BookViewControllerLeaves.h */,
+				5236459114A28D46007BD882 /* BookViewControllerLeaves.m */,
+				52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */,
 				5239EEE21492A62E0006FB5D /* PageViewController.h */,
 				5239EEE31492A62E0006FB5D /* PageViewController.m */,
 				5239EEE41492A62E0006FB5D /* PageViewController.xib */,
@@ -1576,6 +1618,8 @@
 		C5DB5A59144FAF3700D6D6AE /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				5236458D14A27745007BD882 /* LeavesUtilities.h */,
+				5236458E14A27745007BD882 /* LeavesUtilities.m */,
 				C5DB5A53144FAF3300D6D6AE /* DateTimeHelper.h */,
 				C5DB5A54144FAF3300D6D6AE /* DateTimeHelper.m */,
 				C5DB5A55144FAF3300D6D6AE /* IDGenerator.h */,
@@ -1711,7 +1755,7 @@
 				521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */,
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
 				5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */,
-				5239EEEB1492B22E0006FB5D /* BookViewController.xib in Resources */,
+				5239EEEB1492B22E0006FB5D /* BookViewControllerPageView.xib in Resources */,
 				523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */,
 				523F22E714941EB4005BED44 /* open_book_page_turn@2x.png in Resources */,
 				523F22E9149443E3005BED44 /* UIDraftTableViewCellRight.xib in Resources */,
@@ -1743,6 +1787,8 @@
 				52979B0114A0128200F29ECC /* progressBar_mediumfill@2x.png in Resources */,
 				526A5AFC14A0F469000DAF58 /* progress_threshold.png in Resources */,
 				526A5AFD14A0F469000DAF58 /* progress_threshold@2x.png in Resources */,
+				5236459F14A38ECE007BD882 /* BookViewControllerBase.xib in Resources */,
+				52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1873,7 +1919,7 @@
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
 				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
 				5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */,
-				5239EEEA1492B22E0006FB5D /* BookViewController.m in Sources */,
+				5239EEEA1492B22E0006FB5D /* BookViewControllerPageView.m in Sources */,
 				C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */,
 				C58C6CC814973AF00068CCD6 /* ABNotice.m in Sources */,
 				C58C6CC914973AF00068CCD6 /* ABNotifier.m in Sources */,
@@ -1889,6 +1935,12 @@
 				52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */,
 				52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */,
 				52979AE7149FCD4500F29ECC /* UICustomNavigationBar.m in Sources */,
+				5236458514A26D0F007BD882 /* LeavesCache.m in Sources */,
+				5236458614A26D0F007BD882 /* LeavesView.m in Sources */,
+				5236458714A26D0F007BD882 /* LeavesViewController.m in Sources */,
+				5236458F14A27745007BD882 /* LeavesUtilities.m in Sources */,
+				5236459314A28D47007BD882 /* BookViewControllerLeaves.m in Sources */,
+				5236459E14A38ECE007BD882 /* BookViewControllerBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

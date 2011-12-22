@@ -68,13 +68,11 @@
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUITextAlignment">1</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
-							<string key="name">AmericanTypewriter</string>
-							<string key="family">American Typewriter</string>
-							<int key="traits">0</int>
+							<int key="type">1</int>
 							<double key="pointSize">24</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">AmericanTypewriter-CondensedLight</string>
+							<string key="NSName">Helvetica</string>
 							<double key="NSSize">24</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -217,6 +215,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{110, 427}, {100, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>

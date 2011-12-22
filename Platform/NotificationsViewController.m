@@ -17,7 +17,7 @@
 #import "EditorialVotingViewController.h"
 #import "DraftViewController.h"
 #import "FullScreenPhotoViewController.h"
-#import "BookViewController.h"
+#import "BookViewControllerBase.h"
 #import "ProfileViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
@@ -434,7 +434,7 @@
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ that was published notification",activityName,pageID);
     
     //we launch the BookViewController and open it up to the page we specified
-    BookViewController* bookViewController = [BookViewController createInstanceWithPageID:pageID];
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:pageID];
     //TODO: need to implement proper logic in bookviewcontroller to open up to a specific page
     [self.navigationController pushViewController:bookViewController animated:NO];
 }
