@@ -18,8 +18,8 @@
 #import "BaseViewController.h"
 #import "PlatformAppDelegate.h"
 #define kMinimumBusyWaitTime    1
-#define kMaximumBusyWaitTimePutAuthenticator    6
-#define kMaximumBusyWaitTimeFacebookLogin       6
+#define kMaximumBusyWaitTimePutAuthenticator    30
+#define kMaximumBusyWaitTimeFacebookLogin       30
 #define kTimeToShowCompleteIndicator 2
 
 
