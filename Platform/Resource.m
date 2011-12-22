@@ -17,6 +17,7 @@
 #import "Macros.h"
 #import "Request.h"
 #import "Types.h"
+#import "IDGenerator.h"
 
 @implementation Resource
 @dynamic objectid;
@@ -53,7 +54,7 @@
     self = [super initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     if (self) {
         //TODO: need to generate resource id here
-        self.objectid = [context nextID];
+        self.objectid = [[IDGenerator instance] generateNewId:[entity name]];
         self.objecttype = [entity name];
         self.attributeinstancedata = nil;
         self.iswebservicerepresentation = NO;

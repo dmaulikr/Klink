@@ -231,6 +231,7 @@
     
     self.refreshHeader.delegate = self;
     self.refreshHeader.backgroundColor = [UIColor clearColor];
+    self.tbl_productionTableView.rowHeight = kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
     [self.tbl_productionTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
@@ -423,9 +424,9 @@
 }
 
 #pragma mark - Table view delegate
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
-}
+//- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
+//}
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];

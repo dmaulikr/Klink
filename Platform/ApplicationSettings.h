@@ -43,4 +43,7 @@
 
 @property (nonatomic,retain) NSNumber* version;
 
+@property (nonatomic,retain) NSNumber* poll_expiry_seconds;
+@property (nonatomic,retain) NSNumber* poll_num_pages;
+
 @end

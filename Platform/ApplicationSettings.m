@@ -27,6 +27,8 @@
 @dynamic twitter_consumersecret;
 @dynamic page_draftexpiry_seconds;
 @dynamic version;
+@dynamic poll_num_pages;
+@dynamic poll_expiry_seconds;
 
 
 @end

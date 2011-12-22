@@ -135,7 +135,11 @@
         
         // Set deadline
         self.lbl_deadline.text = @"";
+        NSDate* now = [NSDate date];
+        NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
@@ -152,7 +156,11 @@
     //we also need to nil the topVotedPhotoID
     self.topVotedPhotoID = nil;
     self.deadline = nil;
-    
+    self.lbl_draftTitle.text = nil;
+    self.lbl_numPhotos.text = nil;
+    self.lbl_numCaptions.text = nil;
+    self.lbl_deadline.text = nil;
+    self.iv_photo.image = nil;
     [self render];
 }
 

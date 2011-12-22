@@ -644,7 +644,7 @@
     else if (self.configurationType == CAPTION) {
         progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your caption...",self.draftTitle];
     }
-    [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+    [self showDeterminateProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
 
 }
 

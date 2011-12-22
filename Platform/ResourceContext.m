@@ -33,7 +33,7 @@
 @implementation ResourceContext
 
 @synthesize managedObjectContext = __managedObjectContext;
-@synthesize lastIDGenerated = m_lastIDGenerated;
+
 @synthesize managedObjectContexts = m_managedObjectContexts;
 
 static ResourceContext* sharedInstance;
@@ -179,29 +179,7 @@ static ResourceContext* sharedInstance;
 //    }
     [keysToRemove release];
 }
-- (NSNumber*)nextID{
-    
-    int int_secondsSinceEpoch = (int)[[NSDate date]timeIntervalSince1970];
-    NSNumber* secondsSinceEpoch = [NSNumber numberWithInt:int_secondsSinceEpoch];
-    
-    NSString* idString = [NSString stringWithFormat:@"%@",secondsSinceEpoch];
-    
-    NSNumberFormatter *f = [[NSNumberFormatter alloc]init];
-    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    
-    NSNumber* retVal = [f numberFromString:idString] ;
-    [f release];
-    
-    if (self.lastIDGenerated != nil) {
-        while ([retVal isEqualToNumber:self.lastIDGenerated]) {
-            
-            retVal = [NSNumber numberWithLongLong:[self.lastIDGenerated longLongValue] + 1];
-        }
-    }
-       
-    self.lastIDGenerated = retVal;
-    return retVal;
-}
+
   
 - (BOOL) doesExistInLocalStore:(NSNumber *)resourceID {
     return NO;
@@ -264,7 +242,7 @@ static ResourceContext* sharedInstance;
             if (resource.objectid == nil ||
                 [resource.objectid isEqualToNumber:[NSNumber numberWithInt:0]]) {
                 
-                resource.objectid = [IDGenerator generateNewId:resource.objecttype];
+                resource.objectid = [[IDGenerator instance ]generateNewId:resource.objecttype];
             }
             
             NSDate* currentDate = [NSDate date];

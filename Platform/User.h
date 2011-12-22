@@ -24,4 +24,8 @@
 @property (nonatomic,retain) NSNumber* numberofpagespublished;
 @property (nonatomic,retain) NSNumber* numberofphotoslw;
 @property (nonatomic,retain) NSNumber* datebecameeditor;
+@property (nonatomic,retain) NSNumber* numberofdraftscreated;
+@property (nonatomic,retain) NSNumber* numberofcaptions;
+@property (nonatomic,retain) NSNumber* numberofphotos;
+@property (nonatomic,retain) NSNumber* maxweeklyparticipation;
 @end

@@ -21,6 +21,10 @@
 @dynamic numberofphotoslw;
 @dynamic iseditor;
 @dynamic datebecameeditor;
+@dynamic numberofphotos;
+@dynamic numberofcaptions;
+@dynamic numberofdraftscreated;
+@dynamic maxweeklyparticipation;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];

@@ -16,11 +16,11 @@
 
 
 @interface ResourceContext : NSObject {
-    NSNumber* m_lastIDGenerated;
+
     NSMutableDictionary* m_managedObjectContexts;
 }
 
-@property (nonatomic,retain) NSNumber* lastIDGenerated;
+
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic,retain) NSMutableDictionary* managedObjectContexts;
 
@@ -86,8 +86,7 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
 
 
 
-//Generates a unique identifier for a new entity
--(NSNumber*) nextID;
+
 
 //utility methods
 - (void) markResourcesAsBeingSynchronized:(NSArray*)resources withResourceTypes:(NSArray*)resourceTypes;
