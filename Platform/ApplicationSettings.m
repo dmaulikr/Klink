@@ -21,7 +21,7 @@
 @dynamic http_timeout_seconds;
 @dynamic feed_enumeration_timegap;
 @dynamic caption_enumeration_timegap;
-
+@dynamic editor_minimum;
 @dynamic page_enumeration_timegap;
 @dynamic twitter_consumerkey;
 @dynamic twitter_consumersecret;
