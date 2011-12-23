@@ -45,5 +45,6 @@
 
 @property (nonatomic,retain) NSNumber* poll_expiry_seconds;
 @property (nonatomic,retain) NSNumber* poll_num_pages;
+@property (nonatomic,retain) NSNumber* editor_minimum;
 
 @end
