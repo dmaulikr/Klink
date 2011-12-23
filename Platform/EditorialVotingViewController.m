@@ -30,7 +30,6 @@
 @synthesize deadline        = m_deadline;
 @synthesize userJustVoted   = m_userJustVoted;
 
-#define NUMBER_OF_VISIBLE_ITEMS 6
 #define ITEM_SPACING 313
 //#define INCLUDE_PLACEHOLDERS YES
 

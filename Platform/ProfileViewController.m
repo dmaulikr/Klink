@@ -46,8 +46,6 @@
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
 
-#define kEDITORMINIMUM 10
-//#define kUSERBEST 6
 
 #pragma mark - Progress Bar methods 
 - (void)drawProgressBar {    
@@ -61,13 +59,10 @@
     float userBestLineMidPoint = (float)self.iv_userBestLine.frame.size.width / (float)2;
     float userBestLabelMidPoint = (float)self.lbl_userBestLabel.frame.size.width / (float)2;
     
-    // TEMP DELETE THE LINE BELOW, USED FOR TESTING
-    //totalSubmissionsLast7Days = 0;
     
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    //int editorMinimum = [settings. intValue];
+    int editorMinimum = [settings.editor_minimum intValue];
     
-    int editorMinimum = kEDITORMINIMUM;
     int userBest = [self.loggedInUser.maxweeklyparticipation intValue];
     
     // determine which value will set the scale (max value) for the progress bar
