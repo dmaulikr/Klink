@@ -8,6 +8,8 @@
 
 #import "ProfileViewController.h"
 #import "DateTimeHelper.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
 
 @implementation ProfileViewController
 @synthesize lbl_username            = m_lbl_username;
@@ -45,7 +47,7 @@
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
 
 #define kEDITORMINIMUM 10
-#define kUSERBEST 6
+//#define kUSERBEST 6
 
 #pragma mark - Progress Bar methods 
 - (void)drawProgressBar {    
@@ -62,14 +64,20 @@
     // TEMP DELETE THE LINE BELOW, USED FOR TESTING
     //totalSubmissionsLast7Days = 0;
     
-    // determine which value will set the scale (max value) for the progress bar
-    float progressBarMaxValue = MAX(MAX((float)kUSERBEST, (float)kEDITORMINIMUM), (float)totalSubmissionsLast7Days);
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    //int editorMinimum = [settings. intValue];
     
-    if (progressBarMaxValue == kUSERBEST) {
+    int editorMinimum = kEDITORMINIMUM;
+    int userBest = [self.loggedInUser.maxweeklyparticipation intValue];
+    
+    // determine which value will set the scale (max value) for the progress bar
+    float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)totalSubmissionsLast7Days);
+    
+    if (progressBarMaxValue == (float)userBest) {
         // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
         progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
     }
-    else if (progressBarMaxValue == kEDITORMINIMUM) {
+    else if (progressBarMaxValue == (float)editorMinimum) {
         // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
         progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM;
     }
@@ -78,8 +86,8 @@
     }
     
     
-    float scaleEditorMinimum = (float)kEDITORMINIMUM / (float)progressBarMaxValue;
-    float scaleUserBest = (float)kUSERBEST / (float)progressBarMaxValue;
+    float scaleEditorMinimum = (float)editorMinimum / (float)progressBarMaxValue;
+    float scaleUserBest = (float)userBest / (float)progressBarMaxValue;
     
     
     // move the editor threshold line
@@ -268,15 +276,21 @@
         self.lbl_numPages.text = [self.loggedInUser.numberofpagespublished stringValue];
         self.lbl_numVotes.text = [self.loggedInUser.numberofvotes stringValue];
         
-        int totalSubmissions = [self.loggedInUser.numberofdraftscreatedlw intValue]
-                                + [self.loggedInUser.numberofphotoslw intValue]
-                                 + [self.loggedInUser.numberofcaptionslw intValue];
+        int totalSubmissions = [self.loggedInUser.numberofcaptions intValue]
+                                + [self.loggedInUser.numberofphotos intValue]
+                                 + [self.loggedInUser.numberofcaptions intValue];
         self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
         
         self.lbl_draftsLast7Days.text = [self.loggedInUser.numberofdraftscreatedlw stringValue];
         self.lbl_photosLast7Days.text = [self.loggedInUser.numberofphotoslw stringValue];
         self.lbl_captionsLast7Days.text = [self.loggedInUser.numberofcaptionslw stringValue];
-        self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+        
+        int totalLast7Days = [self.loggedInUser.numberofcaptionslw intValue]
+                                + [self.loggedInUser.numberofphotoslw intValue]
+                                    + [self.loggedInUser.numberofcaptionslw intValue];
+        self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
+        
+        self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.loggedInUser.maxweeklyparticipation intValue]];
         
         [self drawProgressBar];
     }

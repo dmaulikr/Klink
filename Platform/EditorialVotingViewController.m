@@ -307,8 +307,6 @@
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
 {
     //limit the number of items views loaded concurrently (for performance reasons)
-    //return NUMBER_OF_VISIBLE_ITEMS;
-    
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     NSUInteger numPagesInPoll = [settings.poll_num_pages intValue];
     return numPagesInPoll;
