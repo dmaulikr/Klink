@@ -123,10 +123,10 @@
     
     if ([feedItems count] > 0) {
         QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
-        queryExpression2.attributeName = ID;
+        queryExpression2.attributeName = DATECREATED;
         queryExpression2.opCode = opcode_QUERYGREATERTHAN;
         Feed* feedItem = [feedItems objectAtIndex:0];
-        queryExpression2.value = [feedItem.objectid stringValue];
+        queryExpression2.value = [feedItem.datecreated stringValue];
         [expressions addObject:queryExpression2];
         [queryExpression2 release];
     }

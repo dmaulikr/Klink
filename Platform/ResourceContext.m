@@ -71,7 +71,8 @@ static ResourceContext* sharedInstance;
             // create a context for this thread
             NSManagedObjectContext *threadContext = [[[NSManagedObjectContext alloc] init] autorelease];
             [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
-            
+           // threadContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+           // [threadContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
             [contextUndoManager setLevelsOfUndo:20];
             threadContext.undoManager = contextUndoManager;

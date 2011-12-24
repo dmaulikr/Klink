@@ -323,7 +323,7 @@
         [contextUndoManager setLevelsOfUndo:20];
         __managedObjectContext.undoManager = contextUndoManager;
         [contextUndoManager release];
-        
+       // [__managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return __managedObjectContext;
