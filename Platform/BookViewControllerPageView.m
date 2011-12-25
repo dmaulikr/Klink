@@ -133,7 +133,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    NSString* activityName = @"BookViewControllerPageView.viewWillAppear:";
+   // NSString* activityName = @"BookViewControllerPageView.viewWillAppear:";
     [super viewWillAppear:animated];
    
     PageViewController* initialViewController = nil;

@@ -299,7 +299,7 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    int c = [[self.frc_pollData fetchedObjects]count];
+    
     return [[self.frc_pollData fetchedObjects]count];
 }
 

@@ -16,7 +16,7 @@
 @property (nonatomic,retain) NSString* displayname;
 @property (nonatomic,retain) NSNumber* numberofvotes;
 @property (nonatomic,retain) NSString* thumbnailurl;
-
+@property (nonatomic,retain) NSNumber* sharinglevel;
 @property (nonatomic,retain) NSNumber* iseditor;
 @property (nonatomic,retain) NSNumber* numberofcaptionslw;
 @property (nonatomic,retain) NSNumber* numberofdraftscreatedlw;

@@ -18,6 +18,8 @@
     
     UIImageView*    m_iv_photo;
     UIImageView*    m_iv_photoFrame;
+    UIButton*       m_btn_writtenBy;
+    UIButton*       m_btn_illustratedBy;
     UILabel*        m_lbl_caption;
     UILabel*        m_lbl_photoby;
     UILabel*        m_lbl_captionby;
@@ -31,9 +33,10 @@
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* draftTableViewCell;
 @property (nonatomic, retain) NSString*                 cellType;
-
-@property (nonatomic, retain) IBOutlet UIImageView* iv_photo;
-@property (nonatomic, retain) IBOutlet UIImageView*  iv_photoFrame;
+@property (nonatomic, retain) IBOutlet UIButton*        btn_writtenBy;
+@property (nonatomic, retain) IBOutlet UIButton*        btn_illustratedBy;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_photoFrame;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_caption;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_photoby;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_captionby;
@@ -41,7 +44,8 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numCaptions;
 
 - (void) renderWithPhotoID:(NSNumber*)photoID;
-
+- (IBAction) onWrittenByClicked:(id)sender;
+- (IBAction) onIllustratedByClicked:(id)sender;
 + (NSString*) cellIdentifierTop;
 + (NSString*) cellIdentifierLeft;
 + (NSString*) cellIdentifierRight;

@@ -331,7 +331,7 @@
 		5239EEE21492A62E0006FB5D /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		5239EEE31492A62E0006FB5D /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		5239EEE41492A62E0006FB5D /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
-		5239EEE71492B22E0006FB5D /* BookViewControllerPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = BookViewControllerPageView.h; sourceTree = "<group>"; };
+		5239EEE71492B22E0006FB5D /* BookViewControllerPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewControllerPageView.h; sourceTree = "<group>"; };
 		5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerPageView.m; sourceTree = "<group>"; };
 		5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerPageView.xib; sourceTree = "<group>"; };
 		523F22E414941EB4005BED44 /* open_book_page_turn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open_book_page_turn.png; sourceTree = "<group>"; };
@@ -679,6 +679,7 @@
 		C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProgressHUDView.xib; sourceTree = "<group>"; };
 		C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProgressHUDView.h; sourceTree = "<group>"; };
 		C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProgressHUDView.m; sourceTree = "<group>"; };
+		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
 		C5D9AA561466EB6C009AA3D8 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		C5D9AA591466EB6C009AA3D8 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -1289,6 +1290,7 @@
 				C5F3AE6B1485B3FA00877C5B /* PollState.h */,
 				C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */,
 				C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */,
+				C5CE03BB14A7C7F300F89241 /* SharingLevel.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";

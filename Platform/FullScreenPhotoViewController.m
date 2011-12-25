@@ -766,6 +766,8 @@
     NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
     ResourceContext* resourceContext = [ResourceContext instance];
+    //we start a new undo group here
+    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
     
     int photoIndex = [self.photoViewSlider getPageIndex];
     Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
@@ -797,8 +799,18 @@
                      }];
     */
     
+    
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
     //now we need to commit to the store
-    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+    
+    //display progress view on the submission of a vote
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    NSString* message = @"Submitting your vote...";
+    [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
     
     //update photo and caption metadata views
     [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
@@ -838,6 +850,30 @@
 - (void) hudWasHidden:(MBProgressHUD *)hud {
     //when the hud is hidden we need to remove it from this view
     [self hideProgressBar];
+    
+    UIProgressHUDView* pv = (UIProgressHUDView*)hud;
+    
+    if (!pv.didSucceed) {
+        //there was an error upon submission
+        //we undo the request that was attempted to be made
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+        
+        //update photo and caption metadata views
+        [self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
+        
+        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+        if ([currentCaptionView.captionID isEqualToNumber:self.captionID]) {
+            [currentCaptionView renderCaptionWithID:self.captionID];
+            
+        }
+
+        
+    }
+
 }
 #pragma mark - UIPagedViewSlider2Delegate
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 

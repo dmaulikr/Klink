@@ -168,10 +168,7 @@
     // Set the navigationbar title
     self.navigationItem.title = @"Notifications";
     
-    //as soon as we open up, we mark all notifications that are currently
-    //open on the screen to be read
-    [self markAllDisplayedNotificationsSeen];
-    
+       
     //we count the number of notifications
     int count = [[self.frc_notifications fetchedObjects]count];
     
@@ -185,16 +182,23 @@
         FeedManager* feedManager = [FeedManager instance];
         [feedManager refreshFeedOnFinish:nil];
         
-        //we need to clear the application badge icon from the app icon
-        UIApplication* application = [UIApplication sharedApplication];
-        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
-        application.applicationIconBadgeNumber =0;
+       
     }
+    
+    //we need to clear the application badge icon from the app icon
+    UIApplication* application = [UIApplication sharedApplication];
+    LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
+    application.applicationIconBadgeNumber =0;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    //as soon as we open up, we mark all notifications that are currently
+    //open on the screen to be read
+    [self markAllDisplayedNotificationsSeen];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated

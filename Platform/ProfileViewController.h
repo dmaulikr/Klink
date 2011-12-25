@@ -38,6 +38,9 @@
     UIImageView* m_iv_progressCaptions;
     UIImageView* m_iv_editorMinimumLine;
     UIImageView* m_iv_userBestLine;
+    
+    User*   m_user;
+    NSNumber* m_userID;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
@@ -61,7 +64,8 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_photosLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_totalLabel;
-
+@property (nonatomic, retain) User* user;
+@property (nonatomic, retain) NSNumber* userID;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;
@@ -70,5 +74,5 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 
 + (ProfileViewController*)createInstance;
-
++ (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;
 @end

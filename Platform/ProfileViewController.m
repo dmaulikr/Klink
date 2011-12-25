@@ -39,7 +39,8 @@
 @synthesize iv_progressCaptions     = m_iv_progressCaptions;
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
 @synthesize iv_userBestLine         = m_iv_userBestLine;
-
+@synthesize user                    = m_user;
+@synthesize userID                  = m_userID;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -49,9 +50,9 @@
 
 #pragma mark - Progress Bar methods 
 - (void)drawProgressBar {    
-    int totalSubmissionsLast7Days = [self.loggedInUser.numberofdraftscreatedlw intValue]
-    + [self.loggedInUser.numberofphotoslw intValue]
-    + [self.loggedInUser.numberofcaptionslw intValue];
+    int totalSubmissionsLast7Days = [self.user.numberofdraftscreatedlw intValue]
+    + [self.user.numberofphotoslw intValue]
+    + [self.user.numberofcaptionslw intValue];
     
     float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETRIGHT;
     float editorMinimumLineMidPoint = (float)self.iv_editorMinimumLine.frame.size.width / (float)2;
@@ -63,7 +64,7 @@
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     int editorMinimum = [settings.editor_minimum intValue];
     
-    int userBest = [self.loggedInUser.maxweeklyparticipation intValue];
+    int userBest = [self.user.maxweeklyparticipation intValue];
     
     // determine which value will set the scale (max value) for the progress bar
     float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)totalSubmissionsLast7Days);
@@ -106,17 +107,17 @@
     
     // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
     // drafts in the last 7 days
-    float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)progressBarMaxValue;
+    float progressDrafts = (float)[self.user.numberofdraftscreatedlw intValue] / (float)progressBarMaxValue;
     //float progressDrafts = (float)3 / (float)progressBarMaxValue;
     self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * progressBarContainerWidth), self.iv_progressDrafts.frame.size.height);
     
     // photos in the last 7 days
-    float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)progressBarMaxValue;
+    float progressPhotos = (float)[self.user.numberofphotoslw intValue] / (float)progressBarMaxValue;
     //float progressPhotos = (float)2 / (float)progressBarMaxValue;
     self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * progressBarContainerWidth), self.iv_progressPhotos.frame.size.height);
     
     // captions in the last 7 days
-    float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)progressBarMaxValue;
+    float progressCaptions = (float)[self.user.numberofcaptionslw intValue] / (float)progressBarMaxValue;
     //float progressCaptions = (float)4 / (float)progressBarMaxValue;
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
     
@@ -263,29 +264,29 @@
     self.navigationItem.title = @"Writers's Log";
     
     // Set up the labels
-    if (self.loggedInUser) {
-        self.lbl_username.text = self.loggedInUser.displayname;
-        self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.loggedInUser.datecreated]]];
-        self.lbl_currentLevel.text = self.loggedInUser.iseditor ? @"Editor" : @"Contributor";
-        self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.loggedInUser.datebecameeditor]]];
-        self.lbl_numPages.text = [self.loggedInUser.numberofpagespublished stringValue];
-        self.lbl_numVotes.text = [self.loggedInUser.numberofvotes stringValue];
+    if (self.user) {
+        self.lbl_username.text = self.user.displayname;
+        self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
+        self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
+        self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
+        self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
+        self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
         
-        int totalSubmissions = [self.loggedInUser.numberofcaptions intValue]
-                                + [self.loggedInUser.numberofphotos intValue]
-                                 + [self.loggedInUser.numberofcaptions intValue];
+        int totalSubmissions = [self.user.numberofcaptions intValue]
+                                + [self.user.numberofphotos intValue]
+                                 + [self.user.numberofcaptions intValue];
         self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
         
-        self.lbl_draftsLast7Days.text = [self.loggedInUser.numberofdraftscreatedlw stringValue];
-        self.lbl_photosLast7Days.text = [self.loggedInUser.numberofphotoslw stringValue];
-        self.lbl_captionsLast7Days.text = [self.loggedInUser.numberofcaptionslw stringValue];
+        self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
+        self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
+        self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
         
-        int totalLast7Days = [self.loggedInUser.numberofcaptionslw intValue]
-                                + [self.loggedInUser.numberofphotoslw intValue]
-                                    + [self.loggedInUser.numberofcaptionslw intValue];
+        int totalLast7Days = [self.user.numberofcaptionslw intValue]
+                                + [self.user.numberofphotoslw intValue]
+                                    + [self.user.numberofcaptionslw intValue];
         self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
         
-        self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.loggedInUser.maxweeklyparticipation intValue]];
+        self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
         
         [self drawProgressBar];
     }
@@ -306,7 +307,18 @@
 #pragma mark - Static Initializers
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
+    //sets the user property to the curretly logged on user
+   // AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    instance.user = instance.loggedInUser;
     return instance;
+}
+
++ (ProfileViewController*)createInstanceForUser:(NSNumber *)userID {
+    //returns an instance of the ProfileViewController configured for the specified user
+    ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
+    instance.userID = userID;
+    return instance;
+    
 }
 
 @end

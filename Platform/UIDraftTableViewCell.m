@@ -17,6 +17,7 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "UIImageView+UIImageViewCategory.h"
+#import "ProfileViewController.h"
 
 #define kPHOTOID                    @"photoid"
 #define kCAPTIONID                  @"captionid"
@@ -37,6 +38,8 @@
 @synthesize lbl_captionby = m_lbl_captionby;
 @synthesize lbl_numVotes = m_lbl_numVotes;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
+@synthesize btn_writtenBy = m_btn_writtenBy;
+@synthesize btn_illustratedBy = m_btn_illustratedBy;
 
 
 #pragma mark - Instance Methods
@@ -150,8 +153,10 @@
         self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
     }
     
-    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
-    self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
+    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
+    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
+    self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
+    [self.btn_illustratedBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
     
     [self setNeedsDisplay];
 }
@@ -188,12 +193,19 @@
         [self.contentView addSubview:self.draftTableViewCell];
         
         self.cellType = reuseIdentifier;
+        self.btn_writtenBy.userInteractionEnabled = YES;
+        self.btn_illustratedBy.userInteractionEnabled = YES;
         
         [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
         [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
         [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+        [self.btn_illustratedBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.btn_writtenBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        
+//        [self.btn_writtenBy addTarget:self action:@selector(onWrittenByClicked:) forControlEvents:UIControlEventAllTouchEvents];
+//        [self.btn_illustratedBy addTarget:self action:@selector(onIllustratedByClicked:) forControlEvents:UIControlEventAllTouchEvents];
         
     }
     return self;
@@ -205,6 +217,8 @@
 
     // Configure the view for the selected state
 }
+
+
 
 - (void)dealloc
 {
@@ -226,8 +240,21 @@
    // [self.lbl_numCaptions release];
 
 }
+#pragma mark - Button Handlers
+- (void) onWrittenByClicked:(id)sender {
+    //need to grab who wrote the caption and transition to that
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:caption.creatorid];
+}
+    
+- (void) onIllustratedByClicked:(id)sender {
+    //need to grab who wrote the photo and transition to that
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+    
+}
 
-                                                                                             
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"UIDraftTableViewCell.onImageDownloadComplete:";

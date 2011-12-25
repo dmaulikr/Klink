@@ -25,6 +25,7 @@
 @dynamic numberofcaptions;
 @dynamic numberofdraftscreated;
 @dynamic maxweeklyparticipation;
+@dynamic sharinglevel;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];

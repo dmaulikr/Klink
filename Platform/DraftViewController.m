@@ -370,6 +370,8 @@
         if (cell == nil) 
         {
             cell = [[[UIDraftTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
+            [cell.btn_writtenBy addTarget:self action:@selector(onWrittenByClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
         }
         
         [cell renderWithPhotoID:photo.objectid];
@@ -380,6 +382,9 @@
     }
 }
 
+- (void) onWrittenByClicked:(id)sender {
+
+}
 #pragma mark - NSFetchedResultsControllerDelegate
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_draftTableView endUpdates];

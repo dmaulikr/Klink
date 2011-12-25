@@ -118,7 +118,7 @@
     //pageController.pageID = pageID;
     
     [self.navigationController pushViewController:bookController animated:YES];
-    [bookController release];
+   // [bookController release];
     
     
     
