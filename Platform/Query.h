@@ -31,6 +31,7 @@
 + (id) queryPhotosWithTheme:(NSNumber*)themeID;
 + (id) queryFeedsForUser:(NSNumber*)userID;
 + (id) queryCaptionsForPhoto:(NSNumber*)photoID;
++ (id) queryPages:(NSNumber*)afterDate;
 + (id) queryPages;
 + (id) queryDrafts;
 + (id) queryUser:(NSNumber*)userID;

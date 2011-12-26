@@ -17,12 +17,14 @@
 @synthesize didSucceed = m_didSucceed;
 @synthesize maximumDisplayTime = m_maximumDisplayTime;
 @synthesize timer = m_timer;
+@synthesize animationTimer = m_animationTimer;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        self.animationType = MBProgressHUDAnimationZoom;
             }
     return self;
 }
@@ -59,6 +61,8 @@
         //stop the maximum display timer as we will exit
         [self.timer invalidate];
         self.timer = nil;
+        [self.animationTimer invalidate];
+        self.animationTimer = nil;
         
         //if they have all been successful
         BOOL isSuccess = YES;
@@ -139,6 +143,10 @@
     //we set a timer to tell us when to hide the progress bar
     if (self.maximumDisplayTime != nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.maximumDisplayTime intValue] target:self selector:@selector(onMaximumDisplayTimerExpired) userInfo:nil repeats:NO];
+        
+        //also if this is only a single member request, we start an animation timer
+        //to simulate the progression using the maximum time as an upper bound
+        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onAnimationTimerTick) userInfo:nil repeats:YES];
     }
 }
 
@@ -147,6 +155,12 @@
     self.didSucceed = NO;
     self.requests = nil;
     self.requests = requests;
+}
+
+- (void) onAnimationTimerTick {
+    //we increment the progress
+    float incrementAmount = 1.0f / [self.maximumDisplayTime floatValue];
+    self.progress = self.progress + incrementAmount;
 }
 
 - (void) onTimerExpireHide {

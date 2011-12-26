@@ -18,7 +18,8 @@
 #import "Macros.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
-
+#import "PageState.h"
+#import "Page.h"
 #define kEnumerateSinglePage    @"enumerateSinglePage"
 
 @implementation CloudEnumerator
@@ -328,7 +329,23 @@
 
 + (CloudEnumerator*) enumeratorForPages {
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    Query* query = [Query queryPages];
+    
+    //we need to get the last date published in the store
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSNumber* numPublished = [NSNumber numberWithInt:kPUBLISHED];
+    
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[numPublished stringValue] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
+    
+    Query* query = nil;
+    
+    if (page == nil) {
+        //in this case we dont have any pages
+        query = [Query queryPages];
+    }
+    else {
+        query = [Query queryPages:page.datepublished];
+    }
+    
     QueryOptions* queryOptions = [QueryOptions queryForPages];
     EnumerationContext* enumerationContext = [EnumerationContext contextForPages];
     query.queryOptions = queryOptions;
