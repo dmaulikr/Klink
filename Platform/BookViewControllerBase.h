@@ -43,6 +43,7 @@
 
 
 - (int) indexOfPageWithID:(NSNumber*)pageid;
+- (void) onEnumerateComplete:(NSDictionary*)userInfo;
 
 
 + (BookViewControllerBase*) createInstance;

@@ -513,7 +513,7 @@ CGFloat distance(CGPoint a, CGPoint b);
 		pageCache.pageSize = pageSize;
 		[self getImages];
 		
-		CGFloat touchRectsWidth = self.bounds.size.width / 7;
+		CGFloat touchRectsWidth = self.bounds.size.width / 2;
 		nextPageRect = CGRectMake(self.bounds.size.width - touchRectsWidth,
 								  0,
 								  touchRectsWidth,

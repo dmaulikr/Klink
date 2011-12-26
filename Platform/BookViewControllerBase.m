@@ -78,7 +78,7 @@
 }
 
 - (int) indexOfPageWithID:(NSNumber*)pageid {
-    //returns the index location with thin the frc_published_photos for the photo with the id specified
+    //returns the index location within the frc_published_photos for the photo with the id specified
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
     int index = 0;
     for (Page* page in fetchedObjects) {
@@ -276,22 +276,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
+    NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
     
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     self.pageCloudEnumerator.delegate = self;
-    
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    int count = [[self.frc_published_pages fetchedObjects] count];
-    if (count == 0) {
-        //there are no published page objects in local store, update from cloud
-        //will need to thow up a progress dialog to show user of download
-        LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd:nil];
-        
-        //TODO: need to make a call to a centrally hosted busy indicator view
-    }
 
 }
 
@@ -305,10 +293,19 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Enumerate published pages from the cloud
-    //self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
-    //self.pageCloudEnumerator.delegate = self;
-    //[self.pageCloudEnumerator enumerateUntilEnd:nil];
+    NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
+    
+    //here we check to see how many items are in the FRC, if it is 0,
+    //then we initiate a query against the cloud.
+    int count = [[self.frc_published_pages fetchedObjects] count];
+    if (count == 0) {
+        //there are no published page objects in local store, update from cloud
+        //will need to thow up a progress dialog to show user of download
+        LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        
+        //TODO: need to make a call to a centrally hosted busy indicator view
+    }
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];

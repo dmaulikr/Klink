@@ -22,7 +22,7 @@
 }
 
 - (CGRect) frameForShowHideButton {
-    return CGRectMake(56, 0, 190, 460);
+    return CGRectMake(100, 0, 100, 460);
 }
 
 #pragma mark - Initializers
@@ -85,6 +85,10 @@
         
         // Create an image out of the PageViewController
         UIImage *image = [self imageWithView:pageViewController.view];
+        
+        // We can release the pageViewController now that we've made an image of it
+        [pageViewController release];
+        
         CGRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
         
         // Adjust the leave view frame to be the size of the PageViewController
@@ -245,6 +249,15 @@
     
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+    [super onEnumerateComplete:userInfo];
+    
+    NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
+    
+    [self.leavesView setNeedsDisplay];
 }
 
 
