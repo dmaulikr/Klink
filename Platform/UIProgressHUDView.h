@@ -16,6 +16,8 @@
     BOOL m_didSucceed;
     NSNumber* m_maximumDisplayTime;
     NSTimer* m_timer;
+    NSTimer* m_animationTimer;
+    
 }
 
 - (id) initWithView:(UIView *)view;
@@ -24,4 +26,5 @@
 @property                    BOOL       didSucceed;
 @property (nonatomic,retain) NSNumber*   maximumDisplayTime;
 @property (nonatomic,retain) NSTimer*   timer;
+@property (nonatomic,retain) NSTimer*   animationTimer;
 @end

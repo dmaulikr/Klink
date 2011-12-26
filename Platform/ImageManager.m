@@ -250,7 +250,7 @@ static inline double radians (double degrees) {
     
     [path appendFormat:@"/%@.jpg",fileNameWithoutExtension];
     
-    [UIImageJPEGRepresentation(image, 1) writeToFile:path atomically:YES];
+    [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;
 }
 
