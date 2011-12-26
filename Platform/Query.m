@@ -181,21 +181,57 @@
     return query;
 }
 
++ (Query*)queryPages:(NSNumber*)afterDate {
+    Query* query =  [[[Query alloc] init]autorelease];
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = DATEPUBLISHED;
+    queryExpression.opCode = opcode_QUERYGREATERTHAN;
+    queryExpression.value = [afterDate stringValue];
+    
+    QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+    queryExpression2.attributeName = STATE;
+    queryExpression2.opCode = opcode_QUERYEQUALITY;
+    queryExpression2.value = [NSString stringWithFormat:@"%d",kPUBLISHED];
+    
+    query.filterObjectType = PAGE;
+    
+    query.attributeExpressions = [NSMutableArray arrayWithObjects:queryExpression, queryExpression2,nil];
+    
+    [queryExpression release];
+    [queryExpression2 release];
+    
+    return query;
+}
+
 + (Query*)queryPages {
     Query* query =  [[[Query alloc] init]autorelease];
     query.filterObjectType = PAGE;
     
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = STATE;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [NSString stringWithFormat:@"%d",kPUBLISHED];
+    query.filterObjectType = PAGE;
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    
+    [queryExpression release];
+    
     return query;
+
+    
 }
 
 + (Query*)queryUser:(NSNumber*)userid {
     Query* query = [[[Query alloc]init ]autorelease];
     query.filterObjectType = USER;
     
+    
     QueryExpression* queryExpression = [[QueryExpression alloc]init];
-    queryExpression.attributeName = ID;
+    queryExpression.attributeName = STATE;
     queryExpression.opCode = opcode_QUERYEQUALITY;
-    queryExpression.value = [userid stringValue];
+    queryExpression.value = [NSString stringWithFormat:@"%d",kPUBLISHED];
     
     query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
     
