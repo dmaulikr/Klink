@@ -30,6 +30,7 @@
 #import "ImageDownloadResponse.h"
 #import "ErrorCodes.h"
 #import "EventManager.h"
+#import "NSStringGUIDCategory.h"
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
 
@@ -295,9 +296,29 @@ static RequestManager* sharedInstance;
     
     for (Request* request in requests) {
         Resource* resource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
-       
-
+        
+        //for each attachment attribute in the object, we need to grab the binary data
+        //convert to base64
+        //and replace the attribute value on the object
+        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+                
+        for (NSString* attachmentAttribute in attachmentAttributes) {
+            NSString* fileName = [resource performSelector:NSSelectorFromString(attachmentAttribute)];
+            //convert to NSData
+            NSData* data = [NSData dataWithContentsOfFile:fileName];
+             
+            //convert to base64 string
+            NSString* base64Attachment = [NSString encodeBase64WithData:data];
+            //we stuff it into the value of the resource
+            [resource setValue:base64Attachment forKey:attachmentAttribute];
+            LOG_REQUEST(0, @"%@Attachment has %d bytes",activityName,[data length]);
+        }
+        //at this point we now have the entire object represented with all attachments resolved
         NSString* resourceJSON = [resource toJSON];
+        
+        
+        
+        
         [resourcesToCreate addObject:resourceJSON];
         [request retain];
         
@@ -309,14 +330,14 @@ static RequestManager* sharedInstance;
         
         //we need to lock all attachment attributes so they arent overwritten
         //when the main resource is created/updated from the server  
-        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
-        [resource lockAttributes:attachmentAttributes];
-            
-        attachmentCount += [attachmentAttributes count];
-        
-       
-        
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+//        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+//        [resource lockAttributes:attachmentAttributes];
+//            
+//        attachmentCount += [attachmentAttributes count];
+//        
+//       
+//        
+//        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
         
     }
     
@@ -744,17 +765,17 @@ static RequestManager* sharedInstance;
         //we need to unlock the attachment attributes as they were purposely
         //locked on the submission to prevent them from being overwritten in the r
         //response
-        NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
+       // NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
         
-        [existingResource unlockAttributes:attachmentAttributesInRequest];
+       // [existingResource unlockAttributes:attachmentAttributesInRequest];
         
         //we mark all of the attributes that were committed by this Create to the server
         //as being clean, except those which are either locked, or attachment attributes
         for (NSString* attributeName in request.changedAttributesList) {
             AttributeInstanceData* aid = [existingResource attributeInstanceDataFor:attributeName];
             
-            if (![aid.islocked boolValue] && 
-                ![aid.isurlattachment boolValue]) {
+            if (![aid.islocked boolValue] /* && 
+                ![aid.isurlattachment boolValue]*/) {
                 aid.isdirty = [NSNumber numberWithBool:NO];
             }
         }
@@ -763,7 +784,7 @@ static RequestManager* sharedInstance;
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
         //we now process all of the attachment attributes in the Request
-        [self processAttachmentsForRequest:request];
+       // [self processAttachmentsForRequest:request];
     }
     else {
         LOG_REQUEST(1, @"%@Create request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,createResponse.errorMessage);
