@@ -116,8 +116,13 @@
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
         //we only add a notification icon for user's that have logged in
+        //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
+        //                                   initWithTitle:self.loggedInUser.displayname
+        //                                   style:UIBarButtonItemStylePlain
+        //                                   target:self
+        //                                   action:@selector(onUsernameButtonPressed:)];
         UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-                                           initWithTitle:self.loggedInUser.displayname
+                                           initWithImage:[UIImage imageNamed:@"icon-profile.png"]
                                            style:UIBarButtonItemStylePlain
                                            target:self
                                            action:@selector(onUsernameButtonPressed:)];

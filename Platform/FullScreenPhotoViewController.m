@@ -509,7 +509,7 @@
 	if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
 		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
 	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
+		[[UIApplication sharedApplication] setStatusBarHidden:hidden animated:YES];
 	}
 	
 	// Get status bar height if visible
@@ -663,18 +663,18 @@
     
     if (captionCount > 0) {
         
-        [self enableVoteButton];
+        //[self enableVoteButton];
         
-      //  int index = [self.captionViewSlider getPageIndex];
-      // Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-      /*  
-        if ([caption.user_hasvoted boolValue] == YES) {
+        int index = [self.captionViewSlider getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+        
+        if ([caption.hasvoted boolValue] == YES) {
             [self disableVoteButton];
         }
         else {
             [self enableVoteButton];
         }
-      */  
+        
     }
     else {
         [self disableVoteButton];
@@ -765,61 +765,52 @@
 - (void) onVoteButtonPressed:(id)sender {
     NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
-    ResourceContext* resourceContext = [ResourceContext instance];
-    //we start a new undo group here
-    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-    
-    int photoIndex = [self.photoViewSlider getPageIndex];
-    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
-    
-    int captionIndex = [self.captionViewSlider getPageIndex];
-    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
-    
-    photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
-    caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-    
-    caption.hasvoted = [NSNumber numberWithBool:YES];
-    
-    // animate the updating of the votes label
-    /*[UIView animateWithDuration:0.25
-                          delay:0
-                        options:( UIViewAnimationCurveEaseInOut )
-                     animations:^{
-                         self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.5, 1.5 );
-                     }
-                     completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.5
-                                               delay:0
-                                             options:( UIViewAnimationCurveEaseInOut )
-                                          animations:^{
-                                              self.photoVotesLabel.text = [NSString stringWithFormat:@"Votes: %@", self.photo.numberofvotes];
-                                              self.photoVotesLabel.transform = CGAffineTransformMakeScale( 1.0, 1.0 );
-                                          }
-                                          completion:nil];
-                     }];
-    */
-    
-    
-    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = appDelegate.progressView;
-    progressView.delegate = self;
-    
-    //now we need to commit to the store
-    [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-    
-    //display progress view on the submission of a vote
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    NSString* message = @"Submitting your vote...";
-    [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-    
-    //update photo and caption metadata views
-    [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
-    
-    UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
-    if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
-        [currentCaptionView renderCaptionWithID:caption.objectid];
-        LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //user is not logged in, must log in first
+        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onVoteButtonPressed:) onTargetObject:self withObject:sender];
     }
+    else {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        //we start a new undo group here
+        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+        
+        int photoIndex = [self.photoViewSlider getPageIndex];
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
+        
+        int captionIndex = [self.captionViewSlider getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
+        
+        photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
+        caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+        
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+        
+        //now we need to commit to the store
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+        
+        //display progress view on the submission of a vote
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+        NSString* message = @"Submitting your vote...";
+        [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
+        //update photo and caption metadata views
+        [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
+        
+        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+        if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
+            [currentCaptionView renderCaptionWithID:caption.objectid];
+            LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
+        }
+        
+        caption.hasvoted = [NSNumber numberWithBool:YES];
+        
+        // Disable the vote button for this caption
+        [self disableVoteButton];
+    }
+    
 }
 
 - (void) onCaptionButtonPressed:(id)sender {
@@ -1155,6 +1146,7 @@
         [self.captionViewSlider.tableView endUpdates];
     }
 }
+
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 

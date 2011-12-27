@@ -277,10 +277,10 @@
     // Do any additional setup after loading the view from its nib.
     
     NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
-    
+
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     self.pageCloudEnumerator.delegate = self;
-
+    
 }
 
 - (void)viewDidUnload
