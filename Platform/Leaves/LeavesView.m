@@ -37,12 +37,16 @@ CGFloat distance(CGPoint a, CGPoint b);
 
 
 - (void) setUpLayers {
-	self.clipsToBounds = YES;
+	// Set the backgound image of the leave view to the book page
+    UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"open_book_page_turn.png"]];
+    
+    self.clipsToBounds = YES;
     
 	topPage = [[CALayer alloc] init];
 	topPage.masksToBounds = YES;
 	topPage.contentsGravity = kCAGravityLeft;
-	topPage.backgroundColor = [[UIColor whiteColor] CGColor];
+	//topPage.backgroundColor = [[UIColor whiteColor] CGColor];
+    topPage.backgroundColor = [background CGColor];
 	
 	topPageOverlay = [[CALayer alloc] init];
 	topPageOverlay.backgroundColor = [[[UIColor blackColor] colorWithAlphaComponent:0.2] CGColor];
@@ -56,7 +60,8 @@ CGFloat distance(CGPoint a, CGPoint b);
 	topPageShadow.endPoint = CGPointMake(0,0.5);
 	
 	topPageReverse = [[CALayer alloc] init];
-	topPageReverse.backgroundColor = [[UIColor whiteColor] CGColor];
+	//topPageReverse.backgroundColor = [[UIColor whiteColor] CGColor];
+    topPageReverse.backgroundColor = [background CGColor];
 	topPageReverse.masksToBounds = YES;
 	
 	topPageReverseImage = [[CALayer alloc] init];
@@ -73,7 +78,8 @@ CGFloat distance(CGPoint a, CGPoint b);
 	topPageReverseShading.endPoint = CGPointMake(0,0.5);
 	
 	bottomPage = [[CALayer alloc] init];
-	bottomPage.backgroundColor = [[UIColor whiteColor] CGColor];
+	//bottomPage.backgroundColor = [[UIColor whiteColor] CGColor];
+    bottomPage.backgroundColor = [background CGColor];
 	bottomPage.masksToBounds = YES;
 	
 	bottomPageShadow = [[CAGradientLayer alloc] init];
@@ -110,6 +116,8 @@ CGFloat distance(CGPoint a, CGPoint b);
     [self setUpLayersForViewingMode];
 	
 	self.leafEdge = 1.0;
+    
+    [background release];
 }
 
 

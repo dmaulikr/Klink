@@ -40,7 +40,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="792194959"/>
+						<reference key="NSNextKeyView" ref="286763219"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -49,7 +49,7 @@
 							<string key="NSResourceName">open_book_page.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="792194959">
+					<object class="IBUIImageView" id="286763219">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{302, 460}</string>
@@ -117,7 +117,7 @@
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="885737782"/>
-							<reference ref="792194959"/>
+							<reference ref="286763219"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -139,7 +139,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">37</int>
-						<reference key="object" ref="792194959"/>
+						<reference key="object" ref="286763219"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
