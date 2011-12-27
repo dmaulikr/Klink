@@ -73,6 +73,7 @@ insertIntoResourceContext:(ResourceContext *)context
     if ([lowerCaseName isEqualToString:HASOPENED] ||
         [lowerCaseName isEqualToString:HASVOTED]) {
         retVal.islocal = [NSNumber numberWithBool:YES];
+        retVal.islocked = [NSNumber numberWithBool:YES];
     }
     
     //we mark has seen as being a locked value, so it doesnt get overwritten by the server
