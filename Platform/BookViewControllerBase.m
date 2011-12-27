@@ -280,19 +280,6 @@
     
     self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     self.pageCloudEnumerator.delegate = self;
-    
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    int count = [[self.frc_published_pages fetchedObjects] count];
-    if (count == 0) {
-        //there are no published page objects in local store, update from cloud
-        //will need to thow up a progress dialog to show user of download
-        LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd:nil];
-        
-        //TODO: need to make a call to a centrally hosted busy indicator view
-    }
-
 
 }
 

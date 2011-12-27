@@ -131,7 +131,7 @@
     [self setControlsHidden:!m_controlsHidden]; 
 }
 
-#pragma mark - Photo Helpers
+#pragma mark - Photo Frame Helper
 - (void) displayPhotoFrameOnImage:(UIImage*)image {
     // get the frame for the new scaled image in the Photo ImageView
     CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];

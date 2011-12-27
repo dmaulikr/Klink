@@ -8,6 +8,7 @@
 
 #import "BookViewControllerLeaves.h"
 #import "PageViewController.h"
+#import "Macros.h"
 #import "Page.h"
 #import "PageState.h"
 #import "LeavesUtilities.h"
@@ -82,7 +83,8 @@
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
         PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
-        pageViewController.view.backgroundColor = [UIColor blackColor];
+        //pageViewController.view.backgroundColor = [UIColor blackColor];
+        pageViewController.view.backgroundColor = [UIColor clearColor];
         [pageNumber release];
         
         //[pageViewController.view drawRect:pageViewController.view.bounds];
@@ -111,6 +113,34 @@
     }
 }
 
+#pragma mark - Render Page from PageViewController
+-(void)renderPage {
+    NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
+    
+    if (self.pageID != nil  && [self.pageID intValue] != 0) {
+        //the page id has been set, we will move to that page
+        int indexForPage = [self indexOfPageWithID:self.pageID];
+        [self.leavesView setCurrentPageIndex:indexForPage];
+    }
+    else {
+        //need to find the latest page
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
+        
+        if (page != nil) {
+            //local store does contain pages to enumerate
+            self.pageID = page.objectid;
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            [self.leavesView setCurrentPageIndex:indexForPage];
+        }
+        else {
+            //no published pages
+            [self.leavesView setCurrentPageIndex:0];
+        }
+    }
+}
+
 #pragma mark - Control Hiding / Showing
 - (void)cancelControlHiding {
 	// If a timer exists then cancel and release
@@ -123,7 +153,7 @@
 - (void)hideControlsAfterDelay:(NSTimeInterval)delay {
     [self cancelControlHiding];
 	if (!m_controlsHidden) {
-		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
 	}
 }
 
@@ -201,6 +231,10 @@
     // Adjust the leave view frame to be the size of the PageViewController
     super.leavesView.frame = [self frameForPageViewController];
     
+    // Set the backgound image of the leave view to the book page
+    //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"open_book_page_turn.png"]];
+    //self.leavesView.backgroundColor = background;
+    //[background release];
     
     // Add an invisible button to capture taps to hide/show the controls
     UIButton* invisibleShowHideButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -211,30 +245,6 @@
     [invisibleShowHideButton addTarget:self action:@selector(toggleControls) forControlEvents:UIControlEventTouchUpInside];
     // add to a view
     [self.view addSubview:invisibleShowHideButton];
-
-    
-    if (self.pageID != nil  && [self.pageID intValue] != 0) {
-        //the page id has been set, we will move to that page
-        int indexForPage = [self indexOfPageWithID:self.pageID];
-        [self.leavesView setCurrentPageIndex:indexForPage];
-    }
-    else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            int indexForPage = [self indexOfPageWithID:self.pageID];
-            [self.leavesView setCurrentPageIndex:indexForPage];
-        }
-        else {
-            //no published pages
-            [self.leavesView setCurrentPageIndex:0];
-        }
-    }
 
 }
 
@@ -253,6 +263,16 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.leavesView reloadData];
+    
+    [self renderPage];
+    
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -261,39 +281,52 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
+#pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controller:(NSFetchedResultsController *)controller 
+    didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
+      forChangeType:(NSFetchedResultsChangeType)type 
+       newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    NSString* activityName = @"BookViewControllerLeaves.controller.didChangeObject:";
+    if (controller == self.frc_published_pages) {
+        
+        int count = [[self.frc_published_pages fetchedObjects]count];
+        
+        if (type == NSFetchedResultsChangeInsert) {
+            //insertion of a new page
+            Resource* resource = (Resource*)anObject;
+            
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
+            
+            [self.leavesView reloadData];
+            
+            [self renderPage];
+            
+            // Uncomment the below line if you want the pageViewController to move to the new page added
+            //pageViewController = [self viewControllerAtIndex:[newIndexPath row]];
+            
+        }
+        else if (type == NSFetchedResultsChangeDelete) {
+            //deletion of a page
+            
+        }
+    }
+    else {
+        LOG_BOOKVIEWCONTROLLER(1, @"%@Received a didChange message from a NSFetchedResultsController that isnt mine. %p",activityName,&controller);
+    }
+}
+
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
     [super onEnumerateComplete:userInfo];
     
     NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
     
-    if (self.pageID != nil  && [self.pageID intValue] != 0) {
-        //the page id has been set, we will move to that page
-        int indexForPage = [self indexOfPageWithID:self.pageID];
-        [self.leavesView setCurrentPageIndex:indexForPage];
-    }
-    else {
-        //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            int indexForPage = [self indexOfPageWithID:self.pageID];
-            //[self.leavesView setCurrentPageIndex:indexForPage];
-            self.leavesView.currentPageIndex = indexForPage;
-        }
-        else {
-            //no published pages
-            //[self.leavesView setCurrentPageIndex:0];
-            self.leavesView.currentPageIndex = 0;
-        }
-    }
-    
-    self.leavesView.currentPageIndex = 1;
     //[self.leavesView reloadData];
+    
+    //[self renderPage];
+    
 }
 
 

@@ -59,7 +59,7 @@
 	[super viewDidLoad];
 	self.leavesView.dataSource = self;
 	self.leavesView.delegate = self;
-	[self.leavesView reloadData];
+	//[self.leavesView reloadData];
 }
 
 - (void)viewDidUnload
