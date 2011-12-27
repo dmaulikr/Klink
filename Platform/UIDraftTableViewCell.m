@@ -243,15 +243,15 @@
 #pragma mark - Button Handlers
 - (void) onWrittenByClicked:(id)sender {
     //need to grab who wrote the caption and transition to that
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
-    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:caption.creatorid];
+ //   ResourceContext* resourceContext = [ResourceContext instance];
+  //  Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+  //  ProfileViewController* pvc = [ProfileViewController createInstanceForUser:caption.creatorid];
 }
     
 - (void) onIllustratedByClicked:(id)sender {
     //need to grab who wrote the photo and transition to that
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+  //  ResourceContext* resourceContext = [ResourceContext instance];
+  //  Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
     
 }
 

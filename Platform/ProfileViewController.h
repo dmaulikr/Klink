@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 
-@interface ProfileViewController : BaseViewController {
+@interface ProfileViewController : BaseViewController <MBProgressHUDDelegate> {
     UILabel* m_lbl_username;
     UILabel* m_lbl_employeeStartDate;
     UILabel* m_lbl_currentLevel;
@@ -39,6 +39,8 @@
     UIImageView* m_iv_editorMinimumLine;
     UIImageView* m_iv_userBestLine;
     
+    UIView* m_v_userSettingsContainer;
+    UISwitch* m_sw_enhancedFacebookSharing;
     User*   m_user;
     NSNumber* m_userID;
 }
@@ -72,7 +74,10 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressCaptions;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
+@property (nonatomic, retain) IBOutlet UIView*      v_userSettingsContainer;
+@property (nonatomic, retain) IBOutlet UISwitch*    sw_enhancedFacebookSharing;
 
+- (IBAction) onEnhancedSharingLevelChanged:(id)sender;
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;
 @end

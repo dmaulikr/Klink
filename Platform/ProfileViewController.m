@@ -10,6 +10,7 @@
 #import "DateTimeHelper.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
+#import "PlatformAppDelegate.h"
 
 @implementation ProfileViewController
 @synthesize lbl_username            = m_lbl_username;
@@ -41,6 +42,8 @@
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
+@synthesize sw_enhancedFacebookSharing  = m_sw_enhancedFacebookSharing;
+@synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -245,6 +248,8 @@
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
+    self.v_userSettingsContainer = nil;
+    self.sw_enhancedFacebookSharing = nil;
     
 }
 
@@ -265,6 +270,17 @@
     
     // Set up the labels
     if (self.user) {
+        
+        //if the user is the currently logged in user, we then enable the user settings container
+        if (self.user == self.loggedInUser) {
+            //yes it is
+            self.v_userSettingsContainer.hidden = NO;
+        }
+        else {
+            //no it isnt
+            self.v_userSettingsContainer.hidden = YES;
+        }
+        self.sw_enhancedFacebookSharing.on = [self.user.sharinglevel boolValue];
         self.lbl_username.text = self.user.displayname;
         self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
         self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
@@ -304,6 +320,45 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+#pragma mark - UISwitch Handler
+- (IBAction) onEnhancedSharingLevelChanged:(id)sender 
+{
+    if (self.user == self.loggedInUser) {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+
+        ResourceContext* resourceContext = [ResourceContext instance];
+      //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+        self.user.sharinglevel = [NSNumber numberWithBool:self.sw_enhancedFacebookSharing.on];
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+        
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+    }
+}
+         
+#pragma mark - MBProgressHUD Delegate
+- (void) hudWasHidden:(MBProgressHUD *)hud {
+    [self hideProgressBar];
+    
+    UIProgressHUDView* pv = (UIProgressHUDView*)hud;
+    
+    if (!pv.didSucceed) {
+        //there was an error upon submission
+        //we undo the request that was attempted to be made
+//        ResourceContext* resourceContext = [ResourceContext instance];
+//        [resourceContext.managedObjectContext.undoManager undo];
+//        
+//        NSError* error = nil;
+//        [resourceContext.managedObjectContext save:&error];
+        
+        self.sw_enhancedFacebookSharing.on = [self.user.sharinglevel boolValue];
+        
+    }
+    
+
+}
 #pragma mark - Static Initializers
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
