@@ -66,7 +66,11 @@
     [super viewWillAppear:animated];
     
     // hide status bar and navigation bar
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
+	}
     self.navigationController.navigationBar.hidden = YES;
     
     // Show photo
@@ -93,7 +97,11 @@
     [super viewWillAppear:animated];
     
     // show status bar and navigation bar
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO animated:NO];
+	}
     self.navigationController.navigationBar.hidden = NO;
 }
 

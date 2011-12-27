@@ -16,6 +16,7 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "DateTimeHelper.h"
+#import "FeedTypes.h"
 
 #define kNOTIFICATIONID             @"notificationid"
 
@@ -63,6 +64,64 @@
         self.lbl_notificationDate.text = [self getDateStringForNotification:dateSent];
         //self.lbl_notificationTitle.text = notification.title;
         self.lbl_notificationMessage.text = notification.message;
+        
+        
+        /*switch ([notification.type intValue]) {
+            case kCAPTION_VOTE | kPHOTO_VOTE:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
+                break;
+            case kCAPTION_ADDED:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-compose.png"];
+                break;
+            case kPHOTO_ADDED_TO_DRAFT:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
+                break;
+            case kDRAFT_SUBMITTED_TO_EDITORS | kDRAFT_EXPIRED | kDRAFT_NOT_PUBLISHED:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
+                break;
+            case kDRAFT_PUBLISHED:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
+                break;
+            case kEDITORIAL_BOARD_VOTE_STARTED | kEDITORIAL_BOARD_VOTE_ENDED | kEDITORIAL_BOARD_NO_RESULT:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
+                break;
+            case kPROMOTION_TO_EDITOR:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-ribbon1.png"];
+                break;
+            case kDEMOTION_FROM_EDITOR:
+                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
+                break;
+            default:
+                break;
+        }*/
+        
+        
+        if ([notification.type intValue] == kCAPTION_VOTE || [notification.type intValue] == kPHOTO_VOTE) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
+        }
+        else if ([notification.type intValue] == kCAPTION_ADDED) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-compose.png"];
+        }
+        else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
+        }
+        else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.type intValue] == kDRAFT_EXPIRED || [notification.type intValue] == kDRAFT_NOT_PUBLISHED) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
+        }
+        else if ([notification.type intValue] == kDRAFT_PUBLISHED) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
+        }         
+        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
+        }         
+        else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-ribbon1.png"];
+        }         
+        else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
+        }
+        
+        
         self.iv_notificationImage.image = nil;
         
         ImageManager* imageManager = [ImageManager instance];
@@ -82,6 +141,10 @@
                 self.iv_notificationImage.contentMode = UIViewContentModeCenter;
                 self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
             }
+        }
+        else {
+            self.iv_notificationImage.contentMode = UIViewContentModeCenter;
+            self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
         }
     }
     [self setNeedsDisplay];
@@ -108,7 +171,7 @@
         
         [self.contentView addSubview:self.notificationTableViewCell];
         //self.userInteractionEnabled = YES;
-        [self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
         [self.lbl_notificationDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
         
     }
@@ -124,6 +187,14 @@
 
 - (void)dealloc
 {
+    /*self.notificationID = nil;
+    self.notificationTableViewCell = nil;
+    //self.lbl_notificationTitle = nil;
+    self.lbl_notificationMessage = nil;
+    self.lbl_notificationDate = nil;
+    self.iv_notificationImage = nil;
+    self.iv_notificationTypeImage = nil;*/
+    
     [super dealloc];
 }
 

@@ -188,9 +188,20 @@
     self.ic_coverFlowView.contentOffset = CGSizeMake(0, 10);
     
     // Navigation Bar Buttons
-    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelButtonPressed:)];
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
+                                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                   target:self
+                                   action:@selector(onCancelButtonPressed:)];
     self.navigationItem.leftBarButtonItem = leftButton;
     [leftButton release];
+    
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                    initWithImage:[UIImage imageNamed:@"icon-globe.png"]
+                                    style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(onGlobeButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    [rightButton release];
 
 }
 
@@ -216,7 +227,11 @@
     }
     
     // hide status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
+	}
     
     // Setting the status bar orientation to landscape forces the view into landscape mode
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
@@ -279,7 +294,11 @@
     [super viewWillDisappear:animated];
     
     // show status bar and navigation bar
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
+	}
 
 }
 
@@ -537,6 +556,10 @@
 #pragma mark - Navigation Bar button handler 
 - (void)onCancelButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)onGlobeButtonPressed:(id)sender {    
+    // Here we should show the message with instructions
 }
 
 #pragma mark - Async Callback Handlers
