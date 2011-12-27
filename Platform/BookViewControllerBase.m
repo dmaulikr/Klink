@@ -18,6 +18,7 @@
 #import "PlatformAppDelegate.h"
 #import "BookViewControllerPageView.h"
 #import "BookViewControllerLeaves.h"
+#import "CloudEnumerator.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
@@ -29,6 +30,7 @@
 @synthesize tb_bookmarkButton       = m_tb_bookmarkButton;
 @synthesize tb_notificationButton  = m_tb_notificationButton;
 @synthesize iv_background           = m_iv_background;
+@synthesize captionCloudEnumerator  = m_captionCloudEnumerator;
 
 
 #pragma mark - Properties
@@ -276,9 +278,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
 
-    self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
+   // NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
+    
+    self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
+
     self.pageCloudEnumerator.delegate = self;
     
 }
@@ -351,7 +355,36 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
+    NSString* activityName = @"BookViewController.onEnumerateComplete:";
+    //on this method we need to enumerate all the captions that are part of the pages
+    //to do this, we enumerate through each page and extract the finished caption ID
+    //and make a fixed ID enumerate call to it.
+    self.captionCloudEnumerator = nil;
+    ResourceContext* resourceContext = [ResourceContext instance];
     
+    NSMutableArray* captionList = [[NSMutableArray alloc]init];
+    NSMutableArray* captionTypeList = [[NSMutableArray alloc]init];
+    
+    for (Page* page in [self.frc_published_pages fetchedObjects]) {
+        if (page.finishedcaptionid != nil) {
+            //we check to see if ti exists in the local store
+            id caption = [resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
+            if (caption == nil) {
+                //caption isnt in local store, add it to the list of captions to be downloaded
+                [captionList addObject:page.finishedcaptionid];
+                [captionTypeList addObject:CAPTION];
+            }
+           
+        }
+    }
+    
+    //at this point we have all the captions that are in the frc
+    LOG_BOOKVIEWCONTROLLER(0, @"%@ Enumerating %d missing captions from the cloud",activityName,[captionList count]);
+    self.captionCloudEnumerator = [CloudEnumerator enumeratorForIDs:captionList withTypes:captionTypeList];
+    
+    [self.captionCloudEnumerator enumerateUntilEnd:nil];
+    [captionList release];
+    [captionTypeList release];
 }
 
 #pragma mark - Static Initializers

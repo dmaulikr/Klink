@@ -23,14 +23,17 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.leavesView = [[LeavesView alloc] initWithFrame:CGRectZero];
+        LeavesView* lv =  [[LeavesView alloc] initWithFrame:CGRectZero];
+        self.leavesView = lv;
+        [lv release];
+        
         self.leavesView.mode = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? LeavesViewModeSinglePage : LeavesViewModeFacingPages;
     }
     return self;
 }
 
 - (void)dealloc {
-	[self.leavesView release];
+	self.leavesView = nil;
     [super dealloc];
 }
 

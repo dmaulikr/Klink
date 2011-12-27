@@ -109,13 +109,13 @@
         CGContextDrawImage(ctx, imageRect, [image CGImage]);
         // OLD WAY:END*/
         
-        [pageViewController release];
+        //[pageViewController release];
     }
 }
 
 #pragma mark - Render Page from PageViewController
 -(void)renderPage {
-    NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
+   // NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
     
     if (self.pageID != nil  && [self.pageID intValue] != 0) {
         //the page id has been set, we will move to that page
@@ -321,7 +321,7 @@
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
     [super onEnumerateComplete:userInfo];
     
-    NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
+  //  NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
     
     //[self.leavesView reloadData];
     

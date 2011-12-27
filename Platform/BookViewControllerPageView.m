@@ -104,7 +104,7 @@
 
 #pragma mark - Render Page from PageViewController
 -(void)renderPage {
-    NSString* activityName = @"BookViewController.controller.renderPage:";
+    //NSString* activityName = @"BookViewController.controller.renderPage:";
     
     PageViewController* pageViewController = nil;
     
@@ -235,7 +235,8 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
-    NSString* activityName = @"BookViewControllerPageView.controller.onEnumerateComplete:";
+    [super onEnumerateComplete:userInfo];
+  //  NSString* activityName = @"BookViewControllerPageView.controller.onEnumerateComplete:";
     
     //[self renderPage];
     
