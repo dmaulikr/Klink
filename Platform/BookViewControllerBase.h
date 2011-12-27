@@ -15,6 +15,7 @@
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     CloudEnumerator*    m_pageCloudEnumerator;
+    CloudEnumerator*    m_captionCloudEnumerator;
     
     NSTimer*            m_controlVisibilityTimer;
     BOOL                m_controlsHidden;
@@ -30,7 +31,7 @@
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
-
+@property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
 
 // Toolbar Buttons
