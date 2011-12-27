@@ -15,7 +15,8 @@
 
 - (id) initWithPageSize:(CGSize)aPageSize
 {
-	if ([super init]) {
+    self = [super init];
+	if (self) {
 		pageSize = aPageSize;
 		pageCache = [[NSMutableDictionary alloc] init];
 	}

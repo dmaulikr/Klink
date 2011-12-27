@@ -174,7 +174,7 @@
     [super dealloc];
 }
 #pragma mark - Initializers
-- (id) commonInit {
+- (void) commonInit {
     //common setup for the view controller
     self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
@@ -200,7 +200,7 @@
     [newCaptionVoteCallback release];
     
     
-    return self;
+    //return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -208,7 +208,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self = [self commonInit];
+        [self commonInit];
     }
     return self;
 }

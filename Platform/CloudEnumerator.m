@@ -331,9 +331,9 @@
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     
     //we need to get the last date published in the store
-    ResourceContext* resourceContext = [ResourceContext instance];
+   
     NSNumber* numPublished = [NSNumber numberWithInt:kPUBLISHED];
-    
+     ResourceContext* resourceContext = [ResourceContext instance];
     Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[numPublished stringValue] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
     
     Query* query = nil;

@@ -503,7 +503,8 @@
                                                            delegate:self 
                                                   cancelButtonTitle:@"OK" 
                                                   otherButtonTitles:nil];
-            [alert show];
+        [message release];   
+        [alert show];
             [alert release];
     }
 
