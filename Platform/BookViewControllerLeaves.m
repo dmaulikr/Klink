@@ -22,7 +22,7 @@
 }
 
 - (CGRect) frameForShowHideButton {
-    return CGRectMake(56, 0, 190, 460);
+    return CGRectMake(100, 0, 100, 460);
 }
 
 #pragma mark - Initializers
@@ -52,6 +52,7 @@
     //CGSize imgContextSize = CGSizeMake(view.bounds.size.width*scale, view.bounds.size.height*scale);
     
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, scale);
+    
     //UIGraphicsBeginImageContextWithOptions(imgContextSize, view.opaque, scale*2);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     
@@ -66,7 +67,8 @@
 
 #pragma mark - LeavesViewController Delegate Methods (for iOS 3-4x)
 - (NSUInteger) numberOfPagesInLeavesView:(LeavesView*)leavesView {
-    return [[self.frc_published_pages fetchedObjects]count];
+    int count = [[self.frc_published_pages fetchedObjects]count];
+    return count;
 }
 
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
@@ -83,17 +85,29 @@
         pageViewController.view.backgroundColor = [UIColor blackColor];
         [pageNumber release];
         
+        //[pageViewController.view drawRect:pageViewController.view.bounds];
+        
+        // NEW WAY:BEGIN directly draw the PageViewController's view to the passed in graphoic context
+        CGRect viewRect = pageViewController.view.frame;
+        
+        CGContextTranslateCTM(ctx, 0.0, viewRect.size.height);
+        CGContextScaleCTM(ctx, 1.0, -1.0);
+        
+        [pageViewController.view.layer renderInContext:ctx];
+        // NEW WAY:END
+        
+        /*// OLD WAY:BEGIN use a UIImage representation of the PageViewController's view
         // Create an image out of the PageViewController
         UIImage *image = [self imageWithView:pageViewController.view];
-        CGRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
         
-        // Adjust the leave view frame to be the size of the PageViewController
-        //super.leavesView.frame = [self frameForPageViewController];
+        CGRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
         
         CGAffineTransform transform = aspectFit(imageRect, CGContextGetClipBoundingBox(ctx));
         CGContextConcatCTM(ctx, transform);
         CGContextDrawImage(ctx, imageRect, [image CGImage]);
+        // OLD WAY:END*/
         
+        [pageViewController release];
     }
 }
 
@@ -245,6 +259,41 @@
     
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+    [super onEnumerateComplete:userInfo];
+    
+    NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
+    
+    if (self.pageID != nil  && [self.pageID intValue] != 0) {
+        //the page id has been set, we will move to that page
+        int indexForPage = [self indexOfPageWithID:self.pageID];
+        [self.leavesView setCurrentPageIndex:indexForPage];
+    }
+    else {
+        //need to find the latest page
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
+        
+        if (page != nil) {
+            //local store does contain pages to enumerate
+            self.pageID = page.objectid;
+            int indexForPage = [self indexOfPageWithID:self.pageID];
+            //[self.leavesView setCurrentPageIndex:indexForPage];
+            self.leavesView.currentPageIndex = indexForPage;
+        }
+        else {
+            //no published pages
+            //[self.leavesView setCurrentPageIndex:0];
+            self.leavesView.currentPageIndex = 0;
+        }
+    }
+    
+    self.leavesView.currentPageIndex = 1;
+    //[self.leavesView reloadData];
 }
 
 

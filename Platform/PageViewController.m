@@ -131,6 +131,36 @@
     [self setControlsHidden:!m_controlsHidden]; 
 }
 
+#pragma mark - Photo Helpers
+- (void) displayPhotoFrameOnImage:(UIImage*)image {
+    // get the frame for the new scaled image in the Photo ImageView
+    CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
+    
+    // create insets to cap the photo frame according to the size of the scaled image
+    UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
+    
+    // apply the cap insets to the photo frame image
+    UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
+    if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
+        self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+        
+        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+    }
+    else {
+        self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
+        //self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(scaledImage.size.width/2) topCapHeight:scaledImage.size.height/2];
+        
+        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+        //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
+        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+    }
+    
+    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
+    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+}
+
 
 #pragma mark - View lifecycle
 
@@ -190,6 +220,11 @@
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
                 
+                [self displayPhotoFrameOnImage:image];
+                
+                /*self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_photo.image = image;
+                
                 // get the frame for the new scaled image in the Photo ImageView
                 CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
                 
@@ -215,7 +250,7 @@
                 
                 // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
                 //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));*/
             }
         }
         else {
@@ -274,110 +309,6 @@
 {
     [super viewWillAppear:animated];
     
-    /*ResourceContext* resourceContext = [ResourceContext instance];
-    
-    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    
-    if (page != nil) {
-        Photo* photo = [page photoWithHighestVotes];
-        self.topVotedPhotoID = photo.objectid;
-        
-        Caption* caption = [page captionWithHighestVotes];
-        
-        NSDate* datePublished = [DateTimeHelper parseWebServiceDateDouble:photo.datecreated];
-        
-        self.lbl_title.text = page.displayname;
-        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
-        self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
-        self.lbl_publishDate.text = [NSString stringWithFormat:@"published: %@", [DateTimeHelper formatMediumDate:datePublished]];
-        self.lbl_pageNumber.text = [NSString stringWithFormat:@"- %@ -", [self.pageNumber stringValue]];
-        
-        ImageManager* imageManager = [ImageManager instance];
-        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:page.objectid forKey:kPAGEID];
-        
-        //add the photo id to the context
-        [userInfo setValue:photo.objectid forKey:kPHOTOID];
-        
-        if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
-            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-            UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
-            [callback release];
-            
-            if (image != nil) {
-                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-                self.iv_photo.image = image;
-                
-                // get the frame for the new scaled image in the Photo ImageView
-                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
-                
-                // create insets to cap the photo frame according to the size of the scaled image
-                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
-                
-                // apply the cap insets to the photo frame image
-                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
-                    self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
-                    
-                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                    self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                }
-                else {
-                    self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
-                    //self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(scaledImage.size.width/2) topCapHeight:scaledImage.size.height/2];
-                    
-                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                    self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                }
-                
-                // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-            }
-        }
-        else {
-            self.iv_photo.contentMode = UIViewContentModeCenter;
-            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
-        }
-        
-        
-        /*if (photo.thumbnailurl != nil && 
-            ![photo.thumbnailurl isEqualToString:@""]) 
-        {
-            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-            UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
-            [callback release];
-            
-            if (image != nil) {
-                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-                self.iv_photo.image = image;
-                
-                // get the frame for the new scaled image in the Photo ImageView
-                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
-                
-                // create insets to cap the photo frame according to the size of the scaled image
-                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
-                
-                // apply the cap insets to the photo frame image
-                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
-                    self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
-                } else {
-                    self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:photoFrameInsets.left topCapHeight:photoFrameInsets.top];
-                }
-                
-                // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-            }
-        }
-        else {
-            self.iv_photo.contentMode = UIViewContentModeCenter;
-            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
-        }*/
-   //     [self.view setNeedsDisplay];
-   // }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -416,7 +347,9 @@
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-            self.iv_photoFrame.frame = CGRectMake(0, self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
+            
+            [self displayPhotoFrameOnImage:response.image];
+            //self.iv_photoFrame.frame = CGRectMake(0, self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
             [self.view setNeedsDisplay];
         }
     }
