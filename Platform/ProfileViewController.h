@@ -40,7 +40,9 @@
     UIImageView* m_iv_userBestLine;
     
     UIView* m_v_userSettingsContainer;
-    UISwitch* m_sw_enhancedFacebookSharing;
+    UISwitch* m_sw_seamlessFacebookSharing;
+    UISwitch* m_sw_facebookLogin;
+    UISwitch* m_sw_twitterLogin;
     User*   m_user;
     NSNumber* m_userID;
 }
@@ -75,9 +77,14 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 @property (nonatomic, retain) IBOutlet UIView*      v_userSettingsContainer;
-@property (nonatomic, retain) IBOutlet UISwitch*    sw_enhancedFacebookSharing;
+@property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
+@property (nonatomic, retain) IBOutlet UISwitch*    sw_facebookLogin;
+@property (nonatomic, retain) IBOutlet UISwitch*    sw_twitterLogin;
 
-- (IBAction) onEnhancedSharingLevelChanged:(id)sender;
+- (IBAction) onFacebookLoginChanged:(id)sender;
+- (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
+- (IBAction) onTwitterLoginChanged:(id)sender;
+
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;
 @end

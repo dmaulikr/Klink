@@ -42,8 +42,10 @@
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
-@synthesize sw_enhancedFacebookSharing  = m_sw_enhancedFacebookSharing;
 @synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
+@synthesize sw_facebookLogin            = m_sw_facebookLogin;
+@synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
+@synthesize sw_twitterLogin             = m_sw_twitterLogin;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -191,7 +193,7 @@
     [rightButton release];
     
     // set custom font on views with text
-    [self.lbl_username setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
+    /*[self.lbl_username setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
     [self.lbl_employeeStartDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
     [self.lbl_currentLevel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:16]];
     [self.lbl_currentLevelDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
@@ -211,7 +213,7 @@
     [self.lbl_draftsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
     [self.lbl_photosLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
     [self.lbl_captionsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_totalLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
+    [self.lbl_totalLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];*/
     
 }
 
@@ -249,7 +251,9 @@
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
     self.v_userSettingsContainer = nil;
-    self.sw_enhancedFacebookSharing = nil;
+    self.sw_seamlessFacebookSharing = nil;
+    self.sw_facebookLogin = nil;
+    self.sw_twitterLogin = nil;
     
 }
 
@@ -280,7 +284,11 @@
             //no it isnt
             self.v_userSettingsContainer.hidden = YES;
         }
-        self.sw_enhancedFacebookSharing.on = [self.user.sharinglevel boolValue];
+        self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
+        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+        self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
+        
+        
         self.lbl_username.text = self.user.displayname;
         self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
         self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
@@ -321,7 +329,17 @@
 }
 
 #pragma mark - UISwitch Handler
-- (IBAction) onEnhancedSharingLevelChanged:(id)sender 
+- (IBAction) onFacebookLoginChanged:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //no user is logged in currently
+        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
+    }
+    else {
+        [self.authenticationManager logoff];
+    }
+}
+
+- (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
     if (self.user == self.loggedInUser) {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -330,13 +348,19 @@
 
         ResourceContext* resourceContext = [ResourceContext instance];
       //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        self.user.sharinglevel = [NSNumber numberWithBool:self.sw_enhancedFacebookSharing.on];
+        self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
     }
 }
+
+- (IBAction) onTwitterLoginChanged:(id)sender {
+    [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
+    
+}
+
          
 #pragma mark - MBProgressHUD Delegate
 - (void) hudWasHidden:(MBProgressHUD *)hud {
@@ -353,7 +377,7 @@
 //        NSError* error = nil;
 //        [resourceContext.managedObjectContext save:&error];
         
-        self.sw_enhancedFacebookSharing.on = [self.user.sharinglevel boolValue];
+        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
         
     }
     
