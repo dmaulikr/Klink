@@ -32,6 +32,7 @@
 @synthesize iv_background           = m_iv_background;
 @synthesize captionCloudEnumerator  = m_captionCloudEnumerator;
 
+#define kENUMERATIONTHRESHOLD   1
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all published pages
@@ -161,6 +162,25 @@
     [fixedSpace1 release];
     [fixedSpace2 release];
     return retVal;
+}
+
+//called when a new page is loaded into the display, will check to see thast given
+//the value for kENUMARTIONTHRESHOLD whether to perform an enumeration against the cloud,
+//and if so, perform it.
+- (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining {
+    NSString* activityName = @"BookViewControllerBase.evaluateAndEnumeratePagesFromCloud:";
+    //we need to make a check to see how many objects we have left
+    //if we are below a threshold, we need to execute a fetch to the server
+    
+    if (pagesRemaining < kENUMERATIONTHRESHOLD &&
+        !self.pageCloudEnumerator.isLoading) {
+        //enumerate
+        LOG_BOOKVIEWCONTROLLER(0, @"Detected only %d pages remaining, initiating re-enumeration from cloud",activityName,pagesRemaining);
+        self.pageCloudEnumerator = nil;
+        self.pageCloudEnumerator = [CloudEnumerator  enumeratorForPages];
+        self.pageCloudEnumerator.delegate = self;
+        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+    }
 }
 
 #pragma mark - Toolbar Button Helpers
@@ -377,12 +397,13 @@
            
         }
     }
-    
-    //at this point we have all the captions that are in the frc
-    LOG_BOOKVIEWCONTROLLER(0, @"%@ Enumerating %d missing captions from the cloud",activityName,[captionList count]);
-    self.captionCloudEnumerator = [CloudEnumerator enumeratorForIDs:captionList withTypes:captionTypeList];
-    
-    [self.captionCloudEnumerator enumerateUntilEnd:nil];
+    if ([captionList count] > 0) {
+        //at this point we have all the captions that are in the frc
+        LOG_BOOKVIEWCONTROLLER(0, @"%@ Enumerating %d missing captions from the cloud",activityName,[captionList count]);
+        self.captionCloudEnumerator = [CloudEnumerator enumeratorForIDs:captionList withTypes:captionTypeList];
+        
+        [self.captionCloudEnumerator enumerateUntilEnd:nil];
+    }
     [captionList release];
     [captionTypeList release];
 }

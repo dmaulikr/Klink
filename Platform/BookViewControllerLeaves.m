@@ -72,6 +72,16 @@
     return count;
 }
 
+- (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)pageIndex {
+    //we need to make a check to see how many objects we have left
+    //if we are below a threshold, we need to execute a fetch to the server
+    int count = [[self.frc_published_pages fetchedObjects]count];
+    int lastIndex = count - 1;
+    int pagesRemaining = lastIndex - pageIndex;
+    [self evaluateAndEnumeratePagesFromCloud:pagesRemaining];
+
+}
+
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
     // Return the page view controller for the given index
     int count = [[self.frc_published_pages fetchedObjects]count];
@@ -96,6 +106,10 @@
         CGContextScaleCTM(ctx, 1.0, -1.0);
         
         [pageViewController.view.layer renderInContext:ctx];
+        
+        
+             
+        
         // NEW WAY:END
         
         /*// OLD WAY:BEGIN use a UIImage representation of the PageViewController's view

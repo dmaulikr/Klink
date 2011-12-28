@@ -41,9 +41,12 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+
+
 #pragma mark - PageViewController Delegate Methods (for iOS 5+)
 - (PageViewController *)viewControllerAtIndex:(int)index
 {
+    NSString* activityName = @"BookViewControllerpageView.viewControllerAtIndex:";
     // Return the page view controller for the given index
     int count = [[self.frc_published_pages fetchedObjects]count];
     
@@ -59,6 +62,12 @@
         PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
 
         [pageNumber release];
+        
+        //we need to make a check to see how many objects we have left
+        //if we are below a threshold, we need to execute a fetch to the server
+        int lastIndex = count - 1;
+        int pagesRemaining = lastIndex - index;
+        [self evaluateAndEnumeratePagesFromCloud:pagesRemaining];
         
         // reenable sharing buttons
         //[super enableFacebookButton];

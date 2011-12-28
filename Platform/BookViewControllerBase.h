@@ -45,7 +45,7 @@
 
 - (int) indexOfPageWithID:(NSNumber*)pageid;
 - (void) onEnumerateComplete:(NSDictionary*)userInfo;
-
+- (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;
