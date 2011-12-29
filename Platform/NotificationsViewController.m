@@ -361,6 +361,10 @@
     [self processClickOfNewVoteNotification:notification];
 }
 
+- (void) processDraftLeaderChangedNotification:(Feed*)notification {
+    [self processClickOfNewVoteNotification:notification];
+}
+
 - (void) processClickOfDraftSubmittedToEditorsNotification:(Feed*)notification {
     //on click this method will move to the draftview controller for this specified page
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
@@ -601,6 +605,11 @@
             //there were no votes
             //onclick should open up into Dark Side view with vote counts listed for each page
             [self processClickOfDraftEditorialBoardNoResult:notification];
+        }
+        else if ([notification.type intValue] == kDRAFT_LEADER_CHANGED) {
+            //this notification sent when we have a change in draft leadership
+            //we go to the caption supplied
+            [self processDraftLeaderChangedNotification:notification];
         }
         
     }
