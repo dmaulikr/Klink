@@ -74,8 +74,8 @@
     newQuery.referencingobjecttype =CAPTION;
     newQuery.includelinkedobjects = YES;
     newQuery.maxlinksreturnedperobject = [settingsObjects.numberoflinkedobjectstoreturn intValue];
-    newQuery.linked_results_sortAscending = YES;
-    newQuery.linked_results_sortattribute=DATECREATED;
+    newQuery.linked_results_sortAscending = NO;
+    newQuery.linked_results_sortattribute=NUMBEROFVOTES;
     newQuery.primary_results_sortascending = YES;
     newQuery.primary_results_sortattribute = DATECREATED;
     return newQuery;
