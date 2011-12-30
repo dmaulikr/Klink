@@ -192,14 +192,12 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
         
     }
-   }
+}
 
 - (IBAction) onLogoffButtonClicked:(id)sender {
     if ([self.authenticationManager isUserAuthenticated]) {
         [self.authenticationManager logoff];
     }
-    
-    
 }
 
 - (IBAction) onLoginTwitterButtonClicked:(id)sender {

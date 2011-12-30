@@ -23,8 +23,11 @@
 #import "ApplicationSettingsManager.h"
 #import "PlatformAppDelegate.h"
 #import "UIProgressHUDView.h"
+#import "UIImageView+UIImageViewCategory.h"
+
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
+#define kPHOTOFRAMETHICKNESS    30
 
 
 @implementation ContributeViewController
@@ -46,6 +49,7 @@
 
 @synthesize btn_cameraButton = m_btn_cameraButton;
 @synthesize iv_photo = m_iv_photo;
+@synthesize iv_photoFrame = m_iv_photoFrame;
 @synthesize img_photo = m_img_photo;
 @synthesize img_thumbnail = m_img_thumbnail;
 @synthesize lbl_photoOptional = m_lbl_photoOptional;
@@ -73,6 +77,39 @@
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
     self.lbl_deadline.text = [NSString stringWithFormat:@"draft deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+}
+
+#pragma mark - Photo Frame Helper
+- (void) displayPhotoFrameOnImage:(UIImage*)image {
+    // get the frame for the new scaled image in the Photo ImageView
+    CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
+    
+    //CGFloat scaleFactor = scaledImage.size.width/self.iv_photo.frame.size.width;
+    
+    // create insets to cap the photo frame according to the size of the scaled image
+    UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
+    
+    // apply the cap insets to the photo frame image
+    UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
+    if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
+        self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
+        
+        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+    }
+    else {
+        self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
+        //self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(scaledImage.size.width/2) topCapHeight:scaledImage.size.height/2];
+        
+        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+        //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
+        
+        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+    }
+    
+    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
+    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
+    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
 }
 
 #pragma mark - Initializers
@@ -161,7 +198,7 @@
     }
     
     // set custom font on views with text
-    [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_titleRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
     [self.lbl_photoOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
@@ -169,7 +206,7 @@
     [self.tv_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
     [self.lbl_captionOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
     [self.lbl_captionRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
     
     // Keeps the text of the caption textview aligned to the vertical center of the textview frame
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
@@ -315,7 +352,10 @@
             UIImage* image = [imageManager downloadImage:currentPhoto.imageurl withUserInfo:nil atCallback:callback];
             [callback release];
             if (image != nil) {
+                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.img_photo = image;
+                
+                [self displayPhotoFrameOnImage:image];
             }
         }
         
@@ -425,7 +465,12 @@
         if (self.configurationType == PAGE && !self.img_photo) {
             self.lbl_photoOptional.hidden = YES;
             self.lbl_photoRequired.hidden = NO;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Photo Required" message:@"Oops! Did we forget to mention that a caption must be attached to a photo. Please add a photo to your new draft, or, delete the caption before submitting." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle:@"Photo Required"
+                                  message:@"Oops! Did we forget to mention that a caption must be attached to a photo. Please add a photo to your new draft, or, delete the caption before submitting."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
             [alert show];
             [alert release];
         }
@@ -714,6 +759,9 @@
             //we only draw the image if this view hasnt been repurposed for another photo
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            
+            [self displayPhotoFrameOnImage:response.image];
             
             [self.view setNeedsDisplay];
         }

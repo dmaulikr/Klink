@@ -114,21 +114,20 @@
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
+    //if ([self.authenticationManager isUserAuthenticated]) {
         //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
         //                                   initWithTitle:self.loggedInUser.displayname
         //                                   style:UIBarButtonItemStylePlain
         //                                   target:self
         //                                   action:@selector(onUsernameButtonPressed:)];
-        UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
+        UIBarButtonItem* profileButton = [[UIBarButtonItem alloc]
                                            initWithImage:[UIImage imageNamed:@"icon-profile.png"]
                                            style:UIBarButtonItemStylePlain
                                            target:self
-                                           action:@selector(onUsernameButtonPressed:)];
-        [retVal addObject:usernameButton];
-        [usernameButton release];
-    }
+                                           action:@selector(onProfileButtonPressed:)];
+        [retVal addObject:profileButton];
+        [profileButton release];
+    //}
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
@@ -242,9 +241,9 @@
     
     [self updateDraftCounterLabels];
     
-    [self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    /*[self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_numDraftsTotal setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_numDraftsClosing setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+    [self.lbl_numDraftsClosing setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -390,26 +389,51 @@
 }
 */
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if (![self.authenticationManager isUserAuthenticated]) {
+            // user is not logged in
+            [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onProfileButtonPressed:) onTargetObject:self withObject:alertView];
+        }
+    }
+}
+
 #pragma mark - Toolbar Button Event Handlers
-- (void) onUsernameButtonPressed:(id)sender {
-    //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
-    //[self.navigationController pushViewController:personalLogViewController animated:YES];
-    
-    ProfileViewController* profileViewController = [ProfileViewController createInstance];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
+- (void) onProfileButtonPressed:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
+    }
+    else {
+        ProfileViewController* profileViewController = [ProfileViewController createInstance];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+    }
    
 }
 
 - (void) onDraftButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onDraftButtonPressed:) onTargetObject:self withObject:sender];
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to start a new draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewDraft];

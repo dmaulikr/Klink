@@ -179,12 +179,12 @@
     // Add the gesture to the photo image view
     [self.iv_openBookPageImage addGestureRecognizer:oneFingerTap];
     
-    [self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    /*[self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
     [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
     [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
     [self.lbl_publishDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_pageNumber setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
+    [self.lbl_pageNumber setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];*/
     
     ResourceContext* resourceContext = [ResourceContext instance];
     

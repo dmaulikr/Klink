@@ -681,6 +681,16 @@
     }
 }
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if (![self.authenticationManager isUserAuthenticated]) {
+            // user is not logged in
+            [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:self withObject:alertView];
+        }
+    }
+}
+
 #pragma mark - Toolbar Button Event Handlers
 - (void) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
@@ -741,8 +751,14 @@
 - (void) onCameraButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
         int index = [self.photoViewSlider getPageIndex];
@@ -767,8 +783,14 @@
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onVoteButtonPressed:) onTargetObject:self withObject:sender];
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to vote up this caption.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -816,8 +838,14 @@
 - (void) onCaptionButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCaptionButtonPressed:) onTargetObject:self withObject:sender];
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to caption to this photo.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
         int index = [self.photoViewSlider getPageIndex];
