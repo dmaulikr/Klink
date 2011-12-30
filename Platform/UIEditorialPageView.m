@@ -160,10 +160,10 @@
         
         [self addSubview:self.view];
         
-        [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+        /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
         [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
         [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
         
     }
     return self;

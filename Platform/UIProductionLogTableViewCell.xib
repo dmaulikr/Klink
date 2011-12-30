@@ -77,14 +77,18 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
 								</object>
+								<reference key="IBUIShadowColor" ref="826174270"/>
+								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<int key="type">1</int>
+									<string key="name">AmericanTypewriter</string>
+									<string key="family">American Typewriter</string>
+									<int key="traits">0</int>
 									<double key="pointSize">17</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica</string>
+									<string key="NSName">AmericanTypewriter-CondensedLight</string>
 									<double key="NSSize">17</double>
 									<int key="NSfFlags">16</int>
 								</object>
@@ -108,14 +112,18 @@
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 								</object>
 								<reference key="IBUIHighlightedColor" ref="826174270"/>
+								<reference key="IBUIShadowColor" ref="826174270"/>
+								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="1046503064">
-									<int key="type">1</int>
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="865867775">
+									<string key="name">AmericanTypewriter</string>
+									<string key="family">American Typewriter</string>
+									<int key="traits">0</int>
 									<double key="pointSize">14</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="899832875">
-									<string key="NSName">Helvetica</string>
+								<object class="NSFont" key="IBUIFont" id="29022421">
+									<string key="NSName">AmericanTypewriter-CondensedLight</string>
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
@@ -136,11 +144,13 @@
 								<string key="IBUIText">999</string>
 								<reference key="IBUITextColor" ref="182458051"/>
 								<reference key="IBUIHighlightedColor" ref="826174270"/>
+								<reference key="IBUIShadowColor" ref="826174270"/>
+								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
-								<reference key="IBUIFontDescription" ref="1046503064"/>
-								<reference key="IBUIFont" ref="899832875"/>
+								<reference key="IBUIFontDescription" ref="865867775"/>
+								<reference key="IBUIFont" ref="29022421"/>
 							</object>
 							<object class="IBUILabel" id="500077301">
 								<reference key="NSNextResponder" ref="1009946813"/>
@@ -158,11 +168,13 @@
 								<string key="IBUIText">999</string>
 								<reference key="IBUITextColor" ref="182458051"/>
 								<reference key="IBUIHighlightedColor" ref="826174270"/>
+								<reference key="IBUIShadowColor" ref="826174270"/>
+								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">2</int>
-								<reference key="IBUIFontDescription" ref="1046503064"/>
-								<reference key="IBUIFont" ref="899832875"/>
+								<reference key="IBUIFontDescription" ref="865867775"/>
+								<reference key="IBUIFont" ref="29022421"/>
 							</object>
 							<object class="IBUIImageView" id="404378873">
 								<reference key="NSNextResponder" ref="1009946813"/>

@@ -12,6 +12,7 @@
 #import "ApplicationSettingsManager.h"
 #import "PlatformAppDelegate.h"
 
+
 @implementation ProfileViewController
 @synthesize lbl_username            = m_lbl_username;
 @synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
@@ -43,9 +44,9 @@
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
 @synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
-@synthesize sw_facebookLogin            = m_sw_facebookLogin;
 @synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
-@synthesize sw_twitterLogin             = m_sw_twitterLogin;
+//@synthesize sw_facebookLogin            = m_sw_facebookLogin;
+//@synthesize sw_twitterLogin             = m_sw_twitterLogin;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -188,9 +189,20 @@
     // Do any additional setup after loading the view from its nib.
     
     // Navigation Bar Buttons
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                    initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                    target:self
+                                    action:@selector(onDoneButtonPressed:)];
     self.navigationItem.rightBarButtonItem = rightButton;
     [rightButton release];
+    
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"Account"
+                                   style:UIBarButtonItemStylePlain
+                                   target:self
+                                   action:@selector(onAccountButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    [leftButton release];
     
     // set custom font on views with text
     /*[self.lbl_username setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
@@ -252,8 +264,8 @@
     self.iv_progressBarContainer = nil;
     self.v_userSettingsContainer = nil;
     self.sw_seamlessFacebookSharing = nil;
-    self.sw_facebookLogin = nil;
-    self.sw_twitterLogin = nil;
+    //self.sw_facebookLogin = nil;
+    //self.sw_twitterLogin = nil;
     
 }
 
@@ -284,9 +296,9 @@
             //no it isnt
             self.v_userSettingsContainer.hidden = YES;
         }
-        self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
         self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-        self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
+        //self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
+        //self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
         
         
         self.lbl_username.text = self.user.displayname;
@@ -323,31 +335,75 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
+#pragma mark - MailComposeController Delegate
+// The mail compose view controller delegate method
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
+        if ([self.authenticationManager isUserAuthenticated]) {
+            [self.authenticationManager logoff];
+        }
+    }
+    else if (buttonIndex == 1) {
+        // Change Username button pressed
+        
+        
+    }
+    else if (buttonIndex == 2) {
+        // Feedback button pressed
+        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+        picker.mailComposeDelegate = self;
+        
+        [picker setSubject:@"Feedback!"];
+        
+        // Set up the recipients
+        NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com",
+                                 nil];
+        
+        [picker setToRecipients:toRecipients];
+        
+        // Present the mail composition interface
+        [self presentModalViewController:picker animated:YES];
+        [picker release]; // Can safely release the controller now.
+    }
+}
+
+
 #pragma mark - Navigation Bar button handler 
 - (void)onDoneButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
 }
 
-#pragma mark - UISwitch Handler
-- (IBAction) onFacebookLoginChanged:(id)sender {
-    if (![self.authenticationManager isUserAuthenticated]) {
-        //no user is logged in currently
-        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
-    }
-    else {
-        [self.authenticationManager logoff];
-    }
+- (void)onAccountButtonPressed:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  destructiveButtonTitle:@"Logout"
+                                  otherButtonTitles:@"Change Username", @"Feedback", nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
 }
 
+#pragma mark - UISwitch Handler
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
     if (self.user == self.loggedInUser) {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
-
+        
         ResourceContext* resourceContext = [ResourceContext instance];
-      //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+        //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
         self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
@@ -356,10 +412,20 @@
     }
 }
 
-- (IBAction) onTwitterLoginChanged:(id)sender {
+/*- (IBAction) onFacebookLoginChanged:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        //no user is logged in currently
+        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
+    }
+    else {
+        [self.authenticationManager logoff];
+    }
+}*/
+
+/*- (IBAction) onTwitterLoginChanged:(id)sender {
     [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
     
-}
+}*/
 
          
 #pragma mark - MBProgressHUD Delegate

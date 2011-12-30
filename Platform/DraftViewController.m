@@ -235,8 +235,8 @@
     [self.tbl_draftTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
-    [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
+    /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
+    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];*/
     
     }
 
@@ -470,26 +470,51 @@
     [self.tbl_draftTableView reloadData];
 }
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if (![self.authenticationManager isUserAuthenticated]) {
+            // user is not logged in
+            [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:self withObject:alertView];
+        }
+    }
+}
+
 #pragma mark - Toolbar Button Event Handlers
-- (void) onUsernameButtonPressed:(id)sender {
-    //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
-    //[self.navigationController pushViewController:personalLogViewController animated:YES];
+- (void) onProfileButtonPressed:(id)sender {
+    if (![self.authenticationManager isUserAuthenticated]) {
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
+    }
+    else {
+        ProfileViewController* profileViewController = [ProfileViewController createInstance];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+    }
     
-    ProfileViewController* profileViewController = [ProfileViewController createInstance];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
-   
 }
 
 - (void) onCameraButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onCameraButtonPressed:) onTargetObject:self withObject:sender];
+        UIAlertView *alert = [[UIAlertView alloc]
+                              initWithTitle:@"Login Required"
+                              message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];

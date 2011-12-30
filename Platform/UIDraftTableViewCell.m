@@ -231,13 +231,13 @@
         self.btn_writtenBy.userInteractionEnabled = YES;
         self.btn_illustratedBy.userInteractionEnabled = YES;
         
-        [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
+        /*[self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
         [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
         [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
         [self.btn_illustratedBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.btn_writtenBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
+        [self.btn_writtenBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
         
 //        [self.btn_writtenBy addTarget:self action:@selector(onWrittenByClicked:) forControlEvents:UIControlEventAllTouchEvents];
 //        [self.btn_illustratedBy addTarget:self action:@selector(onIllustratedByClicked:) forControlEvents:UIControlEventAllTouchEvents];

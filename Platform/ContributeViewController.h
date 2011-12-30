@@ -33,6 +33,7 @@
     
     UIButton*       m_btn_cameraButton; //handles when the photo is touched to launch the camera
     UIImageView*    m_iv_photo;
+    UIImageView*    m_iv_photoFrame;
     UIImage*        m_img_photo;
     UIImage*        m_img_thumbnail;
     UILabel*        m_lbl_photoOptional;
@@ -66,6 +67,7 @@
 
 @property (nonatomic, retain) IBOutlet UIButton*        btn_cameraButton;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_photoFrame;
 @property (nonatomic, retain) UIImage*                  img_photo;
 @property (nonatomic, retain) UIImage*                  img_thumbnail;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_photoOptional;

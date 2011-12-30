@@ -12,7 +12,7 @@
 #import "CloudEnumerator.h"
 #import "EGORefreshTableHeaderView.h"
 
-@interface DraftViewController : BaseViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, CloudEnumeratorDelegate> {
+@interface DraftViewController : BaseViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, CloudEnumeratorDelegate, UIAlertViewDelegate> {
     NSNumber*               m_pageID;
     UIView*                 m_view;
     UILabel*                m_lbl_draftTitle;

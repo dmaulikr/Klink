@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
 
-@interface ProfileViewController : BaseViewController <MBProgressHUDDelegate> {
+@interface ProfileViewController : BaseViewController < MBProgressHUDDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate > {
     UILabel* m_lbl_username;
     UILabel* m_lbl_employeeStartDate;
     UILabel* m_lbl_currentLevel;
@@ -41,8 +42,8 @@
     
     UIView* m_v_userSettingsContainer;
     UISwitch* m_sw_seamlessFacebookSharing;
-    UISwitch* m_sw_facebookLogin;
-    UISwitch* m_sw_twitterLogin;
+    //UISwitch* m_sw_facebookLogin;
+    //UISwitch* m_sw_twitterLogin;
     User*   m_user;
     NSNumber* m_userID;
 }
@@ -78,12 +79,12 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 @property (nonatomic, retain) IBOutlet UIView*      v_userSettingsContainer;
 @property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
-@property (nonatomic, retain) IBOutlet UISwitch*    sw_facebookLogin;
-@property (nonatomic, retain) IBOutlet UISwitch*    sw_twitterLogin;
+//@property (nonatomic, retain) IBOutlet UISwitch*    sw_facebookLogin;
+//@property (nonatomic, retain) IBOutlet UISwitch*    sw_twitterLogin;
 
-- (IBAction) onFacebookLoginChanged:(id)sender;
+//- (IBAction) onFacebookLoginChanged:(id)sender;
+//- (IBAction) onTwitterLoginChanged:(id)sender;
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
-- (IBAction) onTwitterLoginChanged:(id)sender;
 
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;
