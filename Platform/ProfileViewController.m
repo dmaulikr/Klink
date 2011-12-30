@@ -352,6 +352,7 @@
         if ([self.authenticationManager isUserAuthenticated]) {
             [self.authenticationManager logoff];
         }
+        [self dismissModalViewControllerAnimated:YES];
     }
     else if (buttonIndex == 1) {
         // Change Username button pressed

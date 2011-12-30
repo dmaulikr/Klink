@@ -98,6 +98,7 @@
 		5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */; };
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
 		528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 528A49B814AD01F000881A99 /* MessageUI.framework */; };
+		52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52941A6014AE774100BFE179 /* UICustomAlertView.m */; };
 		52979AD1149F980100F29ECC /* doubleline_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACD149F980100F29ECC /* doubleline_bottom.png */; };
 		52979AD2149F980100F29ECC /* doubleline_bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACE149F980100F29ECC /* doubleline_bottom@2x.png */; };
 		52979AD3149F980100F29ECC /* doubleline_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979ACF149F980100F29ECC /* doubleline_top.png */; };
@@ -397,6 +398,8 @@
 		5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewcell_separator_scetched.png; sourceTree = "<group>"; };
 		5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tableviewcell_separator_scetched@2x.png"; sourceTree = "<group>"; };
 		528A49B814AD01F000881A99 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		52941A5F14AE774100BFE179 /* UICustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomAlertView.h; sourceTree = "<group>"; };
+		52941A6014AE774100BFE179 /* UICustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomAlertView.m; sourceTree = "<group>"; };
 		52979ACD149F980100F29ECC /* doubleline_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doubleline_bottom.png; sourceTree = "<group>"; };
 		52979ACE149F980100F29ECC /* doubleline_bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doubleline_bottom@2x.png"; sourceTree = "<group>"; };
 		52979ACF149F980100F29ECC /* doubleline_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doubleline_top.png; sourceTree = "<group>"; };
@@ -1438,6 +1441,8 @@
 			children = (
 				C5A82D751466667E00E77675 /* UICameraActionSheet.h */,
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
+				52941A5F14AE774100BFE179 /* UICustomAlertView.h */,
+				52941A6014AE774100BFE179 /* UICustomAlertView.m */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
 				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
@@ -2019,6 +2024,7 @@
 				5236458F14A27745007BD882 /* LeavesUtilities.m in Sources */,
 				5236459314A28D47007BD882 /* BookViewControllerLeaves.m in Sources */,
 				5236459E14A38ECE007BD882 /* BookViewControllerBase.m in Sources */,
+				52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
