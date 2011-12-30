@@ -22,6 +22,9 @@
 #import "SocialSharingManager.h"
 #import "LandscapePhotoViewController.h"
 #import "PlatformAppDelegate.h"
+#import "NotificationsViewController.h"
+#import "DraftViewController.h"
+#import "UICustomAlertView.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -370,7 +373,12 @@
         //we instruct the page view slider to move to the index of the page which is specified
         [self.photoViewSlider goTo:indexOfPhoto withAnimation:NO];
         
-        [self enumerateCaptionsFromCloudForPhoto:currentPhoto];
+        // only enumerate captions from this view controller if it was initiated by the NotificationsViewController,
+        // otherwise, the DraftViewController has already initialed the captionCloudEnumerator and we should not do it again
+        if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
+            [self enumerateCaptionsFromCloudForPhoto:currentPhoto];
+        }
+        
         if (self.captionID == nil) {
             [self.captionViewSlider goTo:0 withAnimation:NO];
             
@@ -682,11 +690,11 @@
 }
 
 #pragma mark - UIAlertView Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
-            [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:self withObject:alertView];
+            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
         }
     }
 }
@@ -751,10 +759,13 @@
 - (void) onCameraButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onCameraButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];
@@ -783,10 +794,13 @@
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to vote up this caption.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onVoteButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];
@@ -838,10 +852,13 @@
 - (void) onCaptionButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to caption to this photo.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onCaptionButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];

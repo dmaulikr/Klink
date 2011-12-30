@@ -22,6 +22,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
+#import "UICustomAlertView.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -34,7 +35,8 @@
 @synthesize lbl_deadline = m_lbl_deadline;
 @synthesize deadline = m_deadline;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
-@synthesize cloudPhotoEnumerator = m_cloudPhotoEnumerator;
+@synthesize photoCloudEnumerator = m_photoCloudEnumerator;
+@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 @synthesize refreshHeader = m_refreshHeader;
 
 
@@ -267,17 +269,12 @@
         
         if (numPhotosInStore < numPhotosInDraft) {
             LOG_DRAFTVIEWCONTROLLER(0, @"%@Number of photos in store (%d) is less than number of photos on draft (%d), enumerating from cloud",activityName,numPhotosInStore,numPhotosInDraft);
-            self.cloudPhotoEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
-            self.cloudPhotoEnumerator.delegate = self;
+            self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+            self.photoCloudEnumerator.delegate = self;
             
-            [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
-        }
-        
-        
-        
+            [self.photoCloudEnumerator enumerateUntilEnd:nil];
+        }      
     }
-
-    
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -420,10 +417,10 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    self.cloudPhotoEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
-    self.cloudPhotoEnumerator.delegate = self;
+    self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+    self.photoCloudEnumerator.delegate = self;
     
-    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
+    [self.photoCloudEnumerator enumerateUntilEnd:nil];
     
 //    self.cloudPhotoEnumerator = nil;
 //    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
@@ -435,8 +432,8 @@
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
-    if (self.cloudPhotoEnumerator != nil) {
-        return [self.cloudPhotoEnumerator isLoading];
+    if (self.photoCloudEnumerator != nil) {
+        return [self.photoCloudEnumerator isLoading];
     }
     else {
         return NO;
@@ -449,11 +446,25 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
+    NSString* activityName = @"DraftViewController.onEnumerateComplete:";
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
     [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
+    
+    //on this method we need to enumerate all the captions that are part of the photos in this draft
+    //to do this, we enumerate through each photo and extract the caption IDs
+    //and make a fixed ID enumerate call to it.
+    self.captionCloudEnumerator = nil;
+    
+    for (Photo* photo in [self.frc_photos fetchedObjects]) {
+        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:photo.objectid];
+        self.captionCloudEnumerator.delegate = self; 
+        LOG_DRAFTVIEWCONTROLLER(0, @"%@ Enumerating captions from the cloud for photo with id:",activityName,[photo.objectid stringValue]);
+        [self.captionCloudEnumerator enumerateUntilEnd:nil];
+    }
+    
 }
 
 
@@ -471,11 +482,11 @@
 }
 
 #pragma mark - UIAlertView Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
-            [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:self withObject:alertView];
+            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
         }
     }
 }
@@ -483,10 +494,13 @@
 #pragma mark - Toolbar Button Event Handlers
 - (void) onProfileButtonPressed:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onProfileButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];
@@ -507,10 +521,13 @@
 - (void) onCameraButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onCameraButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];

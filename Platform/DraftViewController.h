@@ -21,7 +21,8 @@
 
     UITableView*            m_tbl_draftTableView;
 
-    CloudEnumerator*        m_cloudPhotoEnumerator;
+    CloudEnumerator*        m_photoCloudEnumerator;
+    CloudEnumerator*        m_captionCloudEnumerator;
     EGORefreshTableHeaderView* m_refreshHeader;
 }
 
@@ -31,7 +32,8 @@
 @property (nonatomic, retain) IBOutlet UILabel*              lbl_deadline;
 @property (nonatomic, retain)          NSDate*               deadline;
 @property (nonatomic, retain) IBOutlet UITableView*          tbl_draftTableView;
-@property (nonatomic, retain) CloudEnumerator*               cloudPhotoEnumerator;
+@property (nonatomic, retain) CloudEnumerator*               photoCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;

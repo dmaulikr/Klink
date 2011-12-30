@@ -23,6 +23,7 @@
 #import "ProfileViewController.h"
 #import "PageState.h"
 #import "PlatformAppDelegate.h"
+#import "UICustomAlertView.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -390,11 +391,11 @@
 */
 
 #pragma mark - UIAlertView Delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
-            [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onProfileButtonPressed:) onTargetObject:self withObject:alertView];
+            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
         }
     }
 }
@@ -402,12 +403,17 @@
 #pragma mark - Toolbar Button Event Handlers
 - (void) onProfileButtonPressed:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onProfileButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
+        
+        
         [alert show];
         [alert release];
     }
@@ -426,10 +432,13 @@
 - (void) onDraftButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UIAlertView *alert = [[UIAlertView alloc]
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to start a new draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
+                              onFinishSelector:@selector(onDraftButtonPressed:)
+                              onTargetObject:self
+                              withObject:nil
                               cancelButtonTitle:@"Cancel"
                               otherButtonTitles:@"Login", nil];
         [alert show];

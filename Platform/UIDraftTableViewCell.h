@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CloudEnumerator.h"
 
 
 @interface UIDraftTableViewCell : UITableViewCell {
@@ -37,11 +38,11 @@
 @property (nonatomic, retain) IBOutlet UIButton*        btn_illustratedBy;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photoFrame;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_caption;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_photoby;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_captionby;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_numVotes;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_numCaptions;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_caption;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_photoby;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_numVotes;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
 
 - (void) renderWithPhotoID:(NSNumber*)photoID;
 - (IBAction) onWrittenByClicked:(id)sender;
