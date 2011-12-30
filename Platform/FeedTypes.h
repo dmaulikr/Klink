@@ -23,5 +23,10 @@ typedef enum {
     kEDITORIAL_BOARD_VOTE_ENDED,
     kDRAFT_NOT_PUBLISHED,
     kEDITORIAL_BOARD_NO_RESULT,
-    kDRAFT_LEADER_CHANGED
+    kDRAFT_LEADER_CHANGED,
+    //the following are generic notification types specified for future expansion
+    kGENERIC_EDITORIAL_POST_VOTE,
+    kGENERIC_FULLSCREEN,
+    kGENERIC_DRAFT,
+    kGENERIC_USER
 } FeedType;

@@ -296,7 +296,11 @@
 */
 
 #define kPOLL   @"poll"
-
+#define kCAPTION    @"caption"
+#define kPHOTO      @"photo"
+#define kPAGE       @"page"
+#define kDRAFT      @"draft"
+#define kUSER       @"user"
 #pragma mark - Table view delegate
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
@@ -314,10 +318,7 @@
     return indexPath;
 }
 
-#define kCAPTION    @"caption"
-#define kPHOTO      @"photo"
-#define kPAGE       @"page"
-#define kDRAFT      @"draft"
+
 
 - (void) processClickOfNewVoteNotification:(Feed*)notification {
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
@@ -349,11 +350,18 @@
     [self.navigationController pushViewController:fullScreenController animated:YES];
 }
 
+
+
 - (void) processClickOfNewCaptionNotification:(Feed*)notification {
      //this method has the same logic as the one above it
     [self processClickOfNewVoteNotification:notification];
     
     
+}
+
+- (void) processGenericFullscreenNotification:(Feed*)notification {
+    //this method will simply call the exisiting method which performs same task
+    [self processClickOfNewVoteNotification:notification];
 }
 
 - (void) processClickOfNewPhotoNotification:(Feed*)notification {
@@ -365,6 +373,8 @@
     [self processClickOfNewVoteNotification:notification];
 }
 
+
+//opens the draft view
 - (void) processClickOfDraftSubmittedToEditorsNotification:(Feed*)notification {
     //on click this method will move to the draftview controller for this specified page
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
@@ -385,6 +395,11 @@
 
 }
 
+- (void) processGenericDraftNotification:(Feed*)notification {
+    //generic handler for draft notifications
+    //we just callt he method above as it already does it
+    [self processGenericDraftNotification:notification];
+}
 
 
 - (void) processClickOfEditorialBoardVotingBegin:(Feed*)notification {
@@ -416,6 +431,13 @@
         LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
     }
     
+}
+
+- (void) processGenericEditorialBoardPostVoteNotification:(Feed*)notification {
+    //will display the editorial board view, designed to show the post-vote scene for the user
+    
+    //we will simply call processClickOfEditorialBoardVotingBegin message
+    [self processClickOfEditorialBoardVotingBegin:notification];
 }
 
 - (void) processClickOfEditorialBoardVotingEnding:(Feed*)notification 
@@ -459,6 +481,24 @@
     [self.navigationController pushViewController:profileViewController animated:NO];
 }
 
+- (void) processGenericUserNotification:(Feed*)notification {
+    //generic notification handler for user notifications, will open up the user feed    
+    NSNumber* userID = nil;
+    NSArray* feedObjects = notification.feeddata;
+    
+    //we cycle through the parameters and find the user id
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kUSER])
+        {
+            userID = fd.objectid;
+        }
+    }
+    
+    //open the user profile view
+    ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:userID];
+    [self.navigationController pushViewController:profileViewController animated:NO];
+}
+
 - (void) processClickOfDemotionFromEditorNotification:(Feed*)notification
 {
     [self processClickOfPromotionToEditorNotification:notification];
@@ -472,6 +512,8 @@
 - (void) processClickOfDraftEditorialBoardNoResult:(Feed*)notification {
     [self processClickOfEditorialBoardVotingBegin:notification];
 }
+
+
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -610,6 +652,23 @@
             //this notification sent when we have a change in draft leadership
             //we go to the caption supplied
             [self processDraftLeaderChangedNotification:notification];
+        }
+        else if ([notification.type intValue] == kGENERIC_EDITORIAL_POST_VOTE) {
+            //this notification type is a generic type designed to popup up the editorial
+            //board view in a post-vote layout
+            [self processGenericEditorialBoardPostVoteNotification:notification];
+        }
+        else if ([notification.type intValue] == kGENERIC_FULLSCREEN) {
+            //generic notification that will open up the fullscreen view and show a specific photo and caption
+            [self processGenericFullscreenNotification:notification];
+        }
+        else if ([notification.type intValue] == kGENERIC_DRAFT) {
+            //generic notification that will open up the draft view and show a specific draft
+            [self processGenericDraftNotification:notification];
+        }
+        else if ([notification.type intValue] == kGENERIC_USER) {
+            //generic notification that will open up the user view and show a specific user
+            [self processGenericUserNotification:notification];
         }
         
     }
