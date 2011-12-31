@@ -18,9 +18,10 @@
 @interface ResourceContext : NSObject {
 
     NSMutableDictionary* m_managedObjectContexts;
+    NSLock*  m_lock;
 }
 
-
+@property (nonatomic,retain) NSLock* managedObjectContextsLock;
 @property (nonatomic,retain) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic,retain) NSMutableDictionary* managedObjectContexts;
 
