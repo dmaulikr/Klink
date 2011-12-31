@@ -18,6 +18,8 @@
     UILabel*        m_lbl_notificationDate;
     UIImageView*    m_iv_notificationImage;
     UIImageView*    m_iv_notificationTypeImage;
+    
+    
 }
 
 @property (nonatomic,retain) NSNumber*                  notificationID;
@@ -30,7 +32,7 @@
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationTypeImage;
 
 - (void) renderNotificationWithID:(NSNumber*)notificationID; 
-
+- (IBAction)testButtonClicked:(id)sender;
 + (NSString*) cellIdentifier;
 
 @end

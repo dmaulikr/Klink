@@ -82,3 +82,4 @@ NSString* const HASVOTED                = @"hasvoted";
 NSString* const CREATORID               =@"creatorid";
 NSString* const VERSION                 =@"version";
 NSString* const BASEURL                 =@"base_url";
+NSString* const NUMBEROFFLAGS           =@"numberofflags";

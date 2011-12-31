@@ -17,7 +17,7 @@
     
 }
 
-
+@property (nonatomic, retain) NSNumber * numberofflags;
 @property (nonatomic,retain) NSNumber* creatorid;
 @property (nonatomic,retain) NSString* creatorname;
 @property (nonatomic,retain) NSString* thumbnailurl;

@@ -12,6 +12,7 @@
 @interface Caption : Resource {
     
 }
+@property (nonatomic, retain) NSNumber * numberofflags;
 @property (nonatomic,retain) NSString* caption1;
 @property (nonatomic,retain) NSNumber* creatorid;
 @property (nonatomic,retain) NSString* creatorname;

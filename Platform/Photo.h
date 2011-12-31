@@ -13,7 +13,7 @@
 @interface Photo : Resource {
     
 }
-
+@property (nonatomic, retain) NSNumber * numberofflags;
 @property (nonatomic, retain) NSString * displayname;
 @property (nonatomic, retain) NSString * descr;
 @property (nonatomic, retain) NSNumber * numberofviews;

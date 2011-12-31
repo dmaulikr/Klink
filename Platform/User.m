@@ -11,6 +11,7 @@
 
 
 @implementation User
+@dynamic email;
 @dynamic displayname;
 @dynamic numberofvotes;
 @dynamic thumbnailurl;

@@ -27,7 +27,7 @@
 @dynamic themeid;
 @dynamic latitude;
 @dynamic longitude;
-
+@dynamic numberofflags;
 
 - (void) refreshWith:(Resource*)newResource {
     //we override this method so that we can perform custom logic when
