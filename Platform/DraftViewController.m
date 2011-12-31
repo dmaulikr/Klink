@@ -456,14 +456,14 @@
     //on this method we need to enumerate all the captions that are part of the photos in this draft
     //to do this, we enumerate through each photo and extract the caption IDs
     //and make a fixed ID enumerate call to it.
-    self.captionCloudEnumerator = nil;
+    /*self.captionCloudEnumerator = nil;
     
     for (Photo* photo in [self.frc_photos fetchedObjects]) {
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:photo.objectid];
         self.captionCloudEnumerator.delegate = self; 
         LOG_DRAFTVIEWCONTROLLER(0, @"%@ Enumerating captions from the cloud for photo with id:",activityName,[photo.objectid stringValue]);
         [self.captionCloudEnumerator enumerateUntilEnd:nil];
-    }
+    }*/
     
 }
 

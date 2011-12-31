@@ -375,9 +375,11 @@
         
         // only enumerate captions from this view controller if it was initiated by the NotificationsViewController,
         // otherwise, the DraftViewController has already initialed the captionCloudEnumerator and we should not do it again
-        if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
+        /*if ([self.navigationController.topViewController isKindOfClass:[DraftViewController class]]) {
             [self enumerateCaptionsFromCloudForPhoto:currentPhoto];
-        }
+        }*/
+        
+        [self enumerateCaptionsFromCloudForPhoto:currentPhoto];
         
         if (self.captionID == nil) {
             [self.captionViewSlider goTo:0 withAnimation:NO];
