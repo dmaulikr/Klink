@@ -28,4 +28,6 @@
 @property (nonatomic,retain) NSNumber* numberofcaptions;
 @property (nonatomic,retain) NSNumber* numberofphotos;
 @property (nonatomic,retain) NSNumber* maxweeklyparticipation;
+@property (nonatomic,retain) NSString* imageurl;
+@property (nonatomic,retain) NSString* username;
 @end

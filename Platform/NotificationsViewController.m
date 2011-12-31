@@ -87,7 +87,9 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     
     for (Feed* notification in notifications) {
-        notification.hasseen = [NSNumber numberWithBool:YES];
+        if ([notification.hasseen boolValue] != YES) {
+            notification.hasseen = [NSNumber numberWithBool:YES];
+        }
     }
     
     [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
