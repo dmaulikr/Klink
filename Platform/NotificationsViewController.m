@@ -480,7 +480,13 @@
 {
         //will open up the user profile page for the user
     ProfileViewController* profileViewController = [ProfileViewController createInstance];
-    [self.navigationController pushViewController:profileViewController animated:NO];
+    //[self.navigationController pushViewController:profileViewController animated:NO];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 - (void) processGenericUserNotification:(Feed*)notification {

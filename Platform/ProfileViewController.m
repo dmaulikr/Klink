@@ -11,6 +11,9 @@
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "PlatformAppDelegate.h"
+#import "UIPromptAlertView.h"
+#import "UIProgressHUDView.h"
+#import "Macros.h"
 
 
 @implementation ProfileViewController
@@ -301,7 +304,7 @@
         //self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
         
         
-        self.lbl_username.text = self.user.displayname;
+        self.lbl_username.text = self.user.username;
         self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
         self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
         self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
@@ -336,6 +339,46 @@
 }
 
 
+#pragma mark -  MBProgressHUD Delegate
+-(void)hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"ProfileViewController.hudWasHidden";
+    [self hideProgressBar];
+    
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    
+    if (progressView.didSucceed) {
+        // Username change was successful
+        self.lbl_username.text = self.loggedInUser.username;
+        
+    }
+    else {
+        NSString* duplicateUsername = self.loggedInUser.username;
+        
+        //we need to undo the operation that was last performed
+        LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+        
+        // Show the Change Username alert view again
+        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
+                                    initWithTitle:@"Change Username"
+                                    message:[NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.", duplicateUsername]
+                                    delegate:self
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Change", nil];
+        [alert show];
+        [alert release];
+        
+        // handle fail on change of seamless sharing option
+        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+    }
+    
+}
+
+
 #pragma mark - MailComposeController Delegate
 // The mail compose view controller delegate method
 - (void)mailComposeController:(MFMailComposeViewController *)controller
@@ -343,6 +386,34 @@
                         error:(NSError *)error
 {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIPromptAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSString* enteredText = [alertView enteredText];
+        //self.lbl_username.text = enteredText;
+        
+        // Change the current logged in user's username
+        self.loggedInUser.username = enteredText;
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        //we start a new undo group here
+        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+        
+        //after this point, the platforms should automatically begin syncing the data back to the cloud
+        //we now show a progress bar to monitor this background activity
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = delegate.progressView;
+        progressView.delegate = self;
+        
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+        
+        NSString* progressIndicatorMessage = [NSString stringWithFormat:@"Checking availability..."];
+            
+        [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+    }
 }
 
 #pragma mark - UIActionSheet Delegate
@@ -356,7 +427,14 @@
     }
     else if (buttonIndex == 1) {
         // Change Username button pressed
-        
+        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
+                                    initWithTitle:@"Change Username"
+                                    message:@"\n\nPlease enter your preferred username."
+                                    delegate:self
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Change", nil];
+        [alert show];
+        [alert release];
         
     }
     else if (buttonIndex == 2) {
@@ -430,7 +508,7 @@
 
          
 #pragma mark - MBProgressHUD Delegate
-- (void) hudWasHidden:(MBProgressHUD *)hud {
+/*- (void) hudWasHidden:(MBProgressHUD *)hud {
     [self hideProgressBar];
     
     UIProgressHUDView* pv = (UIProgressHUDView*)hud;
@@ -447,9 +525,8 @@
         self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
         
     }
-    
-
-}
+}*/
+ 
 #pragma mark - Static Initializers
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];

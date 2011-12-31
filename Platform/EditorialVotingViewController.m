@@ -472,7 +472,7 @@
         
         //notify user that their vote has been casted
         if (self.loggedInUser) {
-            message = [[NSString alloc] initWithFormat:@"Thank you, %@, your vote has been cast.", self.loggedInUser.displayname];
+            message = [[NSString alloc] initWithFormat:@"Thank you, %@, your vote has been cast.", self.loggedInUser.username];
         }
         else {
             message = [[NSString alloc] initWithFormat:@"Thank you, your vote has been cast."];
@@ -488,7 +488,7 @@
     else if ([self.poll.hasvoted boolValue]) {
         //notify user that they have already voted in this poll and their new vote has been dismissed
         if (self.loggedInUser) {
-            message = [[NSString alloc] initWithFormat:@"%@, you have already voted for this poll.", self.loggedInUser.displayname];
+            message = [[NSString alloc] initWithFormat:@"%@, you have already voted for this poll.", self.loggedInUser.username];
         }
         else {
             message = [[NSString alloc] initWithFormat:@"You have already voted for this poll."];

@@ -117,10 +117,10 @@
     //check to see if the user is logged in or not
     //if ([self.authenticationManager isUserAuthenticated]) {
         //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-        //                                   initWithTitle:self.loggedInUser.displayname
+        //                                   initWithTitle:self.loggedInUser.username
         //                                   style:UIBarButtonItemStylePlain
         //                                   target:self
-        //                                   action:@selector(onUsernameButtonPressed:)];
+        //                                   action:@selector(onProfileButtonPressed:)];
         UIBarButtonItem* profileButton = [[UIBarButtonItem alloc]
                                            initWithImage:[UIImage imageNamed:@"icon-profile.png"]
                                            style:UIBarButtonItemStylePlain

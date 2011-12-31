@@ -189,7 +189,7 @@
     }
     
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
-    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
+    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",topCaption.creatorname] forState:UIControlStateNormal];
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
     [self.btn_illustratedBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
     

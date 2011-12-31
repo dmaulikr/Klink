@@ -107,21 +107,21 @@
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];    
     
     //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
+    //if ([self.authenticationManager isUserAuthenticated]) {
         //we only add a notification icon for user's that have logged in
         //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-        //                                   initWithTitle:self.loggedInUser.displayname
+        //                                   initWithTitle:self.loggedInUser.username
         //                                   style:UIBarButtonItemStylePlain
         //                                   target:self
-        //                                   action:@selector(onUsernameButtonPressed:)];
+        //                                   action:@selector(onProfileButtonPressed:)];
         UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
                                            initWithImage:[UIImage imageNamed:@"icon-profile.png"]
                                            style:UIBarButtonItemStylePlain
                                            target:self
-                                           action:@selector(onUsernameButtonPressed:)];
+                                           action:@selector(onProfileButtonPressed:)];
         [retVal addObject:usernameButton];
         [usernameButton release];
-    }
+    //}
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
@@ -452,18 +452,6 @@
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
     [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
-    
-    //on this method we need to enumerate all the captions that are part of the photos in this draft
-    //to do this, we enumerate through each photo and extract the caption IDs
-    //and make a fixed ID enumerate call to it.
-    /*self.captionCloudEnumerator = nil;
-    
-    for (Photo* photo in [self.frc_photos fetchedObjects]) {
-        self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:photo.objectid];
-        self.captionCloudEnumerator.delegate = self; 
-        LOG_DRAFTVIEWCONTROLLER(0, @"%@ Enumerating captions from the cloud for photo with id:",activityName,[photo.objectid stringValue]);
-        [self.captionCloudEnumerator enumerateUntilEnd:nil];
-    }*/
     
 }
 

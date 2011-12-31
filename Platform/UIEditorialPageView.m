@@ -133,7 +133,7 @@
         self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
     }
     
-    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
+    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", topCaption.creatorname];
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
     
     [self setNeedsDisplay];

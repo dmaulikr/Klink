@@ -1156,7 +1156,7 @@
                 LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
                 [imageView performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
                 imageView.contentMode = UIViewContentModeScaleAspectFit;
-                [imageView setNeedsDisplay];
+                //[imageView setNeedsDisplay];
             }
         }
     }

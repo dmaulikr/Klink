@@ -200,7 +200,7 @@
         
         self.lbl_title.text = page.displayname;
         self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", photo.creatorname];
+        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", caption.creatorname];
         self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
         self.lbl_publishDate.text = [NSString stringWithFormat:@"published: %@", [DateTimeHelper formatMediumDate:datePublished]];
         self.lbl_pageNumber.text = [NSString stringWithFormat:@"- %@ -", [self.pageNumber stringValue]];
