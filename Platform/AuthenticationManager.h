@@ -33,7 +33,7 @@
 - (BOOL) isUserAuthenticated;
 
 - (BOOL) loginUser:(NSNumber*)userID 
-withAuthenticationContext:(AuthenticationContext*)context;
+withAuthenticationContext:(AuthenticationContext*)context  isSavedLogin:(BOOL)isSavedLogin;
 
 
 - (BOOL)saveAuthenticationContextToKeychainForUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;

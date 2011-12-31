@@ -373,7 +373,7 @@
         
         
         if (contextSavedToKeyChain) {
-            [authenticationManager loginUser:newContext.userid withAuthenticationContext:newContext];
+            [authenticationManager loginUser:newContext.userid withAuthenticationContext:newContext isSavedLogin:NO];
             [self checkStatusAndDismiss];
         }
         else {

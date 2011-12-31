@@ -74,7 +74,7 @@ static  AuthenticationManager* sharedManager;
         if (lastLoggedInUserID != 0) {
             AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
             if (storedContext != nil) {
-                BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext];
+                BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext isSavedLogin:YES];
                 if (result) {
                     LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
                 }
@@ -232,7 +232,10 @@ static  AuthenticationManager* sharedManager;
     return retVal;
 }
 
-- (BOOL)loginUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext *)context {
+- (BOOL)loginUser:(NSNumber*)userID 
+withAuthenticationContext:(AuthenticationContext *)context 
+     isSavedLogin:(BOOL)isSavedLogin 
+{
     NSString* activityName = @"AuthenticationManager.loginUser:";
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -278,8 +281,12 @@ static  AuthenticationManager* sharedManager;
     }
     
     //now we emit the system wide notification to tell people the user has logged in
-    EventManager* eventManager = [EventManager instance];
-    [eventManager raiseUserLoggedInEvent:nil];
+    //we only emit this event if the user has pressed the "login" button rather than a saved context
+    //on app startup
+    if (!isSavedLogin) {
+        EventManager* eventManager = [EventManager instance];
+        [eventManager raiseUserLoggedInEvent:nil];
+    }
     LOG_SECURITY(0,@"%@User %@ successfully logged into application",activityName,self.m_LoggedInUserID);
     return YES;
     
@@ -345,7 +352,7 @@ static  AuthenticationManager* sharedManager;
     BOOL contextSavedToKeyChain = [self saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
     
     if (contextSavedToKeyChain) {
-        BOOL result = [self loginUser:newContext.userid withAuthenticationContext:newContext];
+        BOOL result = [self loginUser:newContext.userid withAuthenticationContext:newContext isSavedLogin:NO];
         if (result) {
             LOG_SECURITY(0,@"%@Login completed successfully");
                          
