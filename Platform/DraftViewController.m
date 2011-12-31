@@ -244,7 +244,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSString* activityName = @"DraftViewController.viewWillAppear:";
+   // NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -264,16 +264,16 @@
                                         repeats:YES];
         
       
-        int numPhotosInDraft = [draft.numberofphotos intValue];
-        int numPhotosInStore = [[self.frc_photos fetchedObjects]count];
+        //int numPhotosInDraft = [draft.numberofphotos intValue];
+       // int numPhotosInStore = [[self.frc_photos fetchedObjects]count];
         
-        if (numPhotosInStore < numPhotosInDraft) {
-            LOG_DRAFTVIEWCONTROLLER(0, @"%@Number of photos in store (%d) is less than number of photos on draft (%d), enumerating from cloud",activityName,numPhotosInStore,numPhotosInDraft);
+        //if (numPhotosInStore < numPhotosInDraft) {
+           // LOG_DRAFTVIEWCONTROLLER(0, @"%@Number of photos in store (%d) is less than number of photos on draft (%d), enumerating from cloud",//activityName,numPhotosInStore,numPhotosInDraft);
             self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
             self.photoCloudEnumerator.delegate = self;
             
             [self.photoCloudEnumerator enumerateUntilEnd:nil];
-        }      
+        //}      
     }
     
     // Toolbar: we update the toolbar items each time the view controller is shown
