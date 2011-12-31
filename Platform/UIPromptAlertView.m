@@ -18,7 +18,7 @@
     if (self = [super initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil])
     {
         UITextField* theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48, 260.0, 31.0)]; 
-        [theTextField setBackgroundColor:[UIColor whiteColor]];
+        [theTextField setBackgroundColor:[UIColor clearColor]];
         [theTextField setBorderStyle:UITextBorderStyleRoundedRect];
         [theTextField setTextAlignment:UITextAlignmentCenter];
         [theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
