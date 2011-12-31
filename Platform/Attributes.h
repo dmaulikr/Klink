@@ -90,3 +90,4 @@ extern NSString* const OBJECTTYPES;
 extern NSString* const CREATORID;
 extern NSString* const VERSION;
 extern NSString* const BASEURL;
+extern NSString* const NUMBEROFFLAGS;

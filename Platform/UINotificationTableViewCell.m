@@ -30,6 +30,7 @@
 @synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
 
 
+
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
     NSDate* now = [NSDate date];
     NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:notificationDate];
@@ -168,8 +169,16 @@
         {
             NSLog(@"Error! Could not load UINotificationTableViewCell file.\n");
         }
+        CGRect framForButton = CGRectMake(237, 47, 44, 17);
+        UIButton* button = [[UIButton alloc]initWithFrame:framForButton];
+        [button setTitle:@"DICKS" forState:UIControlStateNormal];   
+       
+        [button addTarget:self action:@selector(testButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:self.notificationTableViewCell];
+        [self.contentView addSubview:button];
+        
+        
         //self.userInteractionEnabled = YES;
         
         /*[self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
@@ -177,6 +186,11 @@
         
     }
     return self;
+}
+
+- (IBAction)testButtonClicked:(id)sender 
+{
+    NSString* activityName = @"dicks";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -12,7 +12,7 @@
 @interface User : Resource {
     
 }
-
+@property (nonatomic,retain) NSString* email;
 @property (nonatomic,retain) NSString* displayname;
 @property (nonatomic,retain) NSNumber* numberofvotes;
 @property (nonatomic,retain) NSString* thumbnailurl;
