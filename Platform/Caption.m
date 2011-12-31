@@ -26,7 +26,7 @@
     
     if (user != nil) {
         retVal.creatorid = user.objectid;
-        retVal.creatorname = user.displayname;
+        retVal.creatorname = user.username;
     }
     retVal.caption1 = caption;
     retVal.photoid = photoid;

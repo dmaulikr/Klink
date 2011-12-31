@@ -36,6 +36,8 @@
 
 @synthesize managedObjectContexts = m_managedObjectContexts;
 
+@synthesize managedObjectContextsLock = m_lock;
+
 static ResourceContext* sharedInstance;
 //static NSMutableDictionary* managedObjectContexts;
 
@@ -84,7 +86,10 @@ static ResourceContext* sharedInstance;
             [userInfo setValue:thread forKey:kTHREAD];
             [userInfo setValue:threadContext forKey:kCONTEXT];
             
+            //we grab the lock
+            [self.managedObjectContextsLock lock];
             [self.managedObjectContexts setObject:userInfo forKey:threadKey];
+            [self.managedObjectContextsLock unlock];
             [userInfo release];
             return threadContext;
         }
@@ -106,6 +111,10 @@ static ResourceContext* sharedInstance;
         self.managedObjectContexts = d;
         [d release];
         
+        NSLock* l = [[NSLock alloc]init];
+        self.managedObjectContextsLock = l;
+        [l release];
+        
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(onContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
         
@@ -123,7 +132,10 @@ static ResourceContext* sharedInstance;
     int threadCount = [self.managedObjectContexts count];
     LOG_RESOURCECONTEXT(0, @"%@Removing thread managed object context with address %@ leaving %d thread contexts in pool",activityName,threadKey, threadCount-1);
     
+    //grab the lock
+    [self.managedObjectContextsLock lock];
     [self.managedObjectContexts removeObjectForKey:threadKey];
+    [self.managedObjectContextsLock unlock];
 }
 
 - (void) onContextDidSave:(NSNotification*)notification {
@@ -144,9 +156,12 @@ static ResourceContext* sharedInstance;
         
         [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
     }
-    
+     [self.managedObjectContextsLock lock];
     for (NSString* key in self.managedObjectContexts) {
+        //grab le lock
+       
         NSDictionary* userInfo = [self.managedObjectContexts objectForKey:key];
+       
         NSManagedObjectContext* context = [userInfo objectForKey:kCONTEXT];
         NSThread* thread = [userInfo objectForKey:kTHREAD];
         
@@ -168,8 +183,9 @@ static ResourceContext* sharedInstance;
 //            LOG_RESOURCECONTEXT(0, @"%@ Marking managed context for cancelled or deallocated thread %p for deletion",activityName,key);
 //            [keysToRemove addObject:key];
         }
+        
     }
-    
+     [self.managedObjectContextsLock unlock];
     //at this point we need to remove all of the keys in the NSSet from the NSDictionary
 //    int currentNumKeys = [self.managedObjectContexts count];
 //    int numKeysToRemove = [keysToRemove count];

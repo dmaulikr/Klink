@@ -85,8 +85,8 @@
     User* user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
     
     retVal.creatorid = user.objectid;
-    retVal.creatorname = user.displayname;
-    retVal.descr = [NSString stringWithFormat:@"By %@ on %@", user.displayname, [DateTimeHelper formatShortDate:[NSDate date]]];
+    retVal.creatorname = user.username;
+    retVal.descr = [NSString stringWithFormat:@"By %@ on %@", user.username, [DateTimeHelper formatShortDate:[NSDate date]]];
     retVal.themeid = pageid;
     
     // Save thumbnail image
