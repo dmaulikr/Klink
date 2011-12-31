@@ -18,7 +18,18 @@
     if (self = [super initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil])
     {
         UITextField* theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48, 260.0, 31.0)]; 
-        [theTextField setBackgroundColor:[UIColor clearColor]];
+        
+        NSString *reqSysVer = @"5.0";
+        NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+        if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending) {
+            // in pre iOS 5 devices the backgound color of the textfield needs to be set to clear
+            [theTextField setBackgroundColor:[UIColor clearColor]];
+        }
+        else {
+            // in iOS 5 and above devices the backgound color of the textfield needs to be set to white
+            [theTextField setBackgroundColor:[UIColor whiteColor]];
+        }
+        
         [theTextField setBorderStyle:UITextBorderStyleRoundedRect];
         [theTextField setTextAlignment:UITextAlignmentCenter];
         [theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];

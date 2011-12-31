@@ -23,7 +23,6 @@
 #import "ProfileViewController.h"
 #import "PageState.h"
 #import "PlatformAppDelegate.h"
-#import "UICustomAlertView.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -392,7 +391,9 @@
 
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
+    if (buttonIndex == 1 && alertView.delegate == self) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
             [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
@@ -405,7 +406,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onProfileButtonPressed:)
                               onTargetObject:self

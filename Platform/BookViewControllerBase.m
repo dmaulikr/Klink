@@ -183,6 +183,12 @@
     }
 }
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
+}
+
 #pragma mark - Toolbar Button Helpers
 - (void) disableFacebookButton {
     self.tb_facebookButton.enabled = NO;

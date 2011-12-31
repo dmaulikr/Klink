@@ -18,6 +18,8 @@
 #import "EventManager.h"
 #import "CallbackResult.h"
 #import "Request.h"
+#import "UICustomAlertView.h"
+
 @class ContributeViewController;
 @class UICameraActionSheet;
 @class ResourceContext;
@@ -27,7 +29,7 @@
 - (void)submitChangesForController:(ContributeViewController*)controller;
 
 @end
-@interface BaseViewController : UIViewController <ContributeViewControllerDelegate> {
+@interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
 
     UIProgressHUDView*      m_progressView;
     UILoginView*            m_loginView;
@@ -60,4 +62,7 @@
     
 
 - (void) hideProgressBar;
+
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
 @end

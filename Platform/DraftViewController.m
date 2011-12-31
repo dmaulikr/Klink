@@ -22,7 +22,6 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
-#import "UICustomAlertView.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -446,7 +445,7 @@
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(NSDictionary*)userInfo {
-    NSString* activityName = @"DraftViewController.onEnumerateComplete:";
+    //NSString* activityName = @"DraftViewController.onEnumerateComplete:";
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
     
@@ -471,7 +470,9 @@
 
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
+    if (buttonIndex == 1 && alertView.delegate == self) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
             [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
@@ -484,7 +485,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to access your secure profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onProfileButtonPressed:)
                               onTargetObject:self
