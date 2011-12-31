@@ -637,6 +637,19 @@
         
         // hide the landscape photo view
         [self.iv_photoLandscape setHidden:YES];
+        
+        // Reenable the gesture recognizer for the photo image view to handle a single tap
+        UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
+         
+        // Set required taps and number of touches
+        [oneFingerTap setNumberOfTapsRequired:1];
+        [oneFingerTap setNumberOfTouchesRequired:1];
+        
+        // Add the gesture to the photo image view
+        [self.iv_photo addGestureRecognizer:oneFingerTap];
+        
+        //enable gesture events on the photo
+        [self.iv_photo setUserInteractionEnabled:YES];
     }
     
 }
@@ -718,12 +731,12 @@
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
-            [self disableFacebookButton];
+            //[self disableFacebookButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
             
-            NSString* message = @"Submitting to Facebook...";
+            NSString* message = @"Sharing to Facebook...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
@@ -745,13 +758,13 @@
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
-            [self disableTwitterButton];
+            //[self disableTwitterButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
             [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
             
-            NSString* message = @"Submitting to Twitter...";
+            NSString* message = @"Sharing to Twitter...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
         
@@ -764,7 +777,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to contribute a new photo on this draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onCameraButtonPressed:)
                               onTargetObject:self
@@ -857,7 +870,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to caption to this photo.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to contribute a new caption on this photo.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onCaptionButtonPressed:)
                               onTargetObject:self

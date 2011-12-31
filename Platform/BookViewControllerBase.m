@@ -19,6 +19,7 @@
 #import "BookViewControllerPageView.h"
 #import "BookViewControllerLeaves.h"
 #import "CloudEnumerator.h"
+#import "ApplicationSettings.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
@@ -214,6 +215,11 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        progressView.delegate = self;
+        
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -221,14 +227,12 @@
         
         if (page != nil) {
             Caption* caption = [page captionWithHighestVotes];
-            
-            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-            UIProgressHUDView* progressView = appDelegate.progressView;
-            //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-            progressView.delegate = self;
 
             [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
-            [self disableFacebookButton];
+            //[self disableFacebookButton];
+            
+            NSString* message = @"Sharing to Facebook...";
+            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
 }
@@ -241,20 +245,24 @@
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        progressView.delegate = self;
+        
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         
         ResourceContext* resourceContext = [ResourceContext instance];
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
-            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-            UIProgressHUDView* progressView = appDelegate.progressView;
-            //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-            progressView.delegate = self;
-            
             Caption* caption = [page captionWithHighestVotes];
+            
             [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
-            [self disableTwitterButton];
+            //[self disableTwitterButton];
+            
+            NSString* message = @"Sharing to Twitter...";
+            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
 

@@ -112,7 +112,7 @@
 }
 
 - (void) didRotate {
-    [self dismissModalViewControllerAnimated:YES];
+    //[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Static Initializers
