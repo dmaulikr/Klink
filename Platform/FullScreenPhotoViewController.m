@@ -24,7 +24,6 @@
 #import "PlatformAppDelegate.h"
 #import "NotificationsViewController.h"
 #import "DraftViewController.h"
-#import "UICustomAlertView.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -693,7 +692,9 @@
 
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
+    if (buttonIndex == 1 && alertView.delegate == self) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
             [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];

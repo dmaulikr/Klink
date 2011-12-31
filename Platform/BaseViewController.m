@@ -17,6 +17,7 @@
 #import "ImageManager.h"
 #import "NotificationsViewController.h"
 #import "UICustomNavigationBar.h"
+#import "ProfileViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -482,7 +483,37 @@
    
 }
 
-
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString* activityName = @"BaseViewController.alertView:clickedButtonAtIndex:";
+    
+    AuthenticationManager* authnManager = [AuthenticationManager instance];
+    AuthenticationContext* authnContext = [authnManager contextForLoggedInUser];
+    
+    if (alertView.delegate == self && authnContext.isfirsttime) {
+        if (buttonIndex == [alertView cancelButtonIndex]) {
+            // user selected Profile button
+            ProfileViewController* profileViewController = [ProfileViewController createInstance];
+            
+            UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self presentModalViewController:navigationController animated:YES];
+            
+            [navigationController release];
+        }
+        else {
+            // user selected the Continue button, now we call the callback passed in originally
+            if (alertView.targetObject != nil &&
+                [alertView.targetObject respondsToSelector:alertView.onFinishSelector]) {
+                LOG_BASEVIEWCONTROLLER(0,@"%@Resuming original method",activityName);
+                [alertView.targetObject performSelectorOnMainThread:alertView.onFinishSelector withObject:alertView.withObject waitUntilDone:NO];
+            }
+            else {
+                LOG_BASEVIEWCONTROLLER(1,@"%@Callback target object is nil, cannot resume",activityName);
+            }
+        }
+    }
+}
 
 #pragma mark - Async Handlers
 //this method handles a Login attempt that is either cancelled or returned unsuccessfully
@@ -538,6 +569,7 @@
     
 }
 
+
 - (void) onLoginComplete:(CallbackResult*)result {
     NSString* activityName = @"BaseViewController.onLoginComplete:";
         
@@ -545,15 +577,41 @@
     
     if (response.didSucceed) {
         LOG_BASEVIEWCONTROLLER(0,@"%@Login completed successfully",activityName);
-        //now we call the callback passed in originally
+        
+        // unpack the userInfo
         NSDictionary* userInfo = result.context;
+        
+        SEL selector = nil;
+        id target = nil;
+        id parameter = nil;
         
         if (userInfo != nil) {
             NSValue* selectorValue = [userInfo valueForKey:kSELECTOR];
-            SEL selector =  [selectorValue pointerValue];
-            id target =  [userInfo valueForKey:kTARGETOBJECT];
-            id parameter =  [userInfo valueForKey:kPARAMETER];
+            selector =  [selectorValue pointerValue];
+            target =  [userInfo valueForKey:kTARGETOBJECT];
+            parameter =  [userInfo valueForKey:kPARAMETER];
+        }
+        
+        AuthenticationManager* authnManager = [AuthenticationManager instance];
+        AuthenticationContext* authnContext = [authnManager contextForLoggedInUser];
+        
+        if (authnContext.isfirsttime) {
+            LOG_BASEVIEWCONTROLLER(0,@"%@First time user is loggin in",activityName);
+            UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                        initWithTitle:@"Welcome!"
+                                        message:[NSString stringWithFormat:@"Hello %@! We've set up an account for you. Would you like to visit your profile and account settings, or continue from where you left off?", self.loggedInUser.username]
+                                        delegate:self
+                                        onFinishSelector:selector
+                                        onTargetObject:target
+                                        withObject:parameter
+                                        cancelButtonTitle:@"Profile"
+                                        otherButtonTitles:@"Continue", nil];
             
+            [alert show];
+            [alert release];
+        }
+        else {
+            // we call the callback passed in originally
             if (target != nil &&
                 [target respondsToSelector:selector]) {
                 LOG_BASEVIEWCONTROLLER(0,@"%@Resuming original method",activityName);
@@ -563,6 +621,16 @@
                 LOG_BASEVIEWCONTROLLER(1,@"%@Callback target object is nil, cannot resume",activityName);
             }
         }
+        
+        /*//now we call the callback passed in originally
+        if (target != nil &&
+            [target respondsToSelector:selector]) {
+            LOG_BASEVIEWCONTROLLER(0,@"%@Resuming original method",activityName);
+            [target performSelectorOnMainThread:selector withObject:parameter waitUntilDone:NO];
+        }
+        else {
+            LOG_BASEVIEWCONTROLLER(1,@"%@Callback target object is nil, cannot resume",activityName);
+        }*/
     }
     else {
         LOG_BASEVIEWCONTROLLER(0,@"%@Login failed",activityName);
