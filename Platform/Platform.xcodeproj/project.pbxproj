@@ -22,7 +22,7 @@
 		3DCFE8E21464633400D6587D /* icon-thumbUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DE1464633400D6587D /* icon-thumbUp.png */; };
 		3DCFE8E31464633400D6587D /* icon-thumbUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */; };
 		3DF5315B1468ACF600E40575 /* FullScreenPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */; };
-		520800B714AEC527007E5C7D /* UIPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520800B614AEC526007E5C7D /* UIPromptAlertView.m */; };
+		520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520800BA14AF77C7007E5C7D /* UIPromptAlertView.m */; };
 		520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */; };
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
@@ -307,8 +307,8 @@
 		3DCFE8DE1464633400D6587D /* icon-thumbUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp.png"; sourceTree = "<group>"; };
 		3DCFE8DF1464633400D6587D /* icon-thumbUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-thumbUp@2x.png"; sourceTree = "<group>"; };
 		3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullScreenPhotoViewController.xib; sourceTree = "<group>"; };
-		520800B514AEC526007E5C7D /* UIPromptAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIPromptAlertView.h; path = ../../../../../../Desktop/UIPromptAlertView.h; sourceTree = "<group>"; };
-		520800B614AEC526007E5C7D /* UIPromptAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIPromptAlertView.m; path = ../../../../../../Desktop/UIPromptAlertView.m; sourceTree = "<group>"; };
+		520800B914AF77C7007E5C7D /* UIPromptAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptAlertView.h; sourceTree = "<group>"; };
+		520800BA14AF77C7007E5C7D /* UIPromptAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptAlertView.m; sourceTree = "<group>"; };
 		520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPhotoMetaDataView.xib; sourceTree = "<group>"; };
 		520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoMetaDataView.h; sourceTree = "<group>"; };
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
@@ -1446,8 +1446,8 @@
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
 				52941A5F14AE774100BFE179 /* UICustomAlertView.h */,
 				52941A6014AE774100BFE179 /* UICustomAlertView.m */,
-				520800B514AEC526007E5C7D /* UIPromptAlertView.h */,
-				520800B614AEC526007E5C7D /* UIPromptAlertView.m */,
+				520800B914AF77C7007E5C7D /* UIPromptAlertView.h */,
+				520800BA14AF77C7007E5C7D /* UIPromptAlertView.m */,
 				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
 				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
@@ -2030,7 +2030,7 @@
 				5236459314A28D47007BD882 /* BookViewControllerLeaves.m in Sources */,
 				5236459E14A38ECE007BD882 /* BookViewControllerBase.m in Sources */,
 				52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */,
-				520800B714AEC527007E5C7D /* UIPromptAlertView.m in Sources */,
+				520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
