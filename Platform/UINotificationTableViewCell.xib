@@ -50,6 +50,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{6, 4}, {60, 60}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="503161201"/>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -59,48 +60,12 @@
 									<string key="NSResourceName">icon-pics2@2x.png</string>
 								</object>
 							</object>
-							<object class="IBUILabel" id="503161201">
-								<reference key="NSNextResponder" ref="317785299"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{74, 4}, {218, 40}}</string>
-								<reference key="NSSuperview" ref="317785299"/>
-								<reference key="NSNextKeyView" ref="182736235"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<int key="IBUIContentMode">7</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">A draft that contains your caption or photo was submitted to the editors </string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
-								</object>
-								<object class="NSColor" key="IBUIHighlightedColor" id="162891224">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<reference key="IBUIShadowColor" ref="162891224"/>
-								<string key="IBUIShadowOffset">{0, 1}</string>
-								<int key="IBUIBaselineAdjustment">1</int>
-								<float key="IBUIMinimumFontSize">10</float>
-								<int key="IBUINumberOfLines">2</int>
-								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<string key="name">AmericanTypewriter</string>
-									<string key="family">American Typewriter</string>
-									<int key="traits">0</int>
-									<double key="pointSize">12</double>
-								</object>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">AmericanTypewriter-CondensedLight</string>
-									<double key="NSSize">12</double>
-									<int key="NSfFlags">16</int>
-								</object>
-							</object>
 							<object class="IBUILabel" id="491752764">
 								<reference key="NSNextResponder" ref="317785299"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{104, 42}, {182, 21}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="704035046"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -112,7 +77,10 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 								</object>
-								<reference key="IBUIHighlightedColor" ref="162891224"/>
+								<object class="NSColor" key="IBUIHighlightedColor" id="162891224">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
 								<reference key="IBUIShadowColor" ref="162891224"/>
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -134,6 +102,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{296, 21}, {16, 26}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="589169640"/>
 								<int key="IBUIContentMode">4</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -148,6 +117,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 43}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="491752764"/>
 								<int key="IBUIContentMode">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -162,6 +132,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{26, 69}, {267, 4}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -173,6 +144,7 @@
 						</object>
 						<string key="NSFrameSize">{320, 72}</string>
 						<reference key="NSSuperview" ref="443699583"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="622367528"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="307027147">
 							<int key="NSColorSpace">3</int>
@@ -187,24 +159,52 @@
 				</object>
 				<string key="NSFrameSize">{320, 73}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="317785299"/>
 				<reference key="IBUIBackgroundColor" ref="307027147"/>
 				<bool key="IBUIUserInteractionEnabled">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="317785299"/>
 			</object>
+			<object class="IBUILabel" id="503161201">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">292</int>
+				<string key="NSFrameSize">{218, 40}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="182736235"/>
+				<bool key="IBUIOpaque">NO</bool>
+				<bool key="IBUIClipsSubviews">YES</bool>
+				<int key="IBUIContentMode">7</int>
+				<bool key="IBUIUserInteractionEnabled">NO</bool>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+				<string key="IBUIText">A draft that contains your caption or photo was submitted to the editors </string>
+				<object class="NSColor" key="IBUITextColor">
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MCAwIDAAA</bytes>
+				</object>
+				<reference key="IBUIHighlightedColor" ref="162891224"/>
+				<reference key="IBUIShadowColor" ref="162891224"/>
+				<string key="IBUIShadowOffset">{0, 1}</string>
+				<int key="IBUIBaselineAdjustment">1</int>
+				<float key="IBUIMinimumFontSize">10</float>
+				<int key="IBUINumberOfLines">2</int>
+				<object class="IBUIFontDescription" key="IBUIFontDescription">
+					<string key="name">AmericanTypewriter</string>
+					<string key="family">American Typewriter</string>
+					<int key="traits">0</int>
+					<double key="pointSize">12</double>
+				</object>
+				<object class="NSFont" key="IBUIFont">
+					<string key="NSName">AmericanTypewriter-CondensedLight</string>
+					<double key="NSSize">12</double>
+					<int key="NSfFlags">16</int>
+				</object>
+			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">lbl_notificationMessage</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="503161201"/>
-					</object>
-					<int key="connectionID">9</int>
-				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lbl_notificationDate</string>
@@ -267,7 +267,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="704035046"/>
 							<reference ref="622367528"/>
-							<reference ref="503161201"/>
 							<reference ref="491752764"/>
 							<reference ref="182736235"/>
 							<reference ref="589169640"/>
@@ -280,12 +279,6 @@
 						<reference key="object" ref="622367528"/>
 						<reference key="parent" ref="443699583"/>
 						<string key="objectName">Image View - notificationImage</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">6</int>
-						<reference key="object" ref="503161201"/>
-						<reference key="parent" ref="443699583"/>
-						<string key="objectName">Label - notificationMessage</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
@@ -307,6 +300,12 @@
 						<int key="objectID">16</int>
 						<reference key="object" ref="589169640"/>
 						<reference key="parent" ref="443699583"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">6</int>
+						<reference key="object" ref="503161201"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Label - notificationMessage</string>
 					</object>
 				</object>
 			</object>
@@ -355,7 +354,76 @@
 			<nil key="sourceID"/>
 			<int key="maxID">21</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">UINotificationTableViewCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">testButtonClicked:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">testButtonClicked:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">testButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iv_notificationImage</string>
+							<string>iv_notificationTypeImage</string>
+							<string>lbl_notificationDate</string>
+							<string>notificationTableViewCell</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIImageView</string>
+							<string>UIImageView</string>
+							<string>UILabel</string>
+							<string>UITableViewCell</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iv_notificationImage</string>
+							<string>iv_notificationTypeImage</string>
+							<string>lbl_notificationDate</string>
+							<string>notificationTableViewCell</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">iv_notificationImage</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">iv_notificationTypeImage</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">lbl_notificationDate</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">notificationTableViewCell</string>
+								<string key="candidateClassName">UITableViewCell</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UINotificationTableViewCell.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">

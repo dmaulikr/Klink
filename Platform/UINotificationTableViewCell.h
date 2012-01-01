@@ -14,7 +14,7 @@
     UITableViewCell*    m_notificationTableViewCell;
     
     //UILabel*        m_lbl_notificationTitle;
-    UILabel*        m_lbl_notificationMessage;
+   // UILabel*        m_lbl_notificationMessage;
     UILabel*        m_lbl_notificationDate;
     UIImageView*    m_iv_notificationImage;
     UIImageView*    m_iv_notificationTypeImage;
@@ -26,7 +26,7 @@
 @property (nonatomic,retain) IBOutlet UITableViewCell*  notificationTableViewCell;
 
 //@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationTitle;
-@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationMessage;
+//@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationMessage;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationDate;
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationImage;
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationTypeImage;

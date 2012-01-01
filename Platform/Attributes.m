@@ -48,6 +48,7 @@ NSString* const PHOTOID                 =@"photoid";
 NSString* const THEMEID                 =@"themeid";
 NSString* const NUMBEROFVOTES           =@"numberofvotes";
 NSString* const ID                      =@"id";
+NSString* const USERNAME                =@"username";
 NSString* const NAME                    =@"name";
 NSString* const USERID                  =@"userid";
 NSString* const CREATEDRESOURCES        =@"newobjects";

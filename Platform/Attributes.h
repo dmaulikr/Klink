@@ -44,7 +44,7 @@ extern NSString* const PRIMARY_RESULTS_SORTATTRIBUTE;
 extern NSString* const PHOTOID;
 extern NSString* const THEMEID;
 extern NSString* const NUMBEROFVOTES;
-
+extern NSString* const USERNAME;
 
 extern NSString* const SHOULDENUMERATESINGLEPAGE;
 extern NSString* const ONFINISHCALLBACK;

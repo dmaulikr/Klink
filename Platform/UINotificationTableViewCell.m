@@ -17,14 +17,16 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
+#import "UIResourceLinkButton.h"
 
 #define kNOTIFICATIONID             @"notificationid"
+#define kUSERREGEX                  @"\\{.*?\\}"
 
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
 @synthesize notificationTableViewCell = m_notificationTableViewCell;
 //@synthesize lbl_notificationTitle = m_lbl_notificationTitle;
-@synthesize lbl_notificationMessage = m_lbl_notificationMessage;
+//@synthesize lbl_notificationMessage = m_lbl_notificationMessage;
 @synthesize lbl_notificationDate = m_lbl_notificationDate;
 @synthesize iv_notificationImage = m_iv_notificationImage;
 @synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
@@ -54,18 +56,112 @@
 
 }
 
+- (UIFont*) fontForLabel 
+{
+    return [UIFont fontWithName:@"American Typewriter" size:12];
+}
+- (UILabel*) labelWithFrame:(CGRect)frame withText:(NSString*)text 
+{
+    UILabel* label = [[[UILabel alloc]initWithFrame:frame]autorelease];
+    label.font = [self fontForLabel];
+    label.textColor = [UIColor blackColor];
+    label.text = text;
+    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.numberOfLines = 2;
+    label.backgroundColor = [UIColor clearColor];
+    label.opaque = NO;
+
+    return label;
+    
+}
 
 - (void) render {
     ResourceContext* resourceContext = [ResourceContext instance];
         
     Feed* notification = (Feed*)[resourceContext resourceWithType:FEED withID:self.notificationID];
-  
+   
+    
     if (notification != nil) {
         NSDate* dateSent = [DateTimeHelper parseWebServiceDateDouble:notification.datecreated];
         self.lbl_notificationDate.text = [self getDateStringForNotification:dateSent];
         //self.lbl_notificationTitle.text = notification.title;
-        self.lbl_notificationMessage.text = notification.message;
+        NSError* error = NULL;
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
+        NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
         
+        if (numberOfMatches > 0) {
+            //we have matches for embedded user links
+            CGRect vFrame = CGRectMake(74, 4, 218, 40);
+            UIView* containerView = [[UIView alloc]initWithFrame:vFrame];
+            [self.contentView addSubview:containerView];
+            [containerView release];
+            
+            NSArray* matches = [regex matchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
+            NSMutableArray* newMessageArray = [NSMutableArray arrayWithCapacity:[matches count]];
+            int startIndex = 0;
+            int X = 0;
+            int Y = 4;
+            NSRange range;
+            
+            for (NSTextCheckingResult *match in matches) {
+                range = [match range];
+                //need to grab the matched substring
+                NSString* jsonString = [notification.message substringWithRange:range];
+                //we grab the string token to the left of the substring
+                int leftStringEndIndex = range.location;
+                if (leftStringEndIndex > 0) 
+                {
+                    NSRange leftStringRange = NSMakeRange(startIndex, leftStringEndIndex);
+                    NSString* leftString = [notification.message substringWithRange:leftStringRange];
+                    [newMessageArray addObject:leftString];
+                    
+                }
+                startIndex = range.location + range.length;
+                //now we parse into a nsdictionary
+                NSDictionary* jsonDictionary = [jsonString objectFromJSONString];
+                //now we have a json dictionary
+                NSNumber* userID = [jsonDictionary valueForKey:ID];
+                NSString* username = [jsonDictionary valueForKey:USERNAME];
+                
+                //we need to grabthe string range
+                //create a resource link button and add it to the
+                UIFont* font = [self fontForLabel];
+                CGSize labelSize = [username sizeWithFont:font];
+                CGRect linkButtonFrame = CGRectMake(X, Y, labelSize.width, labelSize.height);
+                UIResourceLinkButton* rlb = [[UIResourceLinkButton alloc]initWithFrame:linkButtonFrame];            
+                rlb.titleLabel.font = font;
+            
+                rlb.titleLabel.textColor = [UIColor blackColor];
+                [rlb renderWithObjectID:userID withName:username];
+                X = X + labelSize.width;
+              
+                
+                [containerView addSubview:rlb];
+                [rlb release];
+                
+            }
+            
+            //we need to grab the rest of the string from the last range
+            if (startIndex < [notification.message length]) {
+                NSString* remainder = [notification.message substringFromIndex:startIndex];
+                UIFont* font = [self fontForLabel];
+                CGSize size = [remainder sizeWithFont:font];
+                CGRect frame = CGRectMake(X, Y, size.width,size.height);
+                UILabel* label = [self labelWithFrame:frame withText:remainder];
+                label.autoresizingMask = 2;
+                [containerView addSubview:label];
+                
+            }
+            
+            
+        }
+        else {
+            //no embedded user links found
+            CGRect labelFrame = CGRectMake(74,4,218,40);
+            UILabel* label = [self labelWithFrame:labelFrame withText:notification.message];
+            [self.contentView addSubview:label];
+           
+        }
         
         /*switch ([notification.type intValue]) {
             case kCAPTION_VOTE | kPHOTO_VOTE:
@@ -169,14 +265,10 @@
         {
             NSLog(@"Error! Could not load UINotificationTableViewCell file.\n");
         }
-        CGRect framForButton = CGRectMake(237, 47, 44, 17);
-        UIButton* button = [[UIButton alloc]initWithFrame:framForButton];
-        [button setTitle:@"DICKS" forState:UIControlStateNormal];   
        
-        [button addTarget:self action:@selector(testButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:self.notificationTableViewCell];
-        [self.contentView addSubview:button];
+       
         
         
         //self.userInteractionEnabled = YES;
@@ -188,10 +280,7 @@
     return self;
 }
 
-- (IBAction)testButtonClicked:(id)sender 
-{
-    NSString* activityName = @"dicks";
-}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
