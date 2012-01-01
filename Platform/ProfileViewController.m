@@ -280,6 +280,7 @@
     if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         //yes it is
         self.v_userSettingsContainer.hidden = NO;
+        
     }
     else {
         //no it isnt
@@ -530,29 +531,12 @@
 
     self.user = user;
     self.userID = userid;
-    
-//    self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-//    self.userID = self.user.objectid;
-//    if (self.user != nil) {
-//        [self render];
-//    }
+    [self render];
+
    
 }
 
-/*- (IBAction) onFacebookLoginChanged:(id)sender {
-    if (![self.authenticationManager isUserAuthenticated]) {
-        //no user is logged in currently
-        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
-    }
-    else {
-        [self.authenticationManager logoff];
-    }
-}*/
 
-/*- (IBAction) onTwitterLoginChanged:(id)sender {
-    [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
-    
-}*/
 
          
 #pragma mark - MBProgressHUD Delegate

@@ -18,7 +18,8 @@
     UILabel*        m_lbl_notificationDate;
     UIImageView*    m_iv_notificationImage;
     UIImageView*    m_iv_notificationTypeImage;
-    
+    UIView*         m_containerView;
+    UILabel*        m_label;
     id m_target;
     SEL m_selector;
 }
@@ -28,6 +29,8 @@
 @property (nonatomic,retain) id                         target;
 @property                    SEL                        selector;
 @property (nonatomic,retain) UIResourceLinkButton*      resourceLinkButton;
+@property (nonatomic,retain) UIView*                    containerView;
+@property (nonatomic,retain) UILabel*                   label;
 //@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationTitle;
 //@property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationMessage;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationDate;
