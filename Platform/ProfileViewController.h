@@ -10,7 +10,7 @@
 #import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
 
-@interface ProfileViewController : BaseViewController < MBProgressHUDDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate > {
+@interface ProfileViewController : BaseViewController < MBProgressHUDDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate > {
     UILabel* m_lbl_username;
     UILabel* m_lbl_employeeStartDate;
     UILabel* m_lbl_currentLevel;
@@ -46,6 +46,8 @@
     //UISwitch* m_sw_twitterLogin;
     User*   m_user;
     NSNumber* m_userID;
+    
+    CloudEnumerator* m_profileCloudEnumerator;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
@@ -79,6 +81,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 @property (nonatomic, retain) IBOutlet UIView*      v_userSettingsContainer;
 @property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
+@property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 //@property (nonatomic, retain) IBOutlet UISwitch*    sw_facebookLogin;
 //@property (nonatomic, retain) IBOutlet UISwitch*    sw_twitterLogin;
 

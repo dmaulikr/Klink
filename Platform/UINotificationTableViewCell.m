@@ -17,7 +17,7 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
-#import "UIResourceLinkButton.h"
+
 
 #define kNOTIFICATIONID             @"notificationid"
 #define kUSERREGEX                  @"\\{.*?\\}"
@@ -30,7 +30,9 @@
 @synthesize lbl_notificationDate = m_lbl_notificationDate;
 @synthesize iv_notificationImage = m_iv_notificationImage;
 @synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
-
+@synthesize selector = m_selector;
+@synthesize target = m_target;
+@synthesize resourceLinkButton = m_resourceLinkButton;
 
 
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
@@ -129,12 +131,12 @@
                 CGSize labelSize = [username sizeWithFont:font];
                 CGRect linkButtonFrame = CGRectMake(X, Y, labelSize.width, labelSize.height);
                 UIResourceLinkButton* rlb = [[UIResourceLinkButton alloc]initWithFrame:linkButtonFrame];            
-                rlb.titleLabel.font = font;
-            
+                rlb.titleLabel.font = font;            
                 rlb.titleLabel.textColor = [UIColor blackColor];
+                [rlb addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
                 [rlb renderWithObjectID:userID withName:username];
                 X = X + labelSize.width;
-              
+                self.resourceLinkButton = rlb;
                 
                 [containerView addSubview:rlb];
                 [rlb release];
@@ -247,7 +249,14 @@
     [self setNeedsDisplay];
 }
 
-- (void) renderNotificationWithID:(NSNumber*)notificationID {
+- (void) renderNotificationWithID:(NSNumber*)notificationID 
+                  linkClickTarget:(id)target 
+                linkClickSelector:(SEL)selector 
+{
+    self.resourceLinkButton = nil;
+    
+    self.target = target;
+    self.selector = selector;
     self.notificationID = notificationID;
     [self render];
 }
@@ -280,7 +289,16 @@
     return self;
 }
 
-
+- (void) onClick:(id)sender {
+    //click from a resource link
+    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
+    if (self.target != nil) {
+        if ([self.target respondsToSelector:self.selector]) {
+            NSNumber* objectID = rlb.objectID;
+            [self.target performSelector:self.selector withObject:objectID];
+        }
+    }
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

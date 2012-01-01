@@ -13,6 +13,7 @@
 #import "PlatformAppDelegate.h"
 #import "UIPromptAlertView.h"
 #import "UIProgressHUDView.h"
+#import "CloudEnumerator.h"
 #import "Macros.h"
 
 
@@ -48,6 +49,7 @@
 @synthesize userID                  = m_userID;
 @synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
 @synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
+@synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
 //@synthesize sw_facebookLogin            = m_sw_facebookLogin;
 //@synthesize sw_twitterLogin             = m_sw_twitterLogin;
 
@@ -207,6 +209,7 @@
     self.navigationItem.leftBarButtonItem = leftButton;
     [leftButton release];
     
+    
     // set custom font on views with text
     /*[self.lbl_username setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
     [self.lbl_employeeStartDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
@@ -272,6 +275,47 @@
     
 }
 
+- (void) render {
+    //if the user is the currently logged in user, we then enable the user settings container
+    if (self.user == self.loggedInUser) {
+        //yes it is
+        self.v_userSettingsContainer.hidden = NO;
+    }
+    else {
+        //no it isnt
+        self.v_userSettingsContainer.hidden = YES;
+    }
+    self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+    //self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
+    //self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
+    
+    
+    self.lbl_username.text = self.user.username;
+    self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
+    self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
+    self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
+    self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
+    self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
+    
+    int totalSubmissions = [self.user.numberofcaptions intValue]
+    + [self.user.numberofphotos intValue]
+    + [self.user.numberofcaptions intValue];
+    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+    
+    self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
+    self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
+    self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
+    
+    int totalLast7Days = [self.user.numberofcaptionslw intValue]
+    + [self.user.numberofphotoslw intValue]
+    + [self.user.numberofcaptionslw intValue];
+    self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
+    
+    self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
+    
+    [self drawProgressBar];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -287,48 +331,27 @@
     // Set the navigationbar title
     self.navigationItem.title = @"Writers's Log";
     
-    // Set up the labels
-    if (self.user) {
-        
-        //if the user is the currently logged in user, we then enable the user settings container
-        if (self.user == self.loggedInUser) {
-            //yes it is
-            self.v_userSettingsContainer.hidden = NO;
+    if (self.user == nil) {
+        //we need to retrieve the id specified
+        ResourceContext* resourceContext = [ResourceContext instance];
+        self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+        if (self.user == nil) {
+            //object doesnt exist in the store, we need to grab it from the cloud
+            NSArray* objectIDs = [NSArray arrayWithObject:self.userID];
+            NSArray* objectTypes = [NSArray arrayWithObject:USER];
+            
+            self.profileCloudEnumerator = [CloudEnumerator enumeratorForIDs:objectIDs withTypes:objectTypes];
+            self.profileCloudEnumerator.delegate = self;
+            [self.profileCloudEnumerator enumerateUntilEnd:nil];
         }
         else {
-            //no it isnt
-            self.v_userSettingsContainer.hidden = YES;
+            [self render];
         }
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-        //self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
-        //self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
-        
-        
-        self.lbl_username.text = self.user.username;
-        self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
-        self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
-        self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
-        self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
-        self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
-        
-        int totalSubmissions = [self.user.numberofcaptions intValue]
-                                + [self.user.numberofphotos intValue]
-                                 + [self.user.numberofcaptions intValue];
-        self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
-        
-        self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
-        self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
-        self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
-        
-        int totalLast7Days = [self.user.numberofcaptionslw intValue]
-                                + [self.user.numberofphotoslw intValue]
-                                    + [self.user.numberofcaptionslw intValue];
-        self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
-        
-        self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
-        
-        [self drawProgressBar];
     }
+    else {
+        [self render];
+    }
+ 
     
 }
 
@@ -488,6 +511,17 @@
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
     }
+}
+
+#pragma mark - CloudEnumeratorDelegate
+
+- (void) onEnumerateComplete:(NSDictionary *)userInfo {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    if (self.user != nil) {
+        [self render];
+    }
+   
 }
 
 /*- (IBAction) onFacebookLoginChanged:(id)sender {

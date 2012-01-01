@@ -248,7 +248,7 @@
         }
         
         // Configure the cell...
-        [cell renderNotificationWithID:notification.objectid];
+        [cell renderNotificationWithID:notification.objectid linkClickTarget:self linkClickSelector:@selector(onResourceLinkClick:)];
         
         return cell;
     }
@@ -257,7 +257,15 @@
     }
 }
 
-
+- (void) onResourceLinkClick:(NSNumber*)objectid {
+    ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

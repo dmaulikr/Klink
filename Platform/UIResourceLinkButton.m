@@ -16,7 +16,7 @@
 - (id) init {
     self = [super init];
     if (self) {
-        [self addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
 //        // Initialization code
 //        NSArray* topLevelObjs = nil;
 //        
@@ -34,7 +34,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
         // Initialization code
 //        NSArray* topLevelObjs = nil;
 //        
