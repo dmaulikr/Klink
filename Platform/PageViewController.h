@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
-
+#import "UIResourceLinkButton.h"
 #define UIPageViewControllerOptionSpineLocationKey @"UIPageViewControllerOptionSpineLocationKey"
 
 @interface PageViewController : BaseViewController {    
@@ -25,6 +25,8 @@
     UILabel*        m_lbl_captionby;
     UILabel*        m_lbl_publishDate;
     UILabel*        m_lbl_pageNumber;
+    UIResourceLinkButton*   m_btn_writtenBy;
+    UIResourceLinkButton*   m_btn_illustratedBy;
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;
@@ -37,7 +39,8 @@
 @property (nonatomic,retain) NSNumber*              pageID;
 @property (nonatomic,retain) NSNumber*              topVotedPhotoID;
 @property (nonatomic,retain) NSNumber*              pageNumber;
-
+@property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_writtenBy;
+@property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_illustratedBy;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_openBookPageImage;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_title;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_caption;
@@ -52,7 +55,7 @@
 
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay:(NSTimeInterval)delay;
-
+- (IBAction) onLinkButtonClicked:(id)sender;
 + (PageViewController*) createInstanceWithPageID:(NSNumber*)pageID withPageNumber:(NSNumber*)pageNumber;
 
 @end

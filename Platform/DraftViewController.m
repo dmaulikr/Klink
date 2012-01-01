@@ -371,8 +371,8 @@
         if (cell == nil) 
         {
             cell = [[[UIDraftTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
-            [cell.btn_writtenBy addTarget:self action:@selector(onWrittenByClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
+            [cell.btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         [cell renderWithPhotoID:photo.objectid];
@@ -383,9 +383,18 @@
     }
 }
 
-- (void) onWrittenByClicked:(id)sender {
-
+//called by the draft view cells whens omeone clicks on the author links in them
+- (void) onLinkButtonClicked:(id)sender {
+    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
+    //extract the user profile id
+    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
+
 #pragma mark - NSFetchedResultsControllerDelegate
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_draftTableView endUpdates];

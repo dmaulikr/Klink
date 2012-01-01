@@ -190,7 +190,11 @@
     
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
     [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",topCaption.creatorname] forState:UIControlStateNormal];
+    [self.btn_writtenBy renderWithObjectID:topCaption.creatorid withName:topCaption.creatorname];
+    
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
+    [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
+    
     [self.btn_illustratedBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
     
     [self setNeedsDisplay];
@@ -228,8 +232,32 @@
         [self.contentView addSubview:self.draftTableViewCell];
         
         self.cellType = reuseIdentifier;
-        self.btn_writtenBy.userInteractionEnabled = YES;
-        self.btn_illustratedBy.userInteractionEnabled = YES;
+        
+        //lets us create the link button
+        CGRect frameForWrittenBy = CGRectMake(165, 243, 129, 27);
+        CGRect frameForIllustratedBy = CGRectMake(167,261,129,27);
+        UIResourceLinkButton* rlb1 = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
+        UIResourceLinkButton* rlb2 = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
+       
+        [self.contentView addSubview:rlb1];
+        [self.contentView addSubview:rlb2];
+        self.btn_writtenBy = rlb1;
+        self.btn_illustratedBy = rlb2;
+        
+        //need to set the font properly on the link buttons
+        UIFont* f = [UIFont fontWithName:@"American Typewriter" size:13];
+        
+        self.btn_writtenBy.titleLabel.font = f;
+        self.btn_writtenBy.titleLabel.opaque = NO;
+        self.btn_writtenBy.titleLabel.textColor = [UIColor blackColor];
+        self.btn_illustratedBy.titleLabel.font = f;
+        self.btn_illustratedBy.titleLabel.opaque = NO;
+        self.btn_illustratedBy.titleLabel.textColor = [UIColor blackColor];
+        
+        [rlb1 release];
+        [rlb2 release];
+        
+        
         
         /*[self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
         [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
@@ -239,8 +267,6 @@
         [self.btn_illustratedBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
         [self.btn_writtenBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
         
-//        [self.btn_writtenBy addTarget:self action:@selector(onWrittenByClicked:) forControlEvents:UIControlEventAllTouchEvents];
-//        [self.btn_illustratedBy addTarget:self action:@selector(onIllustratedByClicked:) forControlEvents:UIControlEventAllTouchEvents];
         
     }
     return self;
@@ -264,6 +290,9 @@
     self.lbl_caption = nil;
     self.lbl_numVotes = nil;
     self.lbl_numCaptions = nil;
+    self.btn_illustratedBy = nil;
+    self.btn_writtenBy = nil;
+    
     [super dealloc];
 
    // [self.photoID release];
@@ -275,20 +304,7 @@
    // [self.lbl_numCaptions release];
 
 }
-#pragma mark - Button Handlers
-- (void) onWrittenByClicked:(id)sender {
-    //need to grab who wrote the caption and transition to that
- //   ResourceContext* resourceContext = [ResourceContext instance];
-  //  Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
-  //  ProfileViewController* pvc = [ProfileViewController createInstanceForUser:caption.creatorid];
-}
-    
-- (void) onIllustratedByClicked:(id)sender {
-    //need to grab who wrote the photo and transition to that
-  //  ResourceContext* resourceContext = [ResourceContext instance];
-  //  Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
-    
-}
+
 
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {

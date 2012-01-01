@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CloudEnumerator.h"
-
+#import "UIResourceLinkButton.h"
 
 @interface UIDraftTableViewCell : UITableViewCell {
     NSNumber*       m_photoID;
@@ -17,15 +17,15 @@
     UITableViewCell* m_draftTableViewCell;
     NSString*       m_cellType;
     
-    UIImageView*    m_iv_photo;
-    UIImageView*    m_iv_photoFrame;
-    UIButton*       m_btn_writtenBy;
-    UIButton*       m_btn_illustratedBy;
-    UILabel*        m_lbl_caption;
-    UILabel*        m_lbl_photoby;
-    UILabel*        m_lbl_captionby;
-    UILabel*        m_lbl_numVotes;
-    UILabel*        m_lbl_numCaptions;
+    UIImageView*                m_iv_photo;
+    UIImageView*                m_iv_photoFrame;
+    UIResourceLinkButton*       m_btn_writtenBy;
+    UIResourceLinkButton*       m_btn_illustratedBy;
+    UILabel*                    m_lbl_caption;
+    UILabel*                    m_lbl_photoby;
+    UILabel*                    m_lbl_captionby;
+    UILabel*                    m_lbl_numVotes;
+    UILabel*                    m_lbl_numCaptions;
     
 }
 
@@ -34,8 +34,8 @@
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* draftTableViewCell;
 @property (nonatomic, retain) NSString*                 cellType;
-@property (nonatomic, retain) IBOutlet UIButton*        btn_writtenBy;
-@property (nonatomic, retain) IBOutlet UIButton*        btn_illustratedBy;
+@property (nonatomic, retain) UIResourceLinkButton*        btn_writtenBy;
+@property (nonatomic, retain) UIResourceLinkButton*        btn_illustratedBy;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photoFrame;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_caption;

@@ -16,6 +16,8 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 #import "UIImageView+UIImageViewCategory.h"
+#import "ProfileViewController.h"
+#import "UIResourceLinkButton.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -35,6 +37,8 @@
 @synthesize lbl_publishDate = m_lbl_publishDate;
 @synthesize lbl_pageNumber = m_lbl_pageNumber;
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
+@synthesize btn_writtenBy = m_btn_writtenBy;
+@synthesize btn_illustratedBy = m_btn_illustratedBy;
 
 
 #pragma mark - Initializers
@@ -118,6 +122,15 @@
 	
 }
 
+- (IBAction) onLinkButtonClicked:(id)sender {
+    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
+    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+}
 - (void)hideControls { 
     [self setControlsHidden:YES]; 
 }
@@ -200,8 +213,42 @@
         
         self.lbl_title.text = page.displayname;
         self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", caption.creatorname];
-        self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
+        self.lbl_captionby.text = [NSString stringWithFormat:@"- written by "];
+        self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by "];
+        
+        //set up the link buttons for the written and illustrated by
+        //TODO: in IOS 4.3.2 the button target actions arent being called, in IOS 5.0 they work
+        UIFont* f = [UIFont fontWithName:@"American Typewriter" size:13];
+        
+        CGRect frameForWrittenBy = CGRectMake(161, 342, 126, 20);
+        CGRect frameForIllustratedBy = CGRectMake(161, 363, 126,20);
+        
+        UIResourceLinkButton* rlb1 = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
+        UIResourceLinkButton* rlb2 = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
+        
+        [rlb1 addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [rlb2 addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.btn_writtenBy = rlb1;
+        self.btn_writtenBy.titleLabel.font = f;
+        self.btn_writtenBy.titleLabel.textAlignment = UITextAlignmentLeft;
+        self.btn_writtenBy.titleLabel.textColor = [UIColor blackColor];
+        
+        self.btn_illustratedBy = rlb2;
+        self.btn_illustratedBy.titleLabel.font = f;
+        self.btn_illustratedBy.titleLabel.textAlignment = UITextAlignmentLeft;
+        self.btn_illustratedBy.titleLabel.textColor = [UIColor blackColor];
+        
+        [self.view addSubview:self.btn_writtenBy];
+        [self.view addSubview:self.btn_illustratedBy];
+        
+        [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
+        [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
+        
+        [rlb1 release];
+        [rlb2 release];
+        //end button setup
+        
         self.lbl_publishDate.text = [NSString stringWithFormat:@"published: %@", [DateTimeHelper formatMediumDate:datePublished]];
         self.lbl_pageNumber.text = [NSString stringWithFormat:@"- %@ -", [self.pageNumber stringValue]];
         
@@ -301,6 +348,15 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    self.btn_illustratedBy = nil;
+    self.btn_writtenBy = nil;
+    self.lbl_title = nil;
+    self.lbl_publishDate = nil;
+    self.lbl_photoby = nil;
+    self.lbl_caption = nil;
+    self.lbl_captionby = nil;
+    self.lbl_pageNumber = nil;
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }

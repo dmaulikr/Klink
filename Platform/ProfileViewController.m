@@ -316,6 +316,17 @@
     [self drawProgressBar];
 }
 
+- (void) refreshProfile:(NSNumber*)userid 
+{
+    //object doesnt exist in the store, we need to grab it from the cloud
+    NSArray* objectIDs = [NSArray arrayWithObject:userid];
+    NSArray* objectTypes = [NSArray arrayWithObject:USER];
+    self.profileCloudEnumerator = nil;
+    self.profileCloudEnumerator = [CloudEnumerator enumeratorForIDs:objectIDs withTypes:objectTypes];
+    self.profileCloudEnumerator.delegate = self;
+    [self.profileCloudEnumerator enumerateUntilEnd:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -335,20 +346,15 @@
         //we need to retrieve the id specified
         ResourceContext* resourceContext = [ResourceContext instance];
         self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-        if (self.user == nil) {
-            //object doesnt exist in the store, we need to grab it from the cloud
-            NSArray* objectIDs = [NSArray arrayWithObject:self.userID];
-            NSArray* objectTypes = [NSArray arrayWithObject:USER];
-            
-            self.profileCloudEnumerator = [CloudEnumerator enumeratorForIDs:objectIDs withTypes:objectTypes];
-            self.profileCloudEnumerator.delegate = self;
-            [self.profileCloudEnumerator enumerateUntilEnd:nil];
-        }
-        else {
-            [self render];
+        [self refreshProfile:self.userID];
+        
+        if (self.user != nil) {
+           [self render];             
         }
     }
     else {
+        self.userID = self.user.objectid;
+        [self refreshProfile:self.userID];
         [self render];
     }
  
