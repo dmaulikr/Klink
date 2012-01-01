@@ -13,7 +13,7 @@
 #import "CloudEnumerator.h"
 #import "UIProgressHUDView.h"
 
-@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, CloudEnumeratorDelegate, MBProgressHUDDelegate, UIAlertViewDelegate> {
+@interface FullScreenPhotoViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIPagedViewSlider2Delegate, CloudEnumeratorDelegate, MBProgressHUDDelegate, UIAlertViewDelegate, UIActionSheetDelegate > {
     NSNumber*           m_pageID; //represents the ID of the page whose photos will be shown
     NSNumber*           m_photoID;
     NSNumber*           m_captionID;
