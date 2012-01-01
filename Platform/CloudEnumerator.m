@@ -255,24 +255,29 @@
             else {
                 LOG_ENUMERATION(0, @"%@Enumerate sinlge page complete, enumeration context remains open",activityName);
                 m_isEnumerationPending = NO;
-                [self.delegate onEnumerateComplete:self.userInfo];
+                [self performSelectorOnMainThread:@selector(callOnEnumerationCompleteOnDelegateWith:) withObject:self.userInfo waitUntilDone:YES];
+               
             }
         }
         else {
             LOG_ENUMERATION(0, @"%@Enumeration context is complete",activityName);
             m_isEnumerationPending = NO;
-            [self.delegate onEnumerateComplete:self.userInfo];
+                   [self performSelectorOnMainThread:@selector(callOnEnumerationCompleteOnDelegateWith:) withObject:self.userInfo waitUntilDone:YES];
+            
+            
         }
     }
     else {
         //enumeration failed
         LOG_ENUMERATION(1,@"%@Enumeration failed due to error: %@",activityName,response.errorMessage);
         m_isEnumerationPending = NO;
-        [self.delegate onEnumerateComplete:self.userInfo];
-    }
+        [self performSelectorOnMainThread:@selector(callOnEnumerationCompleteOnDelegateWith:) withObject:self.userInfo waitUntilDone:YES];    }
   
 }
 
+- (void) callOnEnumerationCompleteOnDelegateWith:(NSDictionary*)userInfo {
+    [self.delegate onEnumerateComplete:userInfo];
+}
 
 #pragma mark - Static initializers
 

@@ -71,8 +71,8 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_photosLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_totalLabel;
-@property (nonatomic, retain) User* user;
-@property (nonatomic, retain) NSNumber* userID;
+@property (atomic, retain) User* user;
+@property (atomic, retain) NSNumber* userID;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;

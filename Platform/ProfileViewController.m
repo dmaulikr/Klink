@@ -277,7 +277,7 @@
 
 - (void) render {
     //if the user is the currently logged in user, we then enable the user settings container
-    if (self.user == self.loggedInUser) {
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         //yes it is
         self.v_userSettingsContainer.hidden = NO;
     }
@@ -504,7 +504,9 @@
 #pragma mark - UISwitch Handler
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
-    if (self.user == self.loggedInUser) {
+
+    
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
@@ -523,10 +525,17 @@
 
 - (void) onEnumerateComplete:(NSDictionary *)userInfo {
     ResourceContext* resourceContext = [ResourceContext instance];
-    self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-    if (self.user != nil) {
-        [self render];
-    }
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    NSNumber* userid = user.objectid;
+
+    self.user = user;
+    self.userID = userid;
+    
+//    self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+//    self.userID = self.user.objectid;
+//    if (self.user != nil) {
+//        [self render];
+//    }
    
 }
 
@@ -570,8 +579,10 @@
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
     //sets the user property to the curretly logged on user
-   // AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-    instance.user = instance.loggedInUser;
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    instance.user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    instance.userID = authenticationManager.m_LoggedInUserID;
     return instance;
 }
 
