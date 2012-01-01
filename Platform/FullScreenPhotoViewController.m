@@ -466,7 +466,18 @@
                                              selector:@selector(didRotate)
                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
-
+    // Add flag for review button to navigation bar
+    /*UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                    initWithImage:[UIImage imageNamed:@"icon-flag.png"]
+                                    style:UIBarButtonItemStyleBordered
+                                    target:self
+                                    action:@selector(onFlagButtonPressed:)];*/
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                    initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                    target:self
+                                    action:@selector(onFlagButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    [rightButton release];
   
     
 }
@@ -637,6 +648,19 @@
         
         // hide the landscape photo view
         [self.iv_photoLandscape setHidden:YES];
+        
+        // Reenable the gesture recognizer for the photo image view to handle a single tap
+        UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
+         
+        // Set required taps and number of touches
+        [oneFingerTap setNumberOfTapsRequired:1];
+        [oneFingerTap setNumberOfTouchesRequired:1];
+        
+        // Add the gesture to the photo image view
+        [self.iv_photo addGestureRecognizer:oneFingerTap];
+        
+        //enable gesture events on the photo
+        [self.iv_photo setUserInteractionEnabled:YES];
     }
     
 }
@@ -702,6 +726,71 @@
     }
 }
 
+#pragma mark - UIActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString* activityName = @"FullScreenPhotoViewController.onFlagButtonPressed:";
+    
+    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
+        
+        //we check to ensure the user is logged in first
+        if (![self.authenticationManager isUserAuthenticated]) {
+            UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                        initWithTitle:@"Login Required"
+                                        message:@"Hello! You must punch-in on the production floor to flag these items for review.\n\nPlease login, or join us as a new contributor via Facebook."
+                                        delegate:self
+                                        onFinishSelector:@selector(onFlagButtonPressed:)
+                                        onTargetObject:self
+                                        withObject:nil
+                                        cancelButtonTitle:@"Cancel"
+                                        otherButtonTitles:@"Login", nil];
+            [alert show];
+            [alert release];
+        }
+        else {
+            ResourceContext* resourceContext = [ResourceContext instance];
+            //we start a new undo group here
+            [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+            
+            int photoIndex = [self.photoViewSlider getPageIndex];
+            Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
+            
+            int captionIndex = [self.captionViewSlider getPageIndex];
+            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
+            
+            photo.numberofflags = [NSNumber numberWithInt:([photo.numberofflags intValue] + 1)];
+            caption.numberofflags = [NSNumber numberWithInt:([caption.numberofflags intValue] + 1)];
+            
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            //now we need to commit to the store
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            
+            //display progress view on the submission of a vote
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+            NSString* message = @"Flagging for review...";
+            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+            
+            LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Flagged photo with id: %@ and caption with id: %@ in local store",activityName, photo.objectid, caption.objectid);
+        }
+    }
+}
+
+#pragma mark - Navigation Bar Button Event Handlers
+- (void) onFlagButtonPressed:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:@"Is this item offensive?"
+                                  delegate:self
+                                  cancelButtonTitle:@"Cancel"
+                                  destructiveButtonTitle:@"Flag for review"
+                                  otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
+
 #pragma mark - Toolbar Button Event Handlers
 - (void) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
@@ -718,12 +807,12 @@
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
-            [self disableFacebookButton];
+            //[self disableFacebookButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
             
-            NSString* message = @"Submitting to Facebook...";
+            NSString* message = @"Sharing to Facebook...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
@@ -745,13 +834,13 @@
         SocialSharingManager* sharingManager = [SocialSharingManager getInstance];
         int count = [[self.frc_captions fetchedObjects]count];
         if (count > 0) {
-            [self disableTwitterButton];
+            //[self disableTwitterButton];
             int index = [self.captionViewSlider getPageIndex];
             Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
             
             [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
             
-            NSString* message = @"Submitting to Twitter...";
+            NSString* message = @"Sharing to Twitter...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
         
@@ -764,7 +853,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to contribute a new photo on this draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onCameraButtonPressed:)
                               onTargetObject:self
@@ -857,7 +946,7 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to caption to this photo.\n\nPlease login, or join us as a new contributor via Facebook."
+                              message:@"Hello! You must punch-in on the production floor to contribute a new caption on this photo.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
                               onFinishSelector:@selector(onCaptionButtonPressed:)
                               onTargetObject:self

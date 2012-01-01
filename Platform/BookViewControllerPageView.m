@@ -46,7 +46,7 @@
 #pragma mark - PageViewController Delegate Methods (for iOS 5+)
 - (PageViewController *)viewControllerAtIndex:(int)index
 {
-    NSString* activityName = @"BookViewControllerpageView.viewControllerAtIndex:";
+    //NSString* activityName = @"BookViewControllerpageView.viewControllerAtIndex:";
     // Return the page view controller for the given index
     int count = [[self.frc_published_pages fetchedObjects]count];
     
@@ -55,7 +55,7 @@
     }
     else {
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
-        self.pageID = page.objectid;
+        //self.pageID = page.objectid;
         
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
         
@@ -109,6 +109,14 @@
     
     return [self viewControllerAtIndex:index];
 }
+
+/*- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+    
+    if (completed) {
+        PageViewController* currentPageViewController = [pageViewController.viewControllers objectAtIndex:0];
+        self.pageID = currentPageViewController.pageID;
+    }
+}*/
 
 
 #pragma mark - Render Page from PageViewController

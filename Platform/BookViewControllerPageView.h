@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BookViewControllerBase.h"
 
-@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDataSource > {
+@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource > {
     
     UIPageViewController* m_pageController;
     
