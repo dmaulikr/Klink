@@ -57,7 +57,7 @@
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
         //self.pageID = page.objectid;
         
-        NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
+        NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
         
         PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
 

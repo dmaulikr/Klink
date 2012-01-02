@@ -96,7 +96,7 @@
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
         self.pageID = page.objectid;
         
-        NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 1];
+        NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
         
         PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
         //pageViewController.view.backgroundColor = [UIColor blackColor];
@@ -113,6 +113,9 @@
         
         [pageViewController.view.layer renderInContext:ctx];
         
+        // adjust frames for draft attribution buttons
+        self.btn_writtenBy.frame = pageViewController.btn_writtenBy.frame;
+        self.btn_illustratedBy.frame = pageViewController.btn_illustratedBy.frame;
        
         // NEW WAY:END
         
@@ -270,24 +273,6 @@
 {
     [super viewDidLoad];
     
-    CGRect frameForWrittenBy = CGRectMake(161, 342, 126, 20);
-    CGRect frameForIllustratedBy = CGRectMake(161, 363, 126,20);
-    
-    UIResourceLinkButton* btn_writtenBy = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
-    UIResourceLinkButton* btn_illustratedBy = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
-
-    self.btn_writtenBy = btn_writtenBy;
-    self.btn_illustratedBy = btn_illustratedBy;
-    
-    [btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:btn_writtenBy];
-    [self.view addSubview:btn_illustratedBy];
-    
-    [btn_writtenBy release];
-    [btn_illustratedBy release];
-    
     // Do any additional setup after loading the view from its nib.
     
     // Adjust the leave view frame to be the size of the PageViewController
@@ -307,6 +292,25 @@
     [invisibleShowHideButton addTarget:self action:@selector(toggleControls) forControlEvents:UIControlEventTouchUpInside];
     // add to a view
     [self.view addSubview:invisibleShowHideButton];
+    
+    
+    CGRect frameForWrittenBy = CGRectMake(161, 342, 129, 21);
+    CGRect frameForIllustratedBy = CGRectMake(161, 363, 129, 21);
+    
+    UIResourceLinkButton* btn_writtenBy = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
+    UIResourceLinkButton* btn_illustratedBy = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
+    
+    self.btn_writtenBy = btn_writtenBy;
+    self.btn_illustratedBy = btn_illustratedBy;
+    
+    [btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:btn_writtenBy];
+    [self.view addSubview:btn_illustratedBy];
+    
+    [btn_writtenBy release];
+    [btn_illustratedBy release];
 
 }
 
@@ -324,7 +328,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self hideControlsAfterDelay:5];
+    [self hideControlsAfterDelay:3];
     
 }
 

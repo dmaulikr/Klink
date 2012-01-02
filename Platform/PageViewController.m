@@ -218,7 +218,7 @@
         
         //set up the link buttons for the written and illustrated by
         //TODO: in IOS 4.3.2 the button target actions arent being called, in IOS 5.0 they work
-        UIFont* f = [UIFont fontWithName:@"American Typewriter" size:13];
+        /*UIFont* f = [UIFont fontWithName:@"American Typewriter" size:13];
         
         CGRect frameForWrittenBy = CGRectMake(161, 342, 126, 20);
         CGRect frameForIllustratedBy = CGRectMake(161, 363, 126,20);
@@ -240,13 +240,13 @@
         self.btn_illustratedBy.titleLabel.textColor = [UIColor blackColor];
         
         [self.view addSubview:self.btn_writtenBy];
-        [self.view addSubview:self.btn_illustratedBy];
+        [self.view addSubview:self.btn_illustratedBy];*/
         
         [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
         [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
         
-        [rlb1 release];
-        [rlb2 release];
+        //[rlb1 release];
+        //[rlb2 release];
         //end button setup
         
         self.lbl_publishDate.text = [NSString stringWithFormat:@"published: %@", [DateTimeHelper formatMediumDate:datePublished]];
@@ -371,7 +371,7 @@
 {
     [super viewDidAppear:animated];
 
-    [self hideControlsAfterDelay:5];
+    [self hideControlsAfterDelay:3];
     
 }
 

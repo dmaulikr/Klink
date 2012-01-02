@@ -14,6 +14,7 @@
 @interface HomeViewController : BaseViewController  {
     UIButton*   m_readButton;
     UIButton*   m_productionLogButton;
+    UIImageView*    m_iv_bookCover;
 //    UIButton*   m_contributeButton;
 //    UIButton*   m_newDraftButton;
 //    UIButton*   m_loginButton;
@@ -22,6 +23,7 @@
 
 @property (nonatomic,retain) IBOutlet UIButton* readButton;
 @property (nonatomic,retain) IBOutlet UIButton* productionLogButton;
+@property (nonatomic,retain) IBOutlet UIImageView*  iv_bookCover;
 //@property (nonatomic,retain) IBOutlet UIButton* contributeButton;
 //@property (nonatomic,retain) IBOutlet UIButton* newDraftButton;
 //@property (nonatomic,retain) IBOutlet UIButton* loginButton;

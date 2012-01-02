@@ -21,6 +21,7 @@
 @synthesize readButton          = m_readButton;
 //@synthesize loginButton         = m_loginButton;
 //@synthesize loginTwitterButton  = m_loginTwitterButton;
+@synthesize iv_bookCover        = m_iv_bookCover;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +45,87 @@
     
     // Release any cached data, images, etc that aren't in use.
 }
+
+
+#pragma mark - Book cover open animation
+- (void) pageOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToOpen.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToOpen.hidden = NO;
+    
+    // disable the view so it’s not doing anything while animating
+    viewToOpen.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the left edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToOpen.layer.anchorPoint.x != 0.0f) {
+        viewToOpen.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToOpen.center = CGPointMake(viewToOpen.center.x - viewToOpen.bounds.size.width/2.0f, viewToOpen.center.y);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // start the animation from the current state
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    // this is the basic rotation by 90 degree along the y-axis
+    CATransform3D endTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                           0.0f,
+                                                           -1.0f,
+                                                           0.0f);
+    // these values control the 3D projection outlook
+    endTransform.m34 = 0.001f;
+    endTransform.m14 = -0.0015f;
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:endTransform];
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToOpen.tag] forKey:@"viewToOpenTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToOpen.layer addAnimation:theGroup forKey:@"flipViewOpen"];
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+    
+    [self.iv_bookCover setHidden:YES];
+    
+    /*// Get the tag from the animation, we use it to find the
+    // animated UIView
+    NSNumber *tag = [theAnimation valueForKey:@"viewToOpenTag"];
+    // Find the UIView with the tag and do what you want
+    // This only searches the first level subviews
+    for (UIView *subview in self.view.subviews) {
+        if (subview.tag == [tag intValue]) {
+            // Code for what's needed to happen after
+            // the animation finishes goes here.
+            if (flag) {
+                // Now we just hide the animated view since
+                // animation.removedOnCompletion is not working
+                // in animation groups. Hiding the view prevents it
+                // from returning to the original state and showing.
+                subview.hidden = YES;
+            }
+        }
+    }*/
+}
+
+- (void)openBook {
+    [self pageOpenView:self.iv_bookCover duration:2.0f];
+}
+
 
 #pragma mark - View lifecycle
 
@@ -71,6 +153,9 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController setToolbarHidden:NO animated:YES];
     
+    // unhide the book cover
+    [self.iv_bookCover setHidden:NO];
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -96,6 +181,13 @@
     }*/
     
 }
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self openBook];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

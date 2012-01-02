@@ -58,6 +58,7 @@
 - (void) render {
     [self setTitle:self.objectName forState:UIControlStateNormal];
 }
+
 - (void) renderWithObjectID:(NSNumber*)objectID withName:(NSString*)name {
     self.objectID = objectID;
     self.objectName = name;
