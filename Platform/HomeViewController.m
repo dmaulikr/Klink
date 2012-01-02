@@ -230,7 +230,7 @@
     [self.feedManager refreshFeedOnFinish:nil];
     
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    int numContributors = [settings.editor_minimum intValue];
+    int numContributors = [settings.num_users intValue];
     self.lbl_numContributors.text = [NSString stringWithFormat:@"%d contributors", numContributors];
     
 }
