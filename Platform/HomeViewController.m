@@ -12,16 +12,21 @@
 #import "CallbackResult.h"
 #import "ProductionLogViewController.h"
 #import "BookViewControllerBase.h"
+#import "NotificationsViewController.h"
+#import "ApplicationSettings.h"
+#import "ApplicationSettingsManager.h"
 
 #import "AuthenticationManager.h"
 @implementation HomeViewController
-@synthesize productionLogButton = m_productionLogButton;
+@synthesize btn_productionLogButton = m_btn_productionLogButton;
 //@synthesize contributeButton    = m_contributeButton;
 //@synthesize newDraftButton      = m_newDraftButton;
-@synthesize readButton          = m_readButton;
+@synthesize btn_readButton          = m_btn_readButton;
 //@synthesize loginButton         = m_loginButton;
 //@synthesize loginTwitterButton  = m_loginTwitterButton;
-@synthesize iv_bookCover        = m_iv_bookCover;
+@synthesize btn_writersLogButton    = m_btn_writersLogButton;
+@synthesize iv_bookCover            = m_iv_bookCover;
+@synthesize lbl_numContributors     = m_lbl_numContributors;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -224,6 +229,10 @@
     //let's refresh the feed
     [self.feedManager refreshFeedOnFinish:nil];
     
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    int numContributors = [settings.editor_minimum intValue];
+    self.lbl_numContributors.text = [NSString stringWithFormat:@"%d contributors", numContributors];
+    
 }
 
 - (void)viewDidUnload
@@ -368,6 +377,18 @@
     //                                                                         action:nil] autorelease];
     //[self.navigationController pushViewController:productionLogController animated:YES];
     //[productionLogController release];
+}
+
+- (IBAction) onWritersLogButtonClicked:(id)sender {
+    //called when the writer's log button is pressed
+    
+    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 /*- (IBAction) onContributeButtonClicked:(id)sender {
