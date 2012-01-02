@@ -293,7 +293,7 @@
     
     self.lbl_username.text = self.user.username;
     self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
-    self.lbl_currentLevel.text = self.user.iseditor ? @"Editor" : @"Contributor";
+    self.lbl_currentLevel.text = [self.user.iseditor boolValue] ? @"Editor" : @"Contributor";
     self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
     self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
     self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
