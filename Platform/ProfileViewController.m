@@ -505,8 +505,6 @@
 #pragma mark - UISwitch Handler
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
-
-    
     if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;

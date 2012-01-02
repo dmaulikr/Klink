@@ -12,10 +12,16 @@
 #import "Page.h"
 #import "PageState.h"
 #import "LeavesUtilities.h"
+#import "UIResourceLinkButton.h"
+#import "ProfileViewController.h"
+#import "Photo.h"
+#import "Caption.h"
+
 
 @implementation BookViewControllerLeaves
 @synthesize iv_backgroundLeaves = m_iv_backgroundLeaves;
-
+@synthesize btn_illustratedBy = m_btn_illustratedBy;
+@synthesize btn_writtenBy = m_btn_writtenBy;
 
 #pragma mark - Frames
 - (CGRect) frameForPageViewController {
@@ -107,9 +113,7 @@
         
         [pageViewController.view.layer renderInContext:ctx];
         
-        
-             
-        
+       
         // NEW WAY:END
         
         /*// OLD WAY:BEGIN use a UIImage representation of the PageViewController's view
@@ -127,6 +131,30 @@
     }
 }
 
+- (void) onLinkButtonClicked:(id)sender {
+    
+    int currentIndex = self.leavesView.currentPageIndex;
+    
+    Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
+    Caption* caption = [page captionWithHighestVotes];
+    Photo* photo = [page photoWithHighestVotes];
+    NSNumber* userID = nil;
+    if (sender == self.btn_writtenBy) {
+        userID = caption.creatorid;
+    }
+    else {
+        userID = photo.creatorid;
+    }
+    
+    if (userID != nil) {
+        ProfileViewController* pvc = [ProfileViewController createInstanceForUser:userID];
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+    }
+}
 #pragma mark - Render Page from PageViewController
 -(void)renderPage {
    // NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
@@ -147,6 +175,7 @@
             self.pageID = page.objectid;
             int indexForPage = [self indexOfPageWithID:self.pageID];
             [self.leavesView setCurrentPageIndex:indexForPage];
+            
         }
         else {
             //no published pages
@@ -240,6 +269,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    CGRect frameForWrittenBy = CGRectMake(161, 342, 126, 20);
+    CGRect frameForIllustratedBy = CGRectMake(161, 363, 126,20);
+    
+    UIResourceLinkButton* btn_writtenBy = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
+    UIResourceLinkButton* btn_illustratedBy = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
+
+    self.btn_writtenBy = btn_writtenBy;
+    self.btn_illustratedBy = btn_illustratedBy;
+    
+    [btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:btn_writtenBy];
+    [self.view addSubview:btn_illustratedBy];
+    
+    [btn_writtenBy release];
+    [btn_illustratedBy release];
+    
     // Do any additional setup after loading the view from its nib.
     
     // Adjust the leave view frame to be the size of the PageViewController
