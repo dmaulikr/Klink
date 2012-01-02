@@ -168,10 +168,12 @@
     [flexibleSpace release];
     return retVal;
 }
+
 - (void) dealloc {
     self.frc_draft_pages = nil;
     [super dealloc];
 }
+
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
@@ -270,9 +272,7 @@
 {
     NSString* activityName = @"ProductionLogViewController.viewWillAppear:";
     [super viewWillAppear:animated];
-    
 
-    
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
     int count = [[self.frc_draft_pages fetchedObjects] count];
@@ -288,6 +288,7 @@
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated

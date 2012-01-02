@@ -19,8 +19,8 @@
 //@synthesize contributeButton    = m_contributeButton;
 //@synthesize newDraftButton      = m_newDraftButton;
 @synthesize readButton          = m_readButton;
-@synthesize loginButton         = m_loginButton;
-@synthesize loginTwitterButton  = m_loginTwitterButton;
+//@synthesize loginButton         = m_loginButton;
+//@synthesize loginTwitterButton  = m_loginTwitterButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +64,15 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // unhide navigation bar and toolbar
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setToolbarHidden:NO animated:YES];
+    
+}
+
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 }
@@ -71,7 +80,11 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if ([self.authenticationManager isUserAuthenticated]) {
+    // hide navigation bar and toolbar
+    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.toolbar.hidden = YES;
+    
+    /*if ([self.authenticationManager isUserAuthenticated]) {
         [self.loginButton setTitle:@"Logoff" forState:UIControlStateNormal];
         [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
         [self.loginButton addTarget:self action:@selector(onLogoffButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -80,7 +93,7 @@
         [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
         [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
         [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }
+    }*/
     
 }
 
@@ -90,7 +103,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - System Event Handlers 
+/*#pragma mark - System Event Handlers 
 - (void) onUserLoggedIn:(CallbackResult*)result {
     [super onUserLoggedIn:result];
     
@@ -105,7 +118,7 @@
     [self.loginButton setTitle:@"Login" forState:UIControlStateNormal];
     [self.loginButton removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
     [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-}
+}*/
 
 
 #pragma mark UI Event Handlers
@@ -150,6 +163,21 @@
     //called when the production log button is pressed
     ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
     
+    /*// Modal naviation
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    navigationController.toolbarHidden = NO;
+    
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];*/
+    
+    // Set up navigation bar back button
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Book"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil] autorelease];
+    [self.navigationController setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
     [self.navigationController pushViewController:productionLogController animated:YES];
     [productionLogController release];
 }
@@ -186,7 +214,7 @@
     }
 }*/
 
-- (IBAction) onLoginButtonClicked:(id)sender {
+/*- (IBAction) onLoginButtonClicked:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
         //no user is logged in currently
         [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
@@ -203,12 +231,12 @@
 - (IBAction) onLoginTwitterButtonClicked:(id)sender {
     [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
 
-}
+}*/
 
-#pragma mark - ConrtibuteViewControllerDelegate methods
+/*#pragma mark - ConrtibuteViewControllerDelegate methods
 - (void)onSubmitButtonPressed:(id)sender {
     
-}
+}*/
 
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];

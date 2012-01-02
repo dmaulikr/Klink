@@ -119,6 +119,13 @@
 		52979B0114A0128200F29ECC /* progressBar_mediumfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */; };
 		52B6D12A14AFDBDE0046C69C /* icon-flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D12814AFDBDE0046C69C /* icon-flag.png */; };
 		52B6D12B14AFDBDE0046C69C /* icon-flag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D12914AFDBDE0046C69C /* icon-flag@2x.png */; };
+		52B6D13214B10A570046C69C /* UIHomePageFirstRun.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13114B10A570046C69C /* UIHomePageFirstRun.xib */; };
+		52B6D13A14B174030046C69C /* homepagebutton-bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13414B174020046C69C /* homepagebutton-bottom.png */; };
+		52B6D13B14B174030046C69C /* homepagebutton-bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13514B174020046C69C /* homepagebutton-bottom@2x.png */; };
+		52B6D13C14B174030046C69C /* homepagebutton-middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13614B174020046C69C /* homepagebutton-middle.png */; };
+		52B6D13D14B174030046C69C /* homepagebutton-middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13714B174020046C69C /* homepagebutton-middle@2x.png */; };
+		52B6D13E14B174030046C69C /* homepagebutton-top.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13814B174020046C69C /* homepagebutton-top.png */; };
+		52B6D13F14B174030046C69C /* homepagebutton-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13914B174020046C69C /* homepagebutton-top@2x.png */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -426,6 +433,13 @@
 		52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_mediumfill@2x.png"; sourceTree = "<group>"; };
 		52B6D12814AFDBDE0046C69C /* icon-flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-flag.png"; sourceTree = "<group>"; };
 		52B6D12914AFDBDE0046C69C /* icon-flag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-flag@2x.png"; sourceTree = "<group>"; };
+		52B6D13114B10A570046C69C /* UIHomePageFirstRun.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIHomePageFirstRun.xib; sourceTree = "<group>"; };
+		52B6D13414B174020046C69C /* homepagebutton-bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-bottom.png"; sourceTree = "<group>"; };
+		52B6D13514B174020046C69C /* homepagebutton-bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-bottom@2x.png"; sourceTree = "<group>"; };
+		52B6D13614B174020046C69C /* homepagebutton-middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-middle.png"; sourceTree = "<group>"; };
+		52B6D13714B174020046C69C /* homepagebutton-middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-middle@2x.png"; sourceTree = "<group>"; };
+		52B6D13814B174020046C69C /* homepagebutton-top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-top.png"; sourceTree = "<group>"; };
+		52B6D13914B174020046C69C /* homepagebutton-top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-top@2x.png"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -890,6 +904,12 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52B6D13414B174020046C69C /* homepagebutton-bottom.png */,
+				52B6D13514B174020046C69C /* homepagebutton-bottom@2x.png */,
+				52B6D13614B174020046C69C /* homepagebutton-middle.png */,
+				52B6D13714B174020046C69C /* homepagebutton-middle@2x.png */,
+				52B6D13814B174020046C69C /* homepagebutton-top.png */,
+				52B6D13914B174020046C69C /* homepagebutton-top@2x.png */,
 				526A5AFA14A0F469000DAF58 /* progress_threshold.png */,
 				526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */,
 				52979AF214A0128100F29ECC /* progressBar_container.png */,
@@ -1485,6 +1505,7 @@
 				C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */,
 				C52FB3C914AFCD160048D2C4 /* UIResourceLinkButton.h */,
 				C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */,
+				52B6D13114B10A570046C69C /* UIHomePageFirstRun.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1890,6 +1911,13 @@
 				525FFD1114AA7D3E00675B66 /* icon-cloud@2x.png in Resources */,
 				52B6D12A14AFDBDE0046C69C /* icon-flag.png in Resources */,
 				52B6D12B14AFDBDE0046C69C /* icon-flag@2x.png in Resources */,
+				52B6D13214B10A570046C69C /* UIHomePageFirstRun.xib in Resources */,
+				52B6D13A14B174030046C69C /* homepagebutton-bottom.png in Resources */,
+				52B6D13B14B174030046C69C /* homepagebutton-bottom@2x.png in Resources */,
+				52B6D13C14B174030046C69C /* homepagebutton-middle.png in Resources */,
+				52B6D13D14B174030046C69C /* homepagebutton-middle@2x.png in Resources */,
+				52B6D13E14B174030046C69C /* homepagebutton-top.png in Resources */,
+				52B6D13F14B174030046C69C /* homepagebutton-top@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

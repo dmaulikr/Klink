@@ -187,8 +187,9 @@
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
     [self.navigationController.toolbar setTranslucent:YES];
     
-    
-    
+    // unhide navigation bar and toolbar if they are hidden
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.toolbar.hidden = NO;
     
 }
 
