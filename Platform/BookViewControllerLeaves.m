@@ -313,6 +313,9 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
+    self.btn_writtenBy = nil;
+    self.btn_illustratedBy = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
