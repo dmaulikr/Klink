@@ -229,9 +229,16 @@
     //let's refresh the feed
     [self.feedManager refreshFeedOnFinish:nil];
     
+    // set number of contributors label
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    int numContributors = [settings.num_users intValue];
-    self.lbl_numContributors.text = [NSString stringWithFormat:@"%d contributors", numContributors];
+    //int numContributors = [settings.num_users intValue];
+    NSNumber* numContributors = settings.num_users;
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:kCFNumberFormatterDecimalStyle];
+    [numberFormatter setGroupingSeparator:@","];
+    NSString* numContributorsCommaString = [numberFormatter stringForObjectValue:numContributors];
+    [numberFormatter release];
+    self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
     
 }
 
