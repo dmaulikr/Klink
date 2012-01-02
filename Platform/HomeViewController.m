@@ -212,11 +212,11 @@
 }
 
 - (void)openBook {
-    [self pageOpenView:self.iv_bookCover duration:2.0f];
+    [self pageOpenView:self.iv_bookCover duration:1.0f];
 }
 
 - (void)closeBook {
-    [self pageCloseView:self.iv_bookCover duration:1.0f];
+    [self pageCloseView:self.iv_bookCover duration:0.5f];
 }
 
 #pragma mark - View lifecycle

@@ -233,8 +233,11 @@
         
         self.cellType = reuseIdentifier;
         
+        [self.contentView addSubview:self.btn_writtenBy];
+        [self.contentView addSubview:self.btn_illustratedBy];
+        
         //lets us create the link button
-        CGRect frameForWrittenBy = CGRectMake(165, 243, 129, 27);
+        /*CGRect frameForWrittenBy = CGRectMake(165, 243, 129, 27);
         CGRect frameForIllustratedBy = CGRectMake(167,261,129,27);
         UIResourceLinkButton* rlb1 = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
         UIResourceLinkButton* rlb2 = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
@@ -255,7 +258,7 @@
         self.btn_illustratedBy.titleLabel.textColor = [UIColor blackColor];
         
         [rlb1 release];
-        [rlb2 release];
+        [rlb2 release];*/
         
         
         
