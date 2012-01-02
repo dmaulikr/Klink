@@ -17,6 +17,7 @@
 #import "Macros.h"
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
+#import "UIViewCategory.h"
 
 
 #define kNOTIFICATIONID             @"notificationid"
@@ -33,7 +34,8 @@
 @synthesize selector = m_selector;
 @synthesize target = m_target;
 @synthesize resourceLinkButton = m_resourceLinkButton;
-
+@synthesize containerView = m_containerView;
+@synthesize label = m_label;
 
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
     NSDate* now = [NSDate date];
@@ -96,6 +98,7 @@
             CGRect vFrame = CGRectMake(74, 4, 218, 40);
             UIView* containerView = [[UIView alloc]initWithFrame:vFrame];
             [self.contentView addSubview:containerView];
+            self.containerView = containerView;
             [containerView release];
             
             NSArray* matches = [regex matchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
@@ -160,8 +163,8 @@
         else {
             //no embedded user links found
             CGRect labelFrame = CGRectMake(74,4,218,40);
-            UILabel* label = [self labelWithFrame:labelFrame withText:notification.message];
-            [self.contentView addSubview:label];
+            self.label = [self labelWithFrame:labelFrame withText:notification.message];
+            [self.contentView addSubview:self.label];
            
         }
         
@@ -253,8 +256,21 @@
                   linkClickTarget:(id)target 
                 linkClickSelector:(SEL)selector 
 {
-    self.resourceLinkButton = nil;
     
+    if (self.resourceLinkButton != nil) {
+        [self.resourceLinkButton removeFromSuperview];
+        self.resourceLinkButton = nil;
+    }
+    self.lbl_notificationDate.text = nil;
+    
+    if (self.label != nil) {
+        [self.label removeFromSuperview];
+        self.label = nil;
+    }
+    if (self.containerView != nil) {
+        [self.containerView removeFromSuperview];
+        self.containerView = nil;
+    }
     self.target = target;
     self.selector = selector;
     self.notificationID = notificationID;

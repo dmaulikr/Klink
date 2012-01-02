@@ -277,9 +277,10 @@
 
 - (void) render {
     //if the user is the currently logged in user, we then enable the user settings container
-    if (self.user == self.loggedInUser) {
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         //yes it is
         self.v_userSettingsContainer.hidden = NO;
+        
     }
     else {
         //no it isnt
@@ -504,7 +505,7 @@
 #pragma mark - UISwitch Handler
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
-    if (self.user == self.loggedInUser) {
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
@@ -523,27 +524,17 @@
 
 - (void) onEnumerateComplete:(NSDictionary *)userInfo {
     ResourceContext* resourceContext = [ResourceContext instance];
-    self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-    if (self.user != nil) {
-        [self render];
-    }
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    NSNumber* userid = user.objectid;
+
+    self.user = user;
+    self.userID = userid;
+    [self render];
+
    
 }
 
-/*- (IBAction) onFacebookLoginChanged:(id)sender {
-    if (![self.authenticationManager isUserAuthenticated]) {
-        //no user is logged in currently
-        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
-    }
-    else {
-        [self.authenticationManager logoff];
-    }
-}*/
 
-/*- (IBAction) onTwitterLoginChanged:(id)sender {
-    [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
-    
-}*/
 
          
 #pragma mark - MBProgressHUD Delegate
@@ -570,8 +561,10 @@
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
     //sets the user property to the curretly logged on user
-   // AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-    instance.user = instance.loggedInUser;
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    instance.user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
+    instance.userID = authenticationManager.m_LoggedInUserID;
     return instance;
 }
 
