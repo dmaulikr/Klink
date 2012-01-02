@@ -98,9 +98,92 @@
     [viewToOpen.layer addAnimation:theGroup forKey:@"flipViewOpen"];
 }
 
+- (void) pageCloseView:(UIView *)viewToClose duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToClose.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToClose.hidden = NO;
+    
+    // disable the view so it’s not doing anything while animating
+    viewToClose.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the left edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToClose.layer.anchorPoint.x != 0.0f) {
+        viewToClose.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToClose.center = CGPointMake(viewToClose.center.x - viewToClose.bounds.size.width/2.0f, viewToClose.center.y);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    // start the animation from the open state
+    // this is the basic rotation by 90 degree along the y-axis
+    CATransform3D startTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                           0.0f,
+                                                           -1.0f,
+                                                           0.0f);
+    // these values control the 3D projection outlook
+    startTransform.m34 = 0.001f;
+    startTransform.m14 = -0.0015f;
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:startTransform];
+    
+    // end the transformation at the default state
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToClose.tag] forKey:@"viewToCloseTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToClose.layer addAnimation:theGroup forKey:@"flipViewClosed"];
+}
+
+
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
     
-    [self.iv_bookCover setHidden:YES];
+    // Get the tag from the animation, we use it to find the
+    // animated UIView
+    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipViewClosed"];
+        
+    if (flag) {
+        for (NSString* animationKey in self.iv_bookCover.layer.animationKeys) {
+            if ([animationKey isEqualToString:animationKeyClosed]) {
+                // book closed, move to production log
+                ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+                
+                // Set up navigation bar back button
+                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Book"
+                                                                                          style:UIBarButtonItemStyleBordered
+                                                                                         target:nil
+                                                                                         action:nil] autorelease];
+                [self.navigationController pushViewController:productionLogController animated:YES];
+                [productionLogController release];
+            }
+            else {
+                // book was opened, hide the cover
+                
+                // Now we just hide the animated view since
+                // animation.removedOnCompletion is not working
+                // in animation groups. Hiding the view prevents it
+                // from returning to the original state and showing.
+                self.iv_bookCover.hidden = YES;
+            }
+        }
+    }
     
     /*// Get the tag from the animation, we use it to find the
     // animated UIView
@@ -120,12 +203,16 @@
             }
         }
     }*/
+    
 }
 
 - (void)openBook {
     [self pageOpenView:self.iv_bookCover duration:2.0f];
 }
 
+- (void)closeBook {
+    [self pageCloseView:self.iv_bookCover duration:1.0f];
+}
 
 #pragma mark - View lifecycle
 
@@ -160,6 +247,7 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -216,6 +304,12 @@
 #pragma mark UI Event Handlers
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
+    
+    // Set up navigation bar back button
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Title Page"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil
+                                                                             action:nil] autorelease];
     BookViewControllerBase* bookController = [BookViewControllerBase createInstance];
     
     //TODO: calculate the page ID which the view controller should open to
@@ -223,7 +317,7 @@
     //pageController.pageID = pageID;
     
     [self.navigationController pushViewController:bookController animated:YES];
-   // [bookController release];
+    [bookController release];
     
     
     
@@ -253,7 +347,10 @@
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {
     //called when the production log button is pressed
-    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+    
+    [self closeBook];
+    
+    //ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
     
     /*// Modal naviation
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
@@ -265,13 +362,12 @@
     [navigationController release];*/
     
     // Set up navigation bar back button
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Book"
-                                                                              style:UIBarButtonItemStyleBordered
-                                                                             target:nil
-                                                                             action:nil] autorelease];
-    [self.navigationController setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
-    [self.navigationController pushViewController:productionLogController animated:YES];
-    [productionLogController release];
+    //self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Book"
+    //                                                                          style:UIBarButtonItemStyleBordered
+    //                                                                         target:nil
+    //                                                                         action:nil] autorelease];
+    //[self.navigationController pushViewController:productionLogController animated:YES];
+    //[productionLogController release];
 }
 
 /*- (IBAction) onContributeButtonClicked:(id)sender {
