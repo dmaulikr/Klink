@@ -455,6 +455,7 @@
         
         //now we have a vote object
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onVoteSavedToCloud:)];
+        callback.fireOnMainThread = YES;
         
         //we also update the local count for the page num votes for publish
         targetPage.numberofpublishvotes =[NSNumber numberWithInt:( [targetPage.numberofpublishvotes intValue] + 1)];

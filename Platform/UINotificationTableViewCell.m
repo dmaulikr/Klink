@@ -232,6 +232,7 @@
         if (notification.imageurl != nil &&
             ![notification.imageurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            callback.fireOnMainThread = YES;
             UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
             [callback release];
             

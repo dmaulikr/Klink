@@ -127,6 +127,16 @@
     Callback* applicationDidBecomeActiveCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationDidBecomeActive:)];
     Callback* applicationWentToBackgroundCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onApplicationWentToBackground:)];
     
+    //we configure each callback to callback on the main thread
+    loginCallback.fireOnMainThread = YES;
+    logoutCallback.fireOnMainThread = YES;
+    showProgressBarCallback.fireOnMainThread = YES;
+    hideProgressBarCallback.fireOnMainThread = YES;
+    failedAuthenticationCallback.fireOnMainThread = YES;
+    unknownRequestFailureCallback.fireOnMainThread = YES;
+    applicationDidBecomeActiveCallback.fireOnMainThread = YES;
+    applicationWentToBackgroundCallback.fireOnMainThread = YES;
+    
     [self.eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
     [self.eventManager registerCallback:logoutCallback forSystemEvent:kUSERLOGGEDOUT];
     [self.eventManager registerCallback:showProgressBarCallback forSystemEvent:kSHOWPROGRESS];
@@ -208,7 +218,10 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.loginView = nil;
-        
+    
+    //we need to de-register from all events we may have subscribed too
+    EventManager* eventManager = [EventManager instance];
+    [eventManager unregisterFromAllEvents:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

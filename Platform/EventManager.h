@@ -32,9 +32,13 @@ typedef enum {
 
 @interface EventManager : NSObject {
     NSMutableSet* m_registeredHandlers;
+    NSLock* m_lock;
 }
 
 @property (nonatomic,retain) NSMutableSet* registeredHandlers;
+@property (nonatomic,retain) NSLock*       lock;
+
+- (void) unregisterFromAllEvents:(id)target;
 
 - (void) registerCallback:(Callback*)callback forSystemEvent:(SystemEvent)systemEventType;
 - (void) registerCallbackForAllSystemEvents:(Callback*)callback;
