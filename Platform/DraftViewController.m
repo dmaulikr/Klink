@@ -284,7 +284,7 @@
             self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
             self.photoCloudEnumerator.delegate = self;
             
-            [self.photoCloudEnumerator enumerateUntilEnd:nil];
+           [self.photoCloudEnumerator enumerateUntilEnd:nil];
         //}      
     }
     

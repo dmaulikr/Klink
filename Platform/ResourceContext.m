@@ -423,7 +423,7 @@ static ResourceContext* sharedInstance;
     updatedObjects = [self.managedObjectContext updatedObjects];
     NSArray* uArray = [updatedObjects allObjects];
     for (NSManagedObject* object in uArray) {
-        [self.managedObjectContext refreshObject:object mergeChanges:NO];
+       [self.managedObjectContext refreshObject:object mergeChanges:YES];
     }
     [self.managedObjectContext save:&error];
     
