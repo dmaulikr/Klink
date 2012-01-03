@@ -152,7 +152,7 @@
 
 #pragma mark - Event Handlers
 - (void) onShowNotificationsClick:(id)sender {
-    //when the notifications button is clicked we need to move to the profile view controller
+    //when the notifications button is clicked we need to move to the notifications view controller
     //PersonalLogViewController* personalLogViewController = [PersonalLogViewController createInstance];
     //[self.navigationViewController pushViewController:personalLogViewController animated:YES];
     

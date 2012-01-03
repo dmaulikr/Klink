@@ -137,9 +137,22 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Navigation Bar Buttons
-    UIBarButtonItem* bi = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = bi;
-    [bi release];
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                    initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                    target:self
+                                    action:@selector(onDoneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    [rightButton release];
+    
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
+                                   initWithImage:[UIImage imageNamed:@"icon-profile.png"]
+                                   //initWithTitle:@"Profile"
+                                   style:UIBarButtonItemStyleBordered
+                                   target:self
+                                   action:@selector(onProfileButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    [leftButton release];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -744,6 +757,16 @@
 #pragma mark - Navigation Bar button handler 
 - (void)onDoneButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)onProfileButtonPressed:(id)sender {    
+    ProfileViewController* profileViewController = [ProfileViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 #pragma mark - Async Callback Handlers

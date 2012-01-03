@@ -406,7 +406,6 @@
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             
             [self displayPhotoFrameOnImage:response.image];
-            //self.iv_photoFrame.frame = CGRectMake(0, self.iv_photoFrame.frame.origin.y, response.image.size.width + 58, self.iv_photoFrame.frame.size.height);
             [self.view setNeedsDisplay];
         }
     }

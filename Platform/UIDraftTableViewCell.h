@@ -34,8 +34,8 @@
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* draftTableViewCell;
 @property (nonatomic, retain) NSString*                 cellType;
-@property (nonatomic, retain) UIResourceLinkButton*        btn_writtenBy;
-@property (nonatomic, retain) UIResourceLinkButton*        btn_illustratedBy;
+@property (nonatomic, retain) IBOutlet UIResourceLinkButton*        btn_writtenBy;
+@property (nonatomic, retain) IBOutlet UIResourceLinkButton*        btn_illustratedBy;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photoFrame;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_caption;
