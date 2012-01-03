@@ -174,19 +174,21 @@
     [super dealloc];
 }
 
-#pragma mark - Initializers
-- (void) commonInit {
-    //common setup for the view controller
-    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
-    
-    
+- (void) registerCallbackHandlers {
     // resister callbacks for change events
     Callback* newDraftCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewDraft:)];
     Callback* newPhotoCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhoto:)];
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
     Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
     Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    
+    //we set each callback to call on the mainthread
+    newDraftCallback.fireOnMainThread = YES;
+    newPhotoCallback.fireOnMainThread = YES;
+    newCaptionCallback.fireOnMainThread = YES;
+    newPhotoCallback.fireOnMainThread = YES;
+    newCaptionCallback.fireOnMainThread = YES;
+    newCaptionVoteCallback.fireOnMainThread = YES;
     
     [self.eventManager registerCallback:newDraftCallback forSystemEvent:kNEWPAGE];
     [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
@@ -199,7 +201,16 @@
     [newCaptionCallback release];
     [newPhotoVoteCallback release];
     [newCaptionVoteCallback release];
+
+}
+#pragma mark - Initializers
+- (void) commonInit {
+    //common setup for the view controller
+    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator.delegate = self;
     
+    
+        
     
     //return self;
 }
@@ -242,6 +253,8 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     [self updateDraftCounterLabels];
+    
+    [self registerCallbackHandlers];
     
     /*[self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_numDraftsTotal setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];

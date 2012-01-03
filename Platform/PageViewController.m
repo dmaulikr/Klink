@@ -260,6 +260,7 @@
         
         if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            callback.fireOnMainThread = YES;
             UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
             [callback release];
             

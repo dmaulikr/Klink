@@ -17,7 +17,7 @@
 
 @implementation EventManager
 @synthesize registeredHandlers = m_registeredHandlers;
-
+@synthesize lock = m_lock;
 static EventManager* sharedInstance;
 
 + (EventManager*) instance {
@@ -60,6 +60,31 @@ static EventManager* sharedInstance;
         }
     }
     return retVal;
+}
+
+//called by a object to unregister itself from all events it might be subscribed too
+- (void) unregisterFromAllEvents:(id)target 
+{
+    NSString* activityName = @"EventManager.unregisterFromAllEvents:";
+    NSMutableSet* handlersToRemove = [[NSMutableSet alloc]init];
+    NSArray* handlers = [self.registeredHandlers allObjects];
+    //we need to grab the lock
+    [self.lock lock];
+    
+    for (RegisteredEventHandler* handler in handlers) {
+        //check if the target equals the parameters
+        if (handler.callback.target == target) {
+            //we found a match
+            [handlersToRemove addObject:handler];
+        }
+    }
+    
+    LOG_ENUMERATION(0, @"%@ Removing the target: %p from %d registered events",activityName,target,[[handlersToRemove allObjects]count]);
+    //now we remove them
+    [self.registeredHandlers minusSet:handlersToRemove];
+    [handlersToRemove release];
+    [self.lock unlock];
+    
 }
 
 - (void) registerCallback:(Callback*)callback forSystemEvent:(SystemEvent)systemEventType {
@@ -111,7 +136,8 @@ static EventManager* sharedInstance;
     NSString* activityName = @"EventManager.raiseEvent:";
     NSArray* handlers = [self registeredHandlersForEventType:systemEventType];
     NSMutableSet* handlersToRemove = [[NSMutableSet alloc]init];
-    
+    //we grab the lock to ensure we do not have any race conditions on the set
+    [self.lock lock];
     LOG_EVENTMANAGER(0, @"%@Raising system event %d for all registered handlers",activityName,systemEventType);
     for (RegisteredEventHandler* handler in handlers) {
         if (handler.callback != nil) {
@@ -132,6 +158,7 @@ static EventManager* sharedInstance;
     
     [self.registeredHandlers minusSet:handlersToRemove];
     [handlersToRemove release];
+    [self.lock unlock];
 }
 
 - (void) raiseAuthenticationFailedEvent:(NSDictionary *)userInfo {

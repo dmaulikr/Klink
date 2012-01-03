@@ -306,6 +306,7 @@ static ResourceContext* sharedInstance;
     
     if (saveToCloud) {
         for (int i = 0; i < [updatedObjectsArray count]; i++) {
+            
             Resource* resource = [updatedObjectsArray objectAtIndex:i];
             
             if ([resource isKindOfClass:[Resource class]]) {
@@ -417,6 +418,13 @@ static ResourceContext* sharedInstance;
     }
     
     [self.managedObjectContext processPendingChanges];
+    
+    //we loop through all updated objects now to ensure we have the latest versions
+    updatedObjects = [self.managedObjectContext updatedObjects];
+    NSArray* uArray = [updatedObjects allObjects];
+    for (NSManagedObject* object in uArray) {
+        [self.managedObjectContext refreshObject:object mergeChanges:NO];
+    }
     [self.managedObjectContext save:&error];
     
     if (error != nil) {

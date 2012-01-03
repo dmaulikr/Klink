@@ -727,6 +727,7 @@
     FeedManager* feedManager = [FeedManager instance];
     
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onFeedFinishedRefresh:)];
+    callback.fireOnMainThread = YES;
     [feedManager refreshFeedOnFinish:callback];
     [callback release];
 }

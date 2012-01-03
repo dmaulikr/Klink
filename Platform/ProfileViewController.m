@@ -529,7 +529,9 @@
 
     self.user = user;
     self.userID = userid;
-    [self render];
+    if (self.user != nil && self.userID != nil) {
+        [self render];
+    }
 
    
 }

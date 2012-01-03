@@ -105,6 +105,7 @@
         ![photo.thumbnailurl isEqualToString:@""]) 
     {
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        callback.fireOnMainThread = YES;
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
         [callback release];
         if (image != nil) {
@@ -161,6 +162,7 @@
     self.lbl_numCaptions.text = nil;
     self.lbl_deadline.text = nil;
     self.iv_photo.image = nil;
+    
     [self render];
 }
 
@@ -184,7 +186,7 @@
         
         // resister callbacks for newPhotoVote events incase the topPhoto changes
         Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
-        
+        newPhotoVoteCallback.fireOnMainThread = YES;
         [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
         
         [newPhotoVoteCallback release];
