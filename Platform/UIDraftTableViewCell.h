@@ -45,8 +45,8 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
 
 - (void) renderWithPhotoID:(NSNumber*)photoID;
-- (IBAction) onWrittenByClicked:(id)sender;
-- (IBAction) onIllustratedByClicked:(id)sender;
+//- (IBAction) onWrittenByClicked:(id)sender;
+//- (IBAction) onIllustratedByClicked:(id)sender;
 + (NSString*) cellIdentifierTop;
 + (NSString*) cellIdentifierLeft;
 + (NSString*) cellIdentifierRight;

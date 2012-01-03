@@ -504,7 +504,7 @@
     AuthenticationManager* authnManager = [AuthenticationManager instance];
     AuthenticationContext* authnContext = [authnManager contextForLoggedInUser];
     
-    if (alertView.delegate == self && authnContext.isfirsttime) {
+    if (alertView.delegate == self && [authnContext.isfirsttime boolValue]) {
         if (buttonIndex == [alertView cancelButtonIndex]) {
             // user selected Profile button
             ProfileViewController* profileViewController = [ProfileViewController createInstance];
@@ -609,7 +609,7 @@
         AuthenticationManager* authnManager = [AuthenticationManager instance];
         AuthenticationContext* authnContext = [authnManager contextForLoggedInUser];
         
-        if (authnContext.isfirsttime) {
+        if ([authnContext.isfirsttime boolValue]) {
             LOG_BASEVIEWCONTROLLER(0,@"%@First time user is loggin in",activityName);
             UICustomAlertView *alert = [[UICustomAlertView alloc]
                                         initWithTitle:@"Welcome!"

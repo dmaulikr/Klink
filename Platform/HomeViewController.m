@@ -316,6 +316,18 @@
     [self.loginButton addTarget:self action:@selector(onLoginButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }*/
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
+    if (buttonIndex == 1 && alertView.delegate == self) {
+        if (![self.authenticationManager isUserAuthenticated]) {
+            // user is not logged in
+            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
+        }
+    }
+}
+
 
 #pragma mark UI Event Handlers
 - (IBAction) onReadButtonClicked:(id)sender {
@@ -388,71 +400,30 @@
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     //called when the writer's log button is pressed
-    
-    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
-}
-
-/*- (IBAction) onContributeButtonClicked:(id)sender {
-    //called when the contribute button is pressed
-    DraftViewController* draftController = [[DraftViewController alloc]initWithNibName:@"DraftViewController" bundle:nil];
-    
-    //TODO: calculate the page ID which the view controller should open to
-    NSNumber* pageID = [NSNumber numberWithInt:0];
-    draftController.pageID = pageID;
-    
-    [self.navigationController pushViewController:draftController animated:YES];
-    [draftController release];
-}*/
-
-/*- (IBAction) onNewDraftButtonClicked:(id)sender {
-    //called when the new draft button is pressed
     if (![self.authenticationManager isUserAuthenticated]) {
-        //user needs to authenticate first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onNewDraftButtonClicked:) onTargetObject:self withObject:sender];
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                    initWithTitle:@"Login Required"
+                                    message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    delegate:self
+                                    onFinishSelector:@selector(onWritersLogButtonClicked:)
+                                    onTargetObject:self
+                                    withObject:nil
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
     }
     else {
-        ContributeViewController* contributeViewController = [ContributeViewController createInstance];
-        contributeViewController.delegate = self;
-        contributeViewController.configurationType = PAGE;
+        NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
         
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
-        [contributeViewController release];
-    }
-}*/
-
-/*- (IBAction) onLoginButtonClicked:(id)sender {
-    if (![self.authenticationManager isUserAuthenticated]) {
-        //no user is logged in currently
-        [self authenticate:YES withTwitter:NO onFinishSelector:NULL onTargetObject:nil withObject:nil];
-        
     }
 }
 
-- (IBAction) onLogoffButtonClicked:(id)sender {
-    if ([self.authenticationManager isUserAuthenticated]) {
-        [self.authenticationManager logoff];
-    }
-}
-
-- (IBAction) onLoginTwitterButtonClicked:(id)sender {
-    [self authenticate:NO withTwitter:YES onFinishSelector:NULL onTargetObject:nil withObject:nil];
-
-}*/
-
-/*#pragma mark - ConrtibuteViewControllerDelegate methods
-- (void)onSubmitButtonPressed:(id)sender {
-    
-}*/
 
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
