@@ -60,7 +60,8 @@
 
 
 #pragma mark - Progress Bar methods 
-- (void)drawProgressBar {    
+- (void)drawProgressBar {
+    
     int totalSubmissionsLast7Days = [self.user.numberofdraftscreatedlw intValue]
     + [self.user.numberofphotoslw intValue]
     + [self.user.numberofcaptionslw intValue];
@@ -92,10 +93,12 @@
         // let the progress bar container be filled by the users current count of submissions
     }
     
-    
-    float scaleEditorMinimum = (float)editorMinimum / (float)progressBarMaxValue;
-    float scaleUserBest = (float)userBest / (float)progressBarMaxValue;
-    
+    float scaleEditorMinimum = 0.0f;
+    float scaleUserBest = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        scaleEditorMinimum = (float)editorMinimum / (float)progressBarMaxValue;
+        scaleUserBest = (float)userBest / (float)progressBarMaxValue;
+    }
     
     // move the editor threshold line
     float editorMinimumLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleEditorMinimum * progressBarContainerWidth) - editorMinimumLineMidPoint);
@@ -112,23 +115,38 @@
     float userBestWidth = (float)self.iv_userBestLine.frame.origin.x + (float)userBestLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
     
     // move the user best threshold label
-    float userBestLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    float userBestLabelXOrigin = 0.0f;
+    if ([self.user.maxweeklyparticipation intValue] == 0) {
+        userBestLabelXOrigin = MIN(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    }
+    else {
+        userBestLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    }
     self.lbl_userBestLabel.frame = CGRectMake(userBestLabelXOrigin, self.lbl_userBestLabel.frame.origin.y, self.lbl_userBestLabel.frame.size.width, self.lbl_userBestLabel.frame.size.height);
     
     
     // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
     // drafts in the last 7 days
-    float progressDrafts = (float)[self.user.numberofdraftscreatedlw intValue] / (float)progressBarMaxValue;
+    float progressDrafts = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        progressDrafts = ((float)[self.user.numberofdraftscreatedlw intValue]) / (float)progressBarMaxValue;
+    }
     //float progressDrafts = (float)3 / (float)progressBarMaxValue;
     self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * progressBarContainerWidth), self.iv_progressDrafts.frame.size.height);
     
     // photos in the last 7 days
-    float progressPhotos = (float)[self.user.numberofphotoslw intValue] / (float)progressBarMaxValue;
+    float progressPhotos = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        progressPhotos = (float)[self.user.numberofphotoslw intValue] / (float)progressBarMaxValue;
+    }
     //float progressPhotos = (float)2 / (float)progressBarMaxValue;
     self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * progressBarContainerWidth), self.iv_progressPhotos.frame.size.height);
     
     // captions in the last 7 days
-    float progressCaptions = (float)[self.user.numberofcaptionslw intValue] / (float)progressBarMaxValue;
+    float progressCaptions = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        progressCaptions = (float)[self.user.numberofcaptionslw intValue] / (float)progressBarMaxValue;
+    }
     //float progressCaptions = (float)4 / (float)progressBarMaxValue;
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
     
@@ -200,14 +218,6 @@
                                     action:@selector(onDoneButtonPressed:)];
     self.navigationItem.rightBarButtonItem = rightButton;
     [rightButton release];
-    
-    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"Account"
-                                   style:UIBarButtonItemStylePlain
-                                   target:self
-                                   action:@selector(onAccountButtonPressed:)];
-    self.navigationItem.leftBarButtonItem = leftButton;
-    [leftButton release];
     
     
     // set custom font on views with text
@@ -358,8 +368,17 @@
         [self refreshProfile:self.userID];
         [self render];
     }
- 
     
+    if ([self.userID isEqualToNumber:self.loggedInUser.objectid]) {
+        // Only enable the Account button for the logged in user
+        UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
+                                       initWithTitle:@"Account"
+                                       style:UIBarButtonItemStylePlain
+                                       target:self
+                                       action:@selector(onAccountButtonPressed:)];
+        self.navigationItem.leftBarButtonItem = leftButton;
+        [leftButton release];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

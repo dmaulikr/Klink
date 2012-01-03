@@ -256,8 +256,8 @@
     UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
     self.photoMetaData = pmdv;
     [pmdv release];
-    [self.view addSubview:self.photoMetaData];
     
+    [self.view addSubview:self.photoMetaData];
   
 }
 
@@ -412,7 +412,8 @@
 - (void) viewWillAppear:(BOOL)animated {
     
 	[super viewWillAppear:animated];
-        [self commonInit];
+    
+    [self commonInit];
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
     
@@ -444,6 +445,8 @@
     
 	// Navigation
 	[self updateNavigation];
+    
+    [self cancelControlHiding];
 
 }
 

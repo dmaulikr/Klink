@@ -18,6 +18,7 @@
 #import "UIImageView+UIImageViewCategory.h"
 #import "ProfileViewController.h"
 #import "UIResourceLinkButton.h"
+#import "FullScreenPhotoViewController.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -27,6 +28,7 @@
 @synthesize iv_openBookPageImage = m_iv_openBookPageImage;
 @synthesize pageID = m_pageID;
 @synthesize topVotedPhotoID = m_topVotedPhotoID;
+@synthesize topVotedCaptionID = m_topVotedCaptionID;
 @synthesize pageNumber = m_pageNumber;
 @synthesize lbl_title = m_lbl_title;
 @synthesize iv_photo = m_iv_photo;
@@ -39,6 +41,7 @@
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
 @synthesize btn_writtenBy = m_btn_writtenBy;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
+@synthesize btn_photoButton = m_btn_photoButton;
 
 
 #pragma mark - Initializers
@@ -131,6 +134,7 @@
     
     [navigationController release];
 }
+
 - (void)hideControls { 
     [self setControlsHidden:YES]; 
 }
@@ -208,6 +212,7 @@
         self.topVotedPhotoID = photo.objectid;
         
         Caption* caption = [page captionWithHighestVotes];
+        self.topVotedCaptionID = caption.objectid;
         
         NSDate* datePublished = [DateTimeHelper parseWebServiceDateDouble:photo.datecreated];
         
@@ -386,6 +391,15 @@
     
 }
 
+#pragma mark - Button Handlers
+#pragma mark Photo "Camera" button handler
+- (IBAction)onPhotoButtonPressed:(id)sender {    
+    [self showControls];
+    [self cancelControlHiding];
+    
+    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
+    [self.navigationController pushViewController:fullScreenController animated:YES];
+}
 
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {

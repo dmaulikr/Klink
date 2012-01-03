@@ -14,6 +14,7 @@
 @interface PageViewController : BaseViewController {    
     NSNumber*       m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*       m_topVotedPhotoID;
+    NSNumber*       m_topVotedCaptionID;
     NSNumber*       m_pageNumber;
     
     UIImageView*    m_iv_openBookPageImage;
@@ -27,6 +28,7 @@
     UILabel*        m_lbl_pageNumber;
     UIResourceLinkButton*   m_btn_writtenBy;
     UIResourceLinkButton*   m_btn_illustratedBy;
+    UIButton*       m_btn_photoButton;
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;
@@ -38,6 +40,7 @@
 
 @property (nonatomic,retain) NSNumber*              pageID;
 @property (nonatomic,retain) NSNumber*              topVotedPhotoID;
+@property (nonatomic,retain) NSNumber*              topVotedCaptionID;
 @property (nonatomic,retain) NSNumber*              pageNumber;
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_writtenBy;
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_illustratedBy;
@@ -50,6 +53,7 @@
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_captionby;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_publishDate;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_pageNumber;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_photoButton;
 
 @property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
 
