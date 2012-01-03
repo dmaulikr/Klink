@@ -20,7 +20,7 @@
 #import "BookViewControllerLeaves.h"
 #import "CloudEnumerator.h"
 #import "ApplicationSettings.h"
-
+#import "UserDefaultSettings.h"
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
 @synthesize frc_published_pages = __frc_published_pages;
@@ -333,8 +333,9 @@
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
+    //we store a user preference setting to track if we have successfully downloaded the book
+    //if this flag is missing or not set, we
+    
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {
         //there are no published page objects in local store, update from cloud
@@ -393,6 +394,17 @@
     //on this method we need to enumerate all the captions that are part of the pages
     //to do this, we enumerate through each page and extract the finished caption ID
     //and make a fixed ID enumerate call to it.
+    
+    //we need to check if this enumeration brought down the entire book or was an optimied query
+    //we check by counting the number of query expressions in the enumerator (its a hack, i know)
+    //if its 2, then we know it was optimized, if its 1, we brough down the whole book
+    if ([[self.pageCloudEnumerator.query attributeExpressions]count] == 1) {
+        //it was a complete enumeration
+        //we mark the userdefault setting that we have downloaded the whole book
+        LOG_BOOKVIEWCONTROLLER(0, @"%@Marking that we have successfully downloaded the book into user settings",activityName);
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:YES forKey:setting_HASDOWNLOADEDBOOK];
+    }
     self.captionCloudEnumerator = nil;
     ResourceContext* resourceContext = [ResourceContext instance];
     

@@ -20,6 +20,7 @@
 #import "ApplicationSettingsManager.h"
 #import "PageState.h"
 #import "Page.h"
+#import "UserDefaultSettings.h"
 #define kEnumerateSinglePage    @"enumerateSinglePage"
 
 @implementation CloudEnumerator
@@ -332,6 +333,8 @@
     return enumerator;
 }
 
+
+
 + (CloudEnumerator*) enumeratorForPages {
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     
@@ -341,9 +344,14 @@
      ResourceContext* resourceContext = [ResourceContext instance];
     Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[numPublished stringValue] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
     
+    //we also check a user default setting
+    //if hasDownloadedBook is set to false, we return an enumerator for the entire book, if not, we return a optimized enumerator
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasDownloadedBook = [defaults boolForKey:setting_HASDOWNLOADEDBOOK];
+    
     Query* query = nil;
     
-    if (page == nil) {
+    if (page == nil || !hasDownloadedBook) {
         //in this case we dont have any pages
         query = [Query queryPages];
     }
