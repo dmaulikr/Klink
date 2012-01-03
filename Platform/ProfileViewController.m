@@ -277,7 +277,7 @@
 
 - (void) render {
     //if the user is the currently logged in user, we then enable the user settings container
-    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+    if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         //yes it is
         self.v_userSettingsContainer.hidden = NO;
         
