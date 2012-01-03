@@ -21,9 +21,18 @@
 - (void) shareCaptionOnTwitter:(NSNumber*)captionID 
                       onFinish:(Callback*)callback 
              trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+
 - (void) shareCaptionOnFacebook:(NSNumber*)captionID 
                        onFinish:(Callback*)callback 
               trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+
+- (void) sharePageOnFacebook:(NSNumber*)pageID 
+                    onFinish:(Callback*)callback 
+           trackProgressWith:(id<RequestProgressDelegate>) processDelegate;
+
+- (void) sharePageOnTwitter:(NSNumber*)pageID 
+                   onFinish:(Callback*)callback 
+          trackProgressWith:(id<RequestProgressDelegate>)processDelegate;
 
 + (id) getInstance;
 

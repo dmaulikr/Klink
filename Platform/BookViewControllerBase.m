@@ -226,12 +226,12 @@
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
-            Caption* caption = [page captionWithHighestVotes];
+            
 
-            [sharingManager shareCaptionOnFacebook:caption.objectid onFinish:nil trackProgressWith:progressView];
+            [sharingManager sharePageOnFacebook:page.objectid onFinish:nil trackProgressWith:progressView];
             //[self disableFacebookButton];
             
-            NSString* message = @"Sharing to Facebook...";
+            NSString* message = @"Sharing page to Facebook...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
@@ -256,9 +256,9 @@
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
-            Caption* caption = [page captionWithHighestVotes];
             
-            [sharingManager shareCaptionOnTwitter:caption.objectid onFinish:nil trackProgressWith:progressView];
+            
+            [sharingManager sharePageOnTwitter:page.objectid onFinish:nil trackProgressWith:progressView];
             //[self disableTwitterButton];
             
             NSString* message = @"Sharing to Twitter...";

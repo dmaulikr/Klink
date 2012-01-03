@@ -75,6 +75,7 @@ static ResourceContext* sharedInstance;
             [threadContext setPersistentStoreCoordinator:[appDelegate persistentStoreCoordinator]];
            // threadContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
            // [threadContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+            //[threadContext setMergePolicy:NSOverwriteMergePolicy];
             NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
             [contextUndoManager setLevelsOfUndo:20];
             threadContext.undoManager = contextUndoManager;
@@ -149,9 +150,10 @@ static ResourceContext* sharedInstance;
         NSManagedObjectContext* appDelContext = appDelegate.managedObjectContext;
         LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p on background thread, propagating to context %p on main thread",activityName,sender,appDelContext);
         
-        NSArray* updates = [[notification.userInfo objectForKey:@"inserted"]allObjects];
+        NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
         for (NSInteger i = [updates count]-1;i >=0; i--) {
-            [[appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]]willAccessValueForKey:nil];
+            NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
+            [appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
         }
         
         [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
@@ -172,9 +174,9 @@ static ResourceContext* sharedInstance;
                 
                 NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
                 for (NSInteger i = [updates count]-1;i >=0; i--) {
-                    [[appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]]willAccessValueForKey:nil];
+                    NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
+                    [appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
                 }
-                
                 LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
                 [context mergeChangesFromContextDidSaveNotification:notification];
             }
@@ -429,7 +431,10 @@ static ResourceContext* sharedInstance;
     
     if (error != nil) {
         LOG_RESOURCECONTEXT(1, @"%@Error when saving data to persistence store:%@",activityName,error);
-        
+        NSArray* conflictList = [error.userInfo objectForKey:@"conflictList"];
+        for (NSMergeConflict* conflict in conflictList) {
+            
+        }
     }
     else {
          
