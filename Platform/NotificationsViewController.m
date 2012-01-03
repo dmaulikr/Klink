@@ -210,9 +210,16 @@
 {
     [super viewDidAppear:animated];
     
-    //as soon as we open up, we mark all notifications that are currently
-    //open on the screen to be read
-    [self markAllDisplayedNotificationsSeen];
+    //if the user is not logged in, close the view immediately
+    if (![self.authenticationManager isUserAuthenticated]) {
+        // user is not, or is no longer authenticated, dismiss notifications view immediately
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else {
+        //as soon as we open up, we mark all notifications that are currently
+        //open on the screen to be read
+        [self markAllDisplayedNotificationsSeen];
+    }
 
 }
 
