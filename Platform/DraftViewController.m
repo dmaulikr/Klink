@@ -32,6 +32,7 @@
 @synthesize pageID = m_pageID;
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
 @synthesize lbl_deadline = m_lbl_deadline;
+@synthesize lbl_deadlineNavBar = m_lbl_deadlineNavBar;
 @synthesize deadline = m_deadline;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
 @synthesize photoCloudEnumerator = m_photoCloudEnumerator;
@@ -43,7 +44,8 @@
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+    //self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+    self.lbl_deadlineNavBar.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
 }
 
 #pragma mark - Properties
@@ -196,6 +198,7 @@
     self.tbl_draftTableView = nil;
     self.frc_photos = nil;
     self.pageID = nil;
+    self.lbl_deadlineNavBar = nil;
     //[self.tbl_draftTableView release];
     //[self.frc_photos release];
     //[self.pageID release];
@@ -235,6 +238,16 @@
     self.refreshHeader.backgroundColor = [UIColor clearColor];
     [self.tbl_draftTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
+    
+    // Navigationbar title label with deadline
+    self.lbl_deadlineNavBar = [[[UILabel alloc]initWithFrame:CGRectMake(140,0, 180, 40)] autorelease];
+    self.lbl_deadlineNavBar.font = [UIFont fontWithName:@"American Typewriter" size: 12.0];
+	self.lbl_deadlineNavBar.text = @"";
+	[self.lbl_deadlineNavBar setBackgroundColor:[UIColor clearColor]];
+	[self.lbl_deadlineNavBar setTextColor:[UIColor whiteColor]];
+    [self.lbl_deadlineNavBar setTextAlignment:UITextAlignmentRight];
+    [self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
+	self.navigationItem.titleView = self.lbl_deadlineNavBar;
     
     /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
     [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];*/

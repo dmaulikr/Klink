@@ -208,7 +208,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{93, 247}, {66, 19}}</string>
 								<reference key="NSSuperview" ref="157056619"/>
-								<reference key="NSNextKeyView" ref="560816647"/>
+								<reference key="NSNextKeyView" ref="725455070"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -220,6 +220,7 @@
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="582478362">
 									<string key="name">AmericanTypewriter</string>
 									<string key="family">American Typewriter</string>
@@ -237,7 +238,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{73, 266}, {86, 19}}</string>
 								<reference key="NSSuperview" ref="157056619"/>
-								<reference key="NSNextKeyView" ref="644424927"/>
+								<reference key="NSNextKeyView" ref="224503900"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -249,6 +250,7 @@
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 								<reference key="IBUIFontDescription" ref="582478362"/>
 								<reference key="IBUIFont" ref="950108059"/>
 							</object>
@@ -265,10 +267,10 @@
 									<string key="NSResourceName">tableviewcell_separator_scetched.png</string>
 								</object>
 							</object>
-							<object class="IBUIButton" id="560816647">
+							<object class="IBUIButton" id="725455070">
 								<reference key="NSNextResponder" ref="157056619"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{160, 247}, {141, 19}}</string>
+								<string key="NSFrame">{{163, 247}, {141, 19}}</string>
 								<reference key="NSSuperview" ref="157056619"/>
 								<reference key="NSNextKeyView" ref="263453568"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
@@ -278,27 +280,27 @@
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">Username</string>
 								<reference key="IBUIHighlightedTitleColor" ref="344218479"/>
-								<object class="NSColor" key="IBUINormalTitleColor" id="652564225">
+								<object class="NSColor" key="IBUINormalTitleColor" id="1027567220">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="344218479"/>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="672677303">
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="68077519">
 									<string key="name">AmericanTypewriter-Bold</string>
 									<string key="family">American Typewriter</string>
 									<int key="traits">2</int>
 									<double key="pointSize">13</double>
 								</object>
-								<object class="NSFont" key="IBUIFont" id="59716404">
+								<object class="NSFont" key="IBUIFont" id="628576998">
 									<string key="NSName">AmericanTypewriter-Bold</string>
 									<double key="NSSize">13</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
-							<object class="IBUIButton" id="644424927">
+							<object class="IBUIButton" id="224503900">
 								<reference key="NSNextResponder" ref="157056619"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{160, 266}, {141, 19}}</string>
+								<string key="NSFrame">{{163, 266}, {141, 19}}</string>
 								<reference key="NSSuperview" ref="157056619"/>
 								<reference key="NSNextKeyView" ref="174608724"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
@@ -308,10 +310,10 @@
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">Username</string>
 								<reference key="IBUIHighlightedTitleColor" ref="344218479"/>
-								<reference key="IBUINormalTitleColor" ref="652564225"/>
+								<reference key="IBUINormalTitleColor" ref="1027567220"/>
 								<reference key="IBUINormalTitleShadowColor" ref="344218479"/>
-								<reference key="IBUIFontDescription" ref="672677303"/>
-								<reference key="IBUIFont" ref="59716404"/>
+								<reference key="IBUIFontDescription" ref="68077519"/>
+								<reference key="IBUIFont" ref="628576998"/>
 							</object>
 						</object>
 						<string key="NSFrameSize">{320, 319}</string>
@@ -409,7 +411,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">btn_writtenBy</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="560816647"/>
+						<reference key="destination" ref="725455070"/>
 					</object>
 					<int key="connectionID">71</int>
 				</object>
@@ -417,7 +419,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">btn_illustratedBy</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="644424927"/>
+						<reference key="destination" ref="224503900"/>
 					</object>
 					<int key="connectionID">72</int>
 				</object>
@@ -458,9 +460,9 @@
 							<reference ref="821546511"/>
 							<reference ref="1066936956"/>
 							<reference ref="866526980"/>
-							<reference ref="560816647"/>
+							<reference ref="725455070"/>
 							<reference ref="263453568"/>
-							<reference ref="644424927"/>
+							<reference ref="224503900"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -518,13 +520,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">69</int>
-						<reference key="object" ref="560816647"/>
+						<reference key="object" ref="725455070"/>
 						<reference key="parent" ref="1049622460"/>
 						<string key="objectName">Resource Link Button - writtenBy</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">70</int>
-						<reference key="object" ref="644424927"/>
+						<reference key="object" ref="224503900"/>
 						<reference key="parent" ref="1049622460"/>
 						<string key="objectName">Resource Link Button - illustratedBy</string>
 					</object>

@@ -151,7 +151,6 @@
                                    target:self
                                    action:@selector(onProfileButtonPressed:)];
     self.navigationItem.leftBarButtonItem = leftButton;
-    self.navigationItem.leftBarButtonItem.tintColor = [UIColor clearColor];
     [leftButton release];
     
     // Uncomment the following line to preserve selection between presentations.
