@@ -218,7 +218,9 @@
     else {
         //as soon as we open up, we mark all notifications that are currently
         //open on the screen to be read
-        [self markAllDisplayedNotificationsSeen];
+        //we execute this on a background thread
+        [self performSelectorInBackground:@selector(markAllDisplayedNotificationsSeen) withObject:nil];
+        
     }
 
 }
