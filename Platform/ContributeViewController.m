@@ -669,9 +669,7 @@
 #pragma mark - Navigation Bar button handler
 
 - (void)onSubmitButtonPressed:(id)sender {
-    //we call the delegate to instruct it that it should begin committing the changes indicated by this view
-    [self.delegate submitChangesForController:self];
-    
+      
     //after this point, the platforms should automatically begin syncing the data back to the cloud
     //we now show a progress bar to monitor this background activity
     ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -691,6 +689,9 @@
         progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your caption...",self.draftTitle];
     }
     [self showDeterminateProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+
+    //we call the delegate to instruct it that it should begin committing the changes indicated by this view
+    [self.delegate submitChangesForController:self];
 
 }
 
