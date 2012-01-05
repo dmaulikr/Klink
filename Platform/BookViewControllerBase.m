@@ -21,6 +21,7 @@
 #import "CloudEnumerator.h"
 #import "ApplicationSettings.h"
 #import "UserDefaultSettings.h"
+
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
 @synthesize topVotedPhotoID     = m_topVotedPhotoID;
