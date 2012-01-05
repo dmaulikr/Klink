@@ -282,6 +282,7 @@
 		C5C9E2CD1468957500838934 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CC1468957500838934 /* 37x-Checkmark.png */; };
 		C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */; };
 		C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */; };
+		C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */; };
 		C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */; };
 		C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA591466EB6C009AA3D8 /* blackArrow.png */; };
 		C5D9AA631466EB6C009AA3D8 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA5A1466EB6C009AA3D8 /* blackArrow@2x.png */; };
@@ -755,6 +756,8 @@
 		C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProgressHUDView.xib; sourceTree = "<group>"; };
 		C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProgressHUDView.h; sourceTree = "<group>"; };
 		C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProgressHUDView.m; sourceTree = "<group>"; };
+		C5CBA6B014B38E8B006FA4E3 /* UserDefaultSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultSettings.h; sourceTree = "<group>"; };
+		C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultSettings.m; sourceTree = "<group>"; };
 		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
 		C5D9AA561466EB6C009AA3D8 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
@@ -1400,6 +1403,8 @@
 				C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */,
 				C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */,
 				C5CE03BB14A7C7F300F89241 /* SharingLevel.h */,
+				C5CBA6B014B38E8B006FA4E3 /* UserDefaultSettings.h */,
+				C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -2095,6 +2100,7 @@
 				520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */,
 				C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */,
 				527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */,
+				C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

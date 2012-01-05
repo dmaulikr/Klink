@@ -196,7 +196,7 @@ static  AuthenticationManager* sharedManager;
 -(void) authenticate {
     NSString* activityName = @"AuthenticationManager.authenticate:";
     //now we need to grab their facebook authentication data, and then log them into our app    
-    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access", @"publish_stream",@"user_about_me", nil];
+    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access",@"email", @"publish_stream",@"user_about_me", nil];
     
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;

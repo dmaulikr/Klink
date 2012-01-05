@@ -65,6 +65,47 @@ trackProgressWith:(id<RequestProgressDelegate>)progressDelegate
 
 
 #pragma mark - Sharing Methods
+- (void) sharePageOnFacebook:(NSNumber *)pageID 
+                    onFinish:(Callback *)callback 
+           trackProgressWith:(id<RequestProgressDelegate>)progressDelegate 
+{
+    NSString* activityName = @"SocialSharingManager.sharePageOnFacebook:";
+    SharingOptions* sharingOptions = [SharingOptions shareOnFacebook];
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    
+    if ([authenticationManager isUserAuthenticated]) {
+        NSURL* url = [UrlManager urlForShareObject:pageID withObjectType:PAGE withOptions:sharingOptions withAuthenticationContext:[authenticationManager contextForLoggedInUser]];
+        [self share:url withSharingOptions:sharingOptions onFinish:callback trackProgressWith:progressDelegate];
+        
+    }
+    else {
+        //error, cant share unauthenticated
+        LOG_SOCIALSHARINGMANAGER(1,@"%@Cannot share without being logged in",activityName);
+    }
+    
+}
+
+- (void) sharePageOnTwitter:(NSNumber *)pageID 
+                   onFinish:(Callback *)callback 
+          trackProgressWith:(id<RequestProgressDelegate>)progressDelegate 
+{
+    NSString* activityName = @"SocialSharingManager.sharePageOnTwitter:";
+    SharingOptions* sharingOptions = [SharingOptions shareOnTwitter];
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    
+    if ([authenticationManager isUserAuthenticated]) {
+        NSURL* url = [UrlManager urlForShareObject:pageID withObjectType:CAPTION withOptions:sharingOptions withAuthenticationContext:[authenticationManager contextForLoggedInUser]];
+        [self share:url withSharingOptions:sharingOptions onFinish:callback trackProgressWith:progressDelegate];
+        
+    }
+    else {
+        //error, cant share unauthenticated
+        LOG_SOCIALSHARINGMANAGER(1,@"%@Cannot share without being logged in",activityName);
+    }
+
+}
+
+
 //This method will share a caption on Facebook and Twitter
 - (void) shareCaption:(NSNumber*)captionID 
              onFinish:(Callback*)callback 
