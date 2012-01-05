@@ -20,9 +20,6 @@
 #import "BookViewControllerLeaves.h"
 #import "CloudEnumerator.h"
 #import "ApplicationSettings.h"
-#import "UserDefaultSettings.h"
-#import "UICustomNavigationBar.h"
-#import "UICustomToolbar.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
