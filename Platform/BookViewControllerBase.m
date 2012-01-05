@@ -335,26 +335,6 @@
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
-    
-    /*// Set the navigation bar to the custom clear type
-    // Background Image
-    UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
-    
-    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        // iOS 5 method for changing bar backgounds
-        [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.toolbar setBackgroundImage:barImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    }
-    else {
-        // pre-iOS 5 method for changing bar backgounds
-        UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-        [navigationBar setBackgroundImage:barImage];
-        
-        UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-        [toolbar setBackgroundImage:barImage];
-    }*/
-    
-    
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
     int count = [[self.frc_published_pages fetchedObjects] count];
@@ -375,21 +355,6 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    /*// Set the navigation bar and toolbar back to the default type
-    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        // iOS 5 method for changing bar backgounds
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    }
-    else {
-        // pre-iOS 5 method for changing bar backgounds
-        UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-        [navigationBar setBackgroundImage:nil];
-        
-        UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-        [toolbar setBackgroundImage:nil];
-    }*/
     
 }
 
