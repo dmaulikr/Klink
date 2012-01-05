@@ -17,6 +17,8 @@
 #import "Photo.h"
 #import "Caption.h"
 #import "EventManager.h"
+#import "UICustomNavigationBar.h"
+#import "UICustomToolbar.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -371,6 +373,30 @@
     [self.leavesView reloadData];
     
     [self renderPage];
+    
+    // Set the navigation bar and toolbar to the custom clear type
+    // Background Image
+    UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    
+    // pre-iOS 5 method for changing bar backgounds
+    UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
+    [navigationBar setBackgroundImage:barImage];
+    
+    UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+    [toolbar setBackgroundImage:barImage];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // pre-iOS 5 method for changing bar backgounds
+    UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
+    [navigationBar setBackgroundImage:nil];
+    
+    UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+    [toolbar setBackgroundImage:nil];
     
 }
 

@@ -36,8 +36,8 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // We call super only when no image has been passed in and therefore we
-    // want the default dreatment
+    // We call super only when no image has been passed
+    // in and therefore we want the default treatment
     if (_backgroundImage == nil) {
         [super drawRect:rect];
     }
@@ -49,6 +49,8 @@
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage forBarMetrics:(UIBarMetrics)barMetrics {
     [super setBackgroundImage:backgroundImage forBarMetrics:barMetrics];
+    
+    [self setBackgroundImage:backgroundImage];
      
 }
 

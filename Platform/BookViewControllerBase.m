@@ -336,7 +336,7 @@
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
     
-    // Set the navigation bar to the custom clear type
+    /*// Set the navigation bar to the custom clear type
     // Background Image
     UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
     
@@ -352,7 +352,7 @@
         
         UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
         [toolbar setBackgroundImage:barImage];
-    }
+    }*/
     
     
     //here we check to see how many items are in the FRC, if it is 0,
@@ -376,7 +376,7 @@
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    // Set the navigation bar and toolbar back to the default type
+    /*// Set the navigation bar and toolbar back to the default type
     if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
         // iOS 5 method for changing bar backgounds
         [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
@@ -389,7 +389,7 @@
         
         UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
         [toolbar setBackgroundImage:nil];
-    }
+    }*/
     
 }
 
