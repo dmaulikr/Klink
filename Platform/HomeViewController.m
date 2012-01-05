@@ -339,6 +339,7 @@
                                                                              target:nil
                                                                              action:nil] autorelease];
     BookViewControllerBase* bookController = [BookViewControllerBase createInstance];
+    //BookViewControllerBase* bookController = [BookViewControllerBase createInstanceWithPageID:[NSNumber numberWithInt:1339997979]];
     
     //TODO: calculate the page ID which the view controller should open to
     //NSNumber* pageID = [NSNumber numberWithInt:0];

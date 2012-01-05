@@ -305,12 +305,13 @@
     self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
     self.lbl_currentLevel.text = [self.user.iseditor boolValue] ? @"Editor" : @"Contributor";
     self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
+    
     self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
     self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
     
     int totalSubmissions = [self.user.numberofcaptions intValue]
     + [self.user.numberofphotos intValue]
-    + [self.user.numberofcaptions intValue];
+    + [self.user.numberofdraftscreated intValue];
     self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
     
     self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
@@ -319,7 +320,7 @@
     
     int totalLast7Days = [self.user.numberofcaptionslw intValue]
     + [self.user.numberofphotoslw intValue]
-    + [self.user.numberofcaptionslw intValue];
+    + [self.user.numberofdraftscreatedlw intValue];
     self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
     
     self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
@@ -369,7 +370,7 @@
         [self render];
     }
     
-    if ([self.userID isEqualToNumber:self.loggedInUser.objectid]) {
+    if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {
         // Only enable the Account button for the logged in user
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
                                        initWithTitle:@"Account"

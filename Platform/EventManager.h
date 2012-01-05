@@ -27,7 +27,8 @@ typedef enum {
     kAUTHENTICATIONFAILED,
     kUNKNOWNREQUESTFAILURE,
     kAPPLICATIONBECAMEACTIVE,
-    kAPPLICATIONWENTTOBACKGROUND
+    kAPPLICATIONWENTTOBACKGROUND,
+    kPAGEVIEWPHOTODOWNLOADED
 } SystemEvent;
 
 @interface EventManager : NSObject {
@@ -59,6 +60,8 @@ typedef enum {
 - (void) raiseNewPhotoEvent         :(NSDictionary*)userInfo;
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo;
 - (void) raiseNewPageEvent          :(NSDictionary*)userInfo;
+
+- (void) raisePageViewPhotoDownloadedEvent:(NSDictionary*)userInfo;
 
 - (void) raiseShowProgressViewEvent :(NSString*)message 
                       withCustomView:(UIView*)view 

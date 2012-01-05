@@ -118,6 +118,7 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kUNKNOWNREQUESTFAILURE];
     [self registerCallback:callback forSystemEvent:kAPPLICATIONBECAMEACTIVE];
     [self registerCallback:callback forSystemEvent:kAPPLICATIONWENTTOBACKGROUND];
+    [self registerCallback:callback forSystemEvent:kPAGEVIEWPHOTODOWNLOADED];
 }
 
 - (NSArray*)registeredHandlersForEventType:(int)systemEventType {
@@ -200,6 +201,10 @@ static EventManager* sharedInstance;
 }
 - (void) raiseNewPageEvent: (NSDictionary*)userInfo {
     [self raiseEvent:kNEWPAGE withUserInfo:userInfo];
+}
+
+- (void) raisePageViewPhotoDownloadedEvent:(NSDictionary*)userInfo {
+    [self raiseEvent:kPAGEVIEWPHOTODOWNLOADED withUserInfo:userInfo];
 }
 
 - (void) raiseShowProgressViewEvent:(NSString *)message withCustomView:(UIView *)view withMaximumDisplayTime:(NSNumber *)maximumTimeInSeconds {

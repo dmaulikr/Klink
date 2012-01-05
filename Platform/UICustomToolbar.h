@@ -1,5 +1,5 @@
 //
-//  UICustomNavigationBar.h
+//  UICustomToolbar.h
 //  Platform
 //
 //  Created by Jordan Gurrieri on 12/19/11.
@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UICustomNavigationBar : UINavigationBar {
+@interface UICustomToolbar : UIToolbar {
     UIImage *_backgroundImage;
 }
 
 @property (nonatomic, retain, setter=setBackgroundImage:) UIImage *backgroundImage;
 
 // iOS 5 pass through to super
-- (void)setBackgroundImage:(UIImage *)backgroundImage forBarMetrics:(UIBarMetrics)barMetrics;
+- (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics;
 
 // pre-iOS 5 method
 - (void)setBackgroundImage:(UIImage *)image;

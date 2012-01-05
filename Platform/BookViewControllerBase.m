@@ -20,18 +20,21 @@
 #import "BookViewControllerLeaves.h"
 #import "CloudEnumerator.h"
 #import "ApplicationSettings.h"
+#import "UICustomNavigationBar.h"
+#import "UICustomToolbar.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
+@synthesize topVotedPhotoID     = m_topVotedPhotoID;
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
-@synthesize tb_facebookButton       = m_tb_facebookButton;
-@synthesize tb_twitterButton        = m_tb_twitterButton;
-@synthesize tb_bookmarkButton       = m_tb_bookmarkButton;
+@synthesize tb_facebookButton      = m_tb_facebookButton;
+@synthesize tb_twitterButton       = m_tb_twitterButton;
+@synthesize tb_bookmarkButton      = m_tb_bookmarkButton;
 @synthesize tb_notificationButton  = m_tb_notificationButton;
-@synthesize iv_background           = m_iv_background;
-@synthesize captionCloudEnumerator  = m_captionCloudEnumerator;
+@synthesize iv_background          = m_iv_background;
+@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 
 #define kENUMERATIONTHRESHOLD   1
 
@@ -178,7 +181,7 @@
         //enumerate
         LOG_BOOKVIEWCONTROLLER(0, @"Detected only %d pages remaining, initiating re-enumeration from cloud",activityName,pagesRemaining);
         self.pageCloudEnumerator = nil;
-        self.pageCloudEnumerator = [CloudEnumerator  enumeratorForPages];
+        self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
         self.pageCloudEnumerator.delegate = self;
         [self.pageCloudEnumerator enumerateUntilEnd:nil];
     }
@@ -312,8 +315,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-
-   // NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
+    //NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
     
     self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
 
@@ -333,6 +335,26 @@
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
+    
+    // Set the navigation bar to the custom clear type
+    // Background Image
+    UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    
+    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+        // iOS 5 method for changing bar backgounds
+        [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.toolbar setBackgroundImage:barImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    }
+    else {
+        // pre-iOS 5 method for changing bar backgounds
+        UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
+        [navigationBar setBackgroundImage:barImage];
+        
+        UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+        [toolbar setBackgroundImage:barImage];
+    }
+    
+    
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
     int count = [[self.frc_published_pages fetchedObjects] count];
@@ -350,6 +372,27 @@
     [self setToolbarItems:toolbarItems];
     
 }
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // Set the navigation bar and toolbar back to the default type
+    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+        // iOS 5 method for changing bar backgounds
+        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    }
+    else {
+        // pre-iOS 5 method for changing bar backgounds
+        UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
+        [navigationBar setBackgroundImage:nil];
+        
+        UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+        [toolbar setBackgroundImage:nil];
+    }
+    
+}
+
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

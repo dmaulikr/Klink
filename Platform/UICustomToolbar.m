@@ -1,14 +1,14 @@
 //
-//  UICustomNavigationBar.m
+//  UICustomToolbar.m
 //  Platform
 //
 //  Created by Jordan Gurrieri on 12/19/11.
 //  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "UICustomNavigationBar.h"
+#import "UICustomToolbar.h"
 
-@implementation UICustomNavigationBar
+@implementation UICustomToolbar
 @synthesize backgroundImage = _backgroundImage;
 
 
@@ -47,9 +47,8 @@
     
 }
 
-- (void)setBackgroundImage:(UIImage *)backgroundImage forBarMetrics:(UIBarMetrics)barMetrics {
-    [super setBackgroundImage:backgroundImage forBarMetrics:barMetrics];
-     
+- (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics {
+    [super setBackgroundImage:backgroundImage forToolbarPosition:topOrBottom barMetrics:barMetrics];
 }
 
 #pragma mark - Memory Management

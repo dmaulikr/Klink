@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 #import "BaseViewController.h"
 #import "CloudEnumerator.h"
 #import "MBProgressHUD.h"
@@ -14,6 +15,7 @@
 @interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate,MBProgressHUDDelegate, CloudEnumeratorDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
+    NSNumber*           m_topVotedPhotoID;
     CloudEnumerator*    m_pageCloudEnumerator;
     CloudEnumerator*    m_captionCloudEnumerator;
     
@@ -29,6 +31,7 @@
 }
 
 @property (nonatomic,retain) NSNumber*                      pageID;
+@property (nonatomic,retain) NSNumber*                      topVotedPhotoID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;

@@ -90,6 +90,10 @@
 		5275A16A14AA2FB400837F91 /* icon-trophy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5275A16614AA2FB400837F91 /* icon-trophy@2x.png */; };
 		5275A16D14AA30EC00837F91 /* icon-community.png in Resources */ = {isa = PBXBuildFile; fileRef = 5275A16B14AA30EC00837F91 /* icon-community.png */; };
 		5275A16E14AA30EC00837F91 /* icon-community@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5275A16C14AA30EC00837F91 /* icon-community@2x.png */; };
+		527FFFF414B52C39001D947B /* NavigationBar_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF314B52C39001D947B /* NavigationBar_yellow.png */; };
+		527FFFF714B54369001D947B /* NavigationBar_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF514B54369001D947B /* NavigationBar_clear.png */; };
+		527FFFF814B54369001D947B /* NavigationBar_clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF614B54369001D947B /* NavigationBar_clear@2x.png */; };
+		527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 527FFFFA14B5B37E001D947B /* UICustomToolbar.m */; };
 		5281EEED1485945700AB1BF0 /* icon-pics2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEB1485945600AB1BF0 /* icon-pics2.png */; };
 		5281EEEE1485945700AB1BF0 /* icon-pics2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEEC1485945700AB1BF0 /* icon-pics2@2x.png */; };
 		5281EEF114859A4100AB1BF0 /* image-photoCameraButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */; };
@@ -403,6 +407,11 @@
 		5275A16614AA2FB400837F91 /* icon-trophy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-trophy@2x.png"; sourceTree = "<group>"; };
 		5275A16B14AA30EC00837F91 /* icon-community.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-community.png"; sourceTree = "<group>"; };
 		5275A16C14AA30EC00837F91 /* icon-community@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-community@2x.png"; sourceTree = "<group>"; };
+		527FFFF314B52C39001D947B /* NavigationBar_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavigationBar_yellow.png; sourceTree = "<group>"; };
+		527FFFF514B54369001D947B /* NavigationBar_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavigationBar_clear.png; sourceTree = "<group>"; };
+		527FFFF614B54369001D947B /* NavigationBar_clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavigationBar_clear@2x.png"; sourceTree = "<group>"; };
+		527FFFF914B5B37E001D947B /* UICustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomToolbar.h; sourceTree = "<group>"; };
+		527FFFFA14B5B37E001D947B /* UICustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomToolbar.m; sourceTree = "<group>"; };
 		5281EEEB1485945600AB1BF0 /* icon-pics2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-pics2.png"; sourceTree = "<group>"; };
 		5281EEEC1485945700AB1BF0 /* icon-pics2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-pics2@2x.png"; sourceTree = "<group>"; };
 		5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton@2x.png"; sourceTree = "<group>"; };
@@ -906,6 +915,9 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				527FFFF514B54369001D947B /* NavigationBar_clear.png */,
+				527FFFF614B54369001D947B /* NavigationBar_clear@2x.png */,
+				527FFFF314B52C39001D947B /* NavigationBar_yellow.png */,
 				52B6D13414B174020046C69C /* homepagebutton-bottom.png */,
 				52B6D13514B174020046C69C /* homepagebutton-bottom@2x.png */,
 				52B6D13614B174020046C69C /* homepagebutton-middle.png */,
@@ -1468,6 +1480,8 @@
 				C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */,
 				52979AE5149FCD4500F29ECC /* UICustomNavigationBar.h */,
 				52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */,
+				527FFFF914B5B37E001D947B /* UICustomToolbar.h */,
+				527FFFFA14B5B37E001D947B /* UICustomToolbar.m */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -1922,6 +1936,9 @@
 				52B6D13F14B174030046C69C /* homepagebutton-top@2x.png in Resources */,
 				52B6D14E14B1A7E10046C69C /* book_cover.png in Resources */,
 				52B6D14F14B1A7E10046C69C /* book_cover@2x.png in Resources */,
+				527FFFF414B52C39001D947B /* NavigationBar_yellow.png in Resources */,
+				527FFFF714B54369001D947B /* NavigationBar_clear.png in Resources */,
+				527FFFF814B54369001D947B /* NavigationBar_clear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2077,6 +2094,7 @@
 				52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */,
 				520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */,
 				C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */,
+				527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

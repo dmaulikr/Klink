@@ -19,6 +19,7 @@
 #import "ProfileViewController.h"
 #import "UIResourceLinkButton.h"
 #import "FullScreenPhotoViewController.h"
+#import "BookViewControllerLeaves.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -421,12 +422,20 @@
             
             [self displayPhotoFrameOnImage:response.image];
             [self.view setNeedsDisplay];
+            
+            // Raise event to notify BookViewControllerLeaves that a photo has been downloaded
+            EventManager* eventManager = [EventManager instance];
+            [eventManager raisePageViewPhotoDownloadedEvent:userInfo];
         }
     }
     else {
         self.iv_photo.backgroundColor = [UIColor redColor];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
+
+    // Raise event to notify BookViewControllerLeaves that a photo has been downloaded
+    //EventManager* eventManager = [EventManager instance];
+    //[eventManager raisePageViewPhotoDownloadedEvent:userInfo];
     
 }
 

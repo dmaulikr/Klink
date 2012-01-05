@@ -16,7 +16,10 @@
 #import "ProfileViewController.h"
 #import "Photo.h"
 #import "Caption.h"
+#import "EventManager.h"
 
+#define kPAGEID @"pageid"
+#define kPHOTOID @"photoid"
 
 @implementation BookViewControllerLeaves
 @synthesize iv_backgroundLeaves = m_iv_backgroundLeaves;
@@ -88,13 +91,17 @@
 
 }
 
+- (void) leavesView:(LeavesView *)leavesVie didTurnToPageAtIndex:(NSUInteger)index {
+	
+}
+
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
     // Return the page view controller for the given index
     int count = [[self.frc_published_pages fetchedObjects]count];
     
     if (count != 0 && index < count) {
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
-        self.pageID = page.objectid;
+        //self.pageID = page.objectid;
         
         NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
         
@@ -162,21 +169,37 @@
 -(void)renderPage {
    // NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
     
+    NSNumber* pageID = self.pageID;
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    int indexForPage = 0;
+    
     if (self.pageID != nil  && [self.pageID intValue] != 0) {
         //the page id has been set, we will move to that page
-        int indexForPage = [self indexOfPageWithID:self.pageID];
-        [self.leavesView setCurrentPageIndex:indexForPage];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        
+        if (page != nil) {
+            //local store does contain the page
+            Photo* photo = [page photoWithHighestVotes];
+            self.topVotedPhotoID = photo.objectid;
+            
+            indexForPage = [self indexOfPageWithID:self.pageID];
+            [self.leavesView setCurrentPageIndex:indexForPage];
+        }
+        else {
+            //local store does not contain the page, we need to enumerate pages
+            //[self.pageCloudEnumerator enumerateUntilEnd:nil];
+        }
     }
     else {
         //need to find the latest page
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
         
         if (page != nil) {
             //local store does contain pages to enumerate
             self.pageID = page.objectid;
-            int indexForPage = [self indexOfPageWithID:self.pageID];
+            indexForPage = [self indexOfPageWithID:self.pageID];
             [self.leavesView setCurrentPageIndex:indexForPage];
             
         }
@@ -275,6 +298,11 @@
     
     // Do any additional setup after loading the view from its nib.
     
+    // resister a callback for for when the newly created PageViewController has completed the download of its photo
+    Callback* pageViewPhotoDownloaded = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageViewPhotoDownloaded:)];
+    [self.eventManager registerCallback:pageViewPhotoDownloaded forSystemEvent:kPAGEVIEWPHOTODOWNLOADED];
+    [pageViewPhotoDownloaded release];
+    
     // Adjust the leave view frame to be the size of the PageViewController
     super.leavesView.frame = [self frameForPageViewController];
     
@@ -328,6 +356,10 @@
 {
     [super viewDidAppear:animated];
     
+    //[self.leavesView reloadData];
+    
+    //[self renderPage];
+    
     [self hideControlsAfterDelay:3];
     
 }
@@ -351,6 +383,21 @@
 }
 
 
+#pragma mark - Callback Event Handlers
+- (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
+    NSDictionary* userInfo = result.context;
+    NSNumber* draftID = [userInfo valueForKey:kPAGEID];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    
+    if ([draftID isEqualToNumber:self.pageID] &&
+        [photoID isEqualToNumber:self.topVotedPhotoID]) {
+        
+        [self.leavesView reloadData];
+        
+        [self renderPage];
+    }
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate methods
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
@@ -368,12 +415,9 @@
             
             LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
             
-            [self.leavesView reloadData];
+            //[self.leavesView reloadData];
             
-            [self renderPage];
-            
-            // Uncomment the below line if you want the pageViewController to move to the new page added
-            //pageViewController = [self viewControllerAtIndex:[newIndexPath row]];
+            //[self renderPage];
             
         }
         else if (type == NSFetchedResultsChangeDelete) {
@@ -392,9 +436,9 @@
     
   //  NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
     
-    //[self.leavesView reloadData];
+    [self.leavesView reloadData];
     
-    //[self renderPage];
+    [self renderPage];
     
 }
 
