@@ -434,8 +434,8 @@
     }
 
     // Raise event to notify BookViewControllerLeaves that a photo has been downloaded
-    //EventManager* eventManager = [EventManager instance];
-    //[eventManager raisePageViewPhotoDownloadedEvent:userInfo];
+    EventManager* eventManager = [EventManager instance];
+    [eventManager raisePageViewPhotoDownloadedEvent:userInfo];
     
 }
 
