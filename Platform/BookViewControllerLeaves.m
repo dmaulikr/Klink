@@ -302,6 +302,7 @@
     
     // resister a callback for for when the newly created PageViewController has completed the download of its photo
     Callback* pageViewPhotoDownloaded = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageViewPhotoDownloaded:)];
+    pageViewPhotoDownloaded.fireOnMainThread = YES;
     [self.eventManager registerCallback:pageViewPhotoDownloaded forSystemEvent:kPAGEVIEWPHOTODOWNLOADED];
     [pageViewPhotoDownloaded release];
     
@@ -415,8 +416,7 @@
     NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-    if ([draftID isEqualToNumber:self.pageID] &&
-        [photoID isEqualToNumber:self.topVotedPhotoID]) {
+    if ([draftID isEqualToNumber:self.pageID]) { //&& [photoID isEqualToNumber:self.topVotedPhotoID]) {
         
         [self.leavesView reloadData];
         
