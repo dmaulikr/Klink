@@ -430,7 +430,7 @@
 - (void) processGenericDraftNotification:(Feed*)notification {
     //generic handler for draft notifications
     //we just callt he method above as it already does it
-    [self processGenericDraftNotification:notification];
+    [self processClickOfDraftSubmittedToEditorsNotification:notification];
 }
 
 
@@ -472,6 +472,10 @@
     [self processClickOfEditorialBoardVotingBegin:notification];
 }
 
+- (void) processGenericEditorialBoardNotification:(Feed*)notification {
+    [self processClickOfEditorialBoardVotingBegin:notification];
+}
+
 - (void) processClickOfEditorialBoardVotingEnding:(Feed*)notification 
 {
     //this method opens up the same viewcontroller that is used for the editing process
@@ -499,6 +503,11 @@
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:pageID];
     //TODO: need to implement proper logic in bookviewcontroller to open up to a specific page
     [self.navigationController pushViewController:bookViewController animated:NO];
+}
+
+- (void) processGenericBookNotification:(Feed*)notification {
+    //we just call the method above and assume it works
+    [self processClickOfDraftPublishedNotification:notification];
 }
 
 - (void) processClickOfDraftExpired:(Feed*)notification {
@@ -568,145 +577,161 @@
         
         
         //now we determine which type of notification it is, and navigate to the appropriate view controller
-        if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_STARTED) {
-            //when the vote has started, we launch into the editorial vote view in normal view with t
-            //3 poll objects there
+//        if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_STARTED) {
+//            //when the vote has started, we launch into the editorial vote view in normal view with t
+//            //3 poll objects there
+//            
+//            //we need to mark the notification object as having been read
+//            //TODO: uncomment the below when testing has sufficiently progressed
+////            notification.hasopened = [NSNumber numberWithBool:YES];
+////            ResourceContext* resourceContext = [ResourceContext instance];
+////            [resourceContext save:YES onFinishCallback:nil];
+//            
+//            NSArray* feedObjects = notification.feeddata;
+//            NSNumber* pollID = nil;
+//            
+//            for (FeedData* fd in feedObjects) {
+//                if ([fd.key isEqualToString:kPOLL]) {
+//                    pollID = fd.objectid;
+//                    break;
+//                }
+//            }
+//            
+//            if (pollID != nil) {
+//                EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
+//                
+//                // Modal naviation
+//                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController];
+//                navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//                
+//                [self presentModalViewController:navigationController animated:YES];
+//                
+//                [navigationController release];
+//            }
+//            else {
+//                //error case
+//                LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
+//            }
+//
+//            [self processClickOfEditorialBoardVotingBegin:notification];
+//
+//        }
+//        else if ([notification.type intValue] == kCAPTION_VOTE) 
+//        {
+//          //someone has voted for this user's caption on a photo
+//          //on click, should transition to view of the photo and their caption
+//            [self processClickOfNewVoteNotification:notification];  
+//        }
+//        else if ([notification.type intValue] == kPHOTO_VOTE) 
+//        {
+//            //someone has voted for this user's photo in a draft
+//            //on click should transition to view of the photo and the newest caption
+//            [self processClickOfNewVoteNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kCAPTION_ADDED) 
+//        {
+//          //a new caption has been added for this user's photo in a draft, sent to photo and draft creator
+//            //on click should transition to view of the new caption and photo
+//            [self processClickOfNewCaptionNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS) 
+//        {
+//            //raised when a draft has expired and been submitted to the editorial board for voting
+//            //sent to: creator of draft, and the users of the photo and caption that
+//            //are the highest voted in the draft
+//            [self processClickOfDraftSubmittedToEditorsNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kDRAFT_PUBLISHED ) 
+//        {
+//            //raised when a draft has been published in the book
+//            //sent to: creator of draft, creator of photo, creator of caption
+//            //on click should open page in book to the page published
+//            [self processClickOfDraftPublishedNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED) {
+//            [self processClickOfEditorialBoardVotingEnding:notification];
+//        }
+//        else if ([notification.type intValue] == kDRAFT_EXPIRED) 
+//        {
+//            //raised when a draft has expired
+//            //sent to the creator of draft, creator of photo, creator of caption
+//            //on click should open draft 
+//            [self processClickOfDraftExpired:notification];
+//        }
+//        else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) 
+//        {
+//            //raised when a new photo has been added to a draft
+//            //sent to the creator of the draft, creator of the photo
+//            //on click should open up to the newly added photo
+//            [self processClickOfNewPhotoNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) 
+//        {
+//            //raised when a user has been promoted
+//            //sent to user that has been promoted to editorial board
+//            //on click should open up profile page
+//            [self processClickOfPromotionToEditorNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) 
+//        {
+//            //raised when a user has been demoted
+//            //sent to user that has been demoted from the editorial board
+//            //on click should open up profile page
+//            [self processClickOfDemotionFromEditorNotification:notification];
+//        }
+//        
+//        else if ([notification.type intValue] == kDRAFT_NOT_PUBLISHED) 
+//        {
+//            //raised when a draft does not win a editorial board election
+//            //sent to the page owner, photo creator, caption creator when a draft
+//            //submitted to the editorial board does not win
+//            //on click should open up into Dark Side view which illustrates which page was the winner
+//            [self processClickOfDraftNotPublishedNotification:notification];
+//        }
+//        else if ([notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) 
+//        {
+//            //sent to all editors at the end of a poll where no winner was chosen because
+//            //there were no votes
+//            //onclick should open up into Dark Side view with vote counts listed for each page
+//            [self processClickOfDraftEditorialBoardNoResult:notification];
+//        }
+//        else if ([notification.type intValue] == kDRAFT_LEADER_CHANGED) {
+//            //this notification sent when we have a change in draft leadership
+//            //we go to the caption supplied
+//            [self processDraftLeaderChangedNotification:notification];
+//        }
+//        else 
             
-            //we need to mark the notification object as having been read
-            //TODO: uncomment the below when testing has sufficiently progressed
-//            notification.hasopened = [NSNumber numberWithBool:YES];
-//            ResourceContext* resourceContext = [ResourceContext instance];
-//            [resourceContext save:YES onFinishCallback:nil];
             
-            NSArray* feedObjects = notification.feeddata;
-            NSNumber* pollID = nil;
-            
-            for (FeedData* fd in feedObjects) {
-                if ([fd.key isEqualToString:kPOLL]) {
-                    pollID = fd.objectid;
-                    break;
-                }
-            }
-            
-            if (pollID != nil) {
-                EditorialVotingViewController* editorialBoardViewController = [EditorialVotingViewController createInstanceForPoll:pollID];
-                
-                // Modal naviation
-                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:editorialBoardViewController];
-                navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-                
-                [self presentModalViewController:navigationController animated:YES];
-                
-                [navigationController release];
-            }
-            else {
-                //error case
-                LOG_NOTIFICATIONVIEWCONTROLLER(1, @"%@Could not find poll object associated with notification %@",activityName,notification.objectid);
-            }
-
-            [self processClickOfEditorialBoardVotingBegin:notification];
-
-        }
-        else if ([notification.type intValue] == kCAPTION_VOTE) 
-        {
-          //someone has voted for this user's caption on a photo
-          //on click, should transition to view of the photo and their caption
-            [self processClickOfNewVoteNotification:notification];  
-        }
-        else if ([notification.type intValue] == kPHOTO_VOTE) 
-        {
-            //someone has voted for this user's photo in a draft
-            //on click should transition to view of the photo and the newest caption
-            [self processClickOfNewVoteNotification:notification];
-        }
-        else if ([notification.type intValue] == kCAPTION_ADDED) 
-        {
-          //a new caption has been added for this user's photo in a draft, sent to photo and draft creator
-            //on click should transition to view of the new caption and photo
-            [self processClickOfNewCaptionNotification:notification];
-        }
-        else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS) 
-        {
-            //raised when a draft has expired and been submitted to the editorial board for voting
-            //sent to: creator of draft, and the users of the photo and caption that
-            //are the highest voted in the draft
-            [self processClickOfDraftSubmittedToEditorsNotification:notification];
-        }
-        else if ([notification.type intValue] == kDRAFT_PUBLISHED ) 
-        {
-            //raised when a draft has been published in the book
-            //sent to: creator of draft, creator of photo, creator of caption
-            //on click should open page in book to the page published
-            [self processClickOfDraftPublishedNotification:notification];
-        }
-        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED) {
-            [self processClickOfEditorialBoardVotingEnding:notification];
-        }
-        else if ([notification.type intValue] == kDRAFT_EXPIRED) 
-        {
-            //raised when a draft has expired
-            //sent to the creator of draft, creator of photo, creator of caption
-            //on click should open draft 
-            [self processClickOfDraftExpired:notification];
-        }
-        else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) 
-        {
-            //raised when a new photo has been added to a draft
-            //sent to the creator of the draft, creator of the photo
-            //on click should open up to the newly added photo
-            [self processClickOfNewPhotoNotification:notification];
-        }
-        else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) 
-        {
-            //raised when a user has been promoted
-            //sent to user that has been promoted to editorial board
-            //on click should open up profile page
-            [self processClickOfPromotionToEditorNotification:notification];
-        }
-        else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) 
-        {
-            //raised when a user has been demoted
-            //sent to user that has been demoted from the editorial board
-            //on click should open up profile page
-            [self processClickOfDemotionFromEditorNotification:notification];
-        }
         
-        else if ([notification.type intValue] == kDRAFT_NOT_PUBLISHED) 
-        {
-            //raised when a draft does not win a editorial board election
-            //sent to the page owner, photo creator, caption creator when a draft
-            //submitted to the editorial board does not win
-            //on click should open up into Dark Side view which illustrates which page was the winner
-            [self processClickOfDraftNotPublishedNotification:notification];
-        }
-        else if ([notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) 
-        {
-            //sent to all editors at the end of a poll where no winner was chosen because
-            //there were no votes
-            //onclick should open up into Dark Side view with vote counts listed for each page
-            [self processClickOfDraftEditorialBoardNoResult:notification];
-        }
-        else if ([notification.type intValue] == kDRAFT_LEADER_CHANGED) {
-            //this notification sent when we have a change in draft leadership
-            //we go to the caption supplied
-            [self processDraftLeaderChangedNotification:notification];
-        }
-        else if ([notification.type intValue] == kGENERIC_EDITORIAL_POST_VOTE) {
+        if ([notification.rendertype intValue] == kGENERIC_EDITORIAL_POST_VOTE) {
             //this notification type is a generic type designed to popup up the editorial
             //board view in a post-vote layout
             [self processGenericEditorialBoardPostVoteNotification:notification];
         }
-        else if ([notification.type intValue] == kGENERIC_FULLSCREEN) {
+        else if ([notification.rendertype intValue] == kGENERIC_FULLSCREEN) {
             //generic notification that will open up the fullscreen view and show a specific photo and caption
             [self processGenericFullscreenNotification:notification];
         }
-        else if ([notification.type intValue] == kGENERIC_DRAFT) {
+        else if ([notification.rendertype intValue] == kGENERIC_DRAFT) {
             //generic notification that will open up the draft view and show a specific draft
             [self processGenericDraftNotification:notification];
         }
-        else if ([notification.type intValue] == kGENERIC_USER) {
+        else if ([notification.rendertype intValue] == kGENERIC_USER) {
             //generic notification that will open up the user view and show a specific user
             [self processGenericUserNotification:notification];
+        }
+        else if ([notification.rendertype intValue] == kGENERIC_EDITORIAL) {
+            //generic editorial voting screen pre vote layout
+            [self processGenericEditorialBoardNotification:notification];
+        }
+        else if ([notification.rendertype intValue] == kGENERIC_MESSAGE) {
+            //generic message display notification to the user
+            
+        }
+        else if ([notification.rendertype intValue] == kGENERIC_BOOK) {
+            //generic book display
+            [self processGenericBookNotification:notification];
         }
         
     }

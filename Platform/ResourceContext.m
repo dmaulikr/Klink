@@ -393,14 +393,14 @@ static ResourceContext* sharedInstance;
     
     //process deleted objects
     if (saveToCloud) {
-        NSArray* deletedObjectsArray = [deletedObjects allObjects];
-        for (int i = 0; i < [deletedObjectsArray count]; i++) {
-            Resource* resource = [deletedObjectsArray objectAtIndex:i];
-            if ([resource shouldResourceBeSynchronizedToCloud]) {
-                [resourcesToDeleteInCloud addObject:resource];
-                [resource markAsDirty];
-            }
-        }
+//        NSArray* deletedObjectsArray = [deletedObjects allObjects];
+//        for (int i = 0; i < [deletedObjectsArray count]; i++) {
+//            Resource* resource = [deletedObjectsArray objectAtIndex:i];
+//            if ([resource shouldResourceBeSynchronizedToCloud]) {
+//                [resourcesToDeleteInCloud addObject:resource];
+//                [resource markAsDirty];
+//            }
+//        }
     }
     //now we commit the change to the store
     //let us raise events
