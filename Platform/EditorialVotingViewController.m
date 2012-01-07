@@ -226,15 +226,15 @@
         LOG_EDITORVOTEVIEWCONTROLLER(1, @"%@No poll id was passed into view controller, nothing to render",activityName);
     }
     
+    // Setting the status bar orientation to landscape forces the view into landscape mode
+    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+    
     // hide status bar
     if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
 	}
-    
-    // Setting the status bar orientation to landscape forces the view into landscape mode
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";

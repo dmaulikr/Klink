@@ -193,7 +193,7 @@ CGFloat distance(CGPoint a, CGPoint b);
 - (void) reloadData {
 	[pageCache flush];
 	numberOfPages = [pageCache.dataSource numberOfPagesInLeavesView:self];
-	self.currentPageIndex = 0;
+	//self.currentPageIndex = 0;
 }
 
 
