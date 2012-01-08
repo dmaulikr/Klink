@@ -563,12 +563,13 @@
     NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-    //if ([draftID isEqualToNumber:self.pageID]) {
-    if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
-        
-        [self.leavesView reloadData];
-        
-        [self renderPage];
+    if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
+        if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
+            
+            [self.leavesView reloadData];
+            
+            [self renderPage];
+        }
     }
 }
 

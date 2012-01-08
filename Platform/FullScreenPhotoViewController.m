@@ -365,11 +365,7 @@
 	}
 	
 	// Status Bar
-	if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden animated:YES];
-	}
+    [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
 	
 	// Get status bar height if visible
 	if (![UIApplication sharedApplication].statusBarHidden) {

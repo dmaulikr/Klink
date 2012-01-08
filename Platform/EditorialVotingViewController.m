@@ -230,11 +230,8 @@
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     
     // hide status bar
-    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
-	}
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+
     
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";
@@ -294,11 +291,7 @@
     [super viewWillDisappear:animated];
     
     // show status bar and navigation bar
-    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO animated:YES];
-	}
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
 }
 

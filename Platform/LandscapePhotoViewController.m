@@ -66,12 +66,8 @@
     [super viewWillAppear:animated];
     
     // hide status bar and navigation bar
-    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:YES animated:NO];
-	}
-    self.navigationController.navigationBar.hidden = YES;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    [self.navigationController.navigationBar setHidden:YES];
     
     // Show photo
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -97,13 +93,9 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // show status bar and navigation bar
-    if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO animated:NO];
-	}
-    self.navigationController.navigationBar.hidden = NO;
+    // hide status bar and navigation bar
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    [self.navigationController.navigationBar setHidden:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
