@@ -114,20 +114,23 @@
         
         int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ((index - 1) < publishedPageCount) {
-            // we update the userDefault setting for the last page viewed by the user,
-            // 1 is subtracted from the index to account for the title page which is not in the frc
-            [userDefaults setInteger:(index - 1) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
-        }
-        else {
-            [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
-        }
         
-        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:(index - 1)];
-        self.pageID = page.objectid;
-        
-        Photo* photo = [page photoWithHighestVotes];
-        self.topVotedPhotoID = photo.objectid;
+        if (publishedPageCount != NSNotFound && publishedPageCount >= 0) {
+            if ((index - 1) < publishedPageCount) {
+                // we update the userDefault setting for the last page viewed by the user,
+                // 1 is subtracted from the index to account for the title page which is not in the frc
+                [userDefaults setInteger:(index - 1) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+            }
+            else {
+                [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+            }
+            
+            Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:(index - 1)];
+            self.pageID = page.objectid;
+            
+            Photo* photo = [page photoWithHighestVotes];
+            self.topVotedPhotoID = photo.objectid;
+        }
     }
 }
 
