@@ -31,7 +31,7 @@
 @end
 @interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
 
-    UIProgressHUDView*      m_progressView;
+    
     UILoginView*            m_loginView;
 }
 
@@ -41,7 +41,7 @@
 
 
 @property (nonatomic, retain) User*                     loggedInUser;
-//@property (nonatomic, retain) UIProgressHUDView*        progressView;
+@property (nonatomic, retain) UIProgressHUDView*        progressView;
 @property (nonatomic, retain) UILoginView*              loginView;
 
 - (void) authenticate:(BOOL)facebook 

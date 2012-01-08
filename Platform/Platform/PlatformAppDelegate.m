@@ -23,7 +23,8 @@
 @synthesize window=_window;
 @synthesize deviceToken = m_deviceToken;
 @synthesize managedObjectContext=__managedObjectContext;
-@synthesize progressView = __progressView;
+//@synthesize progressView = __progressView;
+
 @synthesize managedObjectModel=__managedObjectModel;
 
 @synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
@@ -42,16 +43,17 @@
 
 #pragma mark - Properties
 
-- (UIProgressHUDView*)progressView {
-    if (__progressView != nil) {
-        return __progressView;
-    }
-    UIProgressHUDView* pv = [[UIProgressHUDView alloc]initWithWindow:self.window];
-    __progressView = pv;
-    
-    
-    return __progressView;
-}
+
+//- (UIProgressHUDView*)progressView {
+//    if (__progressView != nil) {
+//        return __progressView;
+//    }
+//    UIProgressHUDView* pv = [[UIProgressHUDView alloc]initWithWindow:self.window];
+//    __progressView = pv;
+//    
+//    
+//    return __progressView;
+//}
 - (ApplicationSettingsManager*)applicationSettingsManager {
     if (__applicationSettingsManager != nil) {
         return __applicationSettingsManager;
@@ -250,7 +252,7 @@
 
 - (void)dealloc
 {
-    [__progressView release];
+    //[__progressView release];
     [__resourceContext release];
     [_window release];
     [__managedObjectContext release];

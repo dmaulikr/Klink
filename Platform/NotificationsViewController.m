@@ -564,7 +564,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
+  //   NSString* activityName = @"NotificationsViewController.didSelectRowAtIndexPath:";
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

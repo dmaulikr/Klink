@@ -764,8 +764,8 @@
             photo.numberofflags = [NSNumber numberWithInt:([photo.numberofflags intValue] + 1)];
             caption.numberofflags = [NSNumber numberWithInt:([caption.numberofflags intValue] + 1)];
             
-            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-            UIProgressHUDView* progressView = appDelegate.progressView;
+           // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = self.progressView;
             progressView.delegate = self;
             
             //now we need to commit to the store
@@ -802,8 +802,8 @@
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
+        // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = self.progressView;
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         progressView.delegate = self;
         
@@ -829,8 +829,8 @@
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
+       //  PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = self.progressView;
         progressView.delegate = self;
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         
@@ -915,8 +915,8 @@
         photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
         caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
         
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
+        // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = self.progressView;
         progressView.delegate = self;
         
         //now we need to commit to the store

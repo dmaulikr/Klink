@@ -29,11 +29,22 @@
 @synthesize feedManager           = __feedManager;
 //@synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
-
+@synthesize progressView          = __progressView;
 //@synthesize progressView          = m_progressView;
 @synthesize loginView             = m_loginView;
 
 #pragma mark - Properties
+
+- (UIProgressHUDView*)progressView {
+    if (__progressView != nil) {
+        return __progressView;
+    }
+    UIProgressHUDView* pv = [[UIProgressHUDView alloc]initWithWindow:[UIApplication sharedApplication].keyWindow];
+    __progressView = pv;
+    
+    
+    return __progressView;
+}
 
 - (EventManager*) eventManager {
     if (__eventManager != nil) {
@@ -236,13 +247,29 @@
 {
     NSString* activityName = @"BaseViewController.showDeterminateProgressBar:";
     
-    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = delegate.progressView;
+    // PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    
+
+    
+    UIProgressHUDView* progressView = self.progressView;
+
     
     //first check if this view controller is the top level visible controller
     if (self.navigationController.visibleViewController == self) {
         progressView.labelText = message;
         [progressView removeAllSubviews];
+        
+        //test if the view controller is in landscape or portrait mode        
+//        UIInterfaceOrientation orientation = self.interfaceOrientation;        
+//        if (UIInterfaceOrientationIsLandscape(orientation)) {
+//            //landscape
+//            progressView.transform = CGAffineTransformIdentity;
+//            progressView.transform = CGAffineTransformMakeRotation(M_PI/2*90);
+//        }
+//        else {
+//            //portrait
+//            progressView.transform = CGAffineTransformIdentity;
+//        }
         
         [self.view addSubview:progressView];
         if (view != nil) {
@@ -267,14 +294,28 @@
 {
     NSString* activityName = @"BaseViewController.showProgressBar:";
     
-    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = delegate.progressView;
+    // PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = self.progressView;
 
     
     //first check if this view controller is the top level visible controller
     if (self.navigationController.visibleViewController == self) {
         progressView.labelText = message;
         [progressView removeAllSubviews];
+        
+        
+        //test if the view controller is in landscape or portrait mode        
+        UIInterfaceOrientation orientation = self.interfaceOrientation;        
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            //landscape
+            progressView.transform = CGAffineTransformIdentity;
+            progressView.transform = CGAffineTransformMakeRotation(90);
+        }
+        else {
+            //portrait
+            progressView.transform = CGAffineTransformIdentity;
+        }
+        
         [self.view addSubview:progressView];
         
         if (view != nil) {
@@ -297,8 +338,8 @@
 
 - (void) hideProgressBar {
     NSString* activityName = @"BaseViewController.hideProgressBar:";
-    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = delegate.progressView;
+   //  PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = self.progressView;
 
     
     if (self.navigationController.visibleViewController == self) {
@@ -309,7 +350,7 @@
             [progressView hide:YES];
         }
         progressView.delegate = nil;
-        delegate.progressView = nil;
+        self.progressView = nil;
         
         
     }
@@ -483,8 +524,8 @@
     //create callback to this view controller for when the saves are finished
     Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onSaveComplete:)];
     
-    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = appDelegate.progressView;
+    // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = self.progressView;
 
     //we start a new undo group here
    // [resourceContext.managedObjectContext processPendingChanges];

@@ -673,8 +673,8 @@
     //after this point, the platforms should automatically begin syncing the data back to the cloud
     //we now show a progress bar to monitor this background activity
     ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = delegate.progressView;
+    // PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = self.progressView;
     progressView.delegate = self;
     
     NSString* progressIndicatorMessage = nil;

@@ -442,7 +442,7 @@
     
     int index = self.ic_coverFlowView.currentItemIndex;
     
-    if (index > 0 && index < count && ![self.poll.hasvoted boolValue]) {
+    if (index > 0 && index < count /* && ![self.poll.hasvoted boolValue]*/) {
         
         
         //create a vote object
@@ -465,8 +465,8 @@
         self.userJustVoted = YES;
         
         //lets save that shit to the cloud
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
+        // // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = self.progressView;
         progressView.delegate = self;
         [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
         [callback release];
