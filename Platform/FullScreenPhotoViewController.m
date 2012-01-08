@@ -335,6 +335,104 @@
     return retVal;
 }
 
+#pragma mark - Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		//[self.controlVisibilityTimer release];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
+    [self cancelControlHiding];
+	if (![UIApplication sharedApplication].isStatusBarHidden) {
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
+	}
+}
+
+- (void)setControlsHidden:(BOOL)hidden {
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+    
+	// Get status bar height if visible
+	CGFloat statusBarHeight = 0;
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Status Bar
+    [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
+	
+	// Get status bar height if visible
+	if (![UIApplication sharedApplication].statusBarHidden) {
+		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
+	}
+	
+	// Set navigation bar frame
+	CGRect navBarFrame = self.navigationController.navigationBar.frame;
+	navBarFrame.origin.y = statusBarHeight;
+	self.navigationController.navigationBar.frame = navBarFrame;
+	
+	// Navigation and tool bars
+	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
+    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
+    
+    // Caption view slider
+    [self.captionViewSlider setAlpha:hidden ? 0 : 1];
+    
+    // Photo metadata
+    [self.photoMetaData setAlpha:hidden ? 0 : 1];
+    
+    
+	[UIView commitAnimations];
+	
+	// Control hiding timer
+	// Will cancel existing timer but only begin hiding if
+	// they are visible
+	//[self hideControlsAfterDelay];
+	
+}
+
+- (void)hideControls { 
+    [self setControlsHidden:YES]; 
+}
+
+- (void)showControls { 
+    [self cancelControlHiding];
+    [self setControlsHidden:NO];
+}
+
+- (void)toggleControls { 
+    [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
+}
+
+- (void)showHideArrows {
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:( UIViewAnimationCurveEaseInOut )
+                     animations:^{
+                         [self.iv_leftArrow setAlpha:1];
+                         [self.iv_rightArrow setAlpha:1];
+                     }
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.5
+                                               delay:1
+                                             options:( UIViewAnimationCurveEaseInOut )
+                                          animations:^{
+                                              [self.iv_leftArrow setAlpha:0];
+                                              [self.iv_rightArrow setAlpha:0];
+                                          }
+                                          completion:nil];
+                     }];
+    
+}
+
 #pragma mark - View lifecycle
 /*
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -498,108 +596,6 @@
     return YES; //(interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
-#pragma mark - Control Hiding / Showing
-- (void)cancelControlHiding {
-	// If a timer exists then cancel and release
-	if (self.controlVisibilityTimer) {
-		[self.controlVisibilityTimer invalidate];
-		//[self.controlVisibilityTimer release];
-		self.controlVisibilityTimer = nil;
-	}
-}
-
-- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
-    [self cancelControlHiding];
-	if (![UIApplication sharedApplication].isStatusBarHidden) {
-		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO] ;
-	}
-}
-
-- (void)setControlsHidden:(BOOL)hidden {
-    
-    [UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
-    
-	// Get status bar height if visible
-	CGFloat statusBarHeight = 0;
-	if (![UIApplication sharedApplication].statusBarHidden) {
-		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-	}
-	
-	// Status Bar
-	if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
-	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:hidden animated:YES];
-	}
-	
-	// Get status bar height if visible
-	if (![UIApplication sharedApplication].statusBarHidden) {
-		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-		statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-	}
-	
-	// Set navigation bar frame
-	CGRect navBarFrame = self.navigationController.navigationBar.frame;
-	navBarFrame.origin.y = statusBarHeight;
-	self.navigationController.navigationBar.frame = navBarFrame;
-	
-	// Navigation and tool bars
-	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
-    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
-    
-    // Caption view slider
-    [self.captionViewSlider setAlpha:hidden ? 0 : 1];
-    
-    // Photo metadata
-    [self.photoMetaData setAlpha:hidden ? 0 : 1];
-    
-    
-	[UIView commitAnimations];
-	
-	// Control hiding timer
-	// Will cancel existing timer but only begin hiding if
-	// they are visible
-	//[self hideControlsAfterDelay];
-	
-}
-
-- (void)hideControls { 
-    [self setControlsHidden:YES]; 
-}
-
-- (void)showControls { 
-    [self cancelControlHiding];
-    [self setControlsHidden:NO];
-}
-
-- (void)toggleControls { 
-    [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
-}
-
-- (void)showHideArrows {
-    
-    [UIView animateWithDuration:0.5
-                          delay:0
-                        options:( UIViewAnimationCurveEaseInOut )
-                     animations:^{
-                         [self.iv_leftArrow setAlpha:1];
-                         [self.iv_rightArrow setAlpha:1];
-                     }
-                     completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.5
-                                               delay:1
-                                             options:( UIViewAnimationCurveEaseInOut )
-                                          animations:^{
-                                              [self.iv_leftArrow setAlpha:0];
-                                              [self.iv_rightArrow setAlpha:0];
-                                          }
-                                          completion:nil];
-                     }];
-    
-}
 
 #pragma mark - Landscape Photo Rotation Event Handler
 - (void) didRotate {

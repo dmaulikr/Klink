@@ -57,6 +57,7 @@
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
+#define kMAXUSERNAMELENGTH 15
 
 
 #pragma mark - Progress Bar methods 
@@ -212,12 +213,11 @@
     // Do any additional setup after loading the view from its nib.
     
     // Navigation Bar Buttons
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                     target:self
-                                    action:@selector(onDoneButtonPressed:)];
+                                    action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
-    [rightButton release];
     
     
     // set custom font on views with text
@@ -419,6 +419,7 @@
                                     delegate:self
                                     cancelButtonTitle:@"Cancel"
                                     otherButtonTitles:@"Change", nil];
+        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
         [alert show];
         [alert release];
         
@@ -442,7 +443,6 @@
 - (void)alertView:(UIPromptAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         NSString* enteredText = [alertView enteredText];
-        //self.lbl_username.text = enteredText;
         
         // Change the current logged in user's username
         self.loggedInUser.username = enteredText;
@@ -483,6 +483,7 @@
                                     delegate:self
                                     cancelButtonTitle:@"Cancel"
                                     otherButtonTitles:@"Change", nil];
+        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
         [alert show];
         [alert release];
         

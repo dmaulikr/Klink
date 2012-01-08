@@ -29,19 +29,14 @@
     UIResourceLinkButton*   m_btn_writtenBy;
     UIResourceLinkButton*   m_btn_illustratedBy;
     UIButton*       m_btn_photoButton;
-    
-    NSTimer*        m_controlVisibilityTimer;
-    BOOL            m_controlsHidden;
 
 }
-
-
-
 
 @property (nonatomic,retain) NSNumber*              pageID;
 @property (nonatomic,retain) NSNumber*              topVotedPhotoID;
 @property (nonatomic,retain) NSNumber*              topVotedCaptionID;
 @property (nonatomic,retain) NSNumber*              pageNumber;
+
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_writtenBy;
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_illustratedBy;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_openBookPageImage;
@@ -55,11 +50,8 @@
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_pageNumber;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_photoButton;
 
-@property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
-
-- (void)cancelControlHiding;
-- (void)hideControlsAfterDelay:(NSTimeInterval)delay;
 - (IBAction) onLinkButtonClicked:(id)sender;
+
 + (PageViewController*) createInstanceWithPageID:(NSNumber*)pageID withPageNumber:(NSNumber*)pageNumber;
 
 @end

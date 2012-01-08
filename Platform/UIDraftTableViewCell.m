@@ -184,7 +184,7 @@
         self.captionID = topCaption.objectid;
         self.lbl_caption.textColor = [UIColor blackColor];
         self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
-        self.lbl_numVotes.text = [photo.numberofvotes stringValue];
+        self.lbl_numVotes.text = [topCaption.numberofvotes stringValue];
         self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
     }
     
@@ -236,41 +236,6 @@
         [self.contentView addSubview:self.btn_writtenBy];
         [self.contentView addSubview:self.btn_illustratedBy];
         
-        //lets us create the link button
-        /*CGRect frameForWrittenBy = CGRectMake(165, 243, 129, 27);
-        CGRect frameForIllustratedBy = CGRectMake(167,261,129,27);
-        UIResourceLinkButton* rlb1 = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
-        UIResourceLinkButton* rlb2 = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
-       
-        [self.contentView addSubview:rlb1];
-        [self.contentView addSubview:rlb2];
-        self.btn_writtenBy = rlb1;
-        self.btn_illustratedBy = rlb2;
-        
-        //need to set the font properly on the link buttons
-        UIFont* f = [UIFont fontWithName:@"American Typewriter" size:13];
-        
-        self.btn_writtenBy.titleLabel.font = f;
-        self.btn_writtenBy.titleLabel.opaque = NO;
-        self.btn_writtenBy.titleLabel.textColor = [UIColor blackColor];
-        self.btn_illustratedBy.titleLabel.font = f;
-        self.btn_illustratedBy.titleLabel.opaque = NO;
-        self.btn_illustratedBy.titleLabel.textColor = [UIColor blackColor];
-        
-        [rlb1 release];
-        [rlb2 release];*/
-        
-        
-        
-        /*[self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-        [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-        [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-        [self.btn_illustratedBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.btn_writtenBy.titleLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
-        
-        
     }
     return self;
 }
@@ -297,14 +262,6 @@
     self.btn_writtenBy = nil;
     
     [super dealloc];
-
-   // [self.photoID release];
-   // [self.captionID release];
-   // [self.draftTableViewCellLeft release];
-   // [self.iv_photo release];
-  //  [self.lbl_caption release];
-   // [self.lbl_numVotes release];
-   // [self.lbl_numCaptions release];
 
 }
 

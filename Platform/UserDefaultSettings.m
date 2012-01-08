@@ -9,3 +9,4 @@
 #import "UserDefaultSettings.h"
 
 NSString* const setting_HASDOWNLOADEDBOOK = @"hasDownloadedBook";
+NSString* const setting_LASTVIEWEDPUBLISHEDPAGEINDEX = @"lastViewedPublishedPageIndex";

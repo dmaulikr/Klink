@@ -160,9 +160,18 @@
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.navigationViewController presentModalViewController:navigationController animated:YES];
+    [self.navigationViewController.topViewController presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
+    
+    
+    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    
+    //UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    //navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    //[self presentModalViewController:navigationController animated:YES];
+    
+    //[navigationController release];
     
     
     

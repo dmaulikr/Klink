@@ -11,6 +11,7 @@
 @implementation UIPromptAlertView
 @synthesize textField = m_textField;
 @synthesize enteredText = m_enteredText;
+@synthesize maxTextLength = m_maxTextLength;
 
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... {
@@ -86,7 +87,17 @@
 // Used to prevent spaces in the username
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)text {    
     
-    if([text isEqualToString:@" "]) {
+    NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:text];
+    
+    if (self.maxTextLength) {
+        // textField entry length has been limited
+        if ([newString length] > self.maxTextLength) {
+            // max length of allowable string reached
+            return NO;
+        }
+    }
+    
+    if ([text isEqualToString:@" "]) {
         // no spaces allowed
         return NO;
     }

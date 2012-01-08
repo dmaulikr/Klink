@@ -16,6 +16,7 @@
 #import "CloudEnumeratorFactory.h"
 #import "Macros.h"
 #import "NotificationsViewController.h"
+#import "BookViewControllerBase.h"
 
 @implementation PlatformAppDelegate
 
@@ -104,13 +105,16 @@
                                          UIRemoteNotificationTypeSound |
                                          UIRemoteNotificationTypeAlert)];
     
+    // NEW STUFF TO LOAD BOOK VIEW CONTROLLER
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
+    
     self.window.rootViewController = self.navigationController;
  
     self.window.backgroundColor = [UIColor blackColor];
     
     [self.window makeKeyAndVisible];
     
-
     
     //let us make some checks beginning with the user object
     if ([authenticationManager isUserAuthenticated]) {

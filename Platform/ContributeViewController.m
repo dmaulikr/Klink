@@ -219,6 +219,7 @@
     UIBarButtonItem* lb = [[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onCancelButtonPressed:)];
     self.navigationItem.leftBarButtonItem  = lb;
     [lb release];
+    
     // disable Submit button until user has completed all required fields
     self.navigationItem.rightBarButtonItem.enabled = NO;
 

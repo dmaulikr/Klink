@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "EGORefreshTableHeaderView.h"
+
 @interface ProductionLogViewController : BaseViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate,CloudEnumeratorDelegate, UIAlertViewDelegate> {
+    
     UITableView* m_tbl_productionTableView;
     CloudEnumerator* m_cloudDraftEnumerator;
     UITableViewCell* m_productionTableViewCell;
@@ -17,6 +19,7 @@
     UILabel* m_lbl_title;
     UILabel* m_lbl_numDraftsTotal;
     UILabel* m_lbl_numDraftsClosing;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
