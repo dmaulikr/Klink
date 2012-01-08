@@ -13,13 +13,14 @@
 @dynamic targetobjectid;
 @dynamic targetobjecttype;
 @dynamic message;
-@dynamic type;
+@dynamic feedevent;
 @dynamic userid;
 @dynamic hasopened;
 @dynamic hasseen;
 @dynamic title;
 @dynamic datexpires;
 @dynamic imageurl;
+@dynamic rendertype;
 
 @synthesize feeddata = __feeddata;
 

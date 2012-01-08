@@ -198,28 +198,28 @@
         }*/
         
         
-        if ([notification.type intValue] == kCAPTION_VOTE || [notification.type intValue] == kPHOTO_VOTE) {
+        if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
         }
-        else if ([notification.type intValue] == kCAPTION_ADDED) {
+        else if ([notification.feedevent intValue] == kCAPTION_ADDED) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-compose.png"];
         }
-        else if ([notification.type intValue] == kPHOTO_ADDED_TO_DRAFT) {
+        else if ([notification.feedevent intValue] == kPHOTO_ADDED_TO_DRAFT) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
         }
-        else if ([notification.type intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.type intValue] == kDRAFT_EXPIRED || [notification.type intValue] == kDRAFT_NOT_PUBLISHED) {
+        else if ([notification.feedevent intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == kDRAFT_EXPIRED || [notification.feedevent intValue] == kDRAFT_NOT_PUBLISHED) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
         }
-        else if ([notification.type intValue] == kDRAFT_PUBLISHED) {
+        else if ([notification.feedevent intValue] == kDRAFT_PUBLISHED) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
         }         
-        else if ([notification.type intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.type intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.type intValue] == kEDITORIAL_BOARD_NO_RESULT) {
+        else if ([notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.feedevent intValue] == kEDITORIAL_BOARD_NO_RESULT) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
         }         
-        else if ([notification.type intValue] == kPROMOTION_TO_EDITOR) {
+        else if ([notification.feedevent intValue] == kPROMOTION_TO_EDITOR) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-ribbon1.png"];
         }         
-        else if ([notification.type intValue] == kDEMOTION_FROM_EDITOR) {
+        else if ([notification.feedevent intValue] == kDEMOTION_FROM_EDITOR) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
         }
         
