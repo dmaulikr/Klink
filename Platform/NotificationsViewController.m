@@ -379,7 +379,18 @@
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@, PhotoID:%@, CaptionID:%@ for new caption vote notification",activityName,pageID,photoID,captionID);
     
     FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
+    //[self.navigationController setNavigationBarHidden:YES animated:NO];
+    [[self.navigationController toolbar] setHidden:NO];
     [self.navigationController pushViewController:fullScreenController animated:YES];
+    
+    
+    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    
+    //UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    //navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    //[self presentModalViewController:navigationController animated:YES];
+    
+    //[navigationController release];
 }
 
 

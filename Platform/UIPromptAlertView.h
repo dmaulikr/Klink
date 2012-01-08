@@ -10,11 +10,13 @@
 
 @interface UIPromptAlertView : UIAlertView < UITextFieldDelegate > {
     UITextField*    m_textField;
-    NSString*       enteredText;
+    NSString*       m_enteredText;
+    int             m_maxTextLength;
 }
 
 @property (nonatomic, retain) UITextField   *textField;
 @property (nonatomic, retain) NSString      *enteredText;
+@property (nonatomic)         int           maxTextLength;
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message delegate:(id)delegate cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ...;
 

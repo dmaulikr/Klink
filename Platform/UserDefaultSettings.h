@@ -10,3 +10,4 @@
 
 
 extern NSString* const setting_HASDOWNLOADEDBOOK;
+extern NSString* const setting_LASTVIEWEDPUBLISHEDPAGEINDEX;

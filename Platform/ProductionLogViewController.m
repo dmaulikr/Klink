@@ -105,75 +105,6 @@
     self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"closing today: %d", numDraftsClosing];
 }
 
-#pragma mark - Toolbar buttons
-- (NSArray*) toolbarButtonsForViewController {
-    //returns an array with the toolbar buttons for this view controller
-    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-    
-    //flexible space for button spacing
-    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    //check to see if the user is logged in or not
-    //if ([self.authenticationManager isUserAuthenticated]) {
-        //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-        //                                   initWithTitle:self.loggedInUser.username
-        //                                   style:UIBarButtonItemStylePlain
-        //                                   target:self
-        //                                   action:@selector(onProfileButtonPressed:)];
-        UIBarButtonItem* profileButton = [[UIBarButtonItem alloc]
-                                           initWithImage:[UIImage imageNamed:@"icon-profile.png"]
-                                           style:UIBarButtonItemStylePlain
-                                           target:self
-                                           action:@selector(onProfileButtonPressed:)];
-        [retVal addObject:profileButton];
-        [profileButton release];
-    //}
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    
-    //add draft button
-    UIBarButtonItem* draftButton = [[UIBarButtonItem alloc]
-                                     initWithImage:[UIImage imageNamed:@"icon-newPage.png"]
-                                     style:UIBarButtonItemStylePlain
-                                     target:self
-                                     action:@selector(onDraftButtonPressed:)];
-    [retVal addObject:draftButton];
-    [draftButton release];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    //add bookmark button
-    UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
-                                       initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"]
-                                       style:UIBarButtonItemStylePlain
-                                       target:self 
-                                       action:@selector(onBookmarkButtonPressed:)];
-    [retVal addObject:bookmarkButton];
-    [bookmarkButton release];
-    //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        
-        //add flexible space for button spacing
-        [retVal addObject:flexibleSpace];
-        
-        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
-        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
-        
-        [retVal addObject:notificationBarItem];
-    }
-    [flexibleSpace release];
-    return retVal;
-}
-
-- (void) dealloc {
-    self.frc_draft_pages = nil;
-    [super dealloc];
-}
-
 - (void) registerCallbackHandlers {
     // resister callbacks for change events
     Callback* newDraftCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewDraft:)];
@@ -201,18 +132,61 @@
     [newCaptionCallback release];
     [newPhotoVoteCallback release];
     [newCaptionVoteCallback release];
-
+    
 }
+
+#pragma mark - Toolbar buttons
+- (NSArray*) toolbarButtonsForViewController {
+    //returns an array with the toolbar buttons for this view controller
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    //flexible space for button spacing
+    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem* profileButton = [[UIBarButtonItem alloc]
+                                      initWithImage:[UIImage imageNamed:@"icon-profile.png"]
+                                      style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(onProfileButtonPressed:)];
+    [retVal addObject:profileButton];
+    [profileButton release];
+    
+    //add flexible space for button spacing
+    [retVal addObject:flexibleSpace];
+    
+    //add draft button
+    UIBarButtonItem* draftButton = [[UIBarButtonItem alloc]
+                                     initWithImage:[UIImage imageNamed:@"icon-newPage.png"]
+                                     style:UIBarButtonItemStylePlain
+                                     target:self
+                                     action:@selector(onDraftButtonPressed:)];
+    [retVal addObject:draftButton];
+    [draftButton release];
+    
+    //check to see if the user is logged in or not
+    if ([self.authenticationManager isUserAuthenticated]) {
+        //we only add a notification icon for user's that have logged in
+        
+        //add flexible space for button spacing
+        [retVal addObject:flexibleSpace];
+        
+        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
+        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
+        
+        [retVal addObject:notificationBarItem];
+    }
+    
+    [flexibleSpace release];
+    
+    return retVal;
+}
+
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
     self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
-    
-    
-        
-    
-    //return self;
+            
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -231,6 +205,11 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void) dealloc {
+    self.frc_draft_pages = nil;
+    [super dealloc];
 }
 
 #pragma mark - View lifecycle
@@ -256,15 +235,19 @@
     
     [self registerCallbackHandlers];
     
-    /*[self.lbl_title setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-    [self.lbl_numDraftsTotal setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_numDraftsClosing setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    // Navigation Bar Buttons
+    UIBarButtonItem* leftButton = [[[UIBarButtonItem alloc]
+                                     initWithTitle:@"Home"
+                                    style:UIBarButtonItemStyleBordered 
+                                    target:self 
+                                    action:@selector(onHomeButtonPressed:)] autorelease];
+    self.navigationItem.leftBarButtonItem = leftButton;
 }
 
 - (void)viewDidUnload
@@ -307,6 +290,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -413,6 +397,11 @@
             [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
         }
     }
+}
+
+#pragma mark - Navigation Bar Button Handlers
+- (void) onHomeButtonPressed:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Toolbar Button Event Handlers

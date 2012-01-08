@@ -44,7 +44,6 @@
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    //self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
     self.lbl_deadlineNavBar.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
 }
 
@@ -107,22 +106,13 @@
     //flexible space for button spacing
     UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];    
     
-    //check to see if the user is logged in or not
-    //if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        //UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-        //                                   initWithTitle:self.loggedInUser.username
-        //                                   style:UIBarButtonItemStylePlain
-        //                                   target:self
-        //                                   action:@selector(onProfileButtonPressed:)];
-        UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-                                           initWithImage:[UIImage imageNamed:@"icon-profile.png"]
-                                           style:UIBarButtonItemStylePlain
-                                           target:self
-                                           action:@selector(onProfileButtonPressed:)];
-        [retVal addObject:usernameButton];
-        [usernameButton release];
-    //}
+    UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
+                                       initWithImage:[UIImage imageNamed:@"icon-profile.png"]
+                                       style:UIBarButtonItemStylePlain
+                                       target:self
+                                       action:@selector(onProfileButtonPressed:)];
+    [retVal addObject:usernameButton];
+    [usernameButton release];
     
     //add flexible space for button spacing
     [retVal addObject:flexibleSpace];
@@ -135,18 +125,6 @@
                                      action:@selector(onCameraButtonPressed:)];
     [retVal addObject:cameraButton];
     [cameraButton release];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    //add bookmark button
-    UIBarButtonItem* bookmarkButton = [[UIBarButtonItem alloc]
-                                       initWithImage:[UIImage imageNamed:@"icon-ribbon2.png"] 
-                                       style:UIBarButtonItemStylePlain 
-                                       target:self 
-                                       action:@selector(onBookmarkButtonPressed:)];
-    [retVal addObject:bookmarkButton];
-    [bookmarkButton release];
     
     //check to see if the user is logged in or not
     if ([self.authenticationManager isUserAuthenticated]) {
@@ -162,6 +140,7 @@
     }
     
     [flexibleSpace release];
+    
     return retVal;
 }
 
@@ -169,9 +148,6 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
-    
-       
-    
      
 }
 
@@ -199,9 +175,6 @@
     self.frc_photos = nil;
     self.pageID = nil;
     self.lbl_deadlineNavBar = nil;
-    //[self.tbl_draftTableView release];
-    //[self.frc_photos release];
-    //[self.pageID release];
     [super dealloc];
 }
 
@@ -225,8 +198,6 @@
     [newCaptionVoteCallback release];
 
     
-
-    
     // setup pulldown refresh on tableview
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_draftTableView.bounds.size.height, self.tbl_draftTableView.bounds.size.width, self.tbl_draftTableView.bounds.size.height);
     
@@ -248,9 +219,6 @@
     [self.lbl_deadlineNavBar setTextAlignment:UITextAlignmentRight];
     [self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
 	self.navigationItem.titleView = self.lbl_deadlineNavBar;
-    
-    /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];*/
     
     }
 
@@ -443,13 +411,6 @@
     
     [self.photoCloudEnumerator enumerateUntilEnd:nil];
     
-//    self.cloudPhotoEnumerator = nil;
-//    CloudEnumeratorFactory* cloudEnumeratorFactory = [CloudEnumeratorFactory instance];
-//    
-//    self.cloudPhotoEnumerator = [cloudEnumeratorFactory enumeratorForPhotos:self.pageID];
-//    self.cloudPhotoEnumerator.delegate = self;
-//    [self.cloudPhotoEnumerator enumerateUntilEnd:nil];
-    
 }
 
 - (BOOL) egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
@@ -557,9 +518,6 @@
     }
 }
 
-- (void) onBookmarkButtonPressed:(id)sender {
-    
-}
 
 #pragma mark - Static Initializers
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID {
@@ -578,4 +536,6 @@
     DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:pageID];
     return draftViewController;
 }
+
+
 @end

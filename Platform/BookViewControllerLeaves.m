@@ -19,11 +19,16 @@
 #import "EventManager.h"
 #import "UICustomNavigationBar.h"
 #import "UICustomToolbar.h"
+#import "HomeViewController.h"
+#import "UserDefaultSettings.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
 
 @implementation BookViewControllerLeaves
+@synthesize invisibleReadButton = m_invisibleReadButton;
+@synthesize invisibleProductionLogButton = m_invisibleProductionLogButton;
+@synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
 @synthesize iv_backgroundLeaves = m_iv_backgroundLeaves;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
 @synthesize btn_writtenBy = m_btn_writtenBy;
@@ -56,93 +61,124 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - Helper methods for iOS 4 page view workaround
-- (UIImage *) imageWithView:(UIView *)view
-{
-    float scale = [[UIScreen mainScreen] scale];
-    
-    //CGSize imgContextSize = CGSizeMake(view.bounds.size.width*scale, view.bounds.size.height*scale);
-    
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, scale);
-    
-    //UIGraphicsBeginImageContextWithOptions(imgContextSize, view.opaque, scale*2);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    
-    UIImage* img = UIGraphicsGetImageFromCurrentImageContext();
-    
-    //CGSize imageSize = img.size;
-    
-    UIGraphicsEndImageContext();
-    
-    return img;
-}
 
 #pragma mark - LeavesViewController Delegate Methods (for iOS 3-4x)
 - (NSUInteger) numberOfPagesInLeavesView:(LeavesView*)leavesView {
-    int count = [[self.frc_published_pages fetchedObjects]count];
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    int count = publishedPageCount + 1;     // we add 1 to account for the title page of the book which is not in the frc
     return count;
 }
 
-- (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)pageIndex {
-    //we need to make a check to see how many objects we have left
-    //if we are below a threshold, we need to execute a fetch to the server
-    int count = [[self.frc_published_pages fetchedObjects]count];
-    int lastIndex = count - 1;
-    int pagesRemaining = lastIndex - pageIndex;
-    [self evaluateAndEnumeratePagesFromCloud:pagesRemaining];
+- (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)index {
+    if (index == 0) {
+        // Do nothing, we are turning to the title page
+    }
+    else {
+        index--;    // we need to subtract one from the index to account for the title page which is not in the frc
+        
+        int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+        
+        //we need to make a check to see how many objects we have left
+        //if we are below a threshold, we need to execute a fetch to the server
+        int lastIndex = publishedPageCount - 1;        
+        int pagesRemaining = lastIndex - index;
+        [self evaluateAndEnumeratePagesFromCloud:pagesRemaining];
+        
+        //Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
+        //self.pageID = page.objectid;
+        
+        //Photo* photo = [page photoWithHighestVotes];
+        //self.topVotedPhotoID = photo.objectid;
+    }
 
 }
 
-- (void) leavesView:(LeavesView *)leavesVie didTurnToPageAtIndex:(NSUInteger)index {
-	
+- (void) leavesView:(LeavesView *)leavesView didTurnToPageAtIndex:(NSUInteger)index {
+    if (index == 0) {
+        // we are now showing the title page, enable and show the title page buttons
+        [self.invisibleReadButton setEnabled:YES];
+        [self.invisibleProductionLogButton setEnabled:YES];
+        [self.invisibleWritersLogButton setEnabled:YES];
+        [self.invisibleReadButton setHidden:NO];
+        [self.invisibleProductionLogButton setHidden:NO];
+        [self.invisibleWritersLogButton setHidden:NO];
+    }
+    else {
+        // we are still showing a regular page view, ensure the title page buttons are disabled and hidden
+        [self.invisibleReadButton setEnabled:NO];
+        [self.invisibleProductionLogButton setEnabled:NO];
+        [self.invisibleWritersLogButton setEnabled:NO];
+        [self.invisibleReadButton setHidden:YES];
+        [self.invisibleProductionLogButton setHidden:YES];
+        [self.invisibleWritersLogButton setHidden:YES];
+        
+        int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        if ((index - 1) < publishedPageCount) {
+            // we update the userDefault setting for the last page viewed by the user,
+            // 1 is subtracted from the index to account for the title page which is not in the frc
+            [userDefaults setInteger:(index - 1) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+        }
+        else {
+            [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+        }
+        
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:(index - 1)];
+        self.pageID = page.objectid;
+        
+        Photo* photo = [page photoWithHighestVotes];
+        self.topVotedPhotoID = photo.objectid;
+    }
 }
 
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
-    // Return the page view controller for the given index
-    int count = [[self.frc_published_pages fetchedObjects]count];
     
-    if (count != 0 && index < count) {
-        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
-        //self.pageID = page.objectid;
+    if (index == 0) {
+        // Return the title page, HomeViewController
+        HomeViewController* homeViewController = [HomeViewController createInstance];
+        homeViewController.view.backgroundColor = [UIColor clearColor];
         
-        NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
-        
-        PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
-        //pageViewController.view.backgroundColor = [UIColor blackColor];
-        pageViewController.view.backgroundColor = [UIColor clearColor];
-        [pageNumber release];
-        
-        //[pageViewController.view drawRect:pageViewController.view.bounds];
-        
-        // NEW WAY:BEGIN directly draw the PageViewController's view to the passed in graphoic context
-        CGRect viewRect = pageViewController.view.frame;
+        // directly draw the HomeViewController's view to the passed in graphic context
+        CGRect viewRect = homeViewController.view.frame;
         
         CGContextTranslateCTM(ctx, 0.0, viewRect.size.height);
         CGContextScaleCTM(ctx, 1.0, -1.0);
         
-        [pageViewController.view.layer renderInContext:ctx];
+        [homeViewController.view.layer renderInContext:ctx];
+    }
+    else {
+        // Return the page view controller for the given index
+        index--;    // we need to subtract one to the index to account for the title page which is not in the frc
         
-        // adjust frames for draft attribution buttons
-        self.btn_writtenBy.frame = pageViewController.btn_writtenBy.frame;
-        self.btn_illustratedBy.frame = pageViewController.btn_illustratedBy.frame;
-       
-        // NEW WAY:END
+        int count = [[self.frc_published_pages fetchedObjects]count];
         
-        /*// OLD WAY:BEGIN use a UIImage representation of the PageViewController's view
-        // Create an image out of the PageViewController
-        UIImage *image = [self imageWithView:pageViewController.view];
-        
-        CGRect imageRect = CGRectMake(0, 0, image.size.width, image.size.height);
-        
-        CGAffineTransform transform = aspectFit(imageRect, CGContextGetClipBoundingBox(ctx));
-        CGContextConcatCTM(ctx, transform);
-        CGContextDrawImage(ctx, imageRect, [image CGImage]);
-        // OLD WAY:END*/
-        
-        //[pageViewController release];
+        if (count != 0 && index < count) {
+            Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
+            
+            NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
+            
+            PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+            pageViewController.view.backgroundColor = [UIColor clearColor];
+            [pageNumber release];
+            
+            // directly draw the PageViewController's view to the passed in graphic context
+            CGRect viewRect = pageViewController.view.frame;
+            
+            CGContextTranslateCTM(ctx, 0.0, viewRect.size.height);
+            CGContextScaleCTM(ctx, 1.0, -1.0);
+            
+            [pageViewController.view.layer renderInContext:ctx];
+            
+            // adjust frames for draft attribution buttons
+            self.btn_writtenBy.frame = pageViewController.btn_writtenBy.frame;
+            self.btn_illustratedBy.frame = pageViewController.btn_illustratedBy.frame;
+            
+        }
     }
 }
 
+#pragma mark - Button Handlers
+#pragma mark Username button handler
 - (void) onLinkButtonClicked:(id)sender {
     
     int currentIndex = self.leavesView.currentPageIndex;
@@ -150,7 +186,9 @@
     Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
     Caption* caption = [page captionWithHighestVotes];
     Photo* photo = [page photoWithHighestVotes];
+    
     NSNumber* userID = nil;
+    
     if (sender == self.btn_writtenBy) {
         userID = caption.creatorid;
     }
@@ -167,49 +205,74 @@
         [navigationController release];
     }
 }
+
 #pragma mark - Render Page from PageViewController
 -(void)renderPage {
-   // NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
+    //NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
     
-    NSNumber* pageID = self.pageID;
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
-    ResourceContext* resourceContext = [ResourceContext instance];
+    // we check the user default settings for the last page of the book the user viewed
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSInteger lastViewedPublishedPageIndex = [userDefaults integerForKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
     
     int indexForPage = 0;
     
-    if (self.pageID != nil  && [self.pageID intValue] != 0) {
-        //the page id has been set, we will move to that page
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-        
-        if (page != nil) {
-            //local store does contain the page
-            Photo* photo = [page photoWithHighestVotes];
-            self.topVotedPhotoID = photo.objectid;
-            
-            indexForPage = [self indexOfPageWithID:self.pageID];
+    // check to determine which page to render first
+    if (self.shouldOpenToTitlePage) {
+        // go to title page immidiately
+        indexForPage = 0;
+        [self.leavesView setCurrentPageIndex:0];
+    }
+    else if (publishedPageCount != 0) {
+        if (self.pageID != nil  && [self.pageID intValue] != 0) {
+            // the page id has been set, we will move to that page
+            indexForPage = [self indexOfPageWithID:self.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+            [self.leavesView setCurrentPageIndex:indexForPage];
+        }
+        else if (lastViewedPublishedPageIndex < publishedPageCount) {
+            // we go to the last page the user viewed
+            indexForPage = lastViewedPublishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
             [self.leavesView setCurrentPageIndex:indexForPage];
         }
         else {
-            //local store does not contain the page, we need to enumerate pages
-            //[self.pageCloudEnumerator enumerateUntilEnd:nil];
+            //need to find the first page
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:YES];
+            
+            if (page != nil) {
+                //local store does contain pages to enumerate
+                self.pageID = page.objectid;
+                indexForPage = [self indexOfPageWithID:self.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                [self.leavesView setCurrentPageIndex:indexForPage];
+            }
+            else {
+                //no published pages, go to title page
+                [self.leavesView setCurrentPageIndex:0];
+            }
         }
+    }
+    
+    if (indexForPage == 0) {
+        // we are about to move to the title page of the book, enable and show the title page buttons
+        [self.invisibleReadButton setEnabled:YES];
+        [self.invisibleProductionLogButton setEnabled:YES];
+        [self.invisibleWritersLogButton setEnabled:YES];
+        [self.invisibleReadButton setHidden:NO];
+        [self.invisibleProductionLogButton setHidden:NO];
+        [self.invisibleWritersLogButton setHidden:NO];
     }
     else {
-        //need to find the latest page
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kPUBLISHED] forAttribute:STATE sortBy:DATEPUBLISHED sortAscending:NO];
-        
-        if (page != nil) {
-            //local store does contain pages to enumerate
-            self.pageID = page.objectid;
-            indexForPage = [self indexOfPageWithID:self.pageID];
-            [self.leavesView setCurrentPageIndex:indexForPage];
-            
-        }
-        else {
-            //no published pages
-            [self.leavesView setCurrentPageIndex:0];
-        }
+        // we are about to move to a page view of the book that is not the title page, disable and hide the title page buttons
+        [self.invisibleReadButton setEnabled:NO];
+        [self.invisibleProductionLogButton setEnabled:NO];
+        [self.invisibleWritersLogButton setEnabled:NO];
+        [self.invisibleReadButton setHidden:YES];
+        [self.invisibleProductionLogButton setHidden:YES];
+        [self.invisibleWritersLogButton setHidden:YES];
     }
+
 }
 
 #pragma mark - Control Hiding / Showing
@@ -309,10 +372,10 @@
     // Adjust the leave view frame to be the size of the PageViewController
     super.leavesView.frame = [self frameForPageViewController];
     
-    // Set the backgound image of the leave view to the book page
-    //UIColor *background = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"open_book_page_turn.png"]];
-    //self.leavesView.backgroundColor = background;
-    //[background release];
+    // by default the book should always open to the title page on first load
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
     
     // Add an invisible button to capture taps to hide/show the controls
     UIButton* invisibleShowHideButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -325,6 +388,33 @@
     [self.view addSubview:invisibleShowHideButton];
     
     
+    
+    // Add an invisible buttons to capture touches on HomePage buttons
+    self.invisibleReadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.invisibleProductionLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.invisibleWritersLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    //self.invisibleReadButton.backgroundColor = [UIColor redColor];
+    //self.invisibleProductionLogButton.backgroundColor = [UIColor redColor];
+    //self.invisibleWritersLogButton.backgroundColor = [UIColor redColor];
+    
+    // set the frames of the buttons to match the frames on the HomeViewController layout
+    self.invisibleReadButton.frame = CGRectMake(32, 183, 257, 66);
+    self.invisibleProductionLogButton.frame = CGRectMake(32, 242, 257, 66);
+    self.invisibleWritersLogButton.frame = CGRectMake(32, 301, 257, 66);
+    
+    // add button targets and actions
+    [self.invisibleReadButton addTarget:self action:@selector(onReadButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.invisibleProductionLogButton addTarget:self action:@selector(onProductionLogButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.invisibleWritersLogButton addTarget:self action:@selector(onWritersLogButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // add buttons to the view
+    [self.view addSubview:self.invisibleReadButton];
+    [self.view addSubview:self.invisibleProductionLogButton];
+    [self.view addSubview:self.invisibleWritersLogButton];
+    
+    
+    // add UIResourceLinkButtons for the userNames of page authors
     CGRect frameForWrittenBy = CGRectMake(161, 342, 129, 21);
     CGRect frameForIllustratedBy = CGRectMake(161, 363, 129, 21);
     
@@ -349,8 +439,12 @@
 {
     [super viewDidUnload];
     
+    self.invisibleReadButton = nil;
+    self.invisibleProductionLogButton = nil;
+    self.invisibleWritersLogButton = nil;
     self.btn_writtenBy = nil;
     self.btn_illustratedBy = nil;
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -358,10 +452,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    //[self.leavesView reloadData];
-    
-    //[self renderPage];
     
     [self hideControlsAfterDelay:3];
     
@@ -377,14 +467,15 @@
     
     // Set the navigation bar and toolbar to the custom clear type
     // Background Image
-    UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
     
-    // pre-iOS 5 method for changing bar backgounds
-    UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-    [navigationBar setBackgroundImage:barImage];
+    // pre-iOS 5 method for changing bar backgrounds
+    //UINavigationBar* navigationBar = self.navigationController.navigationBar;
+    //UICustomNavigationBar* customNavigationBar = (UICustomNavigationBar *)navigationBar;
+    //[customNavigationBar setBackgroundImage:barImage];
     
-    UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-    [toolbar setBackgroundImage:barImage];
+    //UICustomToolbar* toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+    //[toolbar setBackgroundImage:barImage];
     
 }
 
@@ -393,11 +484,15 @@
     [super viewWillDisappear:animated];
     
     // pre-iOS 5 method for changing bar backgounds
-    UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-    [navigationBar setBackgroundImage:nil];
+    //UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
+    //[navigationBar setBackgroundImage:nil];
     
-    UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-    [toolbar setBackgroundImage:nil];
+    //UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
+    //[toolbar setBackgroundImage:nil];
+    
+    
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = NO;
     
 }
 
@@ -409,14 +504,64 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - Navigation Bar Button Handlers
+- (void) onHomeButtonPressed:(id)sender {
+    [super onHomeButtonPressed:sender];
+    
+    // we are about to move to the title page of the book, enable and show the title page buttons
+    [self.invisibleReadButton setEnabled:YES];
+    [self.invisibleProductionLogButton setEnabled:YES];
+    [self.invisibleWritersLogButton setEnabled:YES];
+    [self.invisibleReadButton setHidden:NO];
+    [self.invisibleProductionLogButton setHidden:NO];
+    [self.invisibleWritersLogButton setHidden:NO];
+    
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = YES;
+    
+    [self.leavesView setCurrentPageIndex:0];
+    
+}
+
+#pragma mark - UI Event Handlers
+- (IBAction) onReadButtonClicked:(id)sender {
+    //called when the read button is pressed
+    [super onReadButtonClicked:sender];
+    
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = YES;
+    
+    [self renderPage];
+    
+}
+
+- (IBAction) onProductionLogButtonClicked:(id)sender {
+    //called when the production log button is pressed
+    [super onProductionLogButtonClicked:sender];
+    
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
+}
+
+- (IBAction) onWritersLogButtonClicked:(id)sender {
+    //called when the writer's log button is pressed
+    [super onWritersLogButtonClicked:sender];
+    
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
+}
+
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
-    NSDictionary* userInfo = result.context;
+    NSDictionary* userInfo = result.response;
     NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-    if ([draftID isEqualToNumber:self.pageID]) { //&& [photoID isEqualToNumber:self.topVotedPhotoID]) {
+    //if ([draftID isEqualToNumber:self.pageID]) {
+    if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
         
         [self.leavesView reloadData];
         
@@ -440,10 +585,6 @@
             Resource* resource = (Resource*)anObject;
             
             LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
-            
-            //[self.leavesView reloadData];
-            
-            //[self renderPage];
             
         }
         else if (type == NSFetchedResultsChangeDelete) {

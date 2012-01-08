@@ -28,6 +28,10 @@
     UIBarButtonItem*    m_tb_notificationButton;
     
     UIImageView*        m_iv_background;
+    UIImageView*        m_iv_bookCover;
+    
+    BOOL                m_shouldOpenToTitlePage;
+    BOOL                m_shouldAnimatePageTurn;
 }
 
 @property (nonatomic,retain) NSNumber*                      pageID;
@@ -44,11 +48,25 @@
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_notificationButton;
 
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_background;
+@property (nonatomic,retain) IBOutlet UIImageView*          iv_bookCover;
+
+@property (nonatomic)                 BOOL                  shouldOpenToTitlePage;
+@property (nonatomic)                 BOOL                  shouldAnimatePageTurn;
 
 
 - (int) indexOfPageWithID:(NSNumber*)pageid;
 - (void) onEnumerateComplete:(NSDictionary*)userInfo;
 - (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining;
+
+- (IBAction) onReadButtonClicked:(id)sender;
+- (IBAction) onProductionLogButtonClicked:(id)sender;
+- (IBAction) onWritersLogButtonClicked:(id)sender;
+
+- (void) onHomeButtonPressed:(id)sender;
+
+- (void)showControls;
+- (void)cancelControlHiding;
+- (void)toggleControls;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;
