@@ -229,6 +229,16 @@ static inline double radians (double degrees) {
 
 }
 
+- (NSString*)fullPathForPhotoWithName:(NSString*)fileNameWithoutExtension 
+{
+    PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSMutableString* path =[NSMutableString stringWithString:[appDelegate getImageCacheStorageDirectory]];
+    
+    [path appendFormat:@"/%@.jpg",fileNameWithoutExtension];
+    return path;
+}
+
+
 #pragma mark - ASIHTTPRequest Delegate Handlers
 - (void) onImageDownloadComplete:(CallbackResult*)result {
     NSString* activityName = @"ImageManager.onImageDownloadComplete:";
@@ -242,13 +252,23 @@ static inline double radians (double degrees) {
     }
 }
 
+-(NSString*)saveThumbnailImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
+    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-thumbnailurl"];
+    NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
+    [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
+    return path;
+}
 
+- (NSString*)saveImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
+    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-imageurl"];
+    NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
+    [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
+    return path;
+}
 //Saves the picture on the hard disk in teh cache folder and returns the full path
 - (NSString*)saveImage:(UIImage*)image withFileName:(NSString*)fileNameWithoutExtension {
-    PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSMutableString* path =[NSMutableString stringWithString:[appDelegate getImageCacheStorageDirectory]];
-    
-    [path appendFormat:@"/%@.jpg",fileNameWithoutExtension];
+  
+    NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
     
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;

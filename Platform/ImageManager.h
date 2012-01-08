@@ -34,12 +34,14 @@
 - (id)downloadImage:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (void)imageMovedFrom:(NSString*)originalFilePath toDestination:(NSURL*)destinationURL;
 - (UIImage*)shrinkImage:(UIImage*)image toSize:(CGSize)size;
+- (NSString*) fullPathForPhotoWithName:(NSString*)fileNameWithoutExtension;
 
 
 - (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (NSString*)saveImage:(UIImage*)image withFileName:(NSString*)fileNameWithoutExtension;
-
+- (NSString*)saveImage:(UIImage*)image forPhotoWithID:(NSNumber*)photoid;
+- (NSString*)saveThumbnailImage:(UIImage*)image forPhotoWithID:(NSNumber*)photoid;
 
 
 @end

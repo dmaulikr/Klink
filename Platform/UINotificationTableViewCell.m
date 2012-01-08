@@ -167,35 +167,7 @@
             [self.contentView addSubview:self.label];
            
         }
-        
-        /*switch ([notification.type intValue]) {
-            case kCAPTION_VOTE | kPHOTO_VOTE:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
-                break;
-            case kCAPTION_ADDED:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-compose.png"];
-                break;
-            case kPHOTO_ADDED_TO_DRAFT:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
-                break;
-            case kDRAFT_SUBMITTED_TO_EDITORS | kDRAFT_EXPIRED | kDRAFT_NOT_PUBLISHED:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
-                break;
-            case kDRAFT_PUBLISHED:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
-                break;
-            case kEDITORIAL_BOARD_VOTE_STARTED | kEDITORIAL_BOARD_VOTE_ENDED | kEDITORIAL_BOARD_NO_RESULT:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
-                break;
-            case kPROMOTION_TO_EDITOR:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-ribbon1.png"];
-                break;
-            case kDEMOTION_FROM_EDITOR:
-                self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
-                break;
-            default:
-                break;
-        }*/
+       
         
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE) {
@@ -233,6 +205,7 @@
             ![notification.imageurl isEqualToString:@""]) {
             Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
             callback.fireOnMainThread = YES;
+            self.iv_notificationImage.hidden = NO;
             UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
             [callback release];
             
@@ -246,6 +219,7 @@
             }
         }
         else {
+            self.iv_notificationImage.hidden = YES;
             self.iv_notificationImage.contentMode = UIViewContentModeCenter;
             self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
         }

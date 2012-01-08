@@ -90,12 +90,12 @@
     retVal.themeid = pageid;
     
     // Save thumbnail image
-    NSString* thumbnailFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-tb"];
-    retVal.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFileName];
+   // NSString* thumbnailFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-tb"];
+    retVal.thumbnailurl = [imageManager saveThumbnailImage:thumbnailImage forPhotoWithID:retVal.objectid];
     
     // Save fullscreen image
-    NSString* fullscreenFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-fs"];
-    retVal.imageurl = [imageManager saveImage:image withFileName:fullscreenFileName];
+   // NSString* fullscreenFileName = [NSString stringWithFormat:@"%@%@", [retVal.objectid stringValue], @"-fs"];
+    retVal.imageurl = [imageManager saveImage:image forPhotoWithID:retVal.objectid];
     
     
     return retVal;
