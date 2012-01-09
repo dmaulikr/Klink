@@ -455,7 +455,7 @@
     
     int index = self.ic_coverFlowView.currentItemIndex;
     
-    if (index > 0 && index < count /* && ![self.poll.hasvoted boolValue]*/) {
+    if (index >= 0 && index < count  && ![self.poll.hasvoted boolValue]) {
         
         
         //create a vote object
