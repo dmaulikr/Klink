@@ -33,10 +33,18 @@
 
 }
 
-+ (NSString*) formatMediumDateWithTime:(NSDate*)date {
++ (NSString*) formatMediumDateWithTime:(NSDate*)date includeSeconds:(BOOL)seconds {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    
+    if (seconds) {
+        // Returns a string with format like "Dec 1, 2011, 12:00:59 AM"
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    }
+    else {
+        // Returns a string with format like "Dec 1, 2011, 12:00 AM"
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    }
     NSString *formattedDate = [dateFormatter stringFromDate:date];
     
     [dateFormatter release];

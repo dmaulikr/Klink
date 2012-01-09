@@ -178,7 +178,13 @@
             //never been read, so lets highlight the background
             self.contentView.backgroundColor = [UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA];
             self.contentView.opaque = NO;
-            //AAAAAA
+            
+            /*CAGradientLayer *gradient = [CAGradientLayer layer];
+            gradient.frame = CGRectMake(0,0,160,73);
+            gradient.startPoint = CGPointMake(0.0, 0.5);
+            gradient.endPoint = CGPointMake(1.0, 0.5);
+            gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA] CGColor], (id)[[UIColor clearColor] CGColor], nil];
+            [self.contentView.layer insertSublayer:gradient atIndex:0];*/
         }
         else {
             //has been read so lets not highlight the background

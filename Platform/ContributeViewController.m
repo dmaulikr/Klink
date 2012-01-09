@@ -70,7 +70,7 @@
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
     NSDate* deadlineDate = [now dateByAddingTimeInterval:draftExpirySetting];
-    self.lbl_deadline.text = [NSString stringWithFormat:@"draft deadline: %@", [DateTimeHelper formatMediumDateWithTime:deadlineDate]];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"draft deadline: %@", [DateTimeHelper formatMediumDateWithTime:deadlineDate includeSeconds:NO]];
 }
 
 - (void) timeRemaining:(NSTimer *)timer {
