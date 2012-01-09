@@ -185,7 +185,7 @@
         int count = [[self.frc_draft_pages fetchedObjects] count];
         if (count == 0) {
             //there are no objects in local store, update from cloud
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            //[self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
         
         // update all the labels of the UI
