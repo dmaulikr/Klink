@@ -10,6 +10,7 @@
 #import "PageViewController.h"
 #import "Macros.h"
 #import "Page.h"
+#import "Photo.h"
 #import "CloudEnumeratorFactory.h"
 #import "PageState.h"
 #import "HomeViewController.h"
@@ -70,7 +71,6 @@
         }
         else {
             Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
-            //self.pageID = page.objectid;
             
             NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
             
@@ -162,11 +162,28 @@
             [self.invisibleWritersLogButton setHidden:YES];
             
             NSUInteger index = [self indexOfViewController:currentViewController];
+            NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+            
             NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-            if (index != NSNotFound) {
-                // we update the userDefault setting for the last page viewed by the user,
-                // 1 is subtracted from the index to account for the title page which is not in the frc
-                [userDefaults setInteger:(index - 1) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+            
+            if (publishedPageCount != NSNotFound && index != NSNotFound) {
+                
+                NSUInteger publishedPageIndex = index - 1;  // 1 is subtracted from the index to account for the title page which is not in the frc
+                
+                if (publishedPageIndex < publishedPageCount) {
+                    
+                    Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
+                    self.pageID = page.objectid;
+                    
+                    Photo* photo = [page photoWithHighestVotes];
+                    self.topVotedPhotoID = photo.objectid;
+                    
+                    // we update the userDefault setting for the last page viewed by the user
+                    [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                }
+                else {
+                    [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                }
             }
             else {
                 [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
@@ -200,10 +217,25 @@
         pageViewController = [self viewControllerAtIndex:0];
     }
     else if (publishedPageCount != 0) {
-        if (self.pageID != nil  && [self.pageID intValue] != 0) {
-            // the page id has been set, we will move to that page
-            int indexForPage = [self indexOfPageWithID:self.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
-            pageViewController = [self viewControllerAtIndex:indexForPage];
+        if (self.shouldOpenToSpecificPage) {
+            // cancel further opening to this specific page
+            self.shouldOpenToSpecificPage = NO;
+            
+            if (self.pageID != nil  && [self.pageID intValue] != 0) {
+                // the page id has been set, we will move to that page
+                NSUInteger publishedPageIndex = [self indexOfPageWithID:self.pageID];
+                int indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                
+                // we update the userDefault setting for the last page viewed by the user to be this page
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                
+                pageViewController = [self viewControllerAtIndex:indexForPage];
+            }
+            else {
+                // No page specified, go to title page immidiately
+                pageViewController = [self viewControllerAtIndex:0];
+            }
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
             // we go to the last page the user viewed
@@ -219,7 +251,13 @@
             if (page != nil) {
                 //local store does contain pages to enumerate
                 self.pageID = page.objectid;
-                int indexForPage = [self indexOfPageWithID:self.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                NSUInteger publishedPageIndex = [self indexOfPageWithID:self.pageID];
+                int indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                
+                // we update the userDefault setting for the last page viewed by the user to be this page
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                
                 pageViewController = [self viewControllerAtIndex:indexForPage];
             }
             else {
@@ -294,8 +332,8 @@
     [self.pageController didMoveToParentViewController:self];
     
     // by default the book should always open to the title page on first load
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
+    //self.shouldOpenToTitlePage = YES;
+    //self.shouldAnimatePageTurn = NO;
     
     
     // Create gesture recognizer for the background image view to handle a single tap
@@ -531,6 +569,10 @@
 #pragma mark - Static Initializers
 + (BookViewControllerPageView*) createInstance {
     BookViewControllerPageView* instance = [[BookViewControllerPageView alloc]initWithNibName:@"BookViewControllerPageView" bundle:nil];
+    // by default the book should always open to the title page on first load
+    instance.shouldOpenToTitlePage = YES;
+    instance.shouldOpenToSpecificPage = NO;
+    instance.shouldAnimatePageTurn = NO;
     [instance autorelease];
     return instance;
 }
@@ -538,6 +580,9 @@
 + (BookViewControllerPageView*) createInstanceWithPageID:(NSNumber *)pageID {
     BookViewControllerPageView* vc = [BookViewControllerPageView createInstance];
     vc.pageID = pageID;
+    vc.shouldOpenToTitlePage = NO;
+    vc.shouldOpenToSpecificPage = YES;
+    vc.shouldAnimatePageTurn = YES;
     return vc;
 }
 

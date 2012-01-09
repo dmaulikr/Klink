@@ -38,6 +38,7 @@
 @synthesize iv_bookCover           = m_iv_bookCover;
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 @synthesize shouldOpenToTitlePage  = m_shouldOpenToTitlePage;
+@synthesize shouldOpenToSpecificPage = m_shouldOpenToSpecificPage;
 @synthesize shouldAnimatePageTurn  = m_shouldAnimatePageTurn;
 
 #define kENUMERATIONTHRESHOLD   1
@@ -775,12 +776,20 @@
 	if (NSClassFromString(@"UIPageViewController")) {
 		// iOS 5 UIPageViewController style with native page curling
         BookViewControllerPageView* pageViewInstance = [[BookViewControllerPageView alloc]initWithNibName:@"BookViewControllerPageView" bundle:nil];
+        // by default the book should always open to the title page on first load
+        pageViewInstance.shouldOpenToTitlePage = YES;
+        pageViewInstance.shouldOpenToSpecificPage = NO;
+        pageViewInstance.shouldAnimatePageTurn = NO;
         [pageViewInstance autorelease];
         return pageViewInstance;
 	}
     else {
 		// iOS 3-4x LeaveViewController style with custom page curling
         BookViewControllerLeaves* leavesInstance = [[BookViewControllerLeaves alloc]initWithNibName:@"BookViewControllerLeaves" bundle:nil];
+        // by default the book should always open to the title page on first load
+        leavesInstance.shouldOpenToTitlePage = YES;
+        leavesInstance.shouldOpenToSpecificPage = NO;
+        leavesInstance.shouldAnimatePageTurn = NO;
         [leavesInstance autorelease];
         return leavesInstance;
 	}
@@ -789,6 +798,9 @@
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber *)pageID {
     BookViewControllerBase* vc = [BookViewControllerBase createInstance];
     vc.pageID = pageID;
+    vc.shouldOpenToTitlePage = NO;
+    vc.shouldOpenToSpecificPage = YES;
+    vc.shouldAnimatePageTurn = YES;
     return vc;
 }
 

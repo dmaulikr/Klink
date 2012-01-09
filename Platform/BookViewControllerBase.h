@@ -31,6 +31,7 @@
     UIImageView*        m_iv_bookCover;
     
     BOOL                m_shouldOpenToTitlePage;
+    BOOL                m_shouldOpenToSpecificPage;
     BOOL                m_shouldAnimatePageTurn;
 }
 
@@ -51,6 +52,7 @@
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_bookCover;
 
 @property (nonatomic)                 BOOL                  shouldOpenToTitlePage;
+@property (nonatomic)                 BOOL                  shouldOpenToSpecificPage;
 @property (nonatomic)                 BOOL                  shouldAnimatePageTurn;
 
 
