@@ -25,6 +25,7 @@
 #import "PlatformAppDelegate.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "BookViewControllerBase.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -40,6 +41,15 @@
 @synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
+
+@synthesize testButton = m_testButton;
+
+- (IBAction) onTestButtonPressed:(id)sender {
+    
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:[NSNumber numberWithInt:925187962]];
+    [self.navigationController pushViewController:bookViewController animated:YES];
+    
+}
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all draft pages
