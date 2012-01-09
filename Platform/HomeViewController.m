@@ -169,16 +169,23 @@
     self.cloudDraftEnumerator = [CloudEnumerator enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
     
-//    //here we check to see how many items are in the FRC, if it is 0,
-//    //then we initiate a query against the cloud.
-//    int count = [[self.frc_draft_pages fetchedObjects] count];
-//    if (count == 0) {
-//        //there are no objects in local store, update from cloud
-//       // [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-//    }
-    
-    // update all the labels of the UI
-    [self updateLabels];
+    NSString *reqSysVer = @"5.0";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending) {
+        // in pre iOS 5 devices, we need to check the FRC and update UI
+        // labels in viewDidLoad to populate the LeavesViewController
+        
+        //here we check to see how many items are in the FRC, if it is 0,
+        //then we initiate a query against the cloud.
+        int count = [[self.frc_draft_pages fetchedObjects] count];
+        if (count == 0) {
+            //there are no objects in local store, update from cloud
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
+        
+        // update all the labels of the UI
+        [self updateLabels];
+    }
     
 }
 
@@ -210,16 +217,23 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    int count = [[self.frc_draft_pages fetchedObjects] count];
-    if (count == 0) {
-        //there are no objects in local store, update from cloud
-        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    NSString *reqSysVer = @"5.0";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedDescending) {
+        // in iOS 5 and above devices, we need to check the FRC and update UI
+        // labels in viewWillAppear to populate up to date data for the UIPageViewController
+        
+        //here we check to see how many items are in the FRC, if it is 0,
+        //then we initiate a query against the cloud.
+        int count = [[self.frc_draft_pages fetchedObjects] count];
+        if (count == 0) {
+            //there are no objects in local store, update from cloud
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
+        
+        // update all the labels of the UI
+        [self updateLabels];
     }
-    
-    // update all the labels of the UI
-    [self updateLabels];
     
 }
 
