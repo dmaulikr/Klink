@@ -10,7 +10,7 @@
 #import "BaseViewController.h"
 
 
-@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate > {
+@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate > {
     CloudEnumerator* m_cloudDraftEnumerator;
     UIButton*       m_btn_readButton;
     UIButton*       m_btn_productionLogButton;

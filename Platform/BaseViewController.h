@@ -41,7 +41,6 @@
 
 
 @property (nonatomic, retain) User*                     loggedInUser;
-@property (nonatomic, retain) UIProgressHUDView*        progressView;
 @property (nonatomic, retain) UILoginView*              loginView;
 
 - (void) authenticate:(BOOL)facebook 

@@ -186,26 +186,28 @@
     
     int currentIndex = self.leavesView.currentPageIndex;
     
-    Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
-    Caption* caption = [page captionWithHighestVotes];
-    Photo* photo = [page photoWithHighestVotes];
-    
-    NSNumber* userID = nil;
-    
-    if (sender == self.btn_writtenBy) {
-        userID = caption.creatorid;
-    }
-    else {
-        userID = photo.creatorid;
-    }
-    
-    if (userID != nil) {
-        ProfileViewController* pvc = [ProfileViewController createInstanceForUser:userID];
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
-        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentModalViewController:navigationController animated:YES];
+    if (currentIndex < [[self.frc_published_pages fetchedObjects]count]) {
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
+        Caption* caption = [page captionWithHighestVotes];
+        Photo* photo = [page photoWithHighestVotes];
         
-        [navigationController release];
+        NSNumber* userID = nil;
+        
+        if (sender == self.btn_writtenBy) {
+            userID = caption.creatorid;
+        }
+        else {
+            userID = photo.creatorid;
+        }
+        
+        if (userID != nil) {
+            ProfileViewController* pvc = [ProfileViewController createInstanceForUser:userID];
+            UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self presentModalViewController:navigationController animated:YES];
+            
+            [navigationController release];
+        }
     }
 }
 

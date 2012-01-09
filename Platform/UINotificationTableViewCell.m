@@ -18,10 +18,15 @@
 #import "DateTimeHelper.h"
 #import "FeedTypes.h"
 #import "UIViewCategory.h"
-
+#import "Macros.h"
 
 #define kNOTIFICATIONID             @"notificationid"
 #define kUSERREGEX                  @"\\{.*?\\}"
+
+#define kUNREAD_RED         122
+#define kUNREAD_BLUE        122
+#define kUNREAD_GREEN       122
+#define kUNREAD_ALPHA       0.5
 
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
@@ -168,7 +173,18 @@
            
         }
        
-        
+        //need to check if the notification ahs been opened before
+        if ([notification.hasopened boolValue] == NO) {
+            //never been read, so lets highlight the background
+            self.contentView.backgroundColor = [UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA];
+            self.contentView.opaque = NO;
+            //AAAAAA
+        }
+        else {
+            //has been read so lets not highlight the background
+            self.contentView.backgroundColor = [UIColor clearColor];
+            self.contentView.opaque = YES;
+        }
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
@@ -246,6 +262,8 @@
         [self.containerView removeFromSuperview];
         self.containerView = nil;
     }
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.contentView.opaque = YES;
     self.target = target;
     self.selector = selector;
     self.notificationID = notificationID;

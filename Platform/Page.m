@@ -57,6 +57,13 @@
     return photo;
 }
 
+//returns the number of drafts in the store
++ (int) numberOfDrafts {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* draftObjects = [resourceContext resourcesWithType:PAGE withValueEqual:[NSString stringWithFormat:@"%d",kDRAFT] forAttribute:STATE sortBy:nil];
+    
+    return [draftObjects count];
+}
 
 //static initializer
 + (Page*)createNewDraftPage{

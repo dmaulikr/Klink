@@ -18,7 +18,7 @@
 @dynamic hasopened;
 @dynamic hasseen;
 @dynamic title;
-@dynamic datexpires;
+@dynamic dateexpires;
 @dynamic imageurl;
 @dynamic rendertype;
 

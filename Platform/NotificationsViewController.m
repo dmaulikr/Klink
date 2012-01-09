@@ -53,7 +53,7 @@
         double currentDateInSeconds = [currentDate timeIntervalSince1970];
         NSNumber* numDateInSeconds = [NSNumber numberWithDouble:currentDateInSeconds];
         //add predicate to test for unopened feed items    
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@ AND %K>%@",HASOPENED, [NSNumber numberWithBool:NO], USERID,self.authenticationManager.m_LoggedInUserID,DATEEXPIRE,numDateInSeconds];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K>%@",USERID,self.authenticationManager.m_LoggedInUserID,DATEEXPIRE,numDateInSeconds];
         
         
         [fetchRequest setPredicate:predicate];
@@ -83,16 +83,16 @@
 
 #pragma mark - Instance methods
 - (void) markAllDisplayedNotificationsSeen {
-    NSArray* notifications = [self.frc_notifications fetchedObjects];
-    ResourceContext* resourceContext = [ResourceContext instance];
+//    NSArray* notifications = [self.frc_notifications fetchedObjects];
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    
+//    for (Feed* notification in notifications) {
+//        if ([notification.hasseen boolValue] != YES) {
+//            notification.hasseen = [NSNumber numberWithBool:YES];
+//        }
+//    }
     
-    for (Feed* notification in notifications) {
-        if ([notification.hasseen boolValue] != YES) {
-            notification.hasseen = [NSNumber numberWithBool:YES];
-        }
-    }
-    
-    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+   /// [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
 }
 
 
@@ -200,6 +200,7 @@
        
     }
     
+    [self.tbl_notificationsTableView reloadData];
     //we need to clear the application badge icon from the app icon
     UIApplication* application = [UIApplication sharedApplication];
     LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
@@ -219,7 +220,7 @@
         //as soon as we open up, we mark all notifications that are currently
         //open on the screen to be read
         //we execute this on a background thread
-        [self performSelectorInBackground:@selector(markAllDisplayedNotificationsSeen) withObject:nil];
+        //[self performSelectorInBackground:@selector(markAllDisplayedNotificationsSeen) withObject:nil];
         
     }
 
@@ -585,9 +586,12 @@
     
     if (feedCount > 0 && index < feedCount) {
         Feed* notification = [[self.frc_notifications fetchedObjects]objectAtIndex:index];
-        
-
-            
+        //we need to mark the notification as having been opened
+        notification.hasopened = [NSNumber numberWithBool:YES];
+        notification.hasseen = [NSNumber numberWithBool:YES];
+        //save the notification change
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
         
         if ([notification.rendertype intValue] == kGENERIC_EDITORIAL_POST_VOTE) {
             //this notification type is a generic type designed to popup up the editorial
@@ -618,6 +622,7 @@
             //generic book display
             [self processGenericBookNotification:notification];
         }
+        
         
     }
     

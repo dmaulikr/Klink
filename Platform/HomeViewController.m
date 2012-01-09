@@ -20,6 +20,7 @@
 #import "PageState.h"
 #import "Macros.h"
 #import "CloudEnumeratorFactory.h"
+#import "UIStrings.h"
 
 @implementation HomeViewController
 
@@ -131,24 +132,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator = [CloudEnumerator enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
     
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    int count = [[self.frc_draft_pages fetchedObjects] count];
-    if (count == 0) {
-        //there are no objects in local store, update from cloud
-        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-    }
+//    //here we check to see how many items are in the FRC, if it is 0,
+//    //then we initiate a query against the cloud.
+//    int count = [[self.frc_draft_pages fetchedObjects] count];
+//    if (count == 0) {
+//        //there are no objects in local store, update from cloud
+//       // [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+//    }
     
     // update the count of open drafts
-    [self updateDraftCount];
+   [self updateDraftCount];
     
     // set number of contributors label
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     int numContributors = [settings.num_users intValue];
-    
+
     if (numContributors == 0) {
         self.lbl_numContributors.text = [NSString stringWithFormat:@"all contributors"];
     }
@@ -163,17 +164,21 @@
     }
     
     // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
+    NSString* writersLogBtnString = nil;
     if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
+        writersLogBtnString = [NSString stringWithFormat:ui_AUTH_WORKERSLOG, self.loggedInUser.username];
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"%d unread notifications",unreadNotifications];
     }
     else {
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
+        writersLogBtnString = ui_UAUTH_WORKERSLOGS;
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
+
     }
+    [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];
+    [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
-    
+    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];    
 }
 
 - (void)viewDidUnload
@@ -188,6 +193,7 @@
     self.btn_writersLogButton = nil;
     self.lbl_writersLogSubtext = nil;
     self.lbl_numContributors = nil;
+    self.cloudDraftEnumerator = nil;
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -232,14 +238,19 @@
     }
     
     // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
+    NSString* writersLogBtnString = nil;
     if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
+        writersLogBtnString = [NSString stringWithFormat:ui_AUTH_WORKERSLOG, self.loggedInUser.username];
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"%d unread notifications",unreadNotifications];
     }
     else {
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
+        writersLogBtnString = ui_UAUTH_WORKERSLOGS;
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
     }
+    
+    [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];
+    [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
     

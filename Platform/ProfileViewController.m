@@ -454,8 +454,8 @@
         //after this point, the platforms should automatically begin syncing the data back to the cloud
         //we now show a progress bar to monitor this background activity
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        // PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = self.progressView;
+        PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = delegate.progressView;
         progressView.delegate = self;
         
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
@@ -527,8 +527,8 @@
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
 {
     if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
-        // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = self.progressView;
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
         
         ResourceContext* resourceContext = [ResourceContext instance];
