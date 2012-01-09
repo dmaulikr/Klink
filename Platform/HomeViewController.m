@@ -93,6 +93,40 @@
     }
 }
 
+- (void)updateLabels {
+    // update the count of open drafts
+    [self updateDraftCount];
+    
+    // set number of contributors label
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    int numContributors = [settings.num_users intValue];
+    
+    if (numContributors == 0) {
+        self.lbl_numContributors.text = [NSString stringWithFormat:@"all contributors"];
+    }
+    else {
+        NSNumber* numContributors = settings.num_users;
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle:kCFNumberFormatterDecimalStyle];
+        [numberFormatter setGroupingSeparator:@","];
+        NSString* numContributorsCommaString = [numberFormatter stringForObjectValue:numContributors];
+        [numberFormatter release];
+        self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
+    }
+    
+    // set the appropriate text for the Writer's log button
+    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
+    if ([self.authenticationManager isUserAuthenticated]) {
+        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
+    }
+    else {
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
+    }
+    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
+    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
+}
+
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
@@ -142,37 +176,8 @@
         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
     
-    // update the count of open drafts
-    [self updateDraftCount];
-    
-    // set number of contributors label
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    int numContributors = [settings.num_users intValue];
-    
-    if (numContributors == 0) {
-        self.lbl_numContributors.text = [NSString stringWithFormat:@"all contributors"];
-    }
-    else {
-        NSNumber* numContributors = settings.num_users;
-        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setNumberStyle:kCFNumberFormatterDecimalStyle];
-        [numberFormatter setGroupingSeparator:@","];
-        NSString* numContributorsCommaString = [numberFormatter stringForObjectValue:numContributors];
-        [numberFormatter release];
-        self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
-    }
-    
-    // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
-    if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
-    }
-    else {
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
-    }
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
+    // update all the labels of the UI
+    [self updateLabels];
     
 }
 
@@ -211,37 +216,8 @@
         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
     
-    // update the count of open drafts
-    [self updateDraftCount];
-    
-    // set number of contributors label
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    int numContributors = [settings.num_users intValue];
-    
-    if (numContributors == 0) {
-        self.lbl_numContributors.text = [NSString stringWithFormat:@"all contributors"];
-    }
-    else {
-        NSNumber* numContributors = settings.num_users;
-        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setNumberStyle:kCFNumberFormatterDecimalStyle];
-        [numberFormatter setGroupingSeparator:@","];
-        NSString* numContributorsCommaString = [numberFormatter stringForObjectValue:numContributors];
-        [numberFormatter release];
-        self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
-    }
-    
-    // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
-    if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
-    }
-    else {
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
-    }
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
+    // update all the labels of the UI
+    [self updateLabels];
     
 }
 
