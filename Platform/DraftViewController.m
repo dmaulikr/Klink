@@ -22,6 +22,8 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -222,10 +224,31 @@
     
     }
 
+- (void) viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
+        [userDefaults synchronize];
+    }
+}
 - (void)viewWillAppear:(BOOL)animated
 {
    // NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
+    
+    //we check to see if the user has been to this viewcontroller before
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Draft" message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
     
     ResourceContext* resourceContext = [ResourceContext instance];
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];

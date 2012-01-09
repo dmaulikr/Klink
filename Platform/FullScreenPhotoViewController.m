@@ -24,6 +24,8 @@
 #import "PlatformAppDelegate.h"
 #import "NotificationsViewController.h"
 #import "DraftViewController.h"
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -511,6 +513,15 @@
     
 	[super viewWillAppear:animated];
     
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
     [self commonInit];
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
@@ -554,6 +565,18 @@
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
+}
+
+- (void) viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDFULLSCREENVC];
+        [userDefaults synchronize];
+    }
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.

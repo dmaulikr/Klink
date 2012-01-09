@@ -19,6 +19,8 @@
 #import "PlatformAppDelegate.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 @implementation EditorialVotingViewController
 @synthesize poll            = m_poll;
@@ -226,6 +228,16 @@
         LOG_EDITORVOTEVIEWCONTROLLER(1, @"%@No poll id was passed into view controller, nothing to render",activityName);
     }
     
+    //if its the first time the user has opened the production log, we display a welcome message
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Editorial Board" message:ui_WELCOME_EDITORIAL delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
+    
     // Setting the status bar orientation to landscape forces the view into landscape mode
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     
@@ -297,6 +309,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDEDITORIALVC];
+        [userDefaults synchronize];
+    }
+    
     
 }
 

@@ -472,7 +472,7 @@
     
     // Set the navigation bar and toolbar to the custom clear type
     // Background Image
-    UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
     
     // pre-iOS 5 method for changing bar backgrounds
     //UINavigationBar* navigationBar = self.navigationController.navigationBar;

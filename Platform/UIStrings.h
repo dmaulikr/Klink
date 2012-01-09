@@ -13,3 +13,11 @@ extern NSString* const ui_PRODUCTIONLOG;
 extern NSString* const ui_UAUTH_WORKERSLOGS;
 extern NSString* const ui_AUTH_WORKERSLOG;
 extern NSString* const ui_APPLICATIONNAME;
+
+
+extern NSString* const ui_WELCOME_PRODUCTIONLOG;
+extern NSString* const ui_WELCOME_BOOK;
+extern NSString* const ui_WELCOME_FULLSCREEN;
+extern NSString* const ui_WELCOME_DRAFT;
+extern NSString* const ui_WELCOME_PROFILE;
+extern NSString* const ui_WELCOME_EDITORIAL;
