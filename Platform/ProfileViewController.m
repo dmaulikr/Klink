@@ -15,7 +15,8 @@
 #import "UIProgressHUDView.h"
 #import "CloudEnumerator.h"
 #import "Macros.h"
-
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 @implementation ProfileViewController
 @synthesize lbl_username            = m_lbl_username;
@@ -339,9 +340,32 @@
     [self.profileCloudEnumerator enumerateUntilEnd:nil];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDPROFILEVC];
+        [userDefaults synchronize];
+    }
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    //We show an alert view if this is the first time they have used this VC
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC] == NO) 
+    {
+        //it is the first time, we show the alert screen
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Profile" message:ui_WELCOME_PROFILE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+
+    }
+    
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
@@ -350,6 +374,8 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
+    
+    
     
     // Set the navigationbar title
     self.navigationItem.title = @"Writers's Log";

@@ -116,14 +116,19 @@
     }
     
     // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = [NSString stringWithFormat:@"Writer's Log"];
+    NSString* writersLogBtnString = nil;
     if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:@"%@'s Log", self.loggedInUser.username];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Notifications and Profile"];
+        writersLogBtnString = [NSString stringWithFormat:ui_AUTH_WORKERSLOG, self.loggedInUser.username];
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"%d unread notifications",unreadNotifications];
     }
     else {
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become a contributor"];
+        writersLogBtnString = ui_UAUTH_WORKERSLOGS;
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
+        
     }
+    [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];    
+    [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
 }
@@ -231,11 +236,10 @@
             [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
         
-        // update all the labels of the UI
-        [self updateLabels];
+        
     }
-    
-}
+    // update all the labels of the UI
+    [self updateLabels];}
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

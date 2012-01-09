@@ -23,6 +23,8 @@
 #import "ProfileViewController.h"
 #import "PageState.h"
 #import "PlatformAppDelegate.h"
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -269,6 +271,16 @@
     NSString* activityName = @"ProductionLogViewController.viewWillAppear:";
     [super viewWillAppear:animated];
 
+    //if its the first time the user has opened the production log, we display a welcome message
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_PRODUCTIONLOG delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
+    
     //here we check to see how many items are in the FRC, if it is 0,
     //then we initiate a query against the cloud.
     int count = [[self.frc_draft_pages fetchedObjects] count];
@@ -290,6 +302,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
+        [userDefaults synchronize];
+    }
     
 }
 
