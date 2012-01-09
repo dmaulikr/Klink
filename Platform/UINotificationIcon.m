@@ -42,7 +42,7 @@
         double currentDateInSeconds = [currentDate timeIntervalSince1970];
         NSNumber* numDateInSeconds = [NSNumber numberWithDouble:currentDateInSeconds];
         //add predicate to test for unopened feed items    
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@ AND %K>%@",HASOPENED, [NSNumber numberWithBool:NO], USERID,authenticationManager.m_LoggedInUserID,DATEEXPIRE,numDateInSeconds];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K>%@", USERID,authenticationManager.m_LoggedInUserID,DATEEXPIRE,numDateInSeconds];
         
         [fetchRequest setPredicate:predicate];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];

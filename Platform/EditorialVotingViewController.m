@@ -458,8 +458,8 @@
         self.userJustVoted = YES;
         
         //lets save that shit to the cloud
-        // // PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = self.progressView;
+         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
         [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
         [callback release];

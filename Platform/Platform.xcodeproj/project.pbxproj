@@ -232,6 +232,7 @@
 		C5A04A93144356CA0037FA7B /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A92144356CA0037FA7B /* RequestManager.m */; };
 		C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A82D761466667E00E77675 /* UICameraActionSheet.m */; };
 		C5B3003C1447AE0A00236F52 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */; };
+		C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B8B85714BA640A0085B092 /* UIStrings.m */; };
 		C5C298D0144B9CE100206D07 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C298CF144B9CE100206D07 /* EventManager.m */; };
 		C5C76C5A145A123B00BA69B8 /* ApplicationSettingsDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */; };
 		C5C76C7E145B922700BA69B8 /* FullScreenPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */; };
@@ -643,6 +644,8 @@
 		C5A82D761466667E00E77675 /* UICameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICameraActionSheet.m; sourceTree = "<group>"; };
 		C5B3003A1447AE0A00236F52 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
+		C5B8B85614BA640A0085B092 /* UIStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIStrings.h; sourceTree = "<group>"; };
+		C5B8B85714BA640A0085B092 /* UIStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIStrings.m; sourceTree = "<group>"; };
 		C5C298CE144B9CE100206D07 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventManager.h; sourceTree = "<group>"; };
 		C5C298CF144B9CE100206D07 /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventManager.m; sourceTree = "<group>"; };
 		C5C76C58145A123B00BA69B8 /* ApplicationSettingsDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSettingsDefaults.m; sourceTree = "<group>"; };
@@ -1402,6 +1405,8 @@
 				C5CE03BB14A7C7F300F89241 /* SharingLevel.h */,
 				C5CBA6B014B38E8B006FA4E3 /* UserDefaultSettings.h */,
 				C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */,
+				C5B8B85614BA640A0085B092 /* UIStrings.h */,
+				C5B8B85714BA640A0085B092 /* UIStrings.m */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -2095,6 +2100,7 @@
 				C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */,
 				527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */,
 				C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */,
+				C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

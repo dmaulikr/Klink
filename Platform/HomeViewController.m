@@ -20,6 +20,7 @@
 #import "PageState.h"
 #import "Macros.h"
 #import "CloudEnumeratorFactory.h"
+#import "UIStrings.h"
 
 @implementation HomeViewController
 
@@ -165,16 +166,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator = [CloudEnumerator enumeratorForDrafts];
     self.cloudDraftEnumerator.delegate = self;
     
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    int count = [[self.frc_draft_pages fetchedObjects] count];
-    if (count == 0) {
-        //there are no objects in local store, update from cloud
-        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-    }
+//    //here we check to see how many items are in the FRC, if it is 0,
+//    //then we initiate a query against the cloud.
+//    int count = [[self.frc_draft_pages fetchedObjects] count];
+//    if (count == 0) {
+//        //there are no objects in local store, update from cloud
+//       // [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+//    }
     
     // update all the labels of the UI
     [self updateLabels];
@@ -193,6 +194,7 @@
     self.btn_writersLogButton = nil;
     self.lbl_writersLogSubtext = nil;
     self.lbl_numContributors = nil;
+    self.cloudDraftEnumerator = nil;
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

@@ -41,4 +41,5 @@
 
 //static initializers
 + (Page*)createNewDraftPage;
++ (int)numberOfDrafts;
 @end
