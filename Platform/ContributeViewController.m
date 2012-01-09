@@ -197,17 +197,6 @@
                                         repeats:YES];
     }
     
-    // set custom font on views with text
-    /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-    [self.tf_newDraftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-    [self.lbl_titleRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.lbl_photoOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.lbl_photoRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.tv_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-    [self.lbl_captionOptional setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.lbl_captionRequired setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-    [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
-    
     // Keeps the text of the caption textview aligned to the vertical center of the textview frame
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
@@ -356,12 +345,13 @@
             if (image != nil) {
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.img_photo = image;
+                self.iv_photo.image = self.img_photo;
                 
                 [self displayPhotoFrameOnImage:image];
             }
         }
         
-        self.iv_photo.image = self.img_photo;
+        //self.iv_photo.image = self.img_photo;
         self.btn_cameraButton.hidden = YES;
         self.btn_cameraButton.enabled = NO;
         self.lbl_photoOptional.hidden = YES;
@@ -652,10 +642,12 @@
 - (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
                           withFullImage:(UIImage*)image {
     //we handle back end processing of the image from the camera sheet here
+    self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
     self.img_photo = image;
     self.img_thumbnail = thumbnailImage;
-    
     self.iv_photo.image = self.img_photo;
+    
+    [self displayPhotoFrameOnImage:image];
     
     // enable Submit button if ok
     self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
@@ -763,6 +755,7 @@
             LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            self.img_photo = response.image;
             
             [self displayPhotoFrameOnImage:response.image];
             
