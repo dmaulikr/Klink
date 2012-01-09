@@ -20,8 +20,6 @@
     UILabel* m_lbl_numDraftsTotal;
     UILabel* m_lbl_numDraftsClosing;
     
-    UIButton
-    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;

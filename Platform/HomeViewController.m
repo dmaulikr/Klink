@@ -236,10 +236,11 @@
             [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
         
-        
+        // update all the labels of the UI
+        [self updateLabels];
     }
-    // update all the labels of the UI
-    [self updateLabels];}
+    
+}
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
