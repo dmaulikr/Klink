@@ -48,7 +48,7 @@
 }
 
 
-#pragma mark - PageViewController Data Source and Delegate Methods (for iOS 5+)
+#pragma mark - UIPageViewController Data Source and Delegate Methods (for iOS 5+)
 - (UIViewController *)viewControllerAtIndex:(int)index
 {
     //NSString* activityName = @"BookViewControllerpageView.viewControllerAtIndex:";
@@ -509,7 +509,7 @@
             
             LOG_BOOKVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
             
-            [self renderPage];
+            //[self renderPage];
             
         }
         else if (type == NSFetchedResultsChangeDelete) {
