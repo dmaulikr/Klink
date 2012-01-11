@@ -57,7 +57,9 @@
 
 
 - (int) indexOfPageWithID:(NSNumber*)pageid;
-- (void) onEnumerateComplete:(NSDictionary*)userInfo;
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo;
 - (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining;
 
 - (IBAction) onReadButtonClicked:(id)sender;

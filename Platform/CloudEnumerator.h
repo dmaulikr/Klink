@@ -10,10 +10,12 @@
 #import "Query.h"
 #import "QueryOptions.h"
 #import "EnumerationContext.h"
-
+@class CloudEnumerator;
 @protocol CloudEnumeratorDelegate <NSObject> 
 @optional
-- (void) onEnumerateComplete:(NSDictionary*)userInfo;
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray*)results
+                withUserInfo:(NSDictionary*)userInfo;
 
 @end
 
@@ -30,6 +32,7 @@
     long                        m_secondsBetweenConsecutiveSearches;
     NSString*                   m_identifier;
     NSDictionary*               m_userInfo;
+    NSMutableArray*             m_results;
     
 }
 @property (nonatomic,retain) NSString*              identifier;
@@ -41,6 +44,7 @@
 @property (nonatomic,retain) NSDictionary*          userInfo;
 @property long                                      secondsBetweenConsecutiveSearches;
 @property BOOL                                      isLoading;
+@property (nonatomic,retain) NSMutableArray*               results;
 @property (nonatomic,retain) id<CloudEnumeratorDelegate>   delegate;
 
 

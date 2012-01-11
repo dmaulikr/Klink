@@ -721,7 +721,10 @@
 }
 
 #pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo 
+{
     NSString* activityName = @"BookViewController.onEnumerateComplete:";
     //on this method we need to enumerate all the captions that are part of the pages
     //to do this, we enumerate through each page and extract the finished caption ID

@@ -18,6 +18,7 @@
 @synthesize maximumDisplayTime = m_maximumDisplayTime;
 @synthesize timer = m_timer;
 @synthesize animationTimer = m_animationTimer;
+@synthesize validationEnumerator = m_validationEnumerator;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -53,11 +54,30 @@
     float p = (numerator / denominator)*100;
     LOG_REQUEST(0, @"%@ Outstanding submission is %f % complete (%f/%f)",activityName,p,numerator,denominator );
     
-    
+
     self.progress = (numerator / denominator);
     
     //if we detect that all requests have been completed
-    if (self.progress == 1 || [request.statuscode intValue] == kFAILED) {
+    if (self.progress == 1 || [request.statuscode intValue] == kFAILED) 
+    {
+        //intercept failure
+        //if it fails, if there is an enumerator defined
+            //we need to add time to the timer
+            //execute the enumeration
+            //add it to th4 self.requests
+            //recompute progress
+            //wait for completion of that request
+            //we need to reset the timer so that it doesnt go off
+        //use the enumeration handler to get the success/failure of it
+        if ([request.statuscode intValue] == kFAILED &&
+            self.validationEnumerator != nil) 
+        {
+            //there is a validation enumerator defined
+            //and this is a failure, so let us execute the request to see if it worked
+        }
+        
+        
+        
         //stop the maximum display timer as we will exit
         [self.timer invalidate];
         self.timer = nil;
@@ -138,8 +158,11 @@
      [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 }
 
-- (void) show:(BOOL)animated {
+- (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
+{
     [super show:animated];
+    self.maximumDisplayTime = maximumTimeToDisplay;
+    
     //we set a timer to tell us when to hide the progress bar
     if (self.maximumDisplayTime != nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.maximumDisplayTime intValue] target:self selector:@selector(onMaximumDisplayTimerExpired) userInfo:nil repeats:NO];

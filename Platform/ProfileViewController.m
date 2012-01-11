@@ -569,7 +569,10 @@
 
 #pragma mark - CloudEnumeratorDelegate
 
-- (void) onEnumerateComplete:(NSDictionary *)userInfo {
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo
+{
     ResourceContext* resourceContext = [ResourceContext instance];
     User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
     NSNumber* userid = user.objectid;

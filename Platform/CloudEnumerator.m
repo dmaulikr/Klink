@@ -34,6 +34,7 @@
 @synthesize identifier = m_identifier;
 @synthesize isLoading = m_isEnumerationPending;
 @synthesize userInfo = m_userInfo;
+@synthesize results = m_results;
 
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
@@ -44,6 +45,10 @@
         self.lastExecutedTime = nil;
         self.queryOptions = queryOptions;
         m_isEnumerationPending = NO;
+        
+        NSMutableArray* r = [[NSMutableArray alloc]init];
+        self.results = r;
+        [r release];    
     }
     
     return self;
@@ -51,6 +56,7 @@
 
 - (void) dealloc {
     //[self.enumerationContext release];
+    self.results = nil;
     [super dealloc];
 }
 
@@ -66,6 +72,11 @@
         self.queryOptions = queryOptions;
          m_isEnumerationPending = NO;
         self.lastExecutedTime = nil;
+        
+        NSMutableArray* r = [[NSMutableArray alloc]init];
+        self.results = r;
+        [r release];
+       
     }
     return self;
 }
@@ -118,6 +129,7 @@
     
     NSDictionary* userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:enumerateSinglePage] forKey:kEnumerateSinglePage];
     
+
     
     Request* request = [self requestFor:url forOperation:kENUMERATION withUserInfo:userInfo];
     
@@ -175,6 +187,12 @@
     self.enumerationContext.isDone = NO;
     self.enumerationContext.pageNumber = 0;
     self.enumerationContext.numberOfResultsReturned = 0;
+    
+    //we clear the results cache
+    self.results = nil;
+    NSMutableArray* r = [[NSMutableArray alloc]init];
+    self.results = r;
+    [r release];
 }
 
 - (void) onEnumerateComplete:(CallbackResult*)callbackResult {
@@ -192,11 +210,16 @@
         
         LOG_ENUMERATION(0,@"%@Enumeration succeeded with %d primary results and %d secondary results returned",activityName, [response.primaryResults count], [response.secondaryResults count]);
         
+        
+        
+        
         //process the returned results
         if (response.primaryResults != nil) {
             for (Resource* resource in response.primaryResults) {
                 Resource* existingResource = nil;
                 BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
+                //we add all returned data to the inner cache
+                [self.results addObject:resource];
                 
                 if (!isSingletonType) {
                     existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
@@ -223,6 +246,9 @@
             for (Resource* resource in response.secondaryResults) {
                 Resource* existingResource = nil;
                 BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
+                
+                //we add all returned data to the inner cache
+                [self.results addObject:resource];
                 
                 if (!isSingletonType) {
                     existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
@@ -277,7 +303,7 @@
 }
 
 - (void) callOnEnumerationCompleteOnDelegateWith:(NSDictionary*)userInfo {
-    [self.delegate onEnumerateComplete:userInfo];
+    [self.delegate onEnumerateComplete:self withResults:self.results withUserInfo:userInfo];
 }
 
 #pragma mark - Static initializers

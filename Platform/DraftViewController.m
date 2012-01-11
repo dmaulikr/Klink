@@ -450,7 +450,10 @@
 }
 
 #pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo
+{
     //NSString* activityName = @"DraftViewController.onEnumerateComplete:";
     //we tell the ego fresh header that we've stopped loading items
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];

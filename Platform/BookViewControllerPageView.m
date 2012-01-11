@@ -561,8 +561,11 @@
 }
 
 #pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete:(NSDictionary*)userInfo {
-    [super onEnumerateComplete:userInfo];
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo 
+{
+    [super onEnumerateComplete:enumerator withResults:results withUserInfo:userInfo];
     
 }
 
