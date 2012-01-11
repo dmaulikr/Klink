@@ -705,7 +705,22 @@
     }
 }
 
-#pragma mark - Async callbacks
+#pragma mark - UIProgressHUDViewDelegate
+- (NSNumber*)secondsToExtendProgressView:(UIProgressHUDView *)progressView 
+                           onTimerExpiry:(NSTimer *)timer 
+{
+    //we extend the tiemr by 30 more seconds
+    return [NSNumber numberWithInt:30];
+}
+
+- (NSNumber*)secondsToExtendProgressView:(UIProgressHUDView *)progressView 
+                         onFailedRequest:(Request *)failedRequest 
+{
+    //if a requqest fails, we dont extend
+    return nil;
+}
+
+
 - (void) hudWasHidden {
     
     //called when the progress view is hidden

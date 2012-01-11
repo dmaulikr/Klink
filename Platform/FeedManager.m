@@ -122,7 +122,10 @@ static FeedManager* sharedManager;
 
 
 #pragma mark - CloudCallbackDelegate
-- (void) onEnumerateComplete:(NSDictionary*)userInfo {
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo
+{
     NSString* activityName = @"FeedManager.onEnumerateComplete:";
     //called when an refresh for the feed has completed
     //raise a system event for feed refresh complete

@@ -99,7 +99,9 @@ static ApplicationSettingsManager* instance;
     
 }
 #pragma mark - Async Event Handlers
-- (void) onEnumerateComplete:(NSDictionary *)userInfo
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo
 {
     NSString* activityName = @"ApplicationSettingsManager.onEnumerateComplete:";
     

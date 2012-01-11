@@ -10,7 +10,7 @@
 #import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
 
-@interface ProfileViewController : BaseViewController < MBProgressHUDDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate > {
+@interface ProfileViewController : BaseViewController < UIProgressHUDViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate > {
     UILabel* m_lbl_username;
     UILabel* m_lbl_employeeStartDate;
     UILabel* m_lbl_currentLevel;

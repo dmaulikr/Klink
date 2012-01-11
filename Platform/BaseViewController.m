@@ -269,10 +269,10 @@
             progressView.mode = MBProgressHUDModeDeterminate;
         }
         //[progressView hide:NO];
-        progressView.maximumDisplayTime = maximumTimeInSeconds;
+        //progressView.maximumDisplayTime = maximumTimeInSeconds;
         
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
-        [progressView show:YES];
+        [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
         //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
     }
 }
@@ -315,11 +315,11 @@
             progressView.mode = MBProgressHUDModeIndeterminate;
         }
         
-        progressView.maximumDisplayTime = maximumTimeInSeconds;
+        //progressView.maximumDisplayTime = maximumTimeInSeconds;
         
        // [progressView hide:NO];
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
-        [progressView show:YES];
+        [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
         //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
     }
 }

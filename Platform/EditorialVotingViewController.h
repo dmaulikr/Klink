@@ -11,7 +11,7 @@
 #import "Poll.h"
 #import "iCarousel.h"
 
-@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, iCarouselDataSource, iCarouselDelegate, MBProgressHUDDelegate>
+@interface EditorialVotingViewController : BaseViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, iCarouselDataSource, iCarouselDelegate, UIProgressHUDViewDelegate>
 {
     Poll*       m_poll;
     NSNumber*   m_pollID;
