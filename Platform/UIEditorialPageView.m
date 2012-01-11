@@ -48,24 +48,25 @@
     // apply the cap insets to the photo frame image
     UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
     if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
+        // iOS5+ method for scaling the photo frame
+        
         self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
         
         // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
         self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
     }
     else {
+        // pre-iOS5 method for scaling the photo frame
         self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
-        //self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(scaledImage.size.width/2) topCapHeight:scaledImage.size.height/2];
         
         // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-        //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-        
-        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
+        if (scaledImage.size.height > scaledImage.size.width) {
+            self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 4), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 7));
+        }
+        else {
+            self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS + 4), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 4), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS - 7), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 6));
+        }
     }
-    
-    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
 }
 
 #pragma mark - Instance Methods
@@ -161,16 +162,11 @@
         
         [self addSubview:self.view];
         
-        /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-        [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-        [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
-        
     }
     return self;
 }
 
-/*- (id)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -185,14 +181,9 @@
         
         [self addSubview:self.view];
         
-        [self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:24]];
-        [self.lbl_caption setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-        [self.lbl_captionby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_photoby setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        
     }
     return self;
-}*/
+}
 
 - (void)dealloc
 {
@@ -235,5 +226,6 @@
     }
     
 }
+
 
 @end

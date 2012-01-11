@@ -31,6 +31,8 @@
 @synthesize lbl_voteStatus  = m_lbl_voteStatus;
 @synthesize deadline        = m_deadline;
 @synthesize userJustVoted   = m_userJustVoted;
+@synthesize v_votingContainerView   = m_v_votingContainerView;
+@synthesize iv_votingDraftView      = m_iv_votingDraftView;
 
 #define ITEM_SPACING 313
 //#define INCLUDE_PLACEHOLDERS YES
@@ -43,29 +45,55 @@
     self.lbl_voteStatus.text = [NSString stringWithFormat:@"Voting ends in %@", [DateTimeHelper formatTimeInterval:remaining]];
 }
 
-- (NSString*) getStringForVoteStatus {
-    // Show time since user has voted
+- (NSString*) getVoteStatusStringForVote:(Vote*)vote {
+    NSString* voteStatusString = nil;
+    
     ResourceContext* resourceContext = [ResourceContext instance];
     
-    NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
+    /*NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
     NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
     
-    Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
-        
-    NSDate* now = [NSDate date];
-    NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:vote.datecreated]];
-    NSString* timeSinceCreated = nil;
-    if (intervalSinceCreated < 1 ) {
-        timeSinceCreated = @"a moment";
+    Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];*/
+    
+    Page* draftVotedFor = (Page*)[resourceContext resourceWithType:PAGE withID:vote.targetid];
+    NSString* draftTitle = draftVotedFor.displayname;
+    
+    if ([self.poll.state intValue] == kCLOSED) {
+        // Show vote closed date and draft the user voted for
+        voteStatusString = [NSString stringWithFormat:@"This poll closed on %@. You voted for %@.", [DateTimeHelper formatMediumDate:self.deadline], draftTitle];
     }
     else {
-        timeSinceCreated = [DateTimeHelper formatTimeInterval:intervalSinceCreated];
+        // Show time since user has voted
+        NSDate* now = [NSDate date];
+        NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:vote.datecreated]];
+        NSString* timeSinceVoted = nil;
+        if (intervalSinceCreated < 1 ) {
+            timeSinceVoted = @"a moment";
+        }
+        else {
+            timeSinceVoted = [DateTimeHelper formatTimeInterval:intervalSinceCreated];
+        }
+        
+        voteStatusString = [NSString stringWithFormat:@"You voted for %@, %@ ago", draftTitle, timeSinceVoted];
     }
     
-    [resourceValues release];
-    [resourceAttributes release];
+    /*NSDate* now = [NSDate date];
+    NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:vote.datecreated]];
+    NSString* timeSinceVoted = nil;
+    if (intervalSinceCreated < 1 ) {
+        timeSinceVoted = @"a moment";
+    }
+    else {
+        timeSinceVoted = [DateTimeHelper formatTimeInterval:intervalSinceCreated];
+    }*/
     
-    return [NSString stringWithFormat:@"You voted for this poll %@ ago",timeSinceCreated];
+    //Page* draftVotedFor = (Page*)[resourceContext resourceWithType:PAGE withID:vote.targetid];
+    //NSString* draftTitle = draftVotedFor.displayname;
+    
+    //[resourceValues release];
+    //[resourceAttributes release];
+    
+    return voteStatusString;
 }
 
 
@@ -218,6 +246,9 @@
     self.poll_ID = nil;
     self.frc_pollData = nil;
     
+    self.v_votingContainerView = nil;
+    self.iv_votingDraftView = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -248,7 +279,7 @@
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";
     
-    // Set the coverflow carousel starting index
+    /*// Set the coverflow carousel starting index
     if ([self.poll.hasvoted boolValue]) {
         // scroll to the draft that the user previously voted for
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -274,23 +305,49 @@
     else {
         // Set the coverflow carousel to start at the draft in the middle
         [self.ic_coverFlowView scrollToItemAtIndex:1 animated:YES];
-    }
+    }*/
     
-    // Update the vote status label
     self.userJustVoted = NO;
     self.deadline = [DateTimeHelper parseWebServiceDateDouble:self.poll.dateexpires];
-    if ([self.poll.state intValue] == kCLOSED) {
-        self.lbl_voteStatus.text = [NSString stringWithFormat:@"This poll closed on %@", [DateTimeHelper formatMediumDate:self.deadline]];
+    
+    if ([self.poll.state intValue] == kCLOSED && ![self.poll.hasvoted boolValue]) {
+        self.lbl_voteStatus.text = [NSString stringWithFormat:@"This poll closed on %@. You didn't cast your vote.", [DateTimeHelper formatMediumDate:self.deadline]];
+        
+        // TODO: Set the coverflow carousel to start at the draft that won
+        [self.ic_coverFlowView scrollToItemAtIndex:1 animated:YES];
     }
-    else if ([self.poll.hasvoted boolValue]) {
-        [self.btn_voteButton setSelected:YES];
-        self.lbl_voteStatus.text = [self getStringForVoteStatus];
+    else if ([self.poll.state intValue] == kCLOSED && [self.poll.hasvoted boolValue]) {
+        // scroll to the draft that the user previously voted for
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
+        NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
+        
+        Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
+        
+        int indexOfUserVotedPage = [self indexOfPageWithID:vote.targetid];
+        
+        if (indexOfUserVotedPage >= 0 && indexOfUserVotedPage < self.ic_coverFlowView.numberOfVisibleItems) {
+            [self.ic_coverFlowView scrollToItemAtIndex:indexOfUserVotedPage animated:YES];
+        }
+        else {
+            // Set the coverflow carousel to start at the draft in the middle
+            [self.ic_coverFlowView scrollToItemAtIndex:1 animated:YES];
+        }
+        
+        // Update the vote status label 
+        self.lbl_voteStatus.text = [self getVoteStatusStringForVote:vote];
+        
+        [resourceValues release];
+        [resourceAttributes release];
+
     }
     else {
-        [self.btn_voteButton setSelected:NO];
-        self.lbl_voteStatus.text = @"";
+        // Set the coverflow carousel to start at the draft in the middle
+        [self.ic_coverFlowView scrollToItemAtIndex:1 animated:YES];
         
         // show poll deadline timer
+        self.lbl_voteStatus.text = @"";
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                              target:self
                                            selector:@selector(timeRemaining:)
@@ -326,6 +383,19 @@
     return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
+#pragma mark - Image from view object creator
+- (UIImage *) imageWithView:(UIView *)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
 #pragma mark -
 #pragma mark iCarousel methods
 
@@ -358,7 +428,8 @@
         
         CGRect frameForCarouselItem = CGRectMake(0, 0, 273, 268);
         
-        UIEditorialPageView* carouselItem = [[[UIEditorialPageView alloc] initWithFrame:frameForCarouselItem]autorelease];
+        UIEditorialPageView* carouselItem = [[[UIEditorialPageView alloc] initWithFrame:frameForCarouselItem] autorelease];
+        //UIEditorialPageView* carouselItem = [[[UIEditorialPageView alloc] init] autorelease];
         [carouselItem renderWithPageID:page.objectid];
         
         [self.ic_coverFlowView addSubview:carouselItem];
@@ -429,20 +500,63 @@
 }
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
-    /*if (self.ic_coverFlowView.currentItemIndex == index && ![self.poll.hasvoted boolValue]) {
-        // toggle show/hide of the vote button
-        BOOL isVoteButtonHidden = [self.btn_voteButton isHidden];
-        [self.btn_voteButton setHidden:!isVoteButtonHidden];
+    NSString* activityName = @"EditorialVotingViewController.carousel:didSelectItemAtIndex:";
+    
+    /*//UIView* currentDraftView = [[[UIView alloc] initWithFrame:self.iv_votingDraftView.frame] autorelease];
+    currentDraftView = self.ic_coverFlowView.currentItemView;
+    //currentDraftView.frame = self.iv_votingDraftView.frame;
+    //[self.iv_votingDraftView addSubview:currentDraftView];*/
+    
+    if ([carousel itemViewAtIndex:index] == self.ic_coverFlowView.currentItemView && [self.poll.state intValue] != kCLOSED) {
+        if (![self.poll.hasvoted boolValue]) {
+            // Create an image out of the view for the draft to be used in the voting view
+            UIView* currentDraftView = self.ic_coverFlowView.currentItemView;
+            UIImage* img_votingDraft = [self imageWithView:currentDraftView];
+            [self.iv_votingDraftView setImage:img_votingDraft];
+            
+            // Fade in the vote casting view
+            [self.lbl_voteStatus setAlpha:1];
+            [self.v_votingContainerView setAlpha:0];
+            [self.v_votingContainerView setHidden:NO];
+            
+            [UIView animateWithDuration:0.35
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseInOut
+                             animations:^{
+                                 [self.lbl_voteStatus setAlpha:0];
+                                 [self.v_votingContainerView setAlpha:1];
+                             }
+                             completion:nil];
+        }
+        else {
+            NSString* message = nil;
+            
+            //notify user that they have already voted in this poll and their new vote has been dismissed
+            if (self.loggedInUser) {
+                message = [[NSString alloc] initWithFormat:@"%@, you have already voted in this poll.", self.loggedInUser.username];
+            }
+            else {
+                message = [[NSString alloc] initWithFormat:@"You have already voted in this poll."];
+            }
+            
+            LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@User has already voted in this poll, skipping voting",activityName);
+            
+            
+            //show vote confirmation alert
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:message 
+                                                           delegate:self 
+                                                  cancelButtonTitle:@"OK" 
+                                                  otherButtonTitles:nil];
+            [message release];   
+            [alert show];
+            [alert release];
+        }
     }
-    else {
-        // make sure the vote button is hidden until the user selects the currently centered carousel item
-        [self.btn_voteButton setHidden:YES];
-    }*/
 }
 
-#pragma mark - Vote button handler 
-- (IBAction)voteButtonPressed:(id)sender {    
-    //called when the user clicks on a particular image on the viewslider
+#pragma mark - Vote view button handlers 
+- (IBAction)voteButtonPressed:(id)sender {
     NSString* activityName = @"EditorialVotingViewController.voteButtonPressed:";
     
     LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@ user has voted for the page at index %d",activityName,index);
@@ -457,9 +571,7 @@
     
     if (index >= 0 && index < count  && ![self.poll.hasvoted boolValue]) {
         
-        
         //create a vote object
-        
         ResourceContext* resourceContext = [ResourceContext instance];
         [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
         Page* targetPage = [[self.frc_pollData fetchedObjects]objectAtIndex:index];
@@ -471,14 +583,14 @@
         callback.fireOnMainThread = YES;
         
         //we also update the local count for the page num votes for publish
-        targetPage.numberofpublishvotes =[NSNumber numberWithInt:( [targetPage.numberofpublishvotes intValue] + 1)];
+        targetPage.numberofpublishvotes =[NSNumber numberWithInt:([targetPage.numberofpublishvotes intValue] + 1)];
         
         //we also mark the Poll object as this user having voted for it
         self.poll.hasvoted = [NSNumber numberWithBool:YES];
         self.userJustVoted = YES;
         
         //lets save that shit to the cloud
-         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
         [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
@@ -491,7 +603,6 @@
         else {
             message = [[NSString alloc] initWithFormat:@"Thank you, your vote has been cast."];
         }
-        
         
         //lets display the progress view
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -510,8 +621,7 @@
         
         LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@User has already voted for this poll, skipping voting",activityName);
         
-        
-            //show vote confirmation alert
+        //show vote confirmation alert
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                             message:message 
                                                            delegate:self 
@@ -519,11 +629,26 @@
                                                   otherButtonTitles:nil];
         [message release];   
         [alert show];
-            [alert release];
+        [alert release];
     }
 
-   
+}
 
+- (IBAction)cancelVoteButtonPressed:(id)sender {    
+    // Fade out the vote casting view
+    [self.lbl_voteStatus setAlpha:0];
+    [self.v_votingContainerView setAlpha:1];
+    
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         [self.lbl_voteStatus setAlpha:1];
+                         [self.v_votingContainerView setAlpha:0];
+                     }
+                     completion:^(BOOL finished){
+                         [self.v_votingContainerView setHidden:YES];
+                     }];
     
 }
 
@@ -582,9 +707,24 @@
     
     //we know that we need to look at a response object
     Response* response = result.response;
+    
     if (response.didSucceed) {
         //vote submission succeeded
         LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@Vote submission to cloud succeeded",activityName);
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
+        NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
+        
+        Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
+        
+        // Update the vote status label 
+        self.lbl_voteStatus.text = [self getVoteStatusStringForVote:vote];
+        
+        [resourceValues release];
+        [resourceAttributes release];
+        
     }
     else {
         //error case

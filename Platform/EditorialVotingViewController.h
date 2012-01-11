@@ -17,11 +17,13 @@
     NSNumber*   m_pollID;
     
     iCarousel*  m_ic_coverFlowView;
-    UIButton*   m_btn_voteButton;
     UILabel*    m_lbl_voteStatus;
     
     NSDate*     m_deadline;
     BOOL        m_userJustVoted;
+    
+    UIView*         m_v_votingContainerView;
+    UIImageView*    m_iv_votingDraftView;
     
 }
 
@@ -36,7 +38,11 @@
 @property (nonatomic, retain)          NSDate*              deadline;
 @property                              BOOL                 userJustVoted;
 
+@property (nonatomic, retain) IBOutlet UIView*              v_votingContainerView;
+@property (nonatomic, retain) IBOutlet UIImageView*         iv_votingDraftView;
+
 - (IBAction)voteButtonPressed:(id)sender;
+- (IBAction)cancelVoteButtonPressed:(id)sender;
 
 + (EditorialVotingViewController*) createInstanceForPoll:(NSNumber*)pollID;
 
