@@ -13,7 +13,7 @@
 @class ContributeViewController;
 
 
-@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,MBProgressHUDDelegate> {
+@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,UIProgressHUDViewDelegate> {
     id<ContributeViewControllerDelegate> m_delegate;
     
     UICameraActionSheet*    m_cameraActionSheet;

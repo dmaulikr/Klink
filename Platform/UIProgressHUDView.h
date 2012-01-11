@@ -12,8 +12,17 @@
 #import "Request.h"
 #import "CloudEnumerator.h"
 
-//@protocol UIProgressHUDViewDelegate <MBProgressHUDDelegate>
-//- (BOOL) 
+@class UIProgressHUDView;
+
+@protocol UIProgressHUDViewDelegate <MBProgressHUDDelegate>
+
+@optional
+- (NSNumber*) secondsToExtendProgressView:(UIProgressHUDView*)progressView 
+               onFailedRequest:(Request*)failedRequest; 
+- (NSNumber*) secondsToExtendProgressView:(UIProgressHUDView*)progressView 
+           onTimerExpiry:(NSTimer*)timer;
+@end
+
 
 @interface UIProgressHUDView : MBProgressHUD <RequestProgressDelegate>  {
     UIView* m_backgroundView;
@@ -22,11 +31,8 @@
     NSNumber* m_maximumDisplayTime;
     NSTimer* m_timer;
     NSTimer* m_animationTimer;
-    
-    //this enumerator used for checking if there was a success in perceived failure
-    CloudEnumerator* m_validationEnumerator;
-    NSArray* m_validationObjectIDs;
-    NSArray* m_validationObjectTypes;
+    id<UIProgressHUDViewDelegate> m_delegate;
+
 }
 
 - (id) initWithView:(UIView *)view;
@@ -38,5 +44,6 @@
 @property (nonatomic,retain) NSNumber*   maximumDisplayTime;
 @property (nonatomic,retain) NSTimer*   timer;
 @property (nonatomic,retain) NSTimer*   animationTimer;
-@property (nonatomic,retain) CloudEnumerator*  validationEnumerator;
+@property (assign) id<UIProgressHUDViewDelegate> delegate;
+
 @end
