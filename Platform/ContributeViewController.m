@@ -681,7 +681,11 @@
     else if (self.configurationType == CAPTION) {
         progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your caption...",self.draftTitle];
     }
-    [self showDeterminateProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+    
+    NSNumber* maxTimeToShowOnProgress = [NSNumber numberWithInt:([settings.http_timeout_seconds intValue]*2)];
+    NSNumber* heartbeat = [NSNumber numberWithInt:5];
+    
+    [self showDeterminateProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:maxTimeToShowOnProgress withHeartbeat:heartbeat];
 
     //we call the delegate to instruct it that it should begin committing the changes indicated by this view
     [self.delegate submitChangesForController:self];
@@ -706,20 +710,57 @@
 }
 
 #pragma mark - UIProgressHUDViewDelegate
-- (NSNumber*)secondsToExtendProgressView:(UIProgressHUDView *)progressView 
-                           onTimerExpiry:(NSTimer *)timer 
+- (BOOL) progressViewShouldFinishOnSuccess:(UIProgressHUDView *)progressView 
 {
-    //we extend the tiemr by 30 more seconds
-    return [NSNumber numberWithInt:30];
+    //we need to calculate the progress of the overall series of requests
+    //if its equal to 1, then we return YES
+//    float percentageComplete = [progressView percentageComplete];
+//    
+//    if (percentageComplete >= 1) 
+//    {
+//      //we know that all requests have compelted so we return yes;
+//        return YES;
+//    }
+//    else 
+//    {
+//        return NO;    
+//    }
+    //if its equal to something else, we return NO
+    return YES;
 }
 
-- (NSNumber*)secondsToExtendProgressView:(UIProgressHUDView *)progressView 
-                         onFailedRequest:(Request *)failedRequest 
+
+- (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView *)progressView 
+                            didFailOnTimer:(NSTimer *)timer 
 {
-    //if a requqest fails, we dont extend
-    return nil;
+    //NOTE THE UNDO CONTEXT THAT IS OPEN DURING THIS PERIOD IN THE BASE VIEW CONTROLLER
+    //MAY NEED TO OVER RIDE THESE METHODS IN THE BASE VIEW CONTROLLER TO GET RID OF THE 
+    //HUDWASHIDDEN SHIT
+    
+    //we will add 20 seconds to the clock
+    [progressView extendDisplayTimerBy:[NSNumber numberWithDouble:20.0]];
+    return NO;
 }
 
+
+- (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView *)progressView didFailOnRequest:(Request *)request
+{
+    //we need to calculate if we want to wait longer
+    
+    //if we do want to wait longer
+        //we need to calculate the new time to wait, and set it on the maximumdisplaytimer
+        
+    return YES;
+}
+
+
+- (void) progressViewHeartbeat:(UIProgressHUDView *)progressView 
+{
+    //heart beat processing
+    NSString* activityName = @"ContributeViewController.progressViewHeartbeat:";
+    
+    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received heart beat",activityName);
+}
 
 - (void) hudWasHidden {
     

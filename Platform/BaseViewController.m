@@ -233,31 +233,22 @@
 }
 #pragma mark - Progress bar management
 - (void) showDeterminateProgressBar:(NSString*)message
-                    withCustomView:(UIView*)view
-             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+                     withCustomView:(UIView*)view
+             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds
+                      withHeartbeat:(NSNumber*)heartbeatInSeconds
 {
+    
+    
     NSString* activityName = @"BaseViewController.showDeterminateProgressBar:";
     
     PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     UIProgressHUDView* progressView = delegate.progressView;
-
+    
     
     //first check if this view controller is the top level visible controller
     if (self.navigationController.visibleViewController == self) {
         progressView.labelText = message;
         [progressView removeAllSubviews];
-        
-        //test if the view controller is in landscape or portrait mode        
-//        UIInterfaceOrientation orientation = self.interfaceOrientation;        
-//        if (UIInterfaceOrientationIsLandscape(orientation)) {
-//            //landscape
-//            progressView.transform = CGAffineTransformIdentity;
-//            progressView.transform = CGAffineTransformMakeRotation(M_PI/2*90);
-//        }
-//        else {
-//            //portrait
-//            progressView.transform = CGAffineTransformIdentity;
-//        }
         
         [self.view addSubview:progressView];
         if (view != nil) {
@@ -271,10 +262,27 @@
         //[progressView hide:NO];
         //progressView.maximumDisplayTime = maximumTimeInSeconds;
         
+        
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
-        [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
-        //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
+        
+        if (heartbeatInSeconds != nil) 
+        {
+            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds withHeartbeatInterval:heartbeatInSeconds];
+        }
+        else 
+        {
+            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
+        }
     }
+
+}
+
+- (void) showDeterminateProgressBar:(NSString*)message
+                    withCustomView:(UIView*)view
+             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+{
+    [self showDeterminateProgressBar:message withCustomView:view withMaximumDisplayTime:maximumTimeInSeconds withHeartbeat:nil];
+    
 }
 - (void) showProgressBar:(NSString *)message 
           withCustomView:(UIView *)view 
