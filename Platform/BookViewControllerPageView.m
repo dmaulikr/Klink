@@ -403,6 +403,9 @@
     [self.view addSubview:self.invisibleReadButton];
     [self.view addSubview:self.invisibleProductionLogButton];
     [self.view addSubview:self.invisibleWritersLogButton];
+    
+    // Bring the book cover subview to the front
+    [self.view bringSubviewToFront:self.iv_bookCover];
 
 }
 
@@ -415,6 +418,7 @@
     self.invisibleReadButton = nil;
     self.invisibleProductionLogButton = nil;
     self.invisibleWritersLogButton = nil;
+    self.v_tapWritersLogView = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -446,8 +450,11 @@
         [self.navigationController.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     }
     
-    self.shouldOpenToTitlePage = NO;
-    self.shouldAnimatePageTurn = NO;
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    // NSString* activityName = @"BookViewControllerPageView.viewDidAppear:";
+    [super viewDidAppear:animated];
     
 }
 
@@ -504,9 +511,6 @@
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
     [super onReadButtonClicked:sender];
-
-    self.shouldOpenToTitlePage = NO;
-    self.shouldAnimatePageTurn = YES;
     
     [self renderPage];
 
@@ -516,17 +520,11 @@
     //called when the production log button is pressed
     [super onProductionLogButtonClicked:sender];
     
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
-    
 }
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     //called when the writer's log button is pressed
     [super onWritersLogButtonClicked:sender];
-    
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
     
 }
 

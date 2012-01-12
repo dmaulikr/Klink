@@ -27,10 +27,10 @@
 @synthesize frc_pollData    = __frc_pollData;
 @synthesize poll_ID         = m_pollID;
 @synthesize ic_coverFlowView    = m_ic_coverFlowView;
-@synthesize btn_voteButton  = m_btn_voteButton;
+//@synthesize btn_voteButton  = m_btn_voteButton;
 @synthesize lbl_voteStatus  = m_lbl_voteStatus;
 @synthesize deadline        = m_deadline;
-@synthesize userJustVoted   = m_userJustVoted;
+//@synthesize userJustVoted   = m_userJustVoted;
 @synthesize v_votingContainerView   = m_v_votingContainerView;
 @synthesize iv_votingDraftView      = m_iv_votingDraftView;
 
@@ -237,7 +237,8 @@
     self.poll = nil;
     self.poll_ID = nil;
     self.frc_pollData = nil;
-    
+    self.deadline = nil;
+    self.lbl_voteStatus = nil;
     self.v_votingContainerView = nil;
     self.iv_votingDraftView = nil;
     
@@ -271,7 +272,7 @@
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";
     
-    self.userJustVoted = NO;
+    //self.userJustVoted = NO;
     self.deadline = [DateTimeHelper parseWebServiceDateDouble:self.poll.dateexpires];
     int indexOfWinningDraft = [self indexOfPageWithID:self.poll.winningobjectid];
     
@@ -445,12 +446,12 @@
     // make sure the vote button is hidden until the user selects the currently centered carousel item
     
     // hide the vote button until scrolling ends
-    [self.btn_voteButton setAlpha:0];
+    //[self.btn_voteButton setAlpha:0];
     //[self.btn_voteButton setHidden:YES];
 }
 
 - (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
-    // everytime the carousel moves to a new position we need to determine how to display the vote button
+    /*// everytime the carousel moves to a new position we need to determine how to display the vote button
     if ([self.poll.hasvoted boolValue]) {
         // the user has voted in this poll already
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -496,7 +497,7 @@
                              [self.btn_voteButton setAlpha:1];
                          }
                          completion:nil];
-    }
+    }*/
 }
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
@@ -561,7 +562,7 @@
     
     LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@ user has voted for the page at index %d",activityName,index);
     
-    [self.btn_voteButton setSelected:YES];
+    //[self.btn_voteButton setSelected:YES];
 
     NSString* message = nil;
     
@@ -587,7 +588,7 @@
         
         //we also mark the Poll object as this user having voted for it
         self.poll.hasvoted = [NSNumber numberWithBool:YES];
-        self.userJustVoted = YES;
+        //self.userJustVoted = YES;
         
         //lets save that shit to the cloud
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -596,13 +597,13 @@
         [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
         [callback release];
         
-        //notify user that their vote has been casted
+        /*//notify user that their vote has been casted
         if (self.loggedInUser) {
             message = [[NSString alloc] initWithFormat:@"Thank you, %@, your vote has been cast.", self.loggedInUser.username];
         }
         else {
             message = [[NSString alloc] initWithFormat:@"Thank you, your vote has been cast."];
-        }
+        }*/
         
         //lets display the progress view
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -670,6 +671,9 @@
         NSError* error = nil;
         [resourceContext.managedObjectContext save:&error];
         
+        //we unmark the userJustVoted flag so the user can try again
+        //self.userJustVoted = NO;
+        
         //now we need to display an alert telling the user their vote couldn't be cast and to try again
         NSString* message = [NSString stringWithFormat:@"Sorry, there was an error sending your vote to the server. Please try again."];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
@@ -680,16 +684,14 @@
         [alert show];
         [alert release];
 
-        
     }
-    
 }
 
 #pragma mark - UIAlertView Delegate Methods
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (self.userJustVoted) {
+    /*if (self.userJustVoted) {
         [self dismissModalViewControllerAnimated:YES];
-    }
+    }*/
 }
 
 #pragma mark - Navigation Bar button handler 
@@ -712,7 +714,7 @@
         //vote submission succeeded
         LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@Vote submission to cloud succeeded",activityName);
         
-        ResourceContext* resourceContext = [ResourceContext instance];
+        /*ResourceContext* resourceContext = [ResourceContext instance];
         
         NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
         NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
@@ -723,7 +725,7 @@
         self.lbl_voteStatus.text = [self getVoteStatusStringForVote:vote];
         
         [resourceValues release];
-        [resourceAttributes release];
+        [resourceAttributes release];*/
         
     }
     else {

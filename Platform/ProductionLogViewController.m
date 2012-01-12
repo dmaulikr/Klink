@@ -42,14 +42,6 @@
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
 
-@synthesize testButton = m_testButton;
-
-- (IBAction) onTestButtonPressed:(id)sender {
-    
-    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:[NSNumber numberWithInt:925187962]];
-    [self.navigationController pushViewController:bookViewController animated:YES];
-    
-}
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all draft pages
@@ -196,8 +188,8 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
-    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
+    //self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    //self.cloudDraftEnumerator.delegate = self;
             
 }
 
@@ -230,7 +222,9 @@
 {
     [super viewDidLoad];
 
-
+    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator.delegate = self;
+    
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     
     EGORefreshTableHeaderView* erthv = [[EGORefreshTableHeaderView alloc] initWithFrame:frameForRefreshHeader];
