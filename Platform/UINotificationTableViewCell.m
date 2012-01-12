@@ -292,13 +292,6 @@
        
         
         [self.contentView addSubview:self.notificationTableViewCell];
-       
-        
-        
-        //self.userInteractionEnabled = YES;
-        
-        /*[self.lbl_notificationMessage setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-        [self.lbl_notificationDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];*/
         
     }
     return self;
