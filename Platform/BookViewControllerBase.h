@@ -12,7 +12,7 @@
 #import "CloudEnumerator.h"
 #import "MBProgressHUD.h"
 
-@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate,MBProgressHUDDelegate, CloudEnumeratorDelegate > {
+@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate,UIProgressHUDViewDelegate, CloudEnumeratorDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*           m_topVotedPhotoID;

@@ -47,7 +47,7 @@
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber*)maximumTimeToDisplay;
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber*)maximumTimeToDisplay 
                                 withHeartbeatInterval:(NSNumber*)secondsPerBeat;
-- (void) hide:(BOOL)animated;
+
 - (float) percentageComplete;
 - (void) extendDisplayTimerBy:(NSNumber*)secondsToAdd;
 
