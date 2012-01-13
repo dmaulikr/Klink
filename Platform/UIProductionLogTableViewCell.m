@@ -191,11 +191,6 @@
         
         [newPhotoVoteCallback release];
         
-        /*[self.lbl_draftTitle setFont:[UIFont fontWithName:@"TravelingTypewriter" size:17]];
-        [self.lbl_deadline setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_numPhotos setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-        [self.lbl_numCaptions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];*/
-        
     }
     return self;
 }

@@ -150,6 +150,7 @@
     [theGroup setValue:[NSNumber numberWithInt:viewToOpen.tag] forKey:@"viewToOpenTag"];
     // Here you could add other animations to the array
     theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
     theGroup.removedOnCompletion = NO;
     // Add the animation group to the layer
     [viewToOpen.layer addAnimation:theGroup forKey:@"flipViewOpen"];
@@ -205,6 +206,7 @@
     [theGroup setValue:[NSNumber numberWithInt:viewToClose.tag] forKey:@"viewToCloseTag"];
     // Here you could add other animations to the array
     theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
     theGroup.removedOnCompletion = NO;
     // Add the animation group to the layer
     [viewToClose.layer addAnimation:theGroup forKey:@"flipViewClosed"];

@@ -220,30 +220,6 @@
                                     action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    
-    // set custom font on views with text
-    /*[self.lbl_username setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
-    [self.lbl_employeeStartDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_currentLevel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:16]];
-    [self.lbl_currentLevelDate setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_numPages setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
-    [self.lbl_numVotes setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
-    [self.lbl_numSubmissions setFont:[UIFont fontWithName:@"TravelingTypewriter" size:21]];
-    [self.lbl_pagesLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
-    [self.lbl_votesLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
-    [self.lbl_submissionsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:13]];
-    [self.lbl_submissionsLast7DaysLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:15]];
-    [self.lbl_editorMinimumLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.lbl_userBestLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:11]];
-    [self.lbl_draftsLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_photosLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_captionsLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_totalLast7Days setFont:[UIFont fontWithName:@"TravelingTypewriter" size:14]];
-    [self.lbl_draftsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_photosLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_captionsLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];
-    [self.lbl_totalLabel setFont:[UIFont fontWithName:@"TravelingTypewriter" size:12]];*/
-    
 }
 
 - (void)viewDidUnload
