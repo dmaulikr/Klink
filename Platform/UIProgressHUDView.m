@@ -235,7 +235,7 @@
         
         
         
-        
+        [self.customView removeFromSuperview];
         [self renderComplete];
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 

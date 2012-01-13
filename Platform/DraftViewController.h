@@ -28,6 +28,7 @@
 }
 
 @property (nonatomic, retain) NSFetchedResultsController*    frc_photos;
+@property (nonatomic, retain) NSFetchedResultsController*    frc_captions;
 @property (nonatomic, retain) NSNumber*                      pageID;
 @property (nonatomic, retain) IBOutlet UILabel*              lbl_draftTitle;
 @property (nonatomic, retain) IBOutlet UILabel*              lbl_deadline;

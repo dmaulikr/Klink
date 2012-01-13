@@ -80,7 +80,12 @@
 - (void)render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    self.photoID = caption.photoid;
+    
     Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+    
     if (photo != nil) {        
         ImageManager* imageManager = [ImageManager instance];
         NSDictionary* userInfo = [NSDictionary dictionaryWithObject:photo.objectid forKey:kPHOTOID];
@@ -96,32 +101,7 @@
                     self.iv_photo.image = image;
                     
                     [self displayPhotoFrameOnImage:image];
-                    
-                    /*// get the frame for the new scaled image in the Photo ImageView
-                    CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
-                    
-                    // create insets to cap the photo frame according to the size of the scaled image
-                    UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
-                    
-                    // apply the cap insets to the photo frame image
-                    UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                    if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
-                        self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
-                        
-                        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                    } else {
-                        self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
-                        //self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(scaledImage.size.width/2) topCapHeight:scaledImage.size.height/2];
-                        
-                        // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                        //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                        self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                    }
-                    
-                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-                    //self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));*/
+                   
                 }
             }
             else {
@@ -145,33 +125,6 @@
             }
         }
         
-        
-        /*if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
-            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-            UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
-            [callback release];
-            if (image != nil) {
-                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
-                self.iv_photo.image = image;
-                
-                // get the frame for the new scaled image in the Photo ImageView
-                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
-                
-                // create insets to cap the photo frame according to the size of the scaled image
-                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
-                
-                // apply the cap insets to the photo frame image
-                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
-                
-                // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.origin.y, (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), self.iv_photoFrame.frame.size.height);
-            }
-        }
-        else {
-            self.iv_photo.contentMode = UIViewContentModeCenter;
-            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
-        }*/
     }
     
     // reset labels to defualt values
@@ -180,18 +133,26 @@
     self.lbl_caption.textColor = [UIColor darkGrayColor];
     self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
     
-    Caption* topCaption = [photo captionWithHighestVotes];
-    if (topCaption != nil) {
-        self.captionID = topCaption.objectid;
-        self.lbl_caption.textColor = [UIColor blackColor];
-        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
-        self.lbl_numVotes.text = [topCaption.numberofvotes stringValue];
-        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
-    }
+    
+    //let us render the caption here
+    self.lbl_caption.textColor = [UIColor blackColor];
+    self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
+    self.lbl_numVotes.text = [caption.numberofvotes stringValue];
+    self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
+    
+    
+//    Caption* topCaption = [photo captionWithHighestVotes];
+//    if (topCaption != nil) {
+//        self.captionID = topCaption.objectid;
+//        self.lbl_caption.textColor = [UIColor blackColor];
+//        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
+//        self.lbl_numVotes.text = [topCaption.numberofvotes stringValue];
+//        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
+//    }
     
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
-    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",topCaption.creatorname] forState:UIControlStateNormal];
-    [self.btn_writtenBy renderWithObjectID:topCaption.creatorid withName:topCaption.creatorname];
+    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
+    [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
     
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
     [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
@@ -201,6 +162,11 @@
     [self setNeedsDisplay];
 }
 
+- (void) renderWithCaptionID:(NSNumber*)captiondid
+{   
+    self.captionID = captiondid;
+    [self render];
+}
 - (void)renderWithPhotoID:(NSNumber*)photoID {
     self.photoID = photoID;
     

@@ -40,7 +40,7 @@
 @synthesize photoCloudEnumerator = m_photoCloudEnumerator;
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 @synthesize refreshHeader = m_refreshHeader;
-
+@synthesize frc_captions = __frc_captions;
 
 #pragma mark - Deadline Date Timers
 - (void) timeRemaining:(NSTimer *)timer {
@@ -50,6 +50,55 @@
 }
 
 #pragma mark - Properties
+- (NSFetchedResultsController*) frc_captions {
+    NSString* activityName = @"UIDraftViewController.frc_photos:";
+    
+    if (__frc_captions != nil) {
+        return __frc_captions;
+    }
+    else {
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:CAPTION inManagedObjectContext:resourceContext.managedObjectContext];
+        
+        NSSortDescriptor* sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:NUMBEROFVOTES ascending:NO];
+        NSSortDescriptor* sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+        
+        NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
+        
+        //add predicate to gather only photos for this pageID    
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", PAGEID, self.pageID];
+        
+        [fetchRequest setPredicate:predicate];
+        [fetchRequest setSortDescriptors:sortDescriptorArray];
+        [fetchRequest setEntity:entityDescription];
+        [fetchRequest setFetchBatchSize:20];
+        
+        NSFetchedResultsController* controller = [[NSFetchedResultsController alloc]initWithFetchRequest:fetchRequest managedObjectContext:resourceContext.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+        
+        controller.delegate = self;
+        self.frc_captions = controller;
+        
+        
+        NSError* error = nil;
+        [controller performFetch:&error];
+        if (error != nil)
+        {
+            LOG_UIDRAFTVIEW(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+        }
+        
+        [sortDescriptor1 release];
+        [sortDescriptor2 release];
+        [controller release];
+        [fetchRequest release];
+        
+        return __frc_captions;
+    }
+}
+
 
 - (NSFetchedResultsController*) frc_photos {
     NSString* activityName = @"UIDraftViewController.frc_photos:";
@@ -346,14 +395,18 @@
 
 #pragma mark Table View Data Source Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[self.frc_photos fetchedObjects]count];
+    //return [[self.frc_photos fetchedObjects]count];
+    return [[self.frc_captions fetchedObjects]count];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    int photoCount = [[self.frc_photos fetchedObjects]count];
-    if ([indexPath row] < photoCount) 
+    int captionCount = [[self.frc_captions fetchedObjects]count];
+    //int photoCount = [[self.frc_photos fetchedObjects]count];
+    if ([indexPath row] < captionCount) 
     {
-        Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+        Caption* caption = [[self.frc_captions fetchedObjects] objectAtIndex:[indexPath row]];
+        //Photo* photo = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
         
         NSString* reusableCellIdentifier = nil;
         
@@ -379,8 +432,8 @@
             [cell.btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-        [cell renderWithPhotoID:photo.objectid];
-        return cell;
+        [cell renderWithCaptionID:caption.objectid];
+         return cell;
     }
     else {
         return nil;

@@ -447,6 +447,8 @@
                 photo.numberofcaptions = [NSNumber numberWithInt:1];
                 page.numberofcaptions = [NSNumber numberWithInt:1];
                 
+                caption.pageid = page.objectid;
+                
                 LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
             }
             else {
@@ -487,6 +489,8 @@
             
             //increment the caption counter on the page this new photo belongs to
             page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
+            
+            caption.pageid = page.objectid;
         }
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
@@ -511,7 +515,7 @@
         photo.numberofcaptions = [NSNumber numberWithInt:([photo.numberofcaptions intValue] + 1)];
         page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
         
-       
+        caption.pageid = page.objectid;
 
     }
     

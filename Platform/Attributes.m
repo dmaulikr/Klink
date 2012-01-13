@@ -43,7 +43,7 @@ NSString* const LINKED_RESULTS_SORTATTRIBUTE =@"linked_results_sortattribute";
 NSString* const PRIMARY_RESULTS_SORTASCENDING= @"primary_results_sortascending";
 NSString* const PRIMARY_RESULTS_SORTATTRIBUTE = @"primary_results_sortattribute";
 NSString* const ONFINISHCALLBACK        =@"onfinishcallback";
-
+NSString* const PAGEID                  =@"pageid";
 NSString* const PHOTOID                 =@"photoid";
 NSString* const THEMEID                 =@"themeid";
 NSString* const NUMBEROFVOTES           =@"numberofvotes";

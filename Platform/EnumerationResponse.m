@@ -75,7 +75,7 @@
                 if (obj_i != (id)[NSNull null]) 
                 {
                     id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
-                    [primaryResultsObjects insertObject:resource atIndex:i];
+                    [primaryResultsObjects addObject:resource];
                 }
                 
             }
@@ -92,7 +92,7 @@
                 if (obj_i != (id)[NSNull null]) 
                 {
                     id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
-                    [secondaryResultsObjects insertObject:resource atIndex:i];
+                    [secondaryResultsObjects addObject:resource];
                 }
                 
             }

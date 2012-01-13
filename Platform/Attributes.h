@@ -40,7 +40,7 @@ extern NSString* const LINKED_RESULTS_SORTASCENDING;
 extern NSString* const LINKED_RESULTS_SORTATTRIBUTE;
 extern NSString* const PRIMARY_RESULTS_SORTASCENDING;
 extern NSString* const PRIMARY_RESULTS_SORTATTRIBUTE;
-
+extern NSString* const PAGEID;
 extern NSString* const PHOTOID;
 extern NSString* const THEMEID;
 extern NSString* const NUMBEROFVOTES;
