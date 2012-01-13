@@ -21,6 +21,8 @@
 @synthesize animationTimer = m_animationTimer;
 @synthesize heartbeatTimer = m_heartbeatTimer;
 @synthesize heartbeatSeconds = m_heartbeatSeconds;
+@synthesize dateProgressViewShown = m_dateProgressViewShown;
+
 #pragma mark - Property Definitions
 - (id) delegate {
     return m_delegate;
@@ -52,6 +54,18 @@
 }
 
 
+- (void) animateFillOfProgress 
+{
+    
+   
+
+   // [self renderComplete];
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:1];
+//    self.progress = 1;
+//    [UIView commitAnimations];
+}
+
 - (void) extendDisplayTimerBy:(NSNumber *)secondsToAdd 
 {
     NSString* activityName = @"UIProgressHUDView.extendDisplayTimerBy:";
@@ -79,6 +93,8 @@
         
         //adjust the progress meter
         float oldProgressValue = self.progress;
+        
+      
         self.progress = self.progress * ([self.maximumDisplayTime floatValue]/100);
         
         
@@ -135,7 +151,9 @@
     self.mode = MBProgressHUDModeCustomView;
     self.labelText = @"Success!";
     self.didSucceed = YES;
+    [self addSubview:self.customView];
    
+  
 }
 
 - (void) renderFailedCompletion 
@@ -147,6 +165,8 @@
     self.mode = MBProgressHUDModeCustomView;
     self.labelText = @"Failed!";
     self.didSucceed = NO;
+    [self addSubview:self.customView];
+
     
     
 }
@@ -203,49 +223,22 @@
         self.timer = nil;
         [self.animationTimer invalidate];
         self.animationTimer = nil;
-
-        //we need to determine whether we are ending on success or failure here
-        BOOL haveAllRequestsFinishedSuccessfully = YES;
         
         
-        if ([request.statuscode intValue] != kFAILED) 
+        
+        //now we need to animate the filling of the rest of the pie
+        if ([request.statuscode intValue] != kFAILED)
         {
-            for (Request* request in self.requests) 
-            {
-                if ([request.statuscode intValue] == kFAILED) 
-                {
-                    haveAllRequestsFinishedSuccessfully = NO;
-                    break;
-                }
-            }
-        }
-        else 
-        {
-            
-            haveAllRequestsFinishedSuccessfully = NO;
+            //we know we are closing on success, so let us animate the rest of the pie
+            self.progress = 1;
         }
         
-        [self.customView removeFromSuperview];
         
-        if (haveAllRequestsFinishedSuccessfully) 
-        {
-            //since all requests completed successfully we render the success view
-            [self renderSuccessfulCompletion];
-            self.didSucceed = YES;
-            LOG_PROGRESSVIEW(0, @"%@Ending progress view in success state",activityName);           
-            
-        }
-        else 
-        {
-            //render the failure view           
-            [self renderFailedCompletion];
-            self.didSucceed = NO;
-            LOG_PROGRESSVIEW(0, @"%@Ending progress view in failed state",activityName);
-            
-        }
         
-        //now we pause for 5 seconds before we dismiss
+        
+        [self renderComplete];
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
+
 
     }
     
@@ -368,13 +361,67 @@
 //    }
 }
 
+- (void) renderComplete 
+{
+    NSString* activityName = @"UIProgressHUDView.renderComplete:";
+    //we need to determine whether we are ending on success or failure here
+    
+    [self.timer invalidate];
+    [self.heartbeatTimer invalidate];
+    [self.animationTimer invalidate];
+    self.dateProgressViewShown = nil;
+    self.timer = nil;
+    self.heartbeatTimer = nil;
+    self.animationTimer = nil;
+    
+    
+    BOOL haveAllRequestsFinishedSuccessfully = YES;
+       
+    for (Request* request in self.requests) 
+    {
+        if ([request.statuscode intValue] != kCOMPLETED) 
+        {
+            haveAllRequestsFinishedSuccessfully = NO;
+            break;
+        }
+    }
+        
+    [self.customView removeFromSuperview];
+        
+    if (haveAllRequestsFinishedSuccessfully) 
+    {
+        //since all requests completed successfully we render the success view
+        [self renderSuccessfulCompletion];
+        self.didSucceed = YES;
+        LOG_PROGRESSVIEW(0, @"%@Ending progress view in success state",activityName);           
+        
+    }
+    else 
+    {
+        //render the failure view           
+        [self renderFailedCompletion];
+        self.didSucceed = NO;
+        LOG_PROGRESSVIEW(0, @"%@Ending progress view in failed state",activityName);
+        
+    }
+  
+    
+    
+   
+
+}
+
 
 - (void) onHeartbeatTick 
 {
     //we call into the delegate to tell to check our status
-    if ([self.delegate respondsToSelector:@selector(progressViewHeartbeat:)]) 
+    if ([self.delegate respondsToSelector:@selector(progressViewHeartbeat:timeElapsedInSeconds:)]) 
     {
-        [self.delegate progressViewHeartbeat:self];
+        double currentTimeInSeconds = [[NSDate date] timeIntervalSince1970];
+        double dateStartedInSeconds = [self.dateProgressViewShown timeIntervalSince1970];
+        double timeElapsed = currentTimeInSeconds  - dateStartedInSeconds;
+        
+        [self.delegate progressViewHeartbeat:self timeElapsedInSeconds:[NSNumber numberWithDouble:timeElapsed]];
     }
 }
 
@@ -397,11 +444,15 @@
     
     if (shouldFinish) 
     {
+        [self.customView removeFromSuperview];
         [self renderFailedCompletion];
         self.didSucceed = NO;
         LOG_PROGRESSVIEW(0,@"%@Closing progress view due to timer expiry",activityName);
         
+        //[self renderComplete];
+        
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
+
 
     }
     
@@ -449,18 +500,19 @@
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
 {
     [super show:animated];
+    self.dateProgressViewShown = [NSDate date];
     self.maximumDisplayTime = maximumTimeToDisplay;
     
+    self.dateProgressViewShown = [NSDate date];
     
     //we set a timer to tell us when to hide the progress bar
     if (self.maximumDisplayTime != nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.maximumDisplayTime intValue] target:self selector:@selector(onMaximumDisplayTimerExpired) userInfo:nil repeats:NO];
         
-        //also if this is only a single member request, we start an animation timer
-        //to simulate the progression using the maximum time as an upper bound
-        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onAnimationTimerTick) userInfo:nil repeats:YES];
+       
+        
     }
-    
+    self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onAnimationTimerTick) userInfo:nil repeats:YES];
 
 }
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
@@ -470,13 +522,15 @@ withHeartbeatInterval:(NSNumber *)secondsPerBeat
     self.heartbeatSeconds = secondsPerBeat;
     //we only define this if there is a delegate present
     if (self.delegate != nil &&
-        [self.delegate respondsToSelector:@selector(progressViewHeartbeat:)])
+        [self.delegate respondsToSelector:@selector(progressViewHeartbeat:timeElapsedInSeconds:)])
     {
         self.heartbeatTimer = [NSTimer scheduledTimerWithTimeInterval:[secondsPerBeat intValue] target:self selector:@selector(onHeartbeatTick) userInfo:nil repeats:YES];
     }
 }
 
-- (void) initializeWith:(NSArray *)requests {
+- (void) initializeWith:(NSArray *)requests 
+{
+    self.dateProgressViewShown = nil;
     self.progress = 0;
     self.didSucceed = NO;
     self.requests = nil;
@@ -490,13 +544,11 @@ withHeartbeatInterval:(NSNumber *)secondsPerBeat
 }
 
 - (void) onTimerExpireHide {
-    [self.timer invalidate];
-    [self.heartbeatTimer invalidate];
-    [self.animationTimer invalidate];
-    self.timer = nil;
-    self.heartbeatTimer = nil;
-    self.animationTimer = nil;
-    [self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
+
+    
+    
+     [self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
+   // [self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
 }
 
 
@@ -511,6 +563,7 @@ withHeartbeatInterval:(NSNumber *)secondsPerBeat
 
 - (void)dealloc
 {
+    self.dateProgressViewShown = nil;
     self.animationTimer = nil;
     self.timer = nil;
     self.heartbeatTimer = nil;

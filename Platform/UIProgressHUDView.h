@@ -20,7 +20,7 @@
 - (BOOL) progressViewShouldFinishOnSuccess:(UIProgressHUDView*)progressView; 
 - (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView*)progressView didFailOnRequest:(Request*)request;
 - (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView*)progressView didFailOnTimer:(NSTimer*)timer;
-- (void) progressViewHeartbeat:(UIProgressHUDView*)progressView;
+- (void) progressViewHeartbeat:(UIProgressHUDView*)progressView timeElapsedInSeconds:(NSNumber*)elapsedTimeInSeconds ;
 
 
 
@@ -38,14 +38,16 @@
     id<UIProgressHUDViewDelegate> m_delegate;
     NSNumber*   m_requestProgress;
     NSNumber*   m_heartbeatSeconds;
+    NSDate*     m_dateProgressViewShown;
 
 }
 
 - (id) initWithView:(UIView *)view;
+- (void) renderComplete;
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber*)maximumTimeToDisplay;
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber*)maximumTimeToDisplay 
                                 withHeartbeatInterval:(NSNumber*)secondsPerBeat;
-
+- (void) hide:(BOOL)animated;
 - (float) percentageComplete;
 - (void) extendDisplayTimerBy:(NSNumber*)secondsToAdd;
 
@@ -59,5 +61,6 @@
 @property (assign) id<UIProgressHUDViewDelegate> delegate;
 @property (nonatomic,retain) NSTimer*   heartbeatTimer;
 @property (nonatomic,retain) NSNumber*  heartbeatSeconds;
+@property (nonatomic, retain) NSDate*   dateProgressViewShown;
 
 @end

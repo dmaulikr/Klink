@@ -30,5 +30,6 @@
 @dynamic poll_num_pages;
 @dynamic poll_expiry_seconds;
 @dynamic num_users;
+@dynamic progress_maxsecondstodisplay;
 
 @end

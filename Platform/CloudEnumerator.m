@@ -35,7 +35,7 @@
 @synthesize isLoading = m_isEnumerationPending;
 @synthesize userInfo = m_userInfo;
 @synthesize results = m_results;
-
+@synthesize resultsLock = m_resultsLock;
 - (id) initWithEnumerationContext:(EnumerationContext *)enumerationContext withQuery:(Query *)query withQueryOptions:(QueryOptions *)queryOptions {
     
     self = [super init];
@@ -48,7 +48,11 @@
         
         NSMutableArray* r = [[NSMutableArray alloc]init];
         self.results = r;
-        [r release];    
+        [r release];  
+        
+        NSLock* lock = [[NSLock alloc]init];
+        self.resultsLock = lock;
+        [lock release];
     }
     
     return self;
@@ -56,6 +60,12 @@
 
 - (void) dealloc {
     //[self.enumerationContext release];
+    self.query = nil;
+    self.queryOptions = nil;
+    self.userInfo = nil;
+    self.identifier = nil;
+    self.delegate = nil;
+    self.resultsLock = nil;
     self.results = nil;
     [super dealloc];
 }
@@ -123,6 +133,15 @@
     return request;
 }
 
+- (BOOL) canEnumerate 
+{
+    //returns a flag indicating whether the enuemerator is in a state to be executed
+    //again, which is a AND of its is loading and timeElapsed property
+    BOOL hasEnoughTimeLapsedBetweenConsecutiveSearches = [self hasEnoughTimeLapsedBetweenConsecutiveSearches];
+    
+    return (hasEnoughTimeLapsedBetweenConsecutiveSearches && !m_isEnumerationPending);
+}
+
 - (void) enumerate:(BOOL)enumerateSinglePage {
     AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
     NSURL* url = [UrlManager urlForQuery:self.query withEnumerationContext:self.enumerationContext withAuthenticationContext:authenticationContext];
@@ -136,6 +155,26 @@
     RequestManager* requestManager = [RequestManager instance];
     [requestManager submitRequest:request];
 
+}
+
+- (BOOL) hasReturnedObjectWithID:(NSNumber *)objectid 
+{
+    BOOL retVal = NO;
+    //returns a boolean indicating whether the results array
+    //contains the specified object id
+    [self.resultsLock lock];
+    for (Resource* resource in self.results) 
+    {
+        if ([resource.objectid isEqualToNumber:objectid])
+        {
+            //yes it has
+            retVal = YES;
+            break;
+        }
+    }
+    [self.resultsLock unlock];
+    return retVal;
+                                
 }
 
 - (void) enumerateNextPage:(NSDictionary*)userInfo {
@@ -189,10 +228,10 @@
     self.enumerationContext.numberOfResultsReturned = 0;
     
     //we clear the results cache
-    self.results = nil;
-    NSMutableArray* r = [[NSMutableArray alloc]init];
-    self.results = r;
-    [r release];
+    [self.resultsLock lock];
+    [self.results removeAllObjects];
+    [self.resultsLock unlock];
+    
 }
 
 - (void) onEnumerateComplete:(CallbackResult*)callbackResult {
@@ -219,7 +258,9 @@
                 Resource* existingResource = nil;
                 BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
                 //we add all returned data to the inner cache
+                [self.resultsLock lock];
                 [self.results addObject:resource];
+                [self.resultsLock unlock];
                 
                 if (!isSingletonType) {
                     existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];
@@ -248,7 +289,9 @@
                 BOOL isSingletonType = [TypeInstanceData isSingletonType:resource.objecttype];
                 
                 //we add all returned data to the inner cache
+                [self.resultsLock lock];
                 [self.results addObject:resource];
+                [self.resultsLock unlock];
                 
                 if (!isSingletonType) {
                     existingResource = [resourceContext resourceWithType:resource.objecttype withID:resource.objectid];

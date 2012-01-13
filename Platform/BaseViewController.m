@@ -405,7 +405,7 @@
 }
 
 #pragma mark - ConrtibuteViewControllerDelegate methods
-- (void)submitChangesForController:(ContributeViewController*)controller {
+- (NSArray*)submitChangesForController:(ContributeViewController*)controller {
     NSString* activityName = @"BaseViewController.submitChangesForController:";
     ResourceContext* resourceContext = [ResourceContext instance];
     //we start a new undo group here
@@ -526,11 +526,11 @@
     //we start a new undo group here
    // [resourceContext.managedObjectContext processPendingChanges];
    // [resourceContext.managedObjectContext.undoManager endUndoGrouping];
-    [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
+    NSArray* retVal = [resourceContext save:YES onFinishCallback:callback trackProgressWith:progressView];
     
     [callback release];
     
- 
+    return retVal;
    
 }
 

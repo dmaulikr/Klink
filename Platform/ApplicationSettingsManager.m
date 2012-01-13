@@ -136,7 +136,7 @@ static ApplicationSettingsManager* instance;
     settings.http_timeout_seconds = [NSNumber numberWithInt:timeout_HTTP];
     settings.feed_enumeration_timegap = [NSNumber numberWithInt:threshold_FEED_ENUMERATION_TIME_GAP];
     settings.caption_enumeration_timegap = [NSNumber numberWithInt:threshold_CAPTION_ENUMERATION_TIME_GAP];
-    
+    settings.progress_maxsecondstodisplay = [NSNumber numberWithInt:progress_MAXSECONDSTODISPLAY];
    
     
     settings.twitter_consumerkey = twitter_CONSUMERKEY;

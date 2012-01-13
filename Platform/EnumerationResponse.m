@@ -70,9 +70,13 @@
             NSMutableArray *primaryResultsObjects = [[NSMutableArray alloc]initWithCapacity:[primaryResultsJSON count]];
             
             for (int i = 0; i < [primaryResultsJSON count]; i++) {
-                NSDictionary* obj_i = [primaryResultsJSON objectAtIndex:i];        
-                id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
-                [primaryResultsObjects insertObject:resource atIndex:i];
+                NSDictionary* obj_i = [primaryResultsJSON objectAtIndex:i];
+                
+                if (obj_i != (id)[NSNull null]) 
+                {
+                    id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
+                    [primaryResultsObjects insertObject:resource atIndex:i];
+                }
                 
             }
             self.primaryResults = primaryResultsObjects;
@@ -84,9 +88,12 @@
             NSMutableArray *secondaryResultsObjects = [[NSMutableArray alloc]initWithCapacity:[secondaryResultsJSON count]];
             
             for (int i = 0; i < [secondaryResultsJSON count]; i++) {
-                NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];        
-                id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
-                [secondaryResultsObjects insertObject:resource atIndex:i];
+                NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];   
+                if (obj_i != (id)[NSNull null]) 
+                {
+                    id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
+                    [secondaryResultsObjects insertObject:resource atIndex:i];
+                }
                 
             }
             self.secondaryResults = secondaryResultsObjects;

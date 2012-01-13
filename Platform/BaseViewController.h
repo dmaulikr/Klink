@@ -26,7 +26,7 @@
 
 @protocol ContributeViewControllerDelegate <NSObject>
 
-- (void)submitChangesForController:(ContributeViewController*)controller;
+- (NSArray*)submitChangesForController:(ContributeViewController*)controller;
 
 @end
 @interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
