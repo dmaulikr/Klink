@@ -10,6 +10,7 @@
 
 @interface UIEditorialPageView : UIView {
     NSNumber*       m_pageID;
+    NSNumber*       m_pollState;
     NSNumber*       m_photoID;
     NSNumber*       m_captionID;
     
@@ -21,12 +22,15 @@
     UILabel*        m_lbl_caption;
     UILabel*        m_lbl_photoby;
     UILabel*        m_lbl_captionby;
-    UILabel*        m_lbl_numVotes;
-    UILabel*        m_lbl_numCaptions;
+    
+    UIView*         m_v_publishedVotesView;
+    UILabel*        m_lbl_numPublishedVotes;
+    UIImageView*    m_iv_publishedStamp;
     
 }
 
 @property (nonatomic, retain) NSNumber*                 pageID;
+@property (nonatomic, retain) NSNumber*                 pollState;
 @property (nonatomic, retain) NSNumber*                 photoID;
 @property (nonatomic, retain) NSNumber*                 captionID;
 
@@ -39,6 +43,10 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_photoby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
 
-- (void) renderWithPageID:(NSNumber*)pageID;
+@property (nonatomic, retain) IBOutlet UIView*          v_publishedVotesView;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_numPublishedVotes;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_publishedStamp;
+
+- (void)renderWithPageID:(NSNumber*)pageID withPollState:(NSNumber*)pollState;
 
 @end

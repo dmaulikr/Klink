@@ -19,8 +19,6 @@
     UILabel* m_lbl_title;
     UILabel* m_lbl_numDraftsTotal;
     UILabel* m_lbl_numDraftsClosing;
-    
-    UIButton* m_testButton;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
@@ -32,8 +30,5 @@
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsTotal;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsClosing;
 
-@property (nonatomic, retain) IBOutlet UIButton*             testButton;
-
-- (IBAction) onTestButtonPressed:(id)sender;
 
 @end

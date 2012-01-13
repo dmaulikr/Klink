@@ -523,7 +523,8 @@
         [alert release];
     }
     [self commonInit];
-    // Set status bar style to black
+    
+    // Set status bar style to black translucent
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
     
     // we update the toolbar items each time the view controller is shown
@@ -951,6 +952,7 @@
         
         UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
         if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
+            [currentCaptionView setNeedsDisplay];
             [currentCaptionView renderCaptionWithID:caption.objectid];
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
         }
@@ -1017,14 +1019,13 @@
         
         UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
         if ([currentCaptionView.captionID isEqualToNumber:self.captionID]) {
+            [currentCaptionView setNeedsDisplay];
             [currentCaptionView renderCaptionWithID:self.captionID];
             
         }
-
-        
     }
-
 }
+
 #pragma mark - UIPagedViewSlider2Delegate
 - (UIView*) viewSlider:         (UIPagedViewSlider2*)   viewSlider 
      cellForRowAtIndex:         (int)                   index 

@@ -18,6 +18,8 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "UIImageView+UIImageViewCategory.h"
+#import "PageState.h"
+
 
 #define kPHOTOID                    @"photoid"
 #define kPHOTOFRAMETHICKNESS        30
@@ -33,6 +35,10 @@
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_photoby = m_lbl_photoby;
 @synthesize lbl_captionby = m_lbl_captionby;
+@synthesize pollState = m_pollState;
+@synthesize v_publishedVotesView = m_v_publishedVotesView;
+@synthesize lbl_numPublishedVotes = m_lbl_numPublishedVotes;
+@synthesize iv_publishedStamp = m_iv_publishedStamp;
 
 
 #pragma mark - Photo Frame Helper
@@ -76,7 +82,8 @@
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     self.lbl_draftTitle.text = draft.displayname;
     
-    Photo* photo = draft.photoWithHighestVotes;
+    //Photo* photo = draft.photoWithHighestVotes;
+    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:draft.finishedphotoid];
     self.photoID = photo.objectid;
     
     if (photo != nil) {        
@@ -93,29 +100,6 @@
                 self.iv_photo.image = image;
                 
                 [self displayPhotoFrameOnImage:image];
-                
-                /*// get the frame for the new scaled image in the Photo ImageView
-                CGRect scaledImage = [self.iv_photo frameForImage:image inImageViewAspectFit:self.iv_photo];
-                
-                // create insets to cap the photo frame according to the size of the scaled image
-                UIEdgeInsets photoFrameInsets = UIEdgeInsetsMake(scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.height/2 + kPHOTOFRAMETHICKNESS, scaledImage.size.width/2 + kPHOTOFRAMETHICKNESS);
-                
-                // apply the cap insets to the photo frame image
-                UIImage* img_photoFrame = [UIImage imageNamed:@"picture_frame.png"];
-                
-                if ([UIImage instancesRespondToSelector:@selector(resizableImageWithCapInsets:)]) {
-                    // This method is only available in iOS 5
-                    self.iv_photoFrame.image = [img_photoFrame resizableImageWithCapInsets:photoFrameInsets];
-                    
-                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                    self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + 2*kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                } else {
-                    // Fallback for iOS 4.x
-                    self.iv_photoFrame.image = [img_photoFrame stretchableImageWithLeftCapWidth:(int)photoFrameInsets.left topCapHeight:(int)photoFrameInsets.top];
-                    
-                    // resize the photo frame to wrap the scaled image while maintining the cap insets, this preserves the border thickness and shadows of the photo frame
-                    self.iv_photoFrame.frame = CGRectMake((self.iv_photo.frame.origin.x + scaledImage.origin.x - kPHOTOFRAMETHICKNESS/2), (self.iv_photo.frame.origin.y + scaledImage.origin.y - kPHOTOFRAMETHICKNESS + 2), (scaledImage.size.width + kPHOTOFRAMETHICKNESS), (scaledImage.size.height + 2*kPHOTOFRAMETHICKNESS - 2));
-                }*/
             }
         }
         else {
@@ -128,7 +112,8 @@
     self.lbl_caption.textColor = [UIColor darkGrayColor];
     self.lbl_caption.text = @"This photo had no captions.";
     
-    Caption* topCaption = [photo captionWithHighestVotes];
+    //Caption* topCaption = [photo captionWithHighestVotes];
+    Caption* topCaption = (Caption*)[resourceContext resourceWithType:CAPTION withID:draft.finishedcaptionid];
     if (topCaption != nil) {
         self.captionID = topCaption.objectid;
         self.lbl_caption.textColor = [UIColor blackColor];
@@ -138,11 +123,29 @@
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", topCaption.creatorname];
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
     
+    // Show the number of votes if poll is closed
+    if ([self.pollState intValue] == 1) {
+        self.lbl_numPublishedVotes.text = [NSString stringWithFormat:@"%d", [draft.numberofpublishvotes intValue]];
+        [self.v_publishedVotesView setHidden:NO];
+    }
+    else {
+        [self.v_publishedVotesView setHidden:YES];
+    }
+    
+    // Show the published stamp if this draft was published
+    if ([draft.state intValue] == kPUBLISHED) {
+        [self.iv_publishedStamp setHidden:NO];
+    }
+    else {
+        [self.iv_publishedStamp setHidden:YES];
+    }
+    
     [self setNeedsDisplay];
 }
 
-- (void)renderWithPageID:(NSNumber*)pageID {
+- (void)renderWithPageID:(NSNumber*)pageID withPollState:(NSNumber*)pollState {
     self.pageID = pageID;
+    self.pollState = pollState;
     
     [self render];
 }

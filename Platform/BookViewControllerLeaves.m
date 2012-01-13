@@ -29,7 +29,6 @@
 @synthesize invisibleReadButton = m_invisibleReadButton;
 @synthesize invisibleProductionLogButton = m_invisibleProductionLogButton;
 @synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
-@synthesize iv_backgroundLeaves = m_iv_backgroundLeaves;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
 @synthesize btn_writtenBy = m_btn_writtenBy;
 
@@ -182,36 +181,6 @@
     }
 }
 
-#pragma mark - Button Handlers
-#pragma mark Username button handler
-- (void) onLinkButtonClicked:(id)sender {
-    
-    int currentIndex = self.leavesView.currentPageIndex;
-    
-    if (currentIndex < [[self.frc_published_pages fetchedObjects]count]) {
-        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
-        Caption* caption = [page captionWithHighestVotes];
-        Photo* photo = [page photoWithHighestVotes];
-        
-        NSNumber* userID = nil;
-        
-        if (sender == self.btn_writtenBy) {
-            userID = caption.creatorid;
-        }
-        else {
-            userID = photo.creatorid;
-        }
-        
-        if (userID != nil) {
-            ProfileViewController* pvc = [ProfileViewController createInstanceForUser:userID];
-            UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
-            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            [self presentModalViewController:navigationController animated:YES];
-            
-            [navigationController release];
-        }
-    }
-}
 
 #pragma mark - Render Page from PageViewController
 -(void)renderPage {
@@ -461,6 +430,9 @@
     
     [btn_writtenBy release];
     [btn_illustratedBy release];
+    
+    // Bring the book cover subview to the front
+    [self.view bringSubviewToFront:self.iv_bookCover];
 
 }
 
@@ -519,10 +491,6 @@
     //UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
     //[toolbar setBackgroundImage:nil];
     
-    
-    self.shouldOpenToTitlePage = NO;
-    self.shouldAnimatePageTurn = NO;
-    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -533,7 +501,8 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Navigation Bar Button Handlers
+#pragma mark - Button Handlers
+#pragma mark Navigation Bar Button Handlers
 - (void) onHomeButtonPressed:(id)sender {
     [super onHomeButtonPressed:sender];
     
@@ -545,6 +514,9 @@
     [self.invisibleProductionLogButton setHidden:NO];
     [self.invisibleWritersLogButton setHidden:NO];
     
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = NO;
     self.shouldAnimatePageTurn = YES;
     
@@ -552,13 +524,46 @@
     
 }
 
-#pragma mark - UI Event Handlers
+#pragma mark Username button handler
+- (void) onLinkButtonClicked:(id)sender {
+    
+    int currentIndex = self.leavesView.currentPageIndex;
+    
+    if (currentIndex < [[self.frc_published_pages fetchedObjects]count]) {
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
+        Caption* caption = [page captionWithHighestVotes];
+        Photo* photo = [page photoWithHighestVotes];
+        
+        NSNumber* userID = nil;
+        
+        if (sender == self.btn_writtenBy) {
+            userID = caption.creatorid;
+        }
+        else {
+            userID = photo.creatorid;
+        }
+        
+        if (userID != nil) {
+            // setup the book animations for when we return to book
+            self.shouldCloseBookCover = NO;
+            self.shouldOpenBookCover = NO;
+            self.shouldOpenToTitlePage = NO;
+            self.shouldAnimatePageTurn = NO;
+            
+            ProfileViewController* pvc = [ProfileViewController createInstanceForUser:userID];
+            UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self presentModalViewController:navigationController animated:YES];
+            
+            [navigationController release];
+        }
+    }
+}
+
+#pragma mark UI Event Handlers
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
     [super onReadButtonClicked:sender];
-    
-    self.shouldOpenToTitlePage = NO;
-    self.shouldAnimatePageTurn = YES;
     
     [self renderPage];
     
@@ -568,17 +573,11 @@
     //called when the production log button is pressed
     [super onProductionLogButtonClicked:sender];
     
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
-    
 }
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     //called when the writer's log button is pressed
     [super onWritersLogButtonClicked:sender];
-    
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
     
 }
 

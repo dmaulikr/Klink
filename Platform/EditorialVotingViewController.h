@@ -20,7 +20,7 @@
     UILabel*    m_lbl_voteStatus;
     
     NSDate*     m_deadline;
-    BOOL        m_userJustVoted;
+    //BOOL        m_userJustVoted;
     
     UIView*         m_v_votingContainerView;
     UIImageView*    m_iv_votingDraftView;
@@ -32,11 +32,11 @@
 @property (nonatomic, retain) Poll*                         poll;
 
 @property (nonatomic, retain) IBOutlet iCarousel*           ic_coverFlowView;
-@property (nonatomic, retain) IBOutlet UIButton*            btn_voteButton;
+//@property (nonatomic, retain) IBOutlet UIButton*            btn_voteButton;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_voteStatus;
 
 @property (nonatomic, retain)          NSDate*              deadline;
-@property                              BOOL                 userJustVoted;
+//@property                              BOOL                 userJustVoted;
 
 @property (nonatomic, retain) IBOutlet UIView*              v_votingContainerView;
 @property (nonatomic, retain) IBOutlet UIImageView*         iv_votingDraftView;

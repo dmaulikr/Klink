@@ -30,9 +30,12 @@
     UIImageView*        m_iv_background;
     UIImageView*        m_iv_bookCover;
     
+    BOOL                m_shouldOpenBookCover;
+    BOOL                m_shouldCloseBookCover;
     BOOL                m_shouldOpenToTitlePage;
     BOOL                m_shouldOpenToSpecificPage;
     BOOL                m_shouldAnimatePageTurn;
+    
 }
 
 @property (nonatomic,retain) NSNumber*                      pageID;
@@ -51,6 +54,8 @@
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_background;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_bookCover;
 
+@property (nonatomic)                 BOOL                  shouldOpenBookCover;
+@property (nonatomic)                 BOOL                  shouldCloseBookCover;
 @property (nonatomic)                 BOOL                  shouldOpenToTitlePage;
 @property (nonatomic)                 BOOL                  shouldOpenToSpecificPage;
 @property (nonatomic)                 BOOL                  shouldAnimatePageTurn;
@@ -71,6 +76,9 @@
 - (void)showControls;
 - (void)cancelControlHiding;
 - (void)toggleControls;
+
+- (void)openBook;
+- (void)closeBook;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;

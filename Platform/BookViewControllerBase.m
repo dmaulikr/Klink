@@ -37,6 +37,8 @@
 @synthesize iv_background          = m_iv_background;
 @synthesize iv_bookCover           = m_iv_bookCover;
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
+@synthesize shouldOpenBookCover    = m_shouldOpenBookCover;
+@synthesize shouldCloseBookCover   = m_shouldCloseBookCover;
 @synthesize shouldOpenToTitlePage  = m_shouldOpenToTitlePage;
 @synthesize shouldOpenToSpecificPage = m_shouldOpenToSpecificPage;
 @synthesize shouldAnimatePageTurn  = m_shouldAnimatePageTurn;
@@ -56,9 +58,6 @@
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:resourceContext.managedObjectContext];
     
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
-    
-    //add predicate to test for being published
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",STATE, kPUBLISHED];
     
     //add predicate to test for being published
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
@@ -222,14 +221,27 @@
         for (NSString* animationKey in self.iv_bookCover.layer.animationKeys) {
             if ([animationKey isEqualToString:animationKeyClosed]) {
                 // book closed, move to production log
-                ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+                
+                // unhide navigation bar and toolbar
+                [self.navigationController setNavigationBarHidden:NO animated:YES];
+                [self.navigationController setToolbarHidden:NO animated:YES];
                 
                 // Set up navigation bar back button
-                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Book"
+                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Home"
                                                                                           style:UIBarButtonItemStyleBordered
                                                                                          target:nil
                                                                                          action:nil] autorelease];
-                [self.navigationController pushViewController:productionLogController animated:YES];
+                
+                ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+                
+                // Modal naviation to production log
+                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
+                navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                navigationController.toolbarHidden = NO;
+                
+                [self presentModalViewController:navigationController animated:YES];
+                
+                [navigationController release];
                 [productionLogController release];
             }
             else {
@@ -562,6 +574,9 @@
     self.navigationItem.leftBarButtonItem  = homePageButton;
     [homePageButton release];
     
+    // by default the book cover should always open on first load
+    self.shouldOpenBookCover = YES;
+    
 }
 
 - (void)viewDidUnload
@@ -598,6 +613,10 @@
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
+    //if (self.shouldCloseBookCover) {
+    //    [self closeBook];
+    //}
+    
     [self showControls];
     [self cancelControlHiding];
 }
@@ -605,8 +624,9 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self openBook];
-    
+    if (self.shouldOpenBookCover) {
+        [self openBook];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -633,39 +653,34 @@
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
     
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = YES;
+    
 }
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {
     //called when the production log button is pressed
     
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = YES;
+    self.shouldOpenBookCover = YES;
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
+    // navigation to the production log happens after the book is closed
     [self closeBook];
-    
-    // unhide navigation bar and toolbar
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController setToolbarHidden:NO animated:YES];
-    
-    // Set up navigation bar back button
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Home"
-                                                                              style:UIBarButtonItemStyleBordered
-                                                                             target:nil
-                                                                             action:nil] autorelease];
-    
-    ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
-    
-    // Modal naviation
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    navigationController.toolbarHidden = NO;
-    
-    [self presentModalViewController:navigationController animated:YES];
-     
-    [navigationController release];
-    
-    //[self.navigationController pushViewController:productionLogController animated:YES];
-    [productionLogController release];
 }
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
     //called when the writer's log button is pressed
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
