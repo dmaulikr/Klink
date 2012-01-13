@@ -378,7 +378,8 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
+    Caption* selectedCaption = [[self.frc_captions fetchedObjects]objectAtIndex:[indexPath row]];
+    //Photo* selectedPhoto = [[self.frc_photos fetchedObjects] objectAtIndex:[indexPath row]];
     
     // Set up navigation bar back button with draft title
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:page.displayname
@@ -386,7 +387,7 @@
                                                                              target:nil
                                                                              action:nil] autorelease];
     
-    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:selectedPhoto.themeid withPhotoID:selectedPhoto.objectid];
+    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:selectedCaption.photoid withCaptionID:selectedCaption.objectid];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
   
