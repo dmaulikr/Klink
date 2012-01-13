@@ -10,10 +10,12 @@
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
 #import "UIProgressHUDView.h"
+#import "CloudEnumerator.h"
 @class ContributeViewController;
 
 
-@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,UIProgressHUDViewDelegate> {
+@interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,UIProgressHUDViewDelegate,CloudEnumeratorDelegate> 
+{
     id<ContributeViewControllerDelegate> m_delegate;
     
     UICameraActionSheet*    m_cameraActionSheet;
@@ -25,6 +27,8 @@
     NSString*       m_configurationType;
     NSNumber*       m_pageID; //represents the ID of the page that a new photo can be added to
     NSNumber*       m_photoID; //represents the ID of the photo that a new caption can be added to
+    
+    NSArray*        m_requests;
     
     UILabel*        m_lbl_draftTitle;
     NSString*       m_draftTitle;
@@ -46,12 +50,18 @@
     
     UILabel*        m_lbl_deadline;
     NSDate*         m_deadline;
+    
+    CloudEnumerator*    m_idEnumerator;
+    NSArray*            m_objectIDsBeingCreated;
+    NSArray*            m_objectTypesBeingCreated;
+    NSLock*             m_oidArrayLock;
+    NSNumber*           m_secondsToWaitBeforeExecutingValidationEnumeration;
 }
 
 @property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
 
 @property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
-
+@property (nonatomic, retain) NSNumber*                 secondsToWaitBeforeExecutingValidationEnumeration;
 @property (nonatomic, retain) IBOutlet UIScrollView*    scrollView;
 @property (nonatomic, retain) UITextView*               activeTextView;
 @property (nonatomic, retain) UITextField*              activeTextField;
@@ -79,8 +89,13 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionRequired;
 
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_deadline;
+@property (nonatomic, retain) NSArray*                  requests;
 @property (nonatomic, retain)          NSDate*          deadline;
 
+@property (nonatomic, retain) CloudEnumerator*          idEnumerator;
+@property (nonatomic, retain) NSArray*                  objectIDsBeingCreated;
+@property (nonatomic, retain) NSArray*                  objectTypesBeingCreated;
+@property (nonatomic, retain) NSLock*                   oidArrayLock;
 
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;

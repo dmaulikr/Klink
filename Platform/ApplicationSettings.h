@@ -47,5 +47,6 @@
 @property (nonatomic,retain) NSNumber* poll_num_pages;
 @property (nonatomic,retain) NSNumber* editor_minimum;
 @property (nonatomic,retain) NSNumber* num_users;
+@property (nonatomic,retain) NSNumber* progress_maxsecondstodisplay;
 
 @end

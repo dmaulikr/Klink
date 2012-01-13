@@ -24,6 +24,8 @@
 //this URL is to connect to the PRODUCTION environment in the cloud
 NSString* const default_BASEURL = @"http://oscial.com/bonobo/rest";
 
+
+int const progress_MAXSECONDSTODISPLAY = 45;
 int const maxsize_PHOTODOWNLOAD=1000;
 int const maxsize_THEMEDOWNLOAD=100;
 int const maxsize_CAPTIONDOWNLOAD = 1000;

@@ -26,7 +26,7 @@
 
 @protocol ContributeViewControllerDelegate <NSObject>
 
-- (void)submitChangesForController:(ContributeViewController*)controller;
+- (NSArray*)submitChangesForController:(ContributeViewController*)controller;
 
 @end
 @interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
@@ -54,6 +54,12 @@
 - (void) showProgressBar: (NSString*)message 
           withCustomView:(UIView*)view 
   withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
+
+
+- (void) showDeterminateProgressBar:(NSString*)message
+                     withCustomView:(UIView*)view
+             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds
+                      withHeartbeat:(NSNumber*)heartbeatInSeconds;
 
 - (void) showDeterminateProgressBar:(NSString*)message
                      withCustomView:(UIView*)view

@@ -33,6 +33,7 @@
     NSString*                   m_identifier;
     NSDictionary*               m_userInfo;
     NSMutableArray*             m_results;
+    NSLock*                     m_resultsLock;
     
 }
 @property (nonatomic,retain) NSString*              identifier;
@@ -46,6 +47,7 @@
 @property BOOL                                      isLoading;
 @property (nonatomic,retain) NSMutableArray*               results;
 @property (nonatomic,retain) id<CloudEnumeratorDelegate>   delegate;
+@property (nonatomic,retain) NSLock*                        resultsLock;
 
 
 
@@ -60,6 +62,8 @@
                 withQueryOptions:(QueryOptions *)queryOptions;
 
 - (void) reset;
+- (BOOL) hasReturnedObjectWithID:(NSNumber*)objectid;
+- (BOOL) canEnumerate;
 - (void) enumerateNextPage:(NSDictionary*)userInfo;
 - (void) enumerateUntilEnd:(NSDictionary*)userInfo;
 
