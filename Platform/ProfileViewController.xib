@@ -770,7 +770,7 @@
 							<object class="IBUIImageView" id="377027993">
 								<reference key="NSNextResponder" ref="511855897"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{26, 40}, {35, 19}}</string>
+								<string key="NSFrame">{{29, 34}, {32, 30}}</string>
 								<reference key="NSSuperview" ref="511855897"/>
 								<reference key="NSNextKeyView" ref="1016984139"/>
 								<string key="NSReuseIdentifierKey">_NS:567</string>
@@ -1435,7 +1435,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="doubleline_bottom.png">{267, 11}</string>
-			<string key="icon-cloud.png">{35, 19}</string>
+			<string key="icon-cloud.png">{32, 32}</string>
 			<string key="page.png">{320, 480}</string>
 			<string key="progressBar_container.png">{280, 20}</string>
 			<string key="progressBar_darkfill.png">{280, 20}</string>

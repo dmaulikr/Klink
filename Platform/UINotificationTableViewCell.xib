@@ -128,7 +128,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{26, 71}, {267, 4}}</string>
 								<reference key="NSSuperview" ref="317785299"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -139,7 +138,6 @@
 						</object>
 						<string key="NSFrameSize">{320, 72}</string>
 						<reference key="NSSuperview" ref="443699583"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="307027147">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -327,8 +325,8 @@
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{16, 26}</string>
-				<string>{48, 49}</string>
-				<string>{29, 24}</string>
+				<string>{60, 60}</string>
+				<string>{30, 30}</string>
 				<string>{267, 6}</string>
 			</object>
 		</object>

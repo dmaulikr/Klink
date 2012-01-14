@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">10J4139</string>
+		<string key="IBDocument.SystemVersion">11C74</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.AppKitVersion">1138.23</string>
+		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">933</string>
@@ -61,7 +61,6 @@
 								<string key="NSFrame">{{82, 10}, {150, 21}}</string>
 								<reference key="NSSuperview" ref="1009946813"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -131,7 +130,7 @@
 							<object class="IBUILabel" id="500077301">
 								<reference key="NSNextResponder" ref="1009946813"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{235, 25}, {29, 21}}</string>
+								<string key="NSFrame">{{235, 26}, {29, 21}}</string>
 								<reference key="NSSuperview" ref="1009946813"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="971562205"/>
@@ -155,7 +154,7 @@
 							<object class="IBUIImageView" id="971562205">
 								<reference key="NSNextResponder" ref="1009946813"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{268, 26}, {20, 20}}</string>
+								<string key="NSFrame">{{264, 21}, {30, 30}}</string>
 								<reference key="NSSuperview" ref="1009946813"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="706828938"/>
@@ -189,7 +188,6 @@
 								<string key="NSFrame">{{26, 71}, {267, 4}}</string>
 								<reference key="NSSuperview" ref="1009946813"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -409,8 +407,8 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="arrow_right_scetched.png">{16, 26}</string>
-			<string key="icon-compose.png">{29, 18}</string>
-			<string key="icon-pics2@2x.png">{48, 49}</string>
+			<string key="icon-compose.png">{30, 30}</string>
+			<string key="icon-pics2@2x.png">{60, 60}</string>
 			<string key="tableviewcell_separator_scetched.png">{267, 6}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">933</string>

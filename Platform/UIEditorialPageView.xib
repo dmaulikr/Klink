@@ -159,7 +159,6 @@
 						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{68, 124}, {195, 107}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -219,7 +218,7 @@
 							<object class="IBUIImageView" id="757188451">
 								<reference key="NSNextResponder" ref="764919616"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{46, 0}, {29, 24}}</string>
+								<string key="NSFrame">{{45, -3}, {30, 30}}</string>
 								<reference key="NSSuperview" ref="764919616"/>
 								<reference key="NSNextKeyView" ref="310810442"/>
 								<string key="NSReuseIdentifierKey">_NS:567</string>
@@ -446,8 +445,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="icon-pics2@2x.png">{48, 49}</string>
-			<string key="icon-thumbUp-highlighted.png">{24, 29}</string>
+			<string key="icon-pics2@2x.png">{60, 60}</string>
+			<string key="icon-thumbUp-highlighted.png">{30, 30}</string>
 			<string key="page.png">{320, 480}</string>
 			<string key="picture_frame.png">{297, 228}</string>
 			<string key="published_stamp.png">{195, 107}</string>
