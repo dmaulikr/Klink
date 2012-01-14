@@ -12,7 +12,7 @@
 #import "CloudEnumerator.h"
 #import "MBProgressHUD.h"
 
-@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate,UIProgressHUDViewDelegate, CloudEnumeratorDelegate > {
+@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*           m_topVotedPhotoID;
@@ -71,14 +71,17 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
 
-- (void) onHomeButtonPressed:(id)sender;
-
 - (void)showControls;
 - (void)cancelControlHiding;
 - (void)toggleControls;
 
 - (void)openBook;
 - (void)closeBook;
+
+// Book Page Delegate Methods
+- (IBAction) onHomeButtonPressed:(id)sender;
+- (IBAction) onFacebookButtonPressed:(id)sender;
+- (IBAction) onTwitterButtonPressed:(id)sender;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;

@@ -222,6 +222,9 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    //Hide the navigation bar and tool bars so our custom bars can be shown
+    [self.navigationController.navigationBar setHidden:YES];
+    
     NSString *reqSysVer = @"5.0";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedDescending) {

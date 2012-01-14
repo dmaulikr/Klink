@@ -11,8 +11,6 @@
 		3D51CB8C146C7149002E0FD4 /* ContributeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */; };
 		3D5B84DF1463067300FD0F50 /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84DD1463067300FD0F50 /* icon-camera2.png */; };
 		3D5B84E01463067300FD0F50 /* icon-camera2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */; };
-		3D5B84E41463068100FD0F50 /* icon-facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */; };
-		3D5B84E51463068100FD0F50 /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */; };
 		3D683160146E0F2F007B4432 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */; };
 		3D683162146E245F007B4432 /* image-photoCameraButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D683161146E245F007B4432 /* image-photoCameraButton.png */; };
 		3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFE8D714645EEB00D6587D /* UIDraftTableViewCell.m */; };
@@ -41,6 +39,23 @@
 		5220103814785B4000C47C00 /* page_curled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103214785B4000C47C00 /* page_curled@2x.png */; };
 		5220103914785B4000C47C00 /* page.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103314785B4000C47C00 /* page.png */; };
 		5220103A14785B4000C47C00 /* page@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220103414785B4000C47C00 /* page@2x.png */; };
+		52253C0414C0AFC80014E42F /* book_button_roundrect.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C0014C0AFC80014E42F /* book_button_roundrect.png */; };
+		52253C0514C0AFC80014E42F /* book_button_roundrect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C0114C0AFC80014E42F /* book_button_roundrect@2x.png */; };
+		52253C0C14C0BC7F0014E42F /* book_button_roundrect_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C0A14C0BC7F0014E42F /* book_button_roundrect_highlighted.png */; };
+		52253C0D14C0BC7F0014E42F /* book_button_roundrect_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C0B14C0BC7F0014E42F /* book_button_roundrect_highlighted@2x.png */; };
+		52253C0F14C0CBEF0014E42F /* BookPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52253C0E14C0CBEF0014E42F /* BookPageViewController.m */; };
+		52253C2014C208190014E42F /* book_button_facebook_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1814C208190014E42F /* book_button_facebook_highlighted.png */; };
+		52253C2114C208190014E42F /* book_button_facebook_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1914C208190014E42F /* book_button_facebook_highlighted@2x.png */; };
+		52253C2214C208190014E42F /* book_button_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1A14C208190014E42F /* book_button_facebook.png */; };
+		52253C2314C208190014E42F /* book_button_facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1B14C208190014E42F /* book_button_facebook@2x.png */; };
+		52253C2414C208190014E42F /* book_button_twitter-t_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1C14C208190014E42F /* book_button_twitter-t_highlighted.png */; };
+		52253C2514C208190014E42F /* book_button_twitter-t_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1D14C208190014E42F /* book_button_twitter-t_highlighted@2x.png */; };
+		52253C2614C208190014E42F /* book_button_twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1E14C208190014E42F /* book_button_twitter-t.png */; };
+		52253C2714C208190014E42F /* book_button_twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C1F14C208190014E42F /* book_button_twitter-t@2x.png */; };
+		52253C2C14C208500014E42F /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C2814C208500014E42F /* icon-facebook.png */; };
+		52253C2D14C208500014E42F /* icon-facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C2914C208500014E42F /* icon-facebook@2x.png */; };
+		52253C2E14C208500014E42F /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C2A14C208500014E42F /* icon-twitter-t.png */; };
+		52253C2F14C208500014E42F /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52253C2B14C208500014E42F /* icon-twitter-t@2x.png */; };
 		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
 		52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */; };
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
@@ -53,8 +68,7 @@
 		5236459314A28D47007BD882 /* BookViewControllerLeaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236459114A28D46007BD882 /* BookViewControllerLeaves.m */; };
 		5236459E14A38ECE007BD882 /* BookViewControllerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5236459C14A38EC9007BD882 /* BookViewControllerBase.m */; };
 		5236459F14A38ECE007BD882 /* BookViewControllerBase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5236459D14A38ECB007BD882 /* BookViewControllerBase.xib */; };
-		5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE31492A62E0006FB5D /* PageViewController.m */; };
-		5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* PageViewController.xib */; };
+		5239EEE61492A62E0006FB5D /* BookPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE41492A62E0006FB5D /* BookPageViewController.xib */; };
 		5239EEEA1492B22E0006FB5D /* BookViewControllerPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */; };
 		5239EEEB1492B22E0006FB5D /* BookViewControllerPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */; };
 		523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */ = {isa = PBXBuildFile; fileRef = 523F22E414941EB4005BED44 /* open_book_page_turn.png */; };
@@ -172,8 +186,6 @@
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
 		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
 		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
-		C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1B1462ECDA00E14199 /* icon-facebook.png */; };
-		C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
@@ -316,8 +328,6 @@
 		3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContributeViewController.xib; sourceTree = "<group>"; };
 		3D5B84DD1463067300FD0F50 /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
 		3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2@2x.png"; sourceTree = "<group>"; };
-		3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook@2x.png"; sourceTree = "<group>"; };
-		3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
 		3D68315F146E0F2F007B4432 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		3D683161146E245F007B4432 /* image-photoCameraButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton.png"; sourceTree = "<group>"; };
 		3DCFE8D614645EEB00D6587D /* UIDraftTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDraftTableViewCell.h; sourceTree = "<group>"; };
@@ -351,6 +361,23 @@
 		5220103214785B4000C47C00 /* page_curled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_curled@2x.png"; sourceTree = "<group>"; };
 		5220103314785B4000C47C00 /* page.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page.png; sourceTree = "<group>"; };
 		5220103414785B4000C47C00 /* page@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page@2x.png"; sourceTree = "<group>"; };
+		52253C0014C0AFC80014E42F /* book_button_roundrect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_roundrect.png; sourceTree = "<group>"; };
+		52253C0114C0AFC80014E42F /* book_button_roundrect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_roundrect@2x.png"; sourceTree = "<group>"; };
+		52253C0A14C0BC7F0014E42F /* book_button_roundrect_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_roundrect_highlighted.png; sourceTree = "<group>"; };
+		52253C0B14C0BC7F0014E42F /* book_button_roundrect_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_roundrect_highlighted@2x.png"; sourceTree = "<group>"; };
+		52253C0E14C0CBEF0014E42F /* BookPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookPageViewController.m; sourceTree = "<group>"; };
+		52253C1814C208190014E42F /* book_button_facebook_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_facebook_highlighted.png; sourceTree = "<group>"; };
+		52253C1914C208190014E42F /* book_button_facebook_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_facebook_highlighted@2x.png"; sourceTree = "<group>"; };
+		52253C1A14C208190014E42F /* book_button_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_facebook.png; sourceTree = "<group>"; };
+		52253C1B14C208190014E42F /* book_button_facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_facebook@2x.png"; sourceTree = "<group>"; };
+		52253C1C14C208190014E42F /* book_button_twitter-t_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_twitter-t_highlighted.png"; sourceTree = "<group>"; };
+		52253C1D14C208190014E42F /* book_button_twitter-t_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_twitter-t_highlighted@2x.png"; sourceTree = "<group>"; };
+		52253C1E14C208190014E42F /* book_button_twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_twitter-t.png"; sourceTree = "<group>"; };
+		52253C1F14C208190014E42F /* book_button_twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_twitter-t@2x.png"; sourceTree = "<group>"; };
+		52253C2814C208500014E42F /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
+		52253C2914C208500014E42F /* icon-facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook@2x.png"; sourceTree = "<group>"; };
+		52253C2A14C208500014E42F /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
+		52253C2B14C208500014E42F /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
 		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
@@ -372,9 +399,8 @@
 		5236459B14A38EC8007BD882 /* BookViewControllerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewControllerBase.h; sourceTree = "<group>"; };
 		5236459C14A38EC9007BD882 /* BookViewControllerBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerBase.m; sourceTree = "<group>"; };
 		5236459D14A38ECB007BD882 /* BookViewControllerBase.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerBase.xib; sourceTree = "<group>"; };
-		5239EEE21492A62E0006FB5D /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
-		5239EEE31492A62E0006FB5D /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
-		5239EEE41492A62E0006FB5D /* PageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageViewController.xib; sourceTree = "<group>"; };
+		5239EEE21492A62E0006FB5D /* BookPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookPageViewController.h; sourceTree = "<group>"; };
+		5239EEE41492A62E0006FB5D /* BookPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookPageViewController.xib; sourceTree = "<group>"; };
 		5239EEE71492B22E0006FB5D /* BookViewControllerPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookViewControllerPageView.h; sourceTree = "<group>"; };
 		5239EEE81492B22E0006FB5D /* BookViewControllerPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookViewControllerPageView.m; sourceTree = "<group>"; };
 		5239EEE91492B22E0006FB5D /* BookViewControllerPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerPageView.xib; sourceTree = "<group>"; };
@@ -524,8 +550,6 @@
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
 		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
 		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
-		C56F8A1B1462ECDA00E14199 /* icon-facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook.png"; sourceTree = "<group>"; };
-		C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
 		C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationTableViewCell.m; sourceTree = "<group>"; };
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
@@ -965,6 +989,18 @@
 				5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */,
 				529F0CCA14BF735A0063E4AC /* Default.png */,
 				529F0CCB14BF735A0063E4AC /* Default@2x.png */,
+				52253C0A14C0BC7F0014E42F /* book_button_roundrect_highlighted.png */,
+				52253C0B14C0BC7F0014E42F /* book_button_roundrect_highlighted@2x.png */,
+				52253C1814C208190014E42F /* book_button_facebook_highlighted.png */,
+				52253C1914C208190014E42F /* book_button_facebook_highlighted@2x.png */,
+				52253C1A14C208190014E42F /* book_button_facebook.png */,
+				52253C1B14C208190014E42F /* book_button_facebook@2x.png */,
+				52253C1C14C208190014E42F /* book_button_twitter-t_highlighted.png */,
+				52253C1D14C208190014E42F /* book_button_twitter-t_highlighted@2x.png */,
+				52253C1E14C208190014E42F /* book_button_twitter-t.png */,
+				52253C1F14C208190014E42F /* book_button_twitter-t@2x.png */,
+				52253C0014C0AFC80014E42F /* book_button_roundrect.png */,
+				52253C0114C0AFC80014E42F /* book_button_roundrect@2x.png */,
 				527D2EC914B91E0200060FD4 /* book_cover.png */,
 				527D2ECA14B91E0300060FD4 /* book_cover@2x.png */,
 				527D2EBD14B7A58900060FD4 /* open_book.png */,
@@ -1022,10 +1058,10 @@
 				521EAC0C148D9F84006E29D4 /* icon-thumbUp-highlighted@2x.png */,
 				3D5B84DD1463067300FD0F50 /* icon-camera2.png */,
 				3D5B84DE1463067300FD0F50 /* icon-camera2@2x.png */,
-				C56F8A1B1462ECDA00E14199 /* icon-facebook.png */,
-				3D5B84E21463068100FD0F50 /* icon-facebook@2x.png */,
-				C56F8A1C1462ECDA00E14199 /* icon-twitter-t.png */,
-				3D5B84E31463068100FD0F50 /* icon-twitter-t@2x.png */,
+				52253C2814C208500014E42F /* icon-facebook.png */,
+				52253C2914C208500014E42F /* icon-facebook@2x.png */,
+				52253C2A14C208500014E42F /* icon-twitter-t.png */,
+				52253C2B14C208500014E42F /* icon-twitter-t@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1447,9 +1483,9 @@
 				5236459014A28D46007BD882 /* BookViewControllerLeaves.h */,
 				5236459114A28D46007BD882 /* BookViewControllerLeaves.m */,
 				52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */,
-				5239EEE21492A62E0006FB5D /* PageViewController.h */,
-				5239EEE31492A62E0006FB5D /* PageViewController.m */,
-				5239EEE41492A62E0006FB5D /* PageViewController.xib */,
+				5239EEE21492A62E0006FB5D /* BookPageViewController.h */,
+				52253C0E14C0CBEF0014E42F /* BookPageViewController.m */,
+				5239EEE41492A62E0006FB5D /* BookPageViewController.xib */,
 				C5C76C81145B92C100BA69B8 /* HomeViewController.h */,
 				C5C76C82145B92C100BA69B8 /* HomeViewController.m */,
 				C5C76C83145B92C200BA69B8 /* HomeViewController.xib */,
@@ -1833,12 +1869,8 @@
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
 				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
-				C56F8A1D1462ECDA00E14199 /* icon-facebook.png in Resources */,
-				C56F8A1E1462ECDA00E14199 /* icon-twitter-t.png in Resources */,
 				3D5B84DF1463067300FD0F50 /* icon-camera2.png in Resources */,
 				3D5B84E01463067300FD0F50 /* icon-camera2@2x.png in Resources */,
-				3D5B84E41463068100FD0F50 /* icon-facebook@2x.png in Resources */,
-				3D5B84E51463068100FD0F50 /* icon-twitter-t@2x.png in Resources */,
 				C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */,
 				3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */,
 				3DCFE8E01464633400D6587D /* icon-compose.png in Resources */,
@@ -1892,7 +1924,7 @@
 				5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */,
 				521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */,
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
-				5239EEE61492A62E0006FB5D /* PageViewController.xib in Resources */,
+				5239EEE61492A62E0006FB5D /* BookPageViewController.xib in Resources */,
 				5239EEEB1492B22E0006FB5D /* BookViewControllerPageView.xib in Resources */,
 				523F22E614941EB4005BED44 /* open_book_page_turn.png in Resources */,
 				523F22E714941EB4005BED44 /* open_book_page_turn@2x.png in Resources */,
@@ -1964,6 +1996,22 @@
 				529F0CC914BEE8B80063E4AC /* published_stamp@2x.png in Resources */,
 				529F0CCC14BF735A0063E4AC /* Default.png in Resources */,
 				529F0CCD14BF735A0063E4AC /* Default@2x.png in Resources */,
+				52253C0414C0AFC80014E42F /* book_button_roundrect.png in Resources */,
+				52253C0514C0AFC80014E42F /* book_button_roundrect@2x.png in Resources */,
+				52253C0C14C0BC7F0014E42F /* book_button_roundrect_highlighted.png in Resources */,
+				52253C0D14C0BC7F0014E42F /* book_button_roundrect_highlighted@2x.png in Resources */,
+				52253C2014C208190014E42F /* book_button_facebook_highlighted.png in Resources */,
+				52253C2114C208190014E42F /* book_button_facebook_highlighted@2x.png in Resources */,
+				52253C2214C208190014E42F /* book_button_facebook.png in Resources */,
+				52253C2314C208190014E42F /* book_button_facebook@2x.png in Resources */,
+				52253C2414C208190014E42F /* book_button_twitter-t_highlighted.png in Resources */,
+				52253C2514C208190014E42F /* book_button_twitter-t_highlighted@2x.png in Resources */,
+				52253C2614C208190014E42F /* book_button_twitter-t.png in Resources */,
+				52253C2714C208190014E42F /* book_button_twitter-t@2x.png in Resources */,
+				52253C2C14C208500014E42F /* icon-facebook.png in Resources */,
+				52253C2D14C208500014E42F /* icon-facebook@2x.png in Resources */,
+				52253C2E14C208500014E42F /* icon-twitter-t.png in Resources */,
+				52253C2F14C208500014E42F /* icon-twitter-t@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2092,7 +2140,6 @@
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
 				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
-				5239EEE51492A62E0006FB5D /* PageViewController.m in Sources */,
 				5239EEEA1492B22E0006FB5D /* BookViewControllerPageView.m in Sources */,
 				C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */,
 				C58C6CC814973AF00068CCD6 /* ABNotice.m in Sources */,
@@ -2121,6 +2168,7 @@
 				527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */,
 				C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */,
 				C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */,
+				52253C0F14C0CBEF0014E42F /* BookPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

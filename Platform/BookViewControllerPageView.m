@@ -7,7 +7,6 @@
 //
 
 #import "BookViewControllerPageView.h"
-#import "PageViewController.h"
 #import "Macros.h"
 #import "Page.h"
 #import "Photo.h"
@@ -22,10 +21,11 @@
 @synthesize invisibleProductionLogButton = m_invisibleProductionLogButton;
 @synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
 @synthesize v_tapWritersLogView = m_v_tapWritersLogView;
+@synthesize tapGesture = m_tapGesture;
 
 
 #pragma mark - Frames
-- (CGRect) frameForPageViewController {
+- (CGRect) frameForBookPageViewController {
     return CGRectMake(0, 0, 302, 460);
 }
 
@@ -74,7 +74,8 @@
             
             NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
             
-            PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+            BookPageViewController* bookPageViewController = [BookPageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+            bookPageViewController.delegate = self;
             
             [pageNumber release];
             
@@ -84,7 +85,7 @@
             int pagesRemaining = lastIndex - index;
             [self evaluateAndEnumeratePagesFromCloud:pagesRemaining];
             
-            return pageViewController;
+            return bookPageViewController;
         }
     }
 }
@@ -95,9 +96,9 @@
         // title page, return HomeViewController
         return 0;
     }
-    else if ([viewController isKindOfClass:[PageViewController class]]) {
-        PageViewController* pageViewController = (PageViewController *)viewController;
-        return [self indexOfPageWithID:pageViewController.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+    else if ([viewController isKindOfClass:[BookPageViewController class]]) {
+        BookPageViewController* bookPageViewController = (BookPageViewController *)viewController;
+        return [self indexOfPageWithID:bookPageViewController.pageID] + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
     }
     else {
         return NSNotFound;
@@ -152,7 +153,7 @@
             [self.invisibleProductionLogButton setHidden:NO];
             [self.invisibleWritersLogButton setHidden:NO];
         }
-        else if ([currentViewController isKindOfClass:[PageViewController class]]) {
+        else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
             // we are still showing a regular page view, ensure the title page buttons are disabled and hidden
             [self.invisibleReadButton setEnabled:NO];
             [self.invisibleProductionLogButton setEnabled:NO];
@@ -198,11 +199,11 @@
 }
 
 
-#pragma mark - Render Page from PageViewController
+#pragma mark - Render Page from BookPageViewController
 -(void)renderPage {
     //NSString* activityName = @"BookViewController.controller.renderPage:";
     
-    UIViewController* pageViewController = nil;
+    UIViewController* bookPageViewController = nil;
     
     int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
@@ -214,7 +215,7 @@
     // check to determine which page to render first
     if (self.shouldOpenToTitlePage) {
         // go to title page immidiately
-        pageViewController = [self viewControllerAtIndex:0];
+        bookPageViewController = [self viewControllerAtIndex:0];
     }
     else if (publishedPageCount != 0) {
         if (self.shouldOpenToSpecificPage) {
@@ -230,17 +231,17 @@
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
                 
-                pageViewController = [self viewControllerAtIndex:indexForPage];
+                bookPageViewController = [self viewControllerAtIndex:indexForPage];
             }
             else {
                 // No page specified, go to title page immidiately
-                pageViewController = [self viewControllerAtIndex:0];
+                bookPageViewController = [self viewControllerAtIndex:0];
             }
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
             // we go to the last page the user viewed
             int indexForPage = lastViewedPublishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
-            pageViewController = [self viewControllerAtIndex:indexForPage];
+            bookPageViewController = [self viewControllerAtIndex:indexForPage];
         }
         else {
             //need to find the first page
@@ -258,18 +259,18 @@
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
                 
-                pageViewController = [self viewControllerAtIndex:indexForPage];
+                bookPageViewController = [self viewControllerAtIndex:indexForPage];
             }
             else {
                 //no published pages, go to title page
-                pageViewController = [self viewControllerAtIndex:0];
+                bookPageViewController = [self viewControllerAtIndex:0];
             }
         }
     }
     
     
-    if (pageViewController) {
-        if ([pageViewController isKindOfClass:[HomeViewController class]]) {
+    if (bookPageViewController) {
+        if ([bookPageViewController isKindOfClass:[HomeViewController class]]) {
             // we are about to move to the title page of the book, enable and show the title page buttons
             [self.invisibleReadButton setEnabled:YES];
             [self.invisibleProductionLogButton setEnabled:YES];
@@ -288,7 +289,7 @@
             [self.invisibleWritersLogButton setHidden:YES];
         }
         
-        NSArray *viewControllers = [NSArray arrayWithObject:pageViewController];
+        NSArray *viewControllers = [NSArray arrayWithObject:bookPageViewController];
         
         [self.pageController setViewControllers:viewControllers  
                                       direction:UIPageViewControllerNavigationDirectionForward 
@@ -318,9 +319,16 @@
     self.pageController = pvc;
     [pvc release];
     
+    // set up a tap gesture recognizer to grab page flip taps that may cover BookPageViewController buttons
+    for (UIGestureRecognizer* gesture in self.pageController.gestureRecognizers) {
+        if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
+            self.tapGesture = gesture;
+            self.tapGesture.delegate = self;
+        }
+    }
     
     //[self.pageController.view setFrame:[self.view bounds]];
-    [self.pageController.view setFrame:[self frameForPageViewController]];
+    [self.pageController.view setFrame:[self frameForBookPageViewController]];
     
     [self.pageController setViewControllers:nil  
                                   direction:UIPageViewControllerNavigationDirectionForward 
@@ -469,9 +477,9 @@
 #pragma mark - UIGestureRecognizer Delegates
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     // test if our control subview is on-screen
-    if (self.v_tapWritersLogView.superview != nil) {
-        if ([touch.view isDescendantOfView:self.v_tapWritersLogView]) {
-            // we touched our control surface
+    if (self.pageController.view.superview != nil) {
+        if (gestureRecognizer == self.tapGesture) {
+            // we touched the edge of the UIPageViewController
             [self.nextResponder touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
             
             return NO; // ignore the touch
@@ -480,8 +488,9 @@
     return YES; // handle the touch
 }
 
-#pragma mark - Navigation Bar Button Handlers
-- (void) onHomeButtonPressed:(id)sender {
+#pragma mark - Button Handlers
+#pragma mark Book Page Delegate Methods
+- (IBAction) onHomeButtonPressed:(id)sender {
     [super onHomeButtonPressed:sender];
     
     HomeViewController* homeViewController = [HomeViewController createInstance];
@@ -507,7 +516,15 @@
     }
 }
 
-#pragma mark - UI Event Handlers
+- (IBAction) onFacebookButtonPressed:(id)sender {   
+    [super onFacebookButtonPressed:sender];
+}
+
+- (IBAction) onTwitterButtonPressed:(id)sender {
+    [super onTwitterButtonPressed:sender];
+}
+
+#pragma mark Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
     [super onReadButtonClicked:sender];
@@ -519,13 +536,11 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender {
     //called when the production log button is pressed
     [super onProductionLogButtonClicked:sender];
-    
 }
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     //called when the writer's log button is pressed
     [super onWritersLogButtonClicked:sender];
-    
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods

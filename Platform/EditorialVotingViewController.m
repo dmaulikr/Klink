@@ -276,14 +276,24 @@
     self.deadline = [DateTimeHelper parseWebServiceDateDouble:self.poll.dateexpires];
     int indexOfWinningDraft = [self indexOfPageWithID:self.poll.winningobjectid];
     
-    if ([self.poll.hasvoted boolValue]) {
+    // Check to see if the user has voted in this poll
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
+    NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
+    Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
+    [resourceValues release];
+    [resourceAttributes release];
+    
+    if (vote != nil) {
+        // user has voted
+        if ([self.poll.hasvoted boolValue] == NO) {
+            // need to reset hasVoted, this sometimes happens if the user has reinstalled the app
+            self.poll.hasvoted = [NSNumber numberWithBool:YES];
+        }
+    }
+    
+    if ([self.poll.hasvoted boolValue] && vote != nil) {
         // user has voted in this poll
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
-        NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.poll_ID, self.loggedInUser.objectid, nil];
-        NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
-        
-        Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
         
         int indexOfUserVotedDraft = [self indexOfPageWithID:vote.targetid];
         
@@ -325,9 +335,6 @@
                                             repeats:YES];
             
         }
-        
-        [resourceValues release];
-        [resourceAttributes release];
     }
     else {
         if ([self.poll.state intValue] == kCLOSED) {

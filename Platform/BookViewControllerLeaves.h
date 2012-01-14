@@ -8,17 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import "CloudEnumerator.h"
+#import "BookPageViewController.h"
 #import "MBProgressHUD.h"
 #import "LeavesViewController.h"
 #import "UIResourceLinkButton.h"
 
-@interface BookViewControllerLeaves : LeavesViewController {
+@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate > {
     UIButton* m_invisibleReadButton;
     UIButton* m_invisibleProductionLogButton;
     UIButton* m_invisibleWritersLogButton;
     
     UIResourceLinkButton* m_btn_writtenBy;
     UIResourceLinkButton* m_btn_illustratedBy;
+    
+    UIButton*   m_btn_homeButton;
+    UIButton*   m_btn_facebookButton;
+    UIButton*   m_btn_twitterButton;
 }
 
 @property (strong, nonatomic) UIButton* invisibleReadButton;
@@ -27,6 +32,10 @@
 
 @property (nonatomic,retain) UIResourceLinkButton* btn_writtenBy;
 @property (nonatomic,retain) UIResourceLinkButton* btn_illustratedBy;
+
+@property (strong, nonatomic) IBOutlet UIButton*    btn_homeButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_facebookButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_twitterButton;
 
 + (BookViewControllerLeaves*) createInstance;
 + (BookViewControllerLeaves*) createInstanceWithPageID:(NSNumber*)pageID;

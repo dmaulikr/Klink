@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BookViewControllerBase.h"
+#import "BookPageViewController.h"
 
-@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate > {
+@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate > {
     
     UIPageViewController* m_pageController;
     
@@ -18,6 +19,8 @@
     UIButton* m_invisibleWritersLogButton;
     
     UIView* m_v_tapWritersLogView;
+    
+    UITapGestureRecognizer* m_tapGesture;
     
 }
 
@@ -29,6 +32,9 @@
 
 @property (strong, nonatomic) UIView* v_tapWritersLogView;
 
+@property (strong, nonatomic) UIGestureRecognizer* tapGesture;
+
 + (BookViewControllerPageView*) createInstance;
 + (BookViewControllerPageView*) createInstanceWithPageID:(NSNumber*)pageID;
+
 @end

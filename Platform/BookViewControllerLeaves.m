@@ -7,7 +7,6 @@
 //
 
 #import "BookViewControllerLeaves.h"
-#import "PageViewController.h"
 #import "Macros.h"
 #import "Page.h"
 #import "PageState.h"
@@ -31,14 +30,31 @@
 @synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
 @synthesize btn_writtenBy = m_btn_writtenBy;
+@synthesize btn_homeButton = m_btn_homeButton;
+@synthesize btn_facebookButton = m_btn_facebookButton;
+@synthesize btn_twitterButton = m_btn_twitterButton;
+
 
 #pragma mark - Frames
-- (CGRect) frameForPageViewController {
+- (CGRect) frameForBookPageViewController {
     return CGRectMake(0, 0, 302, 460);
 }
 
 - (CGRect) frameForShowHideButton {
     return CGRectMake(100, 0, 100, 460);
+}
+
+#pragma mark - Book Page and Home Page Button Helpers
+- (void) bringBookPageButtonsToFront {
+    [self.view bringSubviewToFront:self.btn_homeButton];
+    [self.view bringSubviewToFront:self.btn_facebookButton];
+    [self.view bringSubviewToFront:self.btn_twitterButton];
+}
+
+- (void) sendBookPageButtonsToBack {
+    [self.view sendSubviewToBack:self.btn_homeButton];
+    [self.view sendSubviewToBack:self.btn_facebookButton];
+    [self.view sendSubviewToBack:self.btn_twitterButton];
 }
 
 #pragma mark - Initializers
@@ -69,6 +85,10 @@
 }
 
 - (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)index {
+    // hide the book page view buttons
+    //[self.view sendSubviewToBack:self.v_buttonOverlayView];
+    [self sendBookPageButtonsToBack];
+    
     if (index == 0) {
         // Do nothing, we are turning to the title page
     }
@@ -96,6 +116,10 @@
         [self.invisibleReadButton setHidden:NO];
         [self.invisibleProductionLogButton setHidden:NO];
         [self.invisibleWritersLogButton setHidden:NO];
+        
+        // hide the book page view buttons
+        //[self.view sendSubviewToBack:self.v_buttonOverlayView];
+        [self sendBookPageButtonsToBack];
     }
     else {
         // we are still showing a regular page view, ensure the title page buttons are disabled and hidden
@@ -105,6 +129,10 @@
         [self.invisibleReadButton setHidden:YES];
         [self.invisibleProductionLogButton setHidden:YES];
         [self.invisibleWritersLogButton setHidden:YES];
+        
+        // show the book page view buttons
+        //[self.view bringSubviewToFront:self.v_buttonOverlayView];
+        [self bringBookPageButtonsToFront];
         
         NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         
@@ -151,7 +179,7 @@
         [homeViewController.view.layer renderInContext:ctx];
     }
     else {
-        // Return the page view controller for the given index
+        // render the book page view controller for the given index
         index--;    // we need to subtract one to the index to account for the title page which is not in the frc
         
         int count = [[self.frc_published_pages fetchedObjects]count];
@@ -161,28 +189,45 @@
             
             NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
             
-            PageViewController* pageViewController = [PageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
-            pageViewController.view.backgroundColor = [UIColor clearColor];
+            BookPageViewController* bookPageViewController = [BookPageViewController createInstanceWithPageID:page.objectid withPageNumber:pageNumber];
+            bookPageViewController.delegate = self;
+            bookPageViewController.view.backgroundColor = [UIColor clearColor];
             [pageNumber release];
             
-            // directly draw the PageViewController's view to the passed in graphic context
-            CGRect viewRect = pageViewController.view.frame;
+            // directly draw the BookPageViewController's view to the passed in graphic context
+            CGRect viewRect = bookPageViewController.view.frame;
             
             CGContextTranslateCTM(ctx, 0.0, viewRect.size.height);
             CGContextScaleCTM(ctx, 1.0, -1.0);
             
-            [pageViewController.view.layer renderInContext:ctx];
+            [bookPageViewController.view.layer renderInContext:ctx];
             
             // adjust frames for draft attribution buttons
-            self.btn_writtenBy.frame = pageViewController.btn_writtenBy.frame;
-            self.btn_illustratedBy.frame = pageViewController.btn_illustratedBy.frame;
+            self.btn_writtenBy.frame = bookPageViewController.btn_writtenBy.frame;
+            self.btn_illustratedBy.frame = bookPageViewController.btn_illustratedBy.frame;
             
         }
     }
 }
 
+#pragma mark Override of LeaveView setCurrentPageIndex: method
+- (void) setCurrentPageIndex:(NSUInteger)aCurrentPageIndex {
+    if (aCurrentPageIndex == 0) {
+        // hide the book page view buttons
+        //[self.view sendSubviewToBack:self.v_buttonOverlayView];
+        [self sendBookPageButtonsToBack];
+    }
+    else {
+        // show the book page view buttons
+        //[self.view bringSubviewToFront:self.v_buttonOverlayView];
+        [self bringBookPageButtonsToFront];
+    }
+    
+    [self.leavesView setCurrentPageIndex:aCurrentPageIndex];
+}
 
-#pragma mark - Render Page from PageViewController
+
+#pragma mark - Render Page from BookPageViewController
 -(void)renderPage {
     //NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
     
@@ -198,7 +243,7 @@
     if (self.shouldOpenToTitlePage) {
         // go to title page immidiately
         indexForPage = 0;
-        [self.leavesView setCurrentPageIndex:0];
+        [self setCurrentPageIndex:0];
     }
     else if (publishedPageCount != 0) {
         if (self.shouldOpenToSpecificPage) {
@@ -214,18 +259,18 @@
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
                 
-                [self.leavesView setCurrentPageIndex:indexForPage];
+                [self setCurrentPageIndex:indexForPage];
             }
             else {
                 // No page specified, go to title page immidiately
                 indexForPage = 0;
-                [self.leavesView setCurrentPageIndex:0];
+                [self setCurrentPageIndex:0];
             }
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
             // we go to the last page the user viewed
             indexForPage = lastViewedPublishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
-            [self.leavesView setCurrentPageIndex:indexForPage];
+            [self setCurrentPageIndex:indexForPage];
         }
         else {
             //need to find the first page
@@ -243,11 +288,11 @@
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
                 
-                [self.leavesView setCurrentPageIndex:indexForPage];
+                [self setCurrentPageIndex:indexForPage];
             }
             else {
                 //no published pages, go to title page
-                [self.leavesView setCurrentPageIndex:0];
+                [self setCurrentPageIndex:0];
             }
         }
     }
@@ -361,14 +406,14 @@
     
     // Do any additional setup after loading the view from its nib.
     
-    // resister a callback for for when the newly created PageViewController has completed the download of its photo
+    // resister a callback for for when the newly created BookPageViewController has completed the download of its photo
     Callback* pageViewPhotoDownloaded = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageViewPhotoDownloaded:)];
     pageViewPhotoDownloaded.fireOnMainThread = YES;
     [self.eventManager registerCallback:pageViewPhotoDownloaded forSystemEvent:kPAGEVIEWPHOTODOWNLOADED];
     [pageViewPhotoDownloaded release];
     
-    // Adjust the leave view frame to be the size of the PageViewController
-    super.leavesView.frame = [self frameForPageViewController];
+    // Adjust the leave view frame to be the size of the BookPageViewController
+    super.leavesView.frame = [self frameForBookPageViewController];
     
     // by default the book should always open to the title page on first load
     //self.shouldOpenToTitlePage = YES;
@@ -419,14 +464,14 @@
     UIResourceLinkButton* btn_writtenBy = [[UIResourceLinkButton alloc]initWithFrame:frameForWrittenBy];
     UIResourceLinkButton* btn_illustratedBy = [[UIResourceLinkButton alloc]initWithFrame:frameForIllustratedBy];
     
-    self.btn_writtenBy = btn_writtenBy;
-    self.btn_illustratedBy = btn_illustratedBy;
-    
     [btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:btn_writtenBy];
-    [self.view addSubview:btn_illustratedBy];
+    self.btn_writtenBy = btn_writtenBy;
+    self.btn_illustratedBy = btn_illustratedBy;
+    
+    [self.view addSubview:self.btn_writtenBy];
+    [self.view addSubview:self.btn_illustratedBy];
     
     [btn_writtenBy release];
     [btn_illustratedBy release];
@@ -501,8 +546,9 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
 #pragma mark - Button Handlers
-#pragma mark Navigation Bar Button Handlers
+#pragma mark Book Page Delegate Methods
 - (void) onHomeButtonPressed:(id)sender {
     [super onHomeButtonPressed:sender];
     
@@ -520,9 +566,18 @@
     self.shouldOpenToTitlePage = NO;
     self.shouldAnimatePageTurn = YES;
     
-    [self.leavesView setCurrentPageIndex:0];
+    [self setCurrentPageIndex:0];
     
 }
+
+- (void) onFacebookButtonPressed:(id)sender {   
+    [super onFacebookButtonPressed:sender];
+}
+
+- (void) onTwitterButtonPressed:(id)sender {
+    [super onTwitterButtonPressed:sender];
+}
+
 
 #pragma mark Username button handler
 - (void) onLinkButtonClicked:(id)sender {
@@ -560,7 +615,7 @@
     }
 }
 
-#pragma mark UI Event Handlers
+#pragma mark Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
     [super onReadButtonClicked:sender];
@@ -580,6 +635,82 @@
     [super onWritersLogButtonClicked:sender];
     
 }
+
+/*#pragma mark - UI Touch Event Handlers
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // test if our control subview is on-screen
+    if (self.v_buttonOverlayView.superview != nil) {
+        if ([touch.view isDescendantOfView:self.v_buttonOverlayView]) {
+            // we touched our control surface
+            return NO; // ignore the touch
+        }
+    }
+    return YES; // handle the touch
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    // test if our button overlay subview is on-screen
+    if (self.v_buttonOverlayView.superview != nil) {
+        for (UITouch* touch in touches) {
+            if (touch.view == self.v_buttonOverlayView) {
+                // we touched our button overlay subview
+                [self.nextResponder touchesBegan:touches withEvent:event]; // pass the touch on
+                break;
+            }
+        }
+    }
+    else {
+        // handle the touch
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    // test if our button overlay subview is on-screen
+    if (self.v_buttonOverlayView.superview != nil) {
+        for (UITouch* touch in touches) {
+            if (touch.view == self.v_buttonOverlayView) {
+                // we touched our button overlay subview
+                [self.nextResponder touchesMoved:touches withEvent:event]; // pass the touch on
+                break;
+            }
+        }
+    }
+    else {
+        // handle the touch
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    // test if our button overlay subview is on-screen
+    if (self.v_buttonOverlayView.superview != nil) {
+        for (UITouch* touch in touches) {
+            if (touch.view == self.v_buttonOverlayView) {
+                // we touched our button overlay subview
+                [self.nextResponder touchesEnded:touches withEvent:event]; // pass the touch on
+                break;
+            }
+        }
+    }
+    else {
+        // handle the touch
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    // test if our button overlay subview is on-screen
+    if (self.v_buttonOverlayView.superview != nil) {
+        for (UITouch* touch in touches) {
+            if (touch.view == self.v_buttonOverlayView) {
+                // we touched our button overlay subview
+                [self.nextResponder touchesCancelled:touches withEvent:event]; // pass the touch on
+                break;
+            }
+        }
+    }
+    else {
+        // handle the touch
+    }
+}*/
 
 
 #pragma mark - Callback Event Handlers

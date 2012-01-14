@@ -88,6 +88,25 @@
     
 }
 
+//called when a new page is loaded into the display, will check to see thast given
+//the value for kENUMARTIONTHRESHOLD whether to perform an enumeration against the cloud,
+//and if so, perform it.
+- (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining {
+    NSString* activityName = @"BookViewControllerBase.evaluateAndEnumeratePagesFromCloud:";
+    //we need to make a check to see how many objects we have left
+    //if we are below a threshold, we need to execute a fetch to the server
+    
+    if (pagesRemaining < kENUMERATIONTHRESHOLD &&
+        !self.pageCloudEnumerator.isLoading) {
+        //enumerate
+        LOG_BOOKVIEWCONTROLLER(0, @"Detected only %d pages remaining, initiating re-enumeration from cloud",activityName,pagesRemaining);
+        self.pageCloudEnumerator = nil;
+        self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
+        self.pageCloudEnumerator.delegate = self;
+        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+    }
+}
+
 - (int) indexOfPageWithID:(NSNumber*)pageid {
     //returns the index location within the frc_published_photos for the photo with the id specified
     NSArray* fetchedObjects = [self.frc_published_pages fetchedObjects];
@@ -419,44 +438,13 @@
     return retVal;
 }
 
-//called when a new page is loaded into the display, will check to see thast given
-//the value for kENUMARTIONTHRESHOLD whether to perform an enumeration against the cloud,
-//and if so, perform it.
-- (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining {
-    NSString* activityName = @"BookViewControllerBase.evaluateAndEnumeratePagesFromCloud:";
-    //we need to make a check to see how many objects we have left
-    //if we are below a threshold, we need to execute a fetch to the server
+#pragma mark - Button Handlers
+#pragma mark Book Page Delegate Methods
+- (IBAction) onHomeButtonPressed:(id)sender {
     
-    if (pagesRemaining < kENUMERATIONTHRESHOLD &&
-        !self.pageCloudEnumerator.isLoading) {
-        //enumerate
-        LOG_BOOKVIEWCONTROLLER(0, @"Detected only %d pages remaining, initiating re-enumeration from cloud",activityName,pagesRemaining);
-        self.pageCloudEnumerator = nil;
-        self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
-        self.pageCloudEnumerator.delegate = self;
-        [self.pageCloudEnumerator enumerateUntilEnd:nil];
-    }
 }
 
-#pragma mark - Toolbar Button Helpers
-- (void) disableFacebookButton {
-    self.tb_facebookButton.enabled = NO;
-}
-
-- (void) enableFacebookButton {
-    self.tb_facebookButton.enabled = YES;
-}
-
-- (void) disableTwitterButton {
-    self.tb_twitterButton.enabled = NO;
-}
-
-- (void) enableTwitterButton {
-    self.tb_twitterButton.enabled = YES;
-}
-
-#pragma mark - Toolbar Button Event Handlers
-- (void) onFacebookButtonPressed:(id)sender {   
+- (IBAction) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
     if (![self.authenticationManager isUserAuthenticated]) {
         //user is not logged in, must log in first
@@ -474,10 +462,7 @@
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
-            
-
             [sharingManager sharePageOnFacebook:page.objectid onFinish:nil trackProgressWith:progressView];
-            //[self disableFacebookButton];
             
             NSString* message = @"Sharing page to Facebook...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
@@ -485,7 +470,7 @@
     }
 }
 
-- (void) onTwitterButtonPressed:(id)sender {
+- (IBAction) onTwitterButtonPressed:(id)sender {
     //we check to ensure the user is logged in to Twitter first
     if (![self.authenticationManager isUserAuthenticated] ||
         ![[self.authenticationManager contextForLoggedInUser]hasTwitter]) {
@@ -504,23 +489,14 @@
         Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
         
         if (page != nil) {
-            
-            
             [sharingManager sharePageOnTwitter:page.objectid onFinish:nil trackProgressWith:progressView];
-            //[self disableTwitterButton];
             
             NSString* message = @"Sharing to Twitter...";
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
-
 }
 
-
-#pragma mark - Navigation Bar Button Handlers
-- (void) onHomeButtonPressed:(id)sender {
-    
-}
 
 #pragma mark - Initializers
 - (void) commonInit {
@@ -593,8 +569,8 @@
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
-    //we store a user preference setting to track if we have successfully downloaded the book
-    //if this flag is missing or not set, we
+    //Hide the navigation bar and tool bars so our custom bars can be shown
+    [self.navigationController.navigationBar setHidden:YES];
     
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {
