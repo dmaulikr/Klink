@@ -303,6 +303,10 @@
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
 
+    // unhide navigation bar and toolbar
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setToolbarHidden:NO animated:YES];
+    
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];

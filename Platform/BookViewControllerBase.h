@@ -22,11 +22,6 @@
     NSTimer*            m_controlVisibilityTimer;
     BOOL                m_controlsHidden;
     
-    UIBarButtonItem*    m_tb_facebookButton;
-    UIBarButtonItem*    m_tb_twitterButton;
-    UIBarButtonItem*    m_tb_bookmarkButton;
-    UIBarButtonItem*    m_tb_notificationButton;
-    
     UIImageView*        m_iv_background;
     UIImageView*        m_iv_bookCover;
     
@@ -44,12 +39,6 @@
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
-
-// Toolbar Buttons
-@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_facebookButton;
-@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_twitterButton;
-@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_bookmarkButton;
-@property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_notificationButton;
 
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_background;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_bookCover;
@@ -85,4 +74,5 @@
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;
+
 @end

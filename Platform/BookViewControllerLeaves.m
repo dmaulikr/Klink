@@ -17,7 +17,6 @@
 #import "Caption.h"
 #import "EventManager.h"
 #import "UICustomNavigationBar.h"
-#import "UICustomToolbar.h"
 #import "HomeViewController.h"
 #import "UserDefaultSettings.h"
 
@@ -364,10 +363,6 @@
      navBarFrame.origin.y = statusBarHeight;
      self.navigationController.navigationBar.frame = navBarFrame;*/
     
-    // Navigation and tool bars
-	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
-    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
-    
 	[UIView commitAnimations];
 	
     // reset the controls hidden flag
@@ -511,30 +506,11 @@
     
     [self renderPage];
     
-    // Set the navigation bar and toolbar to the custom clear type
-    // Background Image
-    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
-    
-    // pre-iOS 5 method for changing bar backgrounds
-    //UINavigationBar* navigationBar = self.navigationController.navigationBar;
-    //UICustomNavigationBar* customNavigationBar = (UICustomNavigationBar *)navigationBar;
-    //[customNavigationBar setBackgroundImage:barImage];
-    
-    //UICustomToolbar* toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-    //[toolbar setBackgroundImage:barImage];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // pre-iOS 5 method for changing bar backgounds
-    //UICustomNavigationBar *navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-    //[navigationBar setBackgroundImage:nil];
-    
-    //UICustomToolbar *toolbar = (UICustomToolbar *)[[self navigationController] toolbar];
-    //[toolbar setBackgroundImage:nil];
     
 }
 

@@ -30,10 +30,6 @@
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 @synthesize controlVisibilityTimer = m_controlVisibilityTimer;
-@synthesize tb_facebookButton      = m_tb_facebookButton;
-@synthesize tb_twitterButton       = m_tb_twitterButton;
-@synthesize tb_bookmarkButton      = m_tb_bookmarkButton;
-@synthesize tb_notificationButton  = m_tb_notificationButton;
 @synthesize iv_background          = m_iv_background;
 @synthesize iv_bookCover           = m_iv_bookCover;
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
@@ -243,10 +239,6 @@
             if ([animationKey isEqualToString:animationKeyClosed]) {
                 // book closed, move to production log
                 
-                // unhide navigation bar and toolbar
-                [self.navigationController setNavigationBarHidden:NO animated:YES];
-                [self.navigationController setToolbarHidden:NO animated:YES];
-                
                 // Set up navigation bar back button
                 self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Home"
                                                                                           style:UIBarButtonItemStyleBordered
@@ -354,10 +346,6 @@
      navBarFrame.origin.y = statusBarHeight;
      self.navigationController.navigationBar.frame = navBarFrame;*/
     
-    // Navigation and tool bars
-	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
-    [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
-    
 	[UIView commitAnimations];
 	
     // reset the controls hidden flag
@@ -383,60 +371,6 @@
     [self setControlsHidden:!m_controlsHidden]; 
 }
 
-#pragma mark - Toolbar buttons
-- (NSArray*) toolbarButtonsForViewController {
-    //returns an array with the toolbar buttons for this view controller
-    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-    
-    // initialize button spacers
-    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem* fixedSpace1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-
-    //add Facebook share button
-    UIBarButtonItem* fb = [[UIBarButtonItem alloc]
-                              initWithImage:[UIImage imageNamed:@"icon-facebook.png"]
-                              style:UIBarButtonItemStylePlain
-                              target:self
-                              action:@selector(onFacebookButtonPressed:)];
-    self.tb_facebookButton  = fb;
-    [fb release];
-    [retVal addObject:self.tb_facebookButton];
-    
-    //add fixed space for button spacing
-    fixedSpace1.width = 10;
-    [retVal addObject:fixedSpace1];
-    
-    //add Twitter share button
-    UIBarButtonItem* tb = [[UIBarButtonItem alloc]
-                             initWithImage:[UIImage imageNamed:@"icon-twitter-t.png"]
-                             style:UIBarButtonItemStylePlain
-                             target:self
-                             action:@selector(onTwitterButtonPressed:)];
-    self.tb_twitterButton = tb;
-    [tb release];
-    [retVal addObject:self.tb_twitterButton];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        
-        //add flexible space for button spacing
-        [retVal addObject:flexibleSpace];
-        
-        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
-        self.tb_notificationButton = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
-        
-        [retVal addObject:self.tb_notificationButton];
-    }
-    
-    [flexibleSpace release];
-    [fixedSpace1 release];
-    
-    return retVal;
-}
 
 #pragma mark - Button Handlers
 #pragma mark Book Page Delegate Methods
@@ -586,18 +520,10 @@
     Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
     [[FeedManager instance]tryRefreshFeedOnFinish:callback];
     
-    // Toolbar: we update the toolbar items each time the view controller is shown
-    NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    [self setToolbarItems:toolbarItems];
-    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
-    //if (self.shouldCloseBookCover) {
-    //    [self closeBook];
-    //}
     
     [self showControls];
     [self cancelControlHiding];

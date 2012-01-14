@@ -435,28 +435,11 @@
    
     [self renderPage];
     
-    // Set the navigation bar and toolbar to the custom clear type
-    // Background Image
-    UIImage *barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
-    
-    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        // iOS 5 method for changing bar backgounds
-        [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.toolbar setBackgroundImage:barImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    }
-    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
     // NSString* activityName = @"BookViewControllerPageView.viewWillDisppear:";
     [super viewWillDisappear:animated];
-    
-    // Set the navigation bar and toolbar back to the default type
-    if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        // iOS 5 method for changing bar backgounds
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-    }
     
 }
 
