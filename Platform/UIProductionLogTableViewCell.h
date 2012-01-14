@@ -17,7 +17,7 @@
     UILabel*        m_lbl_draftTitle;
     UILabel*        m_lbl_deadline;
     UILabel*        m_lbl_numPhotos;
-    UILabel*        m_lbl_numCaptions;
+   // UILabel*        m_lbl_numCaptions;
     
     NSNumber*       m_topVotedPhotoID;
     
@@ -29,7 +29,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_photo;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_draftTitle;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_deadline;
-@property (nonatomic, retain) IBOutlet UILabel*     lbl_numPhotos;
+//@property (nonatomic, retain) IBOutlet UILabel*     lbl_numPhotos;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_numCaptions;
 
 @property (nonatomic, retain)          NSNumber*    topVotedPhotoID;
