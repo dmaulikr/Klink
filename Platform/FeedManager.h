@@ -16,6 +16,7 @@
 @property (nonatomic, retain) Callback* onRefreshCallback;
 
 - (void) refreshFeedOnFinish:(Callback*)callback;
+- (BOOL) tryRefreshFeedOnFinish:(Callback*)callback;
 - (BOOL) isRefreshingFeed;
 
 

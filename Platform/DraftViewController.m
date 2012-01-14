@@ -326,6 +326,9 @@
             
            [self.photoCloudEnumerator enumerateUntilEnd:nil];
         //}      
+        
+        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
     }
     
     // Toolbar: we update the toolbar items each time the view controller is shown
@@ -519,6 +522,11 @@
 
 
 #pragma mark - Callback Event Handlers
+- (void) onFeedRefreshComplete:(CallbackResult*)result
+{
+    //insert any apres feed refresh items in here
+}
+   
 - (void) onNewCaption:(CallbackResult*)result {
     [self.tbl_draftTableView reloadData];
 }
