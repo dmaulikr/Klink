@@ -199,6 +199,11 @@
         
        
     }
+    else 
+    {
+         //we still attempt to refresh the feed, but we dont force a refresh as in the first if block
+        [[FeedManager instance]tryRefreshFeedOnFinish:nil];
+    }
     
     [self.tbl_notificationsTableView reloadData];
     //we need to clear the application badge icon from the app icon
