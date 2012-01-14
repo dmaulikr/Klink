@@ -54,7 +54,6 @@ insertIntoResourceContext:(ResourceContext *)context
     NSString* lowerCaseName = [attribute lowercaseString];
     if ([lowerCaseName isEqualToString:DATECREATED]     ||
         [lowerCaseName isEqualToString:DATEMODIFIED]    ||
-        [lowerCaseName isEqualToString:HASSEEN]         ||
         [lowerCaseName isEqualToString:HASOPENED]) {
         
         retVal.islocked = [NSNumber numberWithBool:YES];
@@ -70,7 +69,7 @@ insertIntoResourceContext:(ResourceContext *)context
     
     
     //we mark hasopened, hasvoted as local only attributes
-    if ([lowerCaseName isEqualToString:HASOPENED] ||
+    if (
         [lowerCaseName isEqualToString:HASVOTED]) {
         retVal.islocal = [NSNumber numberWithBool:YES];
         retVal.islocked = [NSNumber numberWithBool:YES];

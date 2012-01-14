@@ -10,14 +10,10 @@
 #import "JSONKit.h"
 
 @implementation Feed
-@dynamic targetobjectid;
-@dynamic targetobjecttype;
 @dynamic message;
 @dynamic feedevent;
 @dynamic userid;
 @dynamic hasopened;
-@dynamic hasseen;
-@dynamic title;
 @dynamic dateexpires;
 @dynamic imageurl;
 @dynamic rendertype;

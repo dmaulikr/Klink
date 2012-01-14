@@ -587,8 +587,10 @@
     if (feedCount > 0 && index < feedCount) {
         Feed* notification = [[self.frc_notifications fetchedObjects]objectAtIndex:index];
         //we need to mark the notification as having been opened
-        notification.hasopened = [NSNumber numberWithBool:YES];
-        notification.hasseen = [NSNumber numberWithBool:YES];
+        if ([notification.hasopened boolValue] == NO)
+        {
+            notification.hasopened = [NSNumber numberWithBool:YES];
+        }
         //save the notification change
         ResourceContext* resourceContext = [ResourceContext instance];
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
