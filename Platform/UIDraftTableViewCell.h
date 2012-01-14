@@ -43,7 +43,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numVotes;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
-
+- (void) renderWithCaptionID:(NSNumber*)captionid;
 - (void) renderWithPhotoID:(NSNumber*)photoID;
 //- (IBAction) onWrittenByClicked:(id)sender;
 //- (IBAction) onIllustratedByClicked:(id)sender;

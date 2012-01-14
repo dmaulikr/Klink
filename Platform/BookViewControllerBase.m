@@ -582,6 +582,10 @@
         //TODO: need to make a call to a centrally hosted busy indicator view
     }
     
+    //we also make a call to try and refres the feed if it hanst already been done
+    Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
@@ -713,6 +717,11 @@
     }
 }
 
+#pragma mark - FeedRefreshCallback Handler
+- (void) onFeedRefreshComplete:(CallbackResult*)result
+{
+    //insert on feed refresh complete items here, probably the label
+}
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 

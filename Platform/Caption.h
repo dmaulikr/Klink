@@ -19,7 +19,7 @@
 @property (nonatomic,retain) NSNumber* numberofvotes;
 @property (nonatomic,retain) NSNumber* photoid;
 @property (nonatomic,retain) NSNumber* hasvoted;
-
+@property (nonatomic,retain) NSNumber* pageid;
 //static initializers
 + (Caption*) createCaptionForPhoto:(NSNumber*)photoid withCaption:(NSString*)caption;
 @end

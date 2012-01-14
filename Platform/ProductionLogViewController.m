@@ -293,6 +293,12 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
+    else 
+    {
+        //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+         Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    }
     
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
@@ -617,6 +623,12 @@
     return [NSDate date];
 }
 
+
+#pragma mark - Call back for feed refresh
+- (void) onFeedRefreshComplete:(CallbackResult*)result 
+{
+    //perform any post feed update actions here
+}
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 

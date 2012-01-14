@@ -33,4 +33,8 @@
 - (void) fireWithResponse:(Response*)response withContext:(NSDictionary*)context;
 - (void) fireWithUserInfo:(NSDictionary*)userInfo;
 - (void) deliverResultToTarget:(CallbackResult*)result; 
+
+
+//static initializers
++ (Callback*) callbackForTarget:(id)target selector:(SEL)selector fireOnMainThread:(BOOL)fireOnMainThread;
 @end

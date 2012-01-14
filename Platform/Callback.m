@@ -90,4 +90,14 @@
     [self fireWithResult:callbackResult];
 }
 
+#pragma mark - Static Initializers
++ (Callback*) callbackForTarget:(id)target selector:(SEL)selector fireOnMainThread:(BOOL)fireOnMainThread
+{
+    Callback* callback = [[Callback alloc]initWithTarget:target withSelector:selector];
+    callback.fireOnMainThread = fireOnMainThread;
+    [callback autorelease];
+    
+    return callback;
+}
+
 @end

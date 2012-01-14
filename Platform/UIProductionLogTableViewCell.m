@@ -25,7 +25,7 @@
 @synthesize iv_photo = m_iv_photo;
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
 @synthesize lbl_deadline = m_lbl_deadline;
-@synthesize lbl_numPhotos = m_lbl_numPhotos;
+//@synthesize lbl_numPhotos = m_lbl_numPhotos;
 @synthesize lbl_numCaptions = m_lbl_numCaptions;
 @synthesize topVotedPhotoID = m_topVotedPhotoID;
 @synthesize deadline;
@@ -126,8 +126,9 @@
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
     if (draft != nil) {
+       
         self.lbl_draftTitle.text =  draft.displayname;
-        self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
+       // self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
         self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
         
         Photo* topPhoto = [draft photoWithHighestVotes];
@@ -158,7 +159,7 @@
     self.topVotedPhotoID = nil;
     self.deadline = nil;
     self.lbl_draftTitle.text = nil;
-    self.lbl_numPhotos.text = nil;
+   // self.lbl_numPhotos.text = nil;
     self.lbl_numCaptions.text = nil;
     self.lbl_deadline.text = nil;
     self.iv_photo.image = nil;

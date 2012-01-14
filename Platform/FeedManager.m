@@ -63,6 +63,30 @@ static FeedManager* sharedManager;
 }
 
 #pragma mark - Instance methods
+- (BOOL) tryRefreshFeedOnFinish:(Callback*) callback 
+{
+    NSString* activityName = @"FeedManager.tryRefreshFeedOnFinish:";
+    
+    //this method makes a 'smart' attempt at refreshing the feed, only doing so
+    //if the enumerator settings permit it too, to avoid to many calls ont he wire
+    //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    FeedManager* feedManager = [FeedManager instance];
+    if ([authenticationManager isUserAuthenticated] == YES &&
+        [feedManager.feedEnumerator canEnumerate])
+    {
+       
+        LOG_FEEDMANAGER(0, @"%@Refreshing user's feed from cloud",activityName);
+        [feedManager refreshFeedOnFinish:callback];
+        return YES;
+    }
+    else 
+    {
+        LOG_FEEDMANAGER(0, @"%@Skipping user feed refresh, enumerator not ready",activityName);
+        return NO;
+    }
+
+}
 - (void) refreshFeedOnFinish:(Callback *)callback  {
     NSString* activityName = @"FeedManager.refreshFeedOnFinish:";
     //we nil out the current feed enumerator so we are able to create a new instance
