@@ -391,7 +391,7 @@
     //[self.photoMetaData setAlpha:hidden ? 0 : 1];
     
     // Caption page indicator
-    [self.pg_captionPageIndicator setAlpha:hidden ? 0 : 1];
+    //[self.pg_captionPageIndicator setAlpha:hidden ? 0 : 1];
     
 	[UIView commitAnimations];
 	
@@ -415,14 +415,14 @@
     [self setControlsHidden:![UIApplication sharedApplication].isStatusBarHidden]; 
 }
 
-- (void)showHideArrows {
+- (void)showHideLeftArrow:(BOOL)leftArrow rightArrow:(BOOL)rightArrow {
     
     [UIView animateWithDuration:0.5
                           delay:0
                         options:( UIViewAnimationCurveEaseInOut )
                      animations:^{
-                         [self.iv_leftArrow setAlpha:1];
-                         [self.iv_rightArrow setAlpha:1];
+                         [self.iv_leftArrow setAlpha:leftArrow ? 1 : 0];
+                         [self.iv_rightArrow setAlpha:rightArrow ? 1 : 0];
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:0.5
@@ -640,7 +640,7 @@
         //[self.photoMetaData setHidden:YES];
         [self.photoViewSlider setHidden:YES];
         [self.captionViewSlider setHidden:YES];
-        [self.pg_captionPageIndicator setHidden:YES];
+        //[self.pg_captionPageIndicator setHidden:YES];
         [self hideControlsAfterDelay:0.25];
         
         // set the current image on the landscape image view
@@ -676,7 +676,7 @@
         //[self.photoMetaData setHidden:NO];
         [self.photoViewSlider setHidden:NO];
         [self.captionViewSlider setHidden:NO];
-        [self.pg_captionPageIndicator setHidden:NO];
+        //[self.pg_captionPageIndicator setHidden:NO];
         [self showControls];
         
         // hide the landscape photo view
@@ -1169,8 +1169,21 @@
             }
             [self.captionViewSlider addSubview:v_caption];
             
+            if (index == 0 && captionCount == 1) {
+                [self showHideLeftArrow:NO rightArrow:NO];
+            }
+            else if (index == 0 && captionCount > 1) {
+                [self showHideLeftArrow:NO rightArrow:YES];
+            }
+            else if (index == captionCount - 1) {
+                [self showHideLeftArrow:YES rightArrow:NO];
+            }
+            else {
+                [self showHideLeftArrow:YES rightArrow:YES];
+            }
+            
             // Update page indicator for captions
-            [self.pg_captionPageIndicator setNumberOfPages:captionCount];
+            //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
             //[self.pg_captionPageIndicator setCurrentPage:index];
             
         }
@@ -1178,7 +1191,7 @@
             self.captionID = nil;
             
             // Hide page indicator for captions
-            [self.pg_captionPageIndicator setHidden:YES];
+            //[self.pg_captionPageIndicator setHidden:YES];
         }
     }
     
@@ -1227,25 +1240,23 @@
             self.captionID = caption.objectid;
             
             /*if (index == 0) {
-                [self.iv_leftArrow setAlpha:0];
-                [self.iv_rightArrow setAlpha:1];
+                [self showHideLeftArrow:NO rightArrow:YES];
             }
-            if (index == captionCount - 1) {
-                [self.iv_leftArrow setAlpha:1];
-                [self.iv_rightArrow setAlpha:0];
+            else if (index == captionCount - 1) {
+                [self showHideLeftArrow:YES rightArrow:NO];
             }
             else {
-                [self showHideArrows];
+                [self showHideLeftArrow:YES rightArrow:YES];
             }*/
             
             // Update page indicator for captions
             //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
-            [self.pg_captionPageIndicator setCurrentPage:index];
+            //[self.pg_captionPageIndicator setCurrentPage:index];
         }
         else if (captionCount <= 0) {
             self.captionID = nil;
-            //[self.iv_leftArrow setAlpha:0];
-            //[self.iv_leftArrow setAlpha:0];
+            [self.iv_leftArrow setAlpha:0];
+            [self.iv_rightArrow setAlpha:0];
         }
     }
     
