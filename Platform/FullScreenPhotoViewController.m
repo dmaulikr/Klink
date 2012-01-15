@@ -32,7 +32,7 @@
 #define kPictureSpacing             0
 
 #define kCaptionWidth               320
-#define kCaptionHeight              70
+#define kCaptionHeight              75
 #define kCaptionSpacing             0
 
 #define kPHOTOID @"photoid"
@@ -68,8 +68,6 @@
 
 
 #pragma mark - Properties
-
-
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
         return __frc_photos;
@@ -251,15 +249,17 @@
     self.photoViewSlider.tableView.allowsSelection = NO;
     self.captionViewSlider.tableView.allowsSelection = NO;
     
+    self.captionViewSlider.tableView.showsVerticalScrollIndicator = NO;
+    
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
-    [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kPictureSpacing useCellIdentifier:@"caption"];
+    [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kCaptionSpacing useCellIdentifier:@"caption"];
     
     // add photo metadata view
-    UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
-    self.photoMetaData = pmdv;
-    [pmdv release];
+    //UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
+    //self.photoMetaData = pmdv;
+    //[pmdv release];
     
-    [self.view addSubview:self.photoMetaData];
+    //[self.view addSubview:self.photoMetaData];
   
 }
 
@@ -388,8 +388,10 @@
     [self.captionViewSlider setAlpha:hidden ? 0 : 1];
     
     // Photo metadata
-    [self.photoMetaData setAlpha:hidden ? 0 : 1];
+    //[self.photoMetaData setAlpha:hidden ? 0 : 1];
     
+    // Caption page indicator
+    [self.pg_captionPageIndicator setAlpha:hidden ? 0 : 1];
     
 	[UIView commitAnimations];
 	
@@ -500,7 +502,7 @@
         }
         
         // update the metadata for the current photo being displayed
-        [self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
+        //[self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
         
     }
     else {
@@ -531,6 +533,9 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
     
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
     // Render the photo ID specified as a parameter
     if (self.photoID != nil && [self.photoID intValue] != 0) {
         //render the photo specified by the ID passed in
@@ -538,7 +543,6 @@
     }
     else {
         //need to find the latest photo
-        ResourceContext* resourceContext = [ResourceContext instance];
         Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withValueEqual:nil forAttribute:nil sortBy:DATECREATED sortAscending:NO];
         if (photo != nil) {
             //local store does contain photos to enumerate
@@ -554,7 +558,11 @@
     }
     
 	// Navigation
-	[self updateNavigation];
+	//[self updateNavigation];
+    
+    // Set title
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    self.title = [NSString stringWithFormat:@"%@", draft.displayname];
     
     [self cancelControlHiding];
 
@@ -629,9 +637,10 @@
         //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         //[self.navigationController.navigationBar setAlpha:0];
         //[self.navigationController.toolbar setAlpha:0];
-        [self.photoMetaData setHidden:YES];
+        //[self.photoMetaData setHidden:YES];
         [self.photoViewSlider setHidden:YES];
         [self.captionViewSlider setHidden:YES];
+        [self.pg_captionPageIndicator setHidden:YES];
         [self hideControlsAfterDelay:0.25];
         
         // set the current image on the landscape image view
@@ -664,9 +673,10 @@
         //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         //[self.navigationController.navigationBar setHidden:NO];
         //[self.navigationController.toolbar setHidden:NO];
-        [self.photoMetaData setHidden:NO];
+        //[self.photoMetaData setHidden:NO];
         [self.photoViewSlider setHidden:NO];
         [self.captionViewSlider setHidden:NO];
+        [self.pg_captionPageIndicator setHidden:NO];
         [self showControls];
         
         // hide the landscape photo view
@@ -948,7 +958,7 @@
         [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         
         //update photo and caption metadata views
-        [self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
+        //[self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
         
         UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
         if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
@@ -1015,7 +1025,7 @@
         [resourceContext.managedObjectContext save:&error];
         
         //update photo and caption metadata views
-        [self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
+        //[self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
         
         UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
         if ([currentCaptionView.captionID isEqualToNumber:self.captionID]) {
@@ -1161,7 +1171,7 @@
             
             // Update page indicator for captions
             [self.pg_captionPageIndicator setNumberOfPages:captionCount];
-            [self.pg_captionPageIndicator setCurrentPage:index];
+            //[self.pg_captionPageIndicator setCurrentPage:index];
             
         }
         else if (captionCount <= 0) {
@@ -1206,7 +1216,7 @@
         
         [self renderPhoto];
         
-        [self updateNavigation];
+        //[self updateNavigation];
     }
     else if (viewSlider == self.captionViewSlider) {
         int captionCount = [[self.frc_captions fetchedObjects]count];
@@ -1227,6 +1237,10 @@
             else {
                 [self showHideArrows];
             }*/
+            
+            // Update page indicator for captions
+            //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
+            [self.pg_captionPageIndicator setCurrentPage:index];
         }
         else if (captionCount <= 0) {
             self.captionID = nil;
