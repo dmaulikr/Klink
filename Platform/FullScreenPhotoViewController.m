@@ -249,7 +249,7 @@
     self.photoViewSlider.tableView.allowsSelection = NO;
     self.captionViewSlider.tableView.allowsSelection = NO;
     
-    self.captionViewSlider.tableView.showsVerticalScrollIndicator = NO;
+    //self.captionViewSlider.tableView.showsVerticalScrollIndicator = NO;
     
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kCaptionSpacing useCellIdentifier:@"caption"];
@@ -560,9 +560,21 @@
 	// Navigation
 	//[self updateNavigation];
     
-    // Set title
+    // Set Navigation bar title
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     self.title = [NSString stringWithFormat:@"%@", draft.displayname];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    titleLabel.text = self.navigationItem.title;
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
     
     [self cancelControlHiding];
 
@@ -585,6 +597,29 @@
     if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC]==NO) {
         [userDefaults setBool:YES forKey:setting_HASVIEWEDFULLSCREENVC];
         [userDefaults synchronize];
+    }
+    
+    // Show/hide the caption slider arrows as appropriate
+    int captionCount = [[self.frc_captions fetchedObjects]count];
+    if (captionCount > 0) {
+        int index = [self.captionViewSlider getPageIndex];
+        
+        if (index == 0 && captionCount == 1) {
+            [self showHideLeftArrow:NO rightArrow:NO];
+        }
+        else if (index == 0 && captionCount > 1) {
+            [self showHideLeftArrow:NO rightArrow:YES];
+        }
+        else if (index == captionCount - 1) {
+            [self showHideLeftArrow:YES rightArrow:NO];
+        }
+        else {
+            [self showHideLeftArrow:YES rightArrow:YES];
+        }
+    }
+    else {
+        [self.iv_leftArrow setAlpha:0];
+        [self.iv_rightArrow setAlpha:0];
     }
 }
 
@@ -1169,7 +1204,7 @@
             }
             [self.captionViewSlider addSubview:v_caption];
             
-            if (index == 0 && captionCount == 1) {
+            /*if (index == 0 && captionCount == 1) {
                 [self showHideLeftArrow:NO rightArrow:NO];
             }
             else if (index == 0 && captionCount > 1) {
@@ -1180,7 +1215,7 @@
             }
             else {
                 [self showHideLeftArrow:YES rightArrow:YES];
-            }
+            }*/
             
             // Update page indicator for captions
             //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
@@ -1239,7 +1274,11 @@
             
             self.captionID = caption.objectid;
             
-            /*if (index == 0) {
+            // Show/hide the caption slider arrows as appropriate
+            if (index == 0 && captionCount == 1) {
+                [self showHideLeftArrow:NO rightArrow:NO];
+            }
+            else if (index == 0 && captionCount > 1) {
                 [self showHideLeftArrow:NO rightArrow:YES];
             }
             else if (index == captionCount - 1) {
@@ -1247,7 +1286,7 @@
             }
             else {
                 [self showHideLeftArrow:YES rightArrow:YES];
-            }*/
+            }
             
             // Update page indicator for captions
             //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
