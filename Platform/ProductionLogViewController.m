@@ -285,21 +285,22 @@
         [alert release];
     }
     
-    //here we check to see how many items are in the FRC, if it is 0,
-    //then we initiate a query against the cloud.
-    //int count = [[self.frc_draft_pages fetchedObjects] count];
-    //if (count == 0) {
-    //    //there are no objects in local store, update from cloud
-    //    LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-    //}
-    //else 
-    //{
-        //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-         Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
-    //}
     
+    if ([self.cloudDraftEnumerator canEnumerate]) 
+    {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    }
+    else {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
+        
+        //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+
+    }
+    
+       
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
 
