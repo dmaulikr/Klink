@@ -312,8 +312,6 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
     
-    [self.navigationController.toolbar setHidden:YES];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
