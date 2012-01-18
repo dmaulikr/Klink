@@ -37,7 +37,7 @@
 @synthesize lbl_photoby = m_lbl_photoby;
 @synthesize lbl_captionby = m_lbl_captionby;
 @synthesize lbl_numVotes = m_lbl_numVotes;
-@synthesize lbl_numCaptions = m_lbl_numCaptions;
+//@synthesize lbl_numCaptions = m_lbl_numCaptions;
 @synthesize btn_writtenBy = m_btn_writtenBy;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
 
@@ -129,7 +129,7 @@
     
     // reset labels to defualt values
     self.lbl_numVotes.text = @"0";
-    self.lbl_numCaptions.text = @"0";
+    //self.lbl_numCaptions.text = @"0";
     self.lbl_caption.textColor = [UIColor darkGrayColor];
     self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
     
@@ -138,7 +138,7 @@
     self.lbl_caption.textColor = [UIColor blackColor];
     self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
     self.lbl_numVotes.text = [caption.numberofvotes stringValue];
-    self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
+  //  self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
     
     
 //    Caption* topCaption = [photo captionWithHighestVotes];
@@ -224,7 +224,7 @@
     self.iv_photo = nil;
     self.lbl_caption = nil;
     self.lbl_numVotes = nil;
-    self.lbl_numCaptions = nil;
+  //  self.lbl_numCaptions = nil;
     self.btn_illustratedBy = nil;
     self.btn_writtenBy = nil;
     

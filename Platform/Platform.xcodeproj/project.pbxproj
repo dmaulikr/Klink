@@ -2233,6 +2233,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C570B32614C657C3006C24EF /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Blue Label Solutions LLC";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0ED1EDFF-594B-4D95-B579-F4F73ED48E84";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
+			};
+			name = AppStore;
+		};
+		C570B32714C657C3006C24EF /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Platform/Platform-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"/usr/include/libxml2/**",
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(SRC_MGTwitterEngine)",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
+				INFOPLIST_FILE = "Platform/Platform-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries & Headers\"",
+				);
+				PRODUCT_NAME = bonobo;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				VALIDATE_PRODUCT = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = AppStore;
+		};
 		C593F7E3143EB192008D25A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2336,6 +2384,7 @@
 			buildConfigurations = (
 				C593F7E3143EB192008D25A7 /* Debug */,
 				C593F7E4143EB192008D25A7 /* Release */,
+				C570B32614C657C3006C24EF /* AppStore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2345,6 +2394,7 @@
 			buildConfigurations = (
 				C593F7E6143EB192008D25A7 /* Debug */,
 				C593F7E7143EB192008D25A7 /* Release */,
+				C570B32714C657C3006C24EF /* AppStore */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

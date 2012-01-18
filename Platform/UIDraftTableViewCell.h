@@ -25,7 +25,7 @@
     UILabel*                    m_lbl_photoby;
     UILabel*                    m_lbl_captionby;
     UILabel*                    m_lbl_numVotes;
-    UILabel*                    m_lbl_numCaptions;
+//    UILabel*                    m_lbl_numCaptions;
     
 }
 
@@ -42,7 +42,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_photoby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numVotes;
-@property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
+//@property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
 - (void) renderWithCaptionID:(NSNumber*)captionid;
 - (void) renderWithPhotoID:(NSNumber*)photoID;
 //- (IBAction) onWrittenByClicked:(id)sender;
