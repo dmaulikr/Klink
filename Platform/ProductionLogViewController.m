@@ -47,6 +47,8 @@
 @synthesize btn_profileButton           = m_btn_profileButton;
 @synthesize btn_newPageButton           = m_btn_newPageButton;
 @synthesize btn_notificationsButton     = m_btn_notificationsButton;
+@synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
+@synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
 @synthesize swipeGesture                = m_swipeGesture;
 
 
@@ -368,10 +370,18 @@
 }
 
 - (void)openTypewriter {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = NO;
+    
     [self typewriterOpenView:self.v_typewriter duration:0.5f];
 }
 
 - (void)closeTypewriter {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = NO;
+    self.shouldOpenTypewriter = YES;
+    
     [self typewriterCloseView:self.v_typewriter duration:0.5f];
 }
 
@@ -453,6 +463,10 @@
     // Add the gesture to the typewriter view
     [self.v_typewriter addGestureRecognizer:self.swipeGesture];
     
+    // Setup the animation to show the typewriter
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = YES;
+    
 }
 
 - (void)viewDidUnload
@@ -527,7 +541,9 @@
         [userDefaults synchronize];
     }
     
-    [self closeTypewriter];
+    if (self.shouldCloseTypewriter) {
+        [self closeTypewriter];
+    }
     
 }
 
@@ -639,6 +655,10 @@
 
 #pragma mark - Navigation Bar Button Handlers
 - (void) onHomeButtonPressed:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = NO;
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -663,6 +683,10 @@
 
 #pragma mark - Toolbar Button Event Handlers
 - (void) onProfileButtonPressed:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = NO;
+    self.shouldOpenTypewriter = NO;
+    
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
@@ -691,6 +715,10 @@
 }
 
 - (void) onPageButtonPressed:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = NO;
+    self.shouldOpenTypewriter = NO;
+    
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
@@ -719,6 +747,10 @@
 }
 
 - (void) onNotificationsButtonClicked:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = NO;
+    self.shouldOpenTypewriter = NO;
+    
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
@@ -765,6 +797,10 @@
 {    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = YES;
+    
     /*// Set up navigation bar back button
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
                                                                               style:UIBarButtonItemStyleBordered
@@ -782,7 +818,9 @@
     Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
     self.selectedDraftID = draft.objectid;
     
-    [self openTypewriter];
+    if (self.shouldOpenTypewriter) {
+        [self openTypewriter];
+    }
    
 }
 

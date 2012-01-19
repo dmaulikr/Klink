@@ -25,6 +25,8 @@
     UIButton*   m_btn_profileButton;
     UIButton*   m_btn_newPageButton;
     UIButton*   m_btn_notificationsButton;
+    BOOL        m_shouldOpenTypewriter;
+    BOOL        m_shouldCloseTypewriter;
     
     UISwipeGestureRecognizer* m_swipeGesture;
     
@@ -44,6 +46,8 @@
 @property (strong, nonatomic) IBOutlet UIButton*    btn_profileButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_newPageButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_notificationsButton;
+@property (nonatomic)                  BOOL         shouldOpenTypewriter;
+@property (nonatomic)                  BOOL         shouldCloseTypewriter;
 
 @property (strong, nonatomic) UISwipeGestureRecognizer*  swipeGesture;
 
