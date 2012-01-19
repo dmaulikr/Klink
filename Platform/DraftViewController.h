@@ -25,6 +25,12 @@
     CloudEnumerator*        m_photoCloudEnumerator;
     CloudEnumerator*        m_captionCloudEnumerator;
     EGORefreshTableHeaderView* m_refreshHeader;
+    
+    UIView*     m_v_typewriter;
+    UIButton*   m_btn_profileButton;
+    UIButton*   m_btn_newPageButton;
+    UIButton*   m_btn_notificationsButton;
+    
 }
 
 @property (nonatomic, retain) NSFetchedResultsController*    frc_photos;
@@ -39,7 +45,16 @@
 @property (nonatomic, retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
+@property (strong, nonatomic) IBOutlet UIView*      v_typewriter;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_profileButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_cameraButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_notificationsButton;
+
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID;
+
+- (IBAction) onProfileButtonPressed:(id)sender;
+- (IBAction) onCameraButtonPressed:(id)sender;
+- (IBAction) onNotificationsButtonClicked:(id)sender;
 
 @end

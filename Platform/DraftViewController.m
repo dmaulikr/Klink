@@ -24,6 +24,7 @@
 #import "ProfileViewController.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "NotificationsViewController.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -41,6 +42,10 @@
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 @synthesize refreshHeader = m_refreshHeader;
 @synthesize frc_captions = __frc_captions;
+@synthesize v_typewriter                = m_v_typewriter;
+@synthesize btn_profileButton           = m_btn_profileButton;
+@synthesize btn_cameraButton            = m_btn_cameraButton;
+@synthesize btn_notificationsButton     = m_btn_notificationsButton;
 
 #pragma mark - Deadline Date Timers
 - (void) timeRemaining:(NSTimer *)timer {
@@ -271,7 +276,7 @@
     [self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
 	self.navigationItem.titleView = self.lbl_deadlineNavBar;
     
-    }
+}
 
 - (void) viewDidAppear:(BOOL)animated 
 {
@@ -334,6 +339,9 @@
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
+    
+    [self.navigationController setToolbarHidden:YES animated:NO];
+    //[self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)viewDidUnload
@@ -371,7 +379,7 @@
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    //[self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
+    //[self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -516,7 +524,7 @@
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
+    [self.tbl_draftTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
     
 }
 
@@ -603,6 +611,32 @@
         
         [navigationController release];
         [contributeViewController release];
+    }
+}
+
+- (void) onNotificationsButtonClicked:(id)sender {
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                    initWithTitle:@"Login Required"
+                                    message:@"Hello! You must punch-in on the production floor to see your notifications.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    delegate:self
+                                    onFinishSelector:@selector(onNotificationsButtonPressed:)
+                                    onTargetObject:self
+                                    withObject:nil
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
+    }
+    else {
+        NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
     }
 }
 
