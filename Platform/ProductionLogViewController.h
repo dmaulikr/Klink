@@ -19,6 +19,7 @@
     UILabel* m_lbl_title;
     UILabel* m_lbl_numDraftsTotal;
     UILabel* m_lbl_numDraftsClosing;
+    NSNumber* m_selectedDraftID;
     
     UIView*     m_v_typewriter;
     UIButton*   m_btn_profileButton;
@@ -37,6 +38,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_title;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsTotal;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsClosing;
+@property (nonatomic, retain) NSNumber*                     selectedDraftID;
 
 @property (strong, nonatomic) IBOutlet UIView*      v_typewriter;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_profileButton;
