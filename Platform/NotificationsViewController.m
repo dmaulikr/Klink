@@ -180,8 +180,19 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
     
-    // Set the navigationbar title
-    self.navigationItem.title = @"Notifications";
+    // Set Navigation bar title style with typewtirer font
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    titleLabel.text = @"Notifications";
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
     
        
     //we count the number of notifications

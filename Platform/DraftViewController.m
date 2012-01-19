@@ -534,7 +534,7 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
     
-    [self.navigationController setToolbarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:YES];
     //[self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 

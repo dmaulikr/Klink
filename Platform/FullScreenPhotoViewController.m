@@ -577,6 +577,10 @@
     [titleLabel release];
     
     [self cancelControlHiding];
+    
+    // Unhide the navigation bar and toolbar
+    [self.navigationController setToolbarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 
 }
 

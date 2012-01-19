@@ -220,6 +220,20 @@
                                     action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
     
+    // Set Navigation bar title style with typewtirer font
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    titleLabel.text = @"Writers's Log";
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
+    
 }
 
 - (void)viewDidUnload
@@ -350,11 +364,6 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
-    
-    
-    
-    // Set the navigationbar title
-    self.navigationItem.title = @"Writers's Log";
     
     if (self.user == nil) {
         //we need to retrieve the id specified

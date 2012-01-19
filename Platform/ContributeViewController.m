@@ -179,6 +179,22 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+-(void) setNavigationBarTitle:(NSString*)title {
+    // Set Navigation bar title style with typewtirer font
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    titleLabel.text = title;
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
+}
+
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
@@ -286,7 +302,8 @@
     // Set up the view for the appropriate configuration type
     if (self.configurationType == PAGE) {
         // New Draft
-        self.navigationItem.title = @"New Draft";
+        //self.navigationItem.title = @"New Draft";
+        [self setNavigationBarTitle:@"New Draft"];
         self.lbl_draftTitle.hidden = YES;
         self.tf_newDraftTitle.hidden = NO;
         self.tf_newDraftTitle.enabled = YES;
@@ -306,7 +323,8 @@
     }
     else if (self.configurationType == PHOTO) {
         // New Photo
-        self.navigationItem.title = @"New Photo";
+        //self.navigationItem.title = @"New Photo";
+        [self setNavigationBarTitle:@"New Photo"];
         self.btn_cameraButton.hidden = NO;
         self.btn_cameraButton.enabled = YES;
         self.lbl_photoOptional.hidden = YES;
@@ -332,7 +350,8 @@
     }
     else if (self.configurationType == CAPTION) {
         // New Caption
-        self.navigationItem.title = @"New Caption";
+        //self.navigationItem.title = @"New Caption";
+        [self setNavigationBarTitle:@"New Caption"];
         self.lbl_captionOptional.hidden = YES;
         self.lbl_captionRequired.hidden = NO;
         
