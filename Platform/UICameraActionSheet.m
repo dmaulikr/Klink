@@ -132,18 +132,32 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         newFullscreenSize = CGSizeMake(kFullscreenPortraitWidth, kFullscreenPortraitWidth);
     }
     
-    // Make thumbnail image
     ImageManager* imageManager = [ImageManager instance];
-    UIImage* thumbnailImage = [imageManager shrinkImage:chosenImage toSize:newThumbnailSize];
+    
+    // Make new fullscreen image if the original is larger than the size we want
+    UIImage* fullscreenImage;
+    if (chosenImageSize.width > newFullscreenSize.width && chosenImageSize.height > newFullscreenSize.height) {
+        fullscreenImage = [imageManager shrinkImage:chosenImage toSize:newFullscreenSize];
+    }
+    else {
+        fullscreenImage = chosenImage;
+    }
+    
+    // Make thumbnail image if the original is larger than the size we want
+    UIImage* thumbnailImage;
+    if (chosenImageSize.width > newThumbnailSize.width && chosenImageSize.height > newThumbnailSize.height) {
+        thumbnailImage = [imageManager shrinkImage:chosenImage toSize:newThumbnailSize];
+    }
+    else {
+        thumbnailImage = chosenImage;
+    }
+    
     
     // Crop the new shrunken thumbnail image to the fit the target frame size
     CGSize thumbnailImageSize = thumbnailImage.size;
     thumbnailCropRect = CGRectMake((thumbnailImageSize.width - (kThumbnailWidth * kScale))/2, (thumbnailImageSize.height - (kThumbnailHeight * kScale))/2, kThumbnailWidth * kScale, kThumbnailHeight * kScale);
     CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([thumbnailImage CGImage], thumbnailCropRect);
     thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
-    
-    // Make fullscreen image
-    UIImage* fullscreenImage = [imageManager shrinkImage:chosenImage toSize:newFullscreenSize];
     
     id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
 

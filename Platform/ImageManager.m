@@ -188,7 +188,6 @@ static inline double radians (double degrees) {
     CGContextRef context;
     
     // For images taken in portrait mode (the right or left cases), we need to switch targetWidth and targetHeight when building the CG context
-   
     context = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
     CGColorSpaceRelease(colorSpaceInfo);
        
@@ -253,14 +252,14 @@ static inline double radians (double degrees) {
 }
 
 -(NSString*)saveThumbnailImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
-    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-thumbnailurl"];
+    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-thumbnailurl", photoid];
     NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;
 }
 
 - (NSString*)saveImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
-    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-imageurl"];
+    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-imageurl", photoid];
     NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;
