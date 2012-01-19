@@ -109,7 +109,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Begin creation of the thumbnail and fullscreen photos
     UIImage* chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-
+    
+    CGFloat scale = kScale;
     
     CGSize chosenImageSize = chosenImage.size;
     CGSize newThumbnailSize;
@@ -136,7 +137,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Make new fullscreen image if the original is larger than the size we want
     UIImage* fullscreenImage;
-    if (chosenImageSize.width > newFullscreenSize.width && chosenImageSize.height > newFullscreenSize.height) {
+    if (chosenImageSize.width > newFullscreenSize.width*scale && chosenImageSize.height > newFullscreenSize.height*scale) {
         fullscreenImage = [imageManager shrinkImage:chosenImage toSize:newFullscreenSize];
     }
     else {
@@ -145,7 +146,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     // Make thumbnail image if the original is larger than the size we want
     UIImage* thumbnailImage;
-    if (chosenImageSize.width > newThumbnailSize.width && chosenImageSize.height > newThumbnailSize.height) {
+    if (chosenImageSize.width > newThumbnailSize.width*scale && chosenImageSize.height > newThumbnailSize.height*scale) {
         thumbnailImage = [imageManager shrinkImage:chosenImage toSize:newThumbnailSize];
     }
     else {
