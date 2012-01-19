@@ -22,6 +22,7 @@
 #import "ApplicationSettings.h"
 #import "UserDefaultSettings.h"
 #import "NotificationsViewController.h"
+#import "ProfileViewController.h"
 #import "ProductionLogViewController.h"
 
 @implementation BookViewControllerBase
@@ -470,6 +471,20 @@
     
 }
 
+- (void) showProfileViewController
+{
+    ProfileViewController* profileViewController = [ProfileViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    //UINavigationController* navigationController = self.navigationController;
+    // [navigationController pushViewController:notificationsViewController animated:NO];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
+    [navigationController release];
+    
+}
+
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     // setup the book animations for when we return to book
     self.shouldCloseBookCover = NO;
@@ -493,7 +508,14 @@
     }
     else 
     {
-        [self showNotificationViewController];
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        
+        if (unreadNotifications > 0) {
+            [self showNotificationViewController];
+        }
+        else {
+            [self showProfileViewController];
+        }
     }
 }
 
