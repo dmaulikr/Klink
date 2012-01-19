@@ -72,6 +72,7 @@
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize =settingsObject.pagesize;
     enumerationContext.maximumNumberOfResults = settingsObject.feed_maxnumtodownload;
+    
     return enumerationContext;
 
 }

@@ -433,6 +433,25 @@ static ResourceContext* sharedInstance;
         LOG_RESOURCECONTEXT(1, @"%@Error when saving data to persistence store:%@",activityName,error);
         NSArray* conflictList = [error.userInfo objectForKey:@"conflictList"];
         for (NSMergeConflict* conflict in conflictList) {
+            NSManagedObject* conflictingObject = conflict.sourceObject;            
+            NSString* entityName = [conflictingObject.entity name];
+            
+            if ([entityName isEqualToString:ATTRIBUTEINSTANCEDATA]) {
+                AttributeInstanceData* aid = (AttributeInstanceData*)conflictingObject;
+                
+                NSString* attributeName = aid.attributename;
+                LOG_RESOURCECONTEXT(2, @"%@Conflicting Attribute Instance Type forAttributeName:%@",activityName,attributeName);
+                
+            }
+            else if ([entityName isEqualToString:TYPEINSTANCEDATA]) {
+                TypeInstanceData* tid = (TypeInstanceData*)conflictingObject;
+                NSString* objectTypeName = tid.typename;
+                LOG_RESOURCECONTEXT(1, @"%@Conflicting Type Instance Type forTypeName:%@",activityName,objectTypeName);
+            }
+            else  {
+                Resource* resource = (Resource*)conflictingObject;
+                LOG_RESOURCECONTEXT(1,@"%@Conflicting Object With Type:%@ and ID:%@",activityName,resource.objecttype,resource.objectid);
+            }
             
         }
     }

@@ -37,6 +37,8 @@
 @property (strong, nonatomic) IBOutlet UIButton*    btn_facebookButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_twitterButton;
 
+- (void) showNotificationViewController;
+
 + (BookViewControllerLeaves*) createInstance;
 + (BookViewControllerLeaves*) createInstanceWithPageID:(NSNumber*)pageID;
 

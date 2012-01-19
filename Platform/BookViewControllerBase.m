@@ -582,6 +582,20 @@
     [self closeBook];
 }
 
+- (void) showNotificationViewController
+{
+    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    //UINavigationController* navigationController = self.navigationController;
+    // [navigationController pushViewController:notificationsViewController animated:NO];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
+    [navigationController release];
+
+}
+
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     // setup the book animations for when we return to book
     self.shouldCloseBookCover = NO;
@@ -603,14 +617,10 @@
         [alert show];
         [alert release];
     }
-    else {
-        NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-        
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentModalViewController:navigationController animated:YES];
-        
-        [navigationController release];
+    else 
+    {
+       	
+        [self showNotificationViewController];
     }
 }
 

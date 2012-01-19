@@ -60,6 +60,7 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
 
+- (void) showNotificationViewController;
 - (void)showControls;
 - (void)cancelControlHiding;
 - (void)toggleControls;
