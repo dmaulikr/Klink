@@ -196,7 +196,7 @@
         LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Refreshing notification feed from cloud",activityName);
         FeedManager* feedManager = [FeedManager instance];
         [feedManager refreshFeedOnFinish:nil];
-        
+        self.refreshNotificationFeedOnDownload = NO;
        
     }
     else 

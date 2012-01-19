@@ -591,6 +591,10 @@
     }
 }
 
+- (void) showNotificationViewController 
+{
+    [super showNotificationViewController];
+}
 #pragma mark Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed

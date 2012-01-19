@@ -311,10 +311,11 @@
     else 
     {
         //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-         Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
         [[FeedManager instance]tryRefreshFeedOnFinish:callback];
     }
     
+       
     // Update draft counter labels at the top of the view
     [self updateDraftCounterLabels];
 
