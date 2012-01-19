@@ -26,6 +26,7 @@
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "BookViewControllerBase.h"
+#import "NotificationsViewController.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -41,6 +42,12 @@
 @synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
+@synthesize selectedDraftID             = m_selectedDraftID;
+@synthesize v_typewriter                = m_v_typewriter;
+@synthesize btn_profileButton           = m_btn_profileButton;
+@synthesize btn_newPageButton           = m_btn_newPageButton;
+@synthesize btn_notificationsButton     = m_btn_notificationsButton;
+@synthesize swipeGesture                = m_swipeGesture;
 
 
 #pragma mark - Properties
@@ -163,7 +170,7 @@
                                      initWithImage:[UIImage imageNamed:@"icon-newPage.png"]
                                      style:UIBarButtonItemStylePlain
                                      target:self
-                                     action:@selector(onDraftButtonPressed:)];
+                                     action:@selector(onPageButtonPressed:)];
     [retVal addObject:draftButton];
     [draftButton release];
     
@@ -183,6 +190,189 @@
     [flexibleSpace release];
     
     return retVal;
+}
+
+#pragma mark - Typewriter open animation
+- (void) typewriterOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToOpen.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToOpen.hidden = NO;
+    //[self.view bringSubviewToFront:viewToOpen];
+    
+    // disable the view so it’s not doing anything while animating
+    viewToOpen.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the bottom edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToOpen.layer.anchorPoint.y != 1.0f) {
+        //viewToClose.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToOpen.layer.anchorPoint = CGPointMake(0.5f, 1.0f);
+        //viewToClose.center = CGPointMake(viewToClose.center.x - viewToClose.bounds.size.width/2.0f, viewToClose.center.y);
+        viewToOpen.center = CGPointMake(viewToOpen.center.x, viewToOpen.center.y + viewToOpen.bounds.size.height/2.0f);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // start the animation from the current state
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    // this is the basic rotation by 90 degree along the y-axis
+    CATransform3D endTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                           -1.0f,
+                                                           0.0f,
+                                                           0.0f);
+    // these values control the 3D projection outlook
+    endTransform.m34 = 0.001f;
+    endTransform.m24 = 0.005f;
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:endTransform];
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToOpen.tag] forKey:@"viewToOpenTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToOpen.layer addAnimation:theGroup forKey:@"flipViewOpen"];
+}
+
+- (void) typewriterCloseView:(UIView *)viewToClose duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToClose.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToClose.hidden = NO;
+    //[self.view bringSubviewToFront:viewToClose];
+    
+    // disable the view so it’s not doing anything while animating
+    viewToClose.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the bottom edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToClose.layer.anchorPoint.y != 1.0f) {
+        //viewToClose.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToClose.layer.anchorPoint = CGPointMake(0.5f, 1.0f);
+        //viewToClose.center = CGPointMake(viewToClose.center.x - viewToClose.bounds.size.width/2.0f, viewToClose.center.y);
+        viewToClose.center = CGPointMake(viewToClose.center.x, viewToClose.center.y + viewToClose.bounds.size.height/2.0f);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    // start the animation from the open state
+    // this is the basic rotation by 90 degree along the x-axis
+    CATransform3D startTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                             -1.0f,
+                                                             0.0f,
+                                                             0.0f);
+    // these values control the 3D projection outlook
+    //startTransform.m34 = 0.001f;
+    //startTransform.m14 = -0.0015f;
+    startTransform.m34 = 0.001f;
+    startTransform.m24 = 0.005f;
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:startTransform];
+    
+    // end the transformation at the default state
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToClose.tag] forKey:@"viewToCloseTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToClose.layer addAnimation:theGroup forKey:@"flipViewClosed"];
+}
+
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+    
+    // Get the tag from the animation, we use it to find the
+    // animated UIView
+    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipViewClosed"];
+    
+    if (flag) {
+        for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
+            if ([animationKey isEqualToString:animationKeyClosed]) {
+                // typewriter was closed
+                
+                self.v_typewriter.userInteractionEnabled = YES;
+                
+            }
+            else {
+                // typewriter was opened, move to draft view
+                
+                // Open Draft View
+                DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+                
+                // Set up navigation bar back button
+                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
+                                                                                          style:UIBarButtonItemStyleBordered
+                                                                                         target:nil
+                                                                                         action:nil] autorelease];
+                
+                [self.navigationController pushViewController:draftViewController animated:YES];
+                
+                // Now we just hide the animated view since
+                // animation.removedOnCompletion is not working
+                // in animation groups. Hiding the view prevents it
+                // from returning to the original state and showing.
+                //self.iv_bookCover.hidden = YES;
+                //[self.view sendSubviewToBack:self.iv_bookCover];
+            }
+        }
+    }
+    
+    /*// Get the tag from the animation, we use it to find the
+     // animated UIView
+     NSNumber *tag = [theAnimation valueForKey:@"viewToOpenTag"];
+     // Find the UIView with the tag and do what you want
+     // This only searches the first level subviews
+     for (UIView *subview in self.view.subviews) {
+     if (subview.tag == [tag intValue]) {
+     // Code for what's needed to happen after
+     // the animation finishes goes here.
+     if (flag) {
+     // Now we just hide the animated view since
+     // animation.removedOnCompletion is not working
+     // in animation groups. Hiding the view prevents it
+     // from returning to the original state and showing.
+     subview.hidden = YES;
+     }
+     }
+     }*/
+    
+}
+
+- (void)openTypewriter {
+    [self typewriterOpenView:self.v_typewriter duration:0.5f];
+}
+
+- (void)closeTypewriter {
+    [self typewriterCloseView:self.v_typewriter duration:0.5f];
 }
 
 #pragma mark - Initializers
@@ -254,6 +444,15 @@
                                     target:self 
                                     action:@selector(onHomeButtonPressed:)] autorelease];
     self.navigationItem.leftBarButtonItem = leftButton;
+    
+    // Create gesture recognizer for the typewriter view to pass swipes through to the tableview
+    self.swipeGesture = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:nil] autorelease];
+    self.swipeGesture.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
+    self.swipeGesture.delegate = self;
+    
+    // Add the gesture to the typewriter view
+    [self.v_typewriter addGestureRecognizer:self.swipeGesture];
+    
 }
 
 - (void)viewDidUnload
@@ -312,6 +511,9 @@
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
     
+    [self.navigationController setToolbarHidden:YES animated:NO];
+    //[self.navigationController setNavigationBarHidden:YES animated:NO];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -324,6 +526,8 @@
         [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
         [userDefaults synchronize];
     }
+    
+    [self closeTypewriter];
     
 }
 
@@ -438,6 +642,25 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+#pragma mark - UIGestureRecognizer Delegates
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // test if our typewriter control subview is on-screen
+    if (self.v_typewriter.superview != nil) {
+        if (gestureRecognizer == self.swipeGesture) {
+            // user swiped in the area of the typewriter view, pass the touch on to the tableview
+            //[self.nextResponder touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
+            
+            return NO; // ignore the touch
+        }
+    }
+    return YES; // handle the touch
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
 #pragma mark - Toolbar Button Event Handlers
 - (void) onProfileButtonPressed:(id)sender {
     if (![self.authenticationManager isUserAuthenticated]) {
@@ -467,14 +690,14 @@
    
 }
 
-- (void) onDraftButtonPressed:(id)sender {
+- (void) onPageButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
                               initWithTitle:@"Login Required"
                               message:@"Hello! You must punch-in on the production floor to start a new draft.\n\nPlease login, or join us as a new contributor via Facebook."
                               delegate:self
-                              onFinishSelector:@selector(onDraftButtonPressed:)
+                              onFinishSelector:@selector(onPageButtonPressed:)
                               onTargetObject:self
                               withObject:nil
                               cancelButtonTitle:@"Cancel"
@@ -495,8 +718,30 @@
     }
 }
 
-- (void) onBookmarkButtonPressed:(id)sender {
-    
+- (void) onNotificationsButtonClicked:(id)sender {
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                    initWithTitle:@"Login Required"
+                                    message:@"Hello! You must punch-in on the production floor to see your notifications.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    delegate:self
+                                    onFinishSelector:@selector(onNotificationsButtonPressed:)
+                                    onTargetObject:self
+                                    withObject:nil
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
+    }
+    else {
+        NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+    }
 }
 
 #pragma mark - Table view delegate
@@ -512,7 +757,7 @@
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
+    //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
 
 
@@ -520,21 +765,24 @@
 {    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    // Set up navigation bar back button
+    /*// Set up navigation bar back button
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:nil
                                                                              action:nil] autorelease];
     
-    //DraftViewController* draftViewController = [[DraftViewController alloc] initWithNibName:@"DraftViewController" bundle:nil];
+    // Open Draft View
     Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
     
     DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:draft.objectid];
     
-    //Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
-    //draftViewController.pageID = draft.objectid;
+    [self.navigationController pushViewController:draftViewController animated:YES];*/
     
-    [self.navigationController pushViewController:draftViewController animated:YES];
+    // Get ID of draft user selected
+    Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
+    self.selectedDraftID = draft.objectid;
+    
+    [self openTypewriter];
    
 }
 
@@ -643,7 +891,7 @@
     [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
-    [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f)];
+    [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
 
 @end

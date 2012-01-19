@@ -145,7 +145,7 @@
     [rightButton release];
     
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
-                                   initWithImage:[UIImage imageNamed:@"icon-profile.png"]
+                                   initWithImage:[UIImage imageNamed:@"icon-profile-highlighted.png"]
                                    //initWithTitle:@"Profile"
                                    style:UIBarButtonItemStyleBordered
                                    target:self
