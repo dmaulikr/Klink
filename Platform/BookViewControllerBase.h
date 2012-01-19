@@ -56,10 +56,6 @@
                 withUserInfo:(NSDictionary *)userInfo;
 - (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining;
 
-- (IBAction) onReadButtonClicked:(id)sender;
-- (IBAction) onProductionLogButtonClicked:(id)sender;
-- (IBAction) onWritersLogButtonClicked:(id)sender;
-
 - (void) showNotificationViewController;
 - (void)showControls;
 - (void)cancelControlHiding;
@@ -67,6 +63,11 @@
 
 - (void)openBook;
 - (void)closeBook;
+
+// Home Page Delegate Methods
+- (IBAction) onReadButtonClicked:(id)sender;
+- (IBAction) onProductionLogButtonClicked:(id)sender;
+- (IBAction) onWritersLogButtonClicked:(id)sender;
 
 // Book Page Delegate Methods
 - (IBAction) onHomeButtonPressed:(id)sender;

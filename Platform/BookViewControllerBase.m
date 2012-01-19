@@ -431,6 +431,72 @@
     }
 }
 
+#pragma mark Home Page Delegate Methods
+- (IBAction) onReadButtonClicked:(id)sender {
+    //called when the read button is pressed
+    
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = YES;
+    
+}
+
+- (IBAction) onProductionLogButtonClicked:(id)sender {
+    //called when the production log button is pressed
+    
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = YES;
+    self.shouldOpenBookCover = YES;
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
+    // navigation to the production log happens after the book is closed
+    [self closeBook];
+}
+
+- (void) showNotificationViewController
+{
+    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+    //UINavigationController* navigationController = self.navigationController;
+    // [navigationController pushViewController:notificationsViewController animated:NO];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
+    [navigationController release];
+    
+}
+
+- (IBAction) onWritersLogButtonClicked:(id)sender {
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = YES;
+    self.shouldAnimatePageTurn = NO;
+    
+    //called when the writer's log button is pressed
+    if (![self.authenticationManager isUserAuthenticated]) {
+        UICustomAlertView *alert = [[UICustomAlertView alloc]
+                                    initWithTitle:@"Login Required"
+                                    message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    delegate:self
+                                    onFinishSelector:@selector(onWritersLogButtonClicked:)
+                                    onTargetObject:self
+                                    withObject:nil
+                                    cancelButtonTitle:@"Cancel"
+                                    otherButtonTitles:@"Login", nil];
+        [alert show];
+        [alert release];
+    }
+    else 
+    {
+        [self showNotificationViewController];
+    }
+}
+
 
 #pragma mark - Initializers
 - (void) commonInit {
@@ -556,73 +622,6 @@
     }
 }
 
-
-#pragma mark - UI Event Handlers
-- (IBAction) onReadButtonClicked:(id)sender {
-    //called when the read button is pressed
-    
-    // setup the book animations for when we return to book
-    self.shouldCloseBookCover = NO;
-    self.shouldOpenBookCover = NO;
-    self.shouldOpenToTitlePage = NO;
-    self.shouldAnimatePageTurn = YES;
-    
-}
-
-- (IBAction) onProductionLogButtonClicked:(id)sender {
-    //called when the production log button is pressed
-    
-    // setup the book animations for when we return to book
-    self.shouldCloseBookCover = YES;
-    self.shouldOpenBookCover = YES;
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
-    
-    // navigation to the production log happens after the book is closed
-    [self closeBook];
-}
-
-- (void) showNotificationViewController
-{
-    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-    //UINavigationController* navigationController = self.navigationController;
-    // [navigationController pushViewController:notificationsViewController animated:NO];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
-    [navigationController release];
-
-}
-
-- (IBAction) onWritersLogButtonClicked:(id)sender {
-    // setup the book animations for when we return to book
-    self.shouldCloseBookCover = NO;
-    self.shouldOpenBookCover = NO;
-    self.shouldOpenToTitlePage = YES;
-    self.shouldAnimatePageTurn = NO;
-    
-    //called when the writer's log button is pressed
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:@"Login Required"
-                                    message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
-                                    delegate:self
-                                    onFinishSelector:@selector(onWritersLogButtonClicked:)
-                                    onTargetObject:self
-                                    withObject:nil
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
-    }
-    else 
-    {
-       	
-        [self showNotificationViewController];
-    }
-}
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
 - (void) controller:(NSFetchedResultsController *)controller 

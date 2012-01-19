@@ -12,7 +12,6 @@
 #import "Photo.h"
 #import "CloudEnumeratorFactory.h"
 #import "PageState.h"
-#import "HomeViewController.h"
 #import "UserDefaultSettings.h"
 
 @implementation BookViewControllerPageView
@@ -57,6 +56,7 @@
     if (index == 0) {
         // Return the title page, HomeViewController
         HomeViewController* homeViewController = [HomeViewController createInstance];
+        homeViewController.delegate = self;
         
         return homeViewController;
     }
@@ -145,22 +145,22 @@
         UIViewController* currentViewController = [pageViewController.viewControllers objectAtIndex:0];
         
         if ([currentViewController isKindOfClass:[HomeViewController class]]) {
-            // we are now showing the title page, enable and show the title page buttons
+            /*// we are now showing the title page, enable and show the title page buttons
             [self.invisibleReadButton setEnabled:YES];
             [self.invisibleProductionLogButton setEnabled:YES];
             [self.invisibleWritersLogButton setEnabled:YES];
             [self.invisibleReadButton setHidden:NO];
             [self.invisibleProductionLogButton setHidden:NO];
-            [self.invisibleWritersLogButton setHidden:NO];
+            [self.invisibleWritersLogButton setHidden:NO];*/
         }
         else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
-            // we are still showing a regular page view, ensure the title page buttons are disabled and hidden
+            /*// we are still showing a regular page view, ensure the title page buttons are disabled and hidden
             [self.invisibleReadButton setEnabled:NO];
             [self.invisibleProductionLogButton setEnabled:NO];
             [self.invisibleWritersLogButton setEnabled:NO];
             [self.invisibleReadButton setHidden:YES];
             [self.invisibleProductionLogButton setHidden:YES];
-            [self.invisibleWritersLogButton setHidden:YES];
+            [self.invisibleWritersLogButton setHidden:YES];*/
             
             NSUInteger index = [self indexOfViewController:currentViewController];
             NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
@@ -270,7 +270,7 @@
     
     
     if (bookPageViewController) {
-        if ([bookPageViewController isKindOfClass:[HomeViewController class]]) {
+        /*if ([bookPageViewController isKindOfClass:[HomeViewController class]]) {
             // we are about to move to the title page of the book, enable and show the title page buttons
             [self.invisibleReadButton setEnabled:YES];
             [self.invisibleProductionLogButton setEnabled:YES];
@@ -287,7 +287,7 @@
             [self.invisibleReadButton setHidden:YES];
             [self.invisibleProductionLogButton setHidden:YES];
             [self.invisibleWritersLogButton setHidden:YES];
-        }
+        }*/
         
         NSArray *viewControllers = [NSArray arrayWithObject:bookPageViewController];
         
@@ -388,7 +388,7 @@
     [tapProdutionLogView release];
     //[tapWritersLogButton release];*/
     
-    // Add an invisible buttons to capture touches on HomePage buttons
+    /*// Add an invisible buttons to capture touches on HomePage buttons
     self.invisibleReadButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.invisibleProductionLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.invisibleWritersLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -410,7 +410,7 @@
     // add buttons to the view
     [self.view addSubview:self.invisibleReadButton];
     [self.view addSubview:self.invisibleProductionLogButton];
-    [self.view addSubview:self.invisibleWritersLogButton];
+    [self.view addSubview:self.invisibleWritersLogButton];*/
     
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];
@@ -477,15 +477,16 @@
     [super onHomeButtonPressed:sender];
     
     HomeViewController* homeViewController = [HomeViewController createInstance];
+    homeViewController.delegate = self;
     
     if (homeViewController) {
-        // we are about to move to the title page of the book, enable and show the title page buttons
+        /*// we are about to move to the title page of the book, enable and show the title page buttons
         [self.invisibleReadButton setEnabled:YES];
         [self.invisibleProductionLogButton setEnabled:YES];
         [self.invisibleWritersLogButton setEnabled:YES];
         [self.invisibleReadButton setHidden:NO];
         [self.invisibleProductionLogButton setHidden:NO];
-        [self.invisibleWritersLogButton setHidden:NO];
+        [self.invisibleWritersLogButton setHidden:NO];*/
         
         NSArray *viewControllers = [NSArray arrayWithObject:homeViewController];
         
@@ -513,7 +514,6 @@
     [super onReadButtonClicked:sender];
     
     [self renderPage];
-
 }
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {

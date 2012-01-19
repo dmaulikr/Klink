@@ -28,13 +28,22 @@
 @synthesize frc_draft_pages         = __frc_draft_pages;
 @synthesize btn_readButton          = m_btn_readButton;
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
-@synthesize lbl_numDrafts           = m_lbl_numDrafts;
 @synthesize btn_writersLogButton    = m_btn_writersLogButton;
+@synthesize lbl_numDrafts           = m_lbl_numDrafts;
 @synthesize lbl_writersLogSubtext   = m_lbl_writersLogSubtext;
 @synthesize lbl_numContributors     = m_lbl_numContributors;
 
 
 #pragma mark - Properties
+- (id)delegate {
+    return m_delegate;
+}
+
+- (void)setDelegate:(id<HomeViewControllerDelegate>)del
+{
+    m_delegate = del;
+}
+
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"HomeViewController.frc_draft_pages:";
@@ -256,6 +265,18 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - Button Handlers
+- (IBAction) onReadButtonClicked:(id)sender {
+    [self.delegate onReadButtonClicked:sender];
+}
+
+- (IBAction) onProductionLogButtonClicked:(id)sender {   
+    [self.delegate onProductionLogButtonClicked:sender];
+}
+
+- (IBAction) onWritersLogButtonClicked:(id)sender {
+    [self.delegate onWritersLogButtonClicked:sender];
+}
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
 - (void) controller:(NSFetchedResultsController *)controller 

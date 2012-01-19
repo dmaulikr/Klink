@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BookViewControllerBase.h"
 #import "BookPageViewController.h"
+#import "HomeViewController.h"
 
-@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate > {
+@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate, HomeViewControllerDelegate > {
     
     UIPageViewController* m_pageController;
     

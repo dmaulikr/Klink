@@ -17,7 +17,6 @@
 #import "Caption.h"
 #import "EventManager.h"
 #import "UICustomNavigationBar.h"
-#import "HomeViewController.h"
 #import "UserDefaultSettings.h"
 
 #define kPAGEID @"pageid"
@@ -29,6 +28,9 @@
 @synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
 @synthesize btn_illustratedBy = m_btn_illustratedBy;
 @synthesize btn_writtenBy = m_btn_writtenBy;
+@synthesize btn_readButton          = m_btn_readButton;
+@synthesize btn_productionLogButton = m_btn_productionLogButton;
+@synthesize btn_writersLogButton    = m_btn_writersLogButton;
 @synthesize btn_homeButton = m_btn_homeButton;
 @synthesize btn_facebookButton = m_btn_facebookButton;
 @synthesize btn_twitterButton = m_btn_twitterButton;
@@ -54,6 +56,18 @@
     [self.view sendSubviewToBack:self.btn_homeButton];
     [self.view sendSubviewToBack:self.btn_facebookButton];
     [self.view sendSubviewToBack:self.btn_twitterButton];
+}
+
+- (void) bringHomePageButtonsToFront {
+    [self.view bringSubviewToFront:self.btn_readButton];
+    [self.view bringSubviewToFront:self.btn_productionLogButton];
+    [self.view bringSubviewToFront:self.btn_writersLogButton];
+}
+
+- (void) sendHomePageButtonsToBack {
+    [self.view sendSubviewToBack:self.btn_readButton];
+    [self.view sendSubviewToBack:self.btn_productionLogButton];
+    [self.view sendSubviewToBack:self.btn_writersLogButton];
 }
 
 #pragma mark - Initializers
@@ -84,9 +98,10 @@
 }
 
 - (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)index {
-    // hide the book page view buttons
+    // hide the book and home page view buttons
     //[self.view sendSubviewToBack:self.v_buttonOverlayView];
     [self sendBookPageButtonsToBack];
+    [self sendHomePageButtonsToBack];
     
     if (index == 0) {
         // Do nothing, we are turning to the title page
@@ -108,29 +123,31 @@
 
 - (void) leavesView:(LeavesView *)leavesView didTurnToPageAtIndex:(NSUInteger)index {
     if (index == 0) {
-        // we are now showing the title page, enable and show the title page buttons
+        /*// we are now showing the title page, enable and show the title page buttons
         [self.invisibleReadButton setEnabled:YES];
         [self.invisibleProductionLogButton setEnabled:YES];
         [self.invisibleWritersLogButton setEnabled:YES];
         [self.invisibleReadButton setHidden:NO];
         [self.invisibleProductionLogButton setHidden:NO];
-        [self.invisibleWritersLogButton setHidden:NO];
+        [self.invisibleWritersLogButton setHidden:NO];*/
         
-        // hide the book page view buttons
+        // hide the book page view buttons and show the home page buttons
         //[self.view sendSubviewToBack:self.v_buttonOverlayView];
         [self sendBookPageButtonsToBack];
+        [self bringHomePageButtonsToFront];
     }
     else {
-        // we are still showing a regular page view, ensure the title page buttons are disabled and hidden
+        /*// we are still showing a regular page view, ensure the title page buttons are disabled and hidden
         [self.invisibleReadButton setEnabled:NO];
         [self.invisibleProductionLogButton setEnabled:NO];
         [self.invisibleWritersLogButton setEnabled:NO];
         [self.invisibleReadButton setHidden:YES];
         [self.invisibleProductionLogButton setHidden:YES];
-        [self.invisibleWritersLogButton setHidden:YES];
+        [self.invisibleWritersLogButton setHidden:YES];*/
         
-        // show the book page view buttons
+        // show the book page view buttons and hide the home page buttons
         //[self.view bringSubviewToFront:self.v_buttonOverlayView];
+        [self sendHomePageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
         NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
@@ -168,6 +185,7 @@
         // Return the title page, HomeViewController
         HomeViewController* homeViewController = [HomeViewController createInstance];
         homeViewController.view.backgroundColor = [UIColor clearColor];
+        homeViewController.delegate = self;
         
         // directly draw the HomeViewController's view to the passed in graphic context
         CGRect viewRect = homeViewController.view.frame;
@@ -212,13 +230,15 @@
 #pragma mark Override of LeaveView setCurrentPageIndex: method
 - (void) setCurrentPageIndex:(NSUInteger)aCurrentPageIndex {
     if (aCurrentPageIndex == 0) {
-        // hide the book page view buttons
+        // hide the book page view buttons and show the home page buttons
         //[self.view sendSubviewToBack:self.v_buttonOverlayView];
         [self sendBookPageButtonsToBack];
+        [self bringHomePageButtonsToFront];
     }
     else {
-        // show the book page view buttons
+        // show the book page view buttons and hide the home page buttons
         //[self.view bringSubviewToFront:self.v_buttonOverlayView];
+        [self sendHomePageButtonsToBack];
         [self bringBookPageButtonsToFront];
     }
     
@@ -296,7 +316,7 @@
         }
     }
     
-    if (indexForPage == 0) {
+    /*if (indexForPage == 0) {
         // we are about to move to the title page of the book, enable and show the title page buttons
         [self.invisibleReadButton setEnabled:YES];
         [self.invisibleProductionLogButton setEnabled:YES];
@@ -313,7 +333,7 @@
         [self.invisibleReadButton setHidden:YES];
         [self.invisibleProductionLogButton setHidden:YES];
         [self.invisibleWritersLogButton setHidden:YES];
-    }
+    }*/
 
 }
 
@@ -410,11 +430,6 @@
     // Adjust the leave view frame to be the size of the BookPageViewController
     super.leavesView.frame = [self frameForBookPageViewController];
     
-    // by default the book should always open to the title page on first load
-    //self.shouldOpenToTitlePage = YES;
-    //self.shouldAnimatePageTurn = NO;
-    
-    
     // Add an invisible button to capture taps to hide/show the controls
     UIButton* invisibleShowHideButton = [UIButton buttonWithType:UIButtonTypeCustom];
     // set the size of the button to fit in the area between the next page and previous page touch areas of the LeavesView
@@ -426,8 +441,7 @@
     [self.view addSubview:invisibleShowHideButton];
     
     
-    
-    // Add an invisible buttons to capture touches on HomePage buttons
+    /*// Add an invisible buttons to capture touches on HomePage buttons
     self.invisibleReadButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.invisibleProductionLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.invisibleWritersLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -449,7 +463,7 @@
     // add buttons to the view
     [self.view addSubview:self.invisibleReadButton];
     [self.view addSubview:self.invisibleProductionLogButton];
-    [self.view addSubview:self.invisibleWritersLogButton];
+    [self.view addSubview:self.invisibleWritersLogButton];*/
     
     
     // add UIResourceLinkButtons for the userNames of page authors
@@ -528,13 +542,13 @@
 - (void) onHomeButtonPressed:(id)sender {
     [super onHomeButtonPressed:sender];
     
-    // we are about to move to the title page of the book, enable and show the title page buttons
+    /*// we are about to move to the title page of the book, enable and show the title page buttons
     [self.invisibleReadButton setEnabled:YES];
     [self.invisibleProductionLogButton setEnabled:YES];
     [self.invisibleWritersLogButton setEnabled:YES];
     [self.invisibleReadButton setHidden:NO];
     [self.invisibleProductionLogButton setHidden:NO];
-    [self.invisibleWritersLogButton setHidden:NO];
+    [self.invisibleWritersLogButton setHidden:NO];*/
     
     // setup the book animations for when we return to book
     self.shouldCloseBookCover = NO;
@@ -601,7 +615,6 @@
     [super onReadButtonClicked:sender];
     
     [self renderPage];
-    
 }
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {
