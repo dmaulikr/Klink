@@ -53,7 +53,7 @@
     
     for (Feed* feed in feedObjects) 
     {
-        if ([feed.dateexpires doubleValue] < date && [feed.hasopened boolValue] == NO) {
+        if ([feed.dateexpires doubleValue] > date && [feed.hasopened boolValue] == NO) {
             //its unexpired and unopened
             count++;
         }
