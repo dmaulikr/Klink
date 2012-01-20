@@ -27,6 +27,7 @@
 #import "UIStrings.h"
 #import "BookViewControllerBase.h"
 #import "NotificationsViewController.h"
+#import "DateTimeHelper.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -65,11 +66,15 @@
     PlatformAppDelegate* app = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:PAGE inManagedObjectContext:app.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATEDRAFTEXPIRES   ascending:YES];
+    
+    double doubleDateNow = [[NSDate date] timeIntervalSince1970];
     
     //add predicate to test for being published
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    NSString* dateExpireAttributeNameStringValue = [NSString stringWithFormat:@"%@",DATEDRAFTEXPIRES];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d AND %K >= %f",stateAttributeNameStringValue, kDRAFT, dateExpireAttributeNameStringValue,doubleDateNow];
+    
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
