@@ -365,6 +365,9 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
     
+    // Hide toolbar
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
     if (self.user == nil) {
         //we need to retrieve the id specified
         ResourceContext* resourceContext = [ResourceContext instance];

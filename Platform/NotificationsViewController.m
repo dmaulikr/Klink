@@ -180,6 +180,9 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
     
+    // Hide toolbar
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    
     // Set Navigation bar title style with typewtirer font
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
     titleLabel.text = @"Notifications";
@@ -221,6 +224,7 @@
     UIApplication* application = [UIApplication sharedApplication];
     LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@Setting application badge number to 0",activityName);
     application.applicationIconBadgeNumber =0;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
