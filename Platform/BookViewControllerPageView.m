@@ -16,10 +16,6 @@
 
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
-@synthesize invisibleReadButton = m_invisibleReadButton;
-@synthesize invisibleProductionLogButton = m_invisibleProductionLogButton;
-@synthesize invisibleWritersLogButton = m_invisibleWritersLogButton;
-@synthesize v_tapWritersLogView = m_v_tapWritersLogView;
 @synthesize tapGesture = m_tapGesture;
 
 
@@ -145,22 +141,10 @@
         UIViewController* currentViewController = [pageViewController.viewControllers objectAtIndex:0];
         
         if ([currentViewController isKindOfClass:[HomeViewController class]]) {
-            /*// we are now showing the title page, enable and show the title page buttons
-            [self.invisibleReadButton setEnabled:YES];
-            [self.invisibleProductionLogButton setEnabled:YES];
-            [self.invisibleWritersLogButton setEnabled:YES];
-            [self.invisibleReadButton setHidden:NO];
-            [self.invisibleProductionLogButton setHidden:NO];
-            [self.invisibleWritersLogButton setHidden:NO];*/
+            // we are now showing the title page
         }
         else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
-            /*// we are still showing a regular page view, ensure the title page buttons are disabled and hidden
-            [self.invisibleReadButton setEnabled:NO];
-            [self.invisibleProductionLogButton setEnabled:NO];
-            [self.invisibleWritersLogButton setEnabled:NO];
-            [self.invisibleReadButton setHidden:YES];
-            [self.invisibleProductionLogButton setHidden:YES];
-            [self.invisibleWritersLogButton setHidden:YES];*/
+            // we are still showing a regular page view
             
             NSUInteger index = [self indexOfViewController:currentViewController];
             NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
@@ -270,24 +254,6 @@
     
     
     if (bookPageViewController) {
-        /*if ([bookPageViewController isKindOfClass:[HomeViewController class]]) {
-            // we are about to move to the title page of the book, enable and show the title page buttons
-            [self.invisibleReadButton setEnabled:YES];
-            [self.invisibleProductionLogButton setEnabled:YES];
-            [self.invisibleWritersLogButton setEnabled:YES];
-            [self.invisibleReadButton setHidden:NO];
-            [self.invisibleProductionLogButton setHidden:NO];
-            [self.invisibleWritersLogButton setHidden:NO];
-        }
-        else {
-            // we are about to move to a page view of the book that is not the title page, disable and hide the title page buttons
-            [self.invisibleReadButton setEnabled:NO];
-            [self.invisibleProductionLogButton setEnabled:NO];
-            [self.invisibleWritersLogButton setEnabled:NO];
-            [self.invisibleReadButton setHidden:YES];
-            [self.invisibleProductionLogButton setHidden:YES];
-            [self.invisibleWritersLogButton setHidden:YES];
-        }*/
         
         NSArray *viewControllers = [NSArray arrayWithObject:bookPageViewController];
         
@@ -319,7 +285,7 @@
     self.pageController = pvc;
     [pvc release];
     
-    // set up a tap gesture recognizer to grab page flip taps that may cover BookPageViewController buttons
+    // set up a tap gesture recognizer to grab page flip taps that may cover BookPageViewController and HomeViewController buttons
     for (UIGestureRecognizer* gesture in self.pageController.gestureRecognizers) {
         if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
             self.tapGesture = gesture;
@@ -343,7 +309,6 @@
     //self.shouldOpenToTitlePage = YES;
     //self.shouldAnimatePageTurn = NO;
     
-    
     // Create gesture recognizer for the background image view to handle a single tap
     UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
     
@@ -353,64 +318,6 @@
     
     // Add the gesture to the photo image view
     [self.iv_background addGestureRecognizer:oneFingerTap];
-    
-    
-    /*// Enable gesture recognizers for the title page buttons of the HomeViewController
-    UIView* tapReadView = [[UIView alloc] initWithFrame:CGRectMake(32, 183, 257, 66)];
-    UIView* tapProdutionLogView = [[UIView alloc] initWithFrame:CGRectMake(32, 242, 257, 66)];
-    self.v_tapWritersLogView = [[UIView alloc] initWithFrame:CGRectMake(32, 301, 257, 66)];
-    
-    // add tapViews to the view
-    [self.view addSubview:tapReadView];
-    [self.view addSubview:tapProdutionLogView];
-    [self.view addSubview:self.v_tapWritersLogView];
-    
-    UITapGestureRecognizer* tapReadButton = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onReadButtonClicked:)] autorelease];
-    UITapGestureRecognizer* tapProductionLogButton = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onProductionLogButtonClicked:)] autorelease];
-    UITapGestureRecognizer* tapWritersLogButton = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onWritersLogButtonClicked:)] autorelease];
-    
-    tapWritersLogButton.delegate = self;
-    
-    // Set required taps and number of touches
-    [tapReadButton setNumberOfTapsRequired:1];
-    [tapReadButton setNumberOfTouchesRequired:1];
-    [tapProductionLogButton setNumberOfTapsRequired:1];
-    [tapProductionLogButton setNumberOfTouchesRequired:1];
-    [tapWritersLogButton setNumberOfTapsRequired:1];
-    [tapWritersLogButton setNumberOfTouchesRequired:1];
-    
-    // Add the gesture to the photo image view
-    [tapReadView addGestureRecognizer:tapReadButton];
-    [tapProdutionLogView addGestureRecognizer:tapProductionLogButton];
-    [self.v_tapWritersLogView addGestureRecognizer:tapWritersLogButton];
-    
-    [tapReadView release];
-    [tapProdutionLogView release];
-    //[tapWritersLogButton release];*/
-    
-    /*// Add an invisible buttons to capture touches on HomePage buttons
-    self.invisibleReadButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.invisibleProductionLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.invisibleWritersLogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    //self.invisibleReadButton.backgroundColor = [UIColor redColor];
-    //self.invisibleProductionLogButton.backgroundColor = [UIColor redColor];
-    //self.invisibleWritersLogButton.backgroundColor = [UIColor redColor];
-    
-    // set the frames of the buttons to match the frames on the HomeViewController layout
-    self.invisibleReadButton.frame = CGRectMake(32, 183, 257, 66);
-    self.invisibleProductionLogButton.frame = CGRectMake(32, 242, 257, 66);
-    self.invisibleWritersLogButton.frame = CGRectMake(32, 301, 257, 66);
-    
-    // add button targets and actions
-    [self.invisibleReadButton addTarget:self action:@selector(onReadButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.invisibleProductionLogButton addTarget:self action:@selector(onProductionLogButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.invisibleWritersLogButton addTarget:self action:@selector(onWritersLogButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // add buttons to the view
-    [self.view addSubview:self.invisibleReadButton];
-    [self.view addSubview:self.invisibleProductionLogButton];
-    [self.view addSubview:self.invisibleWritersLogButton];*/
     
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];
@@ -423,10 +330,8 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
-    self.invisibleReadButton = nil;
-    self.invisibleProductionLogButton = nil;
-    self.invisibleWritersLogButton = nil;
-    self.v_tapWritersLogView = nil;
+    self.tapGesture = nil;
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -480,13 +385,6 @@
     homeViewController.delegate = self;
     
     if (homeViewController) {
-        /*// we are about to move to the title page of the book, enable and show the title page buttons
-        [self.invisibleReadButton setEnabled:YES];
-        [self.invisibleProductionLogButton setEnabled:YES];
-        [self.invisibleWritersLogButton setEnabled:YES];
-        [self.invisibleReadButton setHidden:NO];
-        [self.invisibleProductionLogButton setHidden:NO];
-        [self.invisibleWritersLogButton setHidden:NO];*/
         
         NSArray *viewControllers = [NSArray arrayWithObject:homeViewController];
         

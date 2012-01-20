@@ -15,9 +15,6 @@
 #import "UIResourceLinkButton.h"
 
 @interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate > {
-    UIButton* m_invisibleReadButton;
-    UIButton* m_invisibleProductionLogButton;
-    UIButton* m_invisibleWritersLogButton;
     
     UIResourceLinkButton* m_btn_writtenBy;
     UIResourceLinkButton* m_btn_illustratedBy;
@@ -30,10 +27,6 @@
     UIButton*   m_btn_facebookButton;
     UIButton*   m_btn_twitterButton;
 }
-
-@property (strong, nonatomic) UIButton* invisibleReadButton;
-@property (strong, nonatomic) UIButton* invisibleProductionLogButton;
-@property (strong, nonatomic) UIButton* invisibleWritersLogButton;
 
 @property (nonatomic,retain) UIResourceLinkButton* btn_writtenBy;
 @property (nonatomic,retain) UIResourceLinkButton* btn_illustratedBy;

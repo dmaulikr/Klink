@@ -177,6 +177,7 @@
 
 - (void)viewDidLoad
 {
+    NSString* activityName = @"HomeViewController.viewDidLoad:";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
@@ -189,13 +190,15 @@
         // in pre iOS 5 devices, we need to check the FRC and update UI
         // labels in viewDidLoad to populate the LeavesViewController
         
-        //here we check to see how many items are in the FRC, if it is 0,
-        //then we initiate a query against the cloud.
-        int count = [[self.frc_draft_pages fetchedObjects] count];
-        if (count == 0) {
-            //there are no objects in local store, update from cloud
-            //[self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        if ([self.cloudDraftEnumerator canEnumerate]) 
+        {
+            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
+        
+        // refresh the notification feed
+        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
         
         // update all the labels of the UI
         [self updateLabels];
@@ -211,8 +214,8 @@
     
     self.btn_readButton = nil;
     self.btn_productionLogButton = nil;
-    self.lbl_numDrafts = nil;
     self.btn_writersLogButton = nil;
+    self.lbl_numDrafts = nil;
     self.lbl_writersLogSubtext = nil;
     self.lbl_numContributors = nil;
     self.cloudDraftEnumerator = nil;
@@ -229,6 +232,7 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    NSString* activityName = @"HomeViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     //Hide the navigation bar and tool bars so our custom bars can be shown
@@ -240,13 +244,15 @@
         // in iOS 5 and above devices, we need to check the FRC and update UI
         // labels in viewWillAppear to populate up to date data for the UIPageViewController
         
-        //here we check to see how many items are in the FRC, if it is 0,
-        //then we initiate a query against the cloud.
-        int count = [[self.frc_draft_pages fetchedObjects] count];
-        if (count == 0) {
-            //there are no objects in local store, update from cloud
+        if ([self.cloudDraftEnumerator canEnumerate]) 
+        {
+            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
             [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
+            
+        // refresh the notification feed
+        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
         
         // update all the labels of the UI
         [self updateLabels];

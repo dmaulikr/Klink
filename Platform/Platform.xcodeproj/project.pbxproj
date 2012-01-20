@@ -19,8 +19,6 @@
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
 		521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */; };
-		5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */; };
-		5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */; };
 		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
 		5220101C147713D700C47C00 /* UICaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5220101B147713D700C47C00 /* UICaptionView.xib */; };
 		522010251477387700C47C00 /* icon-bulb1.png in Resources */ = {isa = PBXBuildFile; fileRef = 522010211477387700C47C00 /* icon-bulb1.png */; };
@@ -355,9 +353,6 @@
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
 		521232C81491437600CC9F93 /* arrow_left_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched.png; sourceTree = "<group>"; };
 		521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_scetched@2x.png"; sourceTree = "<group>"; };
-		5212F8EC149044A100E334B2 /* LandscapePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapePhotoViewController.h; sourceTree = "<group>"; };
-		5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapePhotoViewController.m; sourceTree = "<group>"; };
-		5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LandscapePhotoViewController.xib; sourceTree = "<group>"; };
 		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
 		52201018147713BD00C47C00 /* UICaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionView.m; sourceTree = "<group>"; };
 		5220101B147713D700C47C00 /* UICaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionView.xib; sourceTree = "<group>"; };
@@ -1546,9 +1541,6 @@
 				C5C76C7C145B922600BA69B8 /* FullScreenPhotoViewController.h */,
 				C5C76C7D145B922600BA69B8 /* FullScreenPhotoViewController.m */,
 				3DF5315A1468ACF400E40575 /* FullScreenPhotoViewController.xib */,
-				5212F8EC149044A100E334B2 /* LandscapePhotoViewController.h */,
-				5212F8ED149044A100E334B2 /* LandscapePhotoViewController.m */,
-				5212F8EE149044A100E334B2 /* LandscapePhotoViewController.xib */,
 				3D51CB88146C7149002E0FD4 /* ContributeViewController.h */,
 				3D51CB89146C7149002E0FD4 /* ContributeViewController.m */,
 				3D51CB8A146C7149002E0FD4 /* ContributeViewController.xib */,
@@ -1955,7 +1947,6 @@
 				52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */,
 				52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */,
 				52E66B80148F4D210079270A /* ProfileViewController.xib in Resources */,
-				5212F8F0149044A100E334B2 /* LandscapePhotoViewController.xib in Resources */,
 				521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */,
 				521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */,
 				5239EEE61492A62E0006FB5D /* BookPageViewController.xib in Resources */,
@@ -2203,7 +2194,6 @@
 				52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */,
 				52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */,
 				52E66B7F148F4D210079270A /* ProfileViewController.m in Sources */,
-				5212F8EF149044A100E334B2 /* LandscapePhotoViewController.m in Sources */,
 				5239EEEA1492B22E0006FB5D /* BookViewControllerPageView.m in Sources */,
 				C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */,
 				C58C6CC814973AF00068CCD6 /* ABNotice.m in Sources */,

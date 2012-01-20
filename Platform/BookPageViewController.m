@@ -191,6 +191,12 @@
     self.lbl_caption = nil;
     self.lbl_captionby = nil;
     self.lbl_pageNumber = nil;
+    self.iv_openBookPageImage = nil;
+    self.iv_photo = nil;
+    self.iv_photoFrame = nil;
+    self.btn_homeButton = nil;
+    self.btn_facebookButton = nil;
+    self.btn_twitterButton = nil;
     
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
