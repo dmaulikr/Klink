@@ -252,14 +252,18 @@ static inline double radians (double degrees) {
 }
 
 -(NSString*)saveThumbnailImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
+
     NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-thumbnailurl", photoid];
+
     NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;
 }
 
 - (NSString*)saveImage:(UIImage *)image forPhotoWithID:(NSNumber *)photoid {
-    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-imageurl", photoid];
+
+    NSString* fileNameWithoutExtension = [NSString stringWithFormat:@"%@-imageurl",photoid];
+
     NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;

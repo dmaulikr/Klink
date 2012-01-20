@@ -200,7 +200,7 @@
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
             LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            //[self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
         
         // refresh the notification feed
@@ -254,7 +254,7 @@
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
             LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+           // [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
             
         // refresh the notification feed
