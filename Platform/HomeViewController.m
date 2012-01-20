@@ -103,6 +103,23 @@
     }
 }
 
+- (void)updateWritersLogButtonText {
+    // set the appropriate text for the Writer's log button
+    NSString* writersLogBtnString = nil;
+    if ([self.authenticationManager isUserAuthenticated]) {
+        writersLogBtnString = [NSString stringWithFormat:ui_AUTH_WORKERSLOG, self.loggedInUser.username];
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"%d unread notifications",unreadNotifications];
+    }
+    else {
+        writersLogBtnString = ui_UAUTH_WORKERSLOGS;
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
+    }
+    
+    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
+    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
+}
+
 - (void)updateLabels {
     // update the count of open drafts
     [self updateDraftCount];
@@ -124,22 +141,12 @@
         self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
     }
     
-    // set the appropriate text for the Writer's log button
-    NSString* writersLogBtnString = nil;
-    if ([self.authenticationManager isUserAuthenticated]) {
-        writersLogBtnString = [NSString stringWithFormat:ui_AUTH_WORKERSLOG, self.loggedInUser.username];
-        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"%d unread notifications",unreadNotifications];
-    }
-    else {
-        writersLogBtnString = ui_UAUTH_WORKERSLOGS;
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
-        
-    }
     [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];    
     [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];
-    [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
+    
+    // set the appropriate text for the Writer's log button
+    [self updateWritersLogButtonText];
+    
 }
 
 #pragma mark - Initializers
@@ -282,6 +289,12 @@
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     [self.delegate onWritersLogButtonClicked:sender];
+}
+
+#pragma mark - FeedRefreshCallback Handler
+- (void) onFeedRefreshComplete:(CallbackResult*)result
+{
+    [self updateWritersLogButtonText];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods

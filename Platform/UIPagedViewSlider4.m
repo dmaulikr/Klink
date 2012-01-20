@@ -115,7 +115,9 @@
 //this method will ensure the scrollview continues to scroll towards
 //the edge of the nearest index
 -(void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
-    }
+    
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     int count = [self.delegate itemCountFor:self];
     int newIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
