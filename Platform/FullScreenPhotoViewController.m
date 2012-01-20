@@ -20,7 +20,6 @@
 #import "ImageDownloadResponse.h"
 #import "ApplicationSettings.h"
 #import "SocialSharingManager.h"
-#import "LandscapePhotoViewController.h"
 #import "PlatformAppDelegate.h"
 #import "NotificationsViewController.h"
 #import "DraftViewController.h"
@@ -254,12 +253,12 @@
     [self.photoViewSlider initWithWidth:kPictureWidth withHeight:kPictureHeight withSpacing:kPictureSpacing useCellIdentifier:@"photo"];
     [self.captionViewSlider initWithWidth:kCaptionWidth withHeight:kCaptionHeight withSpacing:kCaptionSpacing useCellIdentifier:@"caption"];
     
-    // add photo metadata view
-    //UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
-    //self.photoMetaData = pmdv;
-    //[pmdv release];
+    /*// add photo metadata view
+    UIPhotoMetaDataView* pmdv = [[UIPhotoMetaDataView alloc] initWithFrame:self.photoMetaData.frame];
+    self.photoMetaData = pmdv;
+    [pmdv release];
     
-    //[self.view addSubview:self.photoMetaData];
+    [self.view addSubview:self.photoMetaData];*/
   
 }
 
@@ -277,11 +276,7 @@
 
 - (void)dealloc
 {
-    self.photoViewSlider = nil;
-    self.captionViewSlider = nil;
-   // [self.photoViewSlider release];
-    //[self.captionViewSlider release];
-       [super dealloc];
+    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -438,12 +433,7 @@
 }
 
 #pragma mark - View lifecycle
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
+
 - (void) enumerateCaptionsFromCloudForPhoto:(Photo*)photo 
 {
     NSString* activityName = @"FullScreenPhotoViewController.enumerateCaptionsFromCloud:";
@@ -590,6 +580,9 @@
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
+    [self showControls];
+    [self cancelControlHiding];
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated 
@@ -659,6 +652,23 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    // Subviews
+    self.photoViewSlider = nil;
+    self.captionViewSlider = nil;
+    self.photoMetaData = nil;
+    self.iv_photo = nil;
+    self.iv_photoLandscape = nil;
+    self.pg_captionPageIndicator = nil;
+    self.iv_leftArrow = nil;
+    self.iv_rightArrow = nil;
+    
+    // Toolbar Buttons
+    self.tb_facebookButton = nil;
+    self.tb_twitterButton = nil;
+    self.tb_cameraButton = nil;
+    self.tb_voteButton = nil;
+    self.tb_captionButton = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -682,29 +692,47 @@
         //[self.pg_captionPageIndicator setHidden:YES];
         [self hideControlsAfterDelay:0.25];
         
+        
         // set the current image on the landscape image view
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+        
+        ImageManager* imageManager = [ImageManager instance];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.iv_photoLandscape forKey:kIMAGEVIEW];
+        
+        //add the photo id to the context
+        [userInfo setValue:self.photoID forKey:kPHOTOID];
+        
+        if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
+            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
+            [callback release];
+            if (image != nil) {
+                [self.iv_photoLandscape setContentMode:UIViewContentModeScaleAspectFit];
+                self.iv_photoLandscape.image = image;
+            }
+            else {
+                // show the photo placeholder icon
+                [self.iv_photo setContentMode:UIViewContentModeCenter];
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+            }
+        }
+        else {
+            self.iv_photo.backgroundColor = [UIColor redColor];
+            self.iv_photo.image = nil;
+        }
+        
+        
+        /*// set the current image on the landscape image view
         if (self.iv_photo.image) {
             self.iv_photoLandscape.image = self.iv_photo.image;
         }
         else {
             self.iv_photoLandscape.backgroundColor = [UIColor redColor];
-        }
+        }*/
         
         // unhide the landscape photo view
         [self.iv_photoLandscape setHidden:NO];
-        
-        /* 
-        //An alternate way using modal view controllers
-        LandscapePhotoViewController* landscapePhotoView = [LandscapePhotoViewController createInstanceWithPhotoID:self.photoID];
-        
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:landscapePhotoView];
-        navigationController.modalTransitionStyle = UIModalTransitionStylePartialCurl;
-        navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentModalViewController:navigationController animated:YES];
-        
-        [navigationController release];
-        [landscapePhotoView release];
-        */
         
     }
     else {
@@ -767,8 +795,6 @@
     int captionCount = [[self.frc_captions fetchedObjects] count];
     
     if (captionCount > 0) {
-        
-        //[self enableVoteButton];
         
         int index = [self.captionViewSlider getPageIndex];
         Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
@@ -1208,19 +1234,6 @@
             }
             [self.captionViewSlider addSubview:v_caption];
             
-            /*if (index == 0 && captionCount == 1) {
-                [self showHideLeftArrow:NO rightArrow:NO];
-            }
-            else if (index == 0 && captionCount > 1) {
-                [self showHideLeftArrow:NO rightArrow:YES];
-            }
-            else if (index == captionCount - 1) {
-                [self showHideLeftArrow:YES rightArrow:NO];
-            }
-            else {
-                [self showHideLeftArrow:YES rightArrow:YES];
-            }*/
-            
             // Update page indicator for captions
             //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
             //[self.pg_captionPageIndicator setCurrentPage:index];
@@ -1300,6 +1313,9 @@
             self.captionID = nil;
             [self.iv_leftArrow setAlpha:0];
             [self.iv_rightArrow setAlpha:0];
+            
+            // Hide page indicator for captions
+            //[self.pg_captionPageIndicator setHidden:YES];
         }
     }
     

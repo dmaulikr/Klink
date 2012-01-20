@@ -584,6 +584,12 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    [self.controlVisibilityTimer invalidate];
+    self.controlVisibilityTimer = nil;
+    
+    self.iv_background = nil;
+    self.iv_bookCover = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {

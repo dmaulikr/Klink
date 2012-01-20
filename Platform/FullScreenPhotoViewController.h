@@ -57,7 +57,7 @@
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_photoLandscape;
 @property (nonatomic,retain) IBOutlet UIPageControl*        pg_captionPageIndicator;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_leftArrow;
-@property (nonatomic, retain) IBOutlet UIImageView*         iv_rightArrow;
+@property (nonatomic,retain) IBOutlet UIImageView*          iv_rightArrow;
 
 // Toolbar Buttons
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_facebookButton;
@@ -67,7 +67,7 @@
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_captionButton;
 
 // Navigation
-- (void)    updateNavigation;
+- (void) updateNavigation;
 
 // Static Initializer
 + (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;

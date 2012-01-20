@@ -485,7 +485,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-   // NSString* activityName = @"DraftViewController.viewWillAppear:";
+    NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     //we check to see if the user has been to this viewcontroller before
@@ -514,20 +514,22 @@
                                        userInfo:nil
                                         repeats:YES];
         
-      
-        //int numPhotosInDraft = [draft.numberofphotos intValue];
-       // int numPhotosInStore = [[self.frc_photos fetchedObjects]count];
+        self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+        self.photoCloudEnumerator.delegate = self;
         
-        //if (numPhotosInStore < numPhotosInDraft) {
-           // LOG_DRAFTVIEWCONTROLLER(0, @"%@Number of photos in store (%d) is less than number of photos on draft (%d), enumerating from cloud",//activityName,numPhotosInStore,numPhotosInDraft);
-            self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
-            self.photoCloudEnumerator.delegate = self;
+        if ([self.photoCloudEnumerator canEnumerate]) 
+        {
+            LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+            [self.photoCloudEnumerator enumerateUntilEnd:nil];
+        }
+        else {
+            LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
             
-           [self.photoCloudEnumerator enumerateUntilEnd:nil];
-        //}      
-        
-        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+            //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+            Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+            [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+            
+        }
     }
     
     // Toolbar: we update the toolbar items each time the view controller is shown
