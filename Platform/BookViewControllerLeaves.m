@@ -23,6 +23,7 @@
 #define kPHOTOID @"photoid"
 
 @implementation BookViewControllerLeaves
+@synthesize controlVisibilityTimer  = m_controlVisibilityTimer;
 @synthesize btn_illustratedBy       = m_btn_illustratedBy;
 @synthesize btn_writtenBy           = m_btn_writtenBy;
 @synthesize btn_readButton          = m_btn_readButton;
@@ -41,6 +42,57 @@
 - (CGRect) frameForShowHideButton {
     return CGRectMake(100, 0, 100, 460);
 }
+
+#pragma mark - Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
+    [self cancelControlHiding];
+	if (!m_controlsHidden) {
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
+	}
+}
+
+- (void)setControlsHidden:(BOOL)hidden {
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+	
+    [self.btn_homeButton setAlpha:hidden ? 0 : 1];
+    [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
+    [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
+    
+	[UIView commitAnimations];
+	
+    // reset the controls hidden flag
+    m_controlsHidden = hidden;
+    
+	// Control hiding timer
+	// Will cancel existing timer but only begin hiding if
+	// they are visible
+	[self hideControlsAfterDelay:5];
+	
+}
+
+- (void)hideControls { 
+    [self setControlsHidden:YES]; 
+}
+
+- (void)showControls { 
+    [self cancelControlHiding];
+    [self setControlsHidden:NO];
+}
+
+- (void)toggleControls {
+    [self setControlsHidden:!m_controlsHidden]; 
+}
+
 
 #pragma mark - Book Page and Home Page Button Helpers
 - (void) bringBookPageButtonsToFront {
@@ -132,6 +184,9 @@
         [self sendHomePageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
+        [self showControls];
+        [self hideControlsAfterDelay:2.5];
+        
         NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -220,6 +275,8 @@
         // show the book page view buttons and hide the home page buttons
         [self sendHomePageButtonsToBack];
         [self bringBookPageButtonsToFront];
+        
+        [self hideControlsAfterDelay:2.5];
     }
     
     [self.leavesView setCurrentPageIndex:aCurrentPageIndex];
@@ -297,78 +354,6 @@
     }
 }
 
-#pragma mark - Control Hiding / Showing
-- (void)cancelControlHiding {
-	// If a timer exists then cancel and release
-	if (self.controlVisibilityTimer) {
-		[self.controlVisibilityTimer invalidate];
-		self.controlVisibilityTimer = nil;
-	}
-}
-
-- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
-    [self cancelControlHiding];
-	if (!m_controlsHidden) {
-		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
-	}
-}
-
-- (void)setControlsHidden:(BOOL)hidden {
-    
-    [UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
-	
-	/*// Get status bar height if visible
-     CGFloat statusBarHeight = 0;
-     if (![UIApplication sharedApplication].statusBarHidden) {
-     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-     statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-     }
-     
-     // Status Bar
-     if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-     [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
-     } else {
-     [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
-     }
-     
-     // Get status bar height if visible
-     if (![UIApplication sharedApplication].statusBarHidden) {
-     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-     statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-     }
-     
-     // Set navigation bar frame
-     CGRect navBarFrame = self.navigationController.navigationBar.frame;
-     navBarFrame.origin.y = statusBarHeight;
-     self.navigationController.navigationBar.frame = navBarFrame;*/
-    
-	[UIView commitAnimations];
-	
-    // reset the controls hidden flag
-    m_controlsHidden = hidden;
-    
-	// Control hiding timer
-	// Will cancel existing timer but only begin hiding if
-	// they are visible
-	[self hideControlsAfterDelay:5];
-	
-}
-
-- (void)hideControls { 
-    [self setControlsHidden:YES]; 
-}
-
-- (void)showControls { 
-    [self cancelControlHiding];
-    [self setControlsHidden:NO];
-}
-
-- (void)toggleControls {
-    [self setControlsHidden:!m_controlsHidden]; 
-}
-
-
 #pragma mark - View lifecycle
 - (void)loadView {
 	[super loadView];
@@ -438,6 +423,11 @@
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
+    if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		self.controlVisibilityTimer = nil;
+	}
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -445,8 +435,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self hideControlsAfterDelay:3];
     
 }
 
@@ -498,11 +486,10 @@
     [super onTwitterButtonPressed:sender];
 }
 
-
-#pragma mark Username button handler
 - (void) onLinkButtonClicked:(id)sender {
+    [super onLinkButtonClicked:sender];
     
-    int currentIndex = self.leavesView.currentPageIndex;
+    int currentIndex = self.leavesView.currentPageIndex - 1;  // we need to subtract one to the index to account for the title page which is not in the frc
     
     if (currentIndex < [[self.frc_published_pages fetchedObjects]count]) {
         Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:currentIndex];
@@ -546,6 +533,7 @@
     [super onReadButtonClicked:sender];
     
     [self renderPage];
+    
 }
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {

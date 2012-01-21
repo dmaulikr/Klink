@@ -30,7 +30,6 @@
 @synthesize topVotedPhotoID     = m_topVotedPhotoID;
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
-@synthesize controlVisibilityTimer = m_controlVisibilityTimer;
 @synthesize iv_background          = m_iv_background;
 @synthesize iv_bookCover           = m_iv_bookCover;
 @synthesize captionCloudEnumerator = m_captionCloudEnumerator;
@@ -301,78 +300,6 @@
 }
 
 
-#pragma mark - Control Hiding / Showing
-- (void)cancelControlHiding {
-	// If a timer exists then cancel and release
-	if (self.controlVisibilityTimer) {
-		[self.controlVisibilityTimer invalidate];
-		self.controlVisibilityTimer = nil;
-	}
-}
-
-- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
-    [self cancelControlHiding];
-	if (!m_controlsHidden) {
-		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
-	}
-}
-
-- (void)setControlsHidden:(BOOL)hidden {
-    
-    [UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
-	
-	/*// Get status bar height if visible
-     CGFloat statusBarHeight = 0;
-     if (![UIApplication sharedApplication].statusBarHidden) {
-     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-     statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-     }
-     
-     // Status Bar
-     if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-     [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
-     } else {
-     [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationNone];
-     }
-     
-     // Get status bar height if visible
-     if (![UIApplication sharedApplication].statusBarHidden) {
-     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-     statusBarHeight = MIN(statusBarFrame.size.height, statusBarFrame.size.width);
-     }
-     
-     // Set navigation bar frame
-     CGRect navBarFrame = self.navigationController.navigationBar.frame;
-     navBarFrame.origin.y = statusBarHeight;
-     self.navigationController.navigationBar.frame = navBarFrame;*/
-    
-	[UIView commitAnimations];
-	
-    // reset the controls hidden flag
-    m_controlsHidden = hidden;
-    
-	// Control hiding timer
-	// Will cancel existing timer but only begin hiding if
-	// they are visible
-	[self hideControlsAfterDelay:5];
-	
-}
-
-- (void)hideControls { 
-    [self setControlsHidden:YES]; 
-}
-
-- (void)showControls { 
-    [self cancelControlHiding];
-    [self setControlsHidden:NO];
-}
-
-- (void)toggleControls {
-    [self setControlsHidden:!m_controlsHidden]; 
-}
-
-
 #pragma mark - Button Handlers
 #pragma mark Book Page Delegate Methods
 - (IBAction) onHomeButtonPressed:(id)sender {
@@ -430,6 +357,10 @@
             [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         }
     }
+}
+
+- (IBAction) onLinkButtonClicked:(id)sender {
+    
 }
 
 #pragma mark Home Page Delegate Methods
@@ -585,9 +516,6 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
-    [self.controlVisibilityTimer invalidate];
-    self.controlVisibilityTimer = nil;
-    
     self.iv_background = nil;
     self.iv_bookCover = nil;
 }
@@ -619,8 +547,6 @@
 - (void) viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [self showControls];
-    [self cancelControlHiding];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

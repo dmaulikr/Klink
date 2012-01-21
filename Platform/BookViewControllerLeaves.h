@@ -16,6 +16,9 @@
 
 @interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate > {
     
+    NSTimer*        m_controlVisibilityTimer;
+    BOOL            m_controlsHidden;
+    
     UIResourceLinkButton* m_btn_writtenBy;
     UIResourceLinkButton* m_btn_illustratedBy;
     
@@ -28,8 +31,10 @@
     UIButton*   m_btn_twitterButton;
 }
 
-@property (nonatomic,retain) UIResourceLinkButton* btn_writtenBy;
-@property (nonatomic,retain) UIResourceLinkButton* btn_illustratedBy;
+@property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
+
+@property (nonatomic,retain) UIResourceLinkButton*  btn_writtenBy;
+@property (nonatomic,retain) UIResourceLinkButton*  btn_illustratedBy;
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_readButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_productionLogButton;

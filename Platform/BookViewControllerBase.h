@@ -19,9 +19,6 @@
     CloudEnumerator*    m_pageCloudEnumerator;
     CloudEnumerator*    m_captionCloudEnumerator;
     
-    NSTimer*            m_controlVisibilityTimer;
-    BOOL                m_controlsHidden;
-    
     UIImageView*        m_iv_background;
     UIImageView*        m_iv_bookCover;
     
@@ -38,7 +35,6 @@
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
-@property (nonatomic,retain) NSTimer*                       controlVisibilityTimer;
 
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_background;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_bookCover;
@@ -57,9 +53,6 @@
 - (void) evaluateAndEnumeratePagesFromCloud:(int)pagesRemaining;
 
 - (void) showNotificationViewController;
-- (void)showControls;
-- (void)cancelControlHiding;
-- (void)toggleControls;
 
 - (void)openBook;
 - (void)closeBook;
@@ -68,6 +61,7 @@
 - (IBAction) onReadButtonClicked:(id)sender;
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
+- (IBAction) onLinkButtonClicked:(id)sender;
 
 // Book Page Delegate Methods
 - (IBAction) onHomeButtonPressed:(id)sender;

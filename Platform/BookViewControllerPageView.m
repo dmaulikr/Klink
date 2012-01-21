@@ -13,6 +13,7 @@
 #import "CloudEnumeratorFactory.h"
 #import "PageState.h"
 #import "UserDefaultSettings.h"
+#import "ProfileViewController.h"
 
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
@@ -404,6 +405,25 @@
 
 - (IBAction) onTwitterButtonPressed:(id)sender {
     [super onTwitterButtonPressed:sender];
+}
+
+- (IBAction) onLinkButtonClicked:(id)sender {
+    [super onLinkButtonClicked:sender];
+    
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = NO;
+    
+    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
+    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    
 }
 
 #pragma mark Home Page Delegate Methods

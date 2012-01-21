@@ -30,6 +30,7 @@
 @synthesize topVotedPhotoID     = m_topVotedPhotoID;
 @synthesize topVotedCaptionID   = m_topVotedCaptionID;
 @synthesize pageNumber          = m_pageNumber;
+@synthesize controlVisibilityTimer = m_controlVisibilityTimer;
 @synthesize iv_openBookPageImage = m_iv_openBookPageImage;
 @synthesize lbl_title           = m_lbl_title;
 @synthesize iv_photo            = m_iv_photo;
@@ -54,6 +55,56 @@
 - (void)setDelegate:(id<BookPageViewControllerDelegate>)del
 {
     m_delegate = del;
+}
+
+#pragma mark - Control Hiding / Showing
+- (void)cancelControlHiding {
+	// If a timer exists then cancel and release
+	if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		self.controlVisibilityTimer = nil;
+	}
+}
+
+- (void)hideControlsAfterDelay:(NSTimeInterval)delay {
+    [self cancelControlHiding];
+	if (!m_controlsHidden) {
+		self.controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
+	}
+}
+
+- (void)setControlsHidden:(BOOL)hidden {
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.35];
+	
+    [self.btn_homeButton setAlpha:hidden ? 0 : 1];
+    [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
+    [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
+    
+	[UIView commitAnimations];
+	
+    // reset the controls hidden flag
+    m_controlsHidden = hidden;
+    
+	// Control hiding timer
+	// Will cancel existing timer but only begin hiding if
+	// they are visible
+	[self hideControlsAfterDelay:5];
+	
+}
+
+- (void)hideControls { 
+    [self setControlsHidden:YES]; 
+}
+
+- (void)showControls { 
+    [self cancelControlHiding];
+    [self setControlsHidden:NO];
+}
+
+- (void)toggleControls {
+    [self setControlsHidden:!m_controlsHidden]; 
 }
 
 #pragma mark - Initializers
@@ -178,6 +229,20 @@
         
         [self.view setNeedsDisplay];
     }
+    
+    // Create gesture recognizer for the photo image view to handle a single tap
+    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
+    
+    // Set required taps and number of touches
+    [oneFingerTap setNumberOfTapsRequired:1];
+    [oneFingerTap setNumberOfTouchesRequired:1];
+    
+    // Add the gesture to the photo image view
+    [self.iv_openBookPageImage addGestureRecognizer:oneFingerTap];
+    
+    //enable gesture events on the photo
+    [self.iv_openBookPageImage setUserInteractionEnabled:YES];
+    
 }
 
 - (void)viewDidUnload
@@ -198,6 +263,11 @@
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
+    if (self.controlVisibilityTimer) {
+		[self.controlVisibilityTimer invalidate];
+		self.controlVisibilityTimer = nil;
+	}
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -209,11 +279,18 @@
     //Hide the navigation bar and tool bars so our custom bars can be shown
     [self.navigationController.navigationBar setHidden:YES];
     
+    // Unhide the buttons
+    [self.btn_homeButton setHidden:NO];
+    [self.btn_facebookButton setHidden:NO];
+    [self.btn_twitterButton setHidden:NO];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self hideControlsAfterDelay:2.5];
     
 }
 
@@ -242,13 +319,7 @@
 
 #pragma mark Username button handler
 - (IBAction) onLinkButtonClicked:(id)sender {
-    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
-    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
+    [self.delegate onLinkButtonClicked:sender];
 }
 
 #pragma mark - Async callbacks

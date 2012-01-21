@@ -20,6 +20,7 @@
 - (IBAction) onHomeButtonPressed:(id)sender;
 - (IBAction) onFacebookButtonPressed:(id)sender;
 - (IBAction) onTwitterButtonPressed:(id)sender;
+- (IBAction) onLinkButtonClicked:(id)sender;
 @end
 
 @interface BookPageViewController : BaseViewController {    
@@ -29,6 +30,9 @@
     NSNumber*       m_topVotedPhotoID;
     NSNumber*       m_topVotedCaptionID;
     NSNumber*       m_pageNumber;
+    
+    NSTimer*        m_controlVisibilityTimer;
+    BOOL            m_controlsHidden;
     
     UIImageView*    m_iv_openBookPageImage;
     UILabel*        m_lbl_title;
@@ -55,6 +59,8 @@
 @property (nonatomic,retain) NSNumber*              topVotedPhotoID;
 @property (nonatomic,retain) NSNumber*              topVotedCaptionID;
 @property (nonatomic,retain) NSNumber*              pageNumber;
+
+@property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
 
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_openBookPageImage;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_title;
