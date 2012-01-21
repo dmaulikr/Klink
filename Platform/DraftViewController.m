@@ -230,7 +230,7 @@
     CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
     transformAnimation.removedOnCompletion = NO;
     transformAnimation.duration = duration;
-    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     // start the animation from the current state
     transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
     // this is the basic rotation by 90 degree along the y-axis
@@ -284,7 +284,7 @@
     CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
     transformAnimation.removedOnCompletion = NO;
     transformAnimation.duration = duration;
-    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
     // start the animation from the open state
     // this is the basic rotation by 90 degree along the x-axis

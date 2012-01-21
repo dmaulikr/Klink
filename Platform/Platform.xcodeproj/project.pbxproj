@@ -122,6 +122,10 @@
 		52809DC714CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DC514CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png */; };
 		52809DDC14CA25C700B5BFE3 /* tape.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DDA14CA25C700B5BFE3 /* tape.png */; };
 		52809DDD14CA25C700B5BFE3 /* tape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DDB14CA25C700B5BFE3 /* tape@2x.png */; };
+		52809DDF14CA548B00B5BFE3 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DDE14CA548A00B5BFE3 /* Icon.png */; };
+		52809DE114CA549100B5BFE3 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DE014CA549000B5BFE3 /* Icon@2x.png */; };
+		52809DE314CA645000B5BFE3 /* Bonobo_appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DE214CA644F00B5BFE3 /* Bonobo_appIcon.png */; };
+		52809DE514CA646300B5BFE3 /* Bonobo_appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DE414CA646200B5BFE3 /* Bonobo_appIcon@2x.png */; };
 		5281EEF114859A4100AB1BF0 /* image-photoCameraButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */; };
 		5281EEF81485B32700AB1BF0 /* arrow_right_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF61485B32600AB1BF0 /* arrow_right_scetched.png */; };
 		5281EEF91485B32700AB1BF0 /* arrow_right_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */; };
@@ -473,6 +477,10 @@
 		52809DC514CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-lightbulb_lit@2x.png"; sourceTree = "<group>"; };
 		52809DDA14CA25C700B5BFE3 /* tape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tape.png; sourceTree = "<group>"; };
 		52809DDB14CA25C700B5BFE3 /* tape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tape@2x.png"; sourceTree = "<group>"; };
+		52809DDE14CA548A00B5BFE3 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		52809DE014CA549000B5BFE3 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		52809DE214CA644F00B5BFE3 /* Bonobo_appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bonobo_appIcon.png; sourceTree = "<group>"; };
+		52809DE414CA646200B5BFE3 /* Bonobo_appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bonobo_appIcon@2x.png"; sourceTree = "<group>"; };
 		5281EEF014859A4100AB1BF0 /* image-photoCameraButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image-photoCameraButton@2x.png"; sourceTree = "<group>"; };
 		5281EEF61485B32600AB1BF0 /* arrow_right_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right_scetched.png; sourceTree = "<group>"; };
 		5281EEF71485B32600AB1BF0 /* arrow_right_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_right_scetched@2x.png"; sourceTree = "<group>"; };
@@ -1195,6 +1203,10 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				52809DE414CA646200B5BFE3 /* Bonobo_appIcon@2x.png */,
+				52809DE214CA644F00B5BFE3 /* Bonobo_appIcon.png */,
+				52809DE014CA549000B5BFE3 /* Icon@2x.png */,
+				52809DDE14CA548A00B5BFE3 /* Icon.png */,
 				528A49B814AD01F000881A99 /* MessageUI.framework */,
 				C58C6CD214973B130068CCD6 /* libicucore.dylib */,
 				C5C9D2F914712942008E3B51 /* libz.1.1.3.dylib */,
@@ -2075,6 +2087,10 @@
 				52809DC714CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png in Resources */,
 				52809DDC14CA25C700B5BFE3 /* tape.png in Resources */,
 				52809DDD14CA25C700B5BFE3 /* tape@2x.png in Resources */,
+				52809DDF14CA548B00B5BFE3 /* Icon.png in Resources */,
+				52809DE114CA549100B5BFE3 /* Icon@2x.png in Resources */,
+				52809DE314CA645000B5BFE3 /* Bonobo_appIcon.png in Resources */,
+				52809DE514CA646300B5BFE3 /* Bonobo_appIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
