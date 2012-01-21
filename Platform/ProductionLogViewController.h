@@ -25,6 +25,7 @@
     UIButton*   m_btn_profileButton;
     UIButton*   m_btn_newPageButton;
     UIButton*   m_btn_notificationsButton;
+    UIButton*   m_btn_notificationBadge;
     BOOL        m_shouldOpenTypewriter;
     BOOL        m_shouldCloseTypewriter;
     
@@ -46,6 +47,7 @@
 @property (strong, nonatomic) IBOutlet UIButton*    btn_profileButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_newPageButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_notificationsButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_notificationBadge;
 @property (nonatomic)                  BOOL         shouldOpenTypewriter;
 @property (nonatomic)                  BOOL         shouldCloseTypewriter;
 

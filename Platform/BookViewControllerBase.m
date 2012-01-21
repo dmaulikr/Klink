@@ -685,6 +685,7 @@
 {
     //insert on feed refresh complete items here, probably the label
 }
+
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 

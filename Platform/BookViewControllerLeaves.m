@@ -242,7 +242,7 @@
     if (self.shouldOpenToTitlePage) {
         // go to title page immidiately
         indexForPage = 0;
-        [self setCurrentPageIndex:0];
+        [self setCurrentPageIndex:indexForPage];
     }
     else if (publishedPageCount != 0) {
         if (self.shouldOpenToSpecificPage) {

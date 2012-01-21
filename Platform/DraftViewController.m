@@ -47,6 +47,7 @@
 @synthesize btn_profileButton           = m_btn_profileButton;
 @synthesize btn_cameraButton            = m_btn_cameraButton;
 @synthesize btn_notificationsButton     = m_btn_notificationsButton;
+@synthesize btn_notificationBadge       = m_btn_notificationBadge;
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
 
@@ -383,6 +384,23 @@
     [self typewriterCloseView:self.v_typewriter duration:0.5f];
 }
 
+#pragma mark - Notification Button Handlers
+- (void)updateNotificationButton {
+    if ([self.authenticationManager isUserAuthenticated]) {
+        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        
+        if (unreadNotifications > 0) {
+            [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb_lit.png"] forState:UIControlStateNormal];
+            
+            [self.btn_notificationBadge setTitle:[NSString stringWithFormat:@"%d", unreadNotifications] forState:UIControlStateNormal];
+            [self.btn_notificationBadge setHidden:NO];
+        }
+    }
+    else {
+        [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb.png"] forState:UIControlStateNormal];
+        [self.btn_notificationBadge setHidden:YES];
+    }
+}
 
 #pragma mark - Initializers
 - (void) commonInit {
@@ -531,6 +549,9 @@
             
         }
     }
+    
+    // Update notifications button on typewriter
+    [self updateNotificationButton];
     
     // Toolbar: we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
@@ -742,7 +763,8 @@
 #pragma mark - Callback Event Handlers
 - (void) onFeedRefreshComplete:(CallbackResult*)result
 {
-    //insert any apres feed refresh items in here
+    // Update notifications button on typewriter
+    [self updateNotificationButton];
 }
    
 - (void) onNewCaption:(CallbackResult*)result {
