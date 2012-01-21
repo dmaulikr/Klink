@@ -254,16 +254,15 @@
     self.activeTextView = nil;
     self.activeTextField = nil;
     
-    //self.configurationType = nil;
-    
     self.lbl_draftTitle = nil;
-    //self.draftTitle = nil;
     self.tf_newDraftTitle = nil;
     self.lbl_titleRequired = nil;
     
     self.btn_cameraButton = nil;
     self.iv_photo = nil;
+    self.iv_photoFrame = nil;
     self.img_photo = nil;
+    self.img_thumbnail = nil;
     self.lbl_photoOptional = nil;
     self.lbl_photoRequired = nil;
     
@@ -275,6 +274,7 @@
     self.lbl_captionRequired = nil;
     
     self.lbl_deadline = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

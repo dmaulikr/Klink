@@ -225,7 +225,7 @@
     self.lbl_numDrafts = nil;
     self.lbl_writersLogSubtext = nil;
     self.lbl_numContributors = nil;
-    self.cloudDraftEnumerator = nil;
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

@@ -572,6 +572,18 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.lbl_draftTitle = nil;
+    self.lbl_deadline = nil;
+    self.lbl_deadlineNavBar = nil;
+    self.tbl_draftTableView = nil;
+    self.refreshHeader = nil;
+    
+    self.v_typewriter = nil;
+    self.btn_profileButton = nil;
+    self.btn_cameraButton = nil;
+    self.btn_notificationsButton = nil;
+    self.btn_notificationBadge = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

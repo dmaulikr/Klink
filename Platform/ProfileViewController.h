@@ -82,11 +82,8 @@
 @property (nonatomic, retain) IBOutlet UIView*      v_userSettingsContainer;
 @property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
-//@property (nonatomic, retain) IBOutlet UISwitch*    sw_facebookLogin;
-//@property (nonatomic, retain) IBOutlet UISwitch*    sw_twitterLogin;
 
-//- (IBAction) onFacebookLoginChanged:(id)sender;
-//- (IBAction) onTwitterLoginChanged:(id)sender;
+
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
 
 + (ProfileViewController*)createInstance;

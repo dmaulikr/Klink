@@ -136,11 +136,14 @@
         [self renderPhoto:topPhoto];
         
         // Set deadline
-        self.lbl_deadline.text = @"";
+        self.lbl_deadline.text = @"deadline:";
         NSDate* now = [NSDate date];
         NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+        
+        if (remaining > 0) {
+            self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+        }
 
         [NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self

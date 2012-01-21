@@ -51,8 +51,6 @@
 @synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
 @synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
-//@synthesize sw_facebookLogin            = m_sw_facebookLogin;
-//@synthesize sw_twitterLogin             = m_sw_twitterLogin;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -271,8 +269,6 @@
     self.iv_progressBarContainer = nil;
     self.v_userSettingsContainer = nil;
     self.sw_seamlessFacebookSharing = nil;
-    //self.sw_facebookLogin = nil;
-    //self.sw_twitterLogin = nil;
     
 }
 
@@ -288,9 +284,6 @@
         self.v_userSettingsContainer.hidden = YES;
     }
     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-    //self.sw_facebookLogin.on = [self.authenticationManager isUserAuthenticated];
-    //self.sw_twitterLogin.on = [self.authenticationManager isUserAuthenticated];
-    
     
     self.lbl_username.text = self.user.username;
     self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"start date: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];

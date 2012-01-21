@@ -506,6 +506,13 @@
     self.lbl_title = nil;
     self.lbl_numDraftsTotal = nil;
     self.lbl_numDraftsClosing = nil;
+    
+    self.v_typewriter = nil;
+    self.btn_profileButton = nil;
+    self.btn_newPageButton = nil;
+    self.btn_notificationsButton = nil;
+    self.btn_notificationBadge = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

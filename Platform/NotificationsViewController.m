@@ -165,6 +165,10 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.tbl_notificationsTableView = nil;
+    self.refreshHeader = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

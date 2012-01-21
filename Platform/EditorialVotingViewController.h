@@ -32,7 +32,6 @@
 @property (nonatomic, retain) Poll*                         poll;
 
 @property (nonatomic, retain) IBOutlet iCarousel*           ic_coverFlowView;
-//@property (nonatomic, retain) IBOutlet UIButton*            btn_voteButton;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_voteStatus;
 
 @property (nonatomic, retain)          NSDate*              deadline;
