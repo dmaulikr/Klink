@@ -59,8 +59,13 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
     
     //add predicate to test for being published
+    double doubleDateNow = [[NSDate date] timeIntervalSince1970];
+    
+    //add predicate to test for being published
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kDRAFT];
+    NSString* dateExpireAttributeNameStringValue = [NSString stringWithFormat:@"%@",DATEDRAFTEXPIRES];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d AND %K >= %f",stateAttributeNameStringValue, kDRAFT, dateExpireAttributeNameStringValue,doubleDateNow];
+
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
