@@ -183,6 +183,7 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];

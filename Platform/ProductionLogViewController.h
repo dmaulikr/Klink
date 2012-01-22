@@ -29,7 +29,9 @@
     BOOL        m_shouldOpenTypewriter;
     BOOL        m_shouldCloseTypewriter;
     
-    UISwipeGestureRecognizer* m_swipeGesture;
+    UIButton*   m_btn_homeButton;
+    
+    //UISwipeGestureRecognizer* m_swipeGesture;
     
 }
 
@@ -51,8 +53,11 @@
 @property (nonatomic)                  BOOL         shouldOpenTypewriter;
 @property (nonatomic)                  BOOL         shouldCloseTypewriter;
 
-@property (strong, nonatomic) UISwipeGestureRecognizer*  swipeGesture;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
 
+//@property (strong, nonatomic) UISwipeGestureRecognizer*  swipeGesture;
+
+- (IBAction) onHomeButtonPressed:(id)sender;
 - (IBAction) onProfileButtonPressed:(id)sender;
 - (IBAction) onPageButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;
