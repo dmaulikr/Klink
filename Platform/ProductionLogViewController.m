@@ -122,7 +122,7 @@
         }
     }
     
-    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"closing today: %d", numDraftsClosing];
+    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"drafts in progress: %d", numDraftsClosing];
 }
 
 - (void) registerCallbackHandlers {

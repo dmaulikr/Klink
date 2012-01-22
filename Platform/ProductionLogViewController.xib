@@ -43,7 +43,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="444732660"/>
-						<reference key="NSNextKeyView" ref="964429167"/>
+						<reference key="NSNextKeyView" ref="900760944"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -52,7 +52,7 @@
 							<string key="NSResourceName">page_curled.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="964429167">
+					<object class="IBUIButton" id="900760944">
 						<reference key="NSNextResponder" ref="444732660"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{5, 7}, {53, 30}}</string>
@@ -100,7 +100,7 @@
 					<object class="IBUILabel" id="789880656">
 						<reference key="NSNextResponder" ref="444732660"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{17, 7}, {285, 30}}</string>
+						<string key="NSFrame">{{17, 38}, {285, 30}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
 						<reference key="NSNextKeyView" ref="723094411"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
@@ -133,7 +133,7 @@
 					</object>
 					<object class="IBUILabel" id="723094411">
 						<reference key="NSNextResponder" ref="444732660"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{20, 45}, {128, 21}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
 						<reference key="NSNextKeyView" ref="703327599"/>
@@ -164,8 +164,8 @@
 					</object>
 					<object class="IBUILabel" id="703327599">
 						<reference key="NSNextResponder" ref="444732660"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{156, 45}, {144, 21}}</string>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrame">{{115, 11}, {200, 21}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
 						<reference key="NSNextKeyView" ref="873029372"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
@@ -456,7 +456,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">btn_homeButton</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="964429167"/>
+						<reference key="destination" ref="900760944"/>
 					</object>
 					<int key="connectionID">48</int>
 				</object>
@@ -506,7 +506,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onHomeButtonPressed:</string>
-						<reference key="source" ref="964429167"/>
+						<reference key="source" ref="900760944"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -539,10 +539,10 @@
 							<reference ref="136593238"/>
 							<reference ref="60469860"/>
 							<reference ref="723094411"/>
-							<reference ref="964429167"/>
+							<reference ref="900760944"/>
 							<reference ref="873029372"/>
-							<reference ref="703327599"/>
 							<reference ref="789880656"/>
+							<reference ref="703327599"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -617,7 +617,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">47</int>
-						<reference key="object" ref="964429167"/>
+						<reference key="object" ref="900760944"/>
 						<reference key="parent" ref="444732660"/>
 					</object>
 				</array>
