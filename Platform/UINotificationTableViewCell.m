@@ -69,6 +69,7 @@
 {
     return [UIFont fontWithName:@"American Typewriter" size:12];
 }
+
 - (UILabel*) labelWithFrame:(CGRect)frame withText:(NSString*)text 
 {
     UILabel* label = [[[UILabel alloc]initWithFrame:frame]autorelease];
@@ -133,8 +134,8 @@
                 NSNumber* userID = [jsonDictionary valueForKey:ID];
                 NSString* username = [jsonDictionary valueForKey:USERNAME];
                 
-                //we need to grabthe string range
-                //create a resource link button and add it to the
+                //we need to grab the string range
+                //create a resource link button and add it to the message
                 UIFont* font = [self fontForLabel];
                 CGSize labelSize = [username sizeWithFont:font];
                 CGRect linkButtonFrame = CGRectMake(X, Y, labelSize.width, labelSize.height);
@@ -156,7 +157,7 @@
                 NSString* remainder = [notification.message substringFromIndex:startIndex];
                 UIFont* font = [self fontForLabel];
                 CGSize size = [remainder sizeWithFont:font];
-                CGRect frame = CGRectMake(X, Y, size.width,size.height);
+                CGRect frame = CGRectMake(X, Y, size.width, size.height);
                 UILabel* label = [self labelWithFrame:frame withText:remainder];
                 label.autoresizingMask = 2;
                 [containerView addSubview:label];
@@ -192,7 +193,7 @@
             self.contentView.opaque = YES;
         }
         
-        if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE) {
+        if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE || [notification.feedevent intValue] == kCAPTION_UNAUTHENTICATED_VOTE || [notification.feedevent intValue] == kPHOTO_UNAUTHENTICATED_VOTE) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
         }
         else if ([notification.feedevent intValue] == kCAPTION_ADDED) {
@@ -201,13 +202,16 @@
         else if ([notification.feedevent intValue] == kPHOTO_ADDED_TO_DRAFT) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
         }
-        else if ([notification.feedevent intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == kDRAFT_EXPIRED || [notification.feedevent intValue] == kDRAFT_NOT_PUBLISHED) {
+        else if ([notification.feedevent intValue] == DRAFT_ADDED || [notification.feedevent intValue] == kDRAFT_LEADER_CHANGED) {
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page2.png"];
+        }
+        else if ([notification.feedevent intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == DRAFT_NOT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == kDRAFT_EXPIRED || [notification.feedevent intValue] == kDRAFT_NOT_PUBLISHED) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
         }
         else if ([notification.feedevent intValue] == kDRAFT_PUBLISHED) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
         }         
-        else if ([notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.feedevent intValue] == kEDITORIAL_BOARD_NO_RESULT) {
+        else if ([notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_CAST || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.feedevent intValue] == kEDITORIAL_BOARD_NO_RESULT) {
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
         }         
         else if ([notification.feedevent intValue] == kPROMOTION_TO_EDITOR) {

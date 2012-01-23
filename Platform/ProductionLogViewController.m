@@ -51,7 +51,8 @@
 @synthesize btn_notificationBadge       = m_btn_notificationBadge;
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
-@synthesize swipeGesture                = m_swipeGesture;
+//@synthesize swipeGesture                = m_swipeGesture;
+@synthesize btn_homeButton              = m_btn_homeButton;
 
 
 #pragma mark - Properties
@@ -121,7 +122,7 @@
         }
     }
     
-    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"closing today: %d", numDraftsClosing];
+    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"drafts in progress: %d", numDraftsClosing];
 }
 
 - (void) registerCallbackHandlers {
@@ -200,7 +201,7 @@
     return retVal;
 }
 
-#pragma mark - Typewriter open animation
+#pragma mark - UIView Animations
 - (void) typewriterOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
     // Remove existing animations before starting new animation
     [viewToOpen.layer removeAllAnimations];
@@ -315,6 +316,85 @@
     [viewToClose.layer addAnimation:theGroup forKey:@"flipViewClosed"];
 }
 
+- (void)openTypewriter {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = NO;
+    
+    [self typewriterOpenView:self.v_typewriter duration:0.5f];
+}
+
+- (void)closeTypewriter {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = NO;
+    self.shouldOpenTypewriter = YES;
+    
+    [self typewriterCloseView:self.v_typewriter duration:0.5f];
+}
+
+- (void) pageShowView:(UIView *)viewToShow duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToShow.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToShow.hidden = NO;
+    
+    // disable the view so it’s not doing anything while animating
+    viewToShow.userInteractionEnabled = NO;
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -230); //place the view just off screen, bottom right
+    //viewToShow.transform = transform;
+    
+    [UIView animateWithDuration:duration  
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         viewToShow.transform = transform;
+                     }
+                     completion:^(BOOL finished) {
+                         if (self.shouldCloseTypewriter) {
+                             [self closeTypewriter];
+                         }
+                     }
+     ];
+}
+
+- (void) pageHideView:(UIView *)viewToShow duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToShow.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    viewToShow.hidden = NO;
+    
+    // disable the view so it’s not doing anything while animating
+    viewToShow.userInteractionEnabled = NO;
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(0, 460); //place the view just off screen, bottom right
+    
+    [UIView animateWithDuration:duration  
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         viewToShow.transform = transform;
+                     }
+                     completion:^(BOOL finished) {
+                         // Open Draft View
+                         DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+                         //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateNormal];
+                         //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateHighlighted];
+                         draftViewController.btn_backButton.titleLabel.text = @"Production Log";
+                         
+                         // Set up navigation bar back button
+                         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
+                                                                                                   style:UIBarButtonItemStyleBordered
+                                                                                                  target:nil
+                                                                                                  action:nil] autorelease];
+                         
+                         [self.navigationController pushViewController:draftViewController animated:NO];
+                     }
+     ];
+}
+
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
     
@@ -327,14 +407,20 @@
             if ([animationKey isEqualToString:animationKeyClosed]) {
                 // typewriter was closed
                 
+                //self.view.userInteractionEnabled = YES;
                 self.v_typewriter.userInteractionEnabled = YES;
                 
             }
             else {
                 // typewriter was opened, move to draft view
                 
+                //[self pageHideView:self.view duration:0.5];
+                
                 // Open Draft View
                 DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+                //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateNormal];
+                //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateHighlighted];
+                draftViewController.btn_backButton.titleLabel.text = @"Production Log";
                 
                 // Set up navigation bar back button
                 self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
@@ -343,6 +429,16 @@
                                                                                          action:nil] autorelease];
                 
                 [self.navigationController pushViewController:draftViewController animated:YES];
+                
+                //[self.navigationController presentModalViewController:draftViewController animated:YES];
+                
+                /*NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+                
+                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
+                navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                [self presentModalViewController:navigationController animated:YES];
+                
+                [navigationController release];*/
                 
                 // Now we just hide the animated view since
                 // animation.removedOnCompletion is not working
@@ -375,21 +471,6 @@
     
 }
 
-- (void)openTypewriter {
-    // Setup the typewriter animation
-    self.shouldCloseTypewriter = YES;
-    self.shouldOpenTypewriter = NO;
-    
-    [self typewriterOpenView:self.v_typewriter duration:0.5f];
-}
-
-- (void)closeTypewriter {
-    // Setup the typewriter animation
-    self.shouldCloseTypewriter = NO;
-    self.shouldOpenTypewriter = YES;
-    
-    [self typewriterCloseView:self.v_typewriter duration:0.5f];
-}
 
 #pragma mark - Notification Button Handlers
 - (void)updateNotificationButton {
@@ -397,6 +478,10 @@
         int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
         
         if (unreadNotifications > 0) {
+            if (unreadNotifications > 99) {
+                // limit the label to "99"
+                unreadNotifications = 99;
+            }
             [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb_lit.png"] forState:UIControlStateNormal];
             
             [self.btn_notificationBadge setTitle:[NSString stringWithFormat:@"%d", unreadNotifications] forState:UIControlStateNormal];
@@ -480,17 +565,23 @@
                                     action:@selector(onHomeButtonPressed:)] autorelease];
     self.navigationItem.leftBarButtonItem = leftButton;
     
-    // Create gesture recognizer for the typewriter view to pass swipes through to the tableview
+    /*// Create gesture recognizer for the typewriter view to pass swipes through to the tableview
     self.swipeGesture = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:nil] autorelease];
     self.swipeGesture.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
     self.swipeGesture.delegate = self;
     
     // Add the gesture to the typewriter view
-    [self.v_typewriter addGestureRecognizer:self.swipeGesture];
+    [self.v_typewriter addGestureRecognizer:self.swipeGesture];*/
     
     // Setup the animation to show the typewriter
     self.shouldCloseTypewriter = YES;
     self.shouldOpenTypewriter = YES;
+    
+    // place the entire view just off screen so it can be shown with the pageShow animation
+    //CGAffineTransform transform = CGAffineTransformMakeTranslation(0, 480);
+    //self.view.transform = transform;
+    //CGSize viewSize = self.view.frame.size;
+    //self.view.frame = CGRectMake(0, 460, viewSize.width, viewSize.height);
     
 }
 
@@ -552,16 +643,29 @@
     // Update notifications button on typewriter
     [self updateNotificationButton];
 
+    // Set custom clear Navigation Bar (iOS5 only)
+    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+    //    [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
+    //}
+    
     // unhide navigation bar and toolbar
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.navigationController setToolbarHidden:NO animated:YES];
+    //[self.navigationController setNavigationBarHidden:NO animated:YES];
+    //[self.navigationController setToolbarHidden:NO animated:YES];
     
     // Toolbar: we update the toolbar items each time the view controller is shown
-    NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    [self setToolbarItems:toolbarItems];
+    //NSArray* toolbarItems = [self toolbarButtonsForViewController];
+    //[self setToolbarItems:toolbarItems];
     
-    [self.navigationController setToolbarHidden:YES animated:NO];
-    //[self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // place the entire view just off screen so it can be shown with the pageShow animation
+    //CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -230); //place the view just off screen, bottom right
+    //self.view.transform = transform;
+    //CGSize viewSize = self.view.frame.size;
+    //self.view.frame = CGRectMake(0, 460, viewSize.width, viewSize.height);
+    
     
 }
 
@@ -580,16 +684,24 @@
         [self closeTypewriter];
     }
     
+    //[self pageShowView:self.view duration:0.5];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    // Set Navigation Bar back to default style (iOS5 only)
+    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+    //    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    //}
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -688,16 +800,7 @@
     }
 }
 
-#pragma mark - Navigation Bar Button Handlers
-- (void) onHomeButtonPressed:(id)sender {
-    // Setup the typewriter animation
-    self.shouldCloseTypewriter = YES;
-    self.shouldOpenTypewriter = NO;
-    
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark - UIGestureRecognizer Delegates
+/*#pragma mark - UIGestureRecognizer Delegates
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     // test if our typewriter control subview is on-screen
     if (self.v_typewriter.superview != nil) {
@@ -714,10 +817,20 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}*/
+
+#pragma mark - Button Handlers
+#pragma mark Navigation Button Handlers
+- (IBAction) onHomeButtonPressed:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = NO;
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
-#pragma mark - Toolbar Button Event Handlers
-- (void) onProfileButtonPressed:(id)sender {
+#pragma mark Tyewriter Button Handlers
+- (IBAction) onProfileButtonPressed:(id)sender {
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;
@@ -749,7 +862,7 @@
    
 }
 
-- (void) onPageButtonPressed:(id)sender {
+- (IBAction) onPageButtonPressed:(id)sender {
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;
@@ -781,7 +894,7 @@
     }
 }
 
-- (void) onNotificationsButtonClicked:(id)sender {
+- (IBAction) onNotificationsButtonClicked:(id)sender {
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;

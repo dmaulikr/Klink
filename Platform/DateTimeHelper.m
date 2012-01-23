@@ -99,13 +99,25 @@
     NSDate *date2 = [[NSDate alloc] initWithTimeInterval:interval sinceDate:date1]; 
     
     // Get conversion to months, days, hours, minutes
-    unsigned int unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    unsigned int unitFlags = NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     
     NSDateComponents *breakdownInfo = [sysCalendar components:unitFlags fromDate:date1  toDate:date2  options:0];
     
     NSString* timeRemaining = nil;
     
-    if ([breakdownInfo hour] > 1) {
+    if ([breakdownInfo month] > 1) {
+        timeRemaining = [NSString stringWithFormat:@"%d months",[breakdownInfo month]];
+    }
+    else if ([breakdownInfo month] == 1) {
+        timeRemaining = [NSString stringWithFormat:@"%d month",[breakdownInfo month]];
+    }
+    else if ([breakdownInfo day] > 1) {
+        timeRemaining = [NSString stringWithFormat:@"%d days",[breakdownInfo day]];
+    }
+    else if ([breakdownInfo day] == 1) {
+        timeRemaining = [NSString stringWithFormat:@"%d day",[breakdownInfo day]];
+    }
+    else if ([breakdownInfo hour] > 1) {
         timeRemaining = [NSString stringWithFormat:@"%d hrs %d min",[breakdownInfo hour], [breakdownInfo minute]];
     }
     else if ([breakdownInfo hour] == 1) {

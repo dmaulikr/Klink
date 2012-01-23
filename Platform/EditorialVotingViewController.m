@@ -257,8 +257,10 @@
         [alert release];
     }
     
+    // Rotate the view to landscape orientation
+    [self shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight];
     // Setting the status bar orientation to landscape forces the view into landscape mode
-    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
+    //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     
     // hide status bar
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
@@ -362,7 +364,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    // show status bar and navigation bar
+    // show status bar
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 
 }
@@ -383,8 +385,13 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+    return (interfaceOrientation == UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
 }
+
+/*- (void) didRotate {
+    // Hide status bar
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}*/
 
 #pragma mark - Image from view object creator
 - (UIImage *) imageWithView:(UIView *)view

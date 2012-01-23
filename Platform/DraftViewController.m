@@ -50,12 +50,14 @@
 @synthesize btn_notificationBadge       = m_btn_notificationBadge;
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
+@synthesize btn_backButton              = m_btn_backButton;
 
 #pragma mark - Deadline Date Timers
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadlineNavBar.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+    //self.lbl_deadlineNavBar.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
 }
 
 #pragma mark - Properties
@@ -337,6 +339,11 @@
             else {
                 // typewriter was opened
                 
+                // Move back to Production Log view controller
+                [self.navigationController popViewControllerAnimated:YES];
+                
+                //[self dismissModalViewControllerAnimated:YES];
+                
                 // Now we just hide the animated view since
                 // animation.removedOnCompletion is not working
                 // in animation groups. Hiding the view prevents it
@@ -390,6 +397,10 @@
         int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
         
         if (unreadNotifications > 0) {
+            if (unreadNotifications > 99) {
+                // limit the label to "99"
+                unreadNotifications = 99;
+            }
             [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb_lit.png"] forState:UIControlStateNormal];
             
             [self.btn_notificationBadge setTitle:[NSString stringWithFormat:@"%d", unreadNotifications] forState:UIControlStateNormal];
@@ -468,14 +479,14 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Navigationbar title label with deadline
-    self.lbl_deadlineNavBar = [[[UILabel alloc]initWithFrame:CGRectMake(140,0, 180, 40)] autorelease];
-    self.lbl_deadlineNavBar.font = [UIFont fontWithName:@"American Typewriter" size: 12.0];
-	self.lbl_deadlineNavBar.text = @"";
-	[self.lbl_deadlineNavBar setBackgroundColor:[UIColor clearColor]];
-	[self.lbl_deadlineNavBar setTextColor:[UIColor whiteColor]];
-    [self.lbl_deadlineNavBar setTextAlignment:UITextAlignmentRight];
-    [self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
-	self.navigationItem.titleView = self.lbl_deadlineNavBar;
+    //self.lbl_deadlineNavBar = [[[UILabel alloc]initWithFrame:CGRectMake(140,0, 180, 40)] autorelease];
+    //self.lbl_deadlineNavBar.font = [UIFont fontWithName:@"American Typewriter" size: 12.0];
+	//self.lbl_deadlineNavBar.text = @"";
+	//[self.lbl_deadlineNavBar setBackgroundColor:[UIColor clearColor]];
+	//[self.lbl_deadlineNavBar setTextColor:[UIColor whiteColor]];
+    //[self.lbl_deadlineNavBar setTextAlignment:UITextAlignmentRight];
+    //[self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
+	//self.navigationItem.titleView = self.lbl_deadlineNavBar;
     
     // Setup the animation to show the typewriter
     self.shouldCloseTypewriter = YES;
@@ -553,18 +564,36 @@
     // Update notifications button on typewriter
     [self updateNotificationButton];
     
+    // Setup back button
+    [self.btn_backButton sizeToFit];
+    UIImage* backButtonBackground = [[UIImage imageNamed:@"book_button_back.png"] stretchableImageWithLeftCapWidth:25.0 topCapHeight:0.0];
+    UIImage* backButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_back_highlighted.png"] stretchableImageWithLeftCapWidth:20.0 topCapHeight:0.0];
+    [self.btn_backButton setBackgroundImage:backButtonBackground forState:UIControlStateNormal];
+    [self.btn_backButton setBackgroundImage:backButtonHighlightedBackground forState:UIControlStateHighlighted];
+    
+    // Set custom clear Navigation Bar (iOS5 only)
+    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
+    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+    //    [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
+    //    [self.lbl_deadlineNavBar setTextColor:[UIColor blackColor]];
+    //}
+    
     // Toolbar: we update the toolbar items each time the view controller is shown
-    NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    [self setToolbarItems:toolbarItems];
+    //NSArray* toolbarItems = [self toolbarButtonsForViewController];
+    //[self setToolbarItems:toolbarItems];
     
     [self.navigationController setToolbarHidden:YES animated:YES];
-    //[self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
+    // Set Navigation Bar back to default style (iOS5 only)
+    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+    //    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    //}
 }
 
 - (void)viewDidUnload
@@ -805,15 +834,26 @@
 
 #pragma mark - UINavigationController Delegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    if ([viewController isKindOfClass:[ProductionLogViewController class]]) {
-        if (self.shouldOpenTypewriter) {
-            [self openTypewriter];
-        }
+    //if ([viewController isKindOfClass:[ProductionLogViewController class]]) {
+    //    if (self.shouldOpenTypewriter) {
+    //        [self openTypewriter];
+    //    }
+    //}
+}
+
+#pragma mark - Button Handlers
+#pragma mark Navigation Button Handlers
+- (IBAction) onBackButtonPressed:(id)sender {
+    // Setup the typewriter animation
+    self.shouldCloseTypewriter = YES;
+    self.shouldOpenTypewriter = YES;
+    
+    if (self.shouldOpenTypewriter) {
+        [self openTypewriter];
     }
 }
 
-
-#pragma mark - Toolbar Button Event Handlers
+#pragma mark Tyewriter Button Handlers
 - (void) onProfileButtonPressed:(id)sender {
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;

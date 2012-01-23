@@ -183,12 +183,14 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
     
-    // Set Navigation bar title style with typewtirer font
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    // Set Navigation bar title style with typewriter font
+    CGSize labelSize = [@"Notifications" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
     titleLabel.text = @"Notifications";
     titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
     titleLabel.textAlignment = UITextAlignmentCenter;

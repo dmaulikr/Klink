@@ -34,6 +34,8 @@
     BOOL        m_shouldOpenTypewriter;
     BOOL        m_shouldCloseTypewriter;
     
+    UIButton*   m_btn_backButton;
+    
 }
 
 @property (nonatomic, retain) NSFetchedResultsController*    frc_photos;
@@ -56,9 +58,12 @@
 @property (nonatomic)                  BOOL         shouldOpenTypewriter;
 @property (nonatomic)                  BOOL         shouldCloseTypewriter;
 
+@property (nonatomic,retain) IBOutlet UIButton*     btn_backButton;
+
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID;
 
+- (IBAction) onBackButtonPressed:(id)sender;
 - (IBAction) onProfileButtonPressed:(id)sender;
 - (IBAction) onCameraButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;

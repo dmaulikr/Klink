@@ -550,10 +550,11 @@
 	// Navigation
 	//[self updateNavigation];
     
-    // Set Navigation bar title
+    // Set Navigation bar title style with typewriter font
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     self.title = [NSString stringWithFormat:@"%@", draft.displayname];
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
+    CGSize labelSize = [self.title sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
     titleLabel.text = self.navigationItem.title;
     titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
     titleLabel.textAlignment = UITextAlignmentCenter;
