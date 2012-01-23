@@ -447,7 +447,8 @@
 }
 
 - (void) dealloc {
-    //self.frc_draft_pages = nil;
+    self.frc_draft_pages = nil;
+    self.selectedDraftID = nil;
     [super dealloc];
 }
 

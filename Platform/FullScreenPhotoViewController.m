@@ -278,6 +278,11 @@
 
 - (void)dealloc
 {
+    self.frc_photos = nil;
+    self.frc_captions = nil;
+    self.pageID = nil;
+    self.photoID = nil;
+    self.captionID = nil;
     [super dealloc];
 }
 
