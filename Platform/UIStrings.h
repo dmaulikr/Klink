@@ -21,3 +21,5 @@ extern NSString* const ui_WELCOME_FULLSCREEN;
 extern NSString* const ui_WELCOME_DRAFT;
 extern NSString* const ui_WELCOME_PROFILE;
 extern NSString* const ui_WELCOME_EDITORIAL;
+
+extern NSString* const ui_EMPTY_CAPTION;

@@ -74,7 +74,7 @@ static  AuthenticationManager* sharedManager;
         if (lastLoggedInUserID != 0) {
             AuthenticationContext* storedContext = [self contextForUserWithID:lastLoggedInUserID];
             if (storedContext != nil) {
-                BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext isSavedLogin:YES];
+                BOOL result = [self loginUser:lastLoggedInUserID withAuthenticationContext:storedContext isSavedLogin:NO];
                 if (result) {
                     LOG_SECURITY(0, @"%@%@",activityName,@" Loaded stored user context");
                 }

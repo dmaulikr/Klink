@@ -14,9 +14,13 @@
  NSString* const ui_AUTH_WORKERSLOG             = @"%@'s Log";
  NSString* const ui_APPLICATIONNAME             = @"Bonobo";
  
+
+ NSString* const ui_EMPTY_CAPTION = @" ";
+
  NSString* const ui_WELCOME_PRODUCTIONLOG       = @"Welcome! love bonobo";
  NSString* const ui_WELCOME_BOOK                = @"Welcome! love bonobo";
  NSString* const ui_WELCOME_FULLSCREEN          = @"Welcome! love bonobo";
  NSString* const ui_WELCOME_DRAFT               = @"Welcome! love bonobo";
  NSString* const ui_WELCOME_PROFILE             = @"Welcome! love bonobo";
  NSString* const ui_WELCOME_EDITORIAL           = @"Welcome! love bonobo";
+

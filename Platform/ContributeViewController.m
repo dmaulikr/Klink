@@ -699,6 +699,7 @@
 
 - (void)onSubmitButtonPressed:(id)sender {
     NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
+    
     //after this point, the platforms should automatically begin syncing the data back to the cloud
     //we now show a progress bar to monitor this background activity
     ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -708,14 +709,14 @@
     
     NSString* progressIndicatorMessage = nil;
     if (self.configurationType == PAGE) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your draft..."];
+        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your draft..."];
                 
     }
     else if (self.configurationType == PHOTO) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your photo...",self.draftTitle];
+        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your photo...",self.draftTitle];
     }
     else if (self.configurationType == CAPTION) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Submitting your caption...",self.draftTitle];
+        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your caption...",self.draftTitle];
     }
     
     NSNumber* maxTimeToShowOnProgress = settings.progress_maxsecondstodisplay;
