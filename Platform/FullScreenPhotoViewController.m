@@ -511,7 +511,7 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
         //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Browse" message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         [alert show];
         [alert release];

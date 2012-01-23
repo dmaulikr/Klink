@@ -521,7 +521,7 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
         //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Draft" message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Concering Drafts..." message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         [alert show];
         [alert release];

@@ -310,7 +310,7 @@
     if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC] == NO) 
     {
         //it is the first time, we show the alert screen
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Profile" message:ui_WELCOME_PROFILE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Your Profile" message:ui_WELCOME_PROFILE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         [alert show];
         [alert release];
