@@ -205,6 +205,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // Setup notification for device orientation change
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRotate)
+                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    
     self.ic_coverFlowView.type = iCarouselTypeCoverFlow2;
     self.ic_coverFlowView.contentOffset = CGSizeMake(0, 10);
     
@@ -388,10 +393,10 @@
     return (interfaceOrientation == UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
 }
 
-/*- (void) didRotate {
+- (void) didRotate {
     // Hide status bar
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-}*/
+}
 
 #pragma mark - Image from view object creator
 - (UIImage *) imageWithView:(UIView *)view
