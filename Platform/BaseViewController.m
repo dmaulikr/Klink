@@ -18,6 +18,7 @@
 #import "NotificationsViewController.h"
 #import "UICustomNavigationBar.h"
 #import "ProfileViewController.h"
+#import "UIStrings.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -437,23 +438,27 @@
             photo.numberofvotes = [NSNumber numberWithInt:0];
             
             //check for caption attached to photo
-            if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
-                Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
-                
-                //we set the initial number of votes on the caption to 0
-                caption.numberofvotes = [NSNumber numberWithInt:0];
-                
-                //set the initial caption counters to 1
-                photo.numberofcaptions = [NSNumber numberWithInt:1];
-                page.numberofcaptions = [NSNumber numberWithInt:1];
-                
-                caption.pageid = page.objectid;
-                
-                LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+            if (controller.caption == nil || [controller.caption isEqualToString:@""]) 
+            {
+                //if the caption is empty, we set it equal to the default valuye for an empty caption
+                controller.caption = ui_EMPTY_CAPTION;
             }
-            else {
-                LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
-            }
+            Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+            
+            //we set the initial number of votes on the caption to 0
+            caption.numberofvotes = [NSNumber numberWithInt:0];
+            
+            //set the initial caption counters to 1
+            photo.numberofcaptions = [NSNumber numberWithInt:1];
+            page.numberofcaptions = [NSNumber numberWithInt:1];
+            
+            caption.pageid = page.objectid;
+            
+            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@, along with photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName, page.objectid,photo.objectid,caption.objectid,caption.caption1);
+//            }
+//            else {
+//                LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ along with photo with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
+//            }
         }
         else {
             LOG_BASEVIEWCONTROLLER(0, @"%@Commiting new page with ID:%@ to the local database",activityName,page.objectid,photo.objectid);
@@ -477,25 +482,25 @@
         //increment the photo counter on the page this new photo belongs to
         page.numberofphotos = [NSNumber numberWithInt:([page.numberofphotos intValue] + 1)];
         
-        if (controller.caption != nil && ![controller.caption isEqualToString:@""]) {
-            Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
+        if (controller.caption == nil || [controller.caption isEqualToString:@""]) 
+        {
+            controller.caption = ui_EMPTY_CAPTION;
             
-            //we set the initial number of votes on the caption to 0
-            caption.numberofvotes = [NSNumber numberWithInt:0];
-            
-            //we set the initial number of captions on the photo to 1
-            photo.numberofcaptions = [NSNumber numberWithInt:1];
-            
-            //increment the caption counter on the page this new photo belongs to
-            page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
-            
-            caption.pageid = page.objectid;
         }
-        else {
-            LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ to the local database",activityName,photo.objectid);
-        }
-      
+        Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+        LOG_BASEVIEWCONTROLLER(0, @"%@Commiting photo with ID:%@ and caption with ID:%@ (caption: %@) to the local database",activityName,photo.objectid,caption.objectid,caption.caption1);
+        
+        //we set the initial number of votes on the caption to 0
+        caption.numberofvotes = [NSNumber numberWithInt:0];
+        
+        //we set the initial number of captions on the photo to 1
+        photo.numberofcaptions = [NSNumber numberWithInt:1];
+        
+        //increment the caption counter on the page this new photo belongs to
+        page.numberofcaptions = [NSNumber numberWithInt:([page.numberofcaptions intValue] + 1)];
+        
+        caption.pageid = page.objectid;
+             
     }
     else if (controller.configurationType == CAPTION) {
         

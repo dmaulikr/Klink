@@ -93,6 +93,7 @@
 @property (nonatomic, retain)          NSDate*          deadline;
 
 @property (nonatomic, retain) CloudEnumerator*          idEnumerator;
+
 @property (nonatomic, retain) NSArray*                  objectIDsBeingCreated;
 @property (nonatomic, retain) NSArray*                  objectTypesBeingCreated;
 @property (nonatomic, retain) NSLock*                   oidArrayLock;

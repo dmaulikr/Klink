@@ -20,3 +20,4 @@ NSString* const ui_WELCOME_PRODUCTIONLOG    = @"Welcome! love dick";
  NSString* const ui_WELCOME_DRAFT   = @"Welcome! love dick";
  NSString* const ui_WELCOME_PROFILE   = @"Welcome! love dick";
  NSString* const ui_WELCOME_EDITORIAL = @"Welcome! love dick";
+ NSString* const ui_EMPTY_CAPTION = @" ";
