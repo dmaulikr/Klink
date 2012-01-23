@@ -24,6 +24,7 @@
 #import "NotificationsViewController.h"
 #import "ProfileViewController.h"
 #import "ProductionLogViewController.h"
+#import "UIStrings.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
@@ -528,6 +529,17 @@
     //Hide the navigation bar and tool bars so our custom bars can be shown
     [self.navigationController.navigationBar setHidden:YES];
     
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
+    
+    
+    
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {
         //there are no published page objects in local store, update from cloud
@@ -551,6 +563,14 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
+        [userDefaults synchronize];
+    }
+    
     
     if (self.shouldOpenBookCover) {
         [self openBook];
