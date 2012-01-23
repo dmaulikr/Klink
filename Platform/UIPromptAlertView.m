@@ -18,7 +18,8 @@
     
     if (self = [super initWithTitle:title message:message delegate:delegate cancelButtonTitle:cancelButtonTitle otherButtonTitles:otherButtonTitles, nil])
     {
-        UITextField* theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48, 260.0, 31.0)]; 
+        UITextField* theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 48, 260.0, 31.0)];
+        [theTextField setDelegate:self];
         
         NSString *reqSysVer = @"5.0";
         NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
@@ -41,7 +42,6 @@
         [theTextField setClearButtonMode:UITextFieldViewModeWhileEditing];
         [theTextField setKeyboardAppearance:UIKeyboardAppearanceAlert];
         [theTextField setReturnKeyType:UIReturnKeyDone];
-        [theTextField setDelegate:self];
         
         [self addSubview:theTextField];
         self.textField = theTextField;
@@ -109,7 +109,7 @@
 // Handles keyboard Return button pressed while editing the username textfield to dismiss the keyboard
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
-    return NO;
+    return YES;
 }
 
 @end
