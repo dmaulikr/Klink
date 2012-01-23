@@ -398,7 +398,7 @@
         
         if (unreadNotifications > 0) {
             if (unreadNotifications > 99) {
-                // limit the label to "99"
+                // limit the label to a count of "99"
                 unreadNotifications = 99;
             }
             [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb_lit.png"] forState:UIControlStateNormal];
@@ -565,7 +565,7 @@
     [self updateNotificationButton];
     
     // Setup back button
-    [self.btn_backButton sizeToFit];
+    //[self.btn_backButton sizeToFit];
     UIImage* backButtonBackground = [[UIImage imageNamed:@"book_button_back.png"] stretchableImageWithLeftCapWidth:25.0 topCapHeight:0.0];
     UIImage* backButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_back_highlighted.png"] stretchableImageWithLeftCapWidth:20.0 topCapHeight:0.0];
     [self.btn_backButton setBackgroundImage:backButtonBackground forState:UIControlStateNormal];

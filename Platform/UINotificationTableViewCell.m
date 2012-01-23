@@ -241,13 +241,13 @@
             }
             else {
                 self.iv_notificationImage.contentMode = UIViewContentModeCenter;
-                self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
         }
         else {
             self.iv_notificationImage.hidden = YES;
             self.iv_notificationImage.contentMode = UIViewContentModeCenter;
-            self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+            self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         }
     }
     [self setNeedsDisplay];

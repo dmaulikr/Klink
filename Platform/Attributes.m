@@ -45,6 +45,7 @@ NSString* const PRIMARY_RESULTS_SORTATTRIBUTE = @"primary_results_sortattribute"
 NSString* const ONFINISHCALLBACK        =@"onfinishcallback";
 NSString* const PAGEID                  =@"pageid";
 NSString* const PHOTOID                 =@"photoid";
+NSString* const CAPTIONID               =@"captionid";
 NSString* const THEMEID                 =@"themeid";
 NSString* const NUMBEROFVOTES           =@"numberofvotes";
 NSString* const ID                      =@"id";

@@ -44,7 +44,7 @@
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="469134969"/>
+						<reference key="NSNextKeyView" ref="871755038"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -53,10 +53,10 @@
 							<string key="NSResourceName">page_curled.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="469134969">
+					<object class="IBUIButton" id="871755038">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{5, 7}, {51, 30}}</string>
+						<string key="NSFrame">{{5, 7}, {56, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="118467872"/>
@@ -65,10 +65,10 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<double key="IBUIContentEdgeInsets.top">0.0</double>
-						<double key="IBUIContentEdgeInsets.bottom">0.0</double>
-						<double key="IBUIContentEdgeInsets.left">8</double>
-						<double key="IBUIContentEdgeInsets.right">0.0</double>
+						<double key="IBUITitleEdgeInsets.top">0.0</double>
+						<double key="IBUITitleEdgeInsets.bottom">0.0</double>
+						<double key="IBUITitleEdgeInsets.left">8</double>
+						<double key="IBUITitleEdgeInsets.right">0.0</double>
 						<string key="IBUIHighlightedTitle">Back</string>
 						<string key="IBUINormalTitle">Back</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor">
@@ -437,7 +437,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">btn_backButton</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="469134969"/>
+						<reference key="destination" ref="871755038"/>
 					</object>
 					<int key="connectionID">30</int>
 				</object>
@@ -487,7 +487,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onBackButtonPressed:</string>
-						<reference key="source" ref="469134969"/>
+						<reference key="source" ref="871755038"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -510,7 +510,7 @@
 							<reference ref="487912626"/>
 							<reference ref="118467872"/>
 							<reference ref="322014009"/>
-							<reference ref="469134969"/>
+							<reference ref="871755038"/>
 							<reference ref="671799414"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -590,7 +590,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">29</int>
-						<reference key="object" ref="469134969"/>
+						<reference key="object" ref="871755038"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -610,7 +610,7 @@
 				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="27.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="29.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
+				<real value="1" key="29.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<real value="0.0" key="29.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

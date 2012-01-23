@@ -150,39 +150,6 @@
     //float progressCaptions = (float)4 / (float)progressBarMaxValue;
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
     
-    
-    /*
-    if (totalSubmissionsLast7Days <= kEDITORMINIMUM) {
-        // user hasn't met the minimum required subissions to be an editor,
-        // make the editor threshold line 80% of the progress bar container
-
-        // move the editor threshold line
-        float editorMinimumLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM * progressBarContainerWidth) - editorMinimumLineMidPoint);
-        self.iv_editorMinimumLine.frame = CGRectMake(editorMinimumLineXOrigin, self.iv_editorMinimumLine.frame.origin.y, self.iv_editorMinimumLine.frame.size.width, self.iv_editorMinimumLine.frame.size.height);
-        float editorMinimumWidth = (float)self.iv_editorMinimumLine.frame.origin.x + (float)editorMinimumLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
-        
-        // move the editor threshold label
-        float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
-        self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
-        
-        // now sequentially draw the progress bars for the draft, photo and caption counts for the last 7 days
-        // drafts in the last 7 days
-        //float progressDrafts = (float)[self.loggedInUser.numberofdraftscreatedlw intValue] / (float)kEDITORMINIMUM;
-        float progressDrafts = (float)3 / (float)kEDITORMINIMUM;
-        self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * editorMinimumWidth), self.iv_progressDrafts.frame.size.height);
-        
-        // photos in the last 7 days
-        //float progressPhotos = (float)[self.loggedInUser.numberofphotoslw intValue] / (float)kEDITORMINIMUM;
-        float progressPhotos = (float)3 / (float)kEDITORMINIMUM;
-        self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * editorMinimumWidth), self.iv_progressPhotos.frame.size.height);
-        
-        // captions in the last 7 days
-        //float progressCaptions = (float)[self.loggedInUser.numberofcaptionslw intValue] / (float)kEDITORMINIMUM;
-        float progressCaptions = (float)4 / (float)kEDITORMINIMUM;
-        self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * editorMinimumWidth), self.iv_progressCaptions.frame.size.height);
-    }
-     */
-    
 }
 
 #pragma mark - Initializers

@@ -113,7 +113,7 @@
         //we need all page objects where there is a polldata object for this poll that points to that page
         NSArray* pagesInPoll = self.poll.polldata;
         
-        //we go through each poll data object and add it o the predicate
+        //we go through each poll data object and add it to the predicate
         NSString* pollQuery = nil;
         NSString* targetIDAttributeName = [NSString stringWithString:OBJECTID];
         for (int i = 0; i < [pagesInPoll count];i++) {

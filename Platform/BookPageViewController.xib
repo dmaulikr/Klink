@@ -94,7 +94,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon-pics2@2x.png</string>
+							<string key="NSResourceName">icon-pics2-large.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="257990783">
@@ -276,6 +276,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{110, 427}, {100, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -725,7 +726,7 @@
 				<string key="43.CustomClassName">UIResourceLinkButton</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="51.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="51.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="59.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -749,7 +750,7 @@
 			<string key="book_button_roundrect_highlighted.png">{49, 30}</string>
 			<string key="book_button_twitter-t.png">{30, 30}</string>
 			<string key="book_button_twitter-t_highlighted.png">{30, 30}</string>
-			<string key="icon-pics2@2x.png">{60, 60}</string>
+			<string key="icon-pics2-large.png">{60, 60}</string>
 			<string key="open_book_page_turn.png">{302, 460}</string>
 			<string key="picture_frame.png">{297, 228}</string>
 		</dictionary>

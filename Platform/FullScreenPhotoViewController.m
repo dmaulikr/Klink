@@ -88,6 +88,7 @@
     
     //add predicate to gather only photos for this pageID    
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %@=%@", THEMEID, self.pageID, OBJECTID, self.photoID];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptorArray];
@@ -134,6 +135,7 @@
     
     //add predicate to gather only photos for this pageID    
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", PHOTOID, self.photoID];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", PHOTOID, self.photoID, OBJECTID, self.captionID];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptorArray];
@@ -715,7 +717,7 @@
             else {
                 // show the photo placeholder icon
                 [self.iv_photo setContentMode:UIViewContentModeCenter];
-                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
         }
         else {
@@ -1195,7 +1197,7 @@
                 else {
                     // show the photo placeholder icon
                     [self.iv_photo setContentMode:UIViewContentModeCenter];
-                    self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                    self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
                     
                     //disable gesture events on the photo
                     [self.iv_photo setUserInteractionEnabled:NO];

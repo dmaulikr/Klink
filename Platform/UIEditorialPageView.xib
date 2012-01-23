@@ -101,7 +101,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon-pics2@2x.png</string>
+							<string key="NSResourceName">icon-pics2-large.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="618008076">
@@ -159,6 +159,7 @@
 						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{68, 124}, {195, 107}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -445,7 +446,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="icon-pics2@2x.png">{60, 60}</string>
+			<string key="icon-pics2-large.png">{60, 60}</string>
 			<string key="icon-thumbUp-highlighted.png">{30, 30}</string>
 			<string key="page.png">{320, 480}</string>
 			<string key="picture_frame.png">{297, 228}</string>

@@ -158,7 +158,7 @@
 
 - (void) renderFailedCompletion 
 {
-    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2@2x.png"]];
+    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
     self.customView = iv;
     [iv release];
      //TODO: need a white 37x x 37x "X" to denote failure
@@ -341,7 +341,7 @@
 //        else {
 //            //show a failed mark
 //            //TODO: need a white 37x x 37x "X" to denote failure
-//            UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2@2x.png"]];
+//            UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
 //            self.customView = iv;
 //            [iv release];
 //
@@ -484,7 +484,7 @@
 //        
 //        LOG_REQUEST(0, @"%@Progress bar has exceeded its maximum display timer setting, automatically closing progress bar and failing request",activityName);
 //        self.didSucceed = NO;
-//        UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2@2x.png"]];
+//        UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
 //        self.customView = iv;
 //        [iv release];
 //        

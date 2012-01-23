@@ -42,6 +42,7 @@ extern NSString* const PRIMARY_RESULTS_SORTASCENDING;
 extern NSString* const PRIMARY_RESULTS_SORTATTRIBUTE;
 extern NSString* const PAGEID;
 extern NSString* const PHOTOID;
+extern NSString* const CAPTIONID;
 extern NSString* const THEMEID;
 extern NSString* const NUMBEROFVOTES;
 extern NSString* const USERNAME;

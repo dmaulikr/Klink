@@ -106,7 +106,7 @@
             }
             else {
                 self.iv_photo.contentMode = UIViewContentModeCenter;
-                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
         }
         else {
@@ -121,7 +121,7 @@
             }
             else {
                 self.iv_photo.contentMode = UIViewContentModeCenter;
-                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2@2x.png"];
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
         }
         
