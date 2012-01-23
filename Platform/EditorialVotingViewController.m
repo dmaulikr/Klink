@@ -445,7 +445,8 @@
         
         UIEditorialPageView* carouselItem = [[[UIEditorialPageView alloc] initWithFrame:frameForCarouselItem] autorelease];
         //UIEditorialPageView* carouselItem = [[[UIEditorialPageView alloc] init] autorelease];
-        [carouselItem renderWithPageID:page.objectid withPollState:self.poll.state];
+        //[carouselItem renderWithPageID:page.objectid withPollState:self.poll.state];
+        [carouselItem renderWithPageID:page.objectid withPollID:self.poll_ID];
         
         [self.ic_coverFlowView addSubview:carouselItem];
         
