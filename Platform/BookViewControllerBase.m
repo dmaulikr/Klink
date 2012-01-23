@@ -240,23 +240,15 @@
             if ([animationKey isEqualToString:animationKeyClosed]) {
                 // book closed, move to production log
                 
-                // Set up navigation bar back button
-                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Home"
-                                                                                          style:UIBarButtonItemStyleBordered
-                                                                                         target:nil
-                                                                                         action:nil] autorelease];
-                
-                ProductionLogViewController* productionLogController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+                ProductionLogViewController* productionLogController = [ProductionLogViewController createInstance];
                 
                 // Modal naviation to production log
                 UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
                 navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-                navigationController.toolbarHidden = NO;
                 
                 [self presentModalViewController:navigationController animated:YES];
                 
                 [navigationController release];
-                [productionLogController release];
             }
             else {
                 // book was opened, hide the cover
@@ -526,8 +518,13 @@
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
     
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
     //Hide the navigation bar and tool bars so our custom bars can be shown
-    [self.navigationController.navigationBar setHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
@@ -537,8 +534,6 @@
         [alert show];
         [alert release];
     }
-    
-    
     
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {

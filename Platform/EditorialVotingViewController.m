@@ -205,11 +205,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    // Setup notification for device orientation change
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRotate)
-                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-    
     self.ic_coverFlowView.type = iCarouselTypeCoverFlow2;
     self.ic_coverFlowView.contentOffset = CGSizeMake(0, 10);
     
@@ -247,6 +242,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // Setup notification for device orientation change
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRotate)
+                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    
     NSString* activityName = @"EditorialViewController.viewWillAppear:";
     if (self.poll_ID == nil || self.poll == nil) {
         LOG_EDITORVOTEVIEWCONTROLLER(1, @"%@No poll id was passed into view controller, nothing to render",activityName);
@@ -267,9 +267,18 @@
     // Setting the status bar orientation to landscape forces the view into landscape mode
     //[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
     
-    // hide status bar
+    // Hide status bar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-
+    
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    // Hide toolbar
+    [self.navigationController setToolbarHidden:YES animated:YES];
     
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";
@@ -369,8 +378,11 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    // show status bar
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
+    // Remove observer for device orientation change
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 
 }
 

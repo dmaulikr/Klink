@@ -178,9 +178,7 @@
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    
-    // make sure the status bar is visible for the picker to control it
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     // Navigation bar
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
@@ -363,6 +361,7 @@
 #define kPAGE       @"page"
 #define kDRAFT      @"draft"
 #define kUSER       @"user"
+
 #pragma mark - Table view delegate
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
@@ -381,7 +380,7 @@
 }
 
 
-
+#pragma mark Notification item selection handlers
 - (void) processClickOfNewVoteNotification:(Feed*)notification {
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
     NSArray* feedObjects = notification.feeddata;
@@ -409,18 +408,9 @@
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@, PhotoID:%@, CaptionID:%@ for new caption vote notification",activityName,pageID,photoID,captionID);
     
     FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
-    //[self.navigationController setNavigationBarHidden:YES animated:NO];
     [[self.navigationController toolbar] setHidden:NO];
     [self.navigationController pushViewController:fullScreenController animated:YES];
     
-    
-    //NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-    
-    //UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-    //navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    //[self presentModalViewController:navigationController animated:YES];
-    
-    //[navigationController release];
 }
 
 
@@ -497,7 +487,6 @@
         [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
-        
     }
     else {
         //error case
@@ -540,10 +529,19 @@
     }
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ that was published notification",activityName,pageID);
     
-    //we launch the BookViewController and open it up to the page we specified
+    // We launch the BookViewController and open it up to the page we specified
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:pageID];
-    //TODO: need to implement proper logic in bookviewcontroller to open up to a specific page
-    [self.navigationController pushViewController:bookViewController animated:NO];
+    
+    // Modal naviation
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    
+    // Push naviation
+    //[self.navigationController pushViewController:bookViewController animated:NO];
 }
 
 - (void) processGenericBookNotification:(Feed*)notification {

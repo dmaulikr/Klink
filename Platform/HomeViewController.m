@@ -251,8 +251,13 @@
     NSString* activityName = @"HomeViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
     //Hide the navigation bar and tool bars so our custom bars can be shown
-    [self.navigationController.navigationBar setHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:NO];
     
     NSString *reqSysVer = @"5.0";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];

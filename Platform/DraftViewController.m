@@ -36,7 +36,7 @@
 @synthesize pageID = m_pageID;
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
 @synthesize lbl_deadline = m_lbl_deadline;
-@synthesize lbl_deadlineNavBar = m_lbl_deadlineNavBar;
+//@synthesize lbl_deadlineNavBar = m_lbl_deadlineNavBar;
 @synthesize deadline = m_deadline;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
 @synthesize photoCloudEnumerator = m_photoCloudEnumerator;
@@ -158,52 +158,6 @@
         
         return __frc_photos;
     }
-}
-
-#pragma mark - Toolbar buttons
-- (NSArray*) toolbarButtonsForViewController {
-    //returns an array with the toolbar buttons for this view controller
-    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-    
-    //flexible space for button spacing
-    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];    
-    
-    UIBarButtonItem* usernameButton = [[UIBarButtonItem alloc]
-                                       initWithImage:[UIImage imageNamed:@"icon-profile.png"]
-                                       style:UIBarButtonItemStylePlain
-                                       target:self
-                                       action:@selector(onProfileButtonPressed:)];
-    [retVal addObject:usernameButton];
-    [usernameButton release];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    //add camera button
-    UIBarButtonItem* cameraButton = [[UIBarButtonItem alloc]
-                                     initWithImage:[UIImage imageNamed:@"icon-camera2.png"]
-                                     style:UIBarButtonItemStylePlain
-                                     target:self
-                                     action:@selector(onCameraButtonPressed:)];
-    [retVal addObject:cameraButton];
-    [cameraButton release];
-    
-    //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        
-        //add flexible space for button spacing
-        [retVal addObject:flexibleSpace];
-        
-        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
-        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
-        
-        [retVal addObject:notificationBarItem];
-    }
-    
-    [flexibleSpace release];
-    
-    return retVal;
 }
 
 #pragma mark - Typewriter open animation
@@ -439,10 +393,10 @@
 
 - (void)dealloc
 {
-    self.tbl_draftTableView = nil;
+    /*self.tbl_draftTableView = nil;
     self.frc_photos = nil;
     self.pageID = nil;
-    self.lbl_deadlineNavBar = nil;
+    self.lbl_deadlineNavBar = nil;*/
     [super dealloc];
 }
 
@@ -571,29 +525,19 @@
     [self.btn_backButton setBackgroundImage:backButtonBackground forState:UIControlStateNormal];
     [self.btn_backButton setBackgroundImage:backButtonHighlightedBackground forState:UIControlStateHighlighted];
     
-    // Set custom clear Navigation Bar (iOS5 only)
-    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
-    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-    //    [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
-    //    [self.lbl_deadlineNavBar setTextColor:[UIColor blackColor]];
-    //}
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
-    // Toolbar: we update the toolbar items each time the view controller is shown
-    //NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    //[self setToolbarItems:toolbarItems];
-    
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    // Hide the navigation bar and tool bars so our custom bars can be shown
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    // Set Navigation Bar back to default style (iOS5 only)
-    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-    //    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    //}
 }
 
 - (void)viewDidUnload
@@ -604,7 +548,7 @@
     
     self.lbl_draftTitle = nil;
     self.lbl_deadline = nil;
-    self.lbl_deadlineNavBar = nil;
+    //self.lbl_deadlineNavBar = nil;
     self.tbl_draftTableView = nil;
     self.refreshHeader = nil;
     

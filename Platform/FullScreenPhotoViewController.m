@@ -507,6 +507,10 @@
     
 	[super viewWillAppear:animated];
     
+    // Setup notification for device orientation change
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRotate)
+                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
@@ -518,13 +522,9 @@
     }
     [self commonInit];
     
-    // Set status bar style to black translucent
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
-    
     // we update the toolbar items each time the view controller is shown
     NSArray* toolbarItems = [self toolbarButtonsForViewController];
     [self setToolbarItems:toolbarItems];
-    
     
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -571,20 +571,48 @@
     
     [self cancelControlHiding];
     
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    // Set status bar style to black translucent
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+    
     // Unhide the navigation bar and toolbar
     [self.navigationController setToolbarHidden:NO animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    // Set Navigation bar and toolbar style to black translucent
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.toolbar setTranslucent:YES];
+    [self.navigationController.toolbar setTintColor:nil];
 
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
     
-    // Set status bar style to black
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    
     [self showControls];
     [self cancelControlHiding];
+    
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    // Set status bar style back to black
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    
+    // Hide the navigation bar and toolbar
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    // Set Navigation bar and toolbar style back to black
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.toolbar setTranslucent:NO];
+    [self.navigationController.toolbar setTintColor:nil];
+    
+    // Remove observer for device orientation change
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
 }
 
@@ -627,12 +655,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];    
-
-    
-    // Setup notification for device orientation change
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRotate)
-                                                 name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
     // Add flag for review button to navigation bar
     /*UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]

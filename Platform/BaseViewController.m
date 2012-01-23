@@ -174,13 +174,13 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Set status bar style to black
+    /*// Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
     // Navigation bar
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:YES];
-    [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController.navigationBar setTintColor:nil];*/
     
     /*
     // Set custom navigation bar background image
@@ -196,13 +196,13 @@
     }
     */
      
-    // Toolbar
+    /*// Toolbar
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
     [self.navigationController.toolbar setTranslucent:YES];
     
     // unhide navigation bar and toolbar if they are hidden
     self.navigationController.navigationBar.hidden = NO;
-    self.navigationController.toolbar.hidden = NO;
+    self.navigationController.toolbar.hidden = NO;*/
     
 }
 
