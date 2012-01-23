@@ -200,7 +200,7 @@ static CloudEnumeratorFactory* sharedManager;
     if (retVal == nil) {
         //could not find an existing enumerator to return, create a new one
         CloudEnumerator* newEnumerator = [CloudEnumerator enumeratorForDrafts];
-        [self.enumeratorsForThemes addObject:newEnumerator];
+        [self.enumeratorsForDrafts addObject:newEnumerator];
         retVal = newEnumerator;
     }
     return retVal;

@@ -193,8 +193,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.cloudDraftEnumerator = [CloudEnumerator enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
+   
     
     NSString *reqSysVer = @"5.0";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
@@ -202,10 +201,15 @@
         // in pre iOS 5 devices, we need to check the FRC and update UI
         // labels in viewDidLoad to populate the LeavesViewController
         
+        if (self.cloudDraftEnumerator == nil) 
+        {
+            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+        }
+        
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
             LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            //[self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
         
         // refresh the notification feed
@@ -256,10 +260,14 @@
         // in iOS 5 and above devices, we need to check the FRC and update UI
         // labels in viewWillAppear to populate up to date data for the UIPageViewController
         
+        if (self.cloudDraftEnumerator == nil)
+        {
+            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+        }
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
             LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-           // [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
         }
             
         // refresh the notification feed
@@ -329,13 +337,7 @@
     }
 }
 
-#pragma mark - CloudEnumeratorDelegate
-- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
-                 withResults:(NSArray *)results 
-                withUserInfo:(NSDictionary *)userInfo
-{
-    
-}
+
 
 
 #pragma mark - Static Initializer
