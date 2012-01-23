@@ -118,7 +118,7 @@
     }
     else {
         writersLogBtnString = ui_UAUTH_WORKERSLOGS;
-        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"become part of the effort"];
+        self.lbl_writersLogSubtext.text = [NSString stringWithFormat:@"Become part of the effort"];
     }
     
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateNormal];

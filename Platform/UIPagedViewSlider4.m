@@ -119,8 +119,23 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //we record the direction we have detected the scroll view to be moving
+    if (m_lastContentOffset < scrollView.contentOffset.y)
+        m_scrollDirection = RIGHT;
+    else if (m_lastContentOffset > scrollView.contentOffset.y) 
+        m_scrollDirection = LEFT;
+    
+    m_lastContentOffset = scrollView.contentOffset.y;
+    
+    
+    // now update the current index
     int count = [self.delegate itemCountFor:self];
-    int newIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
+    
+    int newIndex = 0;
+    //if (m_scrollDirection == RIGHT)
+        newIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:YES];
+    //else if (m_scrollDirection == LEFT)
+    //    newIndex = [self indexForContentOffset:scrollView.contentOffset useFloor:NO];
     
     if (newIndex < 0) newIndex =0 ;
     
@@ -132,14 +147,6 @@
     if (m_index != oldIndex) {
         [self.delegate viewSlider:self isAtIndex:m_index withCellsRemaining:count-m_index];
     }
-    
-    //we now record the direction we have detected the scroll view to be moving
-    if (m_lastContentOffset < scrollView.contentOffset.y)
-        m_scrollDirection = RIGHT;
-    else if (m_lastContentOffset > scrollView.contentOffset.y) 
-        m_scrollDirection = LEFT;
-    
-    m_lastContentOffset = scrollView.contentOffset.y;
     
 }
     

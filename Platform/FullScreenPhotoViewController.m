@@ -695,8 +695,8 @@
         
         
         // set the current image on the landscape image view
-        ResourceContext* resourceContext = [ResourceContext instance];
-        Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+        int index = [self.photoViewSlider getPageIndex];
+        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
         
         ImageManager* imageManager = [ImageManager instance];
         NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.iv_photoLandscape forKey:kIMAGEVIEW];
@@ -722,15 +722,6 @@
             self.iv_photo.backgroundColor = [UIColor redColor];
             self.iv_photo.image = nil;
         }
-        
-        
-        /*// set the current image on the landscape image view
-        if (self.iv_photo.image) {
-            self.iv_photoLandscape.image = self.iv_photo.image;
-        }
-        else {
-            self.iv_photoLandscape.backgroundColor = [UIColor redColor];
-        }*/
         
         // unhide the landscape photo view
         [self.iv_photoLandscape setHidden:NO];
@@ -1280,7 +1271,7 @@
         // unhide the controls of the view if hidden
         [self showControls];
         
-        [self renderPhoto];
+        //[self renderPhoto];
         
         //[self updateNavigation];
     }

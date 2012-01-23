@@ -86,6 +86,9 @@
     didDismissWithButtonIndex:(NSInteger)buttonIndex {
     
     if (buttonIndex != [actionSheet cancelButtonIndex]) {
+        // make sure the status bar is visible for the picker to control it
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        
         if (buttonIndex == 0) {
             [self getMediaFromSource:UIImagePickerControllerSourceTypeCamera];
         } else {
