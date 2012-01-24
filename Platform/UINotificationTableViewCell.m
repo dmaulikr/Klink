@@ -252,8 +252,8 @@
             }
         }
         else {
-            self.iv_notificationImage.hidden = YES;
             self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, self.iv_notificationImage.frame.origin.x + self.iv_notificationImage.frame.size.width/2, self.lbl_notificationMessage.frame.size.height);
+            self.iv_notificationImage.hidden = YES;
         }
     }
     [self setNeedsDisplay];
