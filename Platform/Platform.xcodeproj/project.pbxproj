@@ -634,7 +634,7 @@
 		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorCodes.h; sourceTree = "<group>"; };
 		C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorCodes.m; sourceTree = "<group>"; };
-		C593F7BF143EB191008D25A7 /* Bonobo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bonobo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C593F7BF143EB191008D25A7 /* Bahndr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bahndr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C593F7C3143EB191008D25A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C593F7C5143EB191008D25A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C593F7C7143EB192008D25A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1247,7 +1247,7 @@
 		C593F7C0143EB191008D25A7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C593F7BF143EB191008D25A7 /* Bonobo.app */,
+				C593F7BF143EB191008D25A7 /* Bahndr.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1890,7 +1890,7 @@
 			);
 			name = Platform;
 			productName = Platform;
-			productReference = C593F7BF143EB191008D25A7 /* Bonobo.app */;
+			productReference = C593F7BF143EB191008D25A7 /* Bahndr.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2352,7 +2352,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -2400,7 +2400,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
@@ -2466,7 +2466,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2495,7 +2495,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

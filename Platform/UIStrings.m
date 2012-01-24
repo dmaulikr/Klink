@@ -20,7 +20,7 @@
  NSString* const ui_WELCOME_PRODUCTIONLOG       = @"Each page published in the Book started here as a Draft. Each night, the Editors select one expired Draft to publish as the next page of the Book. Glory comes to those who are published, will you be glorious?";
 
 
- NSString* const ui_WELCOME_BOOK                = @"Each day, a new page is published to the Book. You create the content, you choose what gets published, you control the story. The Book is forever, will you be apart of it?";
+ NSString* const ui_WELCOME_BOOK                = @"Each day, a new page is published to this Book. You create the content, you choose what gets published, you control the story. The Book is forever, will you be apart of it?";
 
  NSString* const ui_WELCOME_FULLSCREEN          = @"Here you can browse through all of the photos and captions that have been submitted to this Draft. Remember to vote for the photos and captions that you like the best. Only the highest voted photo and caption in this Draft will be submitted to Editors for publishing";
 
