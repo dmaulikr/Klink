@@ -285,16 +285,15 @@
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    
-    // Unhide status bar
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     
     // Navigation bar
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    // hide toolbar
+    // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
     
     // Set deadline date

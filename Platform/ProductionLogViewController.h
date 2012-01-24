@@ -62,5 +62,6 @@
 - (IBAction) onPageButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;
 
++ (ProductionLogViewController*)createInstance;
 
 @end

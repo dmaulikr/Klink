@@ -155,52 +155,6 @@
     
 }
 
-#pragma mark - Toolbar buttons
-- (NSArray*) toolbarButtonsForViewController {
-    //returns an array with the toolbar buttons for this view controller
-    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
-    
-    //flexible space for button spacing
-    UIBarButtonItem* flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIBarButtonItem* profileButton = [[UIBarButtonItem alloc]
-                                      initWithImage:[UIImage imageNamed:@"icon-profile.png"]
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(onProfileButtonPressed:)];
-    [retVal addObject:profileButton];
-    [profileButton release];
-    
-    //add flexible space for button spacing
-    [retVal addObject:flexibleSpace];
-    
-    //add draft button
-    UIBarButtonItem* draftButton = [[UIBarButtonItem alloc]
-                                     initWithImage:[UIImage imageNamed:@"icon-newPage.png"]
-                                     style:UIBarButtonItemStylePlain
-                                     target:self
-                                     action:@selector(onPageButtonPressed:)];
-    [retVal addObject:draftButton];
-    [draftButton release];
-    
-    //check to see if the user is logged in or not
-    if ([self.authenticationManager isUserAuthenticated]) {
-        //we only add a notification icon for user's that have logged in
-        
-        //add flexible space for button spacing
-        [retVal addObject:flexibleSpace];
-        
-        UINotificationIcon* notificationIcon = [UINotificationIcon notificationIconForPageViewControllerToolbar];
-        UIBarButtonItem* notificationBarItem = [[[UIBarButtonItem alloc]initWithCustomView:notificationIcon]autorelease];
-        
-        [retVal addObject:notificationBarItem];
-    }
-    
-    [flexibleSpace release];
-    
-    return retVal;
-}
-
 #pragma mark - UIView Animations
 - (void) typewriterOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
     // Remove existing animations before starting new animation
@@ -380,15 +334,6 @@
                      completion:^(BOOL finished) {
                          // Open Draft View
                          DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
-                         //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateNormal];
-                         //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateHighlighted];
-                         draftViewController.btn_backButton.titleLabel.text = @"Production Log";
-                         
-                         // Set up navigation bar back button
-                         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
-                                                                                                   style:UIBarButtonItemStyleBordered
-                                                                                                  target:nil
-                                                                                                  action:nil] autorelease];
                          
                          [self.navigationController pushViewController:draftViewController animated:NO];
                      }
@@ -418,27 +363,10 @@
                 
                 // Open Draft View
                 DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
-                //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateNormal];
-                //[draftViewController.btn_backButton setTitle:@"Production Log" forState:UIControlStateHighlighted];
-                draftViewController.btn_backButton.titleLabel.text = @"Production Log";
-                
-                // Set up navigation bar back button
-                self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Production Log"
-                                                                                          style:UIBarButtonItemStyleBordered
-                                                                                         target:nil
-                                                                                         action:nil] autorelease];
                 
                 [self.navigationController pushViewController:draftViewController animated:YES];
                 
                 //[self.navigationController presentModalViewController:draftViewController animated:YES];
-                
-                /*NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
-                
-                UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-                navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                [self presentModalViewController:navigationController animated:YES];
-                
-                [navigationController release];*/
                 
                 // Now we just hide the animated view since
                 // animation.removedOnCompletion is not working
@@ -497,8 +425,6 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
-    //self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-    //self.cloudDraftEnumerator.delegate = self;
             
 }
 
@@ -522,6 +448,7 @@
 
 - (void) dealloc {
     self.frc_draft_pages = nil;
+    self.selectedDraftID = nil;
     [super dealloc];
 }
 
@@ -642,23 +569,14 @@
     
     // Update notifications button on typewriter
     [self updateNotificationButton];
-
-    // Set custom clear Navigation Bar (iOS5 only)
-    //UIImage* barImage = [UIImage imageNamed:@"NavigationBar_clear.png"];
-    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-    //    [self.navigationController.navigationBar setBackgroundImage:barImage forBarMetrics:UIBarMetricsDefault];
-    //}
     
-    // unhide navigation bar and toolbar
-    //[self.navigationController setNavigationBarHidden:NO animated:YES];
-    //[self.navigationController setToolbarHidden:NO animated:YES];
+    // Make sure the status bar is visible
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
-    // Toolbar: we update the toolbar items each time the view controller is shown
-    //NSArray* toolbarItems = [self toolbarButtonsForViewController];
-    //[self setToolbarItems:toolbarItems];
-    
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    // Hide the navigation bar and tool bars so our custom bars can be shown
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:YES];
     
     // place the entire view just off screen so it can be shown with the pageShow animation
     //CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -230); //place the view just off screen, bottom right
@@ -1079,6 +997,13 @@
     
     // reset the content inset of the tableview so bottom is not covered by toolbar
     [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
+}
+
+#pragma mark - Static Initializer
++ (ProductionLogViewController*)createInstance {
+    ProductionLogViewController* productionLogViewController = [[ProductionLogViewController alloc]initWithNibName:@"ProductionLogViewController" bundle:nil];
+    [productionLogViewController autorelease];
+    return productionLogViewController;
 }
 
 @end

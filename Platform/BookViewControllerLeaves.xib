@@ -51,21 +51,6 @@
 							<string key="NSResourceName">open_book.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="581028380">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{310, 460}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="339911310"/>
-						<string key="NSReuseIdentifierKey">_NS:567</string>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">book_cover.png</string>
-						</object>
-					</object>
 					<object class="IBUIButton" id="371412949">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
@@ -242,7 +227,6 @@
 						<string key="NSFrame">{{75, 423}, {30, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -264,6 +248,21 @@
 						</object>
 						<reference key="IBUIFontDescription" ref="25211852"/>
 						<reference key="IBUIFont" ref="859127162"/>
+					</object>
+					<object class="IBUIImageView" id="581028380">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{310, 460}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="339911310"/>
+						<string key="NSReuseIdentifierKey">_NS:567</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_cover.png</string>
+						</object>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
@@ -409,9 +408,9 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="885737782"/>
 							<reference ref="581028380"/>
-							<reference ref="339911310"/>
-							<reference ref="866747405"/>
 							<reference ref="280258828"/>
+							<reference ref="866747405"/>
+							<reference ref="339911310"/>
 							<reference ref="821279887"/>
 							<reference ref="1028691949"/>
 							<reference ref="371412949"/>

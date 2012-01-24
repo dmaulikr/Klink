@@ -405,6 +405,10 @@
     [btn_writtenBy release];
     [btn_illustratedBy release];
     
+    // Send book buttons to back until a page is loaded
+    [self sendHomePageButtonsToBack];
+    [self sendBookPageButtonsToBack];
+    
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];
 
@@ -445,6 +449,11 @@
     [self.leavesView reloadData];
     
     [self renderPage];
+    
+    if (self.shouldOpenBookCover) {
+        // Bring the book cover subview to the front
+        [self.view bringSubviewToFront:self.iv_bookCover];
+    }
     
 }
 

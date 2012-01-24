@@ -8,6 +8,7 @@
 
 #import "UIEditorialPageView.h"
 #import "Page.h"
+#import "Poll.h"
 #import "Photo.h"
 #import "Caption.h"
 #import "Types.h"
@@ -19,6 +20,9 @@
 #import "Macros.h"
 #import "UIImageView+UIImageViewCategory.h"
 #import "PageState.h"
+#import "Vote.h"
+#import "AuthenticationManager.h"
+#import "User.h"
 
 
 #define kPHOTOID                    @"photoid"
@@ -26,6 +30,7 @@
 
 @implementation UIEditorialPageView
 @synthesize pageID = m_pageID;
+@synthesize pollID = m_pollID;
 @synthesize photoID = m_photoID;
 @synthesize captionID = m_captionID;
 @synthesize view = m_view;
@@ -39,6 +44,7 @@
 @synthesize v_publishedVotesView = m_v_publishedVotesView;
 @synthesize lbl_numPublishedVotes = m_lbl_numPublishedVotes;
 @synthesize iv_publishedStamp = m_iv_publishedStamp;
+@synthesize iv_votedStamp = m_iv_votedStamp;
 
 
 #pragma mark - Photo Frame Helper
@@ -123,8 +129,31 @@
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by %@", topCaption.creatorname];
     self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by %@", photo.creatorname];
     
+    
+    
+    // Retrieve the current logged in user
+    AuthenticationManager* authnManager = [AuthenticationManager instance];
+    
+    User* loggedInUser = (User*)[resourceContext resourceWithType:USER withID:authnManager.m_LoggedInUserID];
+    
+    NSArray* resourceValues = [[NSArray alloc] initWithObjects:self.pollID, loggedInUser.objectid, nil];
+    NSArray* resourceAttributes = [[NSArray alloc] initWithObjects:@"pollid", @"creatorid", nil];
+    Vote* vote = (Vote*)[resourceContext resourceWithType:VOTE withValuesEqual:resourceValues forAttributes:resourceAttributes sortBy:nil];
+    [resourceValues release];
+    [resourceAttributes release];
+    
+    Poll* poll = (Poll*)[resourceContext resourceWithType:POLL withID:self.pollID];
+    
+    // Show the voted stamp if the user voted already for this draft
+    if ([poll.hasvoted boolValue] && [vote.targetid isEqualToNumber:self.pageID]) {
+        [self.iv_votedStamp setHidden:NO];
+    }
+    else {
+        [self.iv_votedStamp setHidden:YES];
+    }
+    
     // Show the number of votes if poll is closed
-    if ([self.pollState intValue] == 1) {
+    if ([poll.state intValue] == 1) {
         self.lbl_numPublishedVotes.text = [NSString stringWithFormat:@"%d", [draft.numberofpublishvotes intValue]];
         [self.v_publishedVotesView setHidden:NO];
     }
@@ -140,12 +169,32 @@
         [self.iv_publishedStamp setHidden:YES];
     }
     
+    
+    /*// Show the number of votes if poll is closed
+    if ([self.pollState intValue] == 1) {
+        self.lbl_numPublishedVotes.text = [NSString stringWithFormat:@"%d", [draft.numberofpublishvotes intValue]];
+        [self.v_publishedVotesView setHidden:NO];
+    }
+    else {
+        [self.v_publishedVotesView setHidden:YES];
+    }
+    
+    // Show the published stamp if this draft was published
+    if ([draft.state intValue] == kPUBLISHED) {
+        [self.iv_publishedStamp setHidden:NO];
+    }
+    else {
+        [self.iv_publishedStamp setHidden:YES];
+    }*/
+    
     [self setNeedsDisplay];
 }
 
-- (void)renderWithPageID:(NSNumber*)pageID withPollState:(NSNumber*)pollState {
+//- (void)renderWithPageID:(NSNumber*)pageID withPollState:(NSNumber*)pollState {
+- (void)renderWithPageID:(NSNumber*)pageID withPollID:(NSNumber*)pollID {
     self.pageID = pageID;
-    self.pollState = pollState;
+    //self.pollState = pollState;
+    self.pollID = pollID;
     
     [self render];
 }
@@ -191,6 +240,7 @@
 - (void)dealloc
 {
     self.pageID = nil;
+    self.pollID = nil;
     self.photoID = nil;
     self.captionID = nil;
     self.view = nil;
@@ -200,6 +250,12 @@
     self.lbl_caption = nil;
     self.lbl_captionby = nil;
     self.lbl_photoby = nil;
+    
+    self.v_publishedVotesView = nil;
+    self.lbl_numPublishedVotes = nil;
+    self.iv_publishedStamp = nil;
+    self.iv_votedStamp = nil;
+    
     [super dealloc];
     
 }
