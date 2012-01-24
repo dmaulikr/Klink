@@ -12,7 +12,7 @@
  NSString* const ui_PRODUCTIONLOG               = @"Write";
  NSString* const ui_UAUTH_WORKERSLOGS           = @"Join";
  NSString* const ui_AUTH_WORKERSLOG             = @"%@'s Log";
- NSString* const ui_APPLICATIONNAME             = @"Bonobo";
+ NSString* const ui_APPLICATIONNAME             = @"Bahndr";
  
 
  NSString* const ui_EMPTY_CAPTION = @" ";
