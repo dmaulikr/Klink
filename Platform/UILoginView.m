@@ -384,7 +384,7 @@
         }
     }
     else {
-        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bonobo servers failed",activityName);
+        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bahndr servers failed",activityName);
         [self dismissWithResult:NO];
     }
 
@@ -439,7 +439,7 @@
 //        }
 //    }
 //    else {
-//        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bonobo servers failed",activityName);
+//        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bahndr servers failed",activityName);
 //        [self dismissWithResult:NO];
 //    }
 }

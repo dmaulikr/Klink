@@ -12,8 +12,8 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Bonobo_appIcon.png</string>
-		<string>Bonobo_appIcon@2x.png</string>
+		<string>Bahndr_appIcon.png</string>
+		<string>Bahndr_appIcon@2x.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -21,11 +21,11 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Bonobo_appIcon.png</string>
-				<string>Bonobo_appIcon@2x.png</string>
+				<string>Bahndr_appIcon.png</string>
+				<string>Bahndr_appIcon@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
-			<false/>
+			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
@@ -55,6 +55,8 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UISupportedInterfaceOrientations</key>
