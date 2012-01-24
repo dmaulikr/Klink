@@ -20,4 +20,6 @@
 @property (nonatomic,retain) NSString* objectName;
 
 - (void) renderWithObjectID:(NSNumber*)objectID withName:(NSString*)name;
+- (void)setFont:(UIFont *)font;
+
 @end

@@ -31,16 +31,14 @@
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
 @synthesize notificationTableViewCell = m_notificationTableViewCell;
-//@synthesize lbl_notificationTitle = m_lbl_notificationTitle;
-//@synthesize lbl_notificationMessage = m_lbl_notificationMessage;
+@synthesize resourceLinkButton = m_resourceLinkButton;
+@synthesize lbl_notificationMessage = m_lbl_notificationMessage;
 @synthesize lbl_notificationDate = m_lbl_notificationDate;
 @synthesize iv_notificationImage = m_iv_notificationImage;
 @synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
+@synthesize iv_notificationBadge = m_iv_notificationBadge;
 @synthesize selector = m_selector;
 @synthesize target = m_target;
-@synthesize resourceLinkButton = m_resourceLinkButton;
-@synthesize containerView = m_containerView;
-@synthesize label = m_label;
 
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
     NSDate* now = [NSDate date];
@@ -67,7 +65,7 @@
 
 - (UIFont*) fontForLabel 
 {
-    return [UIFont fontWithName:@"American Typewriter" size:12];
+    return [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
 }
 
 - (UILabel*) labelWithFrame:(CGRect)frame withText:(NSString*)text 
@@ -94,25 +92,24 @@
     if (notification != nil) {
         NSDate* dateSent = [DateTimeHelper parseWebServiceDateDouble:notification.datecreated];
         self.lbl_notificationDate.text = [self getDateStringForNotification:dateSent];
-        //self.lbl_notificationTitle.text = notification.title;
         NSError* error = NULL;
         NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
         NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
         
+        UIFont* font = [self fontForLabel];
+        
         if (numberOfMatches > 0) {
             //we have matches for embedded user links
-            CGRect vFrame = CGRectMake(74, 4, 218, 40);
-            UIView* containerView = [[UIView alloc]initWithFrame:vFrame];
-            [self.contentView addSubview:containerView];
-            self.containerView = containerView;
-            [containerView release];
             
             NSArray* matches = [regex matchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
             NSMutableArray* newMessageArray = [NSMutableArray arrayWithCapacity:[matches count]];
+            
             int startIndex = 0;
-            int X = 0;
-            int Y = 4;
             NSRange range;
+            NSString* indent = [NSString stringWithFormat:@" "];
+            CGSize indentSize = [indent sizeWithFont:font];
+            CGSize resourceLinkButtonSize = CGSizeMake(0, 0);
+            
             
             for (NSTextCheckingResult *match in matches) {
                 range = [match range];
@@ -128,57 +125,65 @@
                     
                 }
                 startIndex = range.location + range.length;
-                //now we parse into a nsdictionary
+                //now we parse into a NSDictionary
                 NSDictionary* jsonDictionary = [jsonString objectFromJSONString];
                 //now we have a json dictionary
                 NSNumber* userID = [jsonDictionary valueForKey:ID];
                 NSString* username = [jsonDictionary valueForKey:USERNAME];
                 
-                //we need to grab the string range
-                //create a resource link button and add it to the message
-                UIFont* font = [self fontForLabel];
-                CGSize labelSize = [username sizeWithFont:font];
-                CGRect linkButtonFrame = CGRectMake(X, Y, labelSize.width, labelSize.height);
-                UIResourceLinkButton* rlb = [[UIResourceLinkButton alloc]initWithFrame:linkButtonFrame];            
-                rlb.titleLabel.font = font;            
-                rlb.titleLabel.textColor = [UIColor blackColor];
-                [rlb addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-                [rlb renderWithObjectID:userID withName:username];
-                X = X + labelSize.width;
-                self.resourceLinkButton = rlb;
+                resourceLinkButtonSize = [username sizeWithFont:font];
+                self.resourceLinkButton.frame = CGRectMake(self.resourceLinkButton.frame.origin.x, self.resourceLinkButton.frame.origin.y, resourceLinkButtonSize.width, resourceLinkButtonSize.height);
                 
-                [containerView addSubview:rlb];
-                [rlb release];
+                [self.resourceLinkButton setTitle:[NSString stringWithFormat:@"%@",username] forState:UIControlStateNormal];
+                [self.resourceLinkButton renderWithObjectID:userID withName:username];
+                
+                [self.resourceLinkButton setEnabled:YES];
+                [self.resourceLinkButton setHidden:NO];
                 
             }
             
             //we need to grab the rest of the string from the last range
             if (startIndex < [notification.message length]) {
                 NSString* remainder = [notification.message substringFromIndex:startIndex];
-                UIFont* font = [self fontForLabel];
-                CGSize size = [remainder sizeWithFont:font];
-                CGRect frame = CGRectMake(X, Y, size.width, size.height);
-                UILabel* label = [self labelWithFrame:frame withText:remainder];
-                label.autoresizingMask = 2;
-                [containerView addSubview:label];
+                
+                for (int i; indentSize.width < resourceLinkButtonSize.width; i++) {
+                    // add a space until the indent equals the size of the username resourceLinkButton
+                    indent = [NSString stringWithFormat:@"%@ ", indent];
+                    indentSize = [indent sizeWithFont:font];
+                }
+                
+                CGSize maximumSize = CGSizeMake(219, 38);
+                remainder = [NSString stringWithFormat:@"%@%@", indent, remainder];
+                CGSize remainderSize = [remainder sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
+                 
+                [self.lbl_notificationMessage setText:[NSString stringWithFormat:@"%@", remainder]];
+                
+                self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, remainderSize.width, remainderSize.height);
                 
             }
-            
             
         }
         else {
             //no embedded user links found
-            CGRect labelFrame = CGRectMake(74,4,218,40);
-            self.label = [self labelWithFrame:labelFrame withText:notification.message];
-            [self.contentView addSubview:self.label];
+            [self.lbl_notificationMessage setText:notification.message];
+            
+            CGSize maximumSize = CGSizeMake(219, 38);
+            CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
+            
+            self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, messageSize.width, messageSize.height);
+            
+            [self.resourceLinkButton setEnabled:NO];
+            [self.resourceLinkButton setHidden:YES];
            
         }
        
         //need to check if the notification ahs been opened before
         if ([notification.hasopened boolValue] == NO) {
             //never been read, so lets highlight the background
-            self.contentView.backgroundColor = [UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA];
-            self.contentView.opaque = NO;
+            //self.contentView.backgroundColor = [UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA];
+            //self.contentView.opaque = NO;
+            
+            [self.iv_notificationBadge setHidden:NO];
             
             /*CAGradientLayer *gradient = [CAGradientLayer layer];
             gradient.frame = CGRectMake(0,0,160,73);
@@ -189,8 +194,10 @@
         }
         else {
             //has been read so lets not highlight the background
-            self.contentView.backgroundColor = [UIColor clearColor];
-            self.contentView.opaque = YES;
+            //self.contentView.backgroundColor = [UIColor clearColor];
+            //self.contentView.opaque = YES;
+            
+            [self.iv_notificationBadge setHidden:YES];
         }
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE || [notification.feedevent intValue] == kCAPTION_UNAUTHENTICATED_VOTE || [notification.feedevent intValue] == kPHOTO_UNAUTHENTICATED_VOTE) {
@@ -246,8 +253,7 @@
         }
         else {
             self.iv_notificationImage.hidden = YES;
-            self.iv_notificationImage.contentMode = UIViewContentModeCenter;
-            self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+            self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, self.iv_notificationImage.frame.origin.x + self.iv_notificationImage.frame.size.width/2, self.lbl_notificationMessage.frame.size.height);
         }
     }
     [self setNeedsDisplay];
@@ -257,23 +263,9 @@
                   linkClickTarget:(id)target 
                 linkClickSelector:(SEL)selector 
 {
-    
-    if (self.resourceLinkButton != nil) {
-        [self.resourceLinkButton removeFromSuperview];
-        self.resourceLinkButton = nil;
-    }
+    // Reset tableviewcell properties
+    self.lbl_notificationMessage.frame = CGRectMake(34, 6, 212, 19);
     self.lbl_notificationDate.text = nil;
-    
-    if (self.label != nil) {
-        [self.label removeFromSuperview];
-        self.label = nil;
-    }
-    if (self.containerView != nil) {
-        [self.containerView removeFromSuperview];
-        self.containerView = nil;
-    }
-    self.contentView.backgroundColor = [UIColor clearColor];
-    self.contentView.opaque = YES;
     self.target = target;
     self.selector = selector;
     self.notificationID = notificationID;
@@ -293,15 +285,19 @@
         {
             NSLog(@"Error! Could not load UINotificationTableViewCell file.\n");
         }
-       
         
         [self.contentView addSubview:self.notificationTableViewCell];
+        
+        [self.contentView addSubview:self.resourceLinkButton];
+        
+        // Custom initialization
+		//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTweetNotification:) name:IFTweetLabelURLNotification object:nil];
         
     }
     return self;
 }
 
-- (void) onClick:(id)sender {
+- (IBAction) onUsernameButtonPress:(id)sender {
     //click from a resource link
     UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
     if (self.target != nil) {
@@ -321,13 +317,13 @@
 
 - (void)dealloc
 {
-    /*self.notificationID = nil;
+    self.notificationID = nil;
     self.notificationTableViewCell = nil;
-    //self.lbl_notificationTitle = nil;
     self.lbl_notificationMessage = nil;
+    self.resourceLinkButton = nil;
     self.lbl_notificationDate = nil;
     self.iv_notificationImage = nil;
-    self.iv_notificationTypeImage = nil;*/
+    self.iv_notificationTypeImage = nil;
     
     [super dealloc];
 }
@@ -353,6 +349,11 @@
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 
+}
+
+- (void)handleTweetNotification:(NSNotification *)notification
+{
+	NSLog(@"handleTweetNotification: notification = %@", notification);
 }
 
 #pragma mark - Statics

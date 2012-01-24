@@ -64,4 +64,16 @@
     self.objectName = name;
     [self render];
 }
+
+// handle methods that affect both this view and label view
+- (void)setFont:(UIFont *)font
+{
+	[super.titleLabel setFont:font];
+}
+
+- (void)setTextColor:(UIColor *)color
+{
+	[super.titleLabel setTextColor:color];
+}
+
 @end

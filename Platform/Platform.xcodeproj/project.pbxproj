@@ -81,6 +81,10 @@
 		5250E4F814CE545E00C53383 /* progressBar_container@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E4F614CE545E00C53383 /* progressBar_container@2x.png */; };
 		5250E4FB14CE54F200C53383 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E4F914CE54F200C53383 /* 37x-Checkmark.png */; };
 		5250E4FC14CE54F200C53383 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E4FA14CE54F200C53383 /* 37x-Checkmark@2x.png */; };
+		5250E50E14CEDEE700C53383 /* tape_noShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E50C14CEDEE700C53383 /* tape_noShadow.png */; };
+		5250E50F14CEDEE700C53383 /* tape_noShadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E50D14CEDEE700C53383 /* tape_noShadow@2x.png */; };
+		5250E52214CEEA1800C53383 /* blue_dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E52014CEEA1800C53383 /* blue_dot.png */; };
+		5250E52314CEEA1800C53383 /* blue_dot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E52114CEEA1800C53383 /* blue_dot@2x.png */; };
 		525362911499581F001F1EB6 /* UIImageView+UIImageViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */; };
 		5253629B14998DF8001F1EB6 /* thumbnail_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 5253629914998DF8001F1EB6 /* thumbnail_frame.png */; };
 		5253629C14998DF8001F1EB6 /* thumbnail_frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5253629A14998DF8001F1EB6 /* thumbnail_frame@2x.png */; };
@@ -442,6 +446,10 @@
 		5250E4F614CE545E00C53383 /* progressBar_container@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_container@2x.png"; sourceTree = "<group>"; };
 		5250E4F914CE54F200C53383 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		5250E4FA14CE54F200C53383 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		5250E50C14CEDEE700C53383 /* tape_noShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tape_noShadow.png; sourceTree = "<group>"; };
+		5250E50D14CEDEE700C53383 /* tape_noShadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tape_noShadow@2x.png"; sourceTree = "<group>"; };
+		5250E52014CEEA1800C53383 /* blue_dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_dot.png; sourceTree = "<group>"; };
+		5250E52114CEEA1800C53383 /* blue_dot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_dot@2x.png"; sourceTree = "<group>"; };
 		5253628F1499581F001F1EB6 /* UIImageView+UIImageViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIImageViewCategory.h"; sourceTree = "<group>"; };
 		525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIImageViewCategory.m"; sourceTree = "<group>"; };
 		5253629914998DF8001F1EB6 /* thumbnail_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail_frame.png; sourceTree = "<group>"; };
@@ -645,7 +653,7 @@
 		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorCodes.h; sourceTree = "<group>"; };
 		C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorCodes.m; sourceTree = "<group>"; };
-		C593F7BF143EB191008D25A7 /* Bonobo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bonobo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C593F7BF143EB191008D25A7 /* Bahndr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bahndr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C593F7C3143EB191008D25A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C593F7C5143EB191008D25A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C593F7C7143EB192008D25A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1062,8 +1070,12 @@
 				52AAB10C14C7AB0100497FC7 /* typewriter_key-profile@2x.png */,
 				52AAB10D14C7AB0100497FC7 /* typewriterframe.png */,
 				52AAB10E14C7AB0100497FC7 /* typewriterframe@2x.png */,
+				5250E52014CEEA1800C53383 /* blue_dot.png */,
+				5250E52114CEEA1800C53383 /* blue_dot@2x.png */,
 				52809DDA14CA25C700B5BFE3 /* tape.png */,
 				52809DDB14CA25C700B5BFE3 /* tape@2x.png */,
+				5250E50C14CEDEE700C53383 /* tape_noShadow.png */,
+				5250E50D14CEDEE700C53383 /* tape_noShadow@2x.png */,
 				5250E4D514CE490E00C53383 /* Default.png */,
 				5250E4D614CE490E00C53383 /* Default@2x.png */,
 				52253C0014C0AFC80014E42F /* book_button_roundrect.png */,
@@ -1262,7 +1274,7 @@
 		C593F7C0143EB191008D25A7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C593F7BF143EB191008D25A7 /* Bonobo.app */,
+				C593F7BF143EB191008D25A7 /* Bahndr.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1905,7 +1917,7 @@
 			);
 			name = Platform;
 			productName = Platform;
-			productReference = C593F7BF143EB191008D25A7 /* Bonobo.app */;
+			productReference = C593F7BF143EB191008D25A7 /* Bahndr.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2127,6 +2139,10 @@
 				5250E4F814CE545E00C53383 /* progressBar_container@2x.png in Resources */,
 				5250E4FB14CE54F200C53383 /* 37x-Checkmark.png in Resources */,
 				5250E4FC14CE54F200C53383 /* 37x-Checkmark@2x.png in Resources */,
+				5250E50E14CEDEE700C53383 /* tape_noShadow.png in Resources */,
+				5250E50F14CEDEE700C53383 /* tape_noShadow@2x.png in Resources */,
+				5250E52214CEEA1800C53383 /* blue_dot.png in Resources */,
+				5250E52314CEEA1800C53383 /* blue_dot@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2343,7 +2359,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "80D4FAA9-3B26-4A26-9C2A-D2EC64D5E036";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "71FF553F-771B-4032-B282-FEE3F9C18602";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
@@ -2372,7 +2388,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -2420,7 +2436,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
@@ -2486,7 +2502,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2515,7 +2531,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 				);
-				PRODUCT_NAME = Bonobo;
+				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

@@ -662,6 +662,10 @@
 
 - (void)onGlobeButtonPressed:(id)sender {    
     // Here we should show the message with instructions
+    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Editorial Board" message:ui_WELCOME_EDITORIAL delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+    
+    [alert show];
+    [alert release];
 }
 
 #pragma mark - Async Callback Handlers
