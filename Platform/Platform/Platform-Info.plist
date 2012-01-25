@@ -12,8 +12,8 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Bahndr_appIcon.png</string>
-		<string>Bahndr_appIcon@2x.png</string>
+		<string>Bahndr_appIcon-57.png</string>
+		<string>Bahndr_appIcon-114.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -21,8 +21,8 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Bahndr_appIcon.png</string>
-				<string>Bahndr_appIcon@2x.png</string>
+				<string>Bahndr_appIcon-57.png</string>
+				<string>Bahndr_appIcon-114.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>

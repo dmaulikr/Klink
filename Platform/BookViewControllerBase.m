@@ -245,6 +245,8 @@
                 // Modal naviation to production log
                 UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];
                 navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                [navigationController.navigationBar setHidden:YES];
+                [navigationController.toolbar setHidden:YES];
                 
                 [self presentModalViewController:navigationController animated:YES];
                 

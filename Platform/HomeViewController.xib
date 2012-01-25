@@ -47,7 +47,7 @@
 						<string key="NSFrameSize">{302, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="714824289"/>
+						<reference key="NSNextKeyView" ref="941436021"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -62,7 +62,7 @@
 						<string key="NSFrame">{{105, 48}, {110, 38}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="213455008"/>
+						<reference key="NSNextKeyView" ref="714824289"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -100,7 +100,7 @@
 						<string key="NSFrame">{{105, 83}, {110, 11}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="941436021"/>
+						<reference key="NSNextKeyView" ref="213455008"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -325,7 +325,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Blue Label Labs &amp;</string>
+						<string key="IBUIText">New York - Seattle</string>
 						<reference key="IBUITextColor" ref="774697434"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="690742783"/>
@@ -776,7 +776,7 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{267, 11}</string>
+				<string>{1, 11}</string>
 				<string>{257, 66}</string>
 				<string>{257, 66}</string>
 				<string>{257, 66}</string>

@@ -748,8 +748,11 @@
             }
         }
         else {
-            self.iv_photo.backgroundColor = [UIColor redColor];
-            self.iv_photo.image = nil;
+            //self.iv_photo.backgroundColor = [UIColor redColor];
+            //self.iv_photo.image = nil;
+            // show the photo placeholder icon
+            [self.iv_photo setContentMode:UIViewContentModeCenter];
+            self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         }
         
         // unhide the landscape photo view
@@ -1231,8 +1234,11 @@
                 }
             }
             else {
-                self.iv_photo.backgroundColor = [UIColor redColor];
-                self.iv_photo.image = nil;
+                //self.iv_photo.backgroundColor = [UIColor redColor];
+                //self.iv_photo.image = nil;
+                // show the photo placeholder icon
+                [self.iv_photo setContentMode:UIViewContentModeCenter];
+                self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
             
             [self.photoViewSlider addSubview:self.iv_photo];
@@ -1379,7 +1385,10 @@
         }
     }
     else {
-        imageView.backgroundColor = [UIColor redColor];
+        //imageView.backgroundColor = [UIColor redColor];
+        // show the photo placeholder icon
+        [self.iv_photo setContentMode:UIViewContentModeCenter];
+        self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 }

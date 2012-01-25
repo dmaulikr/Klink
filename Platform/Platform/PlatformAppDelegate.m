@@ -106,7 +106,7 @@
                                          UIRemoteNotificationTypeSound |
                                          UIRemoteNotificationTypeAlert)];
     
-    // NEW STUFF TO LOAD BOOK VIEW CONTROLLER
+    /*// Launch the BookView home page
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
     self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
     
@@ -114,7 +114,7 @@
  
     self.window.backgroundColor = [UIColor blackColor];
     
-    [self.window makeKeyAndVisible];
+    [self.window makeKeyAndVisible];*/
     
     
     //let us make some checks beginning with the user object
@@ -135,6 +135,19 @@
         }
 
     }
+    
+    //CloudEnumerator* pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
+    //[pageCloudEnumerator enumerateUntilEnd:nil];
+    
+    // Launch the BookView home page
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
+    
+    self.window.rootViewController = self.navigationController;
+    
+    self.window.backgroundColor = [UIColor blackColor];
+    
+    [self.window makeKeyAndVisible];
     
     //check if the application is launching with notifications queued up
     //if so need to move to the notification window

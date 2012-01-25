@@ -145,6 +145,9 @@
 - (void) renderSuccessfulCompletion 
 {
     UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    
+    //CGRect iv_frame = iv.frame;
+    
     self.customView = iv;
     [iv release];
     
@@ -152,24 +155,25 @@
     self.labelText = @"Success!";
     self.didSucceed = YES;
     [self addSubview:self.customView];
-   
-  
+
 }
 
 - (void) renderFailedCompletion 
 {
-    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
+    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"37x-bug.png"]];
+    
+    //CGRect iv_frame = iv.frame;
+    
     self.customView = iv;
     [iv release];
-     //TODO: need a white 37x x 37x "X" to denote failure
+    
     self.mode = MBProgressHUDModeCustomView;
     self.labelText = @"Failed!";
     self.didSucceed = NO;
     [self addSubview:self.customView];
-
-    
-    
+ 
 }
+
 #pragma RequestProcessDelegate
 - (void) request:(Request *)request setProgress:(float)progress {
     NSString* activityName = @"UIProgressHUDView.setProgress:";

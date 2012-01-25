@@ -255,7 +255,10 @@
         }
     }
     else {
-        self.iv_photo.backgroundColor = [UIColor redColor];
+        //self.iv_photo.backgroundColor = [UIColor redColor];
+        // show the photo placeholder icon
+        [self.iv_photo setContentMode:UIViewContentModeCenter];
+        self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 

@@ -561,17 +561,17 @@
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
     NSDictionary* userInfo = result.response;
-    NSNumber* draftID = [userInfo valueForKey:kPAGEID];
-    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
+    //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-    if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
-        if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
+    //if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
+    //    if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
             
             [self.leavesView reloadData];
             
             [self renderPage];
-        }
-    }
+    //    }
+    //}
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
