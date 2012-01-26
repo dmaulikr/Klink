@@ -16,7 +16,6 @@
 #import "Page.h"
 #import "ImageManager.h"
 #import "NotificationsViewController.h"
-#import "UICustomNavigationBar.h"
 #import "ProfileViewController.h"
 #import "UIStrings.h"
 
@@ -181,20 +180,6 @@
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self.navigationController.navigationBar setTranslucent:YES];
     [self.navigationController.navigationBar setTintColor:nil];*/
-    
-    /*
-    // Set custom navigation bar background image
-    if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        // use the line below to set a custom background image for the navigation bar in iOS 5
-        //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar.png"] forBarMetrics:UIBarMetricsDefault];
-    }
-    else {
-        // use the lines below to set a custom background image for the navigation bar in iOS 4.x
-        //UIImage* barImage = [UIImage imageNamed:@"navbar.png"];
-        //UICustomNavigationBar* navigationBar = (UICustomNavigationBar *)[[self navigationController] navigationBar];
-        //[navigationBar setBackgroundImage:barImage];
-    }
-    */
      
     /*// Toolbar
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];

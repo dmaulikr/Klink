@@ -32,23 +32,28 @@
 
 
 - (CGImageRef) imageForPageIndex:(NSUInteger)pageIndex {
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGFloat scale = [[UIScreen mainScreen] scale];  // we need to size the graphics context according to the device scale
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGContextRef context = CGBitmapContextCreate(NULL, 
-												 pageSize.width, 
-												 pageSize.height, 
+												 pageSize.width*scale, 
+												 pageSize.height*scale, 
 												 8,						/* bits per component*/
-												 pageSize.width * 4, 	/* bytes per row */
+												 pageSize.width*scale * 4, 	/* bytes per row */
 												 colorSpace, 
 												 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
-	CGColorSpaceRelease(colorSpace);
-	CGContextClipToRect(context, CGRectMake(0, 0, pageSize.width, pageSize.height));
+    
+    CGColorSpaceRelease(colorSpace);
+    CGContextClipToRect(context, CGRectMake(0, 0, pageSize.width*scale, pageSize.height*scale));
+    
+    CGContextScaleCTM(context, scale, scale);
 	
 	[dataSource renderPageAtIndex:pageIndex inContext:context];
-	
+    
 	CGImageRef image = CGBitmapContextCreateImage(context);
 	CGContextRelease(context);
-	
-	[UIImage imageWithCGImage:image];
+    
+    [UIImage imageWithCGImage:image];
+	//[UIImage imageWithCGImage:image scale:scale orientation:UIImageOrientationUp];
 	CGImageRelease(image);
 	
 	return image;
@@ -63,6 +68,8 @@
 	if (!pageImage) {
 		CGImageRef pageCGImage = [self imageForPageIndex:pageIndex];
 		pageImage = [UIImage imageWithCGImage:pageCGImage];
+        //CGFloat scale = [[UIScreen mainScreen] scale];
+        //pageImage = [UIImage imageWithCGImage:pageCGImage scale:scale orientation:UIImageOrientationUp];
 		@synchronized (pageCache) {
 			[pageCache setObject:pageImage forKey:pageIndexNumber];
 		}

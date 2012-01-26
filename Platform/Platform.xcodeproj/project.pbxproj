@@ -148,7 +148,6 @@
 		527FFFF414B52C39001D947B /* NavigationBar_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF314B52C39001D947B /* NavigationBar_yellow.png */; };
 		527FFFF714B54369001D947B /* NavigationBar_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF514B54369001D947B /* NavigationBar_clear.png */; };
 		527FFFF814B54369001D947B /* NavigationBar_clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF614B54369001D947B /* NavigationBar_clear@2x.png */; };
-		527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 527FFFFA14B5B37E001D947B /* UICustomToolbar.m */; };
 		52809DC614CA110D00B5BFE3 /* typewriter_key-lightbulb_lit.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DC414CA110D00B5BFE3 /* typewriter_key-lightbulb_lit.png */; };
 		52809DC714CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DC514CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png */; };
 		52809DDC14CA25C700B5BFE3 /* tape.png in Resources */ = {isa = PBXBuildFile; fileRef = 52809DDA14CA25C700B5BFE3 /* tape.png */; };
@@ -160,7 +159,6 @@
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
 		528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 528A49B814AD01F000881A99 /* MessageUI.framework */; };
 		52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52941A6014AE774100BFE179 /* UICustomAlertView.m */; };
-		52979AE7149FCD4500F29ECC /* UICustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */; };
 		52979AFC14A0128200F29ECC /* progressBar_darkfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF414A0128100F29ECC /* progressBar_darkfill.png */; };
 		52979AFD14A0128200F29ECC /* progressBar_darkfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */; };
 		52979AFE14A0128200F29ECC /* progressBar_lightfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF614A0128200F29ECC /* progressBar_lightfill.png */; };
@@ -520,8 +518,6 @@
 		527FFFF314B52C39001D947B /* NavigationBar_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavigationBar_yellow.png; sourceTree = "<group>"; };
 		527FFFF514B54369001D947B /* NavigationBar_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavigationBar_clear.png; sourceTree = "<group>"; };
 		527FFFF614B54369001D947B /* NavigationBar_clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavigationBar_clear@2x.png"; sourceTree = "<group>"; };
-		527FFFF914B5B37E001D947B /* UICustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomToolbar.h; sourceTree = "<group>"; };
-		527FFFFA14B5B37E001D947B /* UICustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomToolbar.m; sourceTree = "<group>"; };
 		52809DC414CA110D00B5BFE3 /* typewriter_key-lightbulb_lit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-lightbulb_lit.png"; sourceTree = "<group>"; };
 		52809DC514CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-lightbulb_lit@2x.png"; sourceTree = "<group>"; };
 		52809DDA14CA25C700B5BFE3 /* tape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tape.png; sourceTree = "<group>"; };
@@ -534,8 +530,6 @@
 		528A49B814AD01F000881A99 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		52941A5F14AE774100BFE179 /* UICustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomAlertView.h; sourceTree = "<group>"; };
 		52941A6014AE774100BFE179 /* UICustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomAlertView.m; sourceTree = "<group>"; };
-		52979AE5149FCD4500F29ECC /* UICustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomNavigationBar.h; sourceTree = "<group>"; };
-		52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomNavigationBar.m; sourceTree = "<group>"; };
 		52979AF414A0128100F29ECC /* progressBar_darkfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_darkfill.png; sourceTree = "<group>"; };
 		52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_darkfill@2x.png"; sourceTree = "<group>"; };
 		52979AF614A0128200F29ECC /* progressBar_lightfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_lightfill.png; sourceTree = "<group>"; };
@@ -1643,10 +1637,6 @@
 				C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */,
 				C5C9E2D014689F7C00838934 /* UIProgressHUDView.h */,
 				C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */,
-				52979AE5149FCD4500F29ECC /* UICustomNavigationBar.h */,
-				52979AE6149FCD4500F29ECC /* UICustomNavigationBar.m */,
-				527FFFF914B5B37E001D947B /* UICustomToolbar.h */,
-				527FFFFA14B5B37E001D947B /* UICustomToolbar.m */,
 				52941A5F14AE774100BFE179 /* UICustomAlertView.h */,
 				52941A6014AE774100BFE179 /* UICustomAlertView.m */,
 				520800B914AF77C7007E5C7D /* UIPromptAlertView.h */,
@@ -2301,7 +2291,6 @@
 				52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */,
 				52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */,
 				52323F30149AA9060055A933 /* UIEditorialPageView.m in Sources */,
-				52979AE7149FCD4500F29ECC /* UICustomNavigationBar.m in Sources */,
 				5236458514A26D0F007BD882 /* LeavesCache.m in Sources */,
 				5236458614A26D0F007BD882 /* LeavesView.m in Sources */,
 				5236458714A26D0F007BD882 /* LeavesViewController.m in Sources */,
@@ -2311,7 +2300,6 @@
 				52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */,
 				520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */,
 				C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */,
-				527FFFFB14B5B37E001D947B /* UICustomToolbar.m in Sources */,
 				C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */,
 				C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */,
 				52253C0F14C0CBEF0014E42F /* BookPageViewController.m in Sources */,

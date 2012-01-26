@@ -16,7 +16,6 @@
 #import "Photo.h"
 #import "Caption.h"
 #import "EventManager.h"
-#import "UICustomNavigationBar.h"
 #import "UserDefaultSettings.h"
 
 #define kPAGEID @"pageid"
@@ -155,6 +154,11 @@
         // Do nothing, we are turning to the title page
     }
     else {
+        if (index < self.leavesView.currentPageIndex) {
+            // paging backwards, need to make sure view reloads
+            self.shouldOpenToSpecificPage = YES;
+        }
+        
         index--;    // we need to subtract one from the index to account for the title page which is not in the frc
         
         int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
@@ -200,7 +204,9 @@
                 Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
                 self.pageID = page.objectid;
                 
-                Photo* photo = [page photoWithHighestVotes];
+                ResourceContext* resourceContext = [ResourceContext instance];
+                //Photo* photo = [page photoWithHighestVotes];
+                Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:page.finishedphotoid];
                 self.topVotedPhotoID = photo.objectid;
                 
                 // we update the userDefault setting for the last page viewed by the user
@@ -217,7 +223,6 @@
 }
 
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
-    
     if (index == 0) {
         // Return the title page, HomeViewController
         HomeViewController* homeViewController = [HomeViewController createInstance];
@@ -560,18 +565,52 @@
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
-    NSDictionary* userInfo = result.response;
+    //NSDictionary* userInfo = result.response;
     //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
-    //if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
-    //    if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
+    /*int count = [[self.frc_published_pages fetchedObjects]count];
+    int nextPageIndex = self.leavesView.currentPageIndex;
+    
+    if (count != 0 && nextPageIndex > -1 && nextPageIndex < count) {
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:nextPageIndex];
+        NSNumber* nextDraftID = page.objectid;
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:page.finishedphotoid];
+        NSNumber* nextTopVotedPhotoID = photo.objectid;
+        
+        if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
+            if ([draftID isEqualToNumber:nextDraftID] && [photoID isEqualToNumber:nextTopVotedPhotoID]) {
+                
+                self.shouldOpenToTitlePage = NO;
+                self.shouldOpenToSpecificPage = YES;
+                self.shouldAnimatePageTurn = YES;
+                
+                [self.leavesView reloadData];
+                
+                [self renderPage];
+            }
+        }
+    }*/
+    
+    /*if (draftID!=nil && photoID!=nil && self.pageID!=nil && self.topVotedPhotoID!=nil) {
+        if ([draftID isEqualToNumber:self.pageID] && [photoID isEqualToNumber:self.topVotedPhotoID]) {
+            
+            self.shouldOpenToTitlePage = NO;
+            self.shouldOpenToSpecificPage = YES;
+            self.shouldAnimatePageTurn = YES;
             
             [self.leavesView reloadData];
             
             [self renderPage];
-    //    }
-    //}
+        }
+    }*/
+    
+    [self.leavesView reloadData];
+    
+    [self renderPage];
+    
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
