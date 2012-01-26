@@ -1021,6 +1021,13 @@
         [alert release];
     }
     else {
+        
+        //display progress view on the submission of a vote
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+        NSString* message = @"Casting your vote...";
+        [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
+        
         ResourceContext* resourceContext = [ResourceContext instance];
         //we start a new undo group here
         [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
@@ -1041,10 +1048,7 @@
         //now we need to commit to the store
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
-        //display progress view on the submission of a vote
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-        NSString* message = @"Submitting your vote...";
-        [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
         
         //update photo and caption metadata views
         //[self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];

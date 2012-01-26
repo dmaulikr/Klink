@@ -25,6 +25,10 @@
 NSString* const default_BASEURL = @"http://oscial.com/bonobo/rest";
 
 
+//this URL is to connect to the PRODUCTION #2 environment in the cloud
+//NSString* const default_BASEURL = @"http://bahndr.com/service/rest";
+
+
 int const progress_MAXSECONDSTODISPLAY = 45;
 int const maxsize_PHOTODOWNLOAD=1000;
 int const maxsize_THEMEDOWNLOAD=100;
@@ -40,3 +44,4 @@ int const page_size_LINKEDOBJECTS = 5;
 int const page_DRAFTEXPIRES_SECONDS = 86400;
 NSString* const twitter_CONSUMERKEY=@"oy2bDqBeASOP7fXXwqOAQ";
 NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBHgQ";
+int const progress_WHEELSPINTIME = 8;

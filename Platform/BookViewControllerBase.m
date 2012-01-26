@@ -642,40 +642,44 @@
     //we need to check if this enumeration brought down the entire book or was an optimized query
     //we check by counting the number of query expressions in the enumerator (its a hack, i know)
     //if its 2, then we know it was optimized, if its 1, we brough down the whole book
-    if ([[self.pageCloudEnumerator.query attributeExpressions]count] == 1) {
-        //it was a complete enumeration
-        //we mark the userdefault setting that we have downloaded the whole book
-        LOG_BOOKVIEWCONTROLLER(0, @"%@Marking that we have successfully downloaded the book into user settings",activityName);
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setBool:YES forKey:setting_HASDOWNLOADEDBOOK];
-    }
-    self.captionCloudEnumerator = nil;
-    ResourceContext* resourceContext = [ResourceContext instance];
     
-    NSMutableArray* captionList = [[NSMutableArray alloc]init];
-    NSMutableArray* captionTypeList = [[NSMutableArray alloc]init];
-    
-    for (Page* page in [self.frc_published_pages fetchedObjects]) {
-        if (page.finishedcaptionid != nil) {
-            //we check to see if ti exists in the local store
-            id caption = [resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
-            if (caption == nil) {
-                //caption isnt in local store, add it to the list of captions to be downloaded
-                [captionList addObject:page.finishedcaptionid];
-                [captionTypeList addObject:CAPTION];
-            }
-           
+    if (enumerator == self.pageCloudEnumerator) {
+        if ([[self.pageCloudEnumerator.query attributeExpressions]count] == 1 &&
+            [results count] > 0) {
+            //it was a complete enumeration
+            //we mark the userdefault setting that we have downloaded the whole book
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Marking that we have successfully downloaded the book into user settings",activityName);
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setBool:YES forKey:setting_HASDOWNLOADEDBOOK];
         }
-    }
-    if ([captionList count] > 0) {
-        //at this point we have all the captions that are in the frc
-        LOG_BOOKVIEWCONTROLLER(0, @"%@ Enumerating %d missing captions from the cloud",activityName,[captionList count]);
-        self.captionCloudEnumerator = [CloudEnumerator enumeratorForIDs:captionList withTypes:captionTypeList];
+        self.captionCloudEnumerator = nil;
+        ResourceContext* resourceContext = [ResourceContext instance];
         
-        [self.captionCloudEnumerator enumerateUntilEnd:nil];
+        NSMutableArray* captionList = [[NSMutableArray alloc]init];
+        NSMutableArray* captionTypeList = [[NSMutableArray alloc]init];
+        
+        for (Page* page in [self.frc_published_pages fetchedObjects]) {
+            if (page.finishedcaptionid != nil) {
+                //we check to see if ti exists in the local store
+                id caption = [resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
+                if (caption == nil) {
+                    //caption isnt in local store, add it to the list of captions to be downloaded
+                    [captionList addObject:page.finishedcaptionid];
+                    [captionTypeList addObject:CAPTION];
+                }
+                
+            }
+        }
+        if ([captionList count] > 0) {
+            //at this point we have all the captions that are in the frc
+            LOG_BOOKVIEWCONTROLLER(0, @"%@ Enumerating %d missing captions from the cloud",activityName,[captionList count]);
+            self.captionCloudEnumerator = [CloudEnumerator enumeratorForIDs:captionList withTypes:captionTypeList];
+            
+            [self.captionCloudEnumerator enumerateUntilEnd:nil];
+        }
+        [captionList release];
+        [captionTypeList release];
     }
-    [captionList release];
-    [captionTypeList release];
 }
 
 #pragma mark - Static Initializers

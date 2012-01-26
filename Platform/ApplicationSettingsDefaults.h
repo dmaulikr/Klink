@@ -33,5 +33,5 @@ extern int const threshold_PAGE_ENUMERATION_TIME_GAP;
 extern int const threshold_FEED_ENUMERATION_TIME_GAP;
 
 extern int const progress_MAXSECONDSTODISPLAY;
-
+extern int const progress_WHEELSPINTIME;
 

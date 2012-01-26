@@ -39,6 +39,8 @@
     NSNumber*   m_requestProgress;
     NSNumber*   m_heartbeatSeconds;
     NSDate*     m_dateProgressViewShown;
+    
+    int         m_wheelRotationTime;
 
 }
 
@@ -55,6 +57,7 @@
 @property (nonatomic,retain) NSArray*   requests;
 @property                    BOOL       didSucceed;
 @property (nonatomic,retain) NSNumber*   maximumDisplayTime;
+@property                    int        wheelRotationTime;
 @property (nonatomic,retain) NSTimer*   timer;
 @property (nonatomic,retain) NSTimer*   animationTimer;
 @property (nonatomic,retain) NSNumber*  requestProgress;
