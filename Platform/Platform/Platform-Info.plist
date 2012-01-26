@@ -12,7 +12,9 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
+		<string>Bahndr_appIcon-58.png</string>
 		<string>Bahndr_appIcon-57.png</string>
+		<string>Bahndr_appIcon-29.png</string>
 		<string>Bahndr_appIcon-114.png</string>
 	</array>
 	<key>CFBundleIcons</key>

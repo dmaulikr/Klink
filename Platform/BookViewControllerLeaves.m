@@ -147,8 +147,8 @@
 
 - (void) leavesView:(LeavesView *)leavesView willTurnToPageAtIndex:(NSUInteger)index {
     // hide the book and home page view buttons
-    [self sendBookPageButtonsToBack];
-    [self sendHomePageButtonsToBack];
+    //[self sendBookPageButtonsToBack];
+    //[self sendHomePageButtonsToBack];
     
     if (index == 0) {
         // Do nothing, we are turning to the title page
@@ -211,6 +211,9 @@
                 
                 // we update the userDefault setting for the last page viewed by the user
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                
+                // mark this page as the page that the book should open to
+                self.shouldOpenToSpecificPage = YES;
             }
             else {
                 [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
@@ -309,12 +312,12 @@
     else if (publishedPageCount != 0) {
         if (self.shouldOpenToSpecificPage) {
             // cancel further opening to this specific page
-            self.shouldOpenToSpecificPage = NO;
+            //self.shouldOpenToSpecificPage = NO;
             
             if (self.pageID != nil  && [self.pageID intValue] != 0) {
                 // the page id has been set, we will move to that page
                 NSUInteger publishedPageIndex = [self indexOfPageWithID:self.pageID];
-                int indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
                 
                 // we update the userDefault setting for the last page viewed by the user to be this page
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -330,6 +333,9 @@
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
             // we go to the last page the user viewed
+            Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:lastViewedPublishedPageIndex];
+            self.pageID = page.objectid;
+            
             indexForPage = lastViewedPublishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
             [self setCurrentPageIndex:indexForPage];
         }
@@ -343,7 +349,7 @@
                 //local store does contain pages to enumerate
                 self.pageID = page.objectid;
                 NSUInteger publishedPageIndex = [self indexOfPageWithID:self.pageID];
-                int indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
+                indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
                 
                 // we update the userDefault setting for the last page viewed by the user to be this page
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];

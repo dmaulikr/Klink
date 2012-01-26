@@ -14,7 +14,7 @@
 #import "LeavesViewController.h"
 #import "UIResourceLinkButton.h"
 
-@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate > {
+@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate > {
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;

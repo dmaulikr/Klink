@@ -144,14 +144,6 @@
     
     Poll* poll = (Poll*)[resourceContext resourceWithType:POLL withID:self.pollID];
     
-    // Show the voted stamp if the user voted already for this draft
-    if ([poll.hasvoted boolValue] && [vote.targetid isEqualToNumber:self.pageID]) {
-        [self.iv_votedStamp setHidden:NO];
-    }
-    else {
-        [self.iv_votedStamp setHidden:YES];
-    }
-    
     // Show the number of votes if poll is closed
     if ([poll.state intValue] == 1) {
         self.lbl_numPublishedVotes.text = [NSString stringWithFormat:@"%d", [draft.numberofpublishvotes intValue]];
@@ -169,23 +161,13 @@
         [self.iv_publishedStamp setHidden:YES];
     }
     
-    
-    /*// Show the number of votes if poll is closed
-    if ([self.pollState intValue] == 1) {
-        self.lbl_numPublishedVotes.text = [NSString stringWithFormat:@"%d", [draft.numberofpublishvotes intValue]];
-        [self.v_publishedVotesView setHidden:NO];
+    // Show the voted stamp if the user voted already for this draft
+    if ([poll.hasvoted boolValue] && [vote.targetid isEqualToNumber:self.pageID]) {
+        [self.iv_votedStamp setHidden:NO];
     }
     else {
-        [self.v_publishedVotesView setHidden:YES];
+        [self.iv_votedStamp setHidden:YES];
     }
-    
-    // Show the published stamp if this draft was published
-    if ([draft.state intValue] == kPUBLISHED) {
-        [self.iv_publishedStamp setHidden:NO];
-    }
-    else {
-        [self.iv_publishedStamp setHidden:YES];
-    }*/
     
     [self setNeedsDisplay];
 }
