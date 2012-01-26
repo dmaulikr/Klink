@@ -17,3 +17,4 @@ extern NSString* const setting_HASVIEWEDPRODUCTIONLOGVC;
 extern NSString* const setting_HASVIEWEDPROFILEVC;
 extern NSString* const setting_HASVIEWEDFULLSCREENVC;
 extern NSString* const setting_HASVIEWEDEDITORIALVC;
+extern NSString* const setting_HASVIEWEDCONTRIBUTEVC;

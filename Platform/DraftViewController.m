@@ -803,8 +803,8 @@
     
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onProfileButtonPressed:)
                               onTargetObject:self
@@ -834,8 +834,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to contribute to this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onCameraButtonPressed:)
                               onTargetObject:self
@@ -866,8 +866,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:@"Login Required"
-                                    message:@"Hello! You must punch-in on the production floor to see your notifications.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    initWithTitle:ui_LOGIN_TITLE
+                                    message:ui_LOGIN_REQUIRED
                                     delegate:self
                                     onFinishSelector:@selector(onNotificationsButtonPressed:)
                                     onTargetObject:self

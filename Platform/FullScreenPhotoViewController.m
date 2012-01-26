@@ -520,7 +520,7 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
         //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Browse" message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Exploring Drafts..." message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         [alert show];
         [alert release];
@@ -858,8 +858,8 @@
         //we check to ensure the user is logged in first
         if (![self.authenticationManager isUserAuthenticated]) {
             UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                        initWithTitle:@"Login Required"
-                                        message:@"Hello! You must punch-in on the production floor to flag these items for review.\n\nPlease login, or join us as a new contributor via Facebook."
+                                        initWithTitle:ui_LOGIN_TITLE
+                                        message:ui_LOGIN_REQUIRED
                                         delegate:self
                                         onFinishSelector:@selector(onFlagButtonPressed:)
                                         onTargetObject:self
@@ -974,8 +974,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to contribute a new photo on this draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onCameraButtonPressed:)
                               onTargetObject:self
@@ -1009,8 +1009,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to vote up this caption.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onVoteButtonPressed:)
                               onTargetObject:self
@@ -1068,8 +1068,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to contribute a new caption on this photo.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onCaptionButtonPressed:)
                               onTargetObject:self

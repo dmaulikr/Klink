@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C593F7BE143EB191008D25A7"
-               BuildableName = "Bonobo.app"
+               BuildableName = "Bahndr.app"
                BlueprintName = "Platform"
                ReferencedContainer = "container:Platform.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C593F7BE143EB191008D25A7"
-            BuildableName = "Bonobo.app"
+            BuildableName = "Bahndr.app"
             BlueprintName = "Platform"
             ReferencedContainer = "container:Platform.xcodeproj">
          </BuildableReference>
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C593F7BE143EB191008D25A7"
-            BuildableName = "Bonobo.app"
+            BuildableName = "Bahndr.app"
             BlueprintName = "Platform"
             ReferencedContainer = "container:Platform.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C593F7BE143EB191008D25A7"
-            BuildableName = "Bonobo.app"
+            BuildableName = "Bahndr.app"
             BlueprintName = "Platform"
             ReferencedContainer = "container:Platform.xcodeproj">
          </BuildableReference>

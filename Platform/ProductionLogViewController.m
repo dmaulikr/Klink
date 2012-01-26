@@ -542,7 +542,7 @@
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
         //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to the Production Floor!" message:ui_WELCOME_PRODUCTIONLOG delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_PRODUCTIONLOG delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         
         [alert show];
         [alert release];
@@ -755,8 +755,8 @@
     
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to access your profile.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onProfileButtonPressed:)
                               onTargetObject:self
@@ -788,8 +788,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:@"Login Required"
-                              message:@"Hello! You must punch-in on the production floor to start a new draft.\n\nPlease login, or join us as a new contributor via Facebook."
+                              initWithTitle:ui_LOGIN_TITLE
+                              message:ui_LOGIN_REQUIRED
                               delegate:self
                               onFinishSelector:@selector(onPageButtonPressed:)
                               onTargetObject:self
@@ -820,8 +820,8 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:@"Login Required"
-                                    message:@"Hello! You must punch-in on the production floor to see your notifications.\n\nPlease login, or join us as a new contributor via Facebook."
+                                    initWithTitle:ui_LOGIN_TITLE
+                                    message:ui_LOGIN_REQUIRED
                                     delegate:self
                                     onFinishSelector:@selector(onNotificationsButtonPressed:)
                                     onTargetObject:self

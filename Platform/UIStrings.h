@@ -23,3 +23,8 @@ extern NSString* const ui_WELCOME_PROFILE;
 extern NSString* const ui_WELCOME_EDITORIAL;
 
 extern NSString* const ui_EMPTY_CAPTION;
+
+extern NSString* const ui_LOGIN_TITLE;
+extern NSString* const ui_LOGIN_REQUIRED;
+
+extern NSString* const ui_WELCOME_CONTRIBUTE;
