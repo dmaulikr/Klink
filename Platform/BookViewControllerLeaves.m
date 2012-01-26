@@ -560,7 +560,7 @@
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
-    NSDictionary* userInfo = result.response;
+   // NSDictionary* userInfo = result.response;
     //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     

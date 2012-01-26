@@ -24,6 +24,8 @@
 #import "PlatformAppDelegate.h"
 #import "UIProgressHUDView.h"
 #import "UIImageView+UIImageViewCategory.h"
+#import "UserDefaultSettings.h"
+#import "UIStrings.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -299,6 +301,17 @@
     // Set deadline date
     self.lbl_deadline.text = @"";
     
+    //we check to see if the user has been to this viewcontroller before
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Bahndr Drafts" message:ui_WELCOME_CONTRIBUTE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+    }
+    
+    
     ResourceContext* resourceContext = [ResourceContext instance];
     
     // Set up the view for the appropriate configuration type
@@ -403,6 +416,17 @@
         //LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
     }
 
+}
+
+- (void) viewDidAppear:(BOOL)animated 
+{
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDCONTRIBUTEVC];
+        [userDefaults synchronize];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

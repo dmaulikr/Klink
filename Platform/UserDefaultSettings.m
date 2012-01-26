@@ -16,3 +16,4 @@ NSString* const setting_HASVIEWEDPRODUCTIONLOGVC = @"hasViewedProductionLogVC";
 NSString* const setting_HASVIEWEDPROFILEVC = @"hasViewedProfileVC";
 NSString* const setting_HASVIEWEDFULLSCREENVC = @"hasViewedFullScreenVC";
 NSString* const setting_HASVIEWEDEDITORIALVC = @"hasViewedEditorialVC";
+NSString* const setting_HASVIEWEDCONTRIBUTEVC = @"hasViewedContributeVC";
