@@ -784,33 +784,10 @@
 }
 
 #pragma mark - Navigation Bar button handler
-
-- (void)onSubmitButtonPressed:(id)sender {
-    NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
+- (void) processSubmitButtonPressed
+{
+    NSString* activityName = @"ContributeViewController.processSubmitButtonPressed:";
     
-    //after this point, the platforms should automatically begin syncing the data back to the cloud
-    //we now show a progress bar to monitor this background activity
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = delegate.progressView;
-    progressView.delegate = self;
- 
-    
-    NSNumber* maxTimeToShowOnProgress = settings.progress_maxsecondstodisplay;
-    
-    //we then calculate how long until we assume the request failed and perform a recovering enumeration
-    self.secondsToWaitBeforeExecutingValidationEnumeration = [NSNumber numberWithInt:15];
-    NSNumber* heartbeat = [NSNumber numberWithInt:5];
-    self.idEnumerator = nil;
-    
-    //we need to construc tthe appropriate success, failure and progress messages for the submission
-    NSString* failureMessage = [self failureMessage];
-    NSString* successMessage = [self successMessage];
-    NSArray* progressMessage = [self progressMessages];
-    
-    [self showDeterminateProgressBarWithMaximumDisplayTime:maxTimeToShowOnProgress withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
-    
-
     //we call the delegate to instruct it that it should begin committing the changes indicated by this view
     self.requests = nil;
     
@@ -840,10 +817,39 @@
     self.objectTypesBeingCreated = otypes;
     [oids release];
     [otypes release];
-
+    
     //release the lock
     [self.oidArrayLock unlock];
     LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Committed changes to local store, tracking %d cloud synchronization Requests",activityName,[self.requests count]);
+}
+- (void)onSubmitButtonPressed:(id)sender {
+ //   NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
+    
+    //after this point, the platforms should automatically begin syncing the data back to the cloud
+    //we now show a progress bar to monitor this background activity
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = delegate.progressView;
+    progressView.delegate = self;
+ 
+    
+    NSNumber* maxTimeToShowOnProgress = settings.progress_maxsecondstodisplay;
+    
+    //we then calculate how long until we assume the request failed and perform a recovering enumeration
+    self.secondsToWaitBeforeExecutingValidationEnumeration = [NSNumber numberWithInt:15];
+    NSNumber* heartbeat = [NSNumber numberWithInt:5];
+    self.idEnumerator = nil;
+    
+    //we need to construc tthe appropriate success, failure and progress messages for the submission
+    NSString* failureMessage = [self failureMessage];
+    NSString* successMessage = [self successMessage];
+    NSArray* progressMessage = [self progressMessages];
+    
+    [self showDeterminateProgressBarWithMaximumDisplayTime:maxTimeToShowOnProgress withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+    
+
+    //create timer for the execution of the commit tasks
+    [self performSelector:@selector(processSubmitButtonPressed) withObject:nil afterDelay:0.5];
 }
 
 

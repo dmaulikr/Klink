@@ -1050,7 +1050,7 @@
 
 
 - (void) onVoteButtonPressed:(id)sender {
-    NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
+   // NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
