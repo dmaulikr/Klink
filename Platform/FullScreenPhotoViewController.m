@@ -871,6 +871,15 @@
             [alert release];
         }
         else {
+            //display progress view on the submission of a vote
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+            NSString* message = @"Flagging for review...";
+            NSString* successMessage = @"Item is flagged for review";
+            NSString* failureMessage = @"Ooops, something went wrong. Please flag again";
+            
+            
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:[NSArray arrayWithObject:message]];
+            
             ResourceContext* resourceContext = [ResourceContext instance];
             //we start a new undo group here
             [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
@@ -891,10 +900,9 @@
             //now we need to commit to the store
             [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
             
-            //display progress view on the submission of a vote
-            ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-            NSString* message = @"Flagging for review...";
-            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+            
+            
+            //[self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
             
             LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Flagged photo with id: %@ and caption with id: %@ in local store",activityName, photo.objectid, caption.objectid);
         }
@@ -1004,6 +1012,43 @@
     }
 }
 
+
+- (void) processOnVotePressed 
+{
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    //we start a new undo group here
+    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+    
+    int photoIndex = [self.photoViewSlider getPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
+    
+    int captionIndex = [self.captionViewSlider getPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
+    
+    photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
+    caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+    
+    
+    
+    //now we need to commit to the store
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+    
+    UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+    if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
+        [currentCaptionView setNeedsDisplay];
+        [currentCaptionView renderCaptionWithID:caption.objectid];
+     //   LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
+    }
+    
+    caption.hasvoted = [NSNumber numberWithBool:YES];
+}
+
+
 - (void) onVoteButtonPressed:(id)sender {
     NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
@@ -1022,45 +1067,21 @@
         [alert release];
     }
     else {
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //we start a new undo group here
-        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        
-        int photoIndex = [self.photoViewSlider getPageIndex];
-        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
-        
-        int captionIndex = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
-        
-        photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
-        caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-        
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
-        progressView.delegate = self;
-        
-        //now we need to commit to the store
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
         //display progress view on the submission of a vote
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-        NSString* message = @"Submitting your vote...";
+        NSString* message = @"Casting thy approval...";
         [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-        
-        //update photo and caption metadata views
-        //[self.photoMetaData renderMetaDataWithID:photo.objectid withCaptionID:caption.objectid];
-        
-        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
-        if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
-            [currentCaptionView setNeedsDisplay];
-            [currentCaptionView renderCaptionWithID:caption.objectid];
-            LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
-        }
-        
-        caption.hasvoted = [NSNumber numberWithBool:YES];
+
+
         
         // Disable the vote button for this caption
         [self disableVoteButton];
+        
+        [self performSelector:@selector(processOnVotePressed) withObject:nil afterDelay:1];
+       // [self performSelectorOnMainThread:@selector(processOnVotePressed) withObject:nil waitUntilDone:NO];
+        
+        
     }
     
 }

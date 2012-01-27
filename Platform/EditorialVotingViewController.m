@@ -570,8 +570,15 @@
         
         //lets display the progress view
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-        [message release];
+        
+        NSString* successMessage =[NSString stringWithFormat: @"Your vote for \"%@\" was cast.",targetPage.displayname];
+        NSString* failureMessage = @"Oops, I'm afraid I couldn't submit your vote. Try again Dave.";
+        NSString* progressMessage = @"Submitting your vote Mr. Editor...";
+        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:[NSArray arrayWithObject:progressMessage]];
+        
+        
+//        [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+//        [message release];
         
     }
     else if ([self.poll.hasvoted boolValue]) {

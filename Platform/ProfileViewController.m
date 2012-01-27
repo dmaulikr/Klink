@@ -521,7 +521,10 @@
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
+        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
+   //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
     }
 }
 

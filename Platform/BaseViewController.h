@@ -51,19 +51,22 @@
 
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
+
 - (void) showProgressBar: (NSString*)message 
           withCustomView:(UIView*)view 
   withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
 
 
-- (void) showDeterminateProgressBar:(NSString*)message
-                     withCustomView:(UIView*)view
-             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds
-                      withHeartbeat:(NSNumber*)heartbeatInSeconds;
+- (void) showDeterminateProgressBarWithMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds
+                      withHeartbeat:(NSNumber*)heartbeatInSeconds 
+                   onSuccessMessage:(NSString*)successMessage 
+                   onFailureMessage:(NSString*)failureMessage 
+                 inProgressMessages:(NSArray*)progressMessages;
 
-- (void) showDeterminateProgressBar:(NSString*)message
-                     withCustomView:(UIView*)view
-             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds; 
+- (void) showDeterminateProgressBarWithMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+                   onSuccessMessage:(NSString*)successMessage 
+                   onFailureMessage:(NSString*)failureMessage 
+                 inProgressMessages:(NSArray*)progressMessages; 
     
 
 - (void) hideProgressBar;

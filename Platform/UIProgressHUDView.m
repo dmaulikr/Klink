@@ -10,6 +10,7 @@
 #import "Request.h"
 #import "Macros.h"
 #import "PlatformAppDelegate.h"
+#import "ApplicationSettingsDefaults.h"
 
 @implementation UIProgressHUDView
 @synthesize requestProgress = m_requestProgress;
@@ -22,6 +23,11 @@
 @synthesize heartbeatTimer = m_heartbeatTimer;
 @synthesize heartbeatSeconds = m_heartbeatSeconds;
 @synthesize dateProgressViewShown = m_dateProgressViewShown;
+@synthesize wheelRotationTime = m_wheelRotationTime;
+@synthesize progressMessages = m_progressMessages;
+@synthesize onSuccessMessage = m_onSuccessMessage;
+@synthesize onFailureMessage = m_onFailureMessage;
+@synthesize indexOfProgressMessageCurrentlyShown = m_indexOfProgressMessageCurrentlyShown;
 
 #pragma mark - Property Definitions
 - (id) delegate {
@@ -49,6 +55,7 @@
 - (id) initWithView:(UIView *)view {
     self = [super initWithView:view];
     if (self) {
+        
             }
     return self;
 }
@@ -56,14 +63,7 @@
 
 - (void) animateFillOfProgress 
 {
-    
-   
 
-   // [self renderComplete];
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:1];
-//    self.progress = 1;
-//    [UIView commitAnimations];
 }
 
 - (void) extendDisplayTimerBy:(NSNumber *)secondsToAdd 
@@ -94,8 +94,13 @@
         //adjust the progress meter
         float oldProgressValue = self.progress;
         
-      
-        self.progress = self.progress * ([self.maximumDisplayTime floatValue]/100);
+        self.progress = self.progress * ((float)self.wheelRotationTime/100);
+        
+        if (self.progress > 1) 
+        {
+            self.progress = self.progress -1;
+        }
+        //self.progress = self.progress * ([self.maximumDisplayTime floatValue]/100);
         
         
         LOG_PROGRESSVIEW(0, @"%@Adjusting progress meter from %f to %f",activityName,oldProgressValue,self.progress);
@@ -107,25 +112,6 @@
     }
 }
 
-
-//- (void) extendMaximumDisplayTime:(NSNumber*)secondsToExtend 
-//{
-//    //now we have the maximumdisplay timer, we need to invalidate that timer
-//    //and now reset the timer to be the additional time given to us by the delegate
-//    if (self.timer != nil)
-//    {
-//        [self.timer invalidate];
-//        self.timer = nil;
-//    }
-//    //we add this time now to the maximumdisplaytimer
-//    self.maximumDisplayTime = [NSNumber numberWithFloat:([self.maximumDisplayTime floatValue] + [secondsToExtend floatValue])];
-//    
-//    //we need to update the progress indicator
-//    self.progress = (self.progress * [self.maximumDisplayTime floatValue])/100.0;
-//    
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:[self.maximumDisplayTime intValue] target:self selector:@selector(onMaximumDisplayTimerExpired) userInfo:nil repeats:NO];
-//    
-//}
 //Returns a % indicating the Requests which have completed
 - (float) percentageComplete 
 {
@@ -151,8 +137,10 @@
     self.customView = iv;
     [iv release];
     
+    
+    
     self.mode = MBProgressHUDModeCustomView;
-    self.labelText = @"Success!";
+    self.labelText = self.onSuccessMessage;
     self.didSucceed = YES;
     [self addSubview:self.customView];
 
@@ -168,7 +156,7 @@
     [iv release];
     
     self.mode = MBProgressHUDModeCustomView;
-    self.labelText = @"Failed!";
+    self.labelText = self.onFailureMessage;
     self.didSucceed = NO;
     [self addSubview:self.customView];
  
@@ -187,7 +175,7 @@
     LOG_PROGRESSVIEW(0, @"%@ Outstanding submission is %f % complete",activityName,p);
     
     
-    if (p >= 1 && 
+    if (p >= 100 && 
         [request.statuscode intValue] != kFAILED)
     {
         //request succeeded and we are now complete according ot our Request array
@@ -239,130 +227,13 @@
         
         
         
-        [self.customView removeFromSuperview];
+        //[self.customView removeFromSuperview];
         [self renderComplete];
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 
 
     }
-    
-    //we get the progress from this request, and then we do a  average across all the requests
-    //set for this progress indicator
-//    float denominator = [self.requests count];
-//    float numerator = 0;
-//    
-//    for (Request* request in self.requests) {
-//        numerator += request.progress;
-//    }
-//    
-//    float p = (numerator / denominator)*100;
-//    LOG_REQUEST(0, @"%@ Outstanding submission is %f % complete (%f/%f)",activityName,p,numerator,denominator );
-//    
-//
-//    self.progress = (numerator / denominator);
-//    
-    
-    //intercept failure
-    //if it fails, if there is an enumerator defined
-    //we need to add time to the timer
-    //execute the enumeration
-    //add it to th4 self.requests
-    //recompute progress
-    //wait for completion of that request
-    //we need to reset the timer so that it doesnt go off
-    //use the enumeration handler to get the success/failure of it
-//    BOOL shouldCloseProgressBar = NO;
-//    if ([request.statuscode intValue] == kFAILED &&
-//        [self.delegate respondsToSelector:@selector(secondsToExtendProgressView:onFailedRequest:)])
-//    {
-//        //delegate extension method defined
-//        NSNumber* secondsMoreToWaitToFail = [self.delegate secondsToExtendProgressView:self onFailedRequest:request];
-//        
-//        if (secondsMoreToWaitToFail != nil &&
-//            [secondsMoreToWaitToFail floatValue] != 0) 
-//        {
-//            LOG_REQUEST(0, @"%@Progress bar timed out, but delegate instructed it to extend its timeout by an additional %d seconds",activityName,[secondsMoreToWaitToFail floatValue]);
-//            [self extendMaximumDisplayTime:secondsMoreToWaitToFail];            
-//            //at this point we should not close the progress bar    
-//            shouldCloseProgressBar = NO;
-//        }
-//        else {
-//            //we should continue normally and close the progress bar
-//            shouldCloseProgressBar = YES;
-//        }
-//
-//    }
-//    else if ([request.statuscode intValue] == kFAILED) 
-//    {
-//        //we should close the progress bar
-//        shouldCloseProgressBar = YES;
-//    }
-//    
-//    
-//    //if we detect that all requests have been completed
-//    if (self.progress >= 1 || shouldCloseProgressBar) 
-//    {
-//
-//        //stop the maximum display timer as we will exit
-//        [self.timer invalidate];
-//        self.timer = nil;
-//        [self.animationTimer invalidate];
-//        self.animationTimer = nil;
-//        
-//        //if they have all been successful
-//        BOOL isSuccess = YES;
-//        Request* failedRequest = nil;
-//        
-//        if ([request.statuscode intValue] != kFAILED) {
-//            for (Request* request in self.requests) {
-//                if ([request.statuscode intValue] == kFAILED) {
-//                    isSuccess = NO;
-//                    failedRequest = request;
-//                    break;
-//                }
-//            }
-//        }
-//        else {
-//            failedRequest = request;
-//            isSuccess = NO;
-//        }
-//                
-//        [self.customView removeFromSuperview];
-//        
-//        if (isSuccess) {
-//            //show a checkmark
-//            
-//            UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-//            self.customView = iv;
-//            [iv release];
-//            
-//            self.mode = MBProgressHUDModeCustomView;
-//            self.labelText = @"Success!";
-//            self.didSucceed = YES;
-//            
-//            
-//        }
-//        else {
-//            //show a failed mark
-//            //TODO: need a white 37x x 37x "X" to denote failure
-//            UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
-//            self.customView = iv;
-//            [iv release];
-//
-//            self.mode = MBProgressHUDModeCustomView;
-//            self.labelText = @"Failed!";
-//            self.didSucceed = NO;
-//            
-//            self.detailsLabelText = failedRequest.errormessage;
-//            
-//
-//        }
-//        
-//        //now we pause for 5 seconds before we dismiss
-//        [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
-//        //[self performSelectorOnMainThread:@selector(hide:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
-//        
-//    }
+
 }
 
 - (void) renderComplete 
@@ -390,7 +261,7 @@
         }
     }
         
-    [self.customView removeFromSuperview];
+    //[self.customView removeFromSuperview];
         
     if (haveAllRequestsFinishedSuccessfully) 
     {
@@ -425,6 +296,13 @@
         double dateStartedInSeconds = [self.dateProgressViewShown timeIntervalSince1970];
         double timeElapsed = currentTimeInSeconds  - dateStartedInSeconds;
         
+        //we also switch the currently displayed text depending on what is currently being shown
+        self.indexOfProgressMessageCurrentlyShown = (self.indexOfProgressMessageCurrentlyShown + 1) % [self.progressMessages count];
+        
+        NSString* newProgressMessage = [self.progressMessages objectAtIndex:self.indexOfProgressMessageCurrentlyShown];
+        //lets display the new progress image
+        self.labelText = newProgressMessage;
+        
         [self.delegate progressViewHeartbeat:self timeElapsedInSeconds:[NSNumber numberWithDouble:timeElapsed]];
     }
 }
@@ -448,7 +326,7 @@
     
     if (shouldFinish) 
     {
-        [self.customView removeFromSuperview];
+      //  [self.customView removeFromSuperview];
         [self renderFailedCompletion];
         self.didSucceed = NO;
         LOG_PROGRESSVIEW(0,@"%@Closing progress view due to timer expiry",activityName);
@@ -459,53 +337,31 @@
 
 
     }
-    
-    
-    
-//    if ([self.delegate respondsToSelector:@selector(secondsToExtendProgressView:onTimerExpiry:)]) 
-//    {
-//        //we ask the delegate if we should fail the request on maximum time expiry
-//        NSNumber* secondsMoreToWaitToFail = [self.delegate secondsToExtendProgressView:self onTimerExpiry:self.timer];
-//        
-//        if (secondsMoreToWaitToFail != nil &&
-//            [secondsMoreToWaitToFail floatValue] != 0) 
-//        {
-//            LOG_REQUEST(0, @"%@Progress bar timed out, but delegate instructed it to extend its timeout by an additional %d seconds",activityName,[secondsMoreToWaitToFail floatValue]);
-//            //now we extend the timer
-//            [self extendMaximumDisplayTime:secondsMoreToWaitToFail];
-//            shouldFail = NO;
-//        }
-//        else {
-//            shouldFail = YES;
-//        }
-//        
-//        
-//    }
-//    
-//    
-//    if (shouldFail)
-//    {
-//        
-//        LOG_REQUEST(0, @"%@Progress bar has exceeded its maximum display timer setting, automatically closing progress bar and failing request",activityName);
-//        self.didSucceed = NO;
-//        UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-pics2-large.png"]];
-//        self.customView = iv;
-//        [iv release];
-//        
-//        self.mode = MBProgressHUDModeCustomView;
-//        self.labelText = @"Failed!";
-//        self.didSucceed = NO;
-//        
-//        [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
-//    }
+
 }
 
 
-- (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
+- (void) show:(BOOL)animated 
+withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
+showProgressMessages:(NSArray *)progressMessages 
+onSuccessShow:(NSString *)successMessage 
+onFailureShow:(NSString *)failureMessage
 {
     [super show:animated];
     self.dateProgressViewShown = [NSDate date];
     self.maximumDisplayTime = maximumTimeToDisplay;
+    self.onFailureMessage = failureMessage;
+    self.onSuccessMessage = successMessage;
+    self.progressMessages = progressMessages;
+    self.indexOfProgressMessageCurrentlyShown = 0;
+    
+    if ([self.progressMessages count] > 0)
+    {
+        self.labelText = [self.progressMessages objectAtIndex:0];
+    }
+    
+    //we set the wheel spin time based on a client only setting
+    self.wheelRotationTime = progress_WHEELSPINTIME;
     
     self.dateProgressViewShown = [NSDate date];
     
@@ -516,13 +372,14 @@
        
         
     }
+    
     self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onAnimationTimerTick) userInfo:nil repeats:YES];
 
 }
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
-withHeartbeatInterval:(NSNumber *)secondsPerBeat
+withHeartbeatInterval:(NSNumber *)secondsPerBeat showProgressMessages:(NSArray *)progressMessages onSuccessShow:(NSString *)successMessage onFailureShow:(NSString *)failureMessage
 {
-    [self show:animated withMaximumDisplayTime:maximumTimeToDisplay];
+    [self show:animated withMaximumDisplayTime:maximumTimeToDisplay showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
     self.heartbeatSeconds = secondsPerBeat;
     //we only define this if there is a delegate present
     if (self.delegate != nil &&
@@ -543,9 +400,20 @@ withHeartbeatInterval:(NSNumber *)secondsPerBeat
 
 - (void) onAnimationTimerTick {
     //we increment the progress
-    float incrementAmount = 1.0f / [self.maximumDisplayTime floatValue];
-    self.progress = self.progress + incrementAmount;
+    
+    float incrementAmount = 1.0f / (float)self.wheelRotationTime;
+    float newProgressValue = self.progress + incrementAmount;
+    
+    
+    if (newProgressValue > 1) 
+    {
+        newProgressValue = newProgressValue - 1;
+    }
+    
+    self.progress = newProgressValue;
+    
 }
+
 
 - (void) onTimerExpireHide {
 

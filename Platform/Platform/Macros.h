@@ -56,7 +56,44 @@
 #else
 #define LOG_NETWORK(...)    do{}while(0)
 #define LOG_GENERAL(...)    do{}while(0)
+#define LOG_SECURITY(...)    do{}while(0)
 #define LOG_GRAPHICS(...)   do{}while(0)
+#define LOG_REQUEST(...)   do{}while(0)
+#define LOG_RESOURCE(...)   do{}while(0)
+#define LOG_RESOURCECONTEXT(...)   do{}while(0)
+#define LOG_HTTP(...)   do{}while(0)
+#define LOG_CONFIGURATION(...)   do{}while(0)
+#define LOG_ENUMERATION(...)   do{}while(0)
+#define LOG_FEED(...)   do{}while(0)
+#define LOG_IMAGE(...)   do{}while(0)
+#define LOG_PAGEVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_BOOKVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_DRAFTVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_PRODUCTIONLOGVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_FULLSCREENPHOTOVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_CONTRIBUTEVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_PERSONALLOGVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_HOMEVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_NOTIFICATIONICON(...)   do{}while(0)
+#define LOG_EVENTMANAGER(...)   do{}while(0)
+#define LOG_FEEDMANAGER(...)   do{}while(0)
+#define LOG_LOGINVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_PROGRESSVIEW(...)   do{}while(0)
+
+#define LOG_OVERLAYVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_UIDRAFTVIEW(...)   do{}while(0)
+#define LOG_DRAFTVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_UIVOTEPAGEVIEW(...)   do{}while(0)
+#define LOG_BASEVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_NOTIFICATIONVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_UIPRODUCTIONLOGTABLEVIEWCELL(...)   do{}while(0)
+#define LOG_SOCIALSHARINGMANAGER(...)   do{}while(0)
+#define LOG_RESPONSE(...)   do{}while(0)
+#define LOG_EDITORVOTEVIEWCONTROLLER(...)   do{}while(0)
+#define LOG_APPLICATIONSETTINGSMANAGER(...)   do{}while(0)
+
+
+
 
 
 #endif
