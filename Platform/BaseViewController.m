@@ -218,10 +218,11 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 #pragma mark - Progress bar management
-- (void) showDeterminateProgressBar:(NSString*)message
-                     withCustomView:(UIView*)view
-             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds
-                      withHeartbeat:(NSNumber*)heartbeatInSeconds
+- (void) showDeterminateProgressBarWithMaximumDisplayTime: (NSNumber*)maximumTimeInSeconds
+                      withHeartbeat:(NSNumber*)heartbeatInSeconds 
+                   onSuccessMessage:(NSString*)successMessage 
+                   onFailureMessage:(NSString*)failureMessage 
+                 inProgressMessages:(NSArray*)progressMessages
 {
     
     
@@ -233,41 +234,36 @@
     
     //first check if this view controller is the top level visible controller
     if (self.navigationController.visibleViewController == self) {
-        progressView.labelText = message;
+       
         [progressView removeAllSubviews];
         
         [self.view addSubview:progressView];
-        if (view != nil) {
-            progressView.customView = view;
-            progressView.mode = MBProgressHUDModeCustomView;
-        }
-        else {
-            progressView.customView = nil;
-            progressView.mode = MBProgressHUDModeDeterminate;
-        }
-        //[progressView hide:NO];
-        //progressView.maximumDisplayTime = maximumTimeInSeconds;
+        
+        progressView.customView = nil;
+        progressView.mode = MBProgressHUDModeDeterminate;
+        
         
         
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
         
         if (heartbeatInSeconds != nil) 
         {
-            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds withHeartbeatInterval:heartbeatInSeconds];
+            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds withHeartbeatInterval:heartbeatInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         }
         else 
         {
-            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
+            [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         }
     }
 
 }
 
-- (void) showDeterminateProgressBar:(NSString*)message
-                    withCustomView:(UIView*)view
-             withMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+- (void) showDeterminateProgressBarWithMaximumDisplayTime:(NSNumber*)maximumTimeInSeconds 
+                   onSuccessMessage:(NSString*)successMessage 
+                   onFailureMessage:(NSString*)failureMessage 
+                 inProgressMessages:(NSArray*)progressMessages 
 {
-    [self showDeterminateProgressBar:message withCustomView:view withMaximumDisplayTime:maximumTimeInSeconds withHeartbeat:nil];
+    [self showDeterminateProgressBarWithMaximumDisplayTime:maximumTimeInSeconds withHeartbeat:nil onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessages];
     
 }
 - (void) showProgressBar:(NSString *)message 
@@ -286,18 +282,6 @@
         [progressView removeAllSubviews];
         
         
-        //test if the view controller is in landscape or portrait mode        
-        UIInterfaceOrientation orientation = self.interfaceOrientation;        
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            //landscape
-            progressView.transform = CGAffineTransformIdentity;
-            progressView.transform = CGAffineTransformMakeRotation(90);
-        }
-        else {
-            //portrait
-            progressView.transform = CGAffineTransformIdentity;
-        }
-        
         [self.view addSubview:progressView];
         
         if (view != nil) {
@@ -313,8 +297,11 @@
         
        // [progressView hide:NO];
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
-        [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds];
-        //    [self.progressView showWhileExecuting:@selector(waitUntilNotBusy:) onTarget:self withObject:maximumTimeInSeconds animated:YES];
+        NSArray* progressMessages = [NSArray arrayWithObject:message];
+        NSString* successMessage = @"Success!";
+        NSString* failureMessage = @"Failure!";
+        [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
+        
     }
 }
 

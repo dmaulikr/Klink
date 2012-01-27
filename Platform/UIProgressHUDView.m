@@ -24,6 +24,10 @@
 @synthesize heartbeatSeconds = m_heartbeatSeconds;
 @synthesize dateProgressViewShown = m_dateProgressViewShown;
 @synthesize wheelRotationTime = m_wheelRotationTime;
+@synthesize progressMessages = m_progressMessages;
+@synthesize onSuccessMessage = m_onSuccessMessage;
+@synthesize onFailureMessage = m_onFailureMessage;
+@synthesize indexOfProgressMessageCurrentlyShown = m_indexOfProgressMessageCurrentlyShown;
 
 #pragma mark - Property Definitions
 - (id) delegate {
@@ -51,6 +55,7 @@
 - (id) initWithView:(UIView *)view {
     self = [super initWithView:view];
     if (self) {
+        
             }
     return self;
 }
@@ -132,8 +137,10 @@
     self.customView = iv;
     [iv release];
     
+    
+    
     self.mode = MBProgressHUDModeCustomView;
-    self.labelText = @"Success!";
+    self.labelText = self.onSuccessMessage;
     self.didSucceed = YES;
     [self addSubview:self.customView];
 
@@ -149,7 +156,7 @@
     [iv release];
     
     self.mode = MBProgressHUDModeCustomView;
-    self.labelText = @"Failed!";
+    self.labelText = self.onFailureMessage;
     self.didSucceed = NO;
     [self addSubview:self.customView];
  
@@ -168,7 +175,7 @@
     LOG_PROGRESSVIEW(0, @"%@ Outstanding submission is %f % complete",activityName,p);
     
     
-    if (p >= 1 && 
+    if (p >= 100 && 
         [request.statuscode intValue] != kFAILED)
     {
         //request succeeded and we are now complete according ot our Request array
@@ -220,7 +227,7 @@
         
         
         
-        [self.customView removeFromSuperview];
+        //[self.customView removeFromSuperview];
         [self renderComplete];
         [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 
@@ -254,7 +261,7 @@
         }
     }
         
-    [self.customView removeFromSuperview];
+    //[self.customView removeFromSuperview];
         
     if (haveAllRequestsFinishedSuccessfully) 
     {
@@ -289,6 +296,13 @@
         double dateStartedInSeconds = [self.dateProgressViewShown timeIntervalSince1970];
         double timeElapsed = currentTimeInSeconds  - dateStartedInSeconds;
         
+        //we also switch the currently displayed text depending on what is currently being shown
+        self.indexOfProgressMessageCurrentlyShown = (self.indexOfProgressMessageCurrentlyShown + 1) % [self.progressMessages count];
+        
+        NSString* newProgressMessage = [self.progressMessages objectAtIndex:self.indexOfProgressMessageCurrentlyShown];
+        //lets display the new progress image
+        self.labelText = newProgressMessage;
+        
         [self.delegate progressViewHeartbeat:self timeElapsedInSeconds:[NSNumber numberWithDouble:timeElapsed]];
     }
 }
@@ -312,7 +326,7 @@
     
     if (shouldFinish) 
     {
-        [self.customView removeFromSuperview];
+      //  [self.customView removeFromSuperview];
         [self renderFailedCompletion];
         self.didSucceed = NO;
         LOG_PROGRESSVIEW(0,@"%@Closing progress view due to timer expiry",activityName);
@@ -327,11 +341,24 @@
 }
 
 
-- (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
+- (void) show:(BOOL)animated 
+withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
+showProgressMessages:(NSArray *)progressMessages 
+onSuccessShow:(NSString *)successMessage 
+onFailureShow:(NSString *)failureMessage
 {
     [super show:animated];
     self.dateProgressViewShown = [NSDate date];
     self.maximumDisplayTime = maximumTimeToDisplay;
+    self.onFailureMessage = failureMessage;
+    self.onSuccessMessage = successMessage;
+    self.progressMessages = progressMessages;
+    self.indexOfProgressMessageCurrentlyShown = 0;
+    
+    if ([self.progressMessages count] > 0)
+    {
+        self.labelText = [self.progressMessages objectAtIndex:0];
+    }
     
     //we set the wheel spin time based on a client only setting
     self.wheelRotationTime = progress_WHEELSPINTIME;
@@ -350,9 +377,9 @@
 
 }
 - (void) show:(BOOL)animated withMaximumDisplayTime:(NSNumber *)maximumTimeToDisplay 
-withHeartbeatInterval:(NSNumber *)secondsPerBeat
+withHeartbeatInterval:(NSNumber *)secondsPerBeat showProgressMessages:(NSArray *)progressMessages onSuccessShow:(NSString *)successMessage onFailureShow:(NSString *)failureMessage
 {
-    [self show:animated withMaximumDisplayTime:maximumTimeToDisplay];
+    [self show:animated withMaximumDisplayTime:maximumTimeToDisplay showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
     self.heartbeatSeconds = secondsPerBeat;
     //we only define this if there is a delegate present
     if (self.delegate != nil &&

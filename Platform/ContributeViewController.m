@@ -717,6 +717,69 @@
     [self onCancelButtonPressed:nil];
 }
 
+- (NSString*)successMessage
+{
+    NSString* retVal = nil;
+    
+    if (self.configurationType == PAGE) 
+    {
+        retVal = [NSString stringWithFormat:@"Created draft \"%@\"!",self.draftTitle];
+    }
+    else if (self.configurationType == PHOTO)
+    {
+        retVal = [NSString stringWithFormat:@"Added photo to  \"%@\"",self.draftTitle];
+    }
+    else {
+        retVal = [NSString stringWithFormat:@"Added caption to \"%@\"",self.draftTitle];
+    }
+    return retVal;
+}
+
+- (NSString*)failureMessage
+{
+    NSString* retVal = nil;
+    
+    if (self.configurationType == PAGE) 
+    {
+        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+    }
+    else if (self.configurationType == PHOTO) 
+    {
+        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+    }
+    else 
+    {
+        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+    }
+    return retVal;
+}
+
+
+- (NSArray*) progressMessages
+{
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    
+    NSString* firstMessage = nil;
+    //we add a bunch of canned in progress messages here
+    if (self.configurationType == PAGE) {
+        firstMessage = [NSString stringWithFormat:@"Creating \"%@\"...",self.draftTitle];
+    }
+    else if (self.configurationType == PHOTO) {
+        firstMessage = [NSString stringWithFormat:@"Adding your photo..."];
+    }
+    else {
+        firstMessage = [NSString stringWithFormat:@"Enscribing your caption..."];
+    }
+    [retVal addObject:firstMessage];
+    [retVal addObject:@"Harmonizing typewriter ribbon..."];
+    [retVal addObject:@"Commencing hydrofracking..."];
+    [retVal addObject:@"Releasing the Kraken..."];
+    [retVal addObject:@"Installing Hadoop..."];
+    [retVal addObject:@"Enumerating the unenumerable..."];
+    [retVal addObject:@"Deploying monoliths..."];
+   
+    return retVal;
+}
 
 #pragma mark - Navigation Bar button handler
 
@@ -729,18 +792,7 @@
     PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     UIProgressHUDView* progressView = delegate.progressView;
     progressView.delegate = self;
-    
-    NSString* progressIndicatorMessage = nil;
-    if (self.configurationType == PAGE) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your draft..."];
-                
-    }
-    else if (self.configurationType == PHOTO) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your photo...",self.draftTitle];
-    }
-    else if (self.configurationType == CAPTION) {
-        progressIndicatorMessage = [NSString stringWithFormat:@"Creating your caption...",self.draftTitle];
-    }
+ 
     
     NSNumber* maxTimeToShowOnProgress = settings.progress_maxsecondstodisplay;
     
@@ -748,7 +800,14 @@
     self.secondsToWaitBeforeExecutingValidationEnumeration = [NSNumber numberWithInt:15];
     NSNumber* heartbeat = [NSNumber numberWithInt:5];
     self.idEnumerator = nil;
-    [self showDeterminateProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:maxTimeToShowOnProgress withHeartbeat:heartbeat];
+    
+    //we need to construc tthe appropriate success, failure and progress messages for the submission
+    NSString* failureMessage = [self failureMessage];
+    NSString* successMessage = [self successMessage];
+    NSArray* progressMessage = [self progressMessages];
+    
+    [self showDeterminateProgressBarWithMaximumDisplayTime:maxTimeToShowOnProgress withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+    
 
     //we call the delegate to instruct it that it should begin committing the changes indicated by this view
     self.requests = nil;
