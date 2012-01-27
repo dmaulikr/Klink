@@ -225,6 +225,25 @@ static ResourceContext* sharedInstance;
     }
 }
 
+
+///Given a specified obejct id and key, it will mark the object for removal
+//within this instances managedobjectcontext
+- (void) delete:(NSNumber *)objectID withType:(NSString *)type
+{
+    NSString* activityName = @"ResourceContext.deleteObject:";
+    Resource* resource = [self resourceWithType:type withID:objectID];
+    
+    if (resource != nil) 
+    {
+        [self.managedObjectContext deleteObject:resource];
+        LOG_RESOURCECONTEXT(0, @"%@Marked object id: %@ with object type:%@ for deletion",activityName,objectID,type);
+    }
+    else {
+        LOG_RESOURCECONTEXT(0, @"%@Could not find object id: %@ with object type:%@ to delete",activityName,objectID,type);
+        
+    }
+}
+
 //saves all pending changes to the local persistence store
 //and then attempts to push all appropriate changes up to the cloud
 - (NSArray*) save:(BOOL)saveToCloud 
@@ -239,15 +258,15 @@ static ResourceContext* sharedInstance;
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
     
     
-    NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
+   
     
     NSMutableArray* createRequests = [[NSMutableArray alloc]init];
     NSMutableArray* putRequests = [[NSMutableArray alloc]init];
     
     //get all pending changes
     NSSet* insertedObjects = [self.managedObjectContext insertedObjects];
-    NSSet* deletedObjects = [self.managedObjectContext deletedObjects];
     NSSet* updatedObjects = [self.managedObjectContext updatedObjects];
+    NSSet* deletedObjects = [self.managedObjectContext deletedObjects];
     
     //process created objects
     NSArray* insertedObjectsArray = [insertedObjects allObjects];
@@ -391,17 +410,7 @@ static ResourceContext* sharedInstance;
     }
     
     
-    //process deleted objects
-    if (saveToCloud) {
-//        NSArray* deletedObjectsArray = [deletedObjects allObjects];
-//        for (int i = 0; i < [deletedObjectsArray count]; i++) {
-//            Resource* resource = [deletedObjectsArray objectAtIndex:i];
-//            if ([resource shouldResourceBeSynchronizedToCloud]) {
-//                [resourcesToDeleteInCloud addObject:resource];
-//                [resource markAsDirty];
-//            }
-//        }
-    }
+
     //now we commit the change to the store
     //let us raise events
     EventManager* eventManager = [EventManager instance];
@@ -514,7 +523,7 @@ static ResourceContext* sharedInstance;
 
         }
     }
-    [resourcesToDeleteInCloud release];
+    
     [resourceTypesToCreateInCloud release];
     [resourcesToCreateInCloud release];
     [resourceIDsToCreateInCloud release];
@@ -761,6 +770,57 @@ static ResourceContext* sharedInstance;
         
     }
     return retVal;
+    
+}
+
+- (NSArray*) resourcesWithType:(NSString *)typeName 
+               withValuesEqual:(NSArray *)valuesArray 
+                 forAttributes:(NSArray *)attributeNameArray 
+                        sortBy:(NSArray *)sortDescriptorArray
+{
+    NSString* activityName = @"ResourceContext.resourcesWithTypeArray";
+    NSArray* retVal = nil;
+    
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:self.managedObjectContext];
+    if (entityDescription) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entityDescription];
+        
+        //we need to create a predicate string for all the values in the query request array
+        NSString* resourceQuery = nil;
+        for (int i = 0; i < [valuesArray count]; i++) {
+            if (i > 0) {
+                resourceQuery = [NSString stringWithFormat:@"%@ AND %@=%@",resourceQuery,[valuesArray objectAtIndex:i],[attributeNameArray objectAtIndex:i]];
+            }
+            else {
+                resourceQuery = [NSString stringWithFormat:@"%@=%@",[valuesArray objectAtIndex:i],[attributeNameArray objectAtIndex:i]];
+            }
+        }
+        
+        //now we have the query for our predicate
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:resourceQuery];    
+        [request setPredicate:predicate];
+        [request setSortDescriptors:sortDescriptorArray];
+        [request setEntity:entityDescription];
+        
+        NSError* error = nil;
+        NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        
+        [request release];
+        
+        if (results != nil && [results count] > 0) {
+            retVal = results;
+        }
+        else {
+            LOG_RESOURCECONTEXT(1,@"%@Could not find object with query: %@", activityName, resourceQuery);
+        }
+    }
+    else {
+        LOG_RESOURCECONTEXT(1,@"%@Could not create entity description for type: %@", activityName, typeName);
+        
+    }
+    return retVal;
+    
     
 }
 
