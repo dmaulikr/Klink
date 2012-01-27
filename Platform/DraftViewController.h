@@ -23,7 +23,7 @@
     UITableView*            m_tbl_draftTableView;
 
     CloudEnumerator*        m_photoCloudEnumerator;
-    CloudEnumerator*        m_captionCloudEnumerator;
+    //CloudEnumerator*        m_captionCloudEnumerator;
     EGORefreshTableHeaderView* m_refreshHeader;
     
     UIView*     m_v_typewriter;
@@ -47,7 +47,7 @@
 @property (nonatomic, retain)          NSDate*               deadline;
 @property (nonatomic, retain) IBOutlet UITableView*          tbl_draftTableView;
 @property (nonatomic, retain) CloudEnumerator*               photoCloudEnumerator;
-@property (nonatomic, retain) CloudEnumerator*               captionCloudEnumerator;
+//@property (nonatomic, retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
 @property (strong, nonatomic) IBOutlet UIView*      v_typewriter;

@@ -40,7 +40,7 @@
 @synthesize deadline = m_deadline;
 @synthesize tbl_draftTableView = m_tbl_draftTableView;
 @synthesize photoCloudEnumerator = m_photoCloudEnumerator;
-@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
+//@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
 @synthesize refreshHeader = m_refreshHeader;
 @synthesize frc_captions = __frc_captions;
 @synthesize v_typewriter                = m_v_typewriter;
@@ -507,11 +507,15 @@
             LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
             
             //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-            Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-            [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+            //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+            //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
             
         }
     }
+    
+    // refresh the notification feed
+    Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
     
     // Update notifications button on typewriter
     [self updateNotificationButton];
@@ -708,6 +712,7 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    //[self.photoCloudEnumerator reset];
     self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
     self.photoCloudEnumerator.delegate = self;
     

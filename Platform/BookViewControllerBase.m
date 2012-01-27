@@ -449,6 +449,19 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
+    NSString* activityName = @"BookViewControllerBase.commonInit";
+    
+    if (self.pageCloudEnumerator == nil) 
+    {
+        self.pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
+        self.pageCloudEnumerator.delegate = self;
+    }
+    
+    if ([self.pageCloudEnumerator canEnumerate]) 
+    {
+        LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+    }
     
 }
 
@@ -487,18 +500,22 @@
     //NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
     
     // let's refresh the feed
-    [self.feedManager refreshFeedOnFinish:nil];
+    //[self.feedManager refreshFeedOnFinish:nil];
     
-    self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
-    self.pageCloudEnumerator.delegate = self;
+    // refresh the notification feed
+    //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    
+    //self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
+    //self.pageCloudEnumerator.delegate = self;
     
     // Navigation bar buttons
-    UIBarButtonItem* homePageButton = [[UIBarButtonItem alloc]initWithTitle:@"Home"
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(onHomeButtonPressed:)];
-    self.navigationItem.leftBarButtonItem  = homePageButton;
-    [homePageButton release];
+    //UIBarButtonItem* homePageButton = [[UIBarButtonItem alloc]initWithTitle:@"Home"
+    //                                                                  style:UIBarButtonItemStyleBordered
+    //                                                                 target:self
+    //                                                                 action:@selector(onHomeButtonPressed:)];
+    //self.navigationItem.leftBarButtonItem  = homePageButton;
+    //[homePageButton release];
     
     // by default the book cover should always open on first load
     self.shouldOpenBookCover = YES;
@@ -541,15 +558,21 @@
     if (count == 0) {
         //there are no published page objects in local store, update from cloud
         //will need to thow up a progress dialog to show user of download
-        LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        if ([self.pageCloudEnumerator canEnumerate]) 
+        {
+            LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+            [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        }
         
-        //TODO: need to make a call to a centrally hosted busy indicator view
+        //LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+        //[self.pageCloudEnumerator enumerateUntilEnd:nil];
+        
+        
     }
     
-    //we also make a call to try and refres the feed if it hanst already been done
-    Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    //we also make a call to try and refresh the feed if it hanst already been done
+    //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
     
 }
 

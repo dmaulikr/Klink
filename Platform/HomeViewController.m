@@ -204,6 +204,7 @@
         if (self.cloudDraftEnumerator == nil) 
         {
             self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+            self.cloudDraftEnumerator.delegate = self;
         }
         
         if ([self.cloudDraftEnumerator canEnumerate]) 
@@ -268,6 +269,7 @@
         if (self.cloudDraftEnumerator == nil)
         {
             self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+            self.cloudDraftEnumerator.delegate = self;
         }
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
@@ -342,8 +344,13 @@
     }
 }
 
-
-
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo 
+{
+   
+}
 
 #pragma mark - Static Initializer
 + (HomeViewController*)createInstance {
