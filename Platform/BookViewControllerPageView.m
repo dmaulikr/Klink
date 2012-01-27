@@ -50,6 +50,8 @@
 {
     //NSString* activityName = @"BookViewControllerpageView.viewControllerAtIndex:";
     
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    
     if (index == 0) {
         // Return the title page, HomeViewController
         HomeViewController* homeViewController = [HomeViewController createInstance];
@@ -57,11 +59,16 @@
         
         return homeViewController;
     }
+    else if (index == publishedPageCount + 1) {
+        // Return the last page placeholder, BookLastPageViewController
+        BookLastPageViewController* bookLastPageViewController = [BookLastPageViewController createInstance];
+        bookLastPageViewController.delegate = self;
+        
+        return bookLastPageViewController;
+    }
     else {
         // Return the page view controller for the given index
         index--;    // we need to subtract one from the index to account for the title page which is not in the frc
-        
-        int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         
         if (publishedPageCount == 0 || index >= publishedPageCount) {
             return nil;
@@ -89,9 +96,15 @@
 
 - (NSUInteger)indexOfViewController:(UIViewController *)viewController
 {
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    
     if ([viewController isKindOfClass:[HomeViewController class]]) {
         // title page, return HomeViewController
         return 0;
+    }
+    else if ([viewController isKindOfClass:[BookLastPageViewController class]]) {
+        // last page, return BookLastPageViewController
+        return publishedPageCount + 1;
     }
     else if ([viewController isKindOfClass:[BookPageViewController class]]) {
         BookPageViewController* bookPageViewController = (BookPageViewController *)viewController;
@@ -127,9 +140,8 @@
     
     int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
-    if (index == (publishedPageCount + 1)) {
-        // we add 1 to the frc count to account for the title page of the book which is not in the frc,
-        // if the new index equals the frc count + 1 then it means we are at the end of the book
+    if (index > (publishedPageCount + 1)) {
+        // if the new index is greater than the frc count + 1 then it means we are at the end of the book
         return nil;
     }
     
@@ -143,6 +155,9 @@
         
         if ([currentViewController isKindOfClass:[HomeViewController class]]) {
             // we are now showing the title page
+        }
+        else if ([currentViewController isKindOfClass:[HomeViewController class]]) {
+            // we are now showing the last placholder page
         }
         else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
             // we are still showing a regular page view
@@ -219,8 +234,8 @@
                 bookPageViewController = [self viewControllerAtIndex:indexForPage];
             }
             else {
-                // No page specified, go to title page immidiately
-                bookPageViewController = [self viewControllerAtIndex:0];
+                // No page specified, go to last page placeholder immidiately
+                bookPageViewController = [self viewControllerAtIndex:publishedPageCount+1];
             }
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
@@ -247,10 +262,14 @@
                 bookPageViewController = [self viewControllerAtIndex:indexForPage];
             }
             else {
-                //no published pages, go to title page
-                bookPageViewController = [self viewControllerAtIndex:0];
+                //no published pages, go to last page placeholder immidiately
+                bookPageViewController = [self viewControllerAtIndex:publishedPageCount+1];
             }
         }
+    }
+    else {
+        //no published pages, go to last page placeholder immidiately
+        bookPageViewController = [self viewControllerAtIndex:publishedPageCount+1];
     }
     
     
@@ -437,11 +456,6 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender {
     //called when the production log button is pressed
     [super onProductionLogButtonClicked:sender];
-}
-
-- (IBAction) onWritersLogButtonClicked:(id)sender {
-    //called when the writer's log button is pressed
-    [super onWritersLogButtonClicked:sender];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods

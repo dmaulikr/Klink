@@ -118,6 +118,16 @@
     [self.view sendSubviewToBack:self.btn_writersLogButton];
 }
 
+- (void) bringLastPageButtonsToFront {
+    [self.view bringSubviewToFront:self.btn_homeButton];
+    [self.view bringSubviewToFront:self.btn_productionLogButton];
+}
+
+- (void) sendLastPageButtonsToBack {
+    [self.view sendSubviewToBack:self.btn_homeButton];
+    [self.view sendSubviewToBack:self.btn_productionLogButton];
+}
+
 #pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -141,7 +151,7 @@
 #pragma mark - LeavesViewController Delegate Methods (for iOS 3-4x)
 - (NSUInteger) numberOfPagesInLeavesView:(LeavesView*)leavesView {
     int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
-    int count = publishedPageCount + 1;     // we add 1 to account for the title page of the book which is not in the frc
+    int count = publishedPageCount + 2;     // we add 2 to account for the title page and last placeholder page of the book which are not in the frc
     return count;
 }
 
@@ -149,9 +159,15 @@
     // hide the book and home page view buttons
     //[self sendBookPageButtonsToBack];
     //[self sendHomePageButtonsToBack];
+    //[self sendLastPageButtonsToBack];
+    
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
     if (index == 0) {
         // Do nothing, we are turning to the title page
+    }
+    else if (index == publishedPageCount + 1) {
+        // Do nothing, we are turning to the last placeholder page
     }
     else {
         if (index < self.leavesView.currentPageIndex) {
@@ -160,8 +176,6 @@
         }
         
         index--;    // we need to subtract one from the index to account for the title page which is not in the frc
-        
-        int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         
         //we need to make a check to see how many objects we have left
         //if we are below a threshold, we need to execute a fetch to the server
@@ -174,24 +188,37 @@
 }
 
 - (void) leavesView:(LeavesView *)leavesView didTurnToPageAtIndex:(NSUInteger)index {
+    
+    NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    
     if (index == 0) {
         // we are now showing the title page
         
         // hide the book page view buttons and show the home page buttons
         [self sendBookPageButtonsToBack];
+        [self sendLastPageButtonsToBack];
         [self bringHomePageButtonsToFront];
+    }
+    else if (index == publishedPageCount + 1) {
+        // we are now showing the title page
+        
+        // hide the book and home page view buttons and show the last placeholder page buttons
+        [self sendBookPageButtonsToBack];
+        [self sendHomePageButtonsToBack];
+        [self bringLastPageButtonsToFront];
+        
+        [self showControls];
     }
     else {
         // we are still showing a regular page view
         
         // show the book page view buttons and hide the home page buttons
         [self sendHomePageButtonsToBack];
+        [self sendLastPageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
         [self showControls];
         [self hideControlsAfterDelay:2.5];
-        
-        NSUInteger publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
         
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         
@@ -226,6 +253,9 @@
 }
 
 - (void) renderPageAtIndex:(NSUInteger)index inContext:(CGContextRef)ctx {
+    
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    
     if (index == 0) {
         // Return the title page, HomeViewController
         HomeViewController* homeViewController = [HomeViewController createInstance];
@@ -240,13 +270,25 @@
         
         [homeViewController.view.layer renderInContext:ctx];
     }
+    else if (index == publishedPageCount + 1) {
+        // Return the last page placeholder, BookLastPageViewController
+        BookLastPageViewController* bookLastPageViewController = [BookLastPageViewController createInstance];
+        bookLastPageViewController.view.backgroundColor = [UIColor clearColor];
+        bookLastPageViewController.delegate = self;
+        
+        // directly draw the BookLastPageViewController's view to the passed in graphic context
+        CGRect viewRect = bookLastPageViewController.view.frame;
+        
+        CGContextTranslateCTM(ctx, 0.0, viewRect.size.height);
+        CGContextScaleCTM(ctx, 1.0, -1.0);
+        
+        [bookLastPageViewController.view.layer renderInContext:ctx];
+    }
     else {
         // render the book page view controller for the given index
         index--;    // we need to subtract one to the index to account for the title page which is not in the frc
         
-        int count = [[self.frc_published_pages fetchedObjects]count];
-        
-        if (count != 0 && index < count) {
+        if (publishedPageCount != 0 && index < publishedPageCount) {
             Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:index];
             
             NSNumber* pageNumber = [[NSNumber alloc] initWithInt:index + 2];
@@ -274,14 +316,25 @@
 
 #pragma mark Override of LeaveView setCurrentPageIndex: method
 - (void) setCurrentPageIndex:(NSUInteger)aCurrentPageIndex {
+    
+    int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
+    
     if (aCurrentPageIndex == 0) {
         // hide the book page view buttons and show the home page buttons
         [self sendBookPageButtonsToBack];
+        [self sendLastPageButtonsToBack];
         [self bringHomePageButtonsToFront];
+    }
+    else if (aCurrentPageIndex == publishedPageCount + 1) {
+        // hide the book and home page view buttons and show the last placeholder page buttons
+        [self sendBookPageButtonsToBack];
+        [self sendHomePageButtonsToBack];
+        [self bringLastPageButtonsToFront];
     }
     else {
         // show the book page view buttons and hide the home page buttons
         [self sendHomePageButtonsToBack];
+        [self sendLastPageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
         [self hideControlsAfterDelay:2.5];
@@ -326,8 +379,8 @@
                 [self setCurrentPageIndex:indexForPage];
             }
             else {
-                // No page specified, go to title page immidiately
-                indexForPage = 0;
+                // No page specified, go to last placeholder page immidiately
+                indexForPage = publishedPageCount + 1;
                 [self setCurrentPageIndex:indexForPage];
             }
         }
@@ -358,10 +411,16 @@
                 [self setCurrentPageIndex:indexForPage];
             }
             else {
-                //no published pages, go to title page
+                //no published pages, go to last placeholder page immidiately
+                indexForPage = publishedPageCount + 1;
                 [self setCurrentPageIndex:indexForPage];
             }
         }
+    }
+    else {
+        //no published pages, go to last page placeholder immidiately
+        indexForPage = publishedPageCount + 1;
+        [self setCurrentPageIndex:indexForPage];
     }
 }
 
@@ -419,6 +478,7 @@
     // Send book buttons to back until a page is loaded
     [self sendHomePageButtonsToBack];
     [self sendBookPageButtonsToBack];
+    [self sendLastPageButtonsToBack];
     
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];

@@ -20,6 +20,7 @@
 #define LOG_FEED(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"feed",level,__VA_ARGS__)
 #define LOG_IMAGE(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"image",level,__VA_ARGS__)
 #define LOG_PAGEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"pageviewcontroller",level,__VA_ARGS__)
+#define LOG_BOOKLASTPAGEVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"pageviewcontroller",level,__VA_ARGS__)
 #define LOG_BOOKVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"bookviewcontroller",level,__VA_ARGS__)
 #define LOG_DRAFTVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"draftviewcontroller",level,__VA_ARGS__)
 #define LOG_PRODUCTIONLOGVIEWCONTROLLER(level, ...)   LogMessageF(__FILE__,__LINE__,__FUNCTION__,@"productionlogviewcontroller",level,__VA_ARGS__)

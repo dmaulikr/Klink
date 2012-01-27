@@ -76,8 +76,8 @@
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_illustratedBy;
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
-@property (strong, nonatomic) IBOutlet UIButton*    btn_facebookButton;
-@property (strong, nonatomic) IBOutlet UIButton*    btn_twitterButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_facebookButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_twitterButton;
 
 - (IBAction) onLinkButtonClicked:(id)sender;
 

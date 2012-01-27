@@ -166,6 +166,8 @@
 		529E666414CFFB9600394EE9 /* Bahndr_appIcon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 5250E53214CF9CBB00C53383 /* Bahndr_appIcon-114.png */; };
 		529E666614D0FB9100394EE9 /* Bahndr_appIcon-58.png in Resources */ = {isa = PBXBuildFile; fileRef = 529E666514D0FB9100394EE9 /* Bahndr_appIcon-58.png */; };
 		529E666814D0FBA500394EE9 /* Bahndr_appIcon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 529E666714D0FBA500394EE9 /* Bahndr_appIcon-29.png */; };
+		529E666C14D2509700394EE9 /* BookLastPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529E666A14D2509600394EE9 /* BookLastPageViewController.m */; };
+		529E666D14D2509700394EE9 /* BookLastPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529E666B14D2509700394EE9 /* BookLastPageViewController.xib */; };
 		529F0CC814BEE8B80063E4AC /* published_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC614BEE8B80063E4AC /* published_stamp.png */; };
 		529F0CC914BEE8B80063E4AC /* published_stamp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */; };
 		52AAB0CE14C60F3400497FC7 /* arrow_left_scetched_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */; };
@@ -536,6 +538,9 @@
 		52979AF914A0128200F29ECC /* progressBar_mediumfill@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progressBar_mediumfill@2x.png"; sourceTree = "<group>"; };
 		529E666514D0FB9100394EE9 /* Bahndr_appIcon-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bahndr_appIcon-58.png"; sourceTree = "<group>"; };
 		529E666714D0FBA500394EE9 /* Bahndr_appIcon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bahndr_appIcon-29.png"; sourceTree = "<group>"; };
+		529E666914D2509500394EE9 /* BookLastPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookLastPageViewController.h; sourceTree = "<group>"; };
+		529E666A14D2509600394EE9 /* BookLastPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookLastPageViewController.m; sourceTree = "<group>"; };
+		529E666B14D2509700394EE9 /* BookLastPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookLastPageViewController.xib; sourceTree = "<group>"; };
 		529F0CC614BEE8B80063E4AC /* published_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = published_stamp.png; sourceTree = "<group>"; };
 		529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "published_stamp@2x.png"; sourceTree = "<group>"; };
 		52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched_highlighted.png; sourceTree = "<group>"; };
@@ -1595,6 +1600,9 @@
 				C5C76C81145B92C100BA69B8 /* HomeViewController.h */,
 				C5C76C82145B92C100BA69B8 /* HomeViewController.m */,
 				C5C76C83145B92C200BA69B8 /* HomeViewController.xib */,
+				529E666914D2509500394EE9 /* BookLastPageViewController.h */,
+				529E666A14D2509600394EE9 /* BookLastPageViewController.m */,
+				529E666B14D2509700394EE9 /* BookLastPageViewController.xib */,
 				5264A2341474566C00E341BA /* ProductionLogViewController.h */,
 				5264A2351474566C00E341BA /* ProductionLogViewController.m */,
 				5264A2361474566C00E341BA /* ProductionLogViewController.xib */,
@@ -2149,6 +2157,7 @@
 				529E666414CFFB9600394EE9 /* Bahndr_appIcon-114.png in Resources */,
 				529E666614D0FB9100394EE9 /* Bahndr_appIcon-58.png in Resources */,
 				529E666814D0FBA500394EE9 /* Bahndr_appIcon-29.png in Resources */,
+				529E666D14D2509700394EE9 /* BookLastPageViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2303,6 +2312,7 @@
 				C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */,
 				C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */,
 				52253C0F14C0CBEF0014E42F /* BookPageViewController.m in Sources */,
+				529E666C14D2509700394EE9 /* BookLastPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

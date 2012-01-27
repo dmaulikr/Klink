@@ -13,8 +13,9 @@
 #import "MBProgressHUD.h"
 #import "LeavesViewController.h"
 #import "UIResourceLinkButton.h"
+#import "BookLastPageViewController.h"
 
-@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate > {
+@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate, BookLastPageViewControllerDelegate > {
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;
