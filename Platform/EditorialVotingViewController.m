@@ -339,12 +339,12 @@
             NSDictionary* userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@", draftTitle] forKey:kDRAFTTITLE];
             
             self.lbl_voteStatus.text = @"";
-            [NSTimer scheduledTimerWithTimeInterval:1.0f
+            NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
                                              target:self
                                            selector:@selector(timeRemaining:)
                                            userInfo:userInfo
                                             repeats:YES];
-            
+            [self timeRemaining:deadlineTimer];
         }
     }
     else {
@@ -366,11 +366,12 @@
             
             // Update the vote status label with the deadline timer
             self.lbl_voteStatus.text = @"";
-            [NSTimer scheduledTimerWithTimeInterval:1.0f
+            NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
                                              target:self
                                            selector:@selector(timeRemaining:)
                                            userInfo:nil
                                             repeats:YES];
+            [self timeRemaining:deadlineTimer];
         }
     }
 }

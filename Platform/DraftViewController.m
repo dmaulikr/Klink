@@ -489,11 +489,12 @@
         // Show time remaining on draft
         self.lbl_deadline.text = @"";
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
+        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
                                        userInfo:nil
                                         repeats:YES];
+        [self timeRemaining:deadlineTimer];
         
         self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
         self.photoCloudEnumerator.delegate = self;

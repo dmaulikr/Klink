@@ -205,30 +205,6 @@
     
     [self registerForKeyboardNotifications];
     
-    // Set deadline
-    if (self.configurationType == PAGE) {
-        // Show a date 24 hours from now
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                         target:self
-                                       selector:@selector(updateDeadlineDate:)
-                                       userInfo:nil
-                                        repeats:YES];
-    }
-    else {
-        // Existing draft, show time remaining
-        ResourceContext* resourceContext = [ResourceContext instance];
-        
-        Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-        
-        self.lbl_deadline.text = @"";
-        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                         target:self
-                                       selector:@selector(timeRemaining:)
-                                       userInfo:nil
-                                        repeats:YES];
-    }
-    
     // Keeps the text of the caption textview aligned to the vertical center of the textview frame
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
@@ -300,6 +276,32 @@
     
     // Set deadline date
     self.lbl_deadline.text = @"";
+    
+    // Set deadline
+    if (self.configurationType == PAGE) {
+        // Show a date 24 hours from now
+        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
+                                                                  target:self
+                                                                selector:@selector(updateDeadlineDate:)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+        [self updateDeadlineDate:deadlineTimer];
+    }
+    else {
+        // Existing draft, show time remaining
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        
+        self.lbl_deadline.text = @"";
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
+                                                                  target:self
+                                                                selector:@selector(timeRemaining:)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+        [self timeRemaining:deadlineTimer];
+    }
     
     //we check to see if the user has been to this viewcontroller before
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];

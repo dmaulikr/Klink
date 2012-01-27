@@ -124,10 +124,12 @@
         timeRemaining = [NSString stringWithFormat:@"%d hr %d min",[breakdownInfo hour], [breakdownInfo minute]];
     }
     else if ([breakdownInfo minute] > 0) {
-        timeRemaining = [NSString stringWithFormat:@"%d min %d sec",[breakdownInfo minute], [breakdownInfo second]];
+        //timeRemaining = [NSString stringWithFormat:@"%d min %d sec",[breakdownInfo minute], [breakdownInfo second]];
+        timeRemaining = [NSString stringWithFormat:@"%d minutes",[breakdownInfo minute]];
     }
     else if ([breakdownInfo second] > 0) {
-        timeRemaining = [NSString stringWithFormat:@"%d seconds",[breakdownInfo second]];
+        //timeRemaining = [NSString stringWithFormat:@"%d seconds",[breakdownInfo second]];
+        timeRemaining = [NSString stringWithFormat:@"< 1 minute",[breakdownInfo second]];
     }
     else {
         timeRemaining = [NSString stringWithFormat:@"closed!"];

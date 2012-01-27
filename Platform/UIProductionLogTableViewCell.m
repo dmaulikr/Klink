@@ -145,11 +145,12 @@
             self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
         }
 
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
+        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
                                        userInfo:nil
                                         repeats:YES];
+        [self timeRemaining:deadlineTimer];
     
     }
     [self setNeedsDisplay];
