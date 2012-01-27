@@ -385,7 +385,7 @@
 
 - (void) showNotificationViewController
 {
-    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
+    NotificationsViewController* notificationsViewController = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
     //UINavigationController* navigationController = self.navigationController;

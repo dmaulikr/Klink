@@ -222,16 +222,25 @@
             
             if ([leaves.modalViewController isKindOfClass:UINavigationController.class]) 
             {
-                //the book view is showing the notification window
+                
                 UINavigationController* navigationController = (UINavigationController*)leaves.modalViewController;
                 topViewController = navigationController.topViewController;
                 
                 if ([topViewController isKindOfClass:NotificationsViewController.class])
                 {
+                    //the book view is showing the notification window
                     NotificationsViewController* nvc = (NotificationsViewController*)leaves.modalViewController;
                     Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
                     LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
                     [feedManager refreshFeedOnFinish:callback];
+                }
+                else 
+                {
+                    //its on a different view controller
+                    NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
+                    [navigationController pushViewController:nvc animated:YES];
+                    
+
                 }
             }
             else 

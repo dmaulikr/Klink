@@ -1013,6 +1013,41 @@
 }
 
 
+- (void) processOnVotePressed 
+{
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    //we start a new undo group here
+    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+    
+    int photoIndex = [self.photoViewSlider getPageIndex];
+    Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
+    
+    int captionIndex = [self.captionViewSlider getPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
+    
+    photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
+    caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+    
+    
+    
+    //now we need to commit to the store
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+    
+    UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
+    if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
+        [currentCaptionView setNeedsDisplay];
+        [currentCaptionView renderCaptionWithID:caption.objectid];
+     //   LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
+    }
+    
+    caption.hasvoted = [NSNumber numberWithBool:YES];
+}
+
 
 - (void) onVoteButtonPressed:(id)sender {
     NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
@@ -1038,42 +1073,15 @@
         NSString* message = @"Casting thy approval...";
         [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
 
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
-        progressView.delegate = self;
-        
-        
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //we start a new undo group here
-        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        
-        int photoIndex = [self.photoViewSlider getPageIndex];
-        Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:photoIndex];
-        
-        int captionIndex = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:captionIndex];
-        
-        photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
-        caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-        
-        
-        
-        //now we need to commit to the store
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        
-        UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
-        if ([currentCaptionView.captionID isEqualToNumber:caption.objectid]) {
-            [currentCaptionView setNeedsDisplay];
-            [currentCaptionView renderCaptionWithID:caption.objectid];
-            LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
-        }
-        
-        caption.hasvoted = [NSNumber numberWithBool:YES];
-        
-        
+
         
         // Disable the vote button for this caption
         [self disableVoteButton];
+        
+        [self performSelector:@selector(processOnVotePressed) withObject:nil afterDelay:1];
+       // [self performSelectorOnMainThread:@selector(processOnVotePressed) withObject:nil waitUntilDone:NO];
+        
+        
     }
     
 }

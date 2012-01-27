@@ -159,9 +159,17 @@
     queryExpression.opCode = opcode_QUERYEQUALITY;
     queryExpression.value = [[NSNumber numberWithInt:kDRAFT]stringValue];
     
-    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    //and expiry is after the current time
+    QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+    queryExpression2.attributeName = DATEDRAFTEXPIRES;
+    queryExpression2.opCode = opcode_QUERYGREATERTHAN;    
+    NSNumber* time =[NSNumber numberWithDouble:[[NSDate date]timeIntervalSince1970]];
+    queryExpression2.value = [time stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObjects:queryExpression, queryExpression2,nil];
     
     [queryExpression release];
+    [queryExpression2 release];
     return query;
     
 }
