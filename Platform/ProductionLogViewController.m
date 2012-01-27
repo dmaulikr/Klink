@@ -103,7 +103,7 @@
     
 }
 
-- (void) updateDraftCounterLabels {
+/*- (void) updateDraftCounterLabels {
     int numDraftsTotal = [[self.frc_draft_pages fetchedObjects]count];
     self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"total drafts: %d", numDraftsTotal];
     
@@ -123,7 +123,7 @@
     }
     
     self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"drafts in progress: %d", numDraftsClosing];
-}
+}*/
 
 - (void) registerCallbackHandlers {
     // resister callbacks for change events
@@ -425,7 +425,20 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
-            
+    NSString* activityName = @"ProductionLogViewController.commonInit";
+    
+    if (self.cloudDraftEnumerator == nil) 
+    {
+        self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+        self.cloudDraftEnumerator.delegate = self;
+    }
+    
+    if ([self.cloudDraftEnumerator canEnumerate]) 
+    {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    }
+    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -458,8 +471,8 @@
 {
     [super viewDidLoad];
 
-    self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
+    //self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    //self.cloudDraftEnumerator.delegate = self;
     
     CGRect frameForRefreshHeader = CGRectMake(0, 0.0f - self.tbl_productionTableView.bounds.size.height, self.tbl_productionTableView.bounds.size.width, self.tbl_productionTableView.bounds.size.height);
     
@@ -474,7 +487,7 @@
     [self.refreshHeader refreshLastUpdatedDate];
     
     // Update draft counter labels at the top of the view
-    [self updateDraftCounterLabels];
+    //[self updateDraftCounterLabels];
     
     [self registerCallbackHandlers];
     
@@ -558,14 +571,17 @@
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
         
         //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+        //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+        //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
 
     }
     
+    // refresh the notification feed
+    Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
        
     // Update draft counter labels at the top of the view
-    [self updateDraftCounterLabels];
+    //[self updateDraftCounterLabels];
     
     // Update notifications button on typewriter
     [self updateNotificationButton];
@@ -915,13 +931,13 @@
             //LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Reloading table",activityName);
            // [self.tbl_productionTableView reloadData];
             // Update draft counter labels at the top of the view
-            [self updateDraftCounterLabels];
+            //[self updateDraftCounterLabels];
         }
         else if (type == NSFetchedResultsChangeDelete) {
             [self.tbl_productionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
            // [self.tbl_productionTableView reloadData];
             // Update draft counter labels at the top of the view
-            [self updateDraftCounterLabels];
+            //[self updateDraftCounterLabels];
         }
     }
     else {
@@ -967,8 +983,9 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    
     [self.cloudDraftEnumerator reset];
+    //self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+    self.cloudDraftEnumerator.delegate = self;
     [self.cloudDraftEnumerator enumerateUntilEnd:nil];
 
 }

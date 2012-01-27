@@ -450,6 +450,7 @@
     
   //  if (numCaptionsInStore < numCaptionsInPhotos) 
   //  {
+        //[self.captionCloudEnumerator reset];
         self.captionCloudEnumerator = [CloudEnumerator enumeratorForCaptions:self.photoID];
         self.captionCloudEnumerator.delegate = self; 
         LOG_FULLSCREENPHOTOVIEWCONTROLLER(0, @"%@Number of captions in store %d does not match number of captions specified in photo %d, re-enumerating from cloud",activityName,numCaptionsInStore, numCaptionsInPhotos);
