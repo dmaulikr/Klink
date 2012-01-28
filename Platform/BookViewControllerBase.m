@@ -404,11 +404,8 @@
     NotificationsViewController* notificationsViewController = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
-    //UINavigationController* navigationController = self.navigationController;
-    // [navigationController pushViewController:notificationsViewController animated:NO];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navigationController animated:YES];
-    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
     [navigationController release];
     
 }
@@ -418,11 +415,8 @@
     ProfileViewController* profileViewController = [ProfileViewController createInstance];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
-    //UINavigationController* navigationController = self.navigationController;
-    // [navigationController pushViewController:notificationsViewController animated:NO];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navigationController animated:YES];
-    //[self.navigationController presentModalViewController:notificationsViewController animated:YES];
     [navigationController release];
     
 }
@@ -473,10 +467,21 @@
         self.pageCloudEnumerator.delegate = self;
     }
     
-    if ([self.pageCloudEnumerator canEnumerate]) 
+    if (!self.pageCloudEnumerator.isLoading) 
     {
-        LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-        [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        //enumerator is not loading, so we can go ahead and reset it and run it
+        
+        if ([self.pageCloudEnumerator canEnumerate]) 
+        {
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+            [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        }
+        else 
+        {
+            //the enumerator is not ready to run, but we reset it and away we go
+            [self.pageCloudEnumerator reset];
+            [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        }
     }
     
 }
@@ -499,12 +504,6 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - MBProgressHUD Delegate Methods
-- (void) hudWasHidden:(MBProgressHUD *)hud 
-{
-        //todo: implement this
-}
-
 
 #pragma mark - View lifecycle
 
@@ -514,27 +513,6 @@
     // Do any additional setup after loading the view from its nib.
     
     //NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
-    
-    // let's refresh the feed
-    //[self.feedManager refreshFeedOnFinish:nil];
-    
-    // refresh the notification feed
-    //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-    //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
-    
-    //self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
-    //self.pageCloudEnumerator.delegate = self;
-    
-    // Navigation bar buttons
-    //UIBarButtonItem* homePageButton = [[UIBarButtonItem alloc]initWithTitle:@"Home"
-    //                                                                  style:UIBarButtonItemStyleBordered
-    //                                                                 target:self
-    //                                                                 action:@selector(onHomeButtonPressed:)];
-    //self.navigationItem.leftBarButtonItem  = homePageButton;
-    //[homePageButton release];
-    
-    // by default the book cover should always open on first load
-    //self.shouldOpenBookCover = YES;
     
 }
 
@@ -573,22 +551,15 @@
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {
         //there are no published page objects in local store, update from cloud
-        //will need to thow up a progress dialog to show user of download
+        
+        //we set the clouddraftenumerator delegate to this view controller
+        self.pageCloudEnumerator.delegate = self;
         if ([self.pageCloudEnumerator canEnumerate]) 
         {
-            LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
             [self.pageCloudEnumerator enumerateUntilEnd:nil];
         }
-        
-        //LOG_BOOKVIEWCONTROLLER(0, @"%@No local drafts found, initiating query against cloud",activityName);
-        //[self.pageCloudEnumerator enumerateUntilEnd:nil];
-        
-        
     }
-    
-    //we also make a call to try and refresh the feed if it hanst already been done
-    //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-    //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
     
     if (!self.shouldOpenBookCover) {
         [self.view sendSubviewToBack:self.iv_bookCover];
@@ -666,11 +637,6 @@
     }
 }
 
-#pragma mark - FeedRefreshCallback Handler
-- (void) onFeedRefreshComplete:(CallbackResult*)result
-{
-    //insert on feed refresh complete items here, probably the label
-}
 
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
@@ -726,15 +692,12 @@
 }
 
 #pragma mark - Static Initializers
-+ (BookViewControllerBase*) createInstance {
-    //BookViewControllerBase* instance = [[BookViewControllerBase alloc]initWithNibName:@"BookViewControllerBase" bundle:nil];
-    //[instance autorelease];
-    //return instance;
-    
++ (BookViewControllerBase*) createInstance {    
     // Determine which supported book view controller type to return
 	if (NSClassFromString(@"UIPageViewController")) {
 		// iOS 5 UIPageViewController style with native page curling
         BookViewControllerPageView* pageViewInstance = [[BookViewControllerPageView alloc]initWithNibName:@"BookViewControllerPageView" bundle:nil];
+        
         // by default the book should always open to the title page on first load
         pageViewInstance.shouldOpenBookCover = YES;
         pageViewInstance.shouldOpenToTitlePage = YES;
@@ -746,6 +709,7 @@
     else {
 		// iOS 3-4x LeaveViewController style with custom page curling
         BookViewControllerLeaves* leavesInstance = [[BookViewControllerLeaves alloc]initWithNibName:@"BookViewControllerLeaves" bundle:nil];
+        
         // by default the book should always open to the title page on first load
         leavesInstance.shouldOpenBookCover = YES;
         leavesInstance.shouldOpenToTitlePage = YES;

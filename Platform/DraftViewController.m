@@ -26,23 +26,23 @@
 #import "UIStrings.h"
 #import "NotificationsViewController.h"
 #import "ProductionLogViewController.h"
+#import "PageState.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
 #define kDRAFTTABLEVIEWCELLHEIGHT_LEFTRIGHT 115
 
 @implementation DraftViewController
-@synthesize frc_photos = __frc_photos;
-@synthesize pageID = m_pageID;
-@synthesize lbl_draftTitle = m_lbl_draftTitle;
-@synthesize lbl_deadline = m_lbl_deadline;
-//@synthesize lbl_deadlineNavBar = m_lbl_deadlineNavBar;
-@synthesize deadline = m_deadline;
-@synthesize tbl_draftTableView = m_tbl_draftTableView;
-@synthesize photoCloudEnumerator = m_photoCloudEnumerator;
-//@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
-@synthesize refreshHeader = m_refreshHeader;
-@synthesize frc_captions = __frc_captions;
+@synthesize frc_photos                  = __frc_photos;
+@synthesize pageID                      = m_pageID;
+@synthesize lbl_draftTitle              = m_lbl_draftTitle;
+@synthesize lbl_deadline                = m_lbl_deadline;
+//@synthesize lbl_deadlineNavBar          = m_lbl_deadlineNavBar;
+@synthesize deadline                    = m_deadline;
+@synthesize tbl_draftTableView          = m_tbl_draftTableView;
+@synthesize photoCloudEnumerator        = m_photoCloudEnumerator;
+@synthesize refreshHeader               = m_refreshHeader;
+@synthesize frc_captions                = __frc_captions;
 @synthesize v_typewriter                = m_v_typewriter;
 @synthesize btn_profileButton           = m_btn_profileButton;
 @synthesize btn_cameraButton            = m_btn_cameraButton;
@@ -367,6 +367,15 @@
     }
 }
 
+#pragma mark - Typewriter Button Helpers
+- (void) disableCameraButton {
+    self.btn_cameraButton.enabled = NO;
+}
+
+- (void) enableCameraButton {
+    self.btn_cameraButton.enabled = YES;
+}
+
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
@@ -404,7 +413,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    // resister callbacks for change events
+    /*// resister callbacks for change events
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
     Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
     Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
@@ -415,7 +424,7 @@
     
     [newCaptionCallback release];
     [newPhotoVoteCallback release];
-    [newCaptionVoteCallback release];
+    [newCaptionVoteCallback release];*/
 
     
     // setup pulldown refresh on tableview
@@ -496,7 +505,29 @@
                                         repeats:YES];
         [self timeRemaining:deadlineTimer];
         
+        //we set the cloudphotoenumerator delegate to this view controller with this pageID
+        self.photoCloudEnumerator = nil;
         self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+        self.photoCloudEnumerator.delegate = self;
+        
+        if (!self.photoCloudEnumerator.isLoading) 
+        {
+            //enumerator is not loading, so we can go ahead and reset it and run it
+            
+            if ([self.photoCloudEnumerator canEnumerate]) 
+            {
+                LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing photo count from cloud",activityName);
+                [self.photoCloudEnumerator enumerateUntilEnd:nil];
+            }
+            else 
+            {
+                //the enumerator is not ready to run, but we reset it and away we go
+                [self.photoCloudEnumerator reset];
+                [self.photoCloudEnumerator enumerateUntilEnd:nil];
+            }
+        }
+        
+        /*self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
         self.photoCloudEnumerator.delegate = self;
         
         if ([self.photoCloudEnumerator canEnumerate]) 
@@ -511,12 +542,26 @@
             //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
             //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
             
-        }
+        }*/
     }
     
     // refresh the notification feed
+    //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    
+    // refresh the notification feed
     Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    
+    if (isEnumeratingFeed) 
+    {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
+    }
+    
+    // if this draft has expired, we need to disable the the vote and caption buttons
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+        [self disableCameraButton];
+    }
     
     // Update notifications button on typewriter
     [self updateNotificationButton];
@@ -713,11 +758,28 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    //[self.photoCloudEnumerator reset];
+    NSString* activityName = @"DraftViewController.egoRefreshTableHeaderDidTriggerRefresh:";
+    //what we need to do is check if the enumerator is actually running
+    //if its running lets not do anything
+    //if its not running, we re-create a new one and away we go
+    
+    if (![self.photoCloudEnumerator isLoading]) 
+    {
+        //enumerator is not loading
+        [self.photoCloudEnumerator reset];
+        [self.photoCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else {
+        //enumerator is currently loading, no refresh scheduled
+        LOG_DRAFTVIEWCONTROLLER(0,@"%@Skipping refresh of draft view as the enumerator is currently running",activityName);
+        [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_draftTableView];
+    }
+    
+    /*//[self.photoCloudEnumerator reset];
     self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
     self.photoCloudEnumerator.delegate = self;
     
-    [self.photoCloudEnumerator enumerateUntilEnd:nil];
+    [self.photoCloudEnumerator enumerateUntilEnd:nil];*/
     
 }
 
@@ -756,17 +818,17 @@
     [self updateNotificationButton];
 }
    
-- (void) onNewCaption:(CallbackResult*)result {
-    [self.tbl_draftTableView reloadData];
+/*- (void) onNewCaption:(CallbackResult*)result {
+    //[self.tbl_draftTableView reloadData];
 }
 
 - (void) onNewPhotoVote:(CallbackResult*)result {
-    [self.tbl_draftTableView reloadData];
+    //[self.tbl_draftTableView reloadData];
 }
 
 - (void) onNewCaptionVote:(CallbackResult*)result {
-    [self.tbl_draftTableView reloadData];
-}
+    //[self.tbl_draftTableView reloadData];
+}*/
 
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

@@ -205,15 +205,43 @@
             self.cloudDraftEnumerator.delegate = self;
         }
         
+        if (!self.cloudDraftEnumerator.isLoading) 
+        {
+            //enumerator is not loading, so we can go ahead and reset it and run it
+            
+            if ([self.cloudDraftEnumerator canEnumerate]) 
+            {
+                LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            }
+            else
+            {
+                //the enumerator is not ready to run, but we reset it and away we go
+                [self.cloudDraftEnumerator reset];
+                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            }
+        }
+        
+        /*if (self.cloudDraftEnumerator == nil) 
+        {
+            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+            self.cloudDraftEnumerator.delegate = self;
+        }
+        
         if ([self.cloudDraftEnumerator canEnumerate]) 
         {
             LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
             [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-        }
+        }*/
         
         // refresh the notification feed
         Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+        BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+        
+        if (isEnumeratingFeed) 
+        {
+            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
+        }
         
         // update all the labels of the UI
         [self updateLabels];
@@ -264,20 +292,49 @@
         // in iOS 5 and above devices, we need to check the FRC and update UI
         // labels in viewWillAppear to populate up to date data for the UIPageViewController
         
-        if (self.cloudDraftEnumerator == nil)
+        if (self.cloudDraftEnumerator == nil) 
         {
             self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
             self.cloudDraftEnumerator.delegate = self;
         }
-        if ([self.cloudDraftEnumerator canEnumerate]) 
+        
+        if (!self.cloudDraftEnumerator.isLoading) 
         {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-        }
+            //enumerator is not loading, so we can go ahead and reset it and run it
             
+            if ([self.cloudDraftEnumerator canEnumerate]) 
+            {
+                LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            }
+            else
+            {
+                //the enumerator is not ready to run, but we reset it and away we go
+                [self.cloudDraftEnumerator reset];
+                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+            }
+        }
+        
+        /*if (self.cloudDraftEnumerator == nil) 
+         {
+         self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+         self.cloudDraftEnumerator.delegate = self;
+         }
+         
+         if ([self.cloudDraftEnumerator canEnumerate]) 
+         {
+         LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+         }*/
+        
         // refresh the notification feed
         Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+        BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+        
+        if (isEnumeratingFeed) 
+        {
+            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
+        }
         
         // update all the labels of the UI
         [self updateLabels];

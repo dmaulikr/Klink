@@ -47,7 +47,6 @@
 @property (nonatomic, retain)          NSDate*               deadline;
 @property (nonatomic, retain) IBOutlet UITableView*          tbl_draftTableView;
 @property (nonatomic, retain) CloudEnumerator*               photoCloudEnumerator;
-//@property (nonatomic, retain) CloudEnumerator*               captionCloudEnumerator;
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;
 
 @property (strong, nonatomic) IBOutlet UIView*      v_typewriter;

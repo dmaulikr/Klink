@@ -25,6 +25,7 @@
 #import "DraftViewController.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "PageState.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -439,6 +440,76 @@
     
 }
 
+#pragma mark - Toolbar Button Helpers
+- (void) disableFacebookButton {
+    self.tb_facebookButton.enabled = NO;
+}
+
+- (void) enableFacebookButton {
+    self.tb_facebookButton.enabled = YES;
+}
+
+- (void) disableTwitterButton {
+    self.tb_twitterButton.enabled = NO;
+}
+
+- (void) enableTwitterButton {
+    self.tb_twitterButton.enabled = YES;
+}
+
+- (void) disableVoteButton {
+    self.tb_voteButton.enabled = NO;
+}
+
+- (void) enableVoteButton {
+    self.tb_voteButton.enabled = YES;
+}
+
+- (void) disableCaptionButton {
+    self.tb_captionButton.enabled = NO;
+}
+
+- (void) enableCaptionButton {
+    self.tb_captionButton.enabled = YES;
+}
+
+- (void) disableCameraButton {
+    self.tb_cameraButton.enabled = NO;
+}
+
+- (void) enableCameraButton {
+    self.tb_cameraButton.enabled = YES;
+}
+
+- (void) enableDisableVoteButton {
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    int captionCount = [[self.frc_captions fetchedObjects] count];
+    
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+        // if this draft has expired, we need to disable the the vote buttons
+        [self disableVoteButton];
+    }
+    else if (captionCount > 0) {
+        
+        int index = [self.captionViewSlider getPageIndex];
+        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
+        
+        if ([caption.hasvoted boolValue] == YES) {
+            [self disableVoteButton];
+        }
+        else {
+            [self enableVoteButton];
+        }
+        
+    }
+    else {
+        [self disableVoteButton];
+    }
+}
+
 #pragma mark - View lifecycle
 
 - (void) enumerateCaptionsFromCloudForPhoto:(Photo*)photo 
@@ -574,6 +645,13 @@
     [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
+    
+    // if this draft has expired, we need to disable the the vote and caption buttons
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+        [self disableCameraButton];
+        [self disableCaptionButton];
+        [self disableVoteButton];
+    }
     
     [self cancelControlHiding];
     
@@ -788,53 +866,6 @@
         [self.iv_photo setUserInteractionEnabled:YES];
     }
     
-}
-
-#pragma mark - Toolbar Button Helpers
-- (void) disableFacebookButton {
-    self.tb_facebookButton.enabled = NO;
-}
-
-- (void) enableFacebookButton {
-    self.tb_facebookButton.enabled = YES;
-}
-
-- (void) disableTwitterButton {
-    self.tb_twitterButton.enabled = NO;
-}
-
-- (void) enableTwitterButton {
-    self.tb_twitterButton.enabled = YES;
-}
-
-- (void) disableVoteButton {
-    self.tb_voteButton.enabled = NO;
-}
-
-- (void) enableVoteButton {
-    self.tb_voteButton.enabled = YES;
-}
-
-- (void) enableDisableVoteButton {
-    
-    int captionCount = [[self.frc_captions fetchedObjects] count];
-    
-    if (captionCount > 0) {
-        
-        int index = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
-        
-        if ([caption.hasvoted boolValue] == YES) {
-            [self disableVoteButton];
-        }
-        else {
-            [self enableVoteButton];
-        }
-        
-    }
-    else {
-        [self disableVoteButton];
-    }
 }
 
 #pragma mark - UIAlertView Delegate
