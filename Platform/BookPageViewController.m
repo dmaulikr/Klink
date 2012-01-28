@@ -20,6 +20,7 @@
 #import "UIResourceLinkButton.h"
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerLeaves.h"
+#import "BookTableOfContentsViewController.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -44,8 +45,10 @@
 @synthesize btn_writtenBy       = m_btn_writtenBy;
 @synthesize btn_illustratedBy   = m_btn_illustratedBy;
 @synthesize btn_homeButton      = m_btn_homeButton;
+@synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
 @synthesize btn_facebookButton = m_btn_facebookButton;
 @synthesize btn_twitterButton = m_btn_twitterButton;
+
 
 #pragma mark - Property Definitions
 - (id)delegate {
@@ -79,6 +82,7 @@
 	[UIView setAnimationDuration:0.35];
 	
     [self.btn_homeButton setAlpha:hidden ? 0 : 1];
+    [self.btn_tableOfContentsButton setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
     
@@ -179,7 +183,7 @@
         Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
         self.topVotedCaptionID = caption.objectid;
         
-        NSDate* datePublished = [DateTimeHelper parseWebServiceDateDouble:photo.datecreated];
+        NSDate* datePublished = [DateTimeHelper parseWebServiceDateDouble:page.datepublished];
         
         // page title
         self.lbl_title.text = page.displayname;
@@ -260,6 +264,7 @@
     self.iv_photo = nil;
     self.iv_photoFrame = nil;
     self.btn_homeButton = nil;
+    self.btn_tableOfContentsButton = nil;
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
@@ -284,8 +289,15 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
     
+    // Setup table of contents button
+    UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"book_button_roundrect.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_roundrect_highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonBackground forState:UIControlStateNormal];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonHighlightedBackground forState:UIControlStateHighlighted];
+    
     // Unhide the buttons
     [self.btn_homeButton setHidden:NO];
+    [self.btn_tableOfContentsButton setHidden:NO];
     [self.btn_facebookButton setHidden:NO];
     [self.btn_twitterButton setHidden:NO];
     
@@ -320,6 +332,10 @@
 
 - (IBAction) onTwitterButtonPressed:(id)sender {
     [self.delegate onTwitterButtonPressed:sender];
+}
+
+- (IBAction) onTableOfContentsButtonPressed:(id)sender {
+    [self.delegate onTableOfContentsButtonPressed:sender];
 }
 
 #pragma mark Username button handler

@@ -29,6 +29,7 @@
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
 @synthesize btn_writersLogButton    = m_btn_writersLogButton;
 @synthesize btn_homeButton          = m_btn_homeButton;
+@synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
 @synthesize btn_facebookButton      = m_btn_facebookButton;
 @synthesize btn_twitterButton       = m_btn_twitterButton;
 
@@ -64,6 +65,7 @@
 	[UIView setAnimationDuration:0.35];
 	
     [self.btn_homeButton setAlpha:hidden ? 0 : 1];
+    [self.btn_tableOfContentsButton setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
     
@@ -96,12 +98,14 @@
 #pragma mark - Book Page and Home Page Button Helpers
 - (void) bringBookPageButtonsToFront {
     [self.view bringSubviewToFront:self.btn_homeButton];
+    [self.view bringSubviewToFront:self.btn_tableOfContentsButton];
     [self.view bringSubviewToFront:self.btn_facebookButton];
     [self.view bringSubviewToFront:self.btn_twitterButton];
 }
 
 - (void) sendBookPageButtonsToBack {
     [self.view sendSubviewToBack:self.btn_homeButton];
+    [self.view sendSubviewToBack:self.btn_tableOfContentsButton];
     [self.view sendSubviewToBack:self.btn_facebookButton];
     [self.view sendSubviewToBack:self.btn_twitterButton];
 }
@@ -120,11 +124,13 @@
 
 - (void) bringLastPageButtonsToFront {
     [self.view bringSubviewToFront:self.btn_homeButton];
+    [self.view bringSubviewToFront:self.btn_tableOfContentsButton];
     [self.view bringSubviewToFront:self.btn_productionLogButton];
 }
 
 - (void) sendLastPageButtonsToBack {
     [self.view sendSubviewToBack:self.btn_homeButton];
+    [self.view sendSubviewToBack:self.btn_tableOfContentsButton];
     [self.view sendSubviewToBack:self.btn_productionLogButton];
 }
 
@@ -495,6 +501,7 @@
     self.btn_productionLogButton = nil;
     self.btn_writersLogButton = nil;
     self.btn_homeButton = nil;
+    self.btn_tableOfContentsButton = nil;
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
@@ -516,6 +523,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Setup table of contents button
+    UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"book_button_roundrect.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_roundrect_highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonBackground forState:UIControlStateNormal];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonHighlightedBackground forState:UIControlStateHighlighted];
     
     [self.leavesView reloadData];
     
@@ -600,6 +613,10 @@
             [navigationController release];
         }
     }
+}
+
+- (IBAction) onTableOfContentsButtonPressed:(id)sender {
+    [super onTableOfContentsButtonPressed:sender];
 }
 
 - (void) showNotificationViewController 

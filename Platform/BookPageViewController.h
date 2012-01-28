@@ -21,6 +21,7 @@
 - (IBAction) onFacebookButtonPressed:(id)sender;
 - (IBAction) onTwitterButtonPressed:(id)sender;
 - (IBAction) onLinkButtonClicked:(id)sender;
+- (IBAction) onTableOfContentsButtonPressed:(id)sender;
 @end
 
 @interface BookPageViewController : BaseViewController {    
@@ -48,9 +49,10 @@
     UIResourceLinkButton*   m_btn_illustratedBy;
     
     UIButton*       m_btn_homeButton;
+    UIButton*       m_btn_tableOfContentsButton;
     UIButton*       m_btn_facebookButton;
     UIButton*       m_btn_twitterButton;
-
+    
 }
 
 @property (assign) id<BookPageViewControllerDelegate>    delegate;
@@ -76,8 +78,10 @@
 @property (nonatomic,retain) IBOutlet UIResourceLinkButton* btn_illustratedBy;
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_tableOfContentsButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_facebookButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_twitterButton;
+
 
 - (IBAction) onLinkButtonClicked:(id)sender;
 

@@ -145,7 +145,7 @@
 						<string key="NSFrame">{{15, 7}, {53, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="371412949"/>
+						<reference key="NSNextKeyView" ref="956451201"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -165,25 +165,59 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="517997453">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">book_button_roundrect_highlighted.png</string>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="411139515">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">book_button_roundrect.png</string>
 						</object>
-						<object class="IBUIFontDescription" key="IBUIFontDescription">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="826315753">
 							<string key="name">AmericanTypewriter</string>
 							<string key="family">American Typewriter</string>
 							<int key="traits">0</int>
 							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont">
+						<object class="NSFont" key="IBUIFont" id="62368840">
 							<string key="NSName">AmericanTypewriter-CondensedLight</string>
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
+					</object>
+					<object class="IBUIButton" id="956451201">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{75, 7}, {30, 30}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="371412949"/>
+						<string key="NSReuseIdentifierKey">_NS:225</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<object class="NSColor" key="IBUIHighlightedTitleColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC41NzY0NzA2MTM1IDAuNDk0MTE3Njc3MiAwLjQyNzQ1MTAxNDUAA</bytes>
+						</object>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC41NzY0NzA2MTM1IDAuNDk0MTE3Njc3MiAwLjQyNzQ1MTAxNDUAA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="28792386"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_button_list_highlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_button_list.png</string>
+						</object>
+						<reference key="IBUIHighlightedBackgroundImage" ref="517997453"/>
+						<reference key="IBUINormalBackgroundImage" ref="411139515"/>
+						<reference key="IBUIFontDescription" ref="826315753"/>
+						<reference key="IBUIFont" ref="62368840"/>
 					</object>
 					<object class="IBUIButton" id="866747405">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -227,6 +261,7 @@
 						<string key="NSFrame">{{75, 423}, {30, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -358,6 +393,14 @@
 					<int key="connectionID">58</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btn_tableOfContentsButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="956451201"/>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onHomeButtonPressed:</string>
 						<reference key="source" ref="339911310"/>
@@ -365,6 +408,24 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">43</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onFacebookButtonPressed:</string>
+						<reference key="source" ref="866747405"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">63</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onTwitterButtonPressed:</string>
+						<reference key="source" ref="280258828"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">64</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -393,6 +454,15 @@
 					</object>
 					<int key="connectionID">62</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onTableOfContentsButtonPressed:</string>
+						<reference key="source" ref="956451201"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">67</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -407,13 +477,14 @@
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="885737782"/>
-							<reference ref="581028380"/>
 							<reference ref="280258828"/>
 							<reference ref="866747405"/>
 							<reference ref="339911310"/>
 							<reference ref="821279887"/>
 							<reference ref="1028691949"/>
 							<reference ref="371412949"/>
+							<reference ref="581028380"/>
+							<reference ref="956451201"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -474,6 +545,12 @@
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Button - Log</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">65</int>
+						<reference key="object" ref="956451201"/>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Button - tableOfContents</string>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -497,12 +574,14 @@
 				<real value="1" key="54.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="55.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="65.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">62</int>
+			<int key="maxID">67</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -523,6 +602,7 @@
 						<string key="onLinkButtonClicked:">id</string>
 						<string key="onProductionLogButtonClicked:">id</string>
 						<string key="onReadButtonClicked:">id</string>
+						<string key="onTableOfContentsButtonPressed:">id</string>
 						<string key="onTwitterButtonPressed:">id</string>
 						<string key="onWritersLogButtonClicked:">id</string>
 					</dictionary>
@@ -545,6 +625,10 @@
 						</object>
 						<object class="IBActionInfo" key="onReadButtonClicked:">
 							<string key="name">onReadButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTableOfContentsButtonPressed:">
+							<string key="name">onTableOfContentsButtonPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="onTwitterButtonPressed:">
@@ -583,6 +667,7 @@
 						<string key="btn_homeButton">UIButton</string>
 						<string key="btn_productionLogButton">UIButton</string>
 						<string key="btn_readButton">UIButton</string>
+						<string key="btn_tableOfContentsButton">UIButton</string>
 						<string key="btn_twitterButton">UIButton</string>
 						<string key="btn_writersLogButton">UIButton</string>
 					</dictionary>
@@ -601,6 +686,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="btn_readButton">
 							<string key="name">btn_readButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="btn_tableOfContentsButton">
+							<string key="name">btn_tableOfContentsButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="btn_twitterButton">
@@ -634,6 +723,8 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="book_button_facebook.png">{30, 30}</string>
 			<string key="book_button_facebook_highlighted.png">{30, 30}</string>
+			<string key="book_button_list.png">{30, 30}</string>
+			<string key="book_button_list_highlighted.png">{30, 30}</string>
 			<string key="book_button_roundrect.png">{49, 30}</string>
 			<string key="book_button_roundrect_highlighted.png">{49, 30}</string>
 			<string key="book_button_twitter-t.png">{30, 30}</string>

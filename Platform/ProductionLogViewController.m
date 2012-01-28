@@ -659,7 +659,7 @@
     int retVal = [[self.frc_draft_pages fetchedObjects]count];
     // Return the number of rows in the section.
     LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Number of rows in fetched results controller:%d",activityName,retVal);
-        return retVal;
+    return retVal;
     
 }
 

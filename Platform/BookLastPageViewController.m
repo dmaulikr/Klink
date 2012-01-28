@@ -16,7 +16,8 @@
 @implementation BookLastPageViewController
 @synthesize cloudDraftEnumerator    = m_cloudDraftEnumerator;
 @synthesize frc_draft_pages         = __frc_draft_pages;
-@synthesize btn_homeButton      = m_btn_homeButton;
+@synthesize btn_homeButton          = m_btn_homeButton;
+@synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
 @synthesize lbl_numDrafts           = m_lbl_numDrafts;
 
@@ -159,6 +160,7 @@
     // e.g. self.myOutlet = nil;
     
     self.btn_homeButton = nil;
+    self.btn_tableOfContentsButton = nil;
     self.btn_productionLogButton = nil;
     self.lbl_numDrafts = nil;
 }
@@ -196,8 +198,15 @@
         [self updateLabels];
     }
     
-    // Unhide the Home button
+    // Setup table of contents button
+    UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"book_button_roundrect.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_roundrect_highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonBackground forState:UIControlStateNormal];
+    [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonHighlightedBackground forState:UIControlStateHighlighted];
+    
+    // Unhide the buttons
     [self.btn_homeButton setHidden:NO];
+    [self.btn_tableOfContentsButton setHidden:NO];
     
 }
 
@@ -210,6 +219,10 @@
 #pragma mark - Button Handlers
 - (IBAction) onHomeButtonPressed:(id)sender {
     [self.delegate onHomeButtonPressed:sender];
+}
+
+- (IBAction) onTableOfContentsButtonPressed:(id)sender {
+    [self.delegate onTableOfContentsButtonPressed:sender];
 }
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {   

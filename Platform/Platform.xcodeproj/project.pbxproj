@@ -19,6 +19,14 @@
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
 		521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */; };
+		521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */; };
+		521D6DCA14D347CF00FA08E3 /* BookTableOfContentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DC814D347CF00FA08E3 /* BookTableOfContentsViewController.xib */; };
+		521D6DCC14D354E500FA08E3 /* UITOCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DCB14D354E500FA08E3 /* UITOCTableViewCell.xib */; };
+		521D6DCF14D354FF00FA08E3 /* UITOCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 521D6DCE14D354FF00FA08E3 /* UITOCTableViewCell.m */; };
+		521D6DD414D37E5F00FA08E3 /* book_button_list_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DD014D37E5E00FA08E3 /* book_button_list_highlighted.png */; };
+		521D6DD514D37E5F00FA08E3 /* book_button_list_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DD114D37E5E00FA08E3 /* book_button_list_highlighted@2x.png */; };
+		521D6DD614D37E5F00FA08E3 /* book_button_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DD214D37E5E00FA08E3 /* book_button_list.png */; };
+		521D6DD714D37E5F00FA08E3 /* book_button_list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521D6DD314D37E5E00FA08E3 /* book_button_list@2x.png */; };
 		52201019147713BD00C47C00 /* UICaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52201018147713BD00C47C00 /* UICaptionView.m */; };
 		5220101C147713D700C47C00 /* UICaptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5220101B147713D700C47C00 /* UICaptionView.xib */; };
 		522010251477387700C47C00 /* icon-bulb1.png in Resources */ = {isa = PBXBuildFile; fileRef = 522010211477387700C47C00 /* icon-bulb1.png */; };
@@ -376,6 +384,16 @@
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
 		521232C81491437600CC9F93 /* arrow_left_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched.png; sourceTree = "<group>"; };
 		521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_scetched@2x.png"; sourceTree = "<group>"; };
+		521D6DC614D347CE00FA08E3 /* BookTableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookTableOfContentsViewController.h; sourceTree = "<group>"; };
+		521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookTableOfContentsViewController.m; sourceTree = "<group>"; };
+		521D6DC814D347CF00FA08E3 /* BookTableOfContentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookTableOfContentsViewController.xib; sourceTree = "<group>"; };
+		521D6DCB14D354E500FA08E3 /* UITOCTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITOCTableViewCell.xib; sourceTree = "<group>"; };
+		521D6DCD14D354FF00FA08E3 /* UITOCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITOCTableViewCell.h; sourceTree = "<group>"; };
+		521D6DCE14D354FF00FA08E3 /* UITOCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITOCTableViewCell.m; sourceTree = "<group>"; };
+		521D6DD014D37E5E00FA08E3 /* book_button_list_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_list_highlighted.png; sourceTree = "<group>"; };
+		521D6DD114D37E5E00FA08E3 /* book_button_list_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_list_highlighted@2x.png"; sourceTree = "<group>"; };
+		521D6DD214D37E5E00FA08E3 /* book_button_list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_button_list.png; sourceTree = "<group>"; };
+		521D6DD314D37E5E00FA08E3 /* book_button_list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_button_list@2x.png"; sourceTree = "<group>"; };
 		52201017147713BD00C47C00 /* UICaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICaptionView.h; sourceTree = "<group>"; };
 		52201018147713BD00C47C00 /* UICaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICaptionView.m; sourceTree = "<group>"; };
 		5220101B147713D700C47C00 /* UICaptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UICaptionView.xib; sourceTree = "<group>"; };
@@ -1095,6 +1113,10 @@
 				52680C6E14CD15A90050BCBB /* book_button_back_highlighted@2x.png */,
 				52680C6F14CD15A90050BCBB /* book_button_back.png */,
 				52680C7014CD15AA0050BCBB /* book_button_back@2x.png */,
+				521D6DD014D37E5E00FA08E3 /* book_button_list_highlighted.png */,
+				521D6DD114D37E5E00FA08E3 /* book_button_list_highlighted@2x.png */,
+				521D6DD214D37E5E00FA08E3 /* book_button_list.png */,
+				521D6DD314D37E5E00FA08E3 /* book_button_list@2x.png */,
 				52253C1814C208190014E42F /* book_button_facebook_highlighted.png */,
 				52253C1914C208190014E42F /* book_button_facebook_highlighted@2x.png */,
 				52253C1A14C208190014E42F /* book_button_facebook.png */,
@@ -1603,6 +1625,9 @@
 				529E666914D2509500394EE9 /* BookLastPageViewController.h */,
 				529E666A14D2509600394EE9 /* BookLastPageViewController.m */,
 				529E666B14D2509700394EE9 /* BookLastPageViewController.xib */,
+				521D6DC614D347CE00FA08E3 /* BookTableOfContentsViewController.h */,
+				521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */,
+				521D6DC814D347CF00FA08E3 /* BookTableOfContentsViewController.xib */,
 				5264A2341474566C00E341BA /* ProductionLogViewController.h */,
 				5264A2351474566C00E341BA /* ProductionLogViewController.m */,
 				5264A2361474566C00E341BA /* ProductionLogViewController.xib */,
@@ -1673,6 +1698,9 @@
 				52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */,
 				52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */,
 				52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */,
+				521D6DCD14D354FF00FA08E3 /* UITOCTableViewCell.h */,
+				521D6DCE14D354FF00FA08E3 /* UITOCTableViewCell.m */,
+				521D6DCB14D354E500FA08E3 /* UITOCTableViewCell.xib */,
 				52201017147713BD00C47C00 /* UICaptionView.h */,
 				52201018147713BD00C47C00 /* UICaptionView.m */,
 				5220101B147713D700C47C00 /* UICaptionView.xib */,
@@ -2158,6 +2186,12 @@
 				529E666614D0FB9100394EE9 /* Bahndr_appIcon-58.png in Resources */,
 				529E666814D0FBA500394EE9 /* Bahndr_appIcon-29.png in Resources */,
 				529E666D14D2509700394EE9 /* BookLastPageViewController.xib in Resources */,
+				521D6DCA14D347CF00FA08E3 /* BookTableOfContentsViewController.xib in Resources */,
+				521D6DCC14D354E500FA08E3 /* UITOCTableViewCell.xib in Resources */,
+				521D6DD414D37E5F00FA08E3 /* book_button_list_highlighted.png in Resources */,
+				521D6DD514D37E5F00FA08E3 /* book_button_list_highlighted@2x.png in Resources */,
+				521D6DD614D37E5F00FA08E3 /* book_button_list.png in Resources */,
+				521D6DD714D37E5F00FA08E3 /* book_button_list@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2313,6 +2347,8 @@
 				C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */,
 				52253C0F14C0CBEF0014E42F /* BookPageViewController.m in Sources */,
 				529E666C14D2509700394EE9 /* BookLastPageViewController.m in Sources */,
+				521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */,
+				521D6DCF14D354FF00FA08E3 /* UITOCTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
