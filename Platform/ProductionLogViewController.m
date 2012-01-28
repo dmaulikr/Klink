@@ -433,10 +433,21 @@
         self.cloudDraftEnumerator.delegate = self;
     }
     
-    if ([self.cloudDraftEnumerator canEnumerate]) 
+    if (!self.cloudDraftEnumerator.isLoading) 
     {
-        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        //enumerator is not loading, so we can go ahead and reset it and run it
+        
+        if ([self.cloudDraftEnumerator canEnumerate]) 
+        {
+            LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
+        else 
+        {
+            //the enumerator is not ready to run, but we reset it and away we go
+            [self.cloudDraftEnumerator reset];
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
     }
     
 }
@@ -562,27 +573,23 @@
     }
     
     
+    //we set the clouddraftenumerator delegate to this view controller
+    self.cloudDraftEnumerator.delegate = self;
     if ([self.cloudDraftEnumerator canEnumerate]) 
     {
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
-    else {
-        LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
-        
-        //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-        //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
-
-    }
     
     // refresh the notification feed
     Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-    [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+      
+    if (isEnumeratingFeed) 
+    {
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
+    }
        
-    // Update draft counter labels at the top of the view
-    //[self updateDraftCounterLabels];
-    
     // Update notifications button on typewriter
     [self updateNotificationButton];
     
@@ -594,11 +601,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self.navigationController setToolbarHidden:YES animated:YES];
     
-    // place the entire view just off screen so it can be shown with the pageShow animation
-    //CGAffineTransform transform = CGAffineTransformMakeTranslation(0, -230); //place the view just off screen, bottom right
-    //self.view.transform = transform;
-    //CGSize viewSize = self.view.frame.size;
-    //self.view.frame = CGRectMake(0, 460, viewSize.width, viewSize.height);
+  
     
     
 }
@@ -983,10 +986,28 @@
 
 #pragma mark - EgoRefreshTableHeaderDelegate
 - (void) egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
-    [self.cloudDraftEnumerator reset];
+    NSString* activityName = @"ProductionLogViewController.egoRefreshTableHeaderDidTriggerRefresh:";
+    //what we need to do is check if the enumerator is actually running
+    //if its running lets not do anything
+    //if its not running, we re-create a new one and away we go
+    
+    if (![self.cloudDraftEnumerator isLoading]) 
+    {
+        //enumerator is not loading
+        [self.cloudDraftEnumerator reset];
+        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    }
+    else {
+        //enumerator is currently loading, no refresh scheduled
+        LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log as the enumerator is currently running",activityName);
+    }
+    
+    //[self.cloudDraftEnumerator reset];
     //self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-    self.cloudDraftEnumerator.delegate = self;
-    [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    
+//    self.cloudDraftEnumerator = nil;
+//    self.cloudDraftEnumerator.delegate = self;
+//    [self.cloudDraftEnumerator enumerateUntilEnd:nil];
 
 }
 

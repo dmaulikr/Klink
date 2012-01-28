@@ -104,7 +104,8 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Ad Hoc Release"
+      customArchiveName = "Bahndr"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
