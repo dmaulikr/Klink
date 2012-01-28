@@ -85,3 +85,5 @@ NSString* const CREATORID               =@"creatorid";
 NSString* const VERSION                 =@"version";
 NSString* const BASEURL                 =@"base_url";
 NSString* const NUMBEROFFLAGS           =@"numberofflags";
+NSString* const RENDERTYPE              =@"rendertype";
+NSString* const FEEDEVENT               =@"feedevent";

@@ -91,6 +91,7 @@
 #define LOG_RESPONSE(...)   do{}while(0)
 #define LOG_EDITORVOTEVIEWCONTROLLER(...)   do{}while(0)
 #define LOG_APPLICATIONSETTINGSMANAGER(...)   do{}while(0)
+#define LOG_BOOKLASTPAGEVIEWCONTROLLER (...)    do{}while(0)
 
 
 

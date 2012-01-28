@@ -69,7 +69,8 @@
     [controller performFetch:&error];
   	if (error != nil)
     {
-        LOG_BOOKLASTPAGEVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
+        
+        //LOG_BOOKLASTPAGEVIEWCONTROLLER(1, @"%@Could not create instance of NSFetchedResultsController due to %@",activityName,[error userInfo]);
     }
     
     [controller release];

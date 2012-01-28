@@ -32,6 +32,7 @@ trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
 
 
 - (void) insert:(Resource*)resource;
+- (void) delete:(NSNumber*)objectID withType:(NSString*)type;
 
 //enumeration methods
 - (void) enumerate:(Query*)query
@@ -79,6 +80,10 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                          sortBy:(NSArray*)sortDescriptorArray;
 
 
+- (NSArray*) resourcesWithType:(NSString*)typeName 
+               withValuesEqual:(NSArray*)values 
+                 forAttributes:(NSArray*)attributeNames 
+                        sortBy:(NSArray*)sortDescriptors;
 
 //- (NSArray*)  resourcesWithType:(NSString*)typeName 
 //                 withValueEqual:(NSString*)value 
