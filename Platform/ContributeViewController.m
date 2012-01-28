@@ -611,6 +611,23 @@
     
     if([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
+        /*if (self.configurationType == CAPTION) {
+            
+            if ([self.activeTextView.text isEqualToString:@""] || [self.activeTextView.text isEqualToString:@"caption"]) {
+                // enable Submit button if ok
+                self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
+                [self textViewDidEndEditing:textView];
+            }
+            else {
+                // caption is acceptable
+                
+                NSString *trimmedCaption = [self.activeTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                
+                self.caption = trimmedCaption;
+                
+                [self onSubmitButtonPressed:textView];
+            }
+        }*/
         return NO;
     }
     

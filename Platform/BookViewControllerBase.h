@@ -67,6 +67,7 @@
 - (IBAction) onHomeButtonPressed:(id)sender;
 - (IBAction) onFacebookButtonPressed:(id)sender;
 - (IBAction) onTwitterButtonPressed:(id)sender;
+- (IBAction) onTableOfContentsButtonPressed:(id)sender;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;

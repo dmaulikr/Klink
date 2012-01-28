@@ -14,6 +14,7 @@
 #import "PageState.h"
 #import "UserDefaultSettings.h"
 #import "ProfileViewController.h"
+#import "BookTableOfContentsViewController.h"
 
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
@@ -443,6 +444,10 @@
     
     [navigationController release];
     
+}
+
+- (IBAction) onTableOfContentsButtonPressed:(id)sender {
+    [super onTableOfContentsButtonPressed:sender];
 }
 
 #pragma mark Home Page Delegate Methods

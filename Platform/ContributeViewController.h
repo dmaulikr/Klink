@@ -101,6 +101,7 @@
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;
 - (IBAction)onCameraButtonPressed:(id)sender;
+- (void)onSubmitButtonPressed:(id)sender;
 - (void)onCancelButtonPressed:(id)sender;
 
 + (ContributeViewController*) createInstanceForNewDraft;

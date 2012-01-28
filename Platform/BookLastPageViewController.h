@@ -16,6 +16,7 @@
 @required
 - (IBAction) onHomeButtonPressed:(id)sender;
 - (IBAction) onProductionLogButtonClicked:(id)sender;
+- (IBAction) onTableOfContentsButtonPressed:(id)sender;
 @end
 
 @interface BookLastPageViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate > {
@@ -24,6 +25,7 @@
     CloudEnumerator* m_cloudDraftEnumerator;
     
     UIButton*       m_btn_homeButton;
+    UIButton*       m_btn_tableOfContentsButton;
     UIButton*       m_btn_productionLogButton;
     UILabel*        m_lbl_numDrafts;
 
@@ -35,6 +37,7 @@
 @property (nonatomic,retain) CloudEnumerator*              cloudDraftEnumerator;
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_tableOfContentsButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_productionLogButton;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_numDrafts;
 
