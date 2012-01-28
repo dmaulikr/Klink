@@ -1000,6 +1000,7 @@
     else {
         //enumerator is currently loading, no refresh scheduled
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log as the enumerator is currently running",activityName);
+        [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
     }
     
     //[self.cloudDraftEnumerator reset];
