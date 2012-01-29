@@ -16,6 +16,7 @@
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*           m_topVotedPhotoID;
+    NSNumber*           m_topVotedCaptionID;
     CloudEnumerator*    m_pageCloudEnumerator;
     CloudEnumerator*    m_captionCloudEnumerator;
     
@@ -32,6 +33,7 @@
 
 @property (nonatomic,retain) NSNumber*                      pageID;
 @property (nonatomic,retain) NSNumber*                      topVotedPhotoID;
+@property (nonatomic,retain) NSNumber*                      topVotedCaptionID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 @property (nonatomic,retain) CloudEnumerator*               pageCloudEnumerator;
 @property (nonatomic,retain) CloudEnumerator*               captionCloudEnumerator;
@@ -68,6 +70,7 @@
 - (IBAction) onFacebookButtonPressed:(id)sender;
 - (IBAction) onTwitterButtonPressed:(id)sender;
 - (IBAction) onTableOfContentsButtonPressed:(id)sender;
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;

@@ -429,7 +429,7 @@
 						<string key="NSFrame">{{75, 7}, {30, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="257990783"/>
+						<reference key="NSNextKeyView" ref="267883399"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -456,6 +456,35 @@
 						<reference key="IBUINormalBackgroundImage" ref="167724937"/>
 						<reference key="IBUIFontDescription" ref="802962107"/>
 						<reference key="IBUIFont" ref="953914814"/>
+					</object>
+					<object class="IBUIButton" id="267883399">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">-2147483356</int>
+						<string key="NSFrame">{{265, 7}, {30, 30}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="257990783"/>
+						<string key="NSReuseIdentifierKey">_NS:225</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="257178573"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="957247106"/>
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_button_zoomOut_highlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_button_zoomOut.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="519597447"/>
+						<reference key="IBUIFont" ref="805767950"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{302, 460}</string>
@@ -601,6 +630,14 @@
 					<int key="connectionID">66</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btn_zoomOutPhoto</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="267883399"/>
+					</object>
+					<int key="connectionID">72</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onLinkButtonClicked:</string>
 						<reference key="source" ref="749069694"/>
@@ -654,6 +691,15 @@
 					</object>
 					<int key="connectionID">67</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onZoomOutPhotoButtonPressed:</string>
+						<reference key="source" ref="267883399"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">73</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -682,6 +728,7 @@
 							<reference ref="520616147"/>
 							<reference ref="51210886"/>
 							<reference ref="417731901"/>
+							<reference ref="267883399"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -775,6 +822,13 @@
 						<int key="objectID">65</int>
 						<reference key="object" ref="417731901"/>
 						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Button - tOC</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">70</int>
+						<reference key="object" ref="267883399"/>
+						<reference key="parent" ref="191373211"/>
+						<string key="objectName">Button - zoomOut</string>
 					</object>
 				</array>
 			</object>
@@ -805,12 +859,14 @@
 				<real value="0.0" key="60.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="65.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="70.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="70.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">67</int>
+			<int key="maxID">73</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -825,17 +881,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">BookPageViewController</string>
 					<string key="superclassName">BaseViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">onLinkButtonClicked:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">onLinkButtonClicked:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onLinkButtonClicked:">id</string>
+						<string key="onZoomOutPhotoButtonPressed:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onLinkButtonClicked:">
 							<string key="name">onLinkButtonClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="onZoomOutPhotoButtonPressed:">
+							<string key="name">onZoomOutPhotoButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="btn_facebookButton">UIButton</string>
 						<string key="btn_homeButton">UIButton</string>
@@ -843,6 +902,7 @@
 						<string key="btn_tableOfContentsButton">UIButton</string>
 						<string key="btn_twitterButton">UIButton</string>
 						<string key="btn_writtenBy">UIResourceLinkButton</string>
+						<string key="btn_zoomOutPhoto">UIButton</string>
 						<string key="iv_openBookPageImage">UIImageView</string>
 						<string key="iv_photo">UIImageView</string>
 						<string key="iv_photoFrame">UIImageView</string>
@@ -877,6 +937,10 @@
 						<object class="IBToOneOutletInfo" key="btn_writtenBy">
 							<string key="name">btn_writtenBy</string>
 							<string key="candidateClassName">UIResourceLinkButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="btn_zoomOutPhoto">
+							<string key="name">btn_zoomOutPhoto</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="iv_openBookPageImage">
 							<string key="name">iv_openBookPageImage</string>
@@ -954,6 +1018,8 @@
 			<string key="book_button_roundrect_highlighted.png">{49, 30}</string>
 			<string key="book_button_twitter-t.png">{30, 30}</string>
 			<string key="book_button_twitter-t_highlighted.png">{30, 30}</string>
+			<string key="book_button_zoomOut.png">{30, 30}</string>
+			<string key="book_button_zoomOut_highlighted.png">{30, 30}</string>
 			<string key="icon-pics2-large.png">{60, 60}</string>
 			<string key="open_book_page_turn.png">{302, 460}</string>
 			<string key="picture_frame.png">{297, 228}</string>

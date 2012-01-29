@@ -46,8 +46,9 @@
 @synthesize btn_illustratedBy   = m_btn_illustratedBy;
 @synthesize btn_homeButton      = m_btn_homeButton;
 @synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
-@synthesize btn_facebookButton = m_btn_facebookButton;
-@synthesize btn_twitterButton = m_btn_twitterButton;
+@synthesize btn_zoomOutPhoto    = m_btn_zoomOutPhoto;
+@synthesize btn_facebookButton  = m_btn_facebookButton;
+@synthesize btn_twitterButton   = m_btn_twitterButton;
 
 
 #pragma mark - Property Definitions
@@ -83,6 +84,7 @@
 	
     [self.btn_homeButton setAlpha:hidden ? 0 : 1];
     [self.btn_tableOfContentsButton setAlpha:hidden ? 0 : 1];
+    [self.btn_zoomOutPhoto setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
     
@@ -265,6 +267,7 @@
     self.iv_photoFrame = nil;
     self.btn_homeButton = nil;
     self.btn_tableOfContentsButton = nil;
+    self.btn_zoomOutPhoto = nil;
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
@@ -298,6 +301,7 @@
     // Unhide the buttons
     [self.btn_homeButton setHidden:NO];
     [self.btn_tableOfContentsButton setHidden:NO];
+    [self.btn_zoomOutPhoto setHidden:NO];
     [self.btn_facebookButton setHidden:NO];
     [self.btn_twitterButton setHidden:NO];
     
@@ -336,6 +340,15 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [self.delegate onTableOfContentsButtonPressed:sender];
+}
+
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
+    [self.delegate onZoomOutPhotoButtonPressed:sender];
+    
+    /*FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
+    //[[self.navigationController navigationBar] setHidden:NO];
+    //[[self.navigationController toolbar] setHidden:NO];
+    [self.navigationController pushViewController:fullScreenController animated:YES];*/
 }
 
 #pragma mark Username button handler

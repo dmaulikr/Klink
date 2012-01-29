@@ -30,6 +30,7 @@
 @synthesize btn_writersLogButton    = m_btn_writersLogButton;
 @synthesize btn_homeButton          = m_btn_homeButton;
 @synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
+@synthesize btn_zoomOutPhoto        = m_btn_zoomOutPhoto;
 @synthesize btn_facebookButton      = m_btn_facebookButton;
 @synthesize btn_twitterButton       = m_btn_twitterButton;
 
@@ -66,6 +67,7 @@
 	
     [self.btn_homeButton setAlpha:hidden ? 0 : 1];
     [self.btn_tableOfContentsButton setAlpha:hidden ? 0 : 1];
+    [self.btn_zoomOutPhoto setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
     
@@ -99,6 +101,7 @@
 - (void) bringBookPageButtonsToFront {
     [self.view bringSubviewToFront:self.btn_homeButton];
     [self.view bringSubviewToFront:self.btn_tableOfContentsButton];
+    [self.view bringSubviewToFront:self.btn_zoomOutPhoto];
     [self.view bringSubviewToFront:self.btn_facebookButton];
     [self.view bringSubviewToFront:self.btn_twitterButton];
 }
@@ -106,6 +109,7 @@
 - (void) sendBookPageButtonsToBack {
     [self.view sendSubviewToBack:self.btn_homeButton];
     [self.view sendSubviewToBack:self.btn_tableOfContentsButton];
+    [self.view sendSubviewToBack:self.btn_zoomOutPhoto];
     [self.view sendSubviewToBack:self.btn_facebookButton];
     [self.view sendSubviewToBack:self.btn_twitterButton];
 }
@@ -241,6 +245,9 @@
                 //Photo* photo = [page photoWithHighestVotes];
                 Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:page.finishedphotoid];
                 self.topVotedPhotoID = photo.objectid;
+                
+                Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
+                self.topVotedCaptionID = caption.objectid;
                 
                 // we update the userDefault setting for the last page viewed by the user
                 [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
@@ -428,6 +435,14 @@
         indexForPage = publishedPageCount + 1;
         [self setCurrentPageIndex:indexForPage];
     }
+    
+    if ((indexForPage != 0) && (indexForPage != (publishedPageCount + 1))) {
+        // we are about to render a published page from the book
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        self.topVotedPhotoID = page.finishedphotoid;
+        self.topVotedCaptionID = page.finishedcaptionid;
+    }
 }
 
 #pragma mark - View lifecycle
@@ -502,6 +517,7 @@
     self.btn_writersLogButton = nil;
     self.btn_homeButton = nil;
     self.btn_tableOfContentsButton = nil;
+    self.btn_zoomOutPhoto = nil;
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
     
@@ -617,6 +633,10 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [super onTableOfContentsButtonPressed:sender];
+}
+
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
+    [super onZoomOutPhotoButtonPressed:sender];
 }
 
 - (void) showNotificationViewController 

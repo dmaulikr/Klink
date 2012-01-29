@@ -26,10 +26,12 @@
 #import "ProductionLogViewController.h"
 #import "UIStrings.h"
 #import "BookTableOfContentsViewController.h"
+#import "FullScreenPhotoViewController.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
 @synthesize topVotedPhotoID     = m_topVotedPhotoID;
+@synthesize topVotedCaptionID   = m_topVotedCaptionID;
 @synthesize frc_published_pages = __frc_published_pages;
 @synthesize pageCloudEnumerator = m_pageCloudEnumerator;
 @synthesize iv_background          = m_iv_background;
@@ -374,6 +376,17 @@
     [navigationController release];
 }
 
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = NO;
+    self.shouldAnimatePageTurn = NO;
+    
+    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
+    [self.navigationController pushViewController:fullScreenController animated:YES];
+}
+
 #pragma mark Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed
@@ -530,6 +543,11 @@
     [super viewWillAppear:animated];
     
     NSString* activityName = @"BookViewControllerBase.viewWillAppear:";
+    
+    /*ResourceContext* resourceContext = [ResourceContext instance];
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    self.topVotedPhotoID = page.finishedphotoid;
+    self.topVotedCaptionID = page.finishedcaptionid;*/
     
     // Make sure the status bar is visible
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];

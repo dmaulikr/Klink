@@ -29,6 +29,7 @@
     
     UIButton*   m_btn_homeButton;
     UIButton*   m_btn_tableOfContentsButton;
+    UIButton*   m_btn_zoomOutPhoto;
     UIButton*   m_btn_facebookButton;
     UIButton*   m_btn_twitterButton;
 }
@@ -44,6 +45,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton*    btn_homeButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_tableOfContentsButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_zoomOutPhoto;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_facebookButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_twitterButton;
 

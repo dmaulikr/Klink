@@ -177,8 +177,13 @@
                     Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
                     self.pageID = page.objectid;
                     
-                    Photo* photo = [page photoWithHighestVotes];
+                    ResourceContext* resourceContext = [ResourceContext instance];
+                    //Photo* photo = [page photoWithHighestVotes];
+                    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:page.finishedphotoid];
                     self.topVotedPhotoID = photo.objectid;
+                    
+                    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
+                    self.topVotedCaptionID = caption.objectid;
                     
                     // we update the userDefault setting for the last page viewed by the user
                     [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
@@ -241,6 +246,9 @@
         }
         else if (lastViewedPublishedPageIndex < publishedPageCount) {
             // we go to the last page the user viewed
+            Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:lastViewedPublishedPageIndex];
+            self.pageID = page.objectid;
+            
             int indexForPage = lastViewedPublishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
             bookPageViewController = [self viewControllerAtIndex:indexForPage];
         }
@@ -253,6 +261,7 @@
             if (page != nil) {
                 //local store does contain pages to enumerate
                 self.pageID = page.objectid;
+                
                 NSUInteger publishedPageIndex = [self indexOfPageWithID:self.pageID];
                 int indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
                 
@@ -275,6 +284,11 @@
     
     
     if (bookPageViewController) {
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        self.topVotedPhotoID = page.finishedphotoid;
+        self.topVotedCaptionID = page.finishedcaptionid;
         
         NSArray *viewControllers = [NSArray arrayWithObject:bookPageViewController];
         
@@ -448,6 +462,10 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [super onTableOfContentsButtonPressed:sender];
+}
+
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
+    [super onZoomOutPhotoButtonPressed:sender];
 }
 
 #pragma mark Home Page Delegate Methods

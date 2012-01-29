@@ -87,9 +87,16 @@
     
     NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
     
-    //add predicate to gather only photos for this pageID    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %@=%@", THEMEID, self.pageID, OBJECTID, self.photoID];
+    //add predicate to gather only photos for this pageID
+    NSPredicate* predicate;
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    if ([draft.state intValue] == kPUBLISHED) {
+        // if this draft has been published, we need to grab only the specific photo and caption requested
+        predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", THEMEID, self.pageID, OBJECTID, self.photoID];
+    }
+    else {
+        predicate = [NSPredicate predicateWithFormat:@"%K=%@", THEMEID, self.pageID];
+    }
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptorArray];
@@ -135,8 +142,18 @@
     NSMutableArray* sortDescriptorArray = [NSMutableArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil];
     
     //add predicate to gather only photos for this pageID    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", PHOTOID, self.photoID];
-    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", PHOTOID, self.photoID, OBJECTID, self.captionID];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", PHOTOID, self.photoID];
+    
+    //add predicate to gather only photos for this pageID
+    NSPredicate* predicate;
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    if ([draft.state intValue] == kPUBLISHED) {
+        // if this draft has been published, we need to grab only the specific photo and caption requested
+        predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", PHOTOID, self.photoID, OBJECTID, self.captionID];
+    }
+    else {
+        predicate = [NSPredicate predicateWithFormat:@"%K=%@", PHOTOID, self.photoID];
+    }
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptorArray];
