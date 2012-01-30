@@ -61,7 +61,7 @@
 - (IBAction) onProfileButtonPressed:(id)sender;
 - (IBAction) onPageButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;
-
+- (void) resetRefreshTableHeaderToNormalPosition;
 + (ProductionLogViewController*)createInstance;
 
 @end

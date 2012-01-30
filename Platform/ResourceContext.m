@@ -175,7 +175,7 @@ static ResourceContext* sharedInstance;
                 NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
                 for (NSInteger i = [updates count]-1;i >=0; i--) {
                     NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
-                    [appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
+                    //[appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
                 }
                 LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
                 [context mergeChangesFromContextDidSaveNotification:notification];
