@@ -575,6 +575,9 @@
     
     //we set the clouddraftenumerator delegate to this view controller
     self.cloudDraftEnumerator.delegate = self;
+    
+    //we perform this check to ereset the table refresh header in the case
+    //that it was left spinning errantly
     if (![self.cloudDraftEnumerator isLoading])
     {
         [self resetRefreshTableHeaderToNormalPosition];
