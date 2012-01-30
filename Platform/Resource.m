@@ -317,6 +317,8 @@
 
 - (BOOL) shouldCopyAttributeValue:(id)value forAttribute:(NSAttributeDescription*)attributeDescription {
     BOOL retVal = NO;
+    //NSString* activityName = @"Resource.shouldCopyAttributeValue:";
+    //NSString* attributeName = [attributeDescription name];
     
     NSAttributeType attrType = [attributeDescription attributeType];
     SEL selector = NSSelectorFromString([attributeDescription name]);
@@ -339,6 +341,7 @@
                 
             }
             else {
+                //LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
                 retVal = NO;
             }
           
@@ -357,6 +360,7 @@
                 retVal = YES;
             }
             else {
+                //LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
                 retVal = NO;
             }
         
@@ -474,11 +478,19 @@
 }
 
 - (NSArray*) copyFrom:(Resource*)resource {
+    NSString* activityName = @"Resource.copyFrom:";
     NSEntityDescription* entity = [self entity];
     NSArray* attributes = [entity properties];
     NSMutableArray* attributesCopied = [[NSMutableArray alloc]init];
     
+    
     for (NSAttributeDescription* attrDesc in attributes) {
+        NSString* attributeName = [attrDesc name];
+        if ([attributeName isEqualToString:POLL_NUM_PAGES])
+        {
+            NSLog(@"Dick");
+        }
+        
         if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
             //see if the passed in object has a value for this attribute
             SEL selector = NSSelectorFromString([attrDesc name]);
@@ -492,6 +504,7 @@
             }
         }
     }
+    LOG_RESOURCE(0, @"%@Refreshed %d attributes on object id: %@ with type: %@",activityName,[attributesCopied count],self.objectid,self.objecttype);
    
     return attributesCopied;
 }
@@ -506,6 +519,25 @@
 }
     
 
+///This method will go through all of this objects attribute instance data objects
+///and reset them tot he default values they would have had upon creation
+- (void) resetAttributeInstanceDataToDefault
+{
+    NSArray* currentAIDs = [self.attributeinstancedata allObjects];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    for (AttributeInstanceData* currentAID in currentAIDs) 
+    {
+        AttributeInstanceData* originalAID = [AttributeInstanceData attributeInstanceDataFor:ATTRIBUTEINSTANCEDATA withResourceContext:resourceContext forAttribute:currentAID.attributename shouldInsertIntoContext:NO]; 
+        //now we have the default value for this AID
+        //we now reset the current the value to that one
+        if ([originalAID.attributename isEqualToString:POLL_NUM_PAGES]) {
+            NSLog(@"Dick");
+        }
+        [currentAID resetTo:originalAID];
+    }
+
+}
 
 - (TypeInstanceData*) typeInstanceData {
     return self.typeinstancedata;

@@ -94,3 +94,4 @@ extern NSString* const BASEURL;
 extern NSString* const NUMBEROFFLAGS;
 extern NSString* const RENDERTYPE;
 extern NSString* const FEEDEVENT;
+extern NSString* const POLL_NUM_PAGES;

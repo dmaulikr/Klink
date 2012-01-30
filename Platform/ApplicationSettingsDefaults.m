@@ -45,3 +45,6 @@ int const page_DRAFTEXPIRES_SECONDS = 86400;
 NSString* const twitter_CONSUMERKEY=@"";
 NSString* const twitter_CONSUMERSECRET=@"";
 int const progress_WHEELSPINTIME = 8;
+int const default_POLL_EXPIRY_IN_SECONDS = 36000;
+int const default_POLL_NUM_PAGES = 3;
+int const EDITOR_MINIMUM = 30;

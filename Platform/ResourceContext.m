@@ -432,10 +432,10 @@ static ResourceContext* sharedInstance;
     
     //we loop through all updated objects now to ensure we have the latest versions
     updatedObjects = [self.managedObjectContext updatedObjects];
-    NSArray* uArray = [updatedObjects allObjects];
-    for (NSManagedObject* object in uArray) {
-       [self.managedObjectContext refreshObject:object mergeChanges:YES];
-    }
+//    NSArray* uArray = [updatedObjects allObjects];
+//    for (NSManagedObject* object in uArray) {
+//       [self.managedObjectContext refreshObject:object mergeChanges:YES];
+//    }
     [self.managedObjectContext save:&error];
     
     if (error != nil) {

@@ -34,4 +34,6 @@ extern int const threshold_FEED_ENUMERATION_TIME_GAP;
 
 extern int const progress_MAXSECONDSTODISPLAY;
 extern int const progress_WHEELSPINTIME;
-
+extern int const default_POLL_EXPIRY_IN_SECONDS;
+extern int const default_POLL_NUM_PAGES;
+extern int const EDITOR_MINIMUM;
