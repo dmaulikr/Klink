@@ -58,6 +58,7 @@ insertIntoResourceContext:(ResourceContext *)context;
 - (void)        unlockAttributes:(NSArray*)attributes;
 - (void)        createAttributeInstanceData:(ResourceContext*)resourceContext;
 - (void)        createTypeInstanceData:(ResourceContext*)resourceContext;
+- (void)        resetAttributeInstanceDataToDefault;
 
 - (NSArray*) changedAttributesToSynchronizeToCloud;
 - (NSArray*) attributesWithValues;

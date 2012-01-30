@@ -575,6 +575,14 @@
     
     //we set the clouddraftenumerator delegate to this view controller
     self.cloudDraftEnumerator.delegate = self;
+    
+    //we perform this check to ereset the table refresh header in the case
+    //that it was left spinning errantly
+    if (![self.cloudDraftEnumerator isLoading])
+    {
+        [self resetRefreshTableHeaderToNormalPosition];
+    }
+    
     if ([self.cloudDraftEnumerator canEnumerate]) 
     {
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
@@ -948,6 +956,14 @@
     }
 }
 
+- (void) resetRefreshTableHeaderToNormalPosition 
+{
+    //we tell the ego fresh header that we've stopped loading items
+    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
+    
+    // reset the content inset of the tableview so bottom is not covered by toolbar
+    [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
+}
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
@@ -1000,7 +1016,7 @@
     else {
         //enumerator is currently loading, no refresh scheduled
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log as the enumerator is currently running",activityName);
-        [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
+        [self resetRefreshTableHeaderToNormalPosition];
     }
     
     //[self.cloudDraftEnumerator reset];
@@ -1031,11 +1047,7 @@
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
 {
-    //we tell the ego fresh header that we've stopped loading items
-    [self.refreshHeader egoRefreshScrollViewDataSourceDidFinishedLoading:self.tbl_productionTableView];
-    
-    // reset the content inset of the tableview so bottom is not covered by toolbar
-    [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
+    [self resetRefreshTableHeaderToNormalPosition];
 }
 
 #pragma mark - Static Initializer

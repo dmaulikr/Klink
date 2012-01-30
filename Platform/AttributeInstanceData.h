@@ -24,9 +24,16 @@
 insertIntoResourceContext:(ResourceContext *)context 
      forAttributeName:(NSString*)attributeName;
 
+- (void) resetTo:(AttributeInstanceData*)originalAID;
 //static initializers
+
 + (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)type 
                            withResourceContext:(ResourceContext*)context
                             forAttribute:(NSString*)attribute;
+
++ (AttributeInstanceData*) attributeInstanceDataFor:(NSString*)type 
+                                withResourceContext:(ResourceContext*)context
+                                       forAttribute:(NSString*)attribute
+                            shouldInsertIntoContext:(BOOL)shouldInsertIntoContext;
 
 @end

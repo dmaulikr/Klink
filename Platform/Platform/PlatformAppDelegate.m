@@ -98,6 +98,7 @@
     //and other singletons
     [self.applicationSettingsManager settings];    
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+   
     application.applicationSupportsShakeToEdit = NO;
     
     //register for push notifications

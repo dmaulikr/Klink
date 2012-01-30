@@ -175,7 +175,7 @@ static ResourceContext* sharedInstance;
                 NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
                 for (NSInteger i = [updates count]-1;i >=0; i--) {
                     NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
-                    [appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
+                    //[appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
                 }
                 LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
                 [context mergeChangesFromContextDidSaveNotification:notification];
@@ -432,10 +432,10 @@ static ResourceContext* sharedInstance;
     
     //we loop through all updated objects now to ensure we have the latest versions
     updatedObjects = [self.managedObjectContext updatedObjects];
-    NSArray* uArray = [updatedObjects allObjects];
-    for (NSManagedObject* object in uArray) {
-       [self.managedObjectContext refreshObject:object mergeChanges:YES];
-    }
+//    NSArray* uArray = [updatedObjects allObjects];
+//    for (NSManagedObject* object in uArray) {
+//       [self.managedObjectContext refreshObject:object mergeChanges:YES];
+//    }
     [self.managedObjectContext save:&error];
     
     if (error != nil) {
@@ -880,6 +880,9 @@ static ResourceContext* sharedInstance;
         NSFetchRequest *request = [[NSFetchRequest alloc] init] ;
         [request setEntity:entityDescription];
         
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@",OBJECTTYPE,typeName];
+        [request setPredicate:predicate];
+        
         NSError* error = nil;
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
         [request release];
@@ -888,14 +891,15 @@ static ResourceContext* sharedInstance;
             retVal = [results objectAtIndex:0];
         }
         else if (results != nil && [results count] > 1) {
-            LOG_RESOURCECONTEXT(1,@"@%@%",activityName,@"Singleton object either doesn't exist, or has multiple instances in the database");
+            LOG_RESOURCECONTEXT(1,@"%@%@",activityName,@"Singleton object either doesn't exist, or has multiple instances in the database");
+            retVal = [results objectAtIndex:0];
         }
         
                
         
     }
     else {
-         LOG_RESOURCECONTEXT(1,@"@%Resource type %@ doesn't exist",activityName,typeName);
+         LOG_RESOURCECONTEXT(1,@"%@Resource type %@ doesn't exist",activityName,typeName);
     }
     return retVal;
 

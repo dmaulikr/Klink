@@ -12,11 +12,12 @@
 #import "CloudEnumerator.h"
 
 @interface ApplicationSettingsManager : NSObject <CloudEnumeratorDelegate> {
-    ResourceContext* m_resourceContext;
+  
     Callback* m_onFinishCallback;
+    ApplicationSettings* m_applicationSettings;
 }
 
-@property (nonatomic, retain) ResourceContext* resourceContext;
+
 @property (nonatomic, retain) ApplicationSettings* settings;
 @property (nonatomic, retain) CloudEnumerator*  applicationSettingsEnumerator;
 @property (nonatomic, retain) Callback* onFinishCallback;
