@@ -317,8 +317,8 @@
 
 - (BOOL) shouldCopyAttributeValue:(id)value forAttribute:(NSAttributeDescription*)attributeDescription {
     BOOL retVal = NO;
-    //NSString* activityName = @"Resource.shouldCopyAttributeValue:";
-    //NSString* attributeName = [attributeDescription name];
+   // NSString* activityName = @"Resource.shouldCopyAttributeValue:";
+   // NSString* attributeName = [attributeDescription name];
     
     NSAttributeType attrType = [attributeDescription attributeType];
     SEL selector = NSSelectorFromString([attributeDescription name]);
@@ -341,7 +341,7 @@
                 
             }
             else {
-                //LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
+              //  LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
                 retVal = NO;
             }
           
@@ -360,7 +360,7 @@
                 retVal = YES;
             }
             else {
-                //LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
+               // LOG_RESOURCE(0,@"%@Skipping copying of attribute %@ as the attribute is either locked or the same on source object",activityName,attributeName);
                 retVal = NO;
             }
         

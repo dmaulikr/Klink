@@ -15,8 +15,7 @@
 #import "AuthenticationManager.h"
 
 @implementation ApplicationSettingsManager
-@synthesize resourceContext = m_resourceContext;
-@synthesize settings = __settings;
+@synthesize settings = m_settings;
 @synthesize applicationSettingsEnumerator = __applicationSettingsEnumerator;
 @synthesize onFinishCallback = m_onFinishCallback;
 
@@ -41,19 +40,19 @@ static ApplicationSettingsManager* instance;
         return nil;
     }
 }
-- (ApplicationSettings*) settings {
-    ResourceContext* resourceContext = [ResourceContext instance];
-    Resource* existingSettingsObject = [resourceContext singletonResourceWithType:APPLICATIONSETTINGS];
-    if (existingSettingsObject != nil){
-        __settings = (ApplicationSettings*)existingSettingsObject;
-        return __settings;
-    }
-    else {
-        __settings = [self createDefaultSettingsObject];
-        return __settings;
-    }
-
-}
+//- (ApplicationSettings*) settings {
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    Resource* existingSettingsObject = [resourceContext singletonResourceWithType:APPLICATIONSETTINGS];
+//    if (existingSettingsObject != nil){
+//        __settings = (ApplicationSettings*)existingSettingsObject;
+//        return __settings;
+//    }
+//    else {
+//        __settings = [self createDefaultSettingsObject];
+//        return __settings;
+//    }
+//
+//}
 
 ///This method will go through the entire application settings object and ensure that
 ///its attribute meta data is not malformed, such that the app always will be able to receive
@@ -87,6 +86,8 @@ static ApplicationSettingsManager* instance;
         }
         else {
             LOG_CONFIGURATION(0,@"@%Could not load saved settings object, will need to create default",activityName);
+            self.settings = [self createDefaultSettingsObject];
+            [self verifyAndUnlockAllAttributes];
         }
         
         
@@ -174,7 +175,7 @@ static ApplicationSettingsManager* instance;
     
     
     
-    [self.resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+    [context save:YES onFinishCallback:nil trackProgressWith:nil];
     
     return settings;
 }

@@ -880,6 +880,9 @@ static ResourceContext* sharedInstance;
         NSFetchRequest *request = [[NSFetchRequest alloc] init] ;
         [request setEntity:entityDescription];
         
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@",OBJECTTYPE,typeName];
+        [request setPredicate:predicate];
+        
         NSError* error = nil;
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
         [request release];
@@ -888,14 +891,15 @@ static ResourceContext* sharedInstance;
             retVal = [results objectAtIndex:0];
         }
         else if (results != nil && [results count] > 1) {
-            LOG_RESOURCECONTEXT(1,@"@%@%",activityName,@"Singleton object either doesn't exist, or has multiple instances in the database");
+            LOG_RESOURCECONTEXT(1,@"%@%@",activityName,@"Singleton object either doesn't exist, or has multiple instances in the database");
+            retVal = [results objectAtIndex:0];
         }
         
                
         
     }
     else {
-         LOG_RESOURCECONTEXT(1,@"@%Resource type %@ doesn't exist",activityName,typeName);
+         LOG_RESOURCECONTEXT(1,@"%@Resource type %@ doesn't exist",activityName,typeName);
     }
     return retVal;
 
