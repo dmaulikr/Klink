@@ -48,6 +48,7 @@
     Caption* retVal = nil;
     ResourceContext* resourceContext = [ResourceContext instance];
     NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
     
     if ([self.state intValue] == kPUBLISHED) 
     {
@@ -55,7 +56,7 @@
     }
     else 
     {
-        NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
+        NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObjects:sortDescriptor,sortDescriptor2,nil]];
         
         if ([captions count] > 0) 
         {

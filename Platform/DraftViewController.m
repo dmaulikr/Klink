@@ -473,6 +473,8 @@
     }
     
 }
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
     NSString* activityName = @"DraftViewController.viewWillAppear:";

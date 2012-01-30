@@ -226,7 +226,7 @@
     self.enumerationContext.isDone = NO;
     self.enumerationContext.pageNumber = 0;
     self.enumerationContext.numberOfResultsReturned = 0;
-    
+    m_isEnumerationPending = NO;
     //we clear the results cache
     [self.resultsLock lock];
     [self.results removeAllObjects];
@@ -239,8 +239,16 @@
     EnumerationResponse* response = (EnumerationResponse*)callbackResult.response;
     if ([response.didSucceed boolValue]) {
         EnumerationContext* returnedContext = response.enumerationContext;
+        
+        if (returnedContext == nil) {
+            LOG_ENUMERATION(1,@"%@Detected a receipt of a null enumeration context from response",activityName);
+        }
+        
+        
         self.enumerationContext = returnedContext;
         self.isDone = [returnedContext.isDone boolValue];
+        
+        
         
         NSDictionary* userInfo = callbackResult.context;
         BOOL shouldEnumerateSinglePage = [[userInfo valueForKey:kEnumerateSinglePage] boolValue];
