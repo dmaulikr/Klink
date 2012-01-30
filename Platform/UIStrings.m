@@ -24,7 +24,7 @@
 
  NSString* const ui_WELCOME_FULLSCREEN          = @"Use this view to browse through the photos and captions in this Draft.\n\nAdd your own photos and captions to this draft with the toolbar.\n\nRemember to use the 'thumb up' button to up-vote your favorite entries.";
 
- NSString* const ui_WELCOME_DRAFT               = @"A Draft consists of a hashtag and any number of photos and captions.\n\nBefore a Draft reaches its deadline, any Bahndrer can add to it, or up-vote their favorite entries to the top.\n\nAt the deadline, only the highest voted photo and caption is considered for publishing.";
+ NSString* const ui_WELCOME_DRAFT               = @"A Draft consists of a hashtag title and any number of photos and captions.\n\nBefore a Draft reaches its deadline, any Bahndrer can add to it, or up-vote their favorite entries to the top.\n\nAt the deadline, only the highest voted photo and caption is considered for publishing.";
 
  NSString* const ui_WELCOME_PROFILE             = @"Welcome! Use the Profile screen to track your Bahndr activity. Contribute enough drafts, photos and captions in one week and you'll be promoted to Editor.\n\nRemember, while any Bahndrer can write, its the Editors that decide what is published.";
 
@@ -35,4 +35,4 @@ NSString* const ui_LOGIN_REQUIRED = @"While anyone can read Bahndr, only logged-
 NSString* const ui_LOGIN_TITLE = @"Join Bahndr";
 
 
-NSString* const ui_WELCOME_CONTRIBUTE = @"Drafts have 3 parts: a hashtag, photo and caption. You can start a Draft with just a hashtag. Anyone can then add a photo or caption to the Draft before it expires.\n\nGo on, let that Great Dane named creativity off her chain and start writing this Draft..."; 
+NSString* const ui_WELCOME_CONTRIBUTE = @"Drafts have 3 parts: a hashtag, photo and caption. You can start a Draft with just a hashtag title. Anyone can then add a photo or caption to the Draft before it expires.\n\nGo on, let that Great Dane named creativity off her chain and start writing this Draft..."; 

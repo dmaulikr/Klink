@@ -447,7 +447,7 @@
                                     initWithTitle:ui_LOGIN_TITLE
                                     message:ui_LOGIN_REQUIRED
                                     delegate:self
-                                    onFinishSelector:@selector(onWritersLogButtonClicked:)
+                                    onFinishSelector:@selector(showProfileViewController)
                                     onTargetObject:self
                                     withObject:nil
                                     cancelButtonTitle:@"Cancel"
@@ -457,14 +457,14 @@
     }
     else 
     {
-        int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
+        //int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
         
-        if (unreadNotifications > 0) {
+        //if (unreadNotifications > 0) {
             [self showNotificationViewController];
-        }
-        else {
-            [self showProfileViewController];
-        }
+        //}
+        //else {
+            //[self showProfileViewController];
+        //}
     }
 }
 

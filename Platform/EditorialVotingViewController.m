@@ -429,8 +429,8 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    
-    return [[self.frc_pollData fetchedObjects]count];
+    int count = [[self.frc_pollData fetchedObjects]count];
+    return count;
 }
 
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
@@ -438,6 +438,7 @@
     //limit the number of items views loaded concurrently (for performance reasons)
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     NSUInteger numPagesInPoll = [settings.poll_num_pages intValue];
+    //NSUInteger numPagesInPoll = 3;
     return numPagesInPoll;
 }
 
