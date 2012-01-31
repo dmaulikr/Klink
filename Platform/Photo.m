@@ -64,9 +64,26 @@
 
 - (Caption*)captionWithHighestVotes {
     //returns the caption object with the highest number of votes associated with this photo
-    ResourceContext* resourceContext = [ResourceContext instance];
+    /*ResourceContext* resourceContext = [ResourceContext instance];
     Caption* topCaption = (Caption*)[resourceContext resourceWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PHOTOID sortBy:NUMBEROFVOTES sortAscending:NO];
-    return topCaption;
+    
+    return topCaption;*/
+    
+    //returns the caption object with the highest number of votes associated with this photo
+    
+    Caption* retVal = nil;
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NUMBEROFVOTES ascending:NO];
+    NSSortDescriptor* sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
+    
+    NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObjects:sortDescriptor,sortDescriptor2,nil]];
+        
+    if ([captions count] > 0) 
+    {
+        retVal = [captions objectAtIndex:0];
+    }
+    
+    return retVal;
     
 }
 
