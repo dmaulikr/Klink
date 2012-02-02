@@ -574,8 +574,17 @@
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         
         NSString* successMessage =[NSString stringWithFormat: @"Your vote for \"%@\" was cast.",targetPage.displayname];
-        NSString* failureMessage = @"Oops, I'm afraid I couldn't submit your vote. Try again Dave.";
-        NSString* progressMessage = @"Submitting your vote Mr. Editor...";
+        
+        NSString* failureMessage;
+        NSString* progressMessage;
+        if (self.loggedInUser) {
+            failureMessage = [[NSString alloc] initWithFormat:@"Oops, I'm afraid I couldn't submit your vote. Try again %@.", self.loggedInUser.username];
+            progressMessage = [[NSString alloc] initWithFormat:@"Submitting your vote Editor %@...", self.loggedInUser.username];
+        }
+        else {
+            failureMessage = @"Oops, I'm afraid I couldn't submit your vote. Try again.";
+            progressMessage = @"Submitting your vote Editor...";
+        }
         [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:[NSArray arrayWithObject:progressMessage]];
         
         
