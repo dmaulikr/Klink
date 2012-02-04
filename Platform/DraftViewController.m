@@ -360,6 +360,10 @@
             [self.btn_notificationBadge setTitle:[NSString stringWithFormat:@"%d", unreadNotifications] forState:UIControlStateNormal];
             [self.btn_notificationBadge setHidden:NO];
         }
+        else {
+            [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb.png"] forState:UIControlStateNormal];
+            [self.btn_notificationBadge setHidden:YES];
+        }
     }
     else {
         [self.btn_notificationsButton setBackgroundImage:[UIImage imageNamed:@"typewriter_key-lightbulb.png"] forState:UIControlStateNormal];
@@ -561,7 +565,7 @@
     }
     
     // if this draft has expired, we need to disable the the vote and caption buttons
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || self.deadline <= [NSDate date]) {
         [self disableCameraButton];
     }
     

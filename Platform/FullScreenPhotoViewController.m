@@ -26,6 +26,7 @@
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "PageState.h"
+#import "DateTimeHelper.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -503,9 +504,11 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
+    NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+    
     int captionCount = [[self.frc_captions fetchedObjects] count];
     
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || deadline <= [NSDate date]) {
         // if this draft has expired, we need to disable the the vote buttons
         [self disableVoteButton];
     }
@@ -664,7 +667,8 @@
     [titleLabel release];
     
     // if this draft has expired, we need to disable the the vote and caption buttons
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+    NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED  || deadline <= [NSDate date]) {
         [self disableCameraButton];
         [self disableCaptionButton];
         [self disableVoteButton];
