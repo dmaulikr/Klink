@@ -565,7 +565,8 @@
     }
     
     // if this draft has expired, we need to disable the the vote and caption buttons
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || self.deadline <= [NSDate date]) {
+    //if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || self.deadline <= [NSDate date]) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
         [self disableCameraButton];
     }
     
