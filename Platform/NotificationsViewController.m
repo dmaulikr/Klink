@@ -645,6 +645,7 @@
         }
         else if ([notification.rendertype intValue] == kGENERIC_MESSAGE) {
             //generic message display notification to the user
+            //TODO: WE NEED METHOD TO RENDER A MESSAGE
             
         }
         else if ([notification.rendertype intValue] == kGENERIC_BOOK) {

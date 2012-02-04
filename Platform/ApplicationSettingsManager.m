@@ -81,13 +81,13 @@ static ApplicationSettingsManager* instance;
         
         if (appSettings != nil) {
             self.settings = appSettings;
-            [self verifyAndUnlockAllAttributes];
+//            [self verifyAndUnlockAllAttributes];
             
         }
         else {
             LOG_CONFIGURATION(0,@"@%Could not load saved settings object, will need to create default",activityName);
             self.settings = [self createDefaultSettingsObject];
-            [self verifyAndUnlockAllAttributes];
+            //[self verifyAndUnlockAllAttributes];
         }
         
         

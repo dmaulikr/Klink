@@ -948,23 +948,23 @@
 - (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView *)progressView 
                             didFailOnTimer:(NSTimer *)timer 
 {
-    NSString* activityName = @"ContributeViewController.progressViewShouldFinishOnFailure:";
+//    NSString* activityName = @"ContributeViewController.progressViewShouldFinishOnFailure:";
     
-    //we check the enumerator validator to see if it brought it down
-    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Timer expired event received from progress view",activityName);
-    if ([self haveAllObjectIDsBeenCreatedOnCloud])
-    {
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Detected that all objects pending creation have been created, marking all requests associated with it as being completed",activityName);
-        //we know that all the objects are on the cloud because of our validation call
-        //so we then go through the progress views request field and make them all success
-        [self markCreatedObjectRequestsCompleteInProgressView:progressView];
-        //by this point we have set all The Requests to be completed
-        
-    }
-    else 
-    {
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Objects that are outstanding for creation have not been enumerated, no processing to be done",activityName);
-    }
+//    //we check the enumerator validator to see if it brought it down
+//    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Timer expired event received from progress view",activityName);
+//    if ([self haveAllObjectIDsBeenCreatedOnCloud])
+//    {
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Detected that all objects pending creation have been created, marking all requests associated with it as being completed",activityName);
+//        //we know that all the objects are on the cloud because of our validation call
+//        //so we then go through the progress views request field and make them all success
+//        [self markCreatedObjectRequestsCompleteInProgressView:progressView];
+//        //by this point we have set all The Requests to be completed
+//        
+//    }
+//    else 
+//    {
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Objects that are outstanding for creation have not been enumerated, no processing to be done",activityName);
+//    }
     
     //we always return yes, as the progress view will figure out if it were sucessful or not
     return YES;
@@ -974,28 +974,28 @@
 
 - (BOOL) progressViewShouldFinishOnFailure:(UIProgressHUDView *)progressView didFailOnRequest:(Request *)request
 {
-    NSString* activityName = @"ContributeViewController.progressViewShouldFinishOnFailureOfRequest:";
+ //   NSString* activityName = @"ContributeViewController.progressViewShouldFinishOnFailureOfRequest:";
     
     //we need to calculate if we want to wait longer
     
     //in the case a request fails, we need to do a similar check as above
-    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received message that Request %@ has failed",activityName,request.objectid);
-    
-    if ([self haveAllObjectIDsBeenCreatedOnCloud]) 
-    {
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Detected that all objects pending creation have been creted, marking all requests associated with them completed",activityName);
-         [self markCreatedObjectRequestsCompleteInProgressView:progressView];
-    }
-    
-    if ([self.idEnumerator isLoading])
-    {
-        //there is an outstanding enumeration, so we must wait
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@There is an outstanding validation enumeration, instructing progress view to wait and not close yet",activityName);
-        return NO;
-    }
-    else {
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@There is no outstanding validation enumeration, instructing progress view to close",activityName);
-    }
+//    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received message that Request %@ has failed",activityName,request.objectid);
+//    
+//    if ([self haveAllObjectIDsBeenCreatedOnCloud]) 
+//    {
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Detected that all objects pending creation have been creted, marking all requests associated with them completed",activityName);
+//         [self markCreatedObjectRequestsCompleteInProgressView:progressView];
+//    }
+//    
+//    if ([self.idEnumerator isLoading])
+//    {
+//        //there is an outstanding enumeration, so we must wait
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@There is an outstanding validation enumeration, instructing progress view to wait and not close yet",activityName);
+//        return NO;
+//    }
+//    else {
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@There is no outstanding validation enumeration, instructing progress view to close",activityName);
+//    }
     
         
     return YES;
@@ -1054,31 +1054,31 @@
     //heart beat processing
     NSString* activityName = @"ContributeViewController.progressViewHeartbeat:";
     
-    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received heart beat from progressView at %d seconds",activityName,[elapsedTimeInSeconds floatValue]);
-    //we need a threshold value to test against
-    float thresholdToBeginValidationEnumeration = [self.secondsToWaitBeforeExecutingValidationEnumeration floatValue];
-    
-    
-    //now we need to test if we have passed the validation threshold
-    if ([elapsedTimeInSeconds floatValue] > thresholdToBeginValidationEnumeration) 
-    {
-       //we hae crossed the threshold, but it doesnt mean we should execute the validatoin query
-        if (self.idEnumerator == nil ||
-                (self.idEnumerator != nil && [self.idEnumerator canEnumerate]))
-        {
-            //at this point we know we can execute the enumeration, but the broader question remains wehther we should execute said enumeration
-            if (![self haveAllObjectIDsBeenCreatedOnCloud])
-            {
-                //they have not all been created, so now we launch the enumeration
-                LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Validation enumeration threshold reached, and not all objects have been detected as being created, executing validation enumerator",activityName);
-                [self enumerateMissingObjectsIDsFromCloud];
-            }
-        }
-                                            
-    }
-    else {
-        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@ Conditions not met for executing a validation enumeration check, skipping process of event.",activityName);
-    }
+//    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received heart beat from progressView at %d seconds",activityName,[elapsedTimeInSeconds floatValue]);
+//    //we need a threshold value to test against
+//    float thresholdToBeginValidationEnumeration = [self.secondsToWaitBeforeExecutingValidationEnumeration floatValue];
+//    
+//    
+//    //now we need to test if we have passed the validation threshold
+//    if ([elapsedTimeInSeconds floatValue] > thresholdToBeginValidationEnumeration) 
+//    {
+//       //we hae crossed the threshold, but it doesnt mean we should execute the validatoin query
+//        if (self.idEnumerator == nil ||
+//                (self.idEnumerator != nil && [self.idEnumerator canEnumerate]))
+//        {
+//            //at this point we know we can execute the enumeration, but the broader question remains wehther we should execute said enumeration
+//            if (![self haveAllObjectIDsBeenCreatedOnCloud])
+//            {
+//                //they have not all been created, so now we launch the enumeration
+//                LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Validation enumeration threshold reached, and not all objects have been detected as being created, executing validation enumerator",activityName);
+//                [self enumerateMissingObjectsIDsFromCloud];
+//            }
+//        }
+//                                            
+//    }
+//    else {
+//        LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@ Conditions not met for executing a validation enumeration check, skipping process of event.",activityName);
+//    }
     
     //on heartbeat we need to make the call if we should verify whether the 
     //objects made it ot the cloud independently

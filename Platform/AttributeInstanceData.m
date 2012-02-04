@@ -143,7 +143,7 @@ insertIntoResourceContext:(ResourceContext *)context
     
     //we mark the baseURL property of the application settings object type
     //as being a locked attribute
-    if ( 
+    if ([lowerCaseName isEqualToString:BASEURL] && 
         [type isEqualToString:APPLICATIONSETTINGS]) {
         retVal.islocked = [NSNumber numberWithBool:YES];
     }
