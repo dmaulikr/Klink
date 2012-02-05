@@ -504,12 +504,11 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    //NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+    NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
     
     int captionCount = [[self.frc_captions fetchedObjects] count];
     
-    //if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || deadline <= [NSDate date]) {
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
         // if this draft has expired, we need to disable the the vote buttons
         [self disableVoteButton];
     }
@@ -669,8 +668,7 @@
     
     // if this draft has expired, we need to disable the the vote and caption buttons
     NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-    //if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || deadline <= [NSDate date]) {
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
         [self disableCameraButton];
         [self disableCaptionButton];
         [self disableVoteButton];
