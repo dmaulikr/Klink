@@ -19,6 +19,7 @@
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
 @synthesize tapGesture = m_tapGesture;
+//@synthesize swipeGesture = m_swipeGesture;
 
 
 #pragma mark - Frames
@@ -323,10 +324,16 @@
     // set up a tap gesture recognizer to grab page flip taps that may cover BookPageViewController and HomeViewController buttons
     for (UIGestureRecognizer* gesture in self.pageController.gestureRecognizers) {
         if ([gesture isKindOfClass:[UITapGestureRecognizer class]]) {
-            self.tapGesture = gesture;
+            self.tapGesture = (UITapGestureRecognizer*)gesture;
             self.tapGesture.delegate = self;
         }
     }
+    
+    // Add a swipe gesture recognizer to grab page flip swipes that start from the far right of the screen, past the edge of the book page
+    // Set direction and number of touches
+    //[self.swipeGesture setDirection:UISwipeGestureRecognizerDirectionLeft];
+    //[self.swipeGesture setNumberOfTouchesRequired:1];
+    //[self.iv_background addGestureRecognizer:self.swipeGesture];
     
     //[self.pageController.view setFrame:[self.view bounds]];
     [self.pageController.view setFrame:[self frameForBookPageViewController]];
@@ -402,11 +409,17 @@
     // test if our control subview is on-screen
     if (self.pageController.view.superview != nil) {
         if (gestureRecognizer == self.tapGesture) {
-            // we touched the edge of the UIPageViewController
+            // we touched the UIPageViewController
             [self.nextResponder touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
             
             return NO; // ignore the touch
         }
+        /*else if (gestureRecognizer == self.swipeGesture) {
+            // we touched background of the BookViewController, pass the swipe to the UIPageViewController
+            [self.pageController touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
+            
+            return NO; // ignore the touch
+        }*/
     }
     return YES; // handle the touch
 }
