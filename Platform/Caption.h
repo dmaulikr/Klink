@@ -20,6 +20,8 @@
 @property (nonatomic,retain) NSNumber* photoid;
 @property (nonatomic,retain) NSNumber* hasvoted;
 @property (nonatomic,retain) NSNumber* pageid;
+@property (nonatomic,retain) NSNumber* hasseen;
+
 //static initializers
 + (Caption*) createCaptionForPhoto:(NSNumber*)photoid withCaption:(NSString*)caption;
 @end
