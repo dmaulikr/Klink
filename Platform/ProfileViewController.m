@@ -414,45 +414,43 @@
     
 }
 
+
 #pragma mark - Feedback Mail Helper
-NSString*
+	
+NSString*	
 machineName()
 {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    return [NSString stringWithCString:systemInfo.machine
-                              encoding:NSUTF8StringEncoding];
+    	
+        struct utsname systemInfo;
+    	
+        uname(&systemInfo);
+    	
+        return [NSString stringWithCString:systemInfo.machine
+                                               encoding:NSUTF8StringEncoding];
+    	
 }
-
 - (void)composeFeedbackMail {
-    // Get version information about the app and phone to prepopulate in the email
+  // Get version information about the app and phone to prepopulate in the email
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString* appVersionNum = [infoDict objectForKey:@"CFBundleVersion"];
     NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
     NSString* deviceType = machineName();
     NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
-    
-    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
+     // Set the email subject
+     [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
     
-    // Set the email subject
-    [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
-    
-    // Set up the recipients
     NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com", nil];
     [picker setToRecipients:toRecipients];
-    
-    // Set up the message header
+
     NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
     [picker setMessageBody:messageHeader isHTML:NO];
-    
+
     // Present the mail composition interface
     [self presentModalViewController:picker animated:YES];
     [picker release]; // Can safely release the controller now.
 }
-
-
 
 #pragma mark - MailComposeController Delegate
 // The mail compose view controller delegate method
@@ -515,8 +513,7 @@ machineName()
     else if (buttonIndex == 2) {
         // Feedback button pressed
         [self composeFeedbackMail];
-        
-        /*MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+       /* MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         picker.mailComposeDelegate = self;
         
         [picker setSubject:@"Feedback!"];
