@@ -116,6 +116,8 @@ static ResourceContext* sharedInstance;
         self.managedObjectContextsLock = l;
         [l release];
         
+        
+               
         NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(onContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
         
@@ -252,6 +254,9 @@ static ResourceContext* sharedInstance;
 {
     
     NSString* activityName = @"ResourceContext.save:";
+    
+    
+    
     NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
@@ -436,6 +441,8 @@ static ResourceContext* sharedInstance;
 //    for (NSManagedObject* object in uArray) {
 //       [self.managedObjectContext refreshObject:object mergeChanges:YES];
 //    }
+    
+    
     [self.managedObjectContext save:&error];
     
     if (error != nil) {
@@ -531,6 +538,8 @@ static ResourceContext* sharedInstance;
     [createRequests release];
     
     [progressDelegate initializeWith:retVal];
+    
+   
     return retVal;
 }
 

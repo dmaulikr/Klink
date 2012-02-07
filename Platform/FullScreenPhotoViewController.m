@@ -367,7 +367,7 @@
         caption.hasseen = [NSNumber numberWithBool:YES];
         
         //save the change
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     }
 }
 
