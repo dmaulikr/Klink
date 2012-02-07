@@ -172,14 +172,16 @@
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
-    if (![facebook isSessionValid]) {
-        [facebook authorize:permissions delegate:self];
-    }
-    else {
-        //user is already authenticated
-        LOG_LOGINVIEWCONTROLLER(0, @"%@user is already authenticated with Facebook",activityName);
-        [self checkStatusAndDismiss];
-    }
+    [facebook authorize:permissions delegate:self];
+    
+//    if (![facebook isSessionValid]) {
+//        [facebook authorize:permissions delegate:self];
+//    }
+//    else {
+//        //user is already authenticated
+//        LOG_LOGINVIEWCONTROLLER(0, @"%@user is already authenticated with Facebook",activityName);
+//        [self checkStatusAndDismiss];
+//    }
     
 }
 

@@ -201,10 +201,10 @@ static  AuthenticationManager* sharedManager;
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
-    if (![facebook isSessionValid]) {
+   // if (![facebook isSessionValid]) {
         LOG_SECURITY(0,@"%@%@",activityName, @"Beginning facebook authentication sequencce");
         [facebook authorize:permissions delegate:self];
-    }
+    //}
     
 }
 
@@ -242,20 +242,20 @@ withAuthenticationContext:(AuthenticationContext *)context
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
-    if (context.facebookaccesstoken) {
-        
-        facebook.accessToken = context.facebookaccesstoken;
-        facebook.expirationDate =[DateTimeHelper parseWebServiceDateDouble:context.facebookaccesstokenexpirydate];
-        if (![facebook isSessionValid]) {            
-            LOG_SECURITY(1, @"%@Facebook session is invalid with token %@",activityName,facebook.accessToken);
-            //need to begin re-authentication procedure
-            return NO;
-        }
-    }
-    else {
-        LOG_SECURITY(1, @"%@%@",activityName,@"No facebook token returned in authenticator");
-        return NO;
-    }
+//    if (context.facebookaccesstoken) {
+//        
+//        facebook.accessToken = context.facebookaccesstoken;
+//        facebook.expirationDate =[DateTimeHelper parseWebServiceDateDouble:context.facebookaccesstokenexpirydate];
+//        if (![facebook isSessionValid]) {            
+//            LOG_SECURITY(1, @"%@Facebook session is invalid with token %@",activityName,facebook.accessToken);
+//            //need to begin re-authentication procedure
+//            return NO;
+//        }
+//    }
+//    else {
+//        LOG_SECURITY(1, @"%@%@",activityName,@"No facebook token returned in authenticator");
+//        return NO;
+//    }
     //set the current user id
     self.m_LoggedInUserID = userID;
     
