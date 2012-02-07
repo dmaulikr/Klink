@@ -19,6 +19,7 @@
 
     NSMutableDictionary* m_managedObjectContexts;
     NSLock*  m_lock;
+  
 }
 
 @property (nonatomic,retain) NSLock* managedObjectContextsLock;

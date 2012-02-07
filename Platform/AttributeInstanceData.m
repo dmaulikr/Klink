@@ -109,6 +109,7 @@ insertIntoResourceContext:(ResourceContext *)context
     //we mark has seen as being a locked value, so it doesnt get overwritten by the server
     if ([lowerCaseName isEqualToString:HASSEEN]) {
         retVal.islocked = [NSNumber numberWithBool:YES];
+        retVal.islocal = [NSNumber numberWithBool:YES];
     }
     
     //we mark numberofvotes attributes on Page and Photo objects local
