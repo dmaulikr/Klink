@@ -24,5 +24,4 @@
 @property (nonatomic,retain) NSNumber* dateexpires;
 @property (nonatomic,retain) NSArray* feeddata;
 @property (nonatomic,retain) NSNumber* rendertype;
-@property (nonatomic,retain) NSString* title;
 @end

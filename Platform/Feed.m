@@ -17,7 +17,6 @@
 @dynamic dateexpires;
 @dynamic imageurl;
 @dynamic rendertype;
-@dynamic title;
 
 @synthesize feeddata = __feeddata;
 
