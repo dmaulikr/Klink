@@ -10,7 +10,6 @@
 #import "Macros.h"
 #import "Page.h"
 #import "CloudEnumeratorFactory.h"
-#import "UINotificationIcon.h"
 #import "SocialSharingManager.h"
 #import "PageState.h"
 #import "ApplicationSettings.h"

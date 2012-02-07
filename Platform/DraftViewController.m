@@ -12,7 +12,6 @@
 #import "DateTimeHelper.h"
 #import "CloudEnumeratorFactory.h"
 #import "AuthenticationManager.h"
-#import "UINotificationIcon.h"
 #import "UICameraActionSheet.h"
 #import "Types.h"
 #import "Attributes.h"

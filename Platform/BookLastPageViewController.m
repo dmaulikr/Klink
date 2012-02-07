@@ -33,7 +33,7 @@
 
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
-    NSString* activityName = @"BookLastViewController.frc_draft_pages:";
+    //NSString* activityName = @"BookLastViewController.frc_draft_pages:";
     if (__frc_draft_pages != nil) {
         return __frc_draft_pages;
     }

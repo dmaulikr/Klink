@@ -1052,7 +1052,7 @@
           timeElapsedInSeconds:(NSNumber *)elapsedTimeInSeconds
 {
     //heart beat processing
-    NSString* activityName = @"ContributeViewController.progressViewHeartbeat:";
+    //NSString* activityName = @"ContributeViewController.progressViewHeartbeat:";
     
 //    LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Received heart beat from progressView at %d seconds",activityName,[elapsedTimeInSeconds floatValue]);
 //    //we need a threshold value to test against

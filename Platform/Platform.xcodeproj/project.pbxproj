@@ -238,8 +238,6 @@
 		C55EC75D145FA50800BA66FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC75F145FA50800BA66FA /* main.m */; };
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
-		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
-		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
@@ -655,8 +653,6 @@
 		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
 		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
-		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
-		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
 		C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationTableViewCell.m; sourceTree = "<group>"; };
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
@@ -1707,8 +1703,6 @@
 			children = (
 				C5A82D751466667E00E77675 /* UICameraActionSheet.h */,
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
-				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
-				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
 				C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */,
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
@@ -2027,7 +2021,6 @@
 				C5C83AE214480DF600AF38CF /* FBDialog.bundle in Resources */,
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
-				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
 				C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */,
 				3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */,
 				C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */,
@@ -2309,7 +2302,6 @@
 				C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */,
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
 				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
-				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
 				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */,
