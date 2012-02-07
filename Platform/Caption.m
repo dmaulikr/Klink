@@ -21,7 +21,6 @@
 @dynamic numberofflags;
 @dynamic pageid;
 @dynamic hasseen;
-
 + (Caption*)createCaptionForPhoto:(NSNumber *)photoid withCaption:(NSString *)caption {
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];    
     ResourceContext* resourceContext = [ResourceContext instance];

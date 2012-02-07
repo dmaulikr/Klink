@@ -522,8 +522,11 @@
     int captionCount = [[self.frc_captions fetchedObjects] count];
     
     if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
+        
         // if this draft has expired, we need to disable the the vote buttons
+       	
         [self disableVoteButton];
+      	
     }
     else if (captionCount > 0) {
         
@@ -681,7 +684,7 @@
     
     // if this draft has expired, we need to disable the the vote and caption buttons
     NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {        
         [self disableCameraButton];
         [self disableCaptionButton];
         [self disableVoteButton];
