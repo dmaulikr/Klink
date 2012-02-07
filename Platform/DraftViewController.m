@@ -385,7 +385,7 @@
 - (void) commonInit {
     //common setup for the view controller
     
-    self.viewedCaptionsArray = [[NSMutableArray alloc] init];
+    self.viewedCaptionsArray = [[[NSMutableArray alloc] init] autorelease];
      
 }
 
@@ -608,8 +608,9 @@
         caption.hasseen = [NSNumber numberWithBool:YES];
     }
     
-    //save the change
-    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+    //save the change locally
+    [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+    
 }
 
 - (void)viewDidUnload
@@ -733,7 +734,6 @@
         
         // Add the caption to the array of viewed captions to mark as read later
         if ([caption.hasseen boolValue] == NO) {
-            //self.viewedCaptionsArray = [NSMutableArray arrayWithArray:self.viewedCaptionsArray];
             [self.viewedCaptionsArray addObject:caption];
         }
         
