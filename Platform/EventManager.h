@@ -17,6 +17,7 @@ typedef enum {
     kNEWCAPTION,
     kNEWPHOTO,
     kNEWPAGE,
+    kCAPTIONREAD,
     //kINSERTEDOBJECTS,
     //kUPDATEDOBJECTS,
     //kDELETEDOBJECTS,
@@ -60,6 +61,7 @@ typedef enum {
 - (void) raiseNewPhotoEvent         :(NSDictionary*)userInfo;
 - (void) raiseNewCaptionEvent       :(NSDictionary*)userInfo;
 - (void) raiseNewPageEvent          :(NSDictionary*)userInfo;
+- (void) raiseCaptionReadEvent      :(NSDictionary*)userInfo;
 
 - (void) raisePageViewPhotoDownloadedEvent:(NSDictionary*)userInfo;
 

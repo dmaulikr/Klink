@@ -358,6 +358,19 @@
     return retVal;
 }
 
+- (void) markCaptionRead {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    // mark the caption as read if it has not been already
+    if ([caption.hasseen boolValue] == NO) {
+        caption.hasseen = [NSNumber numberWithBool:YES];
+        
+        //save the change
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+    }
+}
+
 #pragma mark - Control Hiding / Showing
 - (void)cancelControlHiding {
 	// If a timer exists then cancel and release
@@ -754,6 +767,12 @@
         [self.iv_leftArrow setAlpha:0];
         [self.iv_rightArrow setAlpha:0];
     }
+    
+    // Mark the currently visible caption read
+    if (self.captionID != nil) {
+        [self markCaptionRead];
+    }
+    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -1409,6 +1428,11 @@
             // Update page indicator for captions
             //[self.pg_captionPageIndicator setNumberOfPages:captionCount];
             //[self.pg_captionPageIndicator setCurrentPage:index];
+            
+            // Mark the currently visible caption read
+            if (self.captionID != nil) {
+                [self markCaptionRead];
+            }
         }
         else if (captionCount <= 0) {
             self.captionID = nil;

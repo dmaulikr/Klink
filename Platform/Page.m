@@ -75,6 +75,17 @@
     return photo;
 }
 
+//returns the number of unread Captions in the store
+- (int) numberOfUnreadCaptions {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSArray* valuesArray = [NSArray arrayWithObjects:[self.objectid stringValue], [NSNumber numberWithBool:NO], nil];
+    NSArray* attributesArray = [NSArray arrayWithObjects:PAGEID, HASSEEN, nil];
+    
+    NSArray* unreadCaptions = [resourceContext resourcesWithType:CAPTION withValuesEqual:valuesArray forAttributes:attributesArray sortBy:nil];
+    
+    return [unreadCaptions count];
+}
+
 //returns the number of drafts in the store
 + (int) numberOfDrafts {
     ResourceContext* resourceContext = [ResourceContext instance];

@@ -19,6 +19,7 @@
     UILabel*                m_lbl_deadline;
     //UILabel*                m_lbl_deadlineNavBar;
     NSDate*                 m_deadline;
+    NSMutableArray*         m_viewedCaptionsArray;
 
     UITableView*            m_tbl_draftTableView;
 
@@ -45,6 +46,7 @@
 @property (nonatomic, retain) IBOutlet UILabel*              lbl_deadline;
 //@property (nonatomic, retain)          UILabel*              lbl_deadlineNavBar;
 @property (nonatomic, retain)          NSDate*               deadline;
+@property (nonatomic, retain) NSMutableArray*                viewedCaptionsArray;
 @property (nonatomic, retain) IBOutlet UITableView*          tbl_draftTableView;
 @property (nonatomic, retain) CloudEnumerator*               photoCloudEnumerator;
 @property (nonatomic, retain) EGORefreshTableHeaderView*     refreshHeader;

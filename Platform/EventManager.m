@@ -109,6 +109,7 @@ static EventManager* sharedInstance;
     [self registerCallback:callback forSystemEvent:kNEWCAPTION];
     [self registerCallback:callback forSystemEvent:kNEWPHOTO];
     [self registerCallback:callback forSystemEvent:kNEWPAGE];
+    [self registerCallback:callback forSystemEvent:kCAPTIONREAD];
     //[self registerCallback:callback forSystemEvent:kINSERTEDOBJECTS];
     //[self registerCallback:callback forSystemEvent:kUPDATEDOBJECTS];
     //[self registerCallback:callback forSystemEvent:kDELETEDOBJECTS];    
@@ -203,6 +204,10 @@ static EventManager* sharedInstance;
     [self raiseEvent:kNEWPAGE withUserInfo:userInfo];
 }
 
+- (void) raiseCaptionReadEvent: (NSDictionary*)userInfo {
+    [self raiseEvent:kCAPTIONREAD withUserInfo:userInfo];
+}
+
 - (void) raisePageViewPhotoDownloadedEvent:(NSDictionary*)userInfo {
     [self raiseEvent:kPAGEVIEWPHOTODOWNLOADED withUserInfo:userInfo];
 }
@@ -278,7 +283,15 @@ static EventManager* sharedInstance;
                 
                 userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
                 [self raiseNewCaptionVoteEvent:userInfo];
-            }            
+            }
+            else if ([changedAttributes valueForKey:HASSEEN] != nil) {
+                //number of votes has been changed
+                Caption* caption = (Caption*)obj;
+                LOG_EVENTMANAGER(0, @"%@raising caption read event for caption %@",activityName,caption.objectid);
+                
+                userInfo = [NSDictionary dictionaryWithObject:obj forKey:kCAPTION];
+                [self raiseCaptionReadEvent:userInfo];
+            }
         }
         else if ([obj isKindOfClass:[Photo class]]) {
             //it is a photo object

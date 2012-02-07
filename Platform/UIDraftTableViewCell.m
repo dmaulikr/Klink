@@ -27,19 +27,20 @@
 #define kPHOTOFRAMETHICKNESS        30
 
 @implementation UIDraftTableViewCell
-@synthesize photoID = m_photoID;
-@synthesize captionID = m_captionID;
-@synthesize draftTableViewCell = m_draftTableViewCell;
-@synthesize cellType = m_cellType;
-@synthesize iv_photo = m_iv_photo;
-@synthesize iv_photoFrame = m_iv_photoFrame;
-@synthesize lbl_caption = m_lbl_caption;
-@synthesize lbl_photoby = m_lbl_photoby;
-@synthesize lbl_captionby = m_lbl_captionby;
-@synthesize lbl_numVotes = m_lbl_numVotes;
-//@synthesize lbl_numCaptions = m_lbl_numCaptions;
-@synthesize btn_writtenBy = m_btn_writtenBy;
-@synthesize btn_illustratedBy = m_btn_illustratedBy;
+@synthesize photoID                 = m_photoID;
+@synthesize captionID               = m_captionID;
+@synthesize draftTableViewCell      = m_draftTableViewCell;
+@synthesize cellType                = m_cellType;
+@synthesize iv_photo                = m_iv_photo;
+@synthesize iv_photoFrame           = m_iv_photoFrame;
+@synthesize lbl_caption             = m_lbl_caption;
+@synthesize lbl_photoby             = m_lbl_photoby;
+@synthesize lbl_captionby           = m_lbl_captionby;
+@synthesize lbl_numVotes            = m_lbl_numVotes;
+//@synthesize lbl_numCaptions         = m_lbl_numCaptions;
+@synthesize iv_unreadCaptionBadge   = m_iv_unreadCaptionBadge;
+@synthesize btn_writtenBy           = m_btn_writtenBy;
+@synthesize btn_illustratedBy       = m_btn_illustratedBy;
 
 
 #pragma mark - Photo Frame Helper
@@ -127,6 +128,15 @@
         
     }
     
+    // Update unread flag
+    if ([caption.hasseen boolValue] == YES) {
+        [self.iv_unreadCaptionBadge setHidden:YES];
+    }
+    else {
+        // show the unread badge 
+        [self.iv_unreadCaptionBadge setHidden:NO];
+    }
+    
     // reset labels to defualt values
     self.lbl_numVotes.text = @"0";
     //self.lbl_numCaptions.text = @"0";
@@ -167,6 +177,7 @@
     self.captionID = captiondid;
     [self render];
 }
+
 - (void)renderWithPhotoID:(NSNumber*)photoID {
     self.photoID = photoID;
     

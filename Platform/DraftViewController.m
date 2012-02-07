@@ -34,15 +34,16 @@
 
 @implementation DraftViewController
 @synthesize frc_photos                  = __frc_photos;
+@synthesize frc_captions                = __frc_captions;
 @synthesize pageID                      = m_pageID;
 @synthesize lbl_draftTitle              = m_lbl_draftTitle;
 @synthesize lbl_deadline                = m_lbl_deadline;
+@synthesize viewedCaptionsArray         = m_viewedCaptionsArray;
 //@synthesize lbl_deadlineNavBar          = m_lbl_deadlineNavBar;
 @synthesize deadline                    = m_deadline;
 @synthesize tbl_draftTableView          = m_tbl_draftTableView;
 @synthesize photoCloudEnumerator        = m_photoCloudEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
-@synthesize frc_captions                = __frc_captions;
 @synthesize v_typewriter                = m_v_typewriter;
 @synthesize btn_profileButton           = m_btn_profileButton;
 @synthesize btn_cameraButton            = m_btn_cameraButton;
@@ -383,6 +384,8 @@
 #pragma mark - Initializers
 - (void) commonInit {
     //common setup for the view controller
+    
+    self.viewedCaptionsArray = [[NSMutableArray alloc] init];
      
 }
 
@@ -594,6 +597,21 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //process viewed captions
+    for (Caption* caption in self.viewedCaptionsArray) {
+        caption.hasseen = [NSNumber numberWithBool:YES];
+    }
+    
+    //save the change
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -602,6 +620,7 @@
     
     self.lbl_draftTitle = nil;
     self.lbl_deadline = nil;
+    self.viewedCaptionsArray = nil;
     //self.lbl_deadlineNavBar = nil;
     self.tbl_draftTableView = nil;
     self.refreshHeader = nil;
@@ -711,7 +730,14 @@
         }
         
         [cell renderWithCaptionID:caption.objectid];
-         return cell;
+        
+        // Add the caption to the array of viewed captions to mark as read later
+        if ([caption.hasseen boolValue] == NO) {
+            //self.viewedCaptionsArray = [NSMutableArray arrayWithArray:self.viewedCaptionsArray];
+            [self.viewedCaptionsArray addObject:caption];
+        }
+        
+        return cell;
     }
     else {
         return nil;

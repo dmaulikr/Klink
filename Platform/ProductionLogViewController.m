@@ -51,11 +51,9 @@
 @synthesize btn_notificationBadge       = m_btn_notificationBadge;
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
-//@synthesize swipeGesture                = m_swipeGesture;
 @synthesize btn_homeButton              = m_btn_homeButton;
 
 
-#pragma mark - Properties
 //this NSFetchedResultsController will query for all draft pages
 - (NSFetchedResultsController*) frc_draft_pages {
     NSString* activityName = @"ProductionLogViewController.frc_draft_pages:";
@@ -132,6 +130,7 @@
     Callback* newCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaption:)];
     Callback* newPhotoVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewPhotoVote:)];
     Callback* newCaptionVoteCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNewCaptionVote:)];
+    Callback* unreadCaptionCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUnreadCaptionUpdate:)];
     
     //we set each callback to call on the mainthread
     newDraftCallback.fireOnMainThread = YES;
@@ -140,18 +139,21 @@
     newPhotoCallback.fireOnMainThread = YES;
     newCaptionCallback.fireOnMainThread = YES;
     newCaptionVoteCallback.fireOnMainThread = YES;
+    unreadCaptionCallback.fireOnMainThread = YES;
     
     [self.eventManager registerCallback:newDraftCallback forSystemEvent:kNEWPAGE];
     [self.eventManager registerCallback:newPhotoCallback forSystemEvent:kNEWPHOTO];
     [self.eventManager registerCallback:newCaptionCallback forSystemEvent:kNEWCAPTION];
     [self.eventManager registerCallback:newPhotoVoteCallback forSystemEvent:kNEWPHOTOVOTE];
     [self.eventManager registerCallback:newCaptionVoteCallback forSystemEvent:kNEWCAPTIONVOTE];
+    [self.eventManager registerCallback:unreadCaptionCallback forSystemEvent:kCAPTIONREAD];
     
     [newDraftCallback release];
     [newPhotoCallback release];
     [newCaptionCallback release];
     [newPhotoVoteCallback release];
     [newCaptionVoteCallback release];
+    [unreadCaptionCallback release];
     
 }
 
@@ -520,14 +522,6 @@
                                     action:@selector(onHomeButtonPressed:)] autorelease];
     self.navigationItem.leftBarButtonItem = leftButton;
     
-    /*// Create gesture recognizer for the typewriter view to pass swipes through to the tableview
-    self.swipeGesture = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:nil] autorelease];
-    self.swipeGesture.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
-    self.swipeGesture.delegate = self;
-    
-    // Add the gesture to the typewriter view
-    [self.v_typewriter addGestureRecognizer:self.swipeGesture];*/
-    
     // Setup the animation to show the typewriter
     self.shouldCloseTypewriter = YES;
     self.shouldOpenTypewriter = YES;
@@ -749,25 +743,6 @@
     }
 }
 
-/*#pragma mark - UIGestureRecognizer Delegates
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    // test if our typewriter control subview is on-screen
-    if (self.v_typewriter.superview != nil) {
-        if (gestureRecognizer == self.swipeGesture) {
-            // user swiped in the area of the typewriter view, pass the touch on to the tableview
-            //[self.nextResponder touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
-            
-            return NO; // ignore the touch
-        }
-    }
-    return YES; // handle the touch
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}*/
-
 #pragma mark - Button Handlers
 #pragma mark Navigation Button Handlers
 - (IBAction) onHomeButtonPressed:(id)sender {
@@ -922,8 +897,12 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
-- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
-{
+-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_productionTableView endUpdates];
+    [self.tbl_productionTableView reloadData];
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_productionTableView beginUpdates];
 }
 
@@ -969,13 +948,6 @@
     [self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
-{
-    
-    [self.tbl_productionTableView endUpdates];
-    [self.tbl_productionTableView reloadData];
-}
-
 #pragma mark - Callback Event Handlers
 - (void) onFeedRefreshComplete:(CallbackResult*)result 
 {
@@ -1000,6 +972,10 @@
 }
 
 - (void) onNewCaptionVote:(CallbackResult*)result {
+    [self.tbl_productionTableView reloadData];
+}
+
+- (void) onUnreadCaptionUpdate:(CallbackResult*)result {
     [self.tbl_productionTableView reloadData];
 }
 

@@ -31,8 +31,6 @@
     
     UIButton*   m_btn_homeButton;
     
-    //UISwipeGestureRecognizer* m_swipeGesture;
-    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
@@ -55,7 +53,6 @@
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
 
-//@property (strong, nonatomic) UISwipeGestureRecognizer*  swipeGesture;
 
 - (IBAction) onHomeButtonPressed:(id)sender;
 - (IBAction) onProfileButtonPressed:(id)sender;

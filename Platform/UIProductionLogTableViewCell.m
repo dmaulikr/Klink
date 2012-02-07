@@ -20,17 +20,19 @@
 #define kPHOTOID @"photoid"
 
 @implementation UIProductionLogTableViewCell
-@synthesize pageID = m_pageID;
-@synthesize productionLogTableViewCell = m_productionLogTableViewCell;
-@synthesize iv_photo = m_iv_photo;
-@synthesize lbl_draftTitle = m_lbl_draftTitle;
-@synthesize lbl_deadline = m_lbl_deadline;
-//@synthesize lbl_numPhotos = m_lbl_numPhotos;
-@synthesize lbl_numCaptions = m_lbl_numCaptions;
-@synthesize topVotedPhotoID = m_topVotedPhotoID;
+@synthesize pageID                      = m_pageID;
+@synthesize productionLogTableViewCell  = m_productionLogTableViewCell;
+@synthesize iv_photo                    = m_iv_photo;
+@synthesize lbl_draftTitle              = m_lbl_draftTitle;
+@synthesize lbl_deadline                = m_lbl_deadline;
+//@synthesize lbl_numPhotos               = m_lbl_numPhotos;
+@synthesize lbl_numCaptions             = m_lbl_numCaptions;
+@synthesize iv_captionIcon              = m_iv_captionIcon;
+@synthesize btn_unreadCaptionsBadge     = m_btn_unreadCaptionsBadge;
+@synthesize topVotedPhotoID             = m_topVotedPhotoID;
 @synthesize deadline;
 
-@synthesize eventManager = __eventManager;
+@synthesize eventManager                = __eventManager;
 
 
 #pragma mark - Properties
@@ -93,8 +95,39 @@
 }
 
 
-- (void) renderPhoto:(Photo*)photo {
+- (void)updateCaptionCountLabels {
+    ResourceContext* resourceContext = [ResourceContext instance];
     
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (draft != nil) {
+        // self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
+        self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
+        
+        int newCaptions = [draft numberOfUnreadCaptions];
+        
+        if (newCaptions > 0) {
+            if (newCaptions > 99) {
+                // limit the label to "99"
+                newCaptions = 99;
+            }
+            
+            [self.btn_unreadCaptionsBadge setTitle:[NSString stringWithFormat:@"%d", newCaptions] forState:UIControlStateNormal];
+            [self.btn_unreadCaptionsBadge setTitle:[NSString stringWithFormat:@"%d", newCaptions] forState:UIControlStateDisabled];
+            
+            [self.lbl_numCaptions setHidden:YES];
+            [self.iv_captionIcon setHidden:YES];
+            [self.btn_unreadCaptionsBadge setHidden:NO];
+        }
+        else {
+            [self.lbl_numCaptions setHidden:NO];
+            [self.iv_captionIcon setHidden:NO];
+            [self.btn_unreadCaptionsBadge setHidden:YES];
+        }
+    }
+}
+
+- (void) renderPhoto:(Photo*)photo {
     ImageManager* imageManager = [ImageManager instance];
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
     
@@ -128,8 +161,9 @@
     if (draft != nil) {
        
         self.lbl_draftTitle.text =  draft.displayname;
-       // self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
-        self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
+       
+        // Update caption count labels
+        [self updateCaptionCountLabels];
         
         Photo* topPhoto = [draft photoWithHighestVotes];
         self.topVotedPhotoID = topPhoto.objectid;
@@ -163,8 +197,9 @@
     self.topVotedPhotoID = nil;
     self.deadline = nil;
     self.lbl_draftTitle.text = nil;
-   // self.lbl_numPhotos.text = nil;
+    //self.lbl_numPhotos.text = nil;
     self.lbl_numCaptions.text = nil;
+    self.btn_unreadCaptionsBadge.titleLabel.text = nil;
     self.lbl_deadline.text = nil;
     self.iv_photo.image = nil;
     

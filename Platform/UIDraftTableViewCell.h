@@ -26,6 +26,7 @@
     UILabel*                    m_lbl_captionby;
     UILabel*                    m_lbl_numVotes;
 //    UILabel*                    m_lbl_numCaptions;
+    UIImageView*                m_iv_unreadCaptionBadge;
     
 }
 
@@ -43,6 +44,9 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numVotes;
 //@property (nonatomic, retain) IBOutlet UILabel*         lbl_numCaptions;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_unreadCaptionBadge;
+
+
 - (void) renderWithCaptionID:(NSNumber*)captionid;
 - (void) renderWithPhotoID:(NSNumber*)photoID;
 //- (IBAction) onWrittenByClicked:(id)sender;
