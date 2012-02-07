@@ -23,6 +23,8 @@
 #import "UserDefaultSettings.h"
 #define kEnumerateSinglePage    @"enumerateSinglePage"
 
+static NSLock* lock = nil;
+
 @implementation CloudEnumerator
 @synthesize enumerationContext = m_enumerationContext;
 @synthesize query = m_query;
@@ -53,6 +55,10 @@
         NSLock* lock = [[NSLock alloc]init];
         self.resultsLock = lock;
         [lock release];
+        
+        if (lock == nil) {
+            lock = [[NSLock alloc]init];
+        }
     }
     
     return self;
@@ -237,7 +243,9 @@
 - (void) onEnumerateComplete:(CallbackResult*)callbackResult {
     NSString* activityName = @"CloudEnumerator.onEnumerationComplete:";
     EnumerationResponse* response = (EnumerationResponse*)callbackResult.response;
+    
     if ([response.didSucceed boolValue]) {
+        [lock lock];
         EnumerationContext* returnedContext = response.enumerationContext;
         
         if (returnedContext == nil) {
@@ -321,7 +329,7 @@
         }
         
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-        
+        [lock unlock];
         if (!self.isDone) {
             //enumeration is still open
             
