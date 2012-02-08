@@ -19,6 +19,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerBase.h"
 #import "ProfileViewController.h"
+#import "WebViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 
@@ -263,124 +264,27 @@
     [super viewDidDisappear:animated];
 }
 
+- (void) dealloc {
+    self.frc_notifications = nil;
+    [super dealloc];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return [[self.frc_notifications fetchedObjects]count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    int notificationCount = [[self.frc_notifications fetchedObjects]count];
-    if ([indexPath row] < notificationCount) 
-    {
-        Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
-        UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
-    
-        if (cell == nil) {
-            //cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
-            cell = [[[UINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
-            cell.userInteractionEnabled = YES;
-        }
-        
-        // Configure the cell...
-        [cell renderNotificationWithID:notification.objectid linkClickTarget:self linkClickSelector:@selector(onResourceLinkClick:)];
-        
-        return cell;
-    }
-    else {
-        return nil;
-    }
-}
-
-- (void) onResourceLinkClick:(NSNumber*)objectid {
-    ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navigationController animated:YES];
-    
-    [navigationController release];
-}
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#define kPOLL   @"poll"
+#pragma mark - Notification item selection handlers
+#define kPOLL       @"poll"
 #define kCAPTION    @"caption"
 #define kPHOTO      @"photo"
 #define kPAGE       @"page"
 #define kDRAFT      @"draft"
 #define kUSER       @"user"
+#define kMESSAGE    @"message"
 
-#pragma mark - Table view delegate
--(void) scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
-}
-
-- (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath;
-}
-
-
-#pragma mark Notification item selection handlers
 - (void) processClickOfNewVoteNotification:(Feed*)notification {
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
     NSArray* feedObjects = notification.feeddata;
@@ -450,9 +354,9 @@
             pageID = fd.objectid;
         }
     }
-       LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ draft submission to editorial board notification",activityName,pageID);
+    LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ draft submission to editorial board notification",activityName,pageID);
     
-    //we have th page id, now we launch the draftviewcontroller for this page
+    //we have the page id, now we launch the draftviewcontroller for this page
     DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:pageID];
     [self.navigationController pushViewController:draftViewController animated:YES];
 
@@ -599,12 +503,54 @@
     [self processClickOfEditorialBoardVotingBegin:notification];
 }
 
+- (void) processClickOfMessageNotification:(Feed*)notification {
+    //on click this method will move to the web view controller loaded with the HTML message content
+    NSString* activityName = @"NotificationsViewController.processClickOfMessageNotification:";
+    NSArray* feedObjects = notification.feeddata;
+    NSString* htmlString = nil;
+    
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kMESSAGE])
+        {
+            //TODO get the HTML string from the feed and pass to the htmlString object
+        }
+    }
+    LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved HTMLString message:%@",activityName,htmlString);
+    
+    WebViewController* webViewController = [WebViewController createInstanceWithHTMLString:htmlString withTitle:nil];
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
 
+
+#pragma mark - Table view delegate
+-(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
+    
+    /*// Dynamic height based on feed message size
+     Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
+     
+     UIFont* font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+     
+     CGSize maximumSize = CGSizeMake(219, 57);
+     CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeTailTruncation];
+     
+     return messageSize.height + 35;*/
+}
+
+- (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath;
+}
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     //need to get the notification object
@@ -645,23 +591,101 @@
         }
         else if ([notification.rendertype intValue] == kGENERIC_MESSAGE) {
             //generic message display notification to the user
-            
+            [self processClickOfMessageNotification:notification];
         }
         else if ([notification.rendertype intValue] == kGENERIC_BOOK) {
             //generic book display
             [self processGenericBookNotification:notification];
         }
-        
-        
     }
     
 }
 
-- (void) dealloc {
-    self.frc_notifications = nil;
-    [super dealloc];
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [[self.frc_notifications fetchedObjects]count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int notificationCount = [[self.frc_notifications fetchedObjects]count];
+    if ([indexPath row] < notificationCount) 
+    {
+        Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
+        UINotificationTableViewCell* cell = (UINotificationTableViewCell*) [tableView dequeueReusableCellWithIdentifier:[UINotificationTableViewCell cellIdentifier]];
+        
+        if (cell == nil) {
+            //cell = [[[UINotificationTableViewCell alloc] initWithNotificationID:notification.objectid withStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            cell = [[[UINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UINotificationTableViewCell cellIdentifier]]autorelease];
+            cell.userInteractionEnabled = YES;
+        }
+        
+        // Configure the cell...
+        [cell renderNotificationWithID:notification.objectid linkClickTarget:self linkClickSelector:@selector(onResourceLinkClick:)];
+        
+        return cell;
+    }
+    else {
+        return nil;
+    }
+}
+
+- (void) onResourceLinkClick:(NSNumber*)objectid {
+    ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+}
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }   
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
