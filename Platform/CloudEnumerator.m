@@ -23,7 +23,7 @@
 #import "UserDefaultSettings.h"
 #define kEnumerateSinglePage    @"enumerateSinglePage"
 
-static NSLock* lock = nil;
+static NSLock* _lock; //lock used to synchronize the processing of enumeration requests
 
 @implementation CloudEnumerator
 @synthesize enumerationContext = m_enumerationContext;
@@ -56,8 +56,10 @@ static NSLock* lock = nil;
         self.resultsLock = lock;
         [lock release];
         
-        if (lock == nil) {
-            lock = [[NSLock alloc]init];
+        if (_lock == nil) 
+        {
+            //create the shared lock
+            _lock = [[NSLock alloc]init];
         }
     }
     
@@ -245,7 +247,7 @@ static NSLock* lock = nil;
     EnumerationResponse* response = (EnumerationResponse*)callbackResult.response;
     
     if ([response.didSucceed boolValue]) {
-        [lock lock];
+        [_lock lock];
         EnumerationContext* returnedContext = response.enumerationContext;
         
         if (returnedContext == nil) {
@@ -329,7 +331,7 @@ static NSLock* lock = nil;
         }
         
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-        [lock unlock];
+        [_lock unlock];
         if (!self.isDone) {
             //enumeration is still open
             

@@ -237,10 +237,10 @@ withAuthenticationContext:(AuthenticationContext *)context
      isSavedLogin:(BOOL)isSavedLogin 
 {
     NSString* activityName = @"AuthenticationManager.loginUser:";
-    ResourceContext* resourceContext = [ResourceContext instance];
+ //   ResourceContext* resourceContext = [ResourceContext instance];
     
-    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    Facebook* facebook = appDelegate.facebook;
+//    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+ //   Facebook* facebook = appDelegate.facebook;
     //check to see if the passed in context has valid facebook access data, if so, initiate the facebook session
 //    if (context.facebookaccesstoken) {
 //        
@@ -261,7 +261,7 @@ withAuthenticationContext:(AuthenticationContext *)context
     
     
     //check to see if the profile picture is empty, if so, lets grab it from fb
-    User* currentUser = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID]; 
+//    User* currentUser = (User*)[resourceContext resourceWithType:USER withID:m_LoggedInUserID]; 
     
 //    if (currentUser == nil) {
 //        //if the user object isnt in the database, we need to fetch it from the web service
@@ -271,14 +271,14 @@ withAuthenticationContext:(AuthenticationContext *)context
 //        [userEnumerator enumerateUntilEnd];
 //    }
 //    
-    if (currentUser != nil && (currentUser.thumbnailurl == nil ||
-                               [currentUser.thumbnailurl isEqualToString:@""])) {
-        
-        
-        //since we logged in successfully, now lets grab the profile photo                    
-        self.fbPictureRequest = [facebook requestWithGraphPath:@"me/picture" andDelegate:self];
-        LOG_SECURITY(0,@"%@User %@ doesnt have a profile picture, downloading from Facebook...",activityName,currentUser.objectid);
-    }
+//    if (currentUser != nil && (currentUser.thumbnailurl == nil ||
+//                               [currentUser.thumbnailurl isEqualToString:@""])) {
+//        
+//        
+//        //since we logged in successfully, now lets grab the profile photo                    
+//        self.fbPictureRequest = [facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+//        LOG_SECURITY(0,@"%@User %@ doesnt have a profile picture, downloading from Facebook...",activityName,currentUser.objectid);
+//    }
     
     //now we emit the system wide notification to tell people the user has logged in
     //we only emit this event if the user has pressed the "login" button rather than a saved context

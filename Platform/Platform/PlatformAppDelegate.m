@@ -95,6 +95,7 @@
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons
+    NSManagedObjectContext* context = self.managedObjectContext;
     [self.applicationSettingsManager settings];    
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
    
@@ -369,15 +370,33 @@
  */
 - (NSManagedObjectContext *)managedObjectContext
 {
+  //  NSString* activityName = @"PlatformAppDelegate.managedObjectContext:";
+    NSThread* thread = [NSThread currentThread];
+    
+   
+    
+    
     if (__managedObjectContext != nil)
     {
+       // LOG_SECURITY(0,@"%@Returning context at %p to thread, IsMainThread?: %d",activityName,__managedObjectContext,[thread isMainThread]);
         return __managedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil)
     {
+
+        
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        
+        if ([thread isMainThread]) {
+            // NSLog(@"creating context on main thread");
+          //  LOG_SECURITY(0,@"%@App delegate context created on main thread at %p",activityName,__managedObjectContext);
+        }
+        else {
+          //  LOG_SECURITY(0,@"%@App Delegate context created on background thread at %p",activityName,__managedObjectContext);
+        }
+        
         
         NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
         [contextUndoManager setLevelsOfUndo:20];
