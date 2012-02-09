@@ -60,6 +60,7 @@
         
         if (sourceType == UIImagePickerControllerSourceTypeCamera) {
             picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
         }
         id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
 

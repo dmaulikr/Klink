@@ -414,7 +414,9 @@
 #pragma mark - Image from view object creator
 - (UIImage *) imageWithView:(UIView *)view
 {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    CGFloat scale = [[UIScreen mainScreen] scale];  // we need to size the graphics context according to the device scale
+    
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, scale);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     
     UIImage * img = UIGraphicsGetImageFromCurrentImageContext();

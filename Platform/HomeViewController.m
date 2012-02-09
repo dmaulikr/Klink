@@ -134,7 +134,7 @@
     int numContributors = [settings.num_users intValue];
     
     if (numContributors == 0) {
-        self.lbl_numContributors.text = [NSString stringWithFormat:@"all contributors"];
+        self.lbl_numContributors.text = [NSString stringWithFormat:@"& contributors"];
     }
     else {
         NSNumber* numContributors = settings.num_users;
