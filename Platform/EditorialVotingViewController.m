@@ -591,6 +591,9 @@
 //        [self showDeterminateProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
 //        [message release];
         
+        [failureMessage autorelease];
+        [progressMessage autorelease];
+        
     }
     else if ([self.poll.hasvoted boolValue]) {
         //notify user that they have already voted in this poll and their new vote has been dismissed

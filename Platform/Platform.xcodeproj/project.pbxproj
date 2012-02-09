@@ -180,6 +180,8 @@
 		529E666814D0FBA500394EE9 /* Bahndr_appIcon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 529E666714D0FBA500394EE9 /* Bahndr_appIcon-29.png */; };
 		529E666C14D2509700394EE9 /* BookLastPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529E666A14D2509600394EE9 /* BookLastPageViewController.m */; };
 		529E666D14D2509700394EE9 /* BookLastPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529E666B14D2509700394EE9 /* BookLastPageViewController.xib */; };
+		529EF0A514E1EFE100DED0C4 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529EF0A314E1EFE100DED0C4 /* WebViewController.m */; };
+		529EF0A614E1EFE100DED0C4 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529EF0A414E1EFE100DED0C4 /* WebViewController.xib */; };
 		529F0CC814BEE8B80063E4AC /* published_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC614BEE8B80063E4AC /* published_stamp.png */; };
 		529F0CC914BEE8B80063E4AC /* published_stamp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */; };
 		52AAB0CE14C60F3400497FC7 /* arrow_left_scetched_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */; };
@@ -238,8 +240,6 @@
 		C55EC75D145FA50800BA66FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC75F145FA50800BA66FA /* main.m */; };
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
-		C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A051462D3C700E14199 /* UINotificationIcon.m */; };
-		C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A071462D3D900E14199 /* UINotificationIcon.xib */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
@@ -571,6 +571,9 @@
 		529E666914D2509500394EE9 /* BookLastPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookLastPageViewController.h; sourceTree = "<group>"; };
 		529E666A14D2509600394EE9 /* BookLastPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookLastPageViewController.m; sourceTree = "<group>"; };
 		529E666B14D2509700394EE9 /* BookLastPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookLastPageViewController.xib; sourceTree = "<group>"; };
+		529EF0A214E1EFE100DED0C4 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		529EF0A314E1EFE100DED0C4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		529EF0A414E1EFE100DED0C4 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		529F0CC614BEE8B80063E4AC /* published_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = published_stamp.png; sourceTree = "<group>"; };
 		529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "published_stamp@2x.png"; sourceTree = "<group>"; };
 		52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched_highlighted.png; sourceTree = "<group>"; };
@@ -655,8 +658,6 @@
 		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
 		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
-		C56F8A051462D3C700E14199 /* UINotificationIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationIcon.m; sourceTree = "<group>"; };
-		C56F8A071462D3D900E14199 /* UINotificationIcon.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationIcon.xib; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
 		C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationTableViewCell.m; sourceTree = "<group>"; };
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
@@ -1673,6 +1674,9 @@
 				52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */,
 				52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */,
 				52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */,
+				529EF0A214E1EFE100DED0C4 /* WebViewController.h */,
+				529EF0A314E1EFE100DED0C4 /* WebViewController.m */,
+				529EF0A414E1EFE100DED0C4 /* WebViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1707,8 +1711,6 @@
 			children = (
 				C5A82D751466667E00E77675 /* UICameraActionSheet.h */,
 				C5A82D761466667E00E77675 /* UICameraActionSheet.m */,
-				C56F8A051462D3C700E14199 /* UINotificationIcon.m */,
-				C56F8A071462D3D900E14199 /* UINotificationIcon.xib */,
 				C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */,
 				C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */,
 				C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */,
@@ -2027,7 +2029,6 @@
 				C5C83AE214480DF600AF38CF /* FBDialog.bundle in Resources */,
 				C5C76C85145B92C200BA69B8 /* HomeViewController.xib in Resources */,
 				C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */,
-				C56F8A081462D3D900E14199 /* UINotificationIcon.xib in Resources */,
 				C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */,
 				3DCFE8DB14645F1400D6587D /* UIDraftTableViewCellLeft.xib in Resources */,
 				C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */,
@@ -2224,6 +2225,7 @@
 				527A542D14E0635F00050F57 /* blue_dot_small@2x.png in Resources */,
 				527A543114E081E100050F57 /* blue_dot_medium.png in Resources */,
 				527A543214E081E100050F57 /* blue_dot_medium@2x.png in Resources */,
+				529EF0A614E1EFE100DED0C4 /* WebViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2309,7 +2311,6 @@
 				C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */,
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
 				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
-				C56F8A061462D3C700E14199 /* UINotificationIcon.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
 				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */,
@@ -2381,6 +2382,7 @@
 				529E666C14D2509700394EE9 /* BookLastPageViewController.m in Sources */,
 				521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */,
 				521D6DCF14D354FF00FA08E3 /* UITOCTableViewCell.m in Sources */,
+				529EF0A514E1EFE100DED0C4 /* WebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

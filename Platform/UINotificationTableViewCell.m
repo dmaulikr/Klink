@@ -179,55 +179,65 @@
        
         //need to check if the notification ahs been opened before
         if ([notification.hasopened boolValue] == NO) {
-            //never been read, so lets highlight the background
-            //self.contentView.backgroundColor = [UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA];
-            //self.contentView.opaque = NO;
-            
+            //never been read, show the unreaad badge
             [self.iv_notificationBadge setHidden:NO];
-            
-            /*CAGradientLayer *gradient = [CAGradientLayer layer];
-            gradient.frame = CGRectMake(0,0,160,73);
-            gradient.startPoint = CGPointMake(0.0, 0.5);
-            gradient.endPoint = CGPointMake(1.0, 0.5);
-            gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:kUNREAD_RED green:kUNREAD_GREEN blue:kUNREAD_BLUE alpha:kUNREAD_ALPHA] CGColor], (id)[[UIColor clearColor] CGColor], nil];
-            [self.contentView.layer insertSublayer:gradient atIndex:0];*/
         }
         else {
-            //has been read so lets not highlight the background
-            //self.contentView.backgroundColor = [UIColor clearColor];
-            //self.contentView.opaque = YES;
-            
+            //has been read, hide the unreaad badge
             [self.iv_notificationBadge setHidden:YES];
         }
         
-        if ([notification.feedevent intValue] == kCAPTION_VOTE || [notification.feedevent intValue] == kPHOTO_VOTE || [notification.feedevent intValue] == kCAPTION_UNAUTHENTICATED_VOTE || [notification.feedevent intValue] == kPHOTO_UNAUTHENTICATED_VOTE) {
+        if ([notification.feedevent intValue] == kCAPTION_VOTE ||
+            [notification.feedevent intValue] == kPHOTO_VOTE ||
+            [notification.feedevent intValue] == kCAPTION_UNAUTHENTICATED_VOTE ||
+            [notification.feedevent intValue] == kPHOTO_UNAUTHENTICATED_VOTE) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-thumbUp.png"];
         }
         else if ([notification.feedevent intValue] == kCAPTION_ADDED) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-compose.png"];
         }
         else if ([notification.feedevent intValue] == kPHOTO_ADDED_TO_DRAFT) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-camera2.png"];
         }
-        else if ([notification.feedevent intValue] == DRAFT_ADDED || [notification.feedevent intValue] == kDRAFT_LEADER_CHANGED) {
+        else if ([notification.feedevent intValue] == DRAFT_ADDED ||
+                 [notification.feedevent intValue] == kDRAFT_LEADER_CHANGED) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page2.png"];
         }
-        else if ([notification.feedevent intValue] == kDRAFT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == DRAFT_NOT_SUBMITTED_TO_EDITORS || [notification.feedevent intValue] == kDRAFT_EXPIRED || [notification.feedevent intValue] == kDRAFT_NOT_PUBLISHED) {
+        else if ([notification.feedevent intValue] == kDRAFT_SUBMITTED_TO_EDITORS ||
+                 [notification.feedevent intValue] == DRAFT_NOT_SUBMITTED_TO_EDITORS ||
+                 [notification.feedevent intValue] == kDRAFT_EXPIRED ||
+                 [notification.feedevent intValue] == kDRAFT_NOT_PUBLISHED) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
         }
         else if ([notification.feedevent intValue] == kDRAFT_PUBLISHED) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
         }         
-        else if ([notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_STARTED || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_CAST || [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_ENDED || [notification.feedevent intValue] == kEDITORIAL_BOARD_NO_RESULT) {
+        else if ([notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_STARTED ||
+                 [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_CAST ||
+                 [notification.feedevent intValue] == kEDITORIAL_BOARD_VOTE_ENDED ||
+                 [notification.feedevent intValue] == kEDITORIAL_BOARD_NO_RESULT ||
+                 [notification.feedevent intValue] == kMESSAGE) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
         }         
         else if ([notification.feedevent intValue] == kPROMOTION_TO_EDITOR) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-ribbon1.png"];
         }         
         else if ([notification.feedevent intValue] == kDEMOTION_FROM_EDITOR) {
+            
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
         }
-        
+        else {
+            
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
+        }
         
         self.iv_notificationImage.image = nil;
         
