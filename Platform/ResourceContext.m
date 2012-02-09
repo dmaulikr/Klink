@@ -139,6 +139,7 @@ static ResourceContext* sharedInstance;
     [self.managedObjectContextsLock lock];
     [self.managedObjectContexts removeObjectForKey:threadKey];
     [self.managedObjectContextsLock unlock];
+    LOG_RESOURCECONTEXT(0, @"%@Removed thread managed object context!",activityName);
 }
 
 - (void) onContextDidSave:(NSNotification*)notification {
@@ -796,6 +797,7 @@ static ResourceContext* sharedInstance;
         [request setEntity:entityDescription];
         
         NSError* error = nil;
+        LOG_RESOURCECONTEXT(0, @"%@Executing fetch against managedObjectContext for resources with type:%@",activityName,typeName);
         NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
         
         [request release];

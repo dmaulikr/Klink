@@ -151,6 +151,7 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
 }
 
 - (void) enumerate:(BOOL)enumerateSinglePage {
+    NSString* activityName = @"CloudEnumerator.enumerate:";
     AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
     NSURL* url = [UrlManager urlForQuery:self.query withEnumerationContext:self.enumerationContext withAuthenticationContext:authenticationContext];
     
@@ -162,7 +163,7 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     
     RequestManager* requestManager = [RequestManager instance];
     [requestManager submitRequest:request];
-
+    LOG_ENUMERATION(0, @"%@Enumeration successfully submitted to server",activityName);
 }
 
 - (BOOL) hasReturnedObjectWithID:(NSNumber *)objectid 
@@ -247,7 +248,9 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     EnumerationResponse* response = (EnumerationResponse*)callbackResult.response;
     
     if ([response.didSucceed boolValue]) {
+        LOG_ENUMERATION(0, @"%@Enumeration did succeed",activityName);
         [_lock lock];
+        LOG_ENUMERATION(0, @"%@Lock obtained, processing enumeration results",activityName);
         EnumerationContext* returnedContext = response.enumerationContext;
         
         if (returnedContext == nil) {
