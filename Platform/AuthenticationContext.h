@@ -20,8 +20,6 @@
 @property (nonatomic, retain) NSData* authenticator;
 @property (nonatomic, retain) NSNumber* hastwitter;
 @property (nonatomic, retain) NSNumber* hasfacebook;
-@property (nonatomic, retain) NSString* facebookaccesstoken;
-@property (nonatomic, retain) NSNumber* facebookaccesstokenexpirydate;
 @property (nonatomic, retain) NSString* facebookuserid;
 @property (nonatomic, retain) NSNumber* isfirsttime;
 

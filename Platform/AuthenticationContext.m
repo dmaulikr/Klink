@@ -19,8 +19,6 @@
 @dynamic authenticator;
 @dynamic hastwitter;
 @dynamic hasfacebook;
-@dynamic facebookaccesstoken;
-@dynamic facebookaccesstokenexpirydate;
 @dynamic facebookuserid;
 @dynamic isfirsttime;
 
@@ -132,22 +130,28 @@
 - (NSString*) toJSON {
     NSString* activityName = @"AuthenticationContext.toJSON:";
     NSEntityDescription* entity = [self entity];
-    NSArray* attributeDescriptions = [entity properties];
+    NSArray* attributeDescriptions = [[entity properties]retain];
     NSMutableDictionary* objectAsDictionary = [[NSMutableDictionary alloc]init];
     
-    for (NSAttributeDescription* attrDesc in attributeDescriptions) {
+    LOG_SECURITY(0, @"%Beginning enumeration of attributes and serializing to JSON",activityName);
+    for (NSAttributeDescription* attrDesc in attributeDescriptions) 
+    {
+        NSString* attributeName = [attrDesc name];
         if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
-            SEL selector = NSSelectorFromString([attrDesc name]);
+            SEL selector = NSSelectorFromString(attributeName);
             if ([self respondsToSelector:selector]) {
                 id attrValue = [self performSelector:selector];
                 NSAttributeType attrType = [attrDesc attributeType];
                 if (attrType == NSBinaryDataAttributeType) {
+                    
                     NSData* dataValue = (NSData*)attrValue;
                     NSString* base64string = [NSString encodeBase64WithData:dataValue];
-                    [objectAsDictionary setValue:base64string forKey:[attrDesc name]];
+                    [objectAsDictionary setValue:base64string forKey:attributeName];
+                    LOG_SECURITY(0, @"%@Added attribute %@ with value %@ to JSON dictionary",activityName,[attrDesc name],base64string);
                 }
                 else {
                     [objectAsDictionary setValue:attrValue forKey:[attrDesc name]];
+                    LOG_SECURITY(0, @"%@Added attribute %@ with value %@ to JSON dictionary",activityName,[attrDesc name],attrValue);
                 }
             }
         }
@@ -159,6 +163,7 @@
     
     //we need to iterate through the object's attributes and compose a dictionary
     //of key-value pairs for attributes and references
+    LOG_SECURITY(0, @"%@Serializing dictionary to JSON String...",activityName);
     NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
     [objectAsDictionary release];
     if (error != nil) {
@@ -167,6 +172,7 @@
         return nil;
     }
     else {
+        LOG_SECURITY(0, @"%@Successfully serialized authentication context to JSON: %@",activityName,retVal);
         return retVal;
     }
     
