@@ -53,9 +53,7 @@ static ResourceContext* sharedInstance;
 
 
 - (NSManagedObjectContext*)managedObjectContext {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
-    }
+    NSString* activityName = @"ResourceContext.managedObjectContext:";
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     
     
@@ -76,6 +74,7 @@ static ResourceContext* sharedInstance;
             [threadContext setMergePolicy:NSRollbackMergePolicy];
            // [threadContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             //[threadContext setMergePolicy:NSOverwriteMergePolicy];
+            LOG_SECURITY(0, @"%@Grabbed context at address %p",activityName,threadContext);
             NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
             [contextUndoManager setLevelsOfUndo:20];
             threadContext.undoManager = contextUndoManager;
@@ -96,6 +95,7 @@ static ResourceContext* sharedInstance;
         }
         else {
             NSDictionary* userInfo = [self.managedObjectContexts objectForKey:threadKey];
+          //  LOG_SECURITY(0, @"%@Grabbed context at address %p",activityName,[userInfo objectForKey:kCONTEXT]);
             return [userInfo objectForKey:kCONTEXT];
         }
     }
@@ -146,20 +146,17 @@ static ResourceContext* sharedInstance;
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSManagedObjectContext* sender = notification.object;
     NSMutableSet* keysToRemove = [[NSMutableSet alloc]init];
+    NSThread* currentThread = [NSThread currentThread];
     
-    if (appDelegate.managedObjectContext != sender) {
+    if (![currentThread isMainThread]) {
         //lets propagate the notification to all contexts
         NSManagedObjectContext* appDelContext = appDelegate.managedObjectContext;
         LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p on background thread, propagating to context %p on main thread",activityName,sender,appDelContext);
         
-//        NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
-//        for (NSInteger i = [updates count]-1;i >=0; i--) {
-//            NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
-//            [appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
-//        }
-        
         [appDelegate.managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:notification waitUntilDone:NO];
     }
+    
+    
      [self.managedObjectContextsLock lock];
     for (NSString* key in self.managedObjectContexts) {
         //grab le lock
@@ -173,31 +170,15 @@ static ResourceContext* sharedInstance;
         if (thread != nil && !thread.isCancelled) {
             if (context != nil && 
                 context != sender) {
-                
-//                NSArray* updates = [[notification.userInfo objectForKey:@"updated"]allObjects];
-//                for (NSInteger i = [updates count]-1;i >=0; i--) {
-//                    NSManagedObject* mobject = [appDelegate.managedObjectContext objectWithID:[[updates objectAtIndex:i]objectID]];
-//                    //[appDelegate.managedObjectContext refreshObject:mobject mergeChanges:YES];
-//                }
                 LOG_RESOURCECONTEXT(0, @"%@ Received NSManagedObjectContextDidSaveNotification from %p propagating to context %p on background thread",activityName,sender, context);
                 [context mergeChangesFromContextDidSaveNotification:notification];
             }
         }
-        else {
-//            LOG_RESOURCECONTEXT(0, @"%@ Marking managed context for cancelled or deallocated thread %p for deletion",activityName,key);
-//            [keysToRemove addObject:key];
-        }
+
         
     }
      [self.managedObjectContextsLock unlock];
-    //at this point we need to remove all of the keys in the NSSet from the NSDictionary
-//    int currentNumKeys = [self.managedObjectContexts count];
-//    int numKeysToRemove = [keysToRemove count];
-//    LOG_RESOURCECONTEXT(0, @"%@Removing %d managedObjectContexts leaving the system with %d active managedObjectContexts",activityName,numKeysToRemove,(currentNumKeys-numKeysToRemove));
-//    
-//    for (NSString* keyToRemove in [keysToRemove allObjects]) {
-//        [self.managedObjectContexts removeObjectForKey:keysToRemove];
-//    }
+
     [keysToRemove release];
 }
 
@@ -673,7 +654,9 @@ static ResourceContext* sharedInstance;
         [request setPredicate:predicate];
         
         NSError* error = nil;
-        NSArray* results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        NSManagedObjectContext* context = self.managedObjectContext;
+        //LOG_SECURITY(0, @"%@Grabbing context at memory address %p",activityName,context);
+        NSArray* results = [context executeFetchRequest:request error:&error];
 
         [request release];
         if (results != nil && [results count] > 0) {
