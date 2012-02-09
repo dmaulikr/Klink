@@ -95,7 +95,7 @@
     //we need to make a check to see how many objects we have left
     //if we are below a threshold, we need to execute a fetch to the server
     
-    if (pagesRemaining < kENUMERATIONTHRESHOLD &&
+    if (pagesRemaining <= kENUMERATIONTHRESHOLD &&
         !self.pageCloudEnumerator.isLoading) {
         //enumerate
         LOG_BOOKVIEWCONTROLLER(0, @"Detected only %d pages remaining, initiating re-enumeration from cloud",activityName,pagesRemaining);

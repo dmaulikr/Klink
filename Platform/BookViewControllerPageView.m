@@ -19,7 +19,7 @@
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
 @synthesize tapGesture = m_tapGesture;
-@synthesize panGesture = m_swipeGesture;
+//@synthesize panGesture = m_panGesture;
 
 
 #pragma mark - Frames
@@ -327,15 +327,18 @@
             self.tapGesture = (UITapGestureRecognizer*)gesture;
             self.tapGesture.delegate = self;
         }
+        /*else if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+            self.panGesture = (UIPanGestureRecognizer*)gesture;
+            self.panGesture.delegate = self;
+        }*/
     }
     
-    // Add a swipe gesture recognizer to grab page flip swipes that start from the far right of the screen, past the edge of the book page
-    // Set direction and number of touches
+    /*// Add a swipe gesture recognizer to grab page flip swipes that start from the far right of the screen, past the edge of the book page
     self.panGesture = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:nil] autorelease];
     [self.panGesture setDelegate:self];
     [self.iv_background addGestureRecognizer:self.panGesture];
     //enable gesture events on the background image
-    [self.iv_background setUserInteractionEnabled:YES];
+    [self.iv_background setUserInteractionEnabled:YES];*/
     
     //[self.pageController.view setFrame:[self.view bounds]];
     [self.pageController.view setFrame:[self frameForBookPageViewController]];
@@ -371,6 +374,7 @@
     // e.g. self.myOutlet = nil;
     
     self.tapGesture = nil;
+    //self.panGesture = nil;
     
 }
 
@@ -413,12 +417,10 @@
             return NO; // ignore the touch
         }
         /*else if (gestureRecognizer == self.panGesture) {
-            // we touched background of the BookViewController, pass the swipe to the UIPageViewController
-            [self.panGesture setTranslation:CGPointMake(160, 240) inView:self.pageController.view];
-            //[self.panGesture translationInView:self.pageController.view];
-            //[self.pageController.view touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
+            // we touched background of the BookViewController, pass the pan to the UIPageViewController
+            [self.pageController.view touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
             
-            return YES; // ignore the touch
+            return YES; // handle the touch
         }*/
     }
     return YES; // handle the touch
