@@ -13,6 +13,7 @@
 @synthesize wv_webView  = m_wv_webView;
 @synthesize navBarTitle = m_navBarTitle;
 @synthesize htmlString  = m_htmlString;
+@synthesize baseURL     = m_baseURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,9 +39,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // Setup Deflauts
     // If no title specified set Navigation bar to default
     if (self.navBarTitle == nil) {
         self.navBarTitle = @"Bahndr";
+    }
+    if (self.baseURL == nil) {
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        self.baseURL = [NSURL fileURLWithPath:path];
     }
     
     // Set Navigation bar title style with typewriter font
@@ -58,7 +64,8 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
-    [self.wv_webView loadHTMLString:self.htmlString baseURL:nil];
+    // load the HTML doc
+    [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
     
 }
 
@@ -108,10 +115,11 @@
     return instance;
 }
 
-+ (WebViewController*)createInstanceWithHTMLString:(NSString*)htmlString withTitle:(NSString*)title {
++ (WebViewController*)createInstanceWithTitle:(NSString*)title withHTMLString:(NSString*)htmlString withBaseURL:(NSURL*)baseURL {
     WebViewController* instance = [[[WebViewController alloc]initWithNibName:@"WebViewController" bundle:nil] autorelease];
-    instance.htmlString = htmlString;
     instance.navBarTitle = title;
+    instance.htmlString = htmlString;
+    instance.baseURL = baseURL;
     return instance;
 }
 

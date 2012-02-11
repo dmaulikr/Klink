@@ -517,7 +517,7 @@
     }
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved HTMLString message:%@",activityName,htmlString);
     
-    WebViewController* webViewController = [WebViewController createInstanceWithHTMLString:htmlString withTitle:nil];
+    WebViewController* webViewController = [WebViewController createInstanceWithTitle:nil withHTMLString:htmlString withBaseURL:nil];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
