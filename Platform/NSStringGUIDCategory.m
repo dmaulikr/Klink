@@ -18,6 +18,13 @@
     return [(NSString *)string autorelease];
 }
 
+
+- (NSString*)encodeString:(NSStringEncoding)encoding {
+    return (NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self,
+                                                                NULL, (CFStringRef)@";/?:@&=$+{}<>,",
+                                                                CFStringConvertNSStringEncodingToEncoding(encoding));
+}
+
 - (NSNumber*) numberValue {
     NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
     [f setNumberStyle:NSNumberFormatterNoStyle];

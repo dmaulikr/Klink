@@ -247,7 +247,14 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     NSString* activityName = @"CloudEnumerator.onEnumerationComplete:";
     EnumerationResponse* response = (EnumerationResponse*)callbackResult.response;
     
-    if ([response.didSucceed boolValue]) {
+    if ([response.didSucceed boolValue]) 
+    {
+        NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+        
+                
+        
+        
+      
         LOG_ENUMERATION(0, @"%@Enumeration did succeed",activityName);
         [_lock lock];
         LOG_ENUMERATION(0, @"%@Lock obtained, processing enumeration results",activityName);
@@ -332,7 +339,7 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
             }
 
         }
-        
+          [autorelease drain];
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         [_lock unlock];
         if (!self.isDone) {
