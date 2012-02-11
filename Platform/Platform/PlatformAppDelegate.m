@@ -92,7 +92,6 @@
 {
     NSString* activityName = @"PlatformAppDelegate.applicationDidiFinishLoading:";
     // Override point for customization after application launch.
-    // Add the navigation controller's view to the window and display.
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons

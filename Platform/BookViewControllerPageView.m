@@ -19,7 +19,7 @@
 @implementation BookViewControllerPageView
 @synthesize pageController = m_pageController;
 @synthesize tapGesture = m_tapGesture;
-//@synthesize swipeGesture = m_swipeGesture;
+//@synthesize panGesture = m_panGesture;
 
 
 #pragma mark - Frames
@@ -327,13 +327,18 @@
             self.tapGesture = (UITapGestureRecognizer*)gesture;
             self.tapGesture.delegate = self;
         }
+        /*else if ([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+            self.panGesture = (UIPanGestureRecognizer*)gesture;
+            self.panGesture.delegate = self;
+        }*/
     }
     
-    // Add a swipe gesture recognizer to grab page flip swipes that start from the far right of the screen, past the edge of the book page
-    // Set direction and number of touches
-    //[self.swipeGesture setDirection:UISwipeGestureRecognizerDirectionLeft];
-    //[self.swipeGesture setNumberOfTouchesRequired:1];
-    //[self.iv_background addGestureRecognizer:self.swipeGesture];
+    /*// Add a swipe gesture recognizer to grab page flip swipes that start from the far right of the screen, past the edge of the book page
+    self.panGesture = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:nil] autorelease];
+    [self.panGesture setDelegate:self];
+    [self.iv_background addGestureRecognizer:self.panGesture];
+    //enable gesture events on the background image
+    [self.iv_background setUserInteractionEnabled:YES];*/
     
     //[self.pageController.view setFrame:[self.view bounds]];
     [self.pageController.view setFrame:[self frameForBookPageViewController]];
@@ -347,11 +352,7 @@
     [self.view addSubview:self.pageController.view];
     [self.pageController didMoveToParentViewController:self];
     
-    // by default the book should always open to the title page on first load
-    //self.shouldOpenToTitlePage = YES;
-    //self.shouldAnimatePageTurn = NO;
-    
-    // Create gesture recognizer for the background image view to handle a single tap
+    /*// Create gesture recognizer for the background image view to handle a single tap
     UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
     
     // Set required taps and number of touches
@@ -359,7 +360,7 @@
     [oneFingerTap setNumberOfTouchesRequired:1];
     
     // Add the gesture to the photo image view
-    [self.iv_background addGestureRecognizer:oneFingerTap];
+    [self.iv_background addGestureRecognizer:oneFingerTap];*/
     
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];
@@ -373,6 +374,7 @@
     // e.g. self.myOutlet = nil;
     
     self.tapGesture = nil;
+    //self.panGesture = nil;
     
 }
 
@@ -414,11 +416,11 @@
             
             return NO; // ignore the touch
         }
-        /*else if (gestureRecognizer == self.swipeGesture) {
-            // we touched background of the BookViewController, pass the swipe to the UIPageViewController
-            [self.pageController touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
+        /*else if (gestureRecognizer == self.panGesture) {
+            // we touched background of the BookViewController, pass the pan to the UIPageViewController
+            [self.pageController.view touchesBegan:[NSSet setWithObject:touch] withEvent:UIEventTypeTouches];
             
-            return NO; // ignore the touch
+            return YES; // handle the touch
         }*/
     }
     return YES; // handle the touch

@@ -51,7 +51,6 @@
 								<string key="NSFrame">{{213, 16}, {82, 83}}</string>
 								<reference key="NSSuperview" ref="272843227"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<int key="IBUIContentMode">4</int>
 								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -102,9 +101,8 @@
 								<string key="IBUIShadowOffset">{0, 1}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
-								<int key="IBUINumberOfLines">3</int>
+								<int key="IBUINumberOfLines">0</int>
 								<int key="IBUITextAlignment">1</int>
-								<int key="IBUILineBreakMode">0</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<string key="name">AmericanTypewriter</string>
 									<string key="family">American Typewriter</string>
@@ -186,7 +184,7 @@
 							<object class="IBUIImageView" id="863739235">
 								<reference key="NSNextResponder" ref="272843227"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{10, 10}, {17, 17}}</string>
+								<string key="NSFrame">{{10, 7}, {17, 17}}</string>
 								<reference key="NSSuperview" ref="272843227"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="334651536"/>

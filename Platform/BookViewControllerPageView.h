@@ -17,14 +17,14 @@
     UIPageViewController* m_pageController;
     
     UITapGestureRecognizer* m_tapGesture;
-    //UISwipeGestureRecognizer* m_swipeGesture;
+    //UIPanGestureRecognizer* m_panGesture;
     
 }
 
 @property (strong, nonatomic) UIPageViewController* pageController;
 
 @property (strong, nonatomic) UITapGestureRecognizer* tapGesture;
-//@property (strong, nonatomic) UISwipeGestureRecognizer* swipeGesture;
+//@property (strong, nonatomic) UIPanGestureRecognizer* panGesture;
 
 + (BookViewControllerPageView*) createInstance;
 + (BookViewControllerPageView*) createInstanceWithPageID:(NSNumber*)pageID;
