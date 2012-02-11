@@ -9,6 +9,8 @@
 #import "UrlManager.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
+#import "NSStringGUIDCategory.h"
+
 
 @implementation UrlManager
 
@@ -31,11 +33,12 @@
     NSString* enumerationContextParameterName = param_ENUMERATIONCONTEXT;
     
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
     [parameters appendFormat:@"&%@=%@",authenticationContextParameterName,jsonAuthenticationContext];
     
     NSString* jsonEnumerationContext = [enumerationContext toJSON];
     [parameters appendFormat:@"&%@=%@",enumerationContextParameterName,jsonEnumerationContext];
-    
+
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* url = [[[NSURL alloc] initWithString:escapedURL]autorelease]; ;
     
@@ -59,6 +62,7 @@
     
     NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
     
     [parameters appendFormat:@"%@=%@",objectIDParamName,objectid];
     [parameters appendFormat:@"&%@=%@",objectTypeParamName,objectType];
@@ -94,6 +98,8 @@
     
     NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
+    
     [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -153,6 +159,7 @@
     
     NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [context toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
     
     [parameters appendFormat:@"%@=%@",twitterUserIdParamName,twitterID];
     [parameters appendFormat:@"&%@=%@",twitterAccessTokenParamName,twitterAccessToken];
@@ -184,6 +191,7 @@
     
     NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+    jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
     [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -230,6 +238,7 @@ withAuthenticationContext:(id)authenticationContext;
     
     NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
     [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
     
     NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -254,6 +263,8 @@ withAuthenticationContext:(id)authenticationContext;
     NSString* sharingOptionsIDParamName = param_SHARINGOPTIONS;
     NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
     NSString* jsonAuthenticationContext = [authenticationContext toJSON];
+     jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
+    
     NSString* jsonSharingOptions = [sharingOptions toJSON];
     
     [parameters appendFormat:@"%@=%@",captionIDParamName,objectid];

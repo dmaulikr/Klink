@@ -371,11 +371,7 @@
  */
 - (NSManagedObjectContext *)managedObjectContext
 {
-  //  NSString* activityName = @"PlatformAppDelegate.managedObjectContext:";
-    NSThread* thread = [NSThread currentThread];
-    
-   
-    
+   NSString* activityName = @"PlatformAppDelegate.managedObjectContext:";
     
     if (__managedObjectContext != nil)
     {
@@ -386,25 +382,19 @@
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil)
     {
-
         
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
-        
-        if ([thread isMainThread]) {
-            // NSLog(@"creating context on main thread");
-          //  LOG_SECURITY(0,@"%@App delegate context created on main thread at %p",activityName,__managedObjectContext);
-        }
-        else {
-          //  LOG_SECURITY(0,@"%@App Delegate context created on background thread at %p",activityName,__managedObjectContext);
-        }
-        
-        
+                
         NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
         [contextUndoManager setLevelsOfUndo:20];
         __managedObjectContext.undoManager = contextUndoManager;
         [contextUndoManager release];
        // [__managedObjectContext setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
         [__managedObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    else
+    {
+        LOG_RESOURCECONTEXT(1, @"%@No persistent coordinator found",activityName);    
     }
     return __managedObjectContext;
 }

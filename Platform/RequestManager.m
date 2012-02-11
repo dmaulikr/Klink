@@ -557,7 +557,7 @@ static RequestManager* sharedInstance;
     NSDictionary* jsonDictionary = [responseString objectFromJSONStringWithParseOptions:JKParseOptionNone error:&error];
     
     if (error != nil) {
-        LOG_REQUEST(1, @"@%Could not deserialize response into JSON object: %@",activityName,error);
+        LOG_REQUEST(1, @"%@Could not deserialize response into JSON object: %@",activityName,error);
         return nil;
     }
     else {

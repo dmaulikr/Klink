@@ -146,6 +146,8 @@
                     
                     NSData* dataValue = (NSData*)attrValue;
                     NSString* base64string = [NSString encodeBase64WithData:dataValue];
+                    //encode the string
+                   // base64string = [base64string encodeString:NSUTF8StringEncoding];
                     [objectAsDictionary setValue:base64string forKey:attributeName];
                     LOG_SECURITY(0, @"%@Added attribute %@ with value %@ to JSON dictionary",activityName,[attrDesc name],base64string);
                 }

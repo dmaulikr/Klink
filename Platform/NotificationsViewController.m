@@ -506,15 +506,10 @@
 - (void) processClickOfMessageNotification:(Feed*)notification {
     //on click this method will move to the web view controller loaded with the HTML message content
     NSString* activityName = @"NotificationsViewController.processClickOfMessageNotification:";
-    NSArray* feedObjects = notification.feeddata;
+    //NSArray* feedObjects = notification.feeddata;
     NSString* htmlString = nil;
     
-    for (FeedData* fd in feedObjects) {
-        if ([fd.key isEqualToString:kMESSAGE])
-        {
-            //TODO get the HTML string from the feed and pass to the htmlString object
-        }
-    }
+    htmlString = notification.html;
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved HTMLString message:%@",activityName,htmlString);
     
     WebViewController* webViewController = [WebViewController createInstanceWithHTMLString:htmlString withTitle:nil];
