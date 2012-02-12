@@ -44,9 +44,14 @@
     if (self.navBarTitle == nil) {
         self.navBarTitle = @"Bahndr";
     }
+    
+    // If no baseURL specified set default to the app bundle
     if (self.baseURL == nil) {
         NSString *path = [[NSBundle mainBundle] bundlePath];
         self.baseURL = [NSURL fileURLWithPath:path];
+        
+        // Load the default style to the HTML doc by adding the Message.css file from the app bundle
+        self.htmlString = [NSString stringWithFormat:@"<head> <link rel='stylesheet' type='text/css' href='Message.css' /> </head> %@", self.htmlString];
     }
     
     // Set Navigation bar title style with typewriter font
@@ -63,9 +68,6 @@
     [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
-    
-    // load the HTML doc
-    [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
     
 }
 
@@ -94,6 +96,9 @@
     
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    // load the HTML doc
+    [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
     
 }
 
