@@ -314,7 +314,13 @@
     FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID withCaptionID:captionID];
     [[self.navigationController toolbar] setHidden:NO];
     [self.navigationController pushViewController:fullScreenController animated:YES];
-    
+  
+  /*  
+    // TEMP: Used for testing Feeds of type MESSAGE, can be deleted
+    NSString* htmlString = @"<p>Special message from Bahndr!</p>";
+    WebViewController* webViewController = [WebViewController createInstanceWithTitle:nil withHTMLString:htmlString withBaseURL:nil];
+    [self.navigationController pushViewController:webViewController animated:YES];
+  */  
 }
 
 
@@ -512,7 +518,7 @@
     htmlString = notification.html;
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved HTMLString message:%@",activityName,htmlString);
     
-    WebViewController* webViewController = [WebViewController createInstanceWithHTMLString:htmlString withTitle:nil];
+    WebViewController* webViewController = [WebViewController createInstanceWithTitle:nil withHTMLString:htmlString withBaseURL:nil];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 

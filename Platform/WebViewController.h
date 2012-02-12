@@ -13,6 +13,7 @@
     
     NSString* m_navBarTitle;
     NSString* m_htmlString;
+    NSURL*    m_baseURL;
     
 }
 
@@ -20,9 +21,11 @@
 
 @property (nonatomic, retain) NSString*   navBarTitle;
 @property (nonatomic, retain) NSString*   htmlString;
+@property (nonatomic, retain) NSURL*      baseURL;
 
+// Static Initializers
 + (WebViewController*)createInstance;
 + (WebViewController*)createInstanceWithTitle:(NSString*)title;
-+ (WebViewController*)createInstanceWithHTMLString:(NSString*)htmlString withTitle:(NSString*)title;
++ (WebViewController*)createInstanceWithTitle:(NSString*)title withHTMLString:(NSString*)htmlString withBaseURL:(NSURL*)baseURL;
 
 @end

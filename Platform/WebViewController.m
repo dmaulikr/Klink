@@ -13,6 +13,7 @@
 @synthesize wv_webView  = m_wv_webView;
 @synthesize navBarTitle = m_navBarTitle;
 @synthesize htmlString  = m_htmlString;
+@synthesize baseURL     = m_baseURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,9 +39,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // Setup Deflauts
     // If no title specified set Navigation bar to default
     if (self.navBarTitle == nil) {
         self.navBarTitle = @"Bahndr";
+    }
+    
+    // If no baseURL specified set default to the app bundle
+    if (self.baseURL == nil) {
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        self.baseURL = [NSURL fileURLWithPath:path];
+        
+        // Load the default style to the HTML doc by adding the Message.css file from the app bundle
+        self.htmlString = [NSString stringWithFormat:@"<head> <link rel='stylesheet' type='text/css' href='Message.css' /> </head> %@", self.htmlString];
     }
     
     // Set Navigation bar title style with typewriter font
@@ -57,8 +68,6 @@
     [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
-    
-    [self.wv_webView loadHTMLString:self.htmlString baseURL:nil];
     
 }
 
@@ -88,6 +97,9 @@
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
     
+    // load the HTML doc
+    [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -108,10 +120,11 @@
     return instance;
 }
 
-+ (WebViewController*)createInstanceWithHTMLString:(NSString*)htmlString withTitle:(NSString*)title {
++ (WebViewController*)createInstanceWithTitle:(NSString*)title withHTMLString:(NSString*)htmlString withBaseURL:(NSURL*)baseURL {
     WebViewController* instance = [[[WebViewController alloc]initWithNibName:@"WebViewController" bundle:nil] autorelease];
-    instance.htmlString = htmlString;
     instance.navBarTitle = title;
+    instance.htmlString = htmlString;
+    instance.baseURL = baseURL;
     return instance;
 }
 
