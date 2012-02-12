@@ -166,9 +166,9 @@
     
 }
 -(void) beginFacebookAuthentication {
-    NSString* activityName = @"UILoginView.beginFacebookAuthentication:";
+  //  NSString* activityName = @"UILoginView.beginFacebookAuthentication:";
     //now we need to grab their facebook authentication data, and then log them into our app    
-    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access",@"email", @"publish_stream",@"user_about_me", nil];
+    NSArray *permissions = [NSArray arrayWithObjects:@"offline_access",@"email", @"publish_actions",@"publish_stream",@"user_about_me", nil];
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
     
@@ -277,6 +277,18 @@
     
     
     
+}
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username {
+    NSString* activityName = @"UILoginView.cachedTwitterOAuthDataForUsername:";
+    LOG_LOGINVIEWCONTROLLER(0, @"%@ called for username %@",activityName,username);
+    return nil;
+}
+- (void) twitterOAuthConnectionFailedWithData: (NSData *) data 
+{
+    NSString* activityName = @"UILoginView.twitterOAuthConnectionFailedWithData:";
+    LOG_LOGINVIEWCONTROLLER(1,@"%@Twitter connection failed",activityName);
+                            
 }
 
 #pragma mark - FBRequestDelegate
