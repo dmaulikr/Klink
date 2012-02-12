@@ -234,6 +234,16 @@
             
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-community.png"];
         }
+        else if ([notification.feedevent intValue] == kSHARE_CAPTION_FACEBOOK ||
+                 [notification.feedevent intValue] == kSHARE_PAGE_FACEBOOK) {
+            
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-facebook.png"];
+        }
+        else if ([notification.feedevent intValue] == kSHARE_CAPTION_TWITTER ||
+                 [notification.feedevent intValue] == kSHARE_PAGE_TWITTER) {
+            
+            self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-twitter-t.png"];
+        }
         else {
             
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];

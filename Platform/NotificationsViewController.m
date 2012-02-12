@@ -317,10 +317,10 @@
   
   /*  
     // TEMP: Used for testing Feeds of type MESSAGE, can be deleted
-    NSString* htmlString = @"<p>Special message from Bahndr!</p>";
+    NSString* htmlString = @"<body><h1>New Message!</h1><hr /><h2>This is a special announcement from Bahndr</h2><p>Your draft has bee published to Bahndr.com. <a href='http://www.bahndr.com/'>Click here</a> to visit your published page.</body>";
     WebViewController* webViewController = [WebViewController createInstanceWithTitle:nil withHTMLString:htmlString withBaseURL:nil];
     [self.navigationController pushViewController:webViewController animated:YES];
-  */  
+ */  
 }
 
 

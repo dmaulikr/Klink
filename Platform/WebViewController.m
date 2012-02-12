@@ -32,6 +32,49 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - Back button handler
+// The following enables the nav bar back button to work like a web browser back button
+- (void)updateBackButton {
+    if ([self.wv_webView canGoBack]) {
+        if (!self.navigationItem.leftBarButtonItem) {
+            [self.navigationItem setHidesBackButton:YES animated:YES];
+            UIBarButtonItem *backItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backWasClicked:)] autorelease];
+            [self.navigationItem setLeftBarButtonItem:backItem animated:YES];
+        }
+    }
+    else {
+        [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+        [self.navigationItem setHidesBackButton:NO animated:YES];
+    }
+}
+
+- (void)backWasClicked:(id)sender {
+    if ([self.wv_webView canGoBack]) {
+        [self.wv_webView goBack];
+    }
+}
+
+#pragma mark - UIWebView Delegate Methods
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+	
+	//Capture user link-click.
+	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+		[self.wv_webView setScalesPageToFit:YES];
+        
+        NSURL *URL = [request URL];	
+		NSLog(@"url is: %@s ", URL);
+	}	
+	return YES;   
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self updateBackButton];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self updateBackButton];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -98,6 +141,9 @@
     [self.navigationController setToolbarHidden:YES animated:YES];
     
     // load the HTML doc
+    //NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:self.baseURL];
+    //[requestObj setHTTPBody:[self.htmlString dataUsingEncoding:NSUTF8StringEncoding]];
+    //[self.wv_webView loadRequest:requestObj];
     [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
     
 }

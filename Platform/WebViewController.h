@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WebViewController : UIViewController {
+@interface WebViewController : UIViewController < UIWebViewDelegate > {
     UIWebView* m_wv_webView;
     
     NSString* m_navBarTitle;

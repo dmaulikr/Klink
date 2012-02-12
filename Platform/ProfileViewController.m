@@ -134,6 +134,7 @@
     }
     //float progressDrafts = (float)3 / (float)progressBarMaxValue;
     self.iv_progressDrafts.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressDrafts.frame.origin.y,(progressDrafts * progressBarContainerWidth), self.iv_progressDrafts.frame.size.height);
+    [self.iv_progressDrafts setHidden:NO];
     
     // photos in the last 7 days
     float progressPhotos = 0.0f;
@@ -142,6 +143,7 @@
     }
     //float progressPhotos = (float)2 / (float)progressBarMaxValue;
     self.iv_progressPhotos.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width, self.iv_progressPhotos.frame.origin.y,(progressPhotos * progressBarContainerWidth), self.iv_progressPhotos.frame.size.height);
+    [self.iv_progressPhotos setHidden:NO];
     
     // captions in the last 7 days
     float progressCaptions = 0.0f;
@@ -150,6 +152,7 @@
     }
     //float progressCaptions = (float)4 / (float)progressBarMaxValue;
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
+    [self.iv_progressCaptions setHidden:NO];
     
 }
 
@@ -260,6 +263,7 @@
     if ([self.user.iseditor boolValue]) {
         self.lbl_currentLevel.text = @"Editor";
         self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
+        self.lbl_currentLevelDate.hidden = NO;
     }
     else {
         self.lbl_currentLevel.text = @"Contributor";

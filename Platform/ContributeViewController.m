@@ -840,7 +840,10 @@
     LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Committed changes to local store, tracking %d cloud synchronization Requests",activityName,[self.requests count]);
 }
 - (void)onSubmitButtonPressed:(id)sender {
- //   NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
+    //NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
+    
+    //Disable the Submit button
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
     
     //after this point, the platforms should automatically begin syncing the data back to the cloud
     //we now show a progress bar to monitor this background activity
@@ -1093,8 +1096,7 @@
     
     //called when the progress view is hidden
 
-    
-     [self hideProgressBar];
+    [self hideProgressBar];
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -1121,6 +1123,9 @@
         
         NSError* error = nil;
         [resourceContext.managedObjectContext save:&error];
+        
+        //Re-enable the Submit button
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
     }
 
 }
