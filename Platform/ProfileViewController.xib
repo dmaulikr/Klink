@@ -354,7 +354,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">SUBMISSIONS (last 7 days)</string>
+						<string key="IBUIText">SUBMISSIONS (this week)</string>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="1009615336"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
