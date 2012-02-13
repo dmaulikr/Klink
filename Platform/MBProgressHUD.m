@@ -235,9 +235,9 @@
 	}
 	id me = [self initWithFrame:view.bounds];
 	// We need to take care of rotation ourselves if we're adding the HUD to a window
-	if ([view isKindOfClass:[UIWindow class]]) {
-		[self setTransformForCurrentOrientation:NO];
-	}
+	//if ([view isKindOfClass:[UIWindow class]]) {
+	//	[self setTransformForCurrentOrientation:NO];
+	//}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) 
 												 name:UIDeviceOrientationDidChangeNotification object:nil];
 	

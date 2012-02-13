@@ -60,6 +60,16 @@
     return self;
 }
 
+- (void)deviceOrientationDidChange:(NSNotification *)notification { 
+	// Overriding the original to not do anything if a rotation is detected
+    
+    // Stay in sync with the superview
+	//if (self.superview) {
+	//	self.bounds = self.superview.bounds;
+	//	[self setNeedsDisplay];
+	//}
+}
+
 
 - (void) animateFillOfProgress 
 {
