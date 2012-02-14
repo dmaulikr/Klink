@@ -14,6 +14,8 @@
 @synthesize navBarTitle = m_navBarTitle;
 @synthesize htmlString  = m_htmlString;
 @synthesize baseURL     = m_baseURL;
+@synthesize internetReachable   = m_internetReachable;
+@synthesize hostReachable       = m_hostReachable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,6 +56,7 @@
     }
 }
 
+
 #pragma mark - UIWebView Delegate Methods
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 	
@@ -82,35 +85,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    // Setup Deflauts
-    // If no title specified set Navigation bar to default
-    if (self.navBarTitle == nil) {
-        self.navBarTitle = @"Bahndr";
-    }
+    // setup check for internet connection
+    self.internetReachable = [[[Reachability reachabilityForInternetConnection] retain] autorelease];
     
-    // If no baseURL specified set default to the app bundle
-    if (self.baseURL == nil) {
-        NSString *path = [[NSBundle mainBundle] bundlePath];
-        self.baseURL = [NSURL fileURLWithPath:path];
-        
-        // Load the default style to the HTML doc by adding the Message.css file from the app bundle
-        self.htmlString = [NSString stringWithFormat:@"<head> <link rel='stylesheet' type='text/css' href='Message.css' /> </head> %@", self.htmlString];
-    }
-    
-    // Set Navigation bar title style with typewriter font
-    CGSize labelSize = [self.navBarTitle sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
-    titleLabel.text = self.navBarTitle;
-    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
-    titleLabel.textAlignment = UITextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    // emboss so that the label looks OK
-    [titleLabel setShadowColor:[UIColor blackColor]];
-    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
-    self.navigationItem.titleView = titleLabel;
-    [titleLabel release];
+    // setup check if a pathway to Bahndr host exists
+    self.hostReachable = [[[Reachability reachabilityWithHostName: @"www.bahndr.com"] retain] autorelease];
     
 }
 
@@ -121,6 +100,11 @@
     // e.g. self.myOutlet = nil;
     
     self.wv_webView = nil;
+    self.navBarTitle = nil;
+    self.htmlString = nil;
+    self.baseURL = nil;
+    self.internetReachable = nil;
+    self.hostReachable = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,6 +123,55 @@
     
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    
+    // Setup Deflauts
+    // If no title specified set Navigation bar to default
+    if (self.navBarTitle == nil) {
+        self.navBarTitle = @"Bahndr";
+    }
+    
+    // If no baseURL specified set default to the app bundle
+    if (self.baseURL == nil) {
+        NSString *path = [[NSBundle mainBundle] bundlePath];
+        self.baseURL = [NSURL fileURLWithPath:path];
+    }
+    
+    // Check for network connection availability to www.bahndr.com
+    NetworkStatus internetStatus = [self.internetReachable currentReachabilityStatus];
+    NetworkStatus hostStatus = [self.hostReachable currentReachabilityStatus];
+    
+    if (internetStatus == NotReachable || hostStatus == NotReachable) {
+        // No connection to www.bahndr.com is available. Load the default style
+        // to the HTML doc by adding the Message.css file from the app bundle
+        
+        int originalHeadLocation = [self.htmlString rangeOfString:@"</head>"].location;
+        
+        // Header update to point to local default css file
+        NSString* newHead = @"<head> <link rel='stylesheet' type='text/css' href='Message.css' /> </head>";
+        
+        NSMutableString* mutableHTMLString = [NSMutableString stringWithString:self.htmlString];
+        [mutableHTMLString insertString:newHead atIndex:(originalHeadLocation + @"</head>".length)];
+        
+        self.htmlString = [NSString stringWithString:mutableHTMLString];
+        
+        //self.htmlString = [NSString stringWithFormat:@"<head> <link rel='stylesheet' type='text/css' href='Message.css' /> </head> %@", self.htmlString];
+    }
+    
+    // Set Navigation bar title style with typewriter font
+    CGSize labelSize = [self.navBarTitle sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
+    titleLabel.text = self.navBarTitle;
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
     
     // load the HTML doc
     //NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:self.baseURL];

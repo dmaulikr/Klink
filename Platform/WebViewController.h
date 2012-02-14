@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Reachability.h"
 
 @interface WebViewController : UIViewController < UIWebViewDelegate > {
     UIWebView* m_wv_webView;
@@ -15,6 +16,9 @@
     NSString* m_htmlString;
     NSURL*    m_baseURL;
     
+    Reachability*   m_internetReachable;
+    Reachability*   m_hostReachable;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView*   wv_webView;
@@ -22,6 +26,10 @@
 @property (nonatomic, retain) NSString*   navBarTitle;
 @property (nonatomic, retain) NSString*   htmlString;
 @property (nonatomic, retain) NSURL*      baseURL;
+
+@property (nonatomic, retain) Reachability*   internetReachable;
+@property (nonatomic, retain) Reachability*   hostReachable;
+
 
 // Static Initializers
 + (WebViewController*)createInstance;
