@@ -154,6 +154,7 @@
 		527A543114E081E100050F57 /* blue_dot_medium.png in Resources */ = {isa = PBXBuildFile; fileRef = 527A542F14E081E100050F57 /* blue_dot_medium.png */; };
 		527A543214E081E100050F57 /* blue_dot_medium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 527A543014E081E100050F57 /* blue_dot_medium@2x.png */; };
 		527A753414E738AF0012B229 /* Message.css in Resources */ = {isa = PBXBuildFile; fileRef = 527A753314E738AF0012B229 /* Message.css */; };
+		527A754B14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = 527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */; };
 		527D2EBF14B7A58900060FD4 /* open_book.png in Resources */ = {isa = PBXBuildFile; fileRef = 527D2EBD14B7A58900060FD4 /* open_book.png */; };
 		527D2EC014B7A58900060FD4 /* open_book@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 527D2EBE14B7A58900060FD4 /* open_book@2x.png */; };
 		527FFFF414B52C39001D947B /* NavigationBar_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 527FFFF314B52C39001D947B /* NavigationBar_yellow.png */; };
@@ -545,6 +546,8 @@
 		527A542F14E081E100050F57 /* blue_dot_medium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_dot_medium.png; sourceTree = "<group>"; };
 		527A543014E081E100050F57 /* blue_dot_medium@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue_dot_medium@2x.png"; sourceTree = "<group>"; };
 		527A753314E738AF0012B229 /* Message.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = Message.css; sourceTree = "<group>"; };
+		527A754814ED7EDE0012B229 /* NSDictionary-MutableDeepCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary-MutableDeepCopy.h"; sourceTree = "<group>"; };
+		527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary-MutableDeepCopy.m"; sourceTree = "<group>"; };
 		527D2EBD14B7A58900060FD4 /* open_book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = open_book.png; sourceTree = "<group>"; };
 		527D2EBE14B7A58900060FD4 /* open_book@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open_book@2x.png"; sourceTree = "<group>"; };
 		527FFFF314B52C39001D947B /* NavigationBar_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NavigationBar_yellow.png; sourceTree = "<group>"; };
@@ -1797,6 +1800,8 @@
 				C5C83AF2144B859500AF38CF /* NSURLCategory.m */,
 				5253628F1499581F001F1EB6 /* UIImageView+UIImageViewCategory.h */,
 				525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */,
+				527A754814ED7EDE0012B229 /* NSDictionary-MutableDeepCopy.h */,
+				527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2387,6 +2392,7 @@
 				521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */,
 				521D6DCF14D354FF00FA08E3 /* UITOCTableViewCell.m in Sources */,
 				529EF0A514E1EFE100DED0C4 /* WebViewController.m in Sources */,
+				527A754B14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
