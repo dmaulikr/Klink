@@ -257,6 +257,7 @@
     self.btn_tableOfContentsButton = nil;
     
     self.sb_searchBar = nil;
+    self.btn_backgroundButton = nil;
     
 }
 
