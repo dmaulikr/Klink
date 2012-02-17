@@ -23,6 +23,7 @@
     UIButton*               m_btn_tableOfContentsButton;
     
     UISearchBar*            m_sb_searchBar;
+    UIButton*               m_btn_backgroundButton;
 }
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
@@ -36,8 +37,10 @@
 @property (nonatomic,retain) IBOutlet UIButton*             btn_tableOfContentsButton;
 
 @property (nonatomic,retain) IBOutlet UISearchBar*          sb_searchBar;
+@property (nonatomic,retain) IBOutlet UIButton*             btn_backgroundButton;
 
 - (IBAction) onTOCButtonPressed:(id)sender;
+- (IBAction) onBackgroundButtonPressed:(id)sender;
 
 - (void)resetSearch;
 - (void)handleSearchForTerm:(NSString *)searchTerm;

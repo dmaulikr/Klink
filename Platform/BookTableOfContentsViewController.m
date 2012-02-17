@@ -26,6 +26,7 @@
 @synthesize tbl_tOCTableView        = m_tbl_tOCTableView;
 @synthesize btn_tableOfContentsButton   = m_btn_tableOfContentsButton;
 @synthesize sb_searchBar            = m_sb_searchBar;
+@synthesize btn_backgroundButton    = m_btn_backgroundButton;
 
 
 #pragma mark - Properties
@@ -540,6 +541,7 @@
     NSString *searchTerm = [searchBar text];
     
     [self.sb_searchBar setShowsCancelButton:NO animated:YES];
+    [self.btn_backgroundButton setEnabled:NO];
     [self.sb_searchBar resignFirstResponder];
     //self.tbl_tOCTableView.allowsSelection = YES;
     //self.tbl_tOCTableView.scrollEnabled = YES;
@@ -557,12 +559,14 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [self.sb_searchBar setShowsCancelButton:YES animated:YES];
+    [self.btn_backgroundButton setEnabled:YES];
     //self.tbl_tOCTableView.allowsSelection = NO;
     //self.tbl_tOCTableView.scrollEnabled = NO;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [self.sb_searchBar setShowsCancelButton:NO animated:YES];
+    [self.btn_backgroundButton setEnabled:NO];
     self.sb_searchBar.text = @"";
     [self resetSearch];
     [self.tbl_tOCTableView reloadData];
@@ -572,6 +576,14 @@
 }
 
 #pragma mark - Button Handlers
+- (IBAction) onBackgroundButtonPressed:(id)sender {
+    //[self searchBarCancelButtonClicked:nil];
+    
+    [self.sb_searchBar setShowsCancelButton:NO animated:YES];
+    [self.btn_backgroundButton setEnabled:NO];
+    [self.sb_searchBar resignFirstResponder];
+}
+
 #pragma mark Navigation Button Handlers
 - (IBAction) onTOCButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
