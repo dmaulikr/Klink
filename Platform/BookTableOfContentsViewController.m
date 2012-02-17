@@ -392,8 +392,9 @@
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 
 {
-    UIView* headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 44)] autorelease];
-    [headerView setBackgroundColor:[UIColor clearColor]];
+    UIView* headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 54)] autorelease];
+    //[headerView setBackgroundColor:[UIColor clearColor]];
+    [headerView setBackgroundColor:[UIColor colorWithRed:181.0/255.0 green:164.0/255.0 blue:141.0/255.0 alpha:1.0]];
     
     UILabel * headerLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     headerLabel.backgroundColor = [UIColor clearColor];
@@ -402,7 +403,7 @@
     headerLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:18];
     headerLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     headerLabel.shadowColor = [UIColor whiteColor];
-    headerLabel.frame = CGRectMake(15, -11, 320.0, 44.0);
+    headerLabel.frame = CGRectMake(14, -15, 320.0, 54.0);
     headerLabel.textAlignment = UITextAlignmentLeft;
     
     if ([self.months count] == 0)
@@ -414,6 +415,10 @@
     
     return headerView;
 }
+
+/*- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 54.0;
+}*/
 
 /*- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     return self.months;
@@ -512,6 +517,22 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.sb_searchBar resignFirstResponder];
     return indexPath;
+}
+
+/*- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    // This will scroll the section header with the rest of the table and not anchor the section header to the top
+    CGFloat sectionHeaderHeight = 54;
+    if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+    } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    }
+}*/
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if(scrollView.contentOffset.y <= 0) {
+        self.sb_searchBar.frame = CGRectMake(0, scrollView.contentOffset.y, self.sb_searchBar.frame.size.width, self.sb_searchBar.frame.size.height);
+    }
 }
 
 #pragma mark - Search Bar Delegate Methods
