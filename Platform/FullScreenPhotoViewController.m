@@ -520,18 +520,18 @@
     NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
     
     int captionCount = [[self.frc_captions fetchedObjects] count];
+    int index = [self.captionViewSlider getPageIndex];
+    Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
     
-    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
-        
-        // if this draft has expired, we need to disable the the vote buttons
-       	
+    if (self.loggedInUser.objectid && [self.loggedInUser.objectid isEqualToNumber:caption.creatorid]) {
+        // if this caption belongs to the currently logged in user, we then disable the voting button
         [self disableVoteButton];
-      	
+    }
+    else if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
+        // if this draft has expired, we need to disable the the vote buttons
+        [self disableVoteButton];
     }
     else if (captionCount > 0) {
-        
-        int index = [self.captionViewSlider getPageIndex];
-        Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:index];
         
         if ([caption.hasvoted boolValue] == YES) {
             [self disableVoteButton];
@@ -539,7 +539,6 @@
         else {
             [self enableVoteButton];
         }
-        
     }
     else {
         [self disableVoteButton];
@@ -1146,8 +1145,6 @@
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
         NSString* message = @"Casting thy approval...";
         [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-
-
         
         // Disable the vote button for this caption
         [self disableVoteButton];
@@ -1218,6 +1215,9 @@
             [currentCaptionView renderCaptionWithID:self.captionID];
             
         }
+    }
+    else {
+        [self.captionViewSlider.tableView reloadData];
     }
 }
 
