@@ -675,14 +675,7 @@
 		C58C6CA914973AF00068CCD6 /* ABNotifierDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierDelegate.h; sourceTree = "<group>"; };
 		C58C6CAA14973AF00068CCD6 /* ABNotifierFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierFunctions.h; sourceTree = "<group>"; };
 		C58C6CAB14973AF00068CCD6 /* ABNotifierFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotifierFunctions.m; sourceTree = "<group>"; };
-		C58C6CAD14973AF00068CCD6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HTNotifier.strings; sourceTree = "<group>"; };
 		C58C6CAE14973AF00068CCD6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CAF14973AF00068CCD6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CB014973AF00068CCD6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CB114973AF00068CCD6 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CB214973AF00068CCD6 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CB314973AF00068CCD6 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/HTNotifier.strings; sourceTree = "<group>"; };
-		C58C6CB414973AF00068CCD6 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/HTNotifier.strings"; sourceTree = "<group>"; };
 		C58C6CB714973AF00068CCD6 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
 		C58C6CB814973AF00068CCD6 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
 		C58C6CBA14973AF00068CCD6 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
@@ -2426,14 +2419,7 @@
 		C58C6CAC14973AF00068CCD6 /* HTNotifier.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C58C6CAD14973AF00068CCD6 /* de */,
 				C58C6CAE14973AF00068CCD6 /* en */,
-				C58C6CAF14973AF00068CCD6 /* es */,
-				C58C6CB014973AF00068CCD6 /* fr */,
-				C58C6CB114973AF00068CCD6 /* nl */,
-				C58C6CB214973AF00068CCD6 /* ro */,
-				C58C6CB314973AF00068CCD6 /* ru */,
-				C58C6CB414973AF00068CCD6 /* zh-Hant */,
 			);
 			name = HTNotifier.strings;
 			sourceTree = "<group>";
