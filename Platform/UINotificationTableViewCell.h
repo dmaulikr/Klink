@@ -18,7 +18,7 @@
     UILabel*        m_lbl_notificationDate;
     UIImageView*    m_iv_notificationImage;
     UIImageView*    m_iv_notificationTypeImage;
-    UIImageView*    m_iv_notificationBadge;
+    UIButton*       m_btn_notificationBadge;
     
     id m_target;
     SEL m_selector;
@@ -32,12 +32,14 @@
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_notificationDate;
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationImage;
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationTypeImage;
-@property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationBadge;
+@property (nonatomic,retain) IBOutlet UIButton*         btn_notificationBadge;
 
 @property (nonatomic,retain) id                         target;
 @property                    SEL                        selector;
 
 - (IBAction) onUsernameButtonPress:(id)sender;
+- (IBAction) onNotificationBadgeButtonPress:(id)sender;
+
 - (void) renderNotificationWithID:(NSNumber*)notificationID linkClickTarget:(id)target linkClickSelector:(SEL)selector; 
 
 + (NSString*) cellIdentifier;

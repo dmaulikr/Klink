@@ -36,7 +36,7 @@
 @synthesize lbl_notificationDate = m_lbl_notificationDate;
 @synthesize iv_notificationImage = m_iv_notificationImage;
 @synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
-@synthesize iv_notificationBadge = m_iv_notificationBadge;
+@synthesize btn_notificationBadge = m_btn_notificationBadge;
 @synthesize selector = m_selector;
 @synthesize target = m_target;
 
@@ -177,14 +177,14 @@
            
         }
        
-        //need to check if the notification ahs been opened before
+        //need to check if the notification has been opened before
         if ([notification.hasopened boolValue] == NO) {
             //never been read, show the unreaad badge
-            [self.iv_notificationBadge setHidden:NO];
+            [self.btn_notificationBadge setHidden:NO];
         }
         else {
             //has been read, hide the unreaad badge
-            [self.iv_notificationBadge setHidden:YES];
+            [self.btn_notificationBadge setHidden:YES];
         }
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE ||
@@ -309,23 +309,13 @@
         [self.contentView addSubview:self.notificationTableViewCell];
         
         [self.contentView addSubview:self.resourceLinkButton];
+        [self.contentView addSubview:self.btn_notificationBadge];
         
         // Custom initialization
 		//[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTweetNotification:) name:IFTweetLabelURLNotification object:nil];
         
     }
     return self;
-}
-
-- (IBAction) onUsernameButtonPress:(id)sender {
-    //click from a resource link
-    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
-    if (self.target != nil) {
-        if ([self.target respondsToSelector:self.selector]) {
-            NSNumber* objectID = rlb.objectID;
-            [self.target performSelector:self.selector withObject:objectID];
-        }
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -346,6 +336,34 @@
     self.iv_notificationTypeImage = nil;
     
     [super dealloc];
+}
+
+#pragma mark - Button Handlers
+- (IBAction) onUsernameButtonPress:(id)sender {
+    //click from a resource link
+    UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
+    if (self.target != nil) {
+        if ([self.target respondsToSelector:self.selector]) {
+            NSNumber* objectID = rlb.objectID;
+            [self.target performSelector:self.selector withObject:objectID];
+        }
+    }
+}
+
+- (IBAction) onNotificationBadgeButtonPress:(id)sender {
+    [self.btn_notificationBadge setHidden:YES];
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Feed* notification = (Feed*)[resourceContext resourceWithType:FEED withID:self.notificationID];
+    
+    //we need to mark the notification as having been opened
+    if ([notification.hasopened boolValue] == NO)
+    {
+        notification.hasopened = [NSNumber numberWithBool:YES];
+    }
+    
+    //save the notification change
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
 }
 
 #pragma mark - Async callbacks
