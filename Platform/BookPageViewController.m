@@ -225,12 +225,16 @@
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
                 
+                [self.lbl_photoby setHidden:NO];
+                
                 [self displayPhotoFrameOnImage:image];
             }
         }
         else {
             self.iv_photo.contentMode = UIViewContentModeCenter;
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+            
+            [self.lbl_photoby setHidden:YES];
         }
         
         [self.view setNeedsDisplay];

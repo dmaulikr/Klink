@@ -334,6 +334,7 @@
     self.lbl_notificationDate = nil;
     self.iv_notificationImage = nil;
     self.iv_notificationTypeImage = nil;
+    self.btn_notificationBadge = nil;
     
     [super dealloc];
 }
