@@ -791,12 +791,13 @@
     }
     [retVal addObject:firstMessage];
     [retVal addObject:@"Harmonizing typewriter ribbon..."];
-    [retVal addObject:@"Commencing hydrofracking..."];
+    [retVal addObject:@"Commence hydrofracking..."];
     [retVal addObject:@"Releasing the Kraken..."];
     [retVal addObject:@"Installing Hadoop..."];
-    [retVal addObject:@"Enumerating the unenumerable..."];
-    [retVal addObject:@"Deploying monoliths..."];
-   
+    [retVal addObject:@"Well this is awkward..."];
+    [retVal addObject:@"It usually is much faster..."];
+    [retVal addObject:@"Wilbur, we might have a problem..."];
+
     return retVal;
 }
 
