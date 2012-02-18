@@ -686,7 +686,7 @@
         
         for (Page* page in [self.frc_published_pages fetchedObjects]) {
             if (page.finishedcaptionid != nil) {
-                //we check to see if ti exists in the local store
+                //we check to see if it exists in the local store
                 id caption = [resourceContext resourceWithType:CAPTION withID:page.finishedcaptionid];
                 if (caption == nil) {
                     //caption isnt in local store, add it to the list of captions to be downloaded

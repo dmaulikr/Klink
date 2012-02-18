@@ -91,7 +91,7 @@
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
     enumerationContext.pageSize =settingsObject.pagesize;
-    enumerationContext.maximumNumberOfResults =  [NSNumber numberWithInt:6]; //settingsObject.photo_maxnumtodownload;
+    enumerationContext.maximumNumberOfResults =  settingsObject.photo_maxnumtodownload;
     enumerationContext.pageNumber = [NSNumber numberWithInt:0];
     
     return enumerationContext;
