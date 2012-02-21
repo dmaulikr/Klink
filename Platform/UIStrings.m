@@ -35,4 +35,4 @@ NSString* const ui_LOGIN_REQUIRED               = @"While anyone can read Bahndr
 NSString* const ui_LOGIN_TITLE                  = @"Join Bahndr";
 
 
-NSString* const ui_WELCOME_CONTRIBUTE           = @"Drafts have 3 parts: a hashtag, photo and caption. You can start a Draft with just a hashtag title. Anyone can then add a photo or caption to the Draft before it expires.\n\nGo on, let that Great Dane named creativity off her chain and start writing this Draft..."; 
+NSString* const ui_WELCOME_CONTRIBUTE           = @"Drafts have 3 parts: a hashtag, photo and caption.\n\nYou can start a Draft with just a hashtag title. Anyone can then add a photo or caption to the Draft before it expires.\n\nGo on, let that Great Dane named creativity off her chain and start writing this Draft..."; 
