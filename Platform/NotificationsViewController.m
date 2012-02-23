@@ -492,7 +492,12 @@
     
     //open the user profile view
     ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:userID];
-    [self.navigationController pushViewController:profileViewController animated:NO];
+    //[self.navigationController pushViewController:profileViewController animated:NO];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 - (void) processClickOfDemotionFromEditorNotification:(Feed*)notification
