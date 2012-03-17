@@ -51,6 +51,7 @@ NSString* const NUMBEROFVOTES           =@"numberofvotes";
 NSString* const ID                      =@"id";
 NSString* const USERNAME                =@"username";
 NSString* const NAME                    =@"name";
+NSString* const EMAIL                   =@"email";
 NSString* const USERID                  =@"userid";
 NSString* const CREATEDRESOURCES        =@"newobjects";
 NSString* const MODIFIEDRESOURCE        =@"updatedobject";

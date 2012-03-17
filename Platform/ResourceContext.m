@@ -585,6 +585,7 @@ static ResourceContext* sharedInstance;
 #pragma mark - Authentication Enumeration
 - (void) getAuthenticatorToken:(NSNumber *)facebookID 
                       withName:(NSString *)displayName 
+                     withEmail:(NSString *)email
        withFacebookAccessToken:(NSString *)facebookAccessToken 
        withFacebookTokenExpiry:(NSDate *)date 
                 withDeviceToken:(NSString *)deviceToken
@@ -600,7 +601,7 @@ static ResourceContext* sharedInstance;
     request.onSuccessCallback = callback;
     request.onFailCallback = callback;
     
-    NSURL* url = [UrlManager urlForAuthentication:facebookID withName:displayName withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date withDeviceToken:deviceToken];
+    NSURL* url = [UrlManager urlForAuthentication:facebookID withName:displayName withEmail:email withFacebookAccessToken:facebookAccessToken withFacebookTokenExpiry:date withDeviceToken:deviceToken];
     
     request.url = [url absoluteString];
     

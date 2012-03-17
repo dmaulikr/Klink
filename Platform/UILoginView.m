@@ -174,15 +174,6 @@
     
     [facebook authorize:permissions delegate:self];
     
-//    if (![facebook isSessionValid]) {
-//        [facebook authorize:permissions delegate:self];
-//    }
-//    else {
-//        //user is already authenticated
-//        LOG_LOGINVIEWCONTROLLER(0, @"%@user is already authenticated with Facebook",activityName);
-//        [self checkStatusAndDismiss];
-//    }
-    
 }
 
 #pragma mark - instance methods
@@ -305,11 +296,12 @@
         NSString* facebookIDString = [result valueForKey:ID];
         NSNumber* facebookID = [facebookIDString numberValue];
         NSString* displayName = [result valueForKey:NAME];
+        NSString* email = [result valueForKey:EMAIL];
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
         
         
-        LOG_LOGINVIEWCONTROLLER(0, @"%@:Requesting new authenticator from service withName:%@, withFacebookAccessToken:%@",activityName,displayName,facebook.accessToken);
-        [resourceContext getAuthenticatorToken:facebookID withName:displayName withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate withDeviceToken:appDelegate.deviceToken onFinishNotify:callback];
+        LOG_LOGINVIEWCONTROLLER(0, @"%@:Requesting new authenticator from service withName:%@, withEmail:%@, withFacebookAccessToken:%@",activityName,displayName,email,facebook.accessToken);
+        [resourceContext getAuthenticatorToken:facebookID withName:displayName withEmail:email withFacebookAccessToken:facebook.accessToken withFacebookTokenExpiry:facebook.expirationDate withDeviceToken:appDelegate.deviceToken onFinishNotify:callback];
         [callback release];
         
     }

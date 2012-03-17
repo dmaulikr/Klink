@@ -110,7 +110,11 @@
     
 }
 
-+ (NSURL*) urlForAuthentication:(NSNumber *)facebookID withName:(NSString *)name withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date withDeviceToken:(NSString *)deviceToken {
++ (NSURL*) urlForAuthentication:(NSNumber *)facebookID 
+                       withName:(NSString *)name 
+                      withEmail:(NSString*)email
+        withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date 
+                withDeviceToken:(NSString *)deviceToken {
     
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     
@@ -124,6 +128,8 @@
     [parameters appendFormat:@"%@=%@",facebookIDParamName,[facebookID stringValue]];
     NSString* displayNameParamName = param_DISPLAYNAME;
     [parameters appendFormat:@"&%@=%@",displayNameParamName,name];
+    NSString* emailParamName = param_EMAIL;
+    [parameters appendFormat:@"&%@=%@",emailParamName,email];
     NSString* facebookAccessTokenParamName = param_FACEBOOKACCESSTOKEN;
     [parameters appendFormat:@"&%@=%@",facebookAccessTokenParamName,facebookAccessToken];
     NSString* facebookAccessTokenExpiryParamName = param_FACEBOOKACCESSTOKENEXPIRY;

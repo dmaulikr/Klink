@@ -36,7 +36,8 @@
 
 
 + (NSURL*) urlForAuthentication:(NSNumber*)facebookID 
-                       withName:(NSString*)name 
+                       withName:(NSString*)name
+                      withEmail:(NSString*)email
         withFacebookAccessToken:(NSString*)facebookAccessToken 
         withFacebookTokenExpiry:(NSDate*)date
                 withDeviceToken:(NSString*)deviceToken;

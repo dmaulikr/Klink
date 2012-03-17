@@ -44,7 +44,8 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
 
 //authentication methods
 - (void) getAuthenticatorToken:(NSNumber*)facebookID 
-                      withName:(NSString*)displayName 
+                      withName:(NSString*)displayName
+                     withEmail:(NSString*)email
        withFacebookAccessToken:(NSString*)facebookAccessToken 
     withFacebookTokenExpiry:(NSDate*)date
                withDeviceToken:(NSString*)deviceToken
