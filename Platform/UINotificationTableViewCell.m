@@ -23,11 +23,6 @@
 #define kNOTIFICATIONID             @"notificationid"
 #define kUSERREGEX                  @"\\{.*?\\}"
 
-#define kUNREAD_RED         122
-#define kUNREAD_BLUE        122
-#define kUNREAD_GREEN       122
-#define kUNREAD_ALPHA       0.5
-
 @implementation UINotificationTableViewCell
 @synthesize notificationID = m_notificationID;
 @synthesize notificationTableViewCell = m_notificationTableViewCell;
@@ -96,6 +91,35 @@
         NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
         NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
         
+        // Set up notification image
+        self.iv_notificationImage.image = nil;
+        ImageManager* imageManager = [ImageManager instance];
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:notification.objectid forKey:kNOTIFICATIONID];
+        
+        if (notification.imageurl != nil &&
+            ![notification.imageurl isEqualToString:@""]) {
+            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+            callback.fireOnMainThread = YES;
+            self.iv_notificationImage.hidden = NO;
+            UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
+            [callback release];
+            
+            if (image != nil) {
+                self.iv_notificationImage.contentMode = UIViewContentModeScaleAspectFit;
+                self.iv_notificationImage.image = image;
+            }
+            else {
+                self.iv_notificationImage.contentMode = UIViewContentModeCenter;
+                self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+            }
+        }
+        else {
+            self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, self.iv_notificationImage.frame.origin.x + self.iv_notificationImage.frame.size.width/2, self.lbl_notificationMessage.frame.size.height);
+            self.iv_notificationImage.hidden = YES;
+        }
+        
+        
+        // Set up notification message
         UIFont* font = [self fontForLabel];
         
         if (numberOfMatches > 0) {
@@ -152,7 +176,7 @@
                     indentSize = [indent sizeWithFont:font];
                 }
                 
-                CGSize maximumSize = CGSizeMake(219, 38);
+                CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
                 remainder = [NSString stringWithFormat:@"%@%@", indent, remainder];
                 CGSize remainderSize = [remainder sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
                  
@@ -167,7 +191,7 @@
             //no embedded user links found
             [self.lbl_notificationMessage setText:notification.message];
             
-            CGSize maximumSize = CGSizeMake(219, 38);
+            CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
             CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
             
             self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, messageSize.width, messageSize.height);
@@ -247,33 +271,6 @@
         else {
             
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-globe.png"];
-        }
-        
-        self.iv_notificationImage.image = nil;
-        
-        ImageManager* imageManager = [ImageManager instance];
-        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:notification.objectid forKey:kNOTIFICATIONID];
-        
-        if (notification.imageurl != nil &&
-            ![notification.imageurl isEqualToString:@""]) {
-            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-            callback.fireOnMainThread = YES;
-            self.iv_notificationImage.hidden = NO;
-            UIImage* image = [imageManager downloadImage:notification.imageurl withUserInfo:nil atCallback:callback];
-            [callback release];
-            
-            if (image != nil) {
-                self.iv_notificationImage.contentMode = UIViewContentModeScaleAspectFit;
-                self.iv_notificationImage.image = image;
-            }
-            else {
-                self.iv_notificationImage.contentMode = UIViewContentModeCenter;
-                self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
-            }
-        }
-        else {
-            self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, self.iv_notificationImage.frame.origin.x + self.iv_notificationImage.frame.size.width/2, self.lbl_notificationMessage.frame.size.height);
-            self.iv_notificationImage.hidden = YES;
         }
     }
     [self setNeedsDisplay];

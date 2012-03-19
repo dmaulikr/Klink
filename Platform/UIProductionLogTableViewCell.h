@@ -24,6 +24,8 @@
     NSNumber*       m_topVotedPhotoID;
     
     NSDate*         m_deadline;
+    
+    NSTimer*        m_deadlineTimer;
 }
 
 @property (nonatomic, retain) NSNumber*                     pageID;
@@ -41,7 +43,9 @@
 
 @property (nonatomic, retain)          NSDate*              deadline;
 
-@property (nonatomic, retain) EventManager*                 eventManager;
+@property (nonatomic, retain)          NSTimer*             deadlineTimer;
+
+@property (nonatomic, retain)          EventManager*        eventManager;
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 + (NSString*) cellIdentifier;

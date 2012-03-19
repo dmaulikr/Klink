@@ -20,7 +20,7 @@
  NSString* const ui_WELCOME_PRODUCTIONLOG       = @"Each page in Bahndr starts here as a Draft.\n\nEvery night, Bahndr Editors vote for one Draft to publish in Bahndr.\n\nGlory comes to those who are published, will you be glorious?\n\nLet's find out, press the center typewriter key to create your first Draft...";
 
 
- NSString* const ui_WELCOME_BOOK                = @"Each day, one new story is written into the Bahndr memory book.\n\nYou create the content, you choose what gets published, you write the Bahndr story.\n\nDismiss this alert, and swipe the page to kick start your Bahndr-ing...";
+ NSString* const ui_WELCOME_BOOK                = @"Each day, one new story is written into the Bahndr memory book.\n\nYou create the content, you choose what gets published, you write the Bahndr story.\n\nDismiss this alert, and flick the page to kick start your Bahndr-ing...";
 
  NSString* const ui_WELCOME_FULLSCREEN          = @"Use this view to browse through the photos and captions in this Draft.\n\nAdd your own photos and captions to this draft with the toolbar.\n\nRemember to use the 'thumb up' button to up-vote your favorite entries.";
 
@@ -30,7 +30,7 @@
 
  NSString* const ui_WELCOME_EDITORIAL           = @"You've made it, you are a Bahndr Editor! Only Editors decide what Draft will be published next.\n\nGo on, cast your vote for your favorite Draft. Remember Bahndr is forever, guard it well.";
 
-NSString* const ui_LOGIN_REQUIRED               = @"While anyone can read Bahndr, only logged-in Bahndrers can contribute to it.\n\nJoining Bahndr is easy, just login with Facebook and you are done!\n\nWe use Facebook because it is far more secure for you than anything we could build.";
+NSString* const ui_LOGIN_REQUIRED               = @"While anyone can read Bahndr, only logged-in Bahndrers can contribute to it.\n\nBahndr uses Facebook authentication because of its strength and security.\n\nAnd hey, this is one less password for you to remember.";
 
 NSString* const ui_LOGIN_TITLE                  = @"Join Bahndr";
 

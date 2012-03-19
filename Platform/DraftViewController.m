@@ -445,21 +445,72 @@
     [self.tbl_draftTableView addSubview:self.refreshHeader];
     [self.refreshHeader refreshLastUpdatedDate];
     
-    // Navigationbar title label with deadline
-    //self.lbl_deadlineNavBar = [[[UILabel alloc]initWithFrame:CGRectMake(140,0, 180, 40)] autorelease];
-    //self.lbl_deadlineNavBar.font = [UIFont fontWithName:@"American Typewriter" size: 12.0];
-	//self.lbl_deadlineNavBar.text = @"";
-	//[self.lbl_deadlineNavBar setBackgroundColor:[UIColor clearColor]];
-	//[self.lbl_deadlineNavBar setTextColor:[UIColor whiteColor]];
-    //[self.lbl_deadlineNavBar setTextAlignment:UITextAlignmentRight];
-    //[self.lbl_deadlineNavBar adjustsFontSizeToFitWidth];
-	//self.navigationItem.titleView = self.lbl_deadlineNavBar;
-    
     // Setup the animation to show the typewriter
     self.shouldCloseTypewriter = YES;
     self.shouldOpenTypewriter = YES;
     
     self.navigationController.delegate = self;
+    
+    
+    
+    
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (draft != nil) {
+        
+        self.lbl_draftTitle.text = draft.displayname;
+        
+        // Show time remaining on draft
+        self.lbl_deadline.text = @"";
+        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
+                                                                  target:self
+                                                                selector:@selector(timeRemaining:)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+        [self timeRemaining:deadlineTimer];
+        
+        //we set the cloudphotoenumerator delegate to this view controller with this pageID
+        self.photoCloudEnumerator = nil;
+        self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+        self.photoCloudEnumerator.delegate = self;
+        
+        if (!self.photoCloudEnumerator.isLoading) 
+        {
+            //enumerator is not loading, so we can go ahead and reset it and run it
+            
+            if ([self.photoCloudEnumerator canEnumerate]) 
+            {
+                //LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing photo count from cloud",activityName);
+                [self.photoCloudEnumerator enumerateUntilEnd:nil];
+            }
+            else 
+            {
+                //the enumerator is not ready to run, but we reset it and away we go
+                [self.photoCloudEnumerator reset];
+                [self.photoCloudEnumerator enumerateUntilEnd:nil];
+            }
+        }
+        
+        /*self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+         self.photoCloudEnumerator.delegate = self;
+         
+         if ([self.photoCloudEnumerator canEnumerate]) 
+         {
+         LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+         [self.photoCloudEnumerator enumerateUntilEnd:nil];
+         }
+         else {
+         LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
+         
+         //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+         //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+         //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
+         
+         }*/
+    }
     
 }
 
@@ -467,12 +518,26 @@
 {
     [super viewDidAppear:animated];
     
-    //we mark that the user has viewed this viewcontroller at least once
+    //we check to see if the user has been to this viewcontroller before
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Concering Drafts..." message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+        
+        //we mark that the user has viewed this viewcontroller at least once
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
+        [userDefaults synchronize];
+    }
+    
+    /*//we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC]==NO) {
         [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
         [userDefaults synchronize];
-    }
+    }*/
     
     if (self.shouldCloseTypewriter) {
         [self closeTypewriter];
@@ -486,7 +551,7 @@
     NSString* activityName = @"DraftViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
-    //we check to see if the user has been to this viewcontroller before
+    /*//we check to see if the user has been to this viewcontroller before
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
         //this is the first time opening, so we show a welcome message
@@ -494,12 +559,12 @@
         
         [alert show];
         [alert release];
-    }
+    }*/
     
     ResourceContext* resourceContext = [ResourceContext instance];
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
-    if (draft != nil) {
+    /*if (draft != nil) {
         
         self.lbl_draftTitle.text = draft.displayname;
         
@@ -550,8 +615,8 @@
             //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
             //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
             
-        }*/
-    }
+        }
+    }*/
     
     // refresh the notification feed
     //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
@@ -574,12 +639,12 @@
     // Update notifications button on typewriter
     [self updateNotificationButton];
     
-    // Setup back button
+    /*// Setup back button
     //[self.btn_backButton sizeToFit];
     UIImage* backButtonBackground = [[UIImage imageNamed:@"book_button_back.png"] stretchableImageWithLeftCapWidth:25.0 topCapHeight:0.0];
     UIImage* backButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_back_highlighted.png"] stretchableImageWithLeftCapWidth:20.0 topCapHeight:0.0];
     [self.btn_backButton setBackgroundImage:backButtonBackground forState:UIControlStateNormal];
-    [self.btn_backButton setBackgroundImage:backButtonHighlightedBackground forState:UIControlStateHighlighted];
+    [self.btn_backButton setBackgroundImage:backButtonHighlightedBackground forState:UIControlStateHighlighted];*/
     
     // Make sure the status bar is visible
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];

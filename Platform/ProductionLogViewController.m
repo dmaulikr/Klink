@@ -38,8 +38,6 @@
 @synthesize frc_draft_pages             = __frc_draft_pages;
 @synthesize productionTableViewCell     = m_productionTableViewCell;
 @synthesize lbl_title                   = m_lbl_title;
-@synthesize lbl_numDraftsTotal          = m_lbl_numDraftsTotal;
-@synthesize lbl_numDraftsClosing        = m_lbl_numDraftsClosing;
 @synthesize cloudDraftEnumerator        = m_cloudDraftEnumerator;
 @synthesize refreshHeader               = m_refreshHeader;
 @synthesize selectedDraftID             = m_selectedDraftID;
@@ -99,28 +97,6 @@
     return __frc_draft_pages;
     
 }
-
-/*- (void) updateDraftCounterLabels {
-    int numDraftsTotal = [[self.frc_draft_pages fetchedObjects]count];
-    self.lbl_numDraftsTotal.text = [NSString stringWithFormat:@"total drafts: %d", numDraftsTotal];
-    
-    int numDraftsClosing = 0;
-    NSDate* now = [NSDate date];
-    NSDate* deadline = nil;
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-    NSTimeInterval draftExpirySetting = [settings.page_draftexpiry_seconds doubleValue];
-    
-    for (int i = 0; i < numDraftsTotal; i++) {
-        Page* draft = [[self.frc_draft_pages fetchedObjects]objectAtIndex:i];
-        deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        NSTimeInterval deadlineIntervalRemaining = [deadline timeIntervalSinceDate:now];
-        if ((deadlineIntervalRemaining < draftExpirySetting) && (deadlineIntervalRemaining > 0)) {
-            numDraftsClosing++;
-        }
-    }
-    
-    self.lbl_numDraftsClosing.text = [NSString stringWithFormat:@"drafts in progress: %d", numDraftsClosing];
-}*/
 
 - (void) registerCallbackHandlers {
     // resister callbacks for change events
@@ -543,9 +519,6 @@
     self.productionTableViewCell = nil;
     self.refreshHeader = nil;
     self.lbl_title = nil;
-    self.lbl_numDraftsTotal = nil;
-    self.lbl_numDraftsClosing = nil;
-    
     self.v_typewriter = nil;
     self.btn_profileButton = nil;
     self.btn_newPageButton = nil;
@@ -559,7 +532,7 @@
     NSString* activityName = @"ProductionLogViewController.viewWillAppear:";
     [super viewWillAppear:animated];
 
-    //if its the first time the user has opened the production log, we display a welcome message
+    /*//if its the first time the user has opened the production log, we display a welcome message
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
         //this is the first time opening, so we show a welcome message
@@ -567,13 +540,13 @@
         
         [alert show];
         [alert release];
-    }
+    }*/
     
     
     //we set the clouddraftenumerator delegate to this view controller
     self.cloudDraftEnumerator.delegate = self;
     
-    //we perform this check to ereset the table refresh header in the case
+    //we perform this check to reset the table refresh header in the case
     //that it was left spinning errantly
     if (![self.cloudDraftEnumerator isLoading])
     {
@@ -606,21 +579,34 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self.navigationController setToolbarHidden:YES animated:YES];
     
-  
-    
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    //we mark that the user has viewed this viewcontroller at least once
+    //if its the first time the user has opened the production log, we display a welcome message
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_PRODUCTIONLOG delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+        
+        [alert show];
+        [alert release];
+        
+        //we mark that the user has viewed this viewcontroller at least once
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
+        [userDefaults synchronize];
+    }
+    
+    
+    
+    /*//we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC]==NO) {
         [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
         [userDefaults synchronize];
-    }
+    }*/
     
     if (self.shouldCloseTypewriter) {
         [self closeTypewriter];
@@ -848,9 +834,9 @@
 }
 
 #pragma mark - Table view delegate
-//- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
-//}
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
+}
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];

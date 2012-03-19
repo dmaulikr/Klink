@@ -57,7 +57,7 @@
 @synthesize photoMetaData           = m_photoMetaData;
 @synthesize iv_photo                = m_iv_photo;
 @synthesize iv_photoLandscape       = m_iv_photoLandscape;
-@synthesize pg_captionPageIndicator = m_pg_captionPageIndicator;
+//@synthesize pg_captionPageIndicator = m_pg_captionPageIndicator;
 @synthesize iv_leftArrow            = m_iv_leftArrow;
 @synthesize iv_rightArrow           = m_iv_rightArrow;
 
@@ -810,7 +810,7 @@
     self.photoMetaData = nil;
     self.iv_photo = nil;
     self.iv_photoLandscape = nil;
-    self.pg_captionPageIndicator = nil;
+    //self.pg_captionPageIndicator = nil;
     self.iv_leftArrow = nil;
     self.iv_rightArrow = nil;
     

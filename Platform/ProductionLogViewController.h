@@ -9,16 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "EGORefreshTableHeaderView.h"
+#import "UIProductionLogTableViewCell.h"
 
 @interface ProductionLogViewController : BaseViewController < UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate,CloudEnumeratorDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate > {
     
     UITableView* m_tbl_productionTableView;
     CloudEnumerator* m_cloudDraftEnumerator;
-    UITableViewCell* m_productionTableViewCell;
+    UIProductionLogTableViewCell* m_productionTableViewCell;
     EGORefreshTableHeaderView* m_refreshHeader;
     UILabel* m_lbl_title;
-    UILabel* m_lbl_numDraftsTotal;
-    UILabel* m_lbl_numDraftsClosing;
     NSNumber* m_selectedDraftID;
     
     UIView*     m_v_typewriter;
@@ -36,11 +35,9 @@
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
 @property (nonatomic, retain) NSFetchedResultsController*   frc_draft_pages;
 @property (nonatomic, retain) CloudEnumerator*              cloudDraftEnumerator;
-@property (nonatomic, retain) IBOutlet UITableViewCell*     productionTableViewCell;
+@property (nonatomic, retain) IBOutlet UIProductionLogTableViewCell*     productionTableViewCell;
 @property (nonatomic, retain) EGORefreshTableHeaderView*    refreshHeader;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_title;
-@property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsTotal;
-@property (nonatomic, retain) IBOutlet UILabel*             lbl_numDraftsClosing;
 @property (nonatomic, retain) NSNumber*                     selectedDraftID;
 
 @property (strong, nonatomic) IBOutlet UIView*      v_typewriter;

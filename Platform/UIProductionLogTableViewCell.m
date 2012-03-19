@@ -30,8 +30,8 @@
 @synthesize iv_captionIcon              = m_iv_captionIcon;
 @synthesize btn_unreadCaptionsBadge     = m_btn_unreadCaptionsBadge;
 @synthesize topVotedPhotoID             = m_topVotedPhotoID;
-@synthesize deadline;
-
+@synthesize deadline                    = m_deadline;
+@synthesize deadlineTimer               = m_deadlineTimer;
 @synthesize eventManager                = __eventManager;
 
 
@@ -90,7 +90,17 @@
 //}
 
 - (void) dealloc {
-  
+    [self.deadlineTimer invalidate];
+    
+    self.productionLogTableViewCell = nil;
+    self.iv_photo = nil;
+    self.lbl_draftTitle = nil;
+    self.lbl_deadline = nil;
+    //self.lbl_numPhotos = nil;
+    self.iv_captionIcon = nil;
+    self.lbl_numCaptions = nil;
+    self.btn_unreadCaptionsBadge = nil;
+    
     [super dealloc];
 }
 
@@ -170,21 +180,13 @@
         [self renderPhoto:topPhoto];
         
         // Set deadline
-        self.lbl_deadline.text = @"deadline:";
-        NSDate* now = [NSDate date];
-        NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        
-        if (remaining > 0) {
-            self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
-        }
-
-        NSTimer* deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
+        self.deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
                                          target:self
                                        selector:@selector(timeRemaining:)
                                        userInfo:nil
                                         repeats:YES];
-        [self timeRemaining:deadlineTimer];
+        [self timeRemaining:nil];
     
     }
     [self setNeedsDisplay];
@@ -193,7 +195,6 @@
 - (void) renderDraftWithID:(NSNumber*)pageID {
     self.pageID = pageID;
     
-    //we also need to nil the topVotedPhotoID
     self.topVotedPhotoID = nil;
     self.deadline = nil;
     self.lbl_draftTitle.text = nil;
@@ -202,6 +203,8 @@
     self.btn_unreadCaptionsBadge.titleLabel.text = nil;
     self.lbl_deadline.text = nil;
     self.iv_photo.image = nil;
+    
+    [self.deadlineTimer invalidate];
     
     [self render];
 }

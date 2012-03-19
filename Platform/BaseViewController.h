@@ -30,8 +30,6 @@
 
 @end
 @interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
-
-    
     UILoginView*            m_loginView;
 }
 
