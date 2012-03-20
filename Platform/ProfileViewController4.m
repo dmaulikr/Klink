@@ -1,12 +1,12 @@
 //
-//  ProfileViewController.m
+//  ProfileViewController4.m
 //  Platform
 //
-//  Created by Jordan Gurrieri on 12/6/11.
+//  Created by Jordan Gurrieri on 3/19/12.
 //  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "ProfileViewController.h"
+#import "ProfileViewController4.h"
 #import "DateTimeHelper.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
@@ -17,11 +17,12 @@
 #import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "SettingsViewController.h"
 #import <sys/utsname.h>
 
-@implementation ProfileViewController
+@implementation ProfileViewController4
 @synthesize lbl_username            = m_lbl_username;
-@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
+//@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
 @synthesize lbl_numPages            = m_lbl_numPages;
@@ -49,8 +50,8 @@
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
-@synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
-@synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
+//@synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
+//@synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
@@ -184,9 +185,9 @@
     
     // Navigation Bar Buttons
     UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
-                                    initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                    target:self
-                                    action:@selector(onDoneButtonPressed:)] autorelease];
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                     target:self
+                                     action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     // Set Navigation bar title style with typewriter font
@@ -213,7 +214,7 @@
     // e.g. self.myOutlet = nil;
     
     self.lbl_username = nil;
-    self.lbl_employeeStartDate = nil;
+    //self.lbl_employeeStartDate = nil;
     self.lbl_currentLevel = nil;
     self.lbl_currentLevelDate = nil;
     self.lbl_numPages = nil;
@@ -239,26 +240,26 @@
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
-    self.v_userSettingsContainer = nil;
-    self.sw_seamlessFacebookSharing = nil;
+    //self.v_userSettingsContainer = nil;
+    //self.sw_seamlessFacebookSharing = nil;
     
 }
 
 - (void) render {
     //if the user is the currently logged in user, we then enable the user settings container
-    if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
-        //yes it is
-        self.v_userSettingsContainer.hidden = NO;
-        
-    }
-    else {
-        //no it isnt
-        self.v_userSettingsContainer.hidden = YES;
-    }
-    self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+    /*if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+     //yes it is
+     self.v_userSettingsContainer.hidden = NO;
+     
+     }
+     else {
+     //no it isnt
+     self.v_userSettingsContainer.hidden = YES;
+     }
+     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];*/
     
     self.lbl_username.text = self.user.username;
-    self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"bahndrer since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
+    //self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"bahndrer since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
     //self.lbl_currentLevel.text = [self.user.iseditor boolValue] ? @"Editor" : @"Contributor";
     if ([self.user.iseditor boolValue]) {
         self.lbl_currentLevel.text = @"Editor";
@@ -327,7 +328,7 @@
         
         [alert show];
         [alert release];
-
+        
     }
     
     
@@ -351,7 +352,7 @@
         [self refreshProfile:self.userID];
         
         if (self.user != nil) {
-           [self render];             
+            [self render];             
         }
     }
     else {
@@ -363,12 +364,16 @@
     if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {
         // Only enable the Account button for the logged in user
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
-                                       initWithTitle:@"Account"
+                                       initWithTitle:@"Settings"
                                        style:UIBarButtonItemStylePlain
                                        target:self
                                        action:@selector(onAccountButtonPressed:)];
         self.navigationItem.leftBarButtonItem = leftButton;
         [leftButton release];
+    }
+    else {
+        self.navigationItem.leftBarButtonItem = nil;
+        // TO DO Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
     }
 }
 
@@ -381,7 +386,7 @@
 
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {
-    NSString* activityName = @"ProfileViewController.hudWasHidden";
+    //NSString* activityName = @"ProfileViewController4.hudWasHidden";
     [self hideProgressBar];
     
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
@@ -395,7 +400,7 @@
         NSString* duplicateUsername = self.loggedInUser.username;
         
         //we need to undo the operation that was last performed
-        LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
+        //LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
         ResourceContext* resourceContext = [ResourceContext instance];
         [resourceContext.managedObjectContext.undoManager undo];
         
@@ -414,43 +419,44 @@
         [alert release];
         
         // handle fail on change of seamless sharing option
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+        //self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
     }
     
 }
 
 
-#pragma mark - Feedback Mail Helper	
+#pragma mark - Feedback Mail Helper
+
 NSString*	
-machineName()
+machineName4()
 {
-    	
-        struct utsname systemInfo;
-    	
-        uname(&systemInfo);
-    	
-        return [NSString stringWithCString:systemInfo.machine
-                                               encoding:NSUTF8StringEncoding];
-    	
+    
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    return [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
+    
 }
 - (void)composeFeedbackMail {
-  // Get version information about the app and phone to prepopulate in the email
+    // Get version information about the app and phone to prepopulate in the email
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString* appVersionNum = [infoDict objectForKey:@"CFBundleVersion"];
     NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
-    NSString* deviceType = machineName();
+    NSString* deviceType = machineName4();
     NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
-     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
-     // Set the email subject
-     [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
+    // Set the email subject
+    [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
     
     NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com", nil];
     [picker setToRecipients:toRecipients];
-
+    
     NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
     [picker setMessageBody:messageHeader isHTML:NO];
-
+    
     // Present the mail composition interface
     [self presentModalViewController:picker animated:YES];
     [picker release]; // Can safely release the controller now.
@@ -487,7 +493,7 @@ machineName()
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
         NSString* progressIndicatorMessage = [NSString stringWithFormat:@"Checking availability..."];
-            
+        
         [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
     }
 }
@@ -517,20 +523,20 @@ machineName()
     else if (buttonIndex == 2) {
         // Feedback button pressed
         [self composeFeedbackMail];
-       /* MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-        picker.mailComposeDelegate = self;
-        
-        [picker setSubject:@"Feedback!"];
-        
-        // Set up the recipients
-        NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com",
-                                 nil];
-        
-        [picker setToRecipients:toRecipients];
-        
-        // Present the mail composition interface
-        [self presentModalViewController:picker animated:YES];
-        [picker release]; // Can safely release the controller now.*/
+        /* MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+         picker.mailComposeDelegate = self;
+         
+         [picker setSubject:@"Feedback!"];
+         
+         // Set up the recipients
+         NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com",
+         nil];
+         
+         [picker setToRecipients:toRecipients];
+         
+         // Present the mail composition interface
+         [self presentModalViewController:picker animated:YES];
+         [picker release]; // Can safely release the controller now.*/
     }
 }
 
@@ -540,36 +546,44 @@ machineName()
 }
 
 - (void)onAccountButtonPressed:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+    /*UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                   initWithTitle:nil
                                   delegate:self
                                   cancelButtonTitle:@"Cancel"
                                   destructiveButtonTitle:@"Logout"
                                   otherButtonTitles:@"Change Username", @"Feedback", nil];
     [actionSheet showInView:self.view];
-    [actionSheet release];
+    [actionSheet release];*/
+    
+    SettingsViewController* settingsViewController = [SettingsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 #pragma mark - UISwitch Handler
-- (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
-{
-    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
-        progressView.delegate = self;
-        
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        
-        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
-   //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-        
-    }
-}
+/*- (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
+ {
+ if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+ PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+ UIProgressHUDView* progressView = appDelegate.progressView;
+ progressView.delegate = self;
+ 
+ ResourceContext* resourceContext = [ResourceContext instance];
+ //[resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+ //self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
+ [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+ 
+ ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+ 
+ [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
+ //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+ 
+ }
+ }*/
 
 #pragma mark - CloudEnumeratorDelegate
 
@@ -580,43 +594,43 @@ machineName()
     ResourceContext* resourceContext = [ResourceContext instance];
     User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
     NSNumber* userid = user.objectid;
-
+    
     self.user = user;
     self.userID = userid;
     if (self.user != nil && self.userID != nil) {
         [self render];
     }
-
-   
+    
+    
 }
 
 
 
-         
+
 #pragma mark - MBProgressHUD Delegate
 /*- (void) hudWasHidden:(MBProgressHUD *)hud {
-    [self hideProgressBar];
-    
-    UIProgressHUDView* pv = (UIProgressHUDView*)hud;
-    
-    if (!pv.didSucceed) {
-        //there was an error upon submission
-        //we undo the request that was attempted to be made
-//        ResourceContext* resourceContext = [ResourceContext instance];
-//        [resourceContext.managedObjectContext.undoManager undo];
-//        
-//        NSError* error = nil;
-//        [resourceContext.managedObjectContext save:&error];
-        
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-        
-    }
-}*/
+ [self hideProgressBar];
  
+ UIProgressHUDView* pv = (UIProgressHUDView*)hud;
+ 
+ if (!pv.didSucceed) {
+ //there was an error upon submission
+ //we undo the request that was attempted to be made
+ //        ResourceContext* resourceContext = [ResourceContext instance];
+ //        [resourceContext.managedObjectContext.undoManager undo];
+ //        
+ //        NSError* error = nil;
+ //        [resourceContext.managedObjectContext save:&error];
+ 
+ self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+ 
+ }
+ }*/
+
 #pragma mark - Static Initializers
-+ (ProfileViewController*)createInstance {
-    ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
-    //sets the user property to the currently logged on user
++ (ProfileViewController4*)createInstance {
+    ProfileViewController4* instance = [[[ProfileViewController4 alloc]initWithNibName:@"ProfileViewController4" bundle:nil]autorelease];
+    //sets the user property to the curretly logged on user
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     ResourceContext* resourceContext = [ResourceContext instance];
     instance.user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
@@ -624,9 +638,9 @@ machineName()
     return instance;
 }
 
-+ (ProfileViewController*)createInstanceForUser:(NSNumber *)userID {
-    //returns an instance of the ProfileViewController configured for the specified user
-    ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
++ (ProfileViewController4*)createInstanceForUser:(NSNumber *)userID {
+    //returns an instance of the ProfileViewController4 configured for the specified user
+    ProfileViewController4* instance = [[[ProfileViewController4 alloc]initWithNibName:@"ProfileViewController4" bundle:nil]autorelease];
     instance.userID = userID;
     return instance;
     
