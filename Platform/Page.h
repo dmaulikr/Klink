@@ -34,12 +34,16 @@
 @property (nonatomic,retain) NSNumber* finishedcaptionid;
 @property (nonatomic,retain) NSNumber* datedraftexpires;
 @property (nonatomic,retain) NSNumber* finishedphotoid;
+@property (nonatomic,retain) NSNumber* topvotedcaptionid;
 
 
 - (NSArray*) hashtagList;
 - (Photo*) photoWithHighestVotes;
 - (Caption*) captionWithHighestVotes;
 - (int) numberOfUnreadCaptions;
+
+- (void) updateCaptionWithHighestVotes;
+- (void) updateCaptionWithHighestVotes:(Caption*)caption;
 
 //static initializers
 + (Page*)createNewDraftPage;

@@ -941,6 +941,10 @@
 }
 
 - (void) onNewDraft:(CallbackResult*)result {
+   
+    NSDictionary* userInfo = (NSDictionary*)result.response;
+    Page* page = [userInfo objectForKey:PAGE];
+    [page updateCaptionWithHighestVotes];
     [self.tbl_productionTableView reloadData];
 }
 
@@ -949,6 +953,14 @@
 }
 
 - (void) onNewCaption:(CallbackResult*)result {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSDictionary* userInfo = (NSDictionary*)result.response;
+    Caption* changedCaption = [userInfo objectForKey:CAPTION];
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:changedCaption.pageid]; 
+    
+    if (page != nil) {
+        [page updateCaptionWithHighestVotes:changedCaption];
+    }
     [self.tbl_productionTableView reloadData];
 }
 
@@ -956,7 +968,18 @@
     [self.tbl_productionTableView reloadData];
 }
 
-- (void) onNewCaptionVote:(CallbackResult*)result {
+- (void) onNewCaptionVote:(CallbackResult*)result 
+{
+    ResourceContext* resourceContext = [ResourceContext instance];
+    NSDictionary* userInfo = (NSDictionary*)result.response;
+    Caption* changedCaption = [userInfo objectForKey:CAPTION];
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:changedCaption.pageid]; 
+    
+    if (page != nil) {
+        [page updateCaptionWithHighestVotes:changedCaption];
+    
+    }
+    
     [self.tbl_productionTableView reloadData];
 }
 

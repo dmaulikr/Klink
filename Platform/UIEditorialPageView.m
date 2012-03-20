@@ -88,7 +88,7 @@
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     self.lbl_draftTitle.text = draft.displayname;
     
-    //Photo* photo = draft.photoWithHighestVotes;
+   
     Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:draft.finishedphotoid];
     self.photoID = photo.objectid;
     

@@ -151,14 +151,7 @@
   //  self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
     
     
-//    Caption* topCaption = [photo captionWithHighestVotes];
-//    if (topCaption != nil) {
-//        self.captionID = topCaption.objectid;
-//        self.lbl_caption.textColor = [UIColor blackColor];
-//        self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", topCaption.caption1];
-//        self.lbl_numVotes.text = [topCaption.numberofvotes stringValue];
-//        self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
-//    }
+
     
     self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
     [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
