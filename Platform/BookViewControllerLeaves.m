@@ -242,7 +242,7 @@
                 self.pageID = page.objectid;
                 
                 ResourceContext* resourceContext = [ResourceContext instance];
-                //Photo* photo = [page photoWithHighestVotes];
+                
                 Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:page.finishedphotoid];
                 self.topVotedPhotoID = photo.objectid;
                 
