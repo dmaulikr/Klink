@@ -97,3 +97,6 @@ extern NSString* const RENDERTYPE;
 extern NSString* const FEEDEVENT;
 extern NSString* const POLL_NUM_PAGES;
 extern NSString* const TOPVOTEDCAPTIONID;
+extern NSString* const NUMBERFOLLOWING;
+extern NSString* const NUMBEROFFOLLOWERS;
+extern NSString* const NUMBEROFPOINTS;

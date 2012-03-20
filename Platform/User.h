@@ -30,6 +30,9 @@
 @property (nonatomic,retain) NSNumber* maxweeklyparticipation;
 @property (nonatomic,retain) NSString* imageurl;
 @property (nonatomic,retain) NSString* username;
+@property (nonatomic,retain) NSNumber* numberfollowing;
+@property (nonatomic,retain) NSNumber* numberoffollowers;
+@property (nonatomic,retain) NSNumber* numberofpoints;
 
 
 + (int) unopenedNotificationsFor:(NSNumber*)objectid;

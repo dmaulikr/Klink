@@ -116,7 +116,7 @@
     Caption* currentHighestVotedCaption = [self captionWithHighestVotes];
     
     if (currentHighestVotedCaption == nil ||
-        caption.numberofvotes > currentHighestVotedCaption.numberofvotes) {
+        [caption.numberofvotes intValue] > [currentHighestVotedCaption.numberofvotes intValue]) {
         //the modified caption is the new highest voted caption
         self.topvotedcaptionid = caption.objectid;
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];

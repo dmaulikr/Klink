@@ -31,6 +31,9 @@
 @dynamic sharinglevel;
 @dynamic username;
 @dynamic imageurl;
+@dynamic numberoffollowers;
+@dynamic numberfollowing;
+@dynamic numberofpoints;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];
