@@ -126,9 +126,11 @@ insertIntoResourceContext:(ResourceContext *)context
         }
     }
     
-    //we mark the thumbnail attribute on the user local
+    //we mark the thumbnail, numberoffollowers, numberffollowing attribute on the user local
     if ([type isEqualToString:USER]) {
-        if ([lowerCaseName isEqualToString:THUMBNAILURL]) {
+        if ([lowerCaseName isEqualToString:THUMBNAILURL] ||
+            [lowerCaseName isEqualToString:NUMBEROFFOLLOWERS] ||
+            [lowerCaseName isEqualToString:NUMBERFOLLOWING]) {
             retVal.islocal = [NSNumber numberWithBool:YES];
         }
     }
@@ -137,7 +139,9 @@ insertIntoResourceContext:(ResourceContext *)context
         [lowerCaseName isEqualToString:NUMBEROFCAPTIONS] ||
         [lowerCaseName isEqualToString:NUMBEROFPHOTOS] ||
         [lowerCaseName isEqualToString:NUMBEROFPUBLISHVOTES]||
-        [lowerCaseName isEqualToString:NUMBEROFFLAGS]) {
+        [lowerCaseName isEqualToString:NUMBEROFFLAGS] ||
+        [lowerCaseName isEqualToString:NUMBEROFFOLLOWERS] ||
+        [lowerCaseName isEqualToString:NUMBERFOLLOWING]) {
         //these are all counter variables
         retVal.iscounter = [NSNumber numberWithBool:YES];
     }
