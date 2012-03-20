@@ -21,6 +21,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
+#import "ProfileViewController4.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "NotificationsViewController.h"
@@ -600,22 +601,22 @@
             }
         }
         
-        /*self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
-        self.photoCloudEnumerator.delegate = self;
-        
-        if ([self.photoCloudEnumerator canEnumerate]) 
-        {
-            LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
-            [self.photoCloudEnumerator enumerateUntilEnd:nil];
-        }
-        else {
-            LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
+     //   self.photoCloudEnumerator = [CloudEnumerator enumeratorForPhotos:self.pageID];
+     //   self.photoCloudEnumerator.delegate = self;
+     //   
+     //   if ([self.photoCloudEnumerator canEnumerate]) 
+     //   {
+     //       LOG_DRAFTVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+     //       [self.photoCloudEnumerator enumerateUntilEnd:nil];
+     //   }
+     //   else {
+     //       LOG_PRODUCTIONLOGVIEWCONTROLLER(0,@"%@Skipping refresh of production log, as the enumerator is not ready",activityName);
             
-            //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
-            //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-            //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
+     //       //optionally if there is no draft query being executed, and we are authenticated, then we then refresh the notification feed
+     //       //Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+     //       //[[FeedManager instance]tryRefreshFeedOnFinish:callback];
             
-        }
+     //   }
     }*/
     
     // refresh the notification feed
@@ -979,7 +980,8 @@
         [alert release];
     }
     else {
-        ProfileViewController* profileViewController = [ProfileViewController createInstance];
+        //ProfileViewController* profileViewController = [ProfileViewController createInstance];
+        ProfileViewController4* profileViewController = [ProfileViewController4 createInstance];
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
