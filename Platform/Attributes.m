@@ -92,3 +92,4 @@ NSString* const POLL_NUM_PAGES          =@"poll_num_pages";
 NSString* const TOPVOTEDCAPTIONID       =@"topvotedcaptionid";
 NSString* const NUMBERFOLLOWING         =@"numberfollowing";
 NSString* const NUMBEROFFOLLOWERS       =@"numberoffollowers";
+NSString* const NUMBEROFPOINTS          =@"numberofpoints";

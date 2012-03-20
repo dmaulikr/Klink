@@ -130,7 +130,8 @@ insertIntoResourceContext:(ResourceContext *)context
     if ([type isEqualToString:USER]) {
         if ([lowerCaseName isEqualToString:THUMBNAILURL] ||
             [lowerCaseName isEqualToString:NUMBEROFFOLLOWERS] ||
-            [lowerCaseName isEqualToString:NUMBERFOLLOWING]) {
+            [lowerCaseName isEqualToString:NUMBERFOLLOWING] ||
+            [lowerCaseName isEqualToString:NUMBEROFPOINTS]) {
             retVal.islocal = [NSNumber numberWithBool:YES];
         }
     }
