@@ -181,7 +181,7 @@ machineNameSettings()
     // Set the email subject
     [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
     
-    NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com", nil];
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bahndr.com", nil];
     [picker setToRecipients:toRecipients];
     
     NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
