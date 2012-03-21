@@ -266,6 +266,7 @@
 		C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC214973AF00068CCD6 /* DDXMLNode.m */; };
 		C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC714973AF00068CCD6 /* GCAlertView.m */; };
 		C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C58C6CD214973B130068CCD6 /* libicucore.dylib */; };
+		C58E348D151A325D003CD1EC /* Follow.m in Sources */ = {isa = PBXBuildFile; fileRef = C58E348C151A325D003CD1EC /* Follow.m */; };
 		C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */; };
 		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C5143EB191008D25A7 /* Foundation.framework */; };
@@ -713,6 +714,8 @@
 		C58C6CC614973AF00068CCD6 /* GCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCAlertView.h; sourceTree = "<group>"; };
 		C58C6CC714973AF00068CCD6 /* GCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCAlertView.m; sourceTree = "<group>"; };
 		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		C58E348B151A325D003CD1EC /* Follow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Follow.h; sourceTree = "<group>"; };
+		C58E348C151A325D003CD1EC /* Follow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Follow.m; sourceTree = "<group>"; };
 		C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorCodes.h; sourceTree = "<group>"; };
 		C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorCodes.m; sourceTree = "<group>"; };
 		C593F7BF143EB191008D25A7 /* Bahndr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bahndr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1046,6 +1049,8 @@
 				C522FD3C147A5EB400F691A4 /* PollData.m */,
 				C522FD3E147A612900F691A4 /* Bookmark.h */,
 				C522FD3F147A612900F691A4 /* Bookmark.m */,
+				C58E348B151A325D003CD1EC /* Follow.h */,
+				C58E348C151A325D003CD1EC /* Follow.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -2430,6 +2435,7 @@
 				527A754B14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m in Sources */,
 				5229084A1518253900E971E1 /* ProfileViewController4.m in Sources */,
 				522908531518482B00E971E1 /* SettingsViewController.m in Sources */,
+				C58E348D151A325D003CD1EC /* Follow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

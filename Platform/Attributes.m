@@ -93,3 +93,5 @@ NSString* const TOPVOTEDCAPTIONID       =@"topvotedcaptionid";
 NSString* const NUMBERFOLLOWING         =@"numberfollowing";
 NSString* const NUMBEROFFOLLOWERS       =@"numberoffollowers";
 NSString* const NUMBEROFPOINTS          =@"numberofpoints";
+NSString* const FOLLOWERNAME            =@"followername";
+NSString* const FOLLOWERUSERID          =@"followeruserid";
