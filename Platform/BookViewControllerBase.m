@@ -62,6 +62,17 @@
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
     
+    /*NSPredicate* predicate;
+    if (self.userID != nil) {
+        //add predicate to gather only pages for a specific userID
+        predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@ OR %K=%@", stateAttributeNameStringValue, kPUBLISHED, PHOTOBYID, self.userID, CAPTIONBYID, self.userID];
+    }
+    else {
+        //add predicate to gather all published pages
+        predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
+    }*/
+    
+    
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     [fetchRequest setEntity:entityDescription];

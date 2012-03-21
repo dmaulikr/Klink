@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">11C74</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1138.23</string>
-		<string key="IBDocument.HIToolboxVersion">567.00</string>
+		<int key="IBDocument.SystemTarget">1296</int>
+		<string key="IBDocument.SystemVersion">11D50</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.32</string>
+		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIButton</string>
@@ -218,6 +218,7 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
 						</object>
+						<reference key="IBUIHighlightedTitleShadowColor" ref="1014896780"/>
 						<reference key="IBUINormalTitleShadowColor" ref="257178573"/>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="947779697">
 							<string key="name">AmericanTypewriter-Bold</string>
@@ -246,6 +247,7 @@
 						<string key="IBUINormalTitle">Username</string>
 						<reference key="IBUIHighlightedTitleColor" ref="257178573"/>
 						<reference key="IBUINormalTitleColor" ref="1014896780"/>
+						<reference key="IBUIHighlightedTitleShadowColor" ref="1014896780"/>
 						<reference key="IBUINormalTitleShadowColor" ref="257178573"/>
 						<reference key="IBUIFontDescription" ref="947779697"/>
 						<reference key="IBUIFont" ref="351958714"/>
@@ -287,7 +289,6 @@
 						<string key="NSFrame">{{110, 427}, {100, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -849,8 +850,10 @@
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="42.CustomClassName">UIResourceLinkButton</string>
 				<string key="42.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="42.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="43.CustomClassName">UIResourceLinkButton</string>
 				<string key="43.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="43.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="51.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -881,20 +884,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">BookPageViewController</string>
 					<string key="superclassName">BaseViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="onLinkButtonClicked:">id</string>
-						<string key="onZoomOutPhotoButtonPressed:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="onLinkButtonClicked:">
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">onLinkButtonClicked:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">onLinkButtonClicked:</string>
+						<object class="IBActionInfo" key="NS.object.0">
 							<string key="name">onLinkButtonClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="onZoomOutPhotoButtonPressed:">
-							<string key="name">onZoomOutPhotoButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="btn_facebookButton">UIButton</string>
 						<string key="btn_homeButton">UIButton</string>
@@ -1007,6 +1007,10 @@
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1296" key="NS.object.0"/>
+		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
@@ -1024,6 +1028,6 @@
 			<string key="open_book_page_turn.png">{302, 460}</string>
 			<string key="picture_frame.png">{297, 228}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

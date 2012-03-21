@@ -889,6 +889,7 @@
         // Do nothing, user just pressed 'Cancel' button on cameraActionSheet after having already taken a photo
     }
 }
+
 - (BOOL) haveAllObjectIDsBeenCreatedOnCloud 
 {
     BOOL retVal = YES;

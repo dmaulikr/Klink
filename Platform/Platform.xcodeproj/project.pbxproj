@@ -180,6 +180,10 @@
 		5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */; };
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
 		528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 528A49B814AD01F000881A99 /* MessageUI.framework */; };
+		5293E2E5151918B000854686 /* PeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293E2E3151918B000854686 /* PeopleListViewController.m */; };
+		5293E2E6151918B000854686 /* PeopleListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E4151918B000854686 /* PeopleListViewController.xib */; };
+		5293E2E8151940C500854686 /* icon-profile-large-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E7151940C500854686 /* icon-profile-large-highlighted.png */; };
+		5293E2EA151941E600854686 /* icon-profile-large-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E9151941E600854686 /* icon-profile-large-highlighted@2x.png */; };
 		52941A6114AE774100BFE179 /* UICustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52941A6014AE774100BFE179 /* UICustomAlertView.m */; };
 		52979AFC14A0128200F29ECC /* progressBar_darkfill.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF414A0128100F29ECC /* progressBar_darkfill.png */; };
 		52979AFD14A0128200F29ECC /* progressBar_darkfill@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52979AF514A0128100F29ECC /* progressBar_darkfill@2x.png */; };
@@ -586,6 +590,11 @@
 		5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewcell_separator_scetched.png; sourceTree = "<group>"; };
 		5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tableviewcell_separator_scetched@2x.png"; sourceTree = "<group>"; };
 		528A49B814AD01F000881A99 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		5293E2E2151918B000854686 /* PeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleListViewController.h; sourceTree = "<group>"; };
+		5293E2E3151918B000854686 /* PeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleListViewController.m; sourceTree = "<group>"; };
+		5293E2E4151918B000854686 /* PeopleListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeopleListViewController.xib; sourceTree = "<group>"; };
+		5293E2E7151940C500854686 /* icon-profile-large-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile-large-highlighted.png"; sourceTree = "<group>"; };
+		5293E2E9151941E600854686 /* icon-profile-large-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-profile-large-highlighted@2x.png"; sourceTree = "<group>"; };
 		52941A5F14AE774100BFE179 /* UICustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomAlertView.h; sourceTree = "<group>"; };
 		52941A6014AE774100BFE179 /* UICustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomAlertView.m; sourceTree = "<group>"; };
 		52979AF414A0128100F29ECC /* progressBar_darkfill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressBar_darkfill.png; sourceTree = "<group>"; };
@@ -1235,6 +1244,8 @@
 				5270A1B514C2372D00BE60FE /* icon-profile@2x.png */,
 				52AAB0E714C7404100497FC7 /* icon-profile-highlighted.png */,
 				52AAB0E814C7404100497FC7 /* icon-profile-highlighted@2x.png */,
+				5293E2E7151940C500854686 /* icon-profile-large-highlighted.png */,
+				5293E2E9151941E600854686 /* icon-profile-large-highlighted@2x.png */,
 				5270A1B614C2372D00BE60FE /* icon-ribbon1.png */,
 				5270A1B714C2372D00BE60FE /* icon-ribbon1@2x.png */,
 				5270A1B814C2372D00BE60FE /* icon-thumbUp-highlighted.png */,
@@ -1703,18 +1714,21 @@
 				52E66B7D148F4D210079270A /* ProfileViewController.m */,
 				52E66B7E148F4D210079270A /* ProfileViewController.xib */,
 				5245FC341516FF6F00FBFDBC /* ProfileViewController2.xib */,
-				522908471518241700E971E1 /* ProfileViewController4.h */,
-				522908491518253900E971E1 /* ProfileViewController4.m */,
-				5245FC421518123500FBFDBC /* ProfileViewController4.xib */,
 				52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */,
 				52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */,
 				52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */,
 				529EF0A214E1EFE100DED0C4 /* WebViewController.h */,
 				529EF0A314E1EFE100DED0C4 /* WebViewController.m */,
 				529EF0A414E1EFE100DED0C4 /* WebViewController.xib */,
+				522908471518241700E971E1 /* ProfileViewController4.h */,
+				522908491518253900E971E1 /* ProfileViewController4.m */,
+				5245FC421518123500FBFDBC /* ProfileViewController4.xib */,
 				522908501518482B00E971E1 /* SettingsViewController.h */,
 				522908511518482B00E971E1 /* SettingsViewController.m */,
 				522908521518482B00E971E1 /* SettingsViewController.xib */,
+				5293E2E2151918B000854686 /* PeopleListViewController.h */,
+				5293E2E3151918B000854686 /* PeopleListViewController.m */,
+				5293E2E4151918B000854686 /* PeopleListViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2275,6 +2289,9 @@
 				5245FC3C1517049200FBFDBC /* progressBar_bluefill@2x.png in Resources */,
 				5245FC431518123500FBFDBC /* ProfileViewController4.xib in Resources */,
 				522908541518482B00E971E1 /* SettingsViewController.xib in Resources */,
+				5293E2E6151918B000854686 /* PeopleListViewController.xib in Resources */,
+				5293E2E8151940C500854686 /* icon-profile-large-highlighted.png in Resources */,
+				5293E2EA151941E600854686 /* icon-profile-large-highlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2435,7 +2452,11 @@
 				527A754B14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m in Sources */,
 				5229084A1518253900E971E1 /* ProfileViewController4.m in Sources */,
 				522908531518482B00E971E1 /* SettingsViewController.m in Sources */,
+
 				C58E348D151A325D003CD1EC /* Follow.m in Sources */,
+
+				5293E2E5151918B000854686 /* PeopleListViewController.m in Sources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

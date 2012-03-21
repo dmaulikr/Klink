@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
+#import "UICameraActionSheet.h"
 
-@interface SettingsViewController : BaseViewController < UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIProgressHUDViewDelegate > {
+@interface SettingsViewController : BaseViewController < UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIProgressHUDViewDelegate, UICameraActionSheetDelegate > {
     
     User*               m_user;
     NSNumber*           m_userID;
@@ -22,6 +23,8 @@
     UITableViewCell*    m_tc_facebookSwitchTableViewCell;
     UILabel*            m_lbl_facebookTableViewCellLabel;
     UISwitch*           m_sw_seamlessFacebookSharing;
+    
+    UICameraActionSheet*    m_cameraActionSheet;
 }
 
 @property (nonatomic, retain) IBOutlet UITableViewCell*     tc_changePictureTableViewCell;
@@ -34,6 +37,8 @@
 
 @property (atomic, retain)             User*                user;
 @property (atomic, retain)             NSNumber*            userID;
+
+@property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
 
 - (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
 

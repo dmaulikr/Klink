@@ -21,12 +21,16 @@
 @interface UICameraActionSheet : UIActionSheet <UIActionSheetDelegate, UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
     id<UICameraActionSheetDelegate>  m_delegate;
     
+    BOOL m_allowsEditing;
+    
 }
 
 
 @property (nonatomic,assign) id<UICameraActionSheetDelegate>    a_delegate;
 
+@property (nonatomic)                 BOOL                      allowsEditing;
 
 + (UICameraActionSheet*) createCameraActionSheet;
++ (UICameraActionSheet*)createCameraActionSheetWithTitle:(NSString*)title allowsEditing:(BOOL)editing;
 
 @end
