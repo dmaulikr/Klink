@@ -100,3 +100,6 @@ extern NSString* const TOPVOTEDCAPTIONID;
 extern NSString* const NUMBERFOLLOWING;
 extern NSString* const NUMBEROFFOLLOWERS;
 extern NSString* const NUMBEROFPOINTS;
+extern NSString* const FOLLOWERUSERID;
+extern NSString* const FOLLOWERNAME;
+
