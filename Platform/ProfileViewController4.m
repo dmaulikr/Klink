@@ -296,10 +296,14 @@
        self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
     }
     
-    self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
+    /*self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
     //self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
     self.lbl_numFollowers.text = [self.user.numberoffollowers stringValue];
-    self.lbl_numFollowing.text = [self.user.numberfollowing stringValue];
+    self.lbl_numFollowing.text = [self.user.numberfollowing stringValue];*/
+    
+    [self.btn_numPages setTitle:[self.user.numberofpagespublished stringValue] forState:UIControlStateNormal];
+    [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
+    [self.btn_numFollowing setTitle:[self.user.numberfollowing stringValue] forState:UIControlStateNormal];
     
     /*int totalSubmissions = [self.user.numberofcaptions intValue]
         + [self.user.numberofphotos intValue]
