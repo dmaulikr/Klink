@@ -8,29 +8,43 @@
 
 #import "ProfileViewController4.h"
 #import "DateTimeHelper.h"
-#import "ApplicationSettings.h"
-#import "ApplicationSettingsManager.h"
+
 #import "PlatformAppDelegate.h"
-#import "UIPromptAlertView.h"
-#import "UIProgressHUDView.h"
-#import "CloudEnumerator.h"
-#import "Macros.h"
+//#import "UIProgressHUDView.h"
+//#import "CloudEnumerator.h"
+//#import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "SettingsViewController.h"
-#import <sys/utsname.h>
+//#import <sys/utsname.h>
+#import "PeopleListViewController.h"
 
 @implementation ProfileViewController4
+
+@synthesize iv_profilePicture       = m_iv_profilePicture;
 @synthesize lbl_username            = m_lbl_username;
 //@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
+
 @synthesize lbl_numPages            = m_lbl_numPages;
-@synthesize lbl_numVotes            = m_lbl_numVotes;
-@synthesize lbl_numSubmissions      = m_lbl_numSubmissions;
+//@synthesize lbl_numVotes            = m_lbl_numVotes;
+//@synthesize lbl_numSubmissions      = m_lbl_numSubmissions;
+@synthesize lbl_numFollowers        = m_lbl_numFollowers;
+@synthesize lbl_numFollowing        = m_lbl_numFollowing;
 @synthesize lbl_pagesLabel          = m_lbl_pagesLabel;
 @synthesize lbl_votesLabel          = m_lbl_votesLabel;
 @synthesize lbl_submissionsLabel    = m_lbl_submissionsLabel;
+
+@synthesize btn_numPages            = m_btn_numPages;
+//@synthesize btn_numVotes            = m_btn_numVotes;
+//@synthesize btn_numSubmissions      = m_btn_numSubmissions;
+@synthesize btn_numFollowers        = m_btn_numFollowers;
+@synthesize btn_numFollowing        = m_btn_numFollowing;
+@synthesize btn_pagesLabel          = m_btn_pagesLabel;
+@synthesize btn_followersLabel      = m_btn_followersLabel;
+@synthesize btn_followingLabel      = m_btn_followingLabel;
+
 @synthesize lbl_submissionsLast7DaysLabel = m_lbl_submissionsLast7DaysLabel;
 @synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
 @synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
@@ -50,15 +64,14 @@
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
-//@synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
-//@synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
+@synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
-#define kMAXUSERNAMELENGTH 15
+//#define kMAXUSERNAMELENGTH 15
 
 
 #pragma mark - Progress Bar methods 
@@ -213,16 +226,27 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
+    self.iv_profilePicture = nil;
     self.lbl_username = nil;
     //self.lbl_employeeStartDate = nil;
     self.lbl_currentLevel = nil;
     self.lbl_currentLevelDate = nil;
     self.lbl_numPages = nil;
-    self.lbl_numVotes = nil;
-    self.lbl_numSubmissions = nil;
+    //self.lbl_numVotes = nil;
+    //self.lbl_numSubmissions = nil;
+    self.lbl_numFollowers = nil;
+    self.lbl_numFollowing = nil;
     self.lbl_pagesLabel = nil;
     self.lbl_votesLabel = nil;
     self.lbl_submissionsLabel = nil;
+    self.btn_numPages = nil;
+    //self.btn_numVotes = nil;
+    //self.btn_numSubmissions = nil;
+    self.btn_numFollowers = nil;
+    self.btn_numFollowing = nil;
+    self.btn_pagesLabel = nil;
+    self.btn_followersLabel = nil;
+    self.btn_followingLabel = nil;
     self.lbl_submissionsLast7DaysLabel = nil;
     self.lbl_editorMinimumLabel = nil;
     self.lbl_userBestLabel = nil;
@@ -240,53 +264,52 @@
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
-    //self.v_userSettingsContainer = nil;
-    //self.sw_seamlessFacebookSharing = nil;
+    self.v_leaderboardContainer = nil;
     
 }
 
 - (void) render {
-    //if the user is the currently logged in user, we then enable the user settings container
-    /*if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
-     //yes it is
-     self.v_userSettingsContainer.hidden = NO;
-     
-     }
-     else {
-     //no it isnt
-     self.v_userSettingsContainer.hidden = YES;
-     }
-     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];*/
+    //if the user is the currently logged in user, we then enable the leaderboard container
+    if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+        //yes it is
+        self.v_leaderboardContainer.hidden = NO;
+    }
+    else {
+        //no it isnt
+        self.v_leaderboardContainer.hidden = YES;
+    }
     
     self.lbl_username.text = self.user.username;
-    //self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"bahndrer since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
-    //self.lbl_currentLevel.text = [self.user.iseditor boolValue] ? @"Editor" : @"Contributor";
+
+    //Show current user level and date
     if ([self.user.iseditor boolValue]) {
         self.lbl_currentLevel.text = @"Editor";
         self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
-        self.lbl_currentLevelDate.hidden = NO;
     }
     else {
         self.lbl_currentLevel.text = @"Contributor";
-        self.lbl_currentLevelDate.hidden = YES;
+       self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
     }
     
     self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
-    self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
+    //self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
+    self.lbl_numFollowers.text = [self.user.numberoffollowers stringValue];
+    self.lbl_numFollowing.text = [self.user.numberfollowing stringValue];
     
-    int totalSubmissions = [self.user.numberofcaptions intValue]
-    + [self.user.numberofphotos intValue]
-    + [self.user.numberofdraftscreated intValue];
-    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+    /*int totalSubmissions = [self.user.numberofcaptions intValue]
+        + [self.user.numberofphotos intValue]
+        + [self.user.numberofdraftscreated intValue];
+    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];*/
     
     self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
     self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
     self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
     
-    int totalLast7Days = [self.user.numberofcaptionslw intValue]
-    + [self.user.numberofphotoslw intValue]
-    + [self.user.numberofdraftscreatedlw intValue];
-    self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
+    /*int totalLast7Days = [self.user.numberofcaptionslw intValue]
+        + [self.user.numberofphotoslw intValue]
+        + [self.user.numberofdraftscreatedlw intValue];
+    self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];*/
+    self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];
     
     self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
@@ -384,7 +407,7 @@
 }
 
 
-#pragma mark -  MBProgressHUD Delegate
+/*#pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {
     //NSString* activityName = @"ProfileViewController4.hudWasHidden";
     [self hideProgressBar];
@@ -523,22 +546,10 @@ machineName4()
     else if (buttonIndex == 2) {
         // Feedback button pressed
         [self composeFeedbackMail];
-        /* MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-         picker.mailComposeDelegate = self;
-         
-         [picker setSubject:@"Feedback!"];
-         
-         // Set up the recipients
-         NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com",
-         nil];
-         
-         [picker setToRecipients:toRecipients];
-         
-         // Present the mail composition interface
-         [self presentModalViewController:picker animated:YES];
-         [picker release]; // Can safely release the controller now.*/
     }
 }
+*/
+
 
 #pragma mark - Navigation Bar button handler 
 - (void)onDoneButtonPressed:(id)sender {    
@@ -584,6 +595,19 @@ machineName4()
  
  }
  }*/
+
+#pragma mark - UIButton Handlers
+- (IBAction) onFollowersButtonPressed:(id)sender {
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceWithTitle:@"Followers"];
+    
+    [self.navigationController pushViewController:peopleListViewController animated:YES];
+}
+
+- (IBAction) onFollowingButtonPressed:(id)sender {
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceWithTitle:@"Following"];
+    
+    [self.navigationController pushViewController:peopleListViewController animated:YES];
+}
 
 #pragma mark - CloudEnumeratorDelegate
 
@@ -643,7 +667,6 @@ machineName4()
     ProfileViewController4* instance = [[[ProfileViewController4 alloc]initWithNibName:@"ProfileViewController4" bundle:nil]autorelease];
     instance.userID = userID;
     return instance;
-    
 }
 
 @end

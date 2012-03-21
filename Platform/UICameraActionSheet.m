@@ -33,6 +33,7 @@
 
 @implementation UICameraActionSheet
 @synthesize a_delegate = m_delegate;
+@synthesize allowsEditing = m_allowsEditing;
 
 - (id) initWithTitle:(NSString *)title delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... {
     
@@ -55,7 +56,7 @@
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.mediaTypes = mediaTypes;
         picker.delegate = self;
-        picker.allowsEditing = NO;
+        picker.allowsEditing = self.allowsEditing;
         picker.sourceType = sourceType;
         
         if (sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -177,9 +178,17 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 + (UICameraActionSheet*)createCameraActionSheet {
     UICameraActionSheet* retVal = [[UICameraActionSheet alloc]initWithTitle:nil delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
     retVal.delegate = retVal;
+    retVal.allowsEditing = NO;
     [retVal autorelease];
     return retVal;
-    
+}
+
++ (UICameraActionSheet*)createCameraActionSheetWithTitle:(NSString*)title allowsEditing:(BOOL)editing {
+    UICameraActionSheet* retVal = [[UICameraActionSheet alloc]initWithTitle:title delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
+    retVal.delegate = retVal;
+    retVal.allowsEditing = editing;
+    [retVal autorelease];
+    return retVal;
 }
 
 @end

@@ -32,6 +32,7 @@
 @synthesize sw_seamlessFacebookSharing      = m_sw_seamlessFacebookSharing;
 @synthesize user                            = m_user;
 @synthesize userID                          = m_userID;
+@synthesize cameraActionSheet               = m_cameraActionSheet;
 
 
 #define kMAXUSERNAMELENGTH 15
@@ -42,7 +43,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
         
     }
     return self;
@@ -51,6 +51,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
     
     // Navigation Bar Buttons
     UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
@@ -90,6 +92,14 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.tc_changePictureTableViewCell = nil;
+    self.tc_changeUsernameTableViewCell = nil;
+    self.tc_logoutTableViewCell = nil;
+    self.tc_emailTableViewCell = nil;
+    self.tc_facebookSwitchTableViewCell = nil;
+    self.lbl_facebookTableViewCellLabel = nil;
+    self.sw_seamlessFacebookSharing = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -125,8 +135,8 @@
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     
     if (progressView.didSucceed) {
-        // Username change was successful
-        
+        // Username change was successful, go back to profile to show the user
+        [self dismissModalViewControllerAnimated:YES];
     }
     else {
         NSString* duplicateUsername = self.loggedInUser.username;
@@ -160,15 +170,12 @@
 NSString*	
 machineNameSettings()
 {
-    
     struct utsname systemInfo;
-    
     uname(&systemInfo);
-    
     return [NSString stringWithCString:systemInfo.machine
                               encoding:NSUTF8StringEncoding];
-    
 }
+
 - (void)composeFeedbackMail {
     // Get version information about the app and phone to prepopulate in the email
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -237,14 +244,14 @@ machineNameSettings()
         progressView.delegate = self;
         
         ResourceContext* resourceContext = [ResourceContext instance];
-        //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+        //[resourceContext.managedObjectContext.undoManager beginUndoGrouping];
         self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         
         [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
-        //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        //[self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         
     }
 }
@@ -449,7 +456,9 @@ machineNameSettings()
         
         if (indexPath.row == 0) {
             //Change profile picture
-            
+            self.cameraActionSheet = [UICameraActionSheet createCameraActionSheetWithTitle:@"Change Profile Picture" allowsEditing:YES];
+            self.cameraActionSheet.a_delegate = self;
+            [self.cameraActionSheet showInView:self.view];
         }
         else if (indexPath.row == 1) {
             //Change username
@@ -530,6 +539,26 @@ machineNameSettings()
     [view addSubview:label];
     
     return view;
+    
+}
+
+
+#pragma mark - UICameraActionSheetDelegate methods
+- (void) displayPicker:(UIImagePickerController*) picker {
+    [self presentModalViewController:picker animated:YES];
+}
+
+- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+                          withFullImage:(UIImage*)image {
+    //we handle back end processing of the image from the camera sheet here
+    
+    // Profile piture change was successful, go back to profile to show the user
+    //[self dismissModalViewControllerAnimated:YES];
+    
+}
+
+- (void) onCancel {
+    // we deal with cancel operations from the action sheet here
     
 }
 
