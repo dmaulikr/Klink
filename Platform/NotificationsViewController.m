@@ -19,6 +19,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerBase.h"
 #import "ProfileViewController.h"
+#import "ProfileViewController4.h"
 #import "WebViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
@@ -646,7 +647,8 @@
 }
 
 - (void) onResourceLinkClick:(NSNumber*)objectid {
-    ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
+    //ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
+    ProfileViewController4* profileViewController = [ProfileViewController4 createInstanceForUser:objectid];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

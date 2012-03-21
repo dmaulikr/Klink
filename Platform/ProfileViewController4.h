@@ -59,6 +59,12 @@
     //UISwitch* m_sw_seamlessFacebookSharing;
     //UISwitch* m_sw_facebookLogin;
     //UISwitch* m_sw_twitterLogin;
+    
+    UIView* m_v_followControlsContainer;
+    UIButton* m_btn_follow;
+    UIButton* m_btn_unfollow;
+    
+    
     User*   m_user;
     NSNumber* m_userID;
     
@@ -113,10 +119,17 @@
 //@property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 
+@property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
+@property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
+@property (nonatomic, retain) IBOutlet UIButton*    btn_unfollow;
+
 
 //- (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
+
+- (IBAction) onFollowButtonPressed:(id)sender;
+- (IBAction) onUnfollowButtonPressed:(id)sender;
 
 + (ProfileViewController4*)createInstance;
 + (ProfileViewController4*)createInstanceForUser:(NSNumber*)userID;

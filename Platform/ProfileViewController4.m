@@ -66,6 +66,9 @@
 @synthesize userID                  = m_userID;
 @synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
+@synthesize v_followControlsContainer = m_v_followControlsContainer;
+@synthesize btn_follow              = m_btn_follow;
+@synthesize btn_unfollow            = m_btn_unfollow;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -269,14 +272,16 @@
 }
 
 - (void) render {
-    //if the user is the currently logged in user, we then enable the leaderboard container
+    //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
     if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
         //yes it is
         self.v_leaderboardContainer.hidden = NO;
+        self.v_followControlsContainer.hidden = YES;
     }
     else {
         //no it isnt
         self.v_leaderboardContainer.hidden = YES;
+        self.v_followControlsContainer.hidden = NO;
     }
     
     self.lbl_username.text = self.user.username;
@@ -607,6 +612,14 @@ machineName4()
     PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceWithTitle:@"Following"];
     
     [self.navigationController pushViewController:peopleListViewController animated:YES];
+}
+
+- (IBAction) onFollowButtonPressed:(id)sender {
+    
+}
+
+- (IBAction) onUnfollowButtonPressed:(id)sender {
+    
 }
 
 #pragma mark - CloudEnumeratorDelegate
