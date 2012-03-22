@@ -413,7 +413,7 @@
     }
     else {
         self.userID = self.user.objectid;
-        [self refreshProfile:self.userID];
+        //[self refreshProfile:self.userID];
         [self render];
     }
     
