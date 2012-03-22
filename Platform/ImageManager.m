@@ -268,7 +268,8 @@ static inline double radians (double degrees) {
     [UIImageJPEGRepresentation(image, .5) writeToFile:path atomically:YES];
     return path;
 }
-//Saves the picture on the hard disk in teh cache folder and returns the full path
+
+//Saves the picture on the hard disk in the cache folder and returns the full path
 - (NSString*)saveImage:(UIImage*)image withFileName:(NSString*)fileNameWithoutExtension {
   
     NSString* path = [self fullPathForPhotoWithName:fileNameWithoutExtension];

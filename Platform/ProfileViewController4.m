@@ -19,6 +19,11 @@
 //#import <sys/utsname.h>
 #import "PeopleListViewController.h"
 #import "Follow.h"
+#import "ImageManager.h"
+#import "ImageDownloadResponse.h"
+
+#define kUSERID                    @"userid"
+
 
 @implementation ProfileViewController4
 
@@ -75,7 +80,6 @@
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
-//#define kMAXUSERNAMELENGTH 15
 
 
 #pragma mark - Progress Bar methods 
@@ -269,6 +273,9 @@
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
     self.v_leaderboardContainer = nil;
+    self.v_followControlsContainer = nil;
+    self.btn_follow = nil;
+    self.btn_unfollow = nil;
     
 }
 
@@ -295,6 +302,24 @@
     else {
         self.lbl_currentLevel.text = @"Contributor";
        self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
+    }
+    
+    //Show profile picture
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
+    
+    NSString* path = self.user.imageurl;
+    
+    if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_profilePicture.image = image;
+        }
+    }
+    else {
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     }
     
     /*self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
@@ -417,165 +442,12 @@
 }
 
 
-/*#pragma mark -  MBProgressHUD Delegate
--(void)hudWasHidden:(MBProgressHUD *)hud {
-    //NSString* activityName = @"ProfileViewController4.hudWasHidden";
-    [self hideProgressBar];
-    
-    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
-    
-    if (progressView.didSucceed) {
-        // Username change was successful
-        self.lbl_username.text = self.loggedInUser.username;
-        
-    }
-    else {
-        NSString* duplicateUsername = self.loggedInUser.username;
-        
-        //we need to undo the operation that was last performed
-        //LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
-        ResourceContext* resourceContext = [ResourceContext instance];
-        [resourceContext.managedObjectContext.undoManager undo];
-        
-        NSError* error = nil;
-        [resourceContext.managedObjectContext save:&error];
-        
-        // Show the Change Username alert view again
-        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                    initWithTitle:@"Change Username"
-                                    message:[NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.", duplicateUsername]
-                                    delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Change", nil];
-        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
-        [alert show];
-        [alert release];
-        
-        // handle fail on change of seamless sharing option
-        //self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-    }
-    
-}
-
-
-#pragma mark - Feedback Mail Helper
-
-NSString*	
-machineName4()
-{
-    
-    struct utsname systemInfo;
-    
-    uname(&systemInfo);
-    
-    return [NSString stringWithCString:systemInfo.machine
-                              encoding:NSUTF8StringEncoding];
-    
-}
-- (void)composeFeedbackMail {
-    // Get version information about the app and phone to prepopulate in the email
-    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString* appVersionNum = [infoDict objectForKey:@"CFBundleVersion"];
-    NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
-    NSString* deviceType = machineName4();
-    NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
-    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-    picker.mailComposeDelegate = self;
-    // Set the email subject
-    [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
-    
-    NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com", nil];
-    [picker setToRecipients:toRecipients];
-    
-    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
-    [picker setMessageBody:messageHeader isHTML:NO];
-    
-    // Present the mail composition interface
-    [self presentModalViewController:picker animated:YES];
-    [picker release]; // Can safely release the controller now.
-}
-
-#pragma mark - MailComposeController Delegate
-// The mail compose view controller delegate method
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError *)error
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark - UIAlertView Delegate
-- (void)alertView:(UIPromptAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        NSString* enteredText = [alertView enteredText];
-        
-        // Change the current logged in user's username
-        self.loggedInUser.username = enteredText;
-        
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //we start a new undo group here
-        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        
-        //after this point, the platforms should automatically begin syncing the data back to the cloud
-        //we now show a progress bar to monitor this background activity
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = delegate.progressView;
-        progressView.delegate = self;
-        
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        
-        NSString* progressIndicatorMessage = [NSString stringWithFormat:@"Checking availability..."];
-        
-        [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-    }
-}
-
-#pragma mark - UIActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
-        if ([self.authenticationManager isUserAuthenticated]) {
-            [self.authenticationManager logoff];
-        }
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    else if (buttonIndex == 1) {
-        // Change Username button pressed
-        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                    initWithTitle:@"Change Username"
-                                    message:@"\n\nPlease enter your preferred username."
-                                    delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Change", nil];
-        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
-        [alert show];
-        [alert release];
-        
-    }
-    else if (buttonIndex == 2) {
-        // Feedback button pressed
-        [self composeFeedbackMail];
-    }
-}
-*/
-
-
 #pragma mark - Navigation Bar button handler 
 - (void)onDoneButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)onAccountButtonPressed:(id)sender {
-    /*UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:nil
-                                  delegate:self
-                                  cancelButtonTitle:@"Cancel"
-                                  destructiveButtonTitle:@"Logout"
-                                  otherButtonTitles:@"Change Username", @"Feedback", nil];
-    [actionSheet showInView:self.view];
-    [actionSheet release];*/
-    
     SettingsViewController* settingsViewController = [SettingsViewController createInstance];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
@@ -584,27 +456,6 @@ machineName4()
     
     [navigationController release];
 }
-
-#pragma mark - UISwitch Handler
-/*- (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
- {
- if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
- PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
- UIProgressHUDView* progressView = appDelegate.progressView;
- progressView.delegate = self;
- 
- ResourceContext* resourceContext = [ResourceContext instance];
- //[resourceContext.managedObjectContext.undoManager beginUndoGrouping];
- //self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
- [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
- 
- ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
- 
- [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
- //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
- 
- }
- }*/
 
 #pragma mark - UIButton Handlers
 - (IBAction) onFollowersButtonPressed:(id)sender {
@@ -698,28 +549,28 @@ machineName4()
     
 }
 
-
-
-
-#pragma mark - MBProgressHUD Delegate
-/*- (void) hudWasHidden:(MBProgressHUD *)hud {
- [self hideProgressBar];
- 
- UIProgressHUDView* pv = (UIProgressHUDView*)hud;
- 
- if (!pv.didSucceed) {
- //there was an error upon submission
- //we undo the request that was attempted to be made
- //        ResourceContext* resourceContext = [ResourceContext instance];
- //        [resourceContext.managedObjectContext.undoManager undo];
- //        
- //        NSError* error = nil;
- //        [resourceContext.managedObjectContext save:&error];
- 
- self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
- 
- }
- }*/
+#pragma mark - Async callbacks
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSDictionary* userInfo = result.context;
+    NSNumber* userID = [userInfo valueForKey:kUSERID];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        if ([userID isEqualToNumber:self.userID]) {
+            //we only draw the image if this view hasnt been repurposed for another user
+            [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+        }
+        
+        [self.view setNeedsDisplay];
+    }
+    else {
+        // show the photo placeholder icon
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+        
+        [self.view setNeedsDisplay];
+    }
+    
+}
 
 #pragma mark - Static Initializers
 + (ProfileViewController4*)createInstance {
@@ -733,7 +584,7 @@ machineName4()
 }
 
 + (ProfileViewController4*)createInstanceForUser:(NSNumber *)userID {
-    //returns an instance of the ProfileViewController4 configured for the specified user
+    //returns an instance of the ProfileViewController configured for the specified user
     ProfileViewController4* instance = [[[ProfileViewController4 alloc]initWithNibName:@"ProfileViewController4" bundle:nil]autorelease];
     instance.userID = userID;
     return instance;
