@@ -15,6 +15,7 @@
 #import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "ImageManager.h"
 #import <sys/utsname.h>
 
 @interface SettingsViewController ()
@@ -523,7 +524,6 @@ machineNameSettings()
     }
     
     UILabel *label = [[[UILabel alloc] init] autorelease];
-    //label.frame = CGRectMake(40, 8, 240, 46);
     label.frame = CGRectMake(20, 8, 280, 63);
     label.font = [UIFont fontWithName:@"AmericanTypewriter" size:14.0];
     label.numberOfLines = 3;
@@ -551,8 +551,24 @@ machineNameSettings()
 - (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
                           withFullImage:(UIImage*)image {
     //we handle back end processing of the image from the camera sheet here
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        ImageManager* imageManager = [ImageManager instance];
+        
+        NSString* picFilename = [NSString stringWithFormat:@"%@_profilePicture",self.userID];
+        self.user.imageurl = [imageManager saveImage:thumbnailImage withFileName:picFilename];
+        
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:progressView];
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        
+        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!\n\nLooking good, hot stuff." onFailureMessage:@"Failed :(\n\nTry your good side." inProgressMessages:[NSArray arrayWithObject:@"Updating your profile picture..."]];
+    }
     
-    // Profile piture change was successful, go back to profile to show the user
+    // Profile picture change was successful, go back to profile to show the user
     //[self dismissModalViewControllerAnimated:YES];
     
 }

@@ -34,6 +34,7 @@
 @implementation UICameraActionSheet
 @synthesize a_delegate = m_delegate;
 @synthesize allowsEditing = m_allowsEditing;
+@synthesize picker = m_picker;
 
 - (id) initWithTitle:(NSString *)title delegate:(id<UIActionSheetDelegate>)delegate cancelButtonTitle:(NSString *)cancelButtonTitle destructiveButtonTitle:(NSString *)destructiveButtonTitle otherButtonTitles:(NSString *)otherButtonTitles, ... {
     
@@ -45,6 +46,7 @@
     return self;
 }
 
+
 #pragma mark - Instance Methods
 - (void)getMediaFromSource:(UIImagePickerControllerSourceType)sourceType 
 {
@@ -53,21 +55,22 @@
     if ([UIImagePickerController isSourceTypeAvailable:sourceType] && [mediaTypes count] > 0) 
     {
         NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.mediaTypes = mediaTypes;
-        picker.delegate = self;
-        picker.allowsEditing = self.allowsEditing;
-        picker.sourceType = sourceType;
+        //UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        self.picker = [[[UIImagePickerController alloc] init] autorelease];
+        self.picker.mediaTypes = mediaTypes;
+        self.picker.delegate = self;
+        self.picker.allowsEditing = self.allowsEditing;
+        self.picker.sourceType = sourceType;
         
         if (sourceType == UIImagePickerControllerSourceTypeCamera) {
-            picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-            picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
+            self.picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            self.picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
         }
         id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
 
-        [del displayPicker:picker];
+        [del displayPicker:self.picker];
        
-        [picker release];
+        //[picker release];
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -105,15 +108,24 @@
 
 #pragma mark - UIImagePickerController delegate methods
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissModalViewControllerAnimated:YES];
+    self.picker = picker;
+    [self.picker dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
+    self.picker = picker;
+    
     // Begin creation of the thumbnail and fullscreen photos
-    UIImage* chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage* chosenImage;
+    if (self.allowsEditing == YES) {
+        chosenImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    }
+    else {
+        chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    }
     
     CGFloat scale = kScale;
     
@@ -166,12 +178,12 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
     
     id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
-
-    [del onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
     
     CGImageRelease(croppedThumbnailImage);
     
-    [picker dismissModalViewControllerAnimated:YES];
+    [del onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
+    
+    [self.picker dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Static Initializers

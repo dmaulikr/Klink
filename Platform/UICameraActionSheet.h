@@ -23,10 +23,13 @@
     
     BOOL m_allowsEditing;
     
+    UIImagePickerController* m_picker;
+    
 }
 
 
 @property (nonatomic,assign) id<UICameraActionSheetDelegate>    a_delegate;
+@property (nonatomic,retain) UIImagePickerController*           picker;
 
 @property (nonatomic)                 BOOL                      allowsEditing;
 
