@@ -494,6 +494,34 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     return enumerator;
 }
 
++ (CloudEnumerator*) enumeratorForFollowers:(NSNumber *)userid
+{
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryForFollowers:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForFollowers];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForFollowers:userid];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.follow_enumeration_timegap intValue];    
+    return enumerator;
+    
+}
+
+
++ (CloudEnumerator*) enumeratorForFollowing:(NSNumber *)userid
+{
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryForFollowing:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForFollowing];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForFollowing:userid];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.follow_enumeration_timegap intValue];    
+    return enumerator;
+}
+
 #pragma mark - Static Initializers for Defined Queries
 + (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
             withTypes:(NSArray*)objectTypes 

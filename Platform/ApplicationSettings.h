@@ -49,4 +49,9 @@
 @property (nonatomic,retain) NSNumber* num_users;
 @property (nonatomic,retain) NSNumber* progress_maxsecondstodisplay;
 
+
+//Follow settings
+@property (nonatomic,retain) NSNumber* follow_maxnumtodownload;
+@property (nonatomic,retain) NSNumber* follow_enumeration_timegap;
+
 @end

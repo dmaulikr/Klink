@@ -65,4 +65,8 @@
               withObjectType:(NSString*)objectType 
                  withOptions:(SharingOptions*)sharingOptions 
    withAuthenticationContext:(id)context;
+
++ (NSURL*) urlForDeleteObject:(NSNumber*)objectid 
+               withObjectType:(NSString*)objectType 
+    withAuthenticationContext:(id)context;
 @end

@@ -15,5 +15,9 @@
 @property (nonatomic,retain) NSString* followername;
 
 
+//Static methods
++ (BOOL) doesFollowExistFor:(NSNumber*)userid withFollowerID:(NSNumber*)followeruserid;
+//Static initializers
 + (Follow*) createFollowFor:(NSNumber*)userid withFollowerID:(NSNumber*)followeruserid;
++ (void)unfollowFor:(NSNumber*)userid withFollowerID:(NSNumber*)followeruserid;
 @end

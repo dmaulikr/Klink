@@ -75,6 +75,8 @@
 + (CloudEnumerator*) enumeratorForPages;
 + (CloudEnumerator*) enumeratorForUser:(NSNumber*)userid;
 + (CloudEnumerator*) enumeratorForDrafts;
++ (CloudEnumerator*) enumeratorForFollowers:(NSNumber*)userid;
++ (CloudEnumerator*) enumeratorForFollowing:(NSNumber*)userid;
 + (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
                             withTypes:(NSArray*)objectTypes;
 + (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid;

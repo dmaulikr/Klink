@@ -15,6 +15,22 @@
 @dynamic followeruserid;
 @dynamic username;
 
+
+#pragma mark - Static Methods
++ (BOOL) doesFollowExistFor:(NSNumber*)userid withFollowerID:(NSNumber *)followeruserid
+{
+    BOOL retVal = NO;
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Follow* follow = (Follow*)[resourceContext resourceWithType:FOLLOW withValuesEqual:[NSArray arrayWithObjects:userid,followeruserid, nil] forAttributes:[NSArray arrayWithObjects:USERID,FOLLOWERUSERID, nil] sortBy:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO]]];
+    
+    if (follow == nil) {
+        retVal = NO;
+    }
+    else {
+        retVal = YES;
+    }
+    return retVal;
+}
 #pragma mark - Static Initializers
 //creates a Follow object with the follower following the user
 + (Follow*)createFollowFor:(NSNumber *)userid withFollowerID:(NSNumber *)followeruserid {
@@ -33,6 +49,21 @@
     if (user != nil) {
         retVal.username = user.username;
     }
+    retVal.userid = userid;
+    retVal.followeruserid = followeruserid;
     return  retVal;
+}
+
+
++ (void) unfollowFor:(NSNumber *)userid withFollowerID:(NSNumber *)followeruserid
+{
+    //we delete the follow object
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Follow* follow = (Follow*)[resourceContext resourceWithType:FOLLOW withValuesEqual:[NSArray arrayWithObjects:userid,followeruserid, nil] forAttributes:[NSArray arrayWithObjects:USERID,FOLLOWERUSERID, nil] sortBy:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO]]];
+    if (follow != nil) 
+    {
+        [resourceContext.managedObjectContext deleteObject:follow];
+    }
+    
 }
 @end
