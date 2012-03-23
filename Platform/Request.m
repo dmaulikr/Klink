@@ -82,9 +82,11 @@ withChangedAttributes:(NSArray*)changedAttributes
     [cr release];
     
     if (opcode != kMODIFYATTACHMENT && 
-        opcode != kCREATE) {
+        opcode != kCREATE &&
+        opcode != kDELETE) {
         //attachments dont have children
         //we do not process attachments for creates
+        //we do not process attachments for deletes
         
         NSArray* attachmentsInThisRequest = [self attachmentAttributesInRequest];
         //we have a list of all attachments that will need to be processed

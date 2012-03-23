@@ -37,4 +37,7 @@
 + (id) queryUser:(NSNumber*)userID;
 + (id) queryForIDs:(NSArray*)objectIDs withTypes:(NSArray*)types;
 + (id) queryApplicationSettings:(NSNumber*)userid;
++ (id) queryForFollowers:(NSNumber*)userid;
++ (id) queryForFollowing:(NSNumber*)userid;
+
 @end

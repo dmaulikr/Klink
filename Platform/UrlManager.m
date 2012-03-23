@@ -287,7 +287,34 @@ withAuthenticationContext:(id)authenticationContext;
 
 
 
++ (NSURL*) urlForDeleteObject:(NSNumber*)objectid 
+               withObjectType:(NSString*)objectType 
+    withAuthenticationContext:(id)context
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    NSString* verbName = verb_DELETE;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* objectIDParamName = param_OBJECTID;
+    [parameters appendFormat:@"%@=%@",objectIDParamName,objectid];
+    
+    NSString* objectTypeParamName = param_OBJECTTYPE;
+    [parameters appendFormat:@"&%@=%@",objectTypeParamName,objectType];
+    
+    NSString* authenticationContextParameterName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [context toJSON];
+    
+    jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParameterName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
 
+}
 
 
 

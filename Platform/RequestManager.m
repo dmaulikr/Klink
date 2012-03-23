@@ -31,6 +31,7 @@
 #import "ErrorCodes.h"
 #import "EventManager.h"
 #import "NSStringGUIDCategory.h"
+#import "DeleteResponse.h"
 #define kREQUEST    @"REQUEST"
 #define kATTACHMENTLIST @"ATTACHMENTLIST"
 
@@ -94,7 +95,8 @@ static RequestManager* sharedInstance;
     }
     else if (opcode == kMODIFY ||
              opcode == kMODIFYATTACHMENT ||
-             opcode == kUPDATEAUTHENTICATOR) {
+             opcode == kUPDATEAUTHENTICATOR ||
+             opcode == kDELETE) {
         ASIFormDataRequest* httpRequest = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
         httpRequest.delegate = self;
         httpRequest.requestMethod = @"POST";
@@ -231,7 +233,18 @@ static RequestManager* sharedInstance;
 }
 
 - (void) processDelete:(Request*) request {
-    //TODO: implement delete functionality
+    NSString* activityName = @"RequestManager.processDelete:";
+    NSMutableDictionary* userInfo = [[NSMutableDictionary alloc]init];
+
+    [userInfo setObject:request forKey:kREQUEST];
+    [request retain];
+    
+    ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:[request.operationcode intValue] withURL:request.url withUserInfo:userInfo];
+    LOG_REQUEST(0, @"%@Executing delete request for ID:%@ of Type:%@ ",activityName,request.targetresourceid,request.targetresourcetype);
+    [httpRequest setPostValue:@"" forKey:@""];
+    [userInfo release];
+    [self.operationQueue addOperation:httpRequest];    
+    
 }
 
 - (void) processModify:(Request*) request {
@@ -738,6 +751,23 @@ static RequestManager* sharedInstance;
 
 }
 
+- (Response*) processDeleteResponse:(NSString*)responseString withRequest:(Request*)request 
+{
+    NSString* activityName = @"RequestManager.processDeleteResponse:";
+    NSDictionary* jsonDictionary = [responseString objectFromJSONString];
+    DeleteResponse* deleteResponse = [[DeleteResponse alloc]initFromJSONDictionary:jsonDictionary];
+	
+    if ([deleteResponse.didSucceed boolValue]) {
+        LOG_REQUEST(0, @"%@Delete request succeeded",activityName);
+    }
+    else {
+        LOG_REQUEST(1, @"%@Delete request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,deleteResponse.errorMessage);
+    }
+    [deleteResponse autorelease];
+    return deleteResponse;
+    
+}
+
 - (Response*) processCreateResponse:(NSString*)responseString withRequest:(Request*)request {
     NSString* activityName = @"RequestManager.processCreateResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
@@ -876,6 +906,7 @@ static RequestManager* sharedInstance;
         }
         else if ([request.operationcode intValue] == kDELETE) {
             //TODO: implement response handling for deletes
+            responseObj = [self processDeleteResponse:response withRequest:request];
         }
         else if ([request.operationcode intValue] == kENUMERATION) {
             responseObj = [self processEnumerationResponse:response withRequest:request];

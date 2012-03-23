@@ -12,16 +12,18 @@
 #import "PlatformAppDelegate.h"
 //#import "UIProgressHUDView.h"
 //#import "CloudEnumerator.h"
-//#import "Macros.h"
+#import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "SettingsViewController.h"
 //#import <sys/utsname.h>
 #import "PeopleListViewController.h"
+#import "Follow.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
 
 #define kUSERID                    @"userid"
+
 
 @implementation ProfileViewController4
 
@@ -493,7 +495,31 @@
 }
 
 - (IBAction) onUnfollowButtonPressed:(id)sender {
+    //we need to unfollow a person here
+    NSString* activityName = @"ProfileViewController.onUnfollowButtonPressed:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
     
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if ([Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+        }
+    }
+    else 
+    {
+        LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
+    }
 }
 
 #pragma mark - CloudEnumeratorDelegate

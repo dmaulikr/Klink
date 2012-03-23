@@ -44,4 +44,6 @@
 +(QueryOptions*)queryForDrafts;
 +(QueryOptions*)queryForObjectIDs:(NSArray*)objectIDs withTypes:(NSArray*)objectTypes;
 +(QueryOptions*)queryForApplicationSettings:(NSNumber*)userid;
++(QueryOptions*)queryForFollowers;
++(QueryOptions*)queryForFollowing;
 @end

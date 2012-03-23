@@ -31,5 +31,6 @@
 @dynamic poll_expiry_seconds;
 @dynamic num_users;
 @dynamic progress_maxsecondstodisplay;
-
+@dynamic follow_maxnumtodownload;
+@dynamic follow_enumeration_timegap;
 @end

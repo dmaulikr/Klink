@@ -164,6 +164,23 @@
 
 }
 
++ (QueryOptions*)queryForFollowers {
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATECREATED;  
+    return newQuery;
+}
+
+
++ (QueryOptions*)queryForFollowing {
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATECREATED;  
+    return newQuery;
+}
+
 +(QueryOptions*)queryForObjectIDs:(NSArray*)objectIDs 
                         withTypes:(NSArray*)objectTypes 
 {

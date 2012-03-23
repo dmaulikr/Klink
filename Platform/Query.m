@@ -138,6 +138,23 @@
     [sortDescriptor release];
     return query;
 }
+
++ (id) queryForFollowers:(NSNumber *)userid
+{
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = FOLLOW;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    
+    [queryExpression release];
+    
+    return query;
+}
 + (id) queryForIDs:(NSArray*)objectIDs 
          withTypes:(NSArray*)types {
     
@@ -148,6 +165,23 @@
     
     return query;
     
+}
+
++ (id) queryForFollowing:(NSNumber *)userid
+{
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = FOLLOW;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = FOLLOWERUSERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    
+    [queryExpression release];
+    
+    return query;   
 }
 
 + (Query*)queryDrafts {

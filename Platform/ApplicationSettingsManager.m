@@ -173,8 +173,8 @@ static ApplicationSettingsManager* instance;
     settings.poll_num_pages = [NSNumber numberWithInt:default_POLL_NUM_PAGES];
     settings.editor_minimum = [NSNumber numberWithInt:EDITOR_MINIMUM];
     
-    
-    
+    settings.follow_maxnumtodownload = [NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
+    settings.follow_enumeration_timegap = [NSNumber numberWithInt:threshold_FOLLOW_ENUMERATION_TIME_GAP];
     [context save:YES onFinishCallback:nil trackProgressWith:nil];
     
     return settings;

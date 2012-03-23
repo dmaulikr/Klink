@@ -95,3 +95,4 @@ NSString* const NUMBEROFFOLLOWERS       =@"numberoffollowers";
 NSString* const NUMBEROFPOINTS          =@"numberofpoints";
 NSString* const FOLLOWERNAME            =@"followername";
 NSString* const FOLLOWERUSERID          =@"followeruserid";
+NSString* const DELETEDOBJECTID         =@"deletedobjectid";

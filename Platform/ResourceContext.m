@@ -244,12 +244,13 @@ static ResourceContext* sharedInstance;
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
-    
+    NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
     
    
     
     NSMutableArray* createRequests = [[NSMutableArray alloc]init];
     NSMutableArray* putRequests = [[NSMutableArray alloc]init];
+    NSMutableArray* deleteRequests = [[NSMutableArray alloc]init];
     
     //get all pending changes
     NSSet* insertedObjects = [self.managedObjectContext insertedObjects];
@@ -397,6 +398,32 @@ static ResourceContext* sharedInstance;
         }
     }
     
+    //let us process the deletes
+    NSArray* deletedObjectsArray = [deletedObjects allObjects];
+    if ([deletedObjects count] > 0 &&
+        saveToCloud == YES) 
+    {
+        //we have deleted objects, and we are going to be saving to the cloud
+        for (int i = 0; i < [deletedObjects count]; i++) 
+        {
+            Resource* resource = [deletedObjectsArray objectAtIndex:i];
+            if ([resource isKindOfClass:[Resource class]]) 
+            {
+                //it is an actual Resource that was deleted
+                if ([resource shouldResourceBeSynchronizedToCloud]) 
+                {
+                    AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
+                    //we should post the delete of this object to the cloud
+                    Request* request = [self requestFor:resource forOperation:kDELETE withChangedAttributes:nil onFinishCallback:callback trackProgressWith:progressDelegate];
+                    //lets now get the url for the request
+                    request.url = [[UrlManager urlForDeleteObject:request.targetresourceid withObjectType:request.targetresourcetype withAuthenticationContext:authenticationContext] absoluteString];
+                    //we got the url now we need to add it to the request array
+                    [deleteRequests addObject:request];
+                    [retVal addObject:request];
+                }
+            }
+        }
+    }
     
 
     //now we commit the change to the store
@@ -457,7 +484,7 @@ static ResourceContext* sharedInstance;
     else {
          
         if (saveToCloud) {
-             int numberOfCreates = [resourcesToCreateInCloud count];
+            int numberOfCreates = [resourcesToCreateInCloud count];
             int numberOfUpdates = [putRequests count];
             
             LOG_RESOURCECONTEXT(0, @"%@Saved changes to persistence store successfully, which resulted in  %d create operations, and %d put operations with the cloud",activityName,numberOfCreates,numberOfUpdates);
@@ -501,6 +528,14 @@ static ResourceContext* sharedInstance;
                         [requestManager submitRequest:request];
                     }
                 }
+                
+                //process delete requests
+                if ([deleteRequests count] > 0) {
+                    for (Request* request in deleteRequests) {
+                        //we submit the delete one at a time, we will not support bulk deletes yet
+                        [requestManager submitRequest:request];
+                    }
+                }
             }
             else {
                 
@@ -519,7 +554,7 @@ static ResourceContext* sharedInstance;
     [resourceIDsToCreateInCloud release];
     [putRequests release];
     [createRequests release];
-    
+    [deleteRequests release];
     [progressDelegate initializeWith:retVal];
     
    

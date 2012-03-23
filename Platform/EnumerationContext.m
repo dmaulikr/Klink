@@ -151,4 +151,24 @@
     return enumerationContext;
 }
 
++ (EnumerationContext*) contextForFollowers:(NSNumber *)userid 
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = settingsObject.pagesize;
+    enumerationContext.maximumNumberOfResults = settingsObject.follow_maxnumtodownload;    
+    return enumerationContext;
+
+}
+
++ (EnumerationContext*) contextForFollowing:(NSNumber *)userid
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = settingsObject.pagesize;
+    enumerationContext.maximumNumberOfResults = settingsObject.follow_maxnumtodownload;    
+    return enumerationContext;
+
+}
+
 @end
