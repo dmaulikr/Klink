@@ -224,6 +224,22 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
+    // Setup follow and unfollow buttons
+    UIImage* followButtonImageNormal = [UIImage imageNamed:@"button_roundrect_blue.png"];
+    UIImage* stretchablefollowButtonImageNormal = [followButtonImageNormal stretchableImageWithLeftCapWidth:73 topCapHeight:22];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageNormal forState:UIControlStateNormal];
+    
+    UIImage* followButtonImageSelected = [UIImage imageNamed:@"button_roundrect_lightgrey_selected.png"];
+    UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:73 topCapHeight:22];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];
+    
+    if (self.btn_follow.selected == YES) {
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+    }
+    else {
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    }
+    
 }
 
 - (void)viewDidUnload
@@ -305,8 +321,6 @@
     //Show profile picture
     ImageManager* imageManager = [ImageManager instance];
     NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
-    
-    NSString* path = self.user.imageurl;
     
     if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
@@ -469,7 +483,13 @@
 }
 
 - (IBAction) onFollowButtonPressed:(id)sender {
-    
+    [self.btn_follow setSelected:!self.btn_follow.selected];
+    if (self.btn_follow.selected == YES) {
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+    }
+    else {
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    }
 }
 
 - (IBAction) onUnfollowButtonPressed:(id)sender {
