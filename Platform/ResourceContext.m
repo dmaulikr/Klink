@@ -328,39 +328,9 @@ static ResourceContext* sharedInstance;
                     {
                         
                         
-                        //is this Put-Attachment request?
-                        //                    if ([changedAttributes count] == 1) {
-                        //                        //if the one changed attribute is an attachment type, then this is
-                        //                        //a Put-Attachment request
-                        //                        NSString* changedAttribute = [changedAttributes objectAtIndex:0];
-                        //                        AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
-                        //                        if ([aid.isurlattachment boolValue]) {
-                        //                            //yes, it is an attachment
-                        //                            request = [self requestFor:resource forOperation:kMODIFYATTACHMENT  withChangedAttributes:changedAttributes  onFinishCallback:callback trackProgressWith:progressDelegate];
-                        //                            
-                        //                        }
-                        //                        else {
-                        //                            //no it is not an attachment
-                        //                            request = [self requestFor:resource forOperation:kMODIFY  withChangedAttributes:changedAttributes onFinishCallback:callback
-                        //                                       trackProgressWith:progressDelegate];
-                        //                        }
-                        //                        [resource markAsDirty:changedAttributes];
-                        //                        
-                        //                        
-                        //                    }
-                        //                    else if ([changedAttributes count] > 1) {
-                        //must be a put modify operation since there are more than 1 changed attributes
                         request = [self requestFor:resource forOperation:kMODIFY withChangedAttributes:changedAttributes onFinishCallback:callback
                                  trackProgressWith:progressDelegate];
                         [resource markAsDirty:changedAttributes];
-                        //                    }
-                        //                    else {
-                        //no changed attribute values to sync
-                        //do nothing
-                        //                       request = nil;
-                        //                    }
-                        
-                        
                         if (request != nil) {
                             //we append the changed attribute names to the request
                             //[request setChangedAttributesList:changedAttributes];
@@ -386,10 +356,6 @@ static ResourceContext* sharedInstance;
                                 [attributeValues release];
                                 [attributeOperationCodes release];
                             }
-                            //                        else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
-                            //                            NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
-                            //                            request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
-                            //                        }
                             [retVal addObject:request];
                             [putRequests addObject:request];
                         }
