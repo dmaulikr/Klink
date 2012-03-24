@@ -559,7 +559,7 @@ machineNameSettings()
         ResourceContext* resourceContext = [ResourceContext instance];
         ImageManager* imageManager = [ImageManager instance];
         
-        NSString* picFilename = [NSString stringWithFormat:@"%@_profilePicture",self.userID];
+        NSString* picFilename = [NSString stringWithFormat:@"%@-imageurl",self.userID];
         self.user.imageurl = [imageManager saveImage:thumbnailImage withFileName:picFilename];
         
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
