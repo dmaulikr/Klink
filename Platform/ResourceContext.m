@@ -324,71 +324,41 @@ static ResourceContext* sharedInstance;
                     //get a list of attributes that are changed on the object
                     NSArray* changedAttributes = [resource changedAttributesToSynchronizeToCloud];
                     Request* request = nil;
-                    
-                    //is this Put-Attachment request?
-                    if ([changedAttributes count] == 1) {
-                        //if the one changed attribute is an attachment type, then this is
-                        //a Put-Attachment request
-                        NSString* changedAttribute = [changedAttributes objectAtIndex:0];
-                        AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
-                        if ([aid.isurlattachment boolValue]) {
-                            //yes, it is an attachment
-                            request = [self requestFor:resource forOperation:kMODIFYATTACHMENT  withChangedAttributes:changedAttributes  onFinishCallback:callback trackProgressWith:progressDelegate];
-                            
-                        }
-                        else {
-                            //no it is not an attachment
-                            request = [self requestFor:resource forOperation:kMODIFY  withChangedAttributes:changedAttributes onFinishCallback:callback
-                                       trackProgressWith:progressDelegate];
-                        }
-                        [resource markAsDirty:changedAttributes];
+                    if ([changedAttributes count] > 0) 
+                    {
                         
                         
-                    }
-                    else if ([changedAttributes count] > 1) {
-                        //must be a put modify operation since there are more than 1 changed attributes
                         request = [self requestFor:resource forOperation:kMODIFY withChangedAttributes:changedAttributes onFinishCallback:callback
-                            trackProgressWith:progressDelegate];
+                                 trackProgressWith:progressDelegate];
                         [resource markAsDirty:changedAttributes];
-                    }
-                    else {
-                        //no changed attribute values to sync
-                        //do nothing
-                        request = nil;
-                    }
-                    
-                    
-                    if (request != nil) {
-                        //we append the changed attribute names to the request
-                        //[request setChangedAttributesList:changedAttributes];
-                        
-                        AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
-
-                        //we need to calculate the url for the request
-                        if (request.operationcode ==[NSNumber numberWithInt:kMODIFY]) {
-                            NSDictionary* attributeOperations = [request putAttributeOperations];
-                            NSArray* attributeNames = [attributeOperations allKeys];
-                            NSMutableArray* attributeValues = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
-                            NSMutableArray* attributeOperationCodes = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+                        if (request != nil) {
+                            //we append the changed attribute names to the request
+                            //[request setChangedAttributesList:changedAttributes];
                             
-                            for (NSString* attributeName in attributeNames) {
-                                PutAttributeOperation* putOperation = [attributeOperations valueForKey:attributeName];
-                                [attributeValues addObject:putOperation.value];
-                                [attributeOperationCodes addObject:[NSNumber numberWithInt:putOperation.operationCode]];
+                            AuthenticationContext* authenticationContext = [[AuthenticationManager instance] contextForLoggedInUser];
+                            
+                            //we need to calculate the url for the request
+                            if (request.operationcode ==[NSNumber numberWithInt:kMODIFY]) {
+                                NSDictionary* attributeOperations = [request putAttributeOperations];
+                                NSArray* attributeNames = [attributeOperations allKeys];
+                                NSMutableArray* attributeValues = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+                                NSMutableArray* attributeOperationCodes = [[NSMutableArray alloc]initWithCapacity:[attributeNames count]];
+                                
+                                for (NSString* attributeName in attributeNames) {
+                                    PutAttributeOperation* putOperation = [attributeOperations valueForKey:attributeName];
+                                    [attributeValues addObject:putOperation.value];
+                                    [attributeOperationCodes addObject:[NSNumber numberWithInt:putOperation.operationCode]];
+                                }
+                                
+                                //now all of our arrays are populated we can generate the url
+                                request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAttributes:attributeNames withAttributeValues:attributeValues withOperationCodes:attributeOperationCodes withAuthenticationContext:authenticationContext]absoluteString];
+                                
+                                [attributeValues release];
+                                [attributeOperationCodes release];
                             }
-                            
-                            //now all of our arrays are populated we can generate the url
-                            request.url = [[UrlManager urlForPutObject:request.targetresourceid withObjectType:request.targetresourcetype withAttributes:attributeNames withAttributeValues:attributeValues withOperationCodes:attributeOperationCodes withAuthenticationContext:authenticationContext]absoluteString];
-                            
-                            [attributeValues release];
-                            [attributeOperationCodes release];
+                            [retVal addObject:request];
+                            [putRequests addObject:request];
                         }
-                        else if (request.operationcode == [NSNumber numberWithInt:kMODIFYATTACHMENT]) {
-                            NSString *changedAttribute = [[request changedAttributesList] objectAtIndex:0];
-                            request.url = [[UrlManager urlForUploadAttachment:request.targetresourceid withObjectType:request.targetresourcetype forAttributeName:changedAttribute withAuthenticationContext:authenticationContext] absoluteString];
-                        }
-                        [retVal addObject:request];
-                        [putRequests addObject:request];
                     }
                     
                 } 

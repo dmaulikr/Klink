@@ -209,19 +209,11 @@ withChangedAttributes:(NSArray*)changedAttributes
     Resource* resource = [resourceContext resourceWithType:self.targetresourcetype withID:self.targetresourceid];
     
     for(NSString* changedAttribute in changedAttributes) {
-        AttributeInstanceData* aid = [resource attributeInstanceDataFor:changedAttribute];
-        if ([self.operationcode intValue] == kMODIFY) {
-            if (![aid.isurlattachment boolValue]) {
-                //we skip attachment attributes in Modify requests
+       
+                   
                 PutAttributeOperation* attributeOperation = [resource putAttributeOperationFor:changedAttribute];
                 [retVal setValue:attributeOperation forKey:changedAttribute];
-            }
-        }
-        else {
-            PutAttributeOperation* attributeOperation = [resource putAttributeOperationFor:changedAttribute];
-            [retVal setValue:attributeOperation forKey:changedAttribute];
-
-        }
+    
     }
     return retVal;
 }

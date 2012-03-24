@@ -559,10 +559,10 @@ machineNameSettings()
         ResourceContext* resourceContext = [ResourceContext instance];
         ImageManager* imageManager = [ImageManager instance];
         
-        NSString* picFilename = [NSString stringWithFormat:@"%@_profilePicture",self.userID];
+        NSString* picFilename = [NSString stringWithFormat:@"%@-imageurl",self.userID];
         self.user.imageurl = [imageManager saveImage:thumbnailImage withFileName:picFilename];
         
-        [resourceContext save:NO onFinishCallback:nil trackProgressWith:progressView];
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         
         [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!\n\nLooking good, hot stuff." onFailureMessage:@"Failed :(\n\nTry your good side." inProgressMessages:[NSArray arrayWithObject:@"Updating your profile picture..."]];

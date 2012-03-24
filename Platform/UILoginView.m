@@ -324,6 +324,12 @@
     }
 }
 
+- (void) request:(FBRequest *)request didFailWithError:(NSError *)error
+{
+    NSString* activityName = @"UILoginView.fbRequestDidFailWithError:";
+    LOG_SECURITY(0, @"%@ facebook request failed with error:%@",activityName,[error description]);
+}
+
 #pragma mark - FBSessionDelegate
 - (void) fbDidLogin {
     NSString* activityName = @"UILoginView.fbDidLogin:";
@@ -339,6 +345,8 @@
     
     //the user has authorized our app, now we get his user object to complete authentication
     self.fbProfileRequest = [facebook requestWithGraphPath:@"me" andDelegate:self];
+    
+
     LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,@"requesting user profile details from Facebook");
     
     
@@ -404,50 +412,33 @@
     [self dismissWithResult:[response.didSucceed boolValue]];
 }
 
-- (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result {
+- (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result 
+{
+    NSString* activityName = @"UILoginView.onGetAuthenticationContextDownloaded:";
     GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
     
     //dismiss the progress bar
     [self.parentViewController hideProgressBar];
     [self saveAuthenticatorResponse:response];
     
-//    if (response.didSucceed) {
-//        AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-//        
-//        AuthenticationContext* newContext = response.authenticationcontext;
-//        User* returnedUser = response.user;
-//        
-//        Resource* existingUser = [resourceContext resourceWithType:USER withID:returnedUser.objectid];
-//        
-//        //save the user object that is returned to us in the database
-//        if (existingUser != nil) {
-//            [existingUser refreshWith:returnedUser];
-//        }
-//        else {
-//            //need to insert the new user into the resource context
-//            [resourceContext insert:returnedUser];
-//        }
-//        [resourceContext save:YES onFinishCallback:nil];
-//        
-//        BOOL contextSavedToKeyChain = [authenticationManager saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
-//        
-//       
-//        
-//        if (contextSavedToKeyChain) {
-//            [authenticationManager loginUser:newContext.userid withAuthenticationContext:newContext];
-//            [self checkStatusAndDismiss];
-//        }
-//        else {
-//            //unable to login user due to inability to save the credential to key chain
-//            //raise global error
-//            LOG_LOGINVIEWCONTROLLER(1,@"%@Unable to save user credential to key chain, login failure",activityName);
-//            [self dismissWithResult:NO];
-//        }
+    //now we also see if the user is a first time user and if so, we upload their facebook photo
+//    AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
+//    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+//    Facebook* facebook = appDelegate.facebook;
+//
+//    if ([authenticationContext.isfirsttime boolValue] &&
+//        facebook.isSessionValid) 
+//    {
+//        //its the user's first time logging in
+//        LOG_SECURITY(0, @"%@ Detected its the user's first login, downloading and uploading their Facebook profile picture",activityName);
+//      //  self.fbPictureRequest = [facebook requestWithGraphPath:@"me/picture" andDelegate:self];
+//
 //    }
-//    else {
-//        LOG_LOGINVIEWCONTROLLER(1,@"%@Login with Bahndr servers failed",activityName);
-//        [self dismissWithResult:NO];
+//    else if (!facebook.isSessionValid) 
+//    {
+//        LOG_SECURITY(1, @"%@ Cannot download facebook profile photo as the facebook session is not valid",activityName);
 //    }
+
 }
 
 
