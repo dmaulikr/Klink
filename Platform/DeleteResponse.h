@@ -11,6 +11,7 @@
 #import "Response.h"
 #import "Attributes.h"
 #import "IJSONSerializable.h"
+
 @interface DeleteResponse : Response <IJSONSerializable> {
     NSNumber* m_deletedObjectID;
 }

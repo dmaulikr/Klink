@@ -38,7 +38,6 @@ typedef enum {
 } FeedEvent;
 
 typedef enum {
-  
     //the following are generic notification types specified for future expansion
     kGENERIC_EDITORIAL_POST_VOTE,
     kGENERIC_FULLSCREEN,

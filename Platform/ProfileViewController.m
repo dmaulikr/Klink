@@ -2,34 +2,56 @@
 //  ProfileViewController.m
 //  Platform
 //
-//  Created by Jordan Gurrieri on 12/6/11.
+//  Created by Jordan Gurrieri on 3/19/12.
 //  Copyright (c) 2011 Blue Label Solutions LLC. All rights reserved.
 //
 
 #import "ProfileViewController.h"
 #import "DateTimeHelper.h"
-#import "ApplicationSettings.h"
-#import "ApplicationSettingsManager.h"
+
 #import "PlatformAppDelegate.h"
-#import "UIPromptAlertView.h"
-#import "UIProgressHUDView.h"
-#import "CloudEnumerator.h"
+//#import "UIProgressHUDView.h"
+//#import "CloudEnumerator.h"
 #import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
-#import <sys/utsname.h>
+#import "SettingsViewController.h"
+//#import <sys/utsname.h>
+#import "PeopleListViewController.h"
+#import "Follow.h"
+#import "ImageManager.h"
+#import "ImageDownloadResponse.h"
+#import "PeopleListType.h"
+
+#define kUSERID                    @"userid"
+
 
 @implementation ProfileViewController
+
+@synthesize iv_profilePicture       = m_iv_profilePicture;
 @synthesize lbl_username            = m_lbl_username;
-@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
+//@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
+
 @synthesize lbl_numPages            = m_lbl_numPages;
-@synthesize lbl_numVotes            = m_lbl_numVotes;
-@synthesize lbl_numSubmissions      = m_lbl_numSubmissions;
+//@synthesize lbl_numVotes            = m_lbl_numVotes;
+//@synthesize lbl_numSubmissions      = m_lbl_numSubmissions;
+@synthesize lbl_numFollowers        = m_lbl_numFollowers;
+@synthesize lbl_numFollowing        = m_lbl_numFollowing;
 @synthesize lbl_pagesLabel          = m_lbl_pagesLabel;
 @synthesize lbl_votesLabel          = m_lbl_votesLabel;
 @synthesize lbl_submissionsLabel    = m_lbl_submissionsLabel;
+
+@synthesize btn_numPages            = m_btn_numPages;
+//@synthesize btn_numVotes            = m_btn_numVotes;
+//@synthesize btn_numSubmissions      = m_btn_numSubmissions;
+@synthesize btn_numFollowers        = m_btn_numFollowers;
+@synthesize btn_numFollowing        = m_btn_numFollowing;
+@synthesize btn_pagesLabel          = m_btn_pagesLabel;
+@synthesize btn_followersLabel      = m_btn_followersLabel;
+@synthesize btn_followingLabel      = m_btn_followingLabel;
+
 @synthesize lbl_submissionsLast7DaysLabel = m_lbl_submissionsLast7DaysLabel;
 @synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
 @synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
@@ -49,15 +71,16 @@
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
-@synthesize v_userSettingsContainer     = m_v_userSettingsContainer;
-@synthesize sw_seamlessFacebookSharing  = m_sw_seamlessFacebookSharing;
+@synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
+@synthesize v_followControlsContainer = m_v_followControlsContainer;
+@synthesize btn_follow              = m_btn_follow;
+//@synthesize btn_unfollow            = m_btn_unfollow;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
-#define kMAXUSERNAMELENGTH 15
 
 
 #pragma mark - Progress Bar methods 
@@ -184,9 +207,9 @@
     
     // Navigation Bar Buttons
     UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
-                                    initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                    target:self
-                                    action:@selector(onDoneButtonPressed:)] autorelease];
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                     target:self
+                                     action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     // Set Navigation bar title style with typewriter font
@@ -204,6 +227,15 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
+    // Setup follow and unfollow buttons
+    UIImage* followButtonImageNormal = [UIImage imageNamed:@"button_roundrect_blue.png"];
+    UIImage* stretchablefollowButtonImageNormal = [followButtonImageNormal stretchableImageWithLeftCapWidth:73 topCapHeight:22];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageNormal forState:UIControlStateNormal];
+    
+    UIImage* followButtonImageSelected = [UIImage imageNamed:@"button_roundrect_lightgrey_selected.png"];
+    UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:73 topCapHeight:22];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];
+    
 }
 
 - (void)viewDidUnload
@@ -212,16 +244,27 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
+    self.iv_profilePicture = nil;
     self.lbl_username = nil;
-    self.lbl_employeeStartDate = nil;
+    //self.lbl_employeeStartDate = nil;
     self.lbl_currentLevel = nil;
     self.lbl_currentLevelDate = nil;
     self.lbl_numPages = nil;
-    self.lbl_numVotes = nil;
-    self.lbl_numSubmissions = nil;
+    //self.lbl_numVotes = nil;
+    //self.lbl_numSubmissions = nil;
+    self.lbl_numFollowers = nil;
+    self.lbl_numFollowing = nil;
     self.lbl_pagesLabel = nil;
     self.lbl_votesLabel = nil;
     self.lbl_submissionsLabel = nil;
+    self.btn_numPages = nil;
+    //self.btn_numVotes = nil;
+    //self.btn_numSubmissions = nil;
+    self.btn_numFollowers = nil;
+    self.btn_numFollowing = nil;
+    self.btn_pagesLabel = nil;
+    self.btn_followersLabel = nil;
+    self.btn_followingLabel = nil;
     self.lbl_submissionsLast7DaysLabel = nil;
     self.lbl_editorMinimumLabel = nil;
     self.lbl_userBestLabel = nil;
@@ -239,53 +282,89 @@
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
-    self.v_userSettingsContainer = nil;
-    self.sw_seamlessFacebookSharing = nil;
+    self.v_leaderboardContainer = nil;
+    self.v_followControlsContainer = nil;
+    self.btn_follow = nil;
+    //self.btn_unfollow = nil;
     
 }
 
 - (void) render {
-    //if the user is the currently logged in user, we then enable the user settings container
-    if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+    //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
+    if ([self.loggedInUser.objectid longValue] == [self.userID longValue]) {
         //yes it is
-        self.v_userSettingsContainer.hidden = NO;
-        
+        self.v_leaderboardContainer.hidden = NO;
+        self.v_followControlsContainer.hidden = YES;
     }
     else {
         //no it isnt
-        self.v_userSettingsContainer.hidden = YES;
+        self.v_leaderboardContainer.hidden = YES;
+        self.v_followControlsContainer.hidden = NO;
+        
+        //set the appropriate state for the follow button
+        if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
+            //logged in user does not follow this person, enable the follow button
+            [self.btn_follow setSelected:NO];
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        }
+        else {
+            //logged in user does follow this person, set follow button as selected already
+            [self.btn_follow setSelected:YES];
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+        }
     }
-    self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
     
     self.lbl_username.text = self.user.username;
-    self.lbl_employeeStartDate.text = [NSString stringWithFormat:@"bahndrer since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
-    //self.lbl_currentLevel.text = [self.user.iseditor boolValue] ? @"Editor" : @"Contributor";
+
+    //Show current user level and date
     if ([self.user.iseditor boolValue]) {
         self.lbl_currentLevel.text = @"Editor";
         self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datebecameeditor]]];
-        self.lbl_currentLevelDate.hidden = NO;
     }
     else {
         self.lbl_currentLevel.text = @"Contributor";
-        self.lbl_currentLevelDate.hidden = YES;
+       self.lbl_currentLevelDate.text = [NSString stringWithFormat:@"since: %@", [DateTimeHelper formatMediumDate:[DateTimeHelper parseWebServiceDateDouble:self.user.datecreated]]];
     }
     
-    self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
-    self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
+    //Show profile picture
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
     
-    int totalSubmissions = [self.user.numberofcaptions intValue]
-    + [self.user.numberofphotos intValue]
-    + [self.user.numberofdraftscreated intValue];
-    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];
+    if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_profilePicture.image = image;
+        }
+    }
+    else {
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    }
+    
+    /*self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
+    //self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
+    self.lbl_numFollowers.text = [self.user.numberoffollowers stringValue];
+    self.lbl_numFollowing.text = [self.user.numberfollowing stringValue];*/
+    
+    [self.btn_numPages setTitle:[self.user.numberofpagespublished stringValue] forState:UIControlStateNormal];
+    [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
+    [self.btn_numFollowing setTitle:[self.user.numberfollowing stringValue] forState:UIControlStateNormal];
+    
+    /*int totalSubmissions = [self.user.numberofcaptions intValue]
+        + [self.user.numberofphotos intValue]
+        + [self.user.numberofdraftscreated intValue];
+    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];*/
     
     self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
     self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
     self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
     
     int totalLast7Days = [self.user.numberofcaptionslw intValue]
-    + [self.user.numberofphotoslw intValue]
-    + [self.user.numberofdraftscreatedlw intValue];
+        + [self.user.numberofphotoslw intValue]
+        + [self.user.numberofdraftscreatedlw intValue];
     self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
+    //self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];
     
     self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
@@ -327,9 +406,8 @@
         
         [alert show];
         [alert release];
-
+        
     }
-    
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
@@ -351,7 +429,7 @@
         [self refreshProfile:self.userID];
         
         if (self.user != nil) {
-           [self render];             
+            [self render];             
         }
     }
     else {
@@ -363,13 +441,18 @@
     if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {
         // Only enable the Account button for the logged in user
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
-                                       initWithTitle:@"Account"
+                                       initWithTitle:@"Settings"
                                        style:UIBarButtonItemStylePlain
                                        target:self
                                        action:@selector(onAccountButtonPressed:)];
         self.navigationItem.leftBarButtonItem = leftButton;
         [leftButton release];
     }
+    else {
+        self.navigationItem.leftBarButtonItem = nil;
+        // TO DO Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
+    }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -379,6 +462,159 @@
 }
 
 
+#pragma mark - Navigation Bar button handler 
+- (void)onDoneButtonPressed:(id)sender {    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)onAccountButtonPressed:(id)sender {
+    SettingsViewController* settingsViewController = [SettingsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+}
+
+#pragma mark - UIButton Handlers
+- (IBAction) onFollowersButtonPressed:(id)sender {
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWERS withUserID:self.userID];
+    
+    [self.navigationController pushViewController:peopleListViewController animated:YES];
+}
+
+- (IBAction) onFollowingButtonPressed:(id)sender {
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWING withUserID:self.userID];
+    
+    [self.navigationController pushViewController:peopleListViewController animated:YES];
+}
+
+- (void) processFollowUser {
+    NSString* activityName = @"ProfileViewController.processFollowUser:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if (![Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            //we create a Follow object and then save it
+            [Follow createFollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            //lets save it
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Created follow object for user %@ to follow user %@",activityName,loggedInUserID,self.userID);
+            
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+            
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Following %@...", user.username]]];
+        }
+        else {
+            //error case
+            LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@ Follow relationship already exists for user %@ to follow user %@",activityName,loggedInUserID,self.userID);
+        }
+    }
+    else {
+        LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@User cannot follow themself",activityName);
+    }
+}
+
+- (void) processUnfollowUser {
+    //we need to unfollow a person here
+    NSString* activityName = @"ProfileViewController.processUnfollowUser:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if ([Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+            
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+            
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Unfollowing %@...", user.username]]];
+        }
+        else {
+            //error case
+            LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@ Follow relationship does not exist for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+        }
+    }
+    else 
+    {
+        LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
+    }
+}
+
+- (IBAction) onFollowButtonPressed:(id)sender {
+    NSString* activityName = @"ProfileViewController.onFollowButtonPressed:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    //first we toggle the state of the follow button
+    [self.btn_follow setSelected:!self.btn_follow.selected];
+    
+    if (self.btn_follow.selected == YES) {
+        //logged in user wants to follow this person
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,self.userID);
+        [self processFollowUser];
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+    }
+    else {
+        //logged in user wants to unfollow this person
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ User %@ wants to unfollow user %@",activityName,loggedInUserID,self.userID);
+        [self processUnfollowUser];
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    }
+    
+}
+
+/*- (IBAction) onUnfollowButtonPressed:(id)sender {
+    //we need to unfollow a person here
+    NSString* activityName = @"ProfileViewController.onUnfollowButtonPressed:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if ([Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+        }
+    }
+    else 
+    {
+        LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
+    }
+}*/
+
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {
     NSString* activityName = @"ProfileViewController.hudWasHidden";
@@ -387,13 +623,10 @@
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     
     if (progressView.didSucceed) {
-        // Username change was successful
-        self.lbl_username.text = self.loggedInUser.username;
+        // Follow/Unfollow request was successful
         
     }
     else {
-        NSString* duplicateUsername = self.loggedInUser.username;
-        
         //we need to undo the operation that was last performed
         LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -402,177 +635,18 @@
         NSError* error = nil;
         [resourceContext.managedObjectContext save:&error];
         
-        // Show the Change Username alert view again
-        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                    initWithTitle:@"Change Username"
-                                    message:[NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.", duplicateUsername]
-                                    delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Change", nil];
-        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
-        [alert show];
-        [alert release];
-        
-        // handle fail on change of seamless sharing option
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-    }
-    
-}
-
-
-#pragma mark - Feedback Mail Helper	
-NSString*	
-machineName()
-{
-    	
-        struct utsname systemInfo;
-    	
-        uname(&systemInfo);
-    	
-        return [NSString stringWithCString:systemInfo.machine
-                                               encoding:NSUTF8StringEncoding];
-    	
-}
-- (void)composeFeedbackMail {
-  // Get version information about the app and phone to prepopulate in the email
-    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString* appVersionNum = [infoDict objectForKey:@"CFBundleVersion"];
-    NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
-    NSString* deviceType = machineName();
-    NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
-     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-    picker.mailComposeDelegate = self;
-     // Set the email subject
-     [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
-    
-    NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com", nil];
-    [picker setToRecipients:toRecipients];
-
-    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
-    [picker setMessageBody:messageHeader isHTML:NO];
-
-    // Present the mail composition interface
-    [self presentModalViewController:picker animated:YES];
-    [picker release]; // Can safely release the controller now.
-}
-
-#pragma mark - MailComposeController Delegate
-// The mail compose view controller delegate method
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError *)error
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark - UIAlertView Delegate
-- (void)alertView:(UIPromptAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        NSString* enteredText = [alertView enteredText];
-        
-        // Change the current logged in user's username
-        self.loggedInUser.username = enteredText;
-        
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //we start a new undo group here
-        [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        
-        //after this point, the platforms should automatically begin syncing the data back to the cloud
-        //we now show a progress bar to monitor this background activity
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = delegate.progressView;
-        progressView.delegate = self;
-        
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        
-        NSString* progressIndicatorMessage = [NSString stringWithFormat:@"Checking availability..."];
-            
-        [self showProgressBar:progressIndicatorMessage withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-    }
-}
-
-#pragma mark - UIActionSheet Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == [actionSheet destructiveButtonIndex]) {
-        if ([self.authenticationManager isUserAuthenticated]) {
-            [self.authenticationManager logoff];
+        //toggle the state of the follow button back
+        [self.btn_follow setSelected:!self.btn_follow.selected];
+        if (self.btn_follow.selected == YES) {
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
         }
-        [self dismissModalViewControllerAnimated:YES];
-    }
-    else if (buttonIndex == 1) {
-        // Change Username button pressed
-        UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                    initWithTitle:@"Change Username"
-                                    message:@"\n\nPlease enter your preferred username."
-                                    delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Change", nil];
-        [alert setMaxTextLength:kMAXUSERNAMELENGTH];
-        [alert show];
-        [alert release];
-        
-    }
-    else if (buttonIndex == 2) {
-        // Feedback button pressed
-        [self composeFeedbackMail];
-       /* MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-        picker.mailComposeDelegate = self;
-        
-        [picker setSubject:@"Feedback!"];
-        
-        // Set up the recipients
-        NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bluelabellabs.com",
-                                 nil];
-        
-        [picker setToRecipients:toRecipients];
-        
-        // Present the mail composition interface
-        [self presentModalViewController:picker animated:YES];
-        [picker release]; // Can safely release the controller now.*/
-    }
-}
-
-#pragma mark - Navigation Bar button handler 
-- (void)onDoneButtonPressed:(id)sender {    
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)onAccountButtonPressed:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:nil
-                                  delegate:self
-                                  cancelButtonTitle:@"Cancel"
-                                  destructiveButtonTitle:@"Logout"
-                                  otherButtonTitles:@"Change Username", @"Feedback", nil];
-    [actionSheet showInView:self.view];
-    [actionSheet release];
-}
-
-#pragma mark - UISwitch Handler
-- (IBAction) onFacebookSeamlessSharingChanged:(id)sender 
-{
-    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
-        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-        UIProgressHUDView* progressView = appDelegate.progressView;
-        progressView.delegate = self;
-        
-        ResourceContext* resourceContext = [ResourceContext instance];
-        //  [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
-        self.user.sharinglevel = [NSNumber numberWithBool:self.sw_seamlessFacebookSharing.on];
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-        
-        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:@"Updating your settings..."]];
-   //     [self showDeterminateProgressBar:@"Updating your settings..." withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
-        
+        else {
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        }
     }
 }
 
 #pragma mark - CloudEnumeratorDelegate
-
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
@@ -580,43 +654,40 @@ machineName()
     ResourceContext* resourceContext = [ResourceContext instance];
     User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
     NSNumber* userid = user.objectid;
-
+    
     self.user = user;
     self.userID = userid;
     if (self.user != nil && self.userID != nil) {
         [self render];
     }
-
-   
 }
 
-
-
-         
-#pragma mark - MBProgressHUD Delegate
-/*- (void) hudWasHidden:(MBProgressHUD *)hud {
-    [self hideProgressBar];
+#pragma mark - Async callbacks
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSDictionary* userInfo = result.context;
+    NSNumber* userID = [userInfo valueForKey:kUSERID];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
     
-    UIProgressHUDView* pv = (UIProgressHUDView*)hud;
-    
-    if (!pv.didSucceed) {
-        //there was an error upon submission
-        //we undo the request that was attempted to be made
-//        ResourceContext* resourceContext = [ResourceContext instance];
-//        [resourceContext.managedObjectContext.undoManager undo];
-//        
-//        NSError* error = nil;
-//        [resourceContext.managedObjectContext save:&error];
+    if ([response.didSucceed boolValue] == YES) {
+        if ([userID isEqualToNumber:self.userID]) {
+            //we only draw the image if this view hasnt been repurposed for another user
+            [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+        }
         
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-        
+        [self.view setNeedsDisplay];
     }
-}*/
- 
+    else {
+        // show the photo placeholder icon
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+        
+        [self.view setNeedsDisplay];
+    }
+}
+
 #pragma mark - Static Initializers
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
-    //sets the user property to the currently logged on user
+    //sets the user property to the curretly logged on user
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     ResourceContext* resourceContext = [ResourceContext instance];
     instance.user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
@@ -629,7 +700,6 @@ machineName()
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
     instance.userID = userID;
     return instance;
-    
 }
 
 @end

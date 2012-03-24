@@ -569,7 +569,7 @@ machineNameSettings()
     }
     
     // Profile picture change was successful, go back to profile to show the user
-    //[self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
     
 }
 
