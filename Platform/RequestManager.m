@@ -261,18 +261,31 @@ static RequestManager* sharedInstance;
     [userInfo setObject:request forKey:kREQUEST];
     [request retain];
     
-    //prior to making the call, we lock attachment attributes that need to be uploaded
-    //after the update, so that they are not over-written by the update operation
+    //as part of the modify protocol, we extract all attachment attributes and embed
+    //the base64 encoded attribute values into the MIME content header
     NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
-    [resource lockAttributes:attachmentAttributesInRequest];
-    LOG_REQUEST(0,@"%@Locking %d attachment attributes until Put completes",activityName,[attachmentAttributesInRequest count]);
-    
-    [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+    NSMutableDictionary* attachmentAttributesEncoded = [[NSMutableDictionary alloc]init];
+    for (NSString* attachmentAttributeInRequest in attachmentAttributesInRequest) 
+    {
+        NSString* fileName = [resource performSelector:NSSelectorFromString(attachmentAttributeInRequest)];
+        //convert to NSData
+        NSData* data = [NSData dataWithContentsOfFile:fileName];
+        
+        //convert to base64 string
+        NSString* base64Attachment = [NSString encodeBase64WithData:data];
+        //we put this in a dictionary for later embedding into the request
+        [attachmentAttributesEncoded setValue:base64Attachment forKey:attachmentAttributeInRequest];
+
+    }
+    //at this point we now have all the attachments to be modified in the attachmentAttributesEnvoded dictionary
+    //we convert it to a JSON representation
+    NSString* jsonAttachmentAttributesEncoded = [attachmentAttributesEncoded JSONString];    
+    [attachmentAttributesEncoded release];
     
     //we submit the initial put operation with the request
     //the attachments will be processed on the return leg
     ASIFormDataRequest* httpRequest = (ASIFormDataRequest*)[self requestFor:kMODIFY withURL:request.url withUserInfo:userInfo];
-    //[httpRequest setPostValue:json forKey:@""];
+    [httpRequest setPostValue:jsonAttachmentAttributesEncoded forKey:@""];
     httpRequest.uploadProgressDelegate = request;
     httpRequest.downloadProgressDelegate = request;
     LOG_REQUEST(0, @"%@Executing put request for ID:%@ of Type:%@ with %d attachments to be processed after",activityName,resource.objectid,resource.objecttype,[attachmentAttributesInRequest count]);
@@ -687,13 +700,13 @@ static RequestManager* sharedInstance;
         
         //we need to unlock any attachment attributes that are still pending processing
         //on this original request
-        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
-        [existingResource unlockAttributes:attachmentAttributes];
+//        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+//        [existingResource unlockAttributes:attachmentAttributes];
+//        
+//        
+//        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
-        
-        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-        
-        [self processAttachmentsForRequest:request];
+//        [self processAttachmentsForRequest:request];
         LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@ along with %d secondary objects",activityName,request.targetresourceid,request.targetresourcetype, [putResponse.secondaryResults count]);
 
         
@@ -702,11 +715,11 @@ static RequestManager* sharedInstance;
          LOG_REQUEST(1, @"%@Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
         
         //we need to unlock any attachment attributes that were locked by this request to begin with
-         Resource* existingResource = nil;
-        existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
-        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
-        [existingResource unlockAttributes:attachmentAttributes];
-        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+//         Resource* existingResource = nil;
+//        existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
+//        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
+//        [existingResource unlockAttributes:attachmentAttributes];
+//        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
     }
     [putResponse autorelease];
@@ -900,10 +913,10 @@ static RequestManager* sharedInstance;
             //processing a modify response
             responseObj = [self processModifyResponse:response withRequest:request];
         }
-        else if ([request.operationcode intValue] == kMODIFYATTACHMENT) {
-            //processing a modify attachment response
-            responseObj = [self processModifyAttachmentResponse:response withRequest:request];
-        }
+//        else if ([request.operationcode intValue] == kMODIFYATTACHMENT) {
+//            //processing a modify attachment response
+//            responseObj = [self processModifyAttachmentResponse:response withRequest:request];
+//        }
         else if ([request.operationcode intValue] == kDELETE) {
             //TODO: implement response handling for deletes
             responseObj = [self processDeleteResponse:response withRequest:request];
