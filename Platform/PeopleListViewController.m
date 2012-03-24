@@ -12,7 +12,8 @@
 #import "CloudEnumerator.h"
 #import "PeopleListType.h"
 #import "Follow.h"
-#import "ProfileViewController4.h"
+#import "ProfileViewController.h"
+//#import "ProfileViewController4.h"
 #import "UIPeopleListTableViewCell.h"
 #import "AuthenticationManager.h"
 
@@ -276,12 +277,12 @@
     if ([indexPath row] < followCount) {
         Follow* follow = [[self.frc_follows fetchedObjects] objectAtIndex:[indexPath row]];
         
-        ProfileViewController4* profileViewController;
+        ProfileViewController* profileViewController;
         if (self.listType == kFOLLOWING) {
-            profileViewController = [ProfileViewController4 createInstanceForUser:follow.userid];
+            profileViewController = [ProfileViewController createInstanceForUser:follow.userid];
         }
         else {
-            profileViewController = [ProfileViewController4 createInstanceForUser:follow.followeruserid];
+            profileViewController = [ProfileViewController createInstanceForUser:follow.followeruserid];
         }
     
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
