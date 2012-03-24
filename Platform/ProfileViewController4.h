@@ -121,7 +121,7 @@
 
 @property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
-@property (nonatomic, retain) IBOutlet UIButton*    btn_unfollow;
+//@property (nonatomic, retain) IBOutlet UIButton*    btn_unfollow;
 
 
 //- (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
@@ -129,7 +129,7 @@
 - (IBAction) onFollowingButtonPressed:(id)sender;
 
 - (IBAction) onFollowButtonPressed:(id)sender;
-- (IBAction) onUnfollowButtonPressed:(id)sender;
+//- (IBAction) onUnfollowButtonPressed:(id)sender;
 
 + (ProfileViewController4*)createInstance;
 + (ProfileViewController4*)createInstanceForUser:(NSNumber*)userID;

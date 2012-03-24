@@ -31,6 +31,7 @@
     }
     return retVal;
 }
+
 #pragma mark - Static Initializers
 //creates a Follow object with the follower following the user
 + (Follow*)createFollowFor:(NSNumber *)userid withFollowerID:(NSNumber *)followeruserid {

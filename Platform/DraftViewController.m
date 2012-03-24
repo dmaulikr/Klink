@@ -817,7 +817,9 @@
     
     UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
     //extract the user profile id
-    ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
+    //ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
+    ProfileViewController4* pvc = [ProfileViewController4 createInstanceForUser:rlb.objectID];
+    
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navigationController animated:YES];

@@ -226,6 +226,13 @@
 		52B6D13D14B174030046C69C /* homepagebutton-middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13714B174020046C69C /* homepagebutton-middle@2x.png */; };
 		52B6D13E14B174030046C69C /* homepagebutton-top.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13814B174020046C69C /* homepagebutton-top.png */; };
 		52B6D13F14B174030046C69C /* homepagebutton-top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52B6D13914B174020046C69C /* homepagebutton-top@2x.png */; };
+		52BAB48E151CE2C1002EF515 /* DeleteResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAB48D151CE2C1002EF515 /* DeleteResponse.m */; };
+		52BAB494151D1DBA002EF515 /* UIPeopleListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB493151D1DBA002EF515 /* UIPeopleListTableViewCell.xib */; };
+		52BAB499151D22DD002EF515 /* button_standardcontrol_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB495151D22DD002EF515 /* button_standardcontrol_blue.png */; };
+		52BAB49A151D22DD002EF515 /* button_standardcontrol_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB496151D22DD002EF515 /* button_standardcontrol_blue@2x.png */; };
+		52BAB49F151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB49D151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png */; };
+		52BAB4A0151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB49E151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png */; };
+		52BAB4A3151D403B002EF515 /* UIPeopleListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -235,7 +242,6 @@
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
-		C504DA8E151AA2B100C871A7 /* DeleteResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C504DA8D151AA2B100C871A7 /* DeleteResponse.m */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
 		C507BC8414599455004D9359 /* Caption.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC8314599455004D9359 /* Caption.m */; };
 		C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */; };
@@ -640,6 +646,16 @@
 		52B6D13714B174020046C69C /* homepagebutton-middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-middle@2x.png"; sourceTree = "<group>"; };
 		52B6D13814B174020046C69C /* homepagebutton-top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-top.png"; sourceTree = "<group>"; };
 		52B6D13914B174020046C69C /* homepagebutton-top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homepagebutton-top@2x.png"; sourceTree = "<group>"; };
+		52BAB48C151CE2C1002EF515 /* DeleteResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteResponse.h; sourceTree = "<group>"; };
+		52BAB48D151CE2C1002EF515 /* DeleteResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteResponse.m; sourceTree = "<group>"; };
+		52BAB48F151CFB40002EF515 /* PeopleListType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleListType.h; sourceTree = "<group>"; };
+		52BAB493151D1DBA002EF515 /* UIPeopleListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPeopleListTableViewCell.xib; sourceTree = "<group>"; };
+		52BAB495151D22DD002EF515 /* button_standardcontrol_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_standardcontrol_blue.png; sourceTree = "<group>"; };
+		52BAB496151D22DD002EF515 /* button_standardcontrol_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_standardcontrol_blue@2x.png"; sourceTree = "<group>"; };
+		52BAB49D151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_standardcontrol_lightgrey_selected.png; sourceTree = "<group>"; };
+		52BAB49E151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_standardcontrol_lightgrey_selected@2x.png"; sourceTree = "<group>"; };
+		52BAB4A1151D403A002EF515 /* UIPeopleListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPeopleListTableViewCell.h; sourceTree = "<group>"; };
+		52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPeopleListTableViewCell.m; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -653,8 +669,6 @@
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
-		C504DA8C151AA2B100C871A7 /* DeleteResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteResponse.h; sourceTree = "<group>"; };
-		C504DA8D151AA2B100C871A7 /* DeleteResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteResponse.m; sourceTree = "<group>"; };
 		C507BC7C1459811A004D9359 /* FeedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedManager.h; sourceTree = "<group>"; };
 		C507BC7D1459811A004D9359 /* FeedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedManager.m; sourceTree = "<group>"; };
 		C507BC7F1459857F004D9359 /* FeedTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedTypes.h; sourceTree = "<group>"; };
@@ -1107,6 +1121,10 @@
 				52661834151C183B00CDDAC5 /* button_roundrect_blue@2x.png */,
 				5266183F151C26EA00CDDAC5 /* button_roundrect_lightgrey_selected.png */,
 				52661840151C26EA00CDDAC5 /* button_roundrect_lightgrey_selected@2x.png */,
+				52BAB495151D22DD002EF515 /* button_standardcontrol_blue.png */,
+				52BAB496151D22DD002EF515 /* button_standardcontrol_blue@2x.png */,
+				52BAB49D151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png */,
+				52BAB49E151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png */,
 				52B6D13414B174020046C69C /* homepagebutton-bottom.png */,
 				52B6D13514B174020046C69C /* homepagebutton-bottom@2x.png */,
 				52B6D13614B174020046C69C /* homepagebutton-middle.png */,
@@ -1612,8 +1630,8 @@
 				C5C9E2BC1467986C00838934 /* UpdateAuthenticatorResponse.m */,
 				C55BF280148C76B8004ED3A8 /* PutAttributeOperation.h */,
 				C55BF281148C76B8004ED3A8 /* PutAttributeOperation.m */,
-				C504DA8C151AA2B100C871A7 /* DeleteResponse.h */,
-				C504DA8D151AA2B100C871A7 /* DeleteResponse.m */,
+				52BAB48C151CE2C1002EF515 /* DeleteResponse.h */,
+				52BAB48D151CE2C1002EF515 /* DeleteResponse.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -1656,6 +1674,7 @@
 				C5F4630C1444BCA400170835 /* OpCodes.m */,
 				C5A82D671465ABD900E77675 /* PageState.h */,
 				C5F3AE6B1485B3FA00877C5B /* PollState.h */,
+				52BAB48F151CFB40002EF515 /* PeopleListType.h */,
 				C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */,
 				C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */,
 				C5CE03BB14A7C7F300F89241 /* SharingLevel.h */,
@@ -1797,6 +1816,9 @@
 				C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */,
 				C52FB3C914AFCD160048D2C4 /* UIResourceLinkButton.h */,
 				C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */,
+				52BAB4A1151D403A002EF515 /* UIPeopleListTableViewCell.h */,
+				52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */,
+				52BAB493151D1DBA002EF515 /* UIPeopleListTableViewCell.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2297,6 +2319,11 @@
 				52661838151C183B00CDDAC5 /* button_roundrect_blue@2x.png in Resources */,
 				52661841151C26EA00CDDAC5 /* button_roundrect_lightgrey_selected.png in Resources */,
 				52661842151C26EA00CDDAC5 /* button_roundrect_lightgrey_selected@2x.png in Resources */,
+				52BAB494151D1DBA002EF515 /* UIPeopleListTableViewCell.xib in Resources */,
+				52BAB499151D22DD002EF515 /* button_standardcontrol_blue.png in Resources */,
+				52BAB49A151D22DD002EF515 /* button_standardcontrol_blue@2x.png in Resources */,
+				52BAB49F151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png in Resources */,
+				52BAB4A0151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2459,6 +2486,8 @@
 				522908531518482B00E971E1 /* SettingsViewController.m in Sources */,
 				C58E348D151A325D003CD1EC /* Follow.m in Sources */,
 				5293E2E5151918B000854686 /* PeopleListViewController.m in Sources */,
+				52BAB48E151CE2C1002EF515 /* DeleteResponse.m in Sources */,
+				52BAB4A3151D403B002EF515 /* UIPeopleListTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

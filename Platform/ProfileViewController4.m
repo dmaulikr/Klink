@@ -21,6 +21,7 @@
 #import "Follow.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
+#import "PeopleListType.h"
 
 #define kUSERID                    @"userid"
 
@@ -74,7 +75,7 @@
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
 @synthesize v_followControlsContainer = m_v_followControlsContainer;
 @synthesize btn_follow              = m_btn_follow;
-@synthesize btn_unfollow            = m_btn_unfollow;
+//@synthesize btn_unfollow            = m_btn_unfollow;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -235,13 +236,6 @@
     UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:73 topCapHeight:22];
     [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];
     
-    if (self.btn_follow.selected == YES) {
-        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
-    }
-    else {
-        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
-    }
-    
 }
 
 - (void)viewDidUnload
@@ -291,13 +285,13 @@
     self.v_leaderboardContainer = nil;
     self.v_followControlsContainer = nil;
     self.btn_follow = nil;
-    self.btn_unfollow = nil;
+    //self.btn_unfollow = nil;
     
 }
 
 - (void) render {
     //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
-    if (self.loggedInUser.objectid && [self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+    if ([self.loggedInUser.objectid longValue] == [self.userID longValue]) {
         //yes it is
         self.v_leaderboardContainer.hidden = NO;
         self.v_followControlsContainer.hidden = YES;
@@ -306,6 +300,18 @@
         //no it isnt
         self.v_leaderboardContainer.hidden = YES;
         self.v_followControlsContainer.hidden = NO;
+        
+        //set the appropriate state for the follow button
+        if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
+            //logged in user does not follow this person, enable the follow button
+            [self.btn_follow setSelected:NO];
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        }
+        else {
+            //logged in user does follow this person, set follow button as selected already
+            [self.btn_follow setSelected:YES];
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+        }
     }
     
     self.lbl_username.text = self.user.username;
@@ -354,11 +360,11 @@
     self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
     self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
     
-    /*int totalLast7Days = [self.user.numberofcaptionslw intValue]
+    int totalLast7Days = [self.user.numberofcaptionslw intValue]
         + [self.user.numberofphotoslw intValue]
         + [self.user.numberofdraftscreatedlw intValue];
-    self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];*/
-    self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];
+    self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
+    //self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];
     
     self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
@@ -403,7 +409,6 @@
         
     }
     
-    
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -447,6 +452,7 @@
         self.navigationItem.leftBarButtonItem = nil;
         // TO DO Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
     }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -473,28 +479,115 @@
 
 #pragma mark - UIButton Handlers
 - (IBAction) onFollowersButtonPressed:(id)sender {
-    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceWithTitle:@"Followers"];
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWERS withUserID:self.userID];
     
     [self.navigationController pushViewController:peopleListViewController animated:YES];
 }
 
 - (IBAction) onFollowingButtonPressed:(id)sender {
-    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceWithTitle:@"Following"];
+    PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWING withUserID:self.userID];
     
     [self.navigationController pushViewController:peopleListViewController animated:YES];
 }
 
-- (IBAction) onFollowButtonPressed:(id)sender {
-    [self.btn_follow setSelected:!self.btn_follow.selected];
-    if (self.btn_follow.selected == YES) {
-        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+- (void) processFollowUser {
+    NSString* activityName = @"ProfileViewController.processFollowUser:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if (![Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            //we create a Follow object and then save it
+            [Follow createFollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            //lets save it
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Created follow object for user %@ to follow user %@",activityName,loggedInUserID,self.userID);
+            
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+            
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Following %@...", user.username]]];
+        }
+        else {
+            //error case
+            LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@ Follow relationship already exists for user %@ to follow user %@",activityName,loggedInUserID,self.userID);
+        }
     }
     else {
-        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@User cannot follow themself",activityName);
     }
 }
 
-- (IBAction) onUnfollowButtonPressed:(id)sender {
+- (void) processUnfollowUser {
+    //we need to unfollow a person here
+    NSString* activityName = @"ProfileViewController.processUnfollowUser:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    if ([loggedInUserID longValue] != [self.userID longValue]) 
+    {
+        if ([Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
+        {
+            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+            UIProgressHUDView* progressView = appDelegate.progressView;
+            progressView.delegate = self;
+            
+            [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+            
+            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+            
+            ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+            User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+            
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Unfollowing %@...", user.username]]];
+        }
+        else {
+            //error case
+            LOG_PERSONALLOGVIEWCONTROLLER(1, @"%@ Follow relationship does not exist for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
+        }
+    }
+    else 
+    {
+        LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
+    }
+}
+
+- (IBAction) onFollowButtonPressed:(id)sender {
+    NSString* activityName = @"ProfileViewController.onFollowButtonPressed:";
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    //first we toggle the state of the follow button
+    [self.btn_follow setSelected:!self.btn_follow.selected];
+    
+    if (self.btn_follow.selected == YES) {
+        //logged in user wants to follow this person
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,self.userID);
+        [self processFollowUser];
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+    }
+    else {
+        //logged in user wants to unfollow this person
+        LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ User %@ wants to unfollow user %@",activityName,loggedInUserID,self.userID);
+        [self processUnfollowUser];
+        [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    }
+    
+}
+
+/*- (IBAction) onUnfollowButtonPressed:(id)sender {
     //we need to unfollow a person here
     NSString* activityName = @"ProfileViewController.onUnfollowButtonPressed:";
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
@@ -520,10 +613,40 @@
     {
         LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
     }
+}*/
+
+#pragma mark -  MBProgressHUD Delegate
+-(void)hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"ProfileViewController.hudWasHidden";
+    [self hideProgressBar];
+    
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    
+    if (progressView.didSucceed) {
+        // Follow/Unfollow request was successful
+        
+    }
+    else {
+        //we need to undo the operation that was last performed
+        LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+        
+        //toggle the state of the follow button back
+        [self.btn_follow setSelected:!self.btn_follow.selected];
+        if (self.btn_follow.selected == YES) {
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+        }
+        else {
+            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        }
+    }
 }
 
 #pragma mark - CloudEnumeratorDelegate
-
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
@@ -537,8 +660,6 @@
     if (self.user != nil && self.userID != nil) {
         [self render];
     }
-    
-    
 }
 
 #pragma mark - Async callbacks
@@ -561,7 +682,6 @@
         
         [self.view setNeedsDisplay];
     }
-    
 }
 
 #pragma mark - Static Initializers

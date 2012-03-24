@@ -840,6 +840,7 @@
     [self.oidArrayLock unlock];
     LOG_CONTRIBUTEVIEWCONTROLLER(0, @"%@Committed changes to local store, tracking %d cloud synchronization Requests",activityName,[self.requests count]);
 }
+
 - (void)onSubmitButtonPressed:(id)sender {
     //NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
     

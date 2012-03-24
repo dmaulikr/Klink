@@ -17,7 +17,6 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "UIImageView+UIImageViewCategory.h"
-#import "ProfileViewController.h"
 
 #define kPHOTOID                    @"photoid"
 #define kCAPTIONID                  @"captionid"
