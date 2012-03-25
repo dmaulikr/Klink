@@ -50,7 +50,7 @@
 @property (nonatomic,retain) NSNumber* progress_maxsecondstodisplay;
 
 
-@property (nonatomic,retain) NSNumber* delete_expired_objects;
+
 //Follow settings
 @property (nonatomic,retain) NSNumber* follow_maxnumtodownload;
 @property (nonatomic,retain) NSNumber* follow_enumeration_timegap;

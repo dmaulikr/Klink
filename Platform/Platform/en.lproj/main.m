@@ -10,8 +10,23 @@
 
 int main(int argc, char *argv[])
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
+//    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+//    int retVal = UIApplicationMain(argc, argv, nil, nil);
+//    [pool release];
+//    return retVal;
+    
+    
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    int retVal = -1;
+    @try {
+        retVal = UIApplicationMain(argc, argv, nil, nil);
+    }
+    @catch (NSException* exception) {
+        NSLog(@"Uncaught exception: %@", exception.description);
+        NSLog(@"Stack trace: %@", [exception callStackSymbols]);
+    }
     [pool release];
     return retVal;
+    
+    
 }
