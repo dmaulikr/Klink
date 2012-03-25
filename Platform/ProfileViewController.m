@@ -30,7 +30,6 @@
 
 @synthesize iv_profilePicture       = m_iv_profilePicture;
 @synthesize lbl_username            = m_lbl_username;
-//@synthesize lbl_employeeStartDate   = m_lbl_employeeStartDate;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
 
@@ -44,8 +43,6 @@
 @synthesize lbl_submissionsLabel    = m_lbl_submissionsLabel;
 
 @synthesize btn_numPages            = m_btn_numPages;
-//@synthesize btn_numVotes            = m_btn_numVotes;
-//@synthesize btn_numSubmissions      = m_btn_numSubmissions;
 @synthesize btn_numFollowers        = m_btn_numFollowers;
 @synthesize btn_numFollowing        = m_btn_numFollowing;
 @synthesize btn_pagesLabel          = m_btn_pagesLabel;
@@ -75,7 +72,6 @@
 @synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
 @synthesize v_followControlsContainer = m_v_followControlsContainer;
 @synthesize btn_follow              = m_btn_follow;
-//@synthesize btn_unfollow            = m_btn_unfollow;
 
 #define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 #define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -246,7 +242,6 @@
     
     self.iv_profilePicture = nil;
     self.lbl_username = nil;
-    //self.lbl_employeeStartDate = nil;
     self.lbl_currentLevel = nil;
     self.lbl_currentLevelDate = nil;
     self.lbl_numPages = nil;
@@ -258,8 +253,6 @@
     self.lbl_votesLabel = nil;
     self.lbl_submissionsLabel = nil;
     self.btn_numPages = nil;
-    //self.btn_numVotes = nil;
-    //self.btn_numSubmissions = nil;
     self.btn_numFollowers = nil;
     self.btn_numFollowing = nil;
     self.btn_pagesLabel = nil;
@@ -285,7 +278,6 @@
     self.v_leaderboardContainer = nil;
     self.v_followControlsContainer = nil;
     self.btn_follow = nil;
-    //self.btn_unfollow = nil;
     
 }
 
@@ -586,34 +578,6 @@
     }
     
 }
-
-/*- (IBAction) onUnfollowButtonPressed:(id)sender {
-    //we need to unfollow a person here
-    NSString* activityName = @"ProfileViewController.onUnfollowButtonPressed:";
-    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
-    
-    
-    if ([loggedInUserID longValue] != [self.userID longValue]) 
-    {
-        if ([Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) 
-        {
-            PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-            UIProgressHUDView* progressView = appDelegate.progressView;
-            progressView.delegate = self;
-            
-            [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
-            
-            ResourceContext* resourceContext = [ResourceContext instance];
-            [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-            LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,self.userID);
-        }
-    }
-    else 
-    {
-        LOG_PERSONALLOGVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
-    }
-}*/
 
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {

@@ -13,7 +13,6 @@
 #import "PeopleListType.h"
 #import "Follow.h"
 #import "ProfileViewController.h"
-//#import "ProfileViewController4.h"
 #import "UIPeopleListTableViewCell.h"
 #import "AuthenticationManager.h"
 
@@ -28,6 +27,7 @@
 @synthesize frc_follows             = __frc_follows;
 @synthesize userID                  = m_userID;
 @synthesize listType                = m_listType;
+@synthesize tbl_peopleList          = m_tbl_peopleList;
 @synthesize btn_follow              = m_btn_follow;
 
 
@@ -108,6 +108,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.btn_follow = nil;
+    self.tbl_peopleList = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -206,19 +209,15 @@
             cell = [[[UIPeopleListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UIPeopleListTableViewCell cellIdentifier]] autorelease];
             
             //setup a tag on the follow button so we can look it up if pressed
-            cell.btn_follow.tag = indexPath.row;
+            //cell.btn_follow.tag = indexPath.row;
             [cell.btn_follow addTarget:self action:@selector(onFollowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
         
+        //setup a tag on the follow button so we can look it up if pressed
+        cell.btn_follow.tag = indexPath.row;
+        
         // Configure the cell...
-        if (self.listType == kFOLLOWING) {
-            //[cell.textLabel setText:follow.username];
-            [cell renderCellWithUserID:follow.userid];
-        }
-        else {
-            //[cell.textLabel setText:follow.followername];
-            [cell renderCellWithUserID:follow.followeruserid];
-        }
+        [cell renderCellOfPeopleListType:self.listType withFollowID:follow.objectid];
         
         return cell;
     }
@@ -445,6 +444,14 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_peopleList endUpdates];
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_peopleList beginUpdates];
+}
+
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 
       forChangeType:(NSFetchedResultsChangeType)type 
@@ -455,13 +462,15 @@
     if (controller == self.frc_follows) {
         if (type == NSFetchedResultsChangeInsert) {
             //insertion of a new follow object
+            [self.tbl_peopleList insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
+            
             Resource* resource = (Resource*)anObject;
             int count = [[self.frc_follows fetchedObjects]count];
             LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@Inserting newly created resource with type %@ and id %@ at index %d (num itemsin frc:%d)",activityName,resource.objecttype,resource.objectid,[newIndexPath row],count);
             
         }
         else if (type == NSFetchedResultsChangeDelete) {
-            
+            [self.tbl_peopleList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
         }
     }
     else {

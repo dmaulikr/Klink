@@ -10,10 +10,12 @@
 #import "User.h"
 #import "Follow.h"
 #import "AuthenticationManager.h"
+#import "PeopleListType.h"
 
 
 @implementation UIPeopleListTableViewCell
-@synthesize userID                      = m_userID;
+@synthesize followID                    = m_followID;
+@synthesize listType                    = m_listType;
 @synthesize peopleListTableViewCell     = m_peopleListTableViewCell;
 @synthesize lbl_username                = m_lbl_username;
 @synthesize iv_profilePicture           = m_iv_profilePicture;
@@ -61,22 +63,15 @@
     NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
     
     ResourceContext* resourceContext = [ResourceContext instance];
-    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    Follow* follow = (Follow*)[resourceContext resourceWithType:FOLLOW withID:self.followID];
     
-    if (user != nil) {
-        self.lbl_username.text = user.username;
-        
-        //set the appropriate state for the follow button
-        //if ([loggedInUserID longValue] == [self.userID longValue]) {
-            //yes it is, hide the follow button
-        //    self.btn_follow.hidden = YES;
-        //}
-        //else {
-        //    //no it isnt
-        //    self.btn_follow.hidden = NO;
+    if (follow != nil) {
+        if (self.listType == kFOLLOWING) {
+            self.lbl_username.text = follow.username;
             
-            if ([loggedInUserID longValue] != [self.userID longValue] && ![Follow doesFollowExistFor:self.userID withFollowerID:loggedInUserID]) {
-                //logged in user does not follow this person, enable the follow button
+            //set the appropriate state for the follow button
+            if ([loggedInUserID longValue] != [follow.userid longValue] && ![Follow doesFollowExistFor:follow.userid withFollowerID:loggedInUserID]) {
+                //this is not the logged in user, nor does the logged in user follow this person, enable the follow button
                 [self.btn_follow setSelected:NO];
                 [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
             }
@@ -85,20 +80,36 @@
                 [self.btn_follow setSelected:YES];
                 [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
             }
-        //}
+        }
+        else {
+            self.lbl_username.text = follow.followername;
+            
+            //set the appropriate state for the follow button
+            if ([loggedInUserID longValue] != [follow.followeruserid longValue] && ![Follow doesFollowExistFor:follow.followeruserid withFollowerID:loggedInUserID]) {
+                //this is not the logged in user, nor does the logged in user follow this person, enable the follow button
+                [self.btn_follow setSelected:NO];
+                [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+            }
+            else {
+                //logged in user does follow this person, set follow button as selected already
+                [self.btn_follow setSelected:YES];
+                [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+            }
+        }
     }
     
     [self setNeedsDisplay];
 }
 
-- (void) renderCellWithUserID:(NSNumber*)userID {
+- (void) renderCellOfPeopleListType:(int)peopleListType withFollowID:(NSNumber*)followID {
     // Reset tableviewcell properties
-    self.userID = nil;
+    self.followID = nil;
     self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-highlighted.png"];
     self.lbl_username.text = nil;
     [self.btn_follow setSelected:NO];
     
-    self.userID = userID;
+    self.followID = followID;
+    self.listType = peopleListType;
     [self render];
 }
 

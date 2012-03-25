@@ -21,7 +21,6 @@
 #import "FullScreenPhotoViewController.h"
 #import "ContributeViewController.h"
 #import "ProfileViewController.h"
-//#import "ProfileViewController4.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "NotificationsViewController.h"
@@ -818,7 +817,6 @@
     UIResourceLinkButton* rlb = (UIResourceLinkButton*)sender;
     //extract the user profile id
     ProfileViewController* pvc = [ProfileViewController createInstanceForUser:rlb.objectID];
-    //ProfileViewController4* pvc = [ProfileViewController4 createInstanceForUser:rlb.objectID];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:pvc];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -983,7 +981,6 @@
     }
     else {
         ProfileViewController* profileViewController = [ProfileViewController createInstance];
-        //ProfileViewController4* profileViewController = [ProfileViewController4 createInstance];
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface UIPeopleListTableViewCell : UITableViewCell {
-    NSNumber*           m_userID;
+    NSNumber*           m_followID;
+    int                 m_listType;
     
     UITableViewCell*    m_peopleListTableViewCell;
     UILabel*            m_lbl_username;
@@ -17,14 +18,15 @@
     UIButton*           m_btn_follow;
 }
 
-@property (nonatomic, retain) NSNumber*                 userID;
+@property (nonatomic, retain) NSNumber*                 followID;
+@property                    int                        listType;
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* peopleListTableViewCell;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_username;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_profilePicture;
 @property (nonatomic, retain) IBOutlet UIButton*        btn_follow;
 
-- (void) renderCellWithUserID:(NSNumber*)userID;
+- (void) renderCellOfPeopleListType:(int)peopleListType withFollowID:(NSNumber*)followID;
 
 + (NSString*) cellIdentifier;
 

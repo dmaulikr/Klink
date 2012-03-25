@@ -14,7 +14,6 @@
     
     UIImageView* m_iv_profilePicture;
     UILabel* m_lbl_username;
-    //UILabel* m_lbl_employeeStartDate;
     UILabel* m_lbl_currentLevel;
     UILabel* m_lbl_currentLevelDate;
     
@@ -28,8 +27,6 @@
     UILabel* m_lbl_submissionsLabel;
     
     UIButton* m_btn_numPages;
-    //UIButton* m_btn_numVotes;
-    //UIButton* m_btn_numSubmissions;
     UIButton* m_btn_numFollowers;
     UIButton* m_btn_numFollowing;
     UIButton* m_btn_pagesLabel;
@@ -56,14 +53,8 @@
     UIImageView* m_iv_userBestLine;
     
     UIView* m_v_leaderboardContainer;
-    //UISwitch* m_sw_seamlessFacebookSharing;
-    //UISwitch* m_sw_facebookLogin;
-    //UISwitch* m_sw_twitterLogin;
-    
     UIView* m_v_followControlsContainer;
     UIButton* m_btn_follow;
-    UIButton* m_btn_unfollow;
-    
     
     User*   m_user;
     NSNumber* m_userID;
@@ -73,7 +64,6 @@
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
-//@property (nonatomic, retain) IBOutlet UILabel* lbl_employeeStartDate;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevelDate;
 
@@ -87,8 +77,6 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLabel;
 
 @property (nonatomic, retain) IBOutlet UIButton* btn_numPages;
-//@property (nonatomic, retain) IBOutlet UIButton* btn_numVotes;
-//@property (nonatomic, retain) IBOutlet UIButton* btn_numSubmissions;
 @property (nonatomic, retain) IBOutlet UIButton* btn_numFollowers;
 @property (nonatomic, retain) IBOutlet UIButton* btn_numFollowing;
 @property (nonatomic, retain) IBOutlet UIButton* btn_pagesLabel;
@@ -115,21 +103,18 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressCaptions;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
-@property (nonatomic, retain) IBOutlet UIView*      v_leaderboardContainer;
-//@property (nonatomic, retain) IBOutlet UISwitch*    sw_seamlessFacebookSharing;
-@property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 
+@property (nonatomic, retain) IBOutlet UIView*      v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
-//@property (nonatomic, retain) IBOutlet UIButton*    btn_unfollow;
+
+@property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 
 
-//- (IBAction) onFacebookSeamlessSharingChanged:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 
 - (IBAction) onFollowButtonPressed:(id)sender;
-//- (IBAction) onUnfollowButtonPressed:(id)sender;
 
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;

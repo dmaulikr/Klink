@@ -16,6 +16,7 @@
     NSNumber* m_userID;
     int m_listType;
     
+    UITableView* m_tbl_peopleList;
     UIButton* m_btn_follow;
     
 }
@@ -27,6 +28,7 @@
 @property                  int                              listType;
 
 @property (nonatomic,retain) UIButton*                      btn_follow;
+@property (nonatomic,retain) IBOutlet UITableView*          tbl_peopleList;
 
 + (PeopleListViewController*)createInstanceOfListType:(int)listType withUserID:(NSNumber*)userID;
 

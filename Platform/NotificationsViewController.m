@@ -19,7 +19,6 @@
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerBase.h"
 #import "ProfileViewController.h"
-//#import "ProfileViewController4.h"
 #import "WebViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
@@ -648,7 +647,6 @@
 
 - (void) onResourceLinkClick:(NSNumber*)objectid {
     ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:objectid];
-    //ProfileViewController4* profileViewController = [ProfileViewController4 createInstanceForUser:objectid];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -703,6 +701,7 @@
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_notificationsTableView beginUpdates];
 }
+
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject 
         atIndexPath:(NSIndexPath *)indexPath 
@@ -711,7 +710,6 @@
     
     if (type == NSFetchedResultsChangeInsert) {
         //new notification has been downloaded
-        
         [self.tbl_notificationsTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationTop];
     }
     else if (type == NSFetchedResultsChangeDelete) {

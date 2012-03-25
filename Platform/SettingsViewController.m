@@ -560,7 +560,10 @@ machineNameSettings()
         ImageManager* imageManager = [ImageManager instance];
         
         NSString* picFilename = [NSString stringWithFormat:@"%@-imageurl",self.userID];
-        self.user.imageurl = [imageManager saveImage:thumbnailImage withFileName:picFilename];
+        self.user.imageurl = [imageManager saveImage:image withFileName:picFilename];
+        
+        NSString* thumbnailFilename = [NSString stringWithFormat:@"%@-thumbnailurl",self.userID];
+        self.user.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFilename];
         
         [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
