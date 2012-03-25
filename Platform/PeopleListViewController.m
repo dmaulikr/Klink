@@ -23,7 +23,9 @@
 
 @implementation PeopleListViewController
 
-@synthesize cloudFollowEnumerator   = m_cloudFollowEnumerator;
+//@synthesize cloudFollowEnumerator   = m_cloudFollowEnumerator;
+@synthesize cloudFollowersEnumerator   = m_cloudFollowersEnumerator;
+@synthesize cloudFollowingEnumerator   = m_cloudFollowingEnumerator;
 @synthesize frc_follows             = __frc_follows;
 @synthesize userID                  = m_userID;
 @synthesize listType                = m_listType;
@@ -118,8 +120,49 @@
     [super viewWillAppear:animated];
     NSString* activityName = @"PeopleListViewController.frc_follows:";
     
-    // Refresh the follows list on each open
-    self.cloudFollowEnumerator = nil;
+    // Refresh the follow lists on each open
+    self.cloudFollowersEnumerator = nil;
+    self.cloudFollowingEnumerator = nil;
+    
+    self.cloudFollowersEnumerator = [CloudEnumerator enumeratorForFollowers:self.userID];
+    self.cloudFollowingEnumerator = [CloudEnumerator enumeratorForFollowing:self.userID];
+    
+    self.cloudFollowersEnumerator.delegate = self;
+    self.cloudFollowingEnumerator.delegate = self;
+    
+    if (!self.cloudFollowersEnumerator.isLoading) 
+    {
+        //followers enumerator is not loading, so we can go ahead and reset it and run it
+        if ([self.cloudFollowersEnumerator canEnumerate]) 
+        {
+            LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@Refreshing followers count from cloud",activityName);
+            [self.cloudFollowersEnumerator enumerateUntilEnd:nil];
+        }
+        else
+        {
+            //the followers enumerator is not ready to run, but we reset it and away we go
+            [self.cloudFollowersEnumerator reset];
+            [self.cloudFollowersEnumerator enumerateUntilEnd:nil];
+        }
+    }
+    
+    if (!self.cloudFollowingEnumerator.isLoading) 
+    {
+        //following enumerator is not loading, so we can go ahead and reset it and run it
+        if ([self.cloudFollowingEnumerator canEnumerate]) 
+        {
+            LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@Refreshing following count from cloud",activityName);
+            [self.cloudFollowingEnumerator enumerateUntilEnd:nil];
+        }
+        else
+        {
+            //the following enumerator is not ready to run, but we reset it and away we go
+            [self.cloudFollowingEnumerator reset];
+            [self.cloudFollowingEnumerator enumerateUntilEnd:nil];
+        }
+    }
+    
+    /*self.cloudFollowEnumerator = nil;
     if (self.listType == kFOLLOWING) 
     {
         self.cloudFollowEnumerator = [CloudEnumerator enumeratorForFollowing:self.userID];
@@ -143,7 +186,7 @@
             [self.cloudFollowEnumerator reset];
             [self.cloudFollowEnumerator enumerateUntilEnd:nil];
         }
-    }
+    }*/
     
     NSString* navBarTitle;
     if (self.listType == kFOLLOWING) {

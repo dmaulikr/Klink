@@ -47,11 +47,15 @@
     if (follower != nil) {
         retVal.followername = follower.username;
         
+        //increment the follower counter on the user
+        user.numberoffollowers = [NSNumber numberWithInt:([user.numberoffollowers intValue] + 1)];
+        
     }
     
     if (user != nil) {
         retVal.username = user.username;
     }
+    
     retVal.userid = userid;
     retVal.followeruserid = followeruserid;
     return  retVal;
@@ -63,9 +67,16 @@
     //we delete the follow object
     ResourceContext* resourceContext = [ResourceContext instance];
     Follow* follow = (Follow*)[resourceContext resourceWithType:FOLLOW withValuesEqual:[NSArray arrayWithObjects:userid,followeruserid, nil] forAttributes:[NSArray arrayWithObjects:USERID,FOLLOWERUSERID, nil] sortBy:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO]]];
+    
+    //need to grab the relevant user object
+    User* user = (User*)[resourceContext resourceWithType:USER withID:userid];
+    
     if (follow != nil) 
     {
         [resourceContext.managedObjectContext deleteObject:follow];
+        
+        //decrement the follower counter on the user
+        user.numberoffollowers = [NSNumber numberWithInt:([user.numberoffollowers intValue] - 1)];
     }
     
 }

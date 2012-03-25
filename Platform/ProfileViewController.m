@@ -500,6 +500,9 @@
             //we create a Follow object and then save it
             [Follow createFollowFor:self.userID withFollowerID:loggedInUserID];
             
+            // update followers count on profile
+            [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
+            
             //lets save it
             ResourceContext* resourceContext = [ResourceContext instance];
             [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
@@ -535,7 +538,11 @@
             UIProgressHUDView* progressView = appDelegate.progressView;
             progressView.delegate = self;
             
+            //we remove the follow object and then save it
             [Follow unfollowFor:self.userID withFollowerID:loggedInUserID];
+            
+            // update followers count on profile
+            [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
             
             ResourceContext* resourceContext = [ResourceContext instance];
             [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
@@ -609,6 +616,8 @@
         else {
             [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
         }
+        
+        [self render];
     }
 }
 

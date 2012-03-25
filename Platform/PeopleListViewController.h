@@ -11,7 +11,9 @@
 
 @interface PeopleListViewController : BaseViewController < UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate, UIProgressHUDViewDelegate > {
 
-    CloudEnumerator* m_cloudFollowEnumerator;
+    //CloudEnumerator* m_cloudFollowEnumerator;
+    CloudEnumerator* m_cloudFollowersEnumerator;
+    CloudEnumerator* m_cloudFollowingEnumerator;
     
     NSNumber* m_userID;
     int m_listType;
@@ -22,7 +24,9 @@
 }
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_follows;
-@property (nonatomic,retain) CloudEnumerator*               cloudFollowEnumerator;
+//@property (nonatomic,retain) CloudEnumerator*               cloudFollowEnumerator;
+@property (nonatomic,retain) CloudEnumerator*               cloudFollowersEnumerator;
+@property (nonatomic,retain) CloudEnumerator*               cloudFollowingEnumerator;
 
 @property (atomic, retain) NSNumber*                        userID;
 @property                  int                              listType;
