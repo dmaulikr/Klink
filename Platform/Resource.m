@@ -55,7 +55,8 @@
     if (self) {
         //TODO: need to generate resource id here
         self.objectid = [[IDGenerator instance] generateNewId:[entity name]];
-        self.objecttype = [entity name];
+        [self setObjecttype:[entity name]];
+        //self.objecttype = [entity name];
         self.attributeinstancedata = nil;
         self.iswebservicerepresentation = NO;
         self.typeinstancedata = nil;

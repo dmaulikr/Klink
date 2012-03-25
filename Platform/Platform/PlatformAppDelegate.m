@@ -373,21 +373,21 @@
      */
     
     
-    void (^block)(NSNumber*) = ^(NSNumber* number) {
-        [self deleteExpiredObjectsOlderThan:number];
-    };
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_expired_objects intValue]];
-    
-    NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
-    dispatch_async(backgroundQueue, ^{block(localThreshold);});
+//    void (^block)(NSNumber*) = ^(NSNumber* number) {
+//        [self deleteExpiredObjectsOlderThan:number];
+//    };
+//    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+//    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.clean_after intValue]];
+//    
+//    NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+//    dispatch_async(backgroundQueue, ^{block(localThreshold);});
     
     
         
     
 //    [self performSelectorInBackground:@selector(deleteExpiredObjectsOlderThan:) withObject:settings.delete_expired_objects];
-    [autorelease drain];
-    [localThreshold release];
+ //   [autorelease drain];
+  //  [localThreshold release];
     //[self deleteExpiredObjectsOlderThan:settings.delete_expired_objects];
     
     EventManager* eventManager = [EventManager instance];
