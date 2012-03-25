@@ -50,3 +50,4 @@ int const default_POLL_EXPIRY_IN_SECONDS = 36000;
 int const default_POLL_NUM_PAGES = 3;
 int const EDITOR_MINIMUM = 30;
 int const maxsize_FOLLOWDOWNLOAD = 1000;
+int const delete_expired_objects = 30;

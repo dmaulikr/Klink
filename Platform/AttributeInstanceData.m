@@ -97,12 +97,15 @@ insertIntoResourceContext:(ResourceContext *)context
         retVal.isurlattachment = [NSNumber numberWithBool:YES];
     }
     
+    //we mark topcaptionid as being a local variable
+    if ([lowerCaseName isEqualToString:TOPVOTEDCAPTIONID])
+    {
+        retVal.islocal = [NSNumber numberWithBool:YES];
+    }
     
-    
-    //we mark hasopened, hasvoted,topvotedcaptionid as local only attributes
+    //we mark hasopened, hasvoted,as local only attributes
     if (
-        [lowerCaseName isEqualToString:HASVOTED] ||
-        [lowerCaseName isEqualToString:TOPVOTEDCAPTIONID]) {
+        [lowerCaseName isEqualToString:HASVOTED] ) {
         retVal.islocal = [NSNumber numberWithBool:YES];
         retVal.islocked = [NSNumber numberWithBool:YES];
     }

@@ -72,6 +72,65 @@ static  ImageManager* sharedManager;
     
 }
 
+//removes the local image copy of the url from the local cache
+- (void) deleteImage:(NSString *)url
+{
+    if ([NSURL isValidURL:url]) {
+        //its a url
+        return [self deleteImageFromURL:url];
+        
+    }
+    else {
+        //its a file
+        return [self deleteImageFromFile:url];
+    }
+   
+}
+
+- (void) deleteImageFromFile:(NSString *)path
+{
+    NSString* activityName = @"ImageManager.deleteImageFromFile:";
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:path]) {
+        NSError* error = nil;
+        [fileManager removeItemAtPath:path error:&error];
+        
+        if (error != nil) 
+        {
+            LOG_IMAGE(1, @"%@ Unable to delete image at path %@ due to %@",activityName,path,[error localizedDescription]);
+        }
+        else 
+        {
+            LOG_IMAGE(0, @"%@ Successfully removed image at path %@ from cache",activityName,path);
+        }
+    }
+    else {
+        LOG_IMAGE(0,@"%@Unable to find image on filesystem at %@",activityName,path);
+    }
+
+}
+
+- (void) deleteImageFromURL:(NSString *)url
+{
+    NSString* activityName = @"ImageManager.deleteImageFromURL:";
+    
+    NSURL *urlObject = [NSURL URLWithString:url];
+    PlatformAppDelegate *appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSString* fileName = [urlObject lastPathComponent];
+    NSString* directory = [appDelegate getImageCacheStorageDirectory];
+    NSString* path = [NSString stringWithFormat:@"%@/%@",directory,fileName];
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:path]) {
+        LOG_IMAGE(0, @"%@ deleting image at %@ for url %@ from local cache",activityName,path,url);
+        [self deleteImageFromFile:path];
+        
+    }
+    
+}
+
 - (void) imageMovedFrom:(NSString *)originalFilePath toDestination:(NSURL *)destinationURL {
     //this method will take the image located aqt the original filePath, and move it to a path
     //such that the URL addressed in the second parameter will correctly hit the cache whenever it is requested

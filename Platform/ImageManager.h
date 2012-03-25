@@ -35,7 +35,9 @@
 - (void)imageMovedFrom:(NSString*)originalFilePath toDestination:(NSURL*)destinationURL;
 - (UIImage*)shrinkImage:(UIImage*)image toSize:(CGSize)size;
 - (NSString*) fullPathForPhotoWithName:(NSString*)fileNameWithoutExtension;
-
+- (void) deleteImage:(NSString*)url;
+- (void) deleteImageFromURL:(NSString*)url;
+- (void) deleteImageFromFile:(NSString*)path;
 
 - (id)downloadImageFromURL:(NSString*)url withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;
 - (id)downloadImageFromFile:(NSString*)path withUserInfo:(NSDictionary*)userInfo atCallback:(Callback*)callback;

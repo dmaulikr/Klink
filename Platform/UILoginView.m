@@ -327,7 +327,7 @@
 - (void) request:(FBRequest *)request didFailWithError:(NSError *)error
 {
     NSString* activityName = @"UILoginView.fbRequestDidFailWithError:";
-    LOG_SECURITY(0, @"%@ facebook request failed with error:%@",activityName,[error description]);
+    LOG_SECURITY(0, @"%@ facebook request failed with error:%@",activityName,[error localizedDescription]);
 }
 
 #pragma mark - FBSessionDelegate

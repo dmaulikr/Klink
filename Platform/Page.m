@@ -84,27 +84,27 @@
 
 
 - (void) updateCaptionWithHighestVotes {
-        ResourceContext* resourceContext = [ResourceContext instance];
-        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NUMBEROFVOTES ascending:NO];
-        NSSortDescriptor* sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
-        Caption* retVal = nil;
-    
-        if ([self.state intValue] == kPUBLISHED) 
-        {
-            retVal = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.finishedcaptionid];
-        }
-        else 
-        {
-            NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObjects:sortDescriptor,sortDescriptor2,nil]];
-           
-            if ([captions count] > 0) 
-            {
-               retVal = [captions objectAtIndex:0];
-            }
-        }
-    //now we need to save the id
-    self.topvotedcaptionid = retVal.objectid;
-    [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+//        ResourceContext* resourceContext = [ResourceContext instance];
+//        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:NUMBEROFVOTES ascending:NO];
+//        NSSortDescriptor* sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
+//        Caption* retVal = nil;
+//    
+//        if ([self.state intValue] == kPUBLISHED) 
+//        {
+//            retVal = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.finishedcaptionid];
+//        }
+//        else 
+//        {
+//            NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[self.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObjects:sortDescriptor,sortDescriptor2,nil]];
+//           
+//            if ([captions count] > 0) 
+//            {
+//               retVal = [captions objectAtIndex:0];
+//            }
+//        }
+//    //now we need to save the id
+//    self.topvotedcaptionid = retVal.objectid;
+//    [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
 }
 
 //this method will take the caption and update the Page object
@@ -112,15 +112,15 @@
 - (void)updateCaptionWithHighestVotes:(Caption *)caption {
     //we will trap this event here and perform a look up against the draft to see if the
     //top voted caption id has changed
-    ResourceContext* resourceContext = [ResourceContext instance];    
-    Caption* currentHighestVotedCaption = [self captionWithHighestVotes];
-    
-    if (currentHighestVotedCaption == nil ||
-        [caption.numberofvotes intValue] > [currentHighestVotedCaption.numberofvotes intValue]) {
-        //the modified caption is the new highest voted caption
-        self.topvotedcaptionid = caption.objectid;
-        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-    }
+//    ResourceContext* resourceContext = [ResourceContext instance];    
+//    Caption* currentHighestVotedCaption = [self captionWithHighestVotes];
+//    
+//    if (currentHighestVotedCaption == nil ||
+//        [caption.numberofvotes intValue] > [currentHighestVotedCaption.numberofvotes intValue]) {
+//        //the modified caption is the new highest voted caption
+//        self.topvotedcaptionid = caption.objectid;
+//        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+//    }
 
 }
 

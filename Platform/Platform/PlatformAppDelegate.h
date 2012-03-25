@@ -16,6 +16,8 @@
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate, ABNotifierDelegate> {
     NSString* m_deviceToken;
     
+    //we use this queue for delete operations
+    dispatch_queue_t backgroundQueue;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

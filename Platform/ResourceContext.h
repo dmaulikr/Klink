@@ -31,7 +31,7 @@ onFinishCallback:(Callback*)callback
 trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
 
 
-
+- (void) clean;
 - (void) insert:(Resource*)resource;
 - (void) delete:(NSNumber*)objectID withType:(NSString*)type;
 
@@ -81,6 +81,10 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                    forAttribute:(NSString*)attribute 
                          sortBy:(NSArray*)sortDescriptorArray;
 
+- (NSArray*)  resourcesWithType:(NSString*)typeName 
+           withValueLessThan:(NSString*)value 
+                   forAttribute:(NSString*)attributeName 
+                         sortBy:(NSArray*)sortDescriptorArray;
 
 - (NSArray*) resourcesWithType:(NSString*)typeName 
                withValuesEqual:(NSArray*)values 
