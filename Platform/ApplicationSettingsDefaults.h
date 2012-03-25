@@ -39,4 +39,4 @@ extern int const progress_WHEELSPINTIME;
 extern int const default_POLL_EXPIRY_IN_SECONDS;
 extern int const default_POLL_NUM_PAGES;
 extern int const EDITOR_MINIMUM;
-
+extern int const delete_expired_objects;

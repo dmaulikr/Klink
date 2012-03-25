@@ -18,7 +18,13 @@
 #import "NotificationsViewController.h"
 #import "BookViewControllerBase.h"
 #import "BookViewControllerLeaves.h"
+#import "Page.h"
+#import "Photo.h"
+#import "DateTimeHelper.h"
+#import "Caption.h"
+#import "Feed.h"
 
+#import "ImageManager.h"
 @implementation PlatformAppDelegate
 
 
@@ -107,6 +113,8 @@
                                          UIRemoteNotificationTypeSound |
                                          UIRemoteNotificationTypeAlert)];
     
+    
+    backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0);
     /*// Launch the BookView home page
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
     self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
@@ -161,12 +169,93 @@
         //need to move to the view controller
     }
     
+    
+
+    
     [ABNotifier startNotifierWithAPIKey:@"4293ede2b3ea7ae6cede2af848a57a1a" environmentName:ABNotifierDevelopmentEnvironment useSSL:NO delegate:self];
     
     
      
     return YES;
 }
+
+
+- (void) deleteExpiredObjectsOlderThan:(NSNumber*)daysAfterExpiry 
+{
+    NSString* activityName = @"PlatformAppDelegate.deleteExpiredObjectsOlderThan:";
+    if (daysAfterExpiry > 0) 
+    {
+        //we need to calculate the date to query expired objects by
+        NSDate* now = [NSDate date];
+        NSNumber* daysToAdd = [NSNumber numberWithInt:([daysAfterExpiry intValue] * -1)];
+        NSDate* queryDate = [DateTimeHelper addDays:daysToAdd toDate:now];
+        NSNumber* doubleQueryDate = [NSNumber numberWithDouble:[queryDate timeIntervalSince1970]];
+        LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting expired pages older than %@",activityName,queryDate);
+        //let us now find all the objects and delete them
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSMutableArray* imageURLSToDelete = [[NSMutableArray alloc]init ];
+        
+        //we delete starting fromt he oldest first
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATEDRAFTEXPIRES ascending:YES];
+        NSArray* expiredPagesToDelete = [resourceContext resourcesWithType:PAGE withValueLessThan:[doubleQueryDate stringValue] forAttribute:DATEDRAFTEXPIRES sortBy:[NSArray arrayWithObject:sortDescriptor]];
+        
+        for (Page* expiredPageToDelete in expiredPagesToDelete) 
+        {
+            LOG_APPLICATIONSETTINGSMANAGER(0, @"%@Deleting expired page with id:%@ and displayName:%@",activityName,expiredPageToDelete.objectid,expiredPageToDelete.displayname);
+            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
+            //we get all captions and photos associated with this object
+            NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
+            
+            NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:THEMEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
+            
+            //now we also delete all these objects
+            for (Caption* caption in captions) 
+            {
+                //delete this caption
+                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Caption %@ associated with expired Page: %@",activityName,caption.objectid,expiredPageToDelete.objectid);
+                [resourceContext delete:caption.objectid withType:caption.objecttype];
+            }
+            
+            for (Photo* photo in photos) 
+            {
+                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Photo %@ associated with expired Page: %@",activityName,photo.objectid,expiredPageToDelete.objectid);
+                [resourceContext delete:photo.objectid withType:photo.objecttype];
+                
+                //we add the image and photo urls for this page to the delete images array
+                [imageURLSToDelete addObject:photo.imageurl];
+                [imageURLSToDelete addObject:photo.thumbnailurl];
+            }
+            [resourceContext delete:expiredPageToDelete.objectid withType:expiredPageToDelete.objecttype];
+            
+        }
+        //now lets clean up old images from our application cache directory
+        if ([imageURLSToDelete count] > 0) 
+        {
+            LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ removing %d old image urls from our image ache",activityName,[imageURLSToDelete count]);
+            ImageManager* imageManager = [ImageManager instance];
+            
+            for (NSString* path in imageURLSToDelete)
+            {
+                [imageManager deleteImage:path];
+            }
+        }
+        
+        //now lets also clean up old feed objects as well
+        NSSortDescriptor* feedSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
+        NSArray* expiredFeedObjectsToDelete = [resourceContext resourcesWithType:FEED withValueLessThan:[doubleQueryDate stringValue] forAttribute:DATEEXPIRE sortBy:[NSArray arrayWithObject:feedSortDescriptor]];
+        
+        for (Feed* expiredFeedObjectToDelete in expiredFeedObjectsToDelete) 
+        {
+            LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting expired feed object %d",activityName,expiredFeedObjectToDelete.objectid);
+            [resourceContext delete:expiredFeedObjectToDelete.objectid withType:FEED];
+        }
+        [imageURLSToDelete release];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+    }
+}
+
 
 - (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSString* activityName = @"application.didFailToRegisterForRemoteNotificationsWithError:";
@@ -280,7 +369,27 @@
     /*
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+     
      */
+    
+    
+    void (^block)(NSNumber*) = ^(NSNumber* number) {
+        [self deleteExpiredObjectsOlderThan:number];
+    };
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_expired_objects intValue]];
+    
+    NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+    dispatch_async(backgroundQueue, ^{block(localThreshold);});
+    
+    
+        
+    
+//    [self performSelectorInBackground:@selector(deleteExpiredObjectsOlderThan:) withObject:settings.delete_expired_objects];
+    [autorelease drain];
+    [localThreshold release];
+    //[self deleteExpiredObjectsOlderThan:settings.delete_expired_objects];
+    
     EventManager* eventManager = [EventManager instance];
     [eventManager raiseApplicationWentToBackground];
 }
@@ -305,6 +414,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+        
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
 }

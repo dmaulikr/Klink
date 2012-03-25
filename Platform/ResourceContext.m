@@ -826,6 +826,51 @@ static ResourceContext* sharedInstance;
 }
 
 - (NSArray*)  resourcesWithType:(NSString*)typeName 
+           withValueLessThan:(NSString*)value 
+                   forAttribute:(NSString*)attributeName 
+                         sortBy:(NSArray*)sortDescriptorArray
+{
+    NSString* activityName = @"ResourceContext.resourcesWithTypeGreaterThan:";
+    NSArray* retVal = nil;
+    
+    
+    NSManagedObjectContext *appContext = self.managedObjectContext;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:typeName inManagedObjectContext:appContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDescription];
+    
+    if (attributeName != nil && 
+        value != nil) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"%K<%@",attributeName,value];    
+        [request setPredicate:predicate];
+    }
+    
+    if (sortDescriptorArray != nil) {
+        [request setSortDescriptors:sortDescriptorArray];
+    }
+    
+    
+    NSError* error = nil;
+    NSArray* results = [appContext executeFetchRequest:request error:&error];
+    
+    if (error != nil) {
+        
+        LOG_RESOURCECONTEXT(1, @"%@Error fetching results from data layer for attribute:%@ with error:%@",activityName,attributeName,error);
+    }
+    
+    else {
+        
+        retVal = results;
+    }
+    [request release];
+    
+    return retVal; 
+}
+
+
+- (NSArray*)  resourcesWithType:(NSString*)typeName 
                  withValueEqual:(NSString*)value 
                    forAttribute:(NSString*)attributeName 
                          sortBy:(NSArray*)sortDescriptorArray {

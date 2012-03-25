@@ -22,6 +22,22 @@
 
 }
 
++ (NSDate*) addDays:(NSNumber*)daysToAdd toDate:(NSDate*)date 
+{
+   
+    
+    
+    // set up date components
+    NSDateComponents *components = [[[NSDateComponents alloc] init] autorelease];
+    [components setDay:[daysToAdd intValue]];
+    
+    // create a calendar
+    NSCalendar *gregorian = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+    
+    NSDate *newDate2 = [gregorian dateByAddingComponents:components toDate:date options:0];
+    return newDate2;
+}
+
 + (NSString*) formatShortDate:(NSDate*)date {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
     [dateFormatter setDateStyle:NSDateFormatterShortStyle];

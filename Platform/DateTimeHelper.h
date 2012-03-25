@@ -23,4 +23,5 @@
 + (NSString*) formatMediumDate:(NSDate*)date;
 + (NSString *) formatTimeInterval:(NSTimeInterval)interval;
 
++ (NSDate*) addDays:(NSNumber*)daysToAdd toDate:(NSDate*)date;
 @end

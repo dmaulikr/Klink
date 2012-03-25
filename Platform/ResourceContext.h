@@ -81,6 +81,10 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                    forAttribute:(NSString*)attribute 
                          sortBy:(NSArray*)sortDescriptorArray;
 
+- (NSArray*)  resourcesWithType:(NSString*)typeName 
+           withValueLessThan:(NSString*)value 
+                   forAttribute:(NSString*)attributeName 
+                         sortBy:(NSArray*)sortDescriptorArray;
 
 - (NSArray*) resourcesWithType:(NSString*)typeName 
                withValuesEqual:(NSArray*)values 
