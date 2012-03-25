@@ -29,6 +29,9 @@
 @implementation ProfileViewController
 
 @synthesize iv_profilePicture       = m_iv_profilePicture;
+@synthesize btn_changeProfilePicture = m_btn_changeProfilePicture;
+@synthesize cameraActionSheet       = m_cameraActionSheet;
+
 @synthesize lbl_username            = m_lbl_username;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
@@ -472,6 +475,13 @@
 }
 
 #pragma mark - UIButton Handlers
+- (IBAction) onChangeProfilePictureButtonPressed:(id)sender {
+    //Change profile picture button pressed
+    self.cameraActionSheet = [UICameraActionSheet createCameraActionSheetWithTitle:@"Change Profile Picture" allowsEditing:YES];
+    self.cameraActionSheet.a_delegate = self;
+    [self.cameraActionSheet showInView:self.view];
+}
+
 - (IBAction) onFollowersButtonPressed:(id)sender {
     PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWERS withUserID:self.userID];
     
@@ -619,6 +629,41 @@
         
         [self render];
     }
+}
+
+#pragma mark - UICameraActionSheetDelegate methods
+- (void) displayPicker:(UIImagePickerController*) picker {
+    [self presentModalViewController:picker animated:YES];
+}
+
+- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+                          withFullImage:(UIImage*)image {
+    //we handle back end processing of the image from the camera sheet here
+    if ([self.user.objectid isEqualToNumber:self.loggedInUser.objectid]) {
+        PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+        UIProgressHUDView* progressView = appDelegate.progressView;
+        progressView.delegate = self;
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        ImageManager* imageManager = [ImageManager instance];
+        
+        NSString* picFilename = [NSString stringWithFormat:@"%@-imageurl",self.userID];
+        self.user.imageurl = [imageManager saveImage:image withFileName:picFilename];
+        
+        NSString* thumbnailFilename = [NSString stringWithFormat:@"%@-thumbnailurl",self.userID];
+        self.user.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFilename];
+        
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        
+        [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!\n\nLooking good, hot stuff." onFailureMessage:@"Failed :(\n\nTry your good side." inProgressMessages:[NSArray arrayWithObject:@"Updating your profile picture..."]];
+    }
+    
+}
+
+- (void) onCancel {
+    // we deal with cancel operations from the action sheet here
+    
 }
 
 #pragma mark - CloudEnumeratorDelegate

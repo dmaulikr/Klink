@@ -512,6 +512,7 @@
             
         }
         else if (type == NSFetchedResultsChangeDelete) {
+            //deletion of a new follow object
             [self.tbl_peopleList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
         }
     }

@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
+#import "UICameraActionSheet.h"
 
-@interface ProfileViewController : BaseViewController < UIProgressHUDViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate > {
+@interface ProfileViewController : BaseViewController < UIProgressHUDViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate, UICameraActionSheetDelegate > {
     
     UIImageView* m_iv_profilePicture;
+    UIButton* m_btn_changeProfilePicture;
+    UICameraActionSheet* m_cameraActionSheet;
+    
     UILabel* m_lbl_username;
     UILabel* m_lbl_currentLevel;
     UILabel* m_lbl_currentLevelDate;
@@ -63,6 +67,9 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
+@property (nonatomic, retain) IBOutlet UIButton* btn_changeProfilePicture;
+@property (nonatomic, retain) UICameraActionSheet*      cameraActionSheet;
+
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevelDate;
@@ -111,9 +118,9 @@
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 
 
+- (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
-
 - (IBAction) onFollowButtonPressed:(id)sender;
 
 + (ProfileViewController*)createInstance;
