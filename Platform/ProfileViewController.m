@@ -327,10 +327,12 @@
         UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
         [callback release];
         if (image != nil) {
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
             self.iv_profilePicture.image = image;
         }
     }
     else {
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
         self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     }
     
@@ -635,6 +637,7 @@
     if ([response.didSucceed boolValue] == YES) {
         if ([userID isEqualToNumber:self.userID]) {
             //we only draw the image if this view hasnt been repurposed for another user
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
             [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
         }
         
@@ -642,6 +645,7 @@
     }
     else {
         // show the photo placeholder icon
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
         self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
         
         [self.view setNeedsDisplay];
