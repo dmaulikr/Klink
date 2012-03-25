@@ -31,7 +31,7 @@ onFinishCallback:(Callback*)callback
 trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
 
 
-
+- (void) clean;
 - (void) insert:(Resource*)resource;
 - (void) delete:(NSNumber*)objectID withType:(NSString*)type;
 
