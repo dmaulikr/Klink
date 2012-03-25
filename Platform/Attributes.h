@@ -103,3 +103,5 @@ extern NSString* const NUMBEROFPOINTS;
 extern NSString* const FOLLOWERUSERID;
 extern NSString* const FOLLOWERNAME;
 extern NSString* const DELETEDOBJECTID;
+extern NSString* const FOLLOWERIMAGEURL;
+extern NSString* const USERIMAGEURL;

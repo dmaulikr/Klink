@@ -13,6 +13,8 @@
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSString* username;
 @property (nonatomic,retain) NSString* followername;
+@property (nonatomic,retain) NSString* followerimageurl;
+@property (nonatomic,retain) NSString* userimageurl;
 
 
 //Static methods

@@ -96,3 +96,5 @@ NSString* const NUMBEROFPOINTS          =@"numberofpoints";
 NSString* const FOLLOWERNAME            =@"followername";
 NSString* const FOLLOWERUSERID          =@"followeruserid";
 NSString* const DELETEDOBJECTID         =@"deletedobjectid";
+NSString* const FOLLOWERIMAGEURL        =@"followerimageurl";
+NSString* const USERIMAGEURL            =@"userimageurl";
