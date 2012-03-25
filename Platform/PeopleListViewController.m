@@ -293,7 +293,7 @@
 }
 
 #pragma mark - Follow Button Handlers
-- (void) processFollowUserWithID:(NSNumber*)userID {
+- (void) processFollowUserWithID:(NSNumber*)userID withUserName:(NSString*)username {
     NSString* activityName = @"PeopleListViewController.processFollowUser:";
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
@@ -316,9 +316,8 @@
             LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ Created follow object for user %@ to follow user %@",activityName,loggedInUserID,userID);
             
             ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-            User* user = (User*)[resourceContext resourceWithType:USER withID:userID];
             
-            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Following %@...", user.username]]];
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Following %@...", username]]];
         }
         else {
             //error case
@@ -330,7 +329,7 @@
     }
 }
 
-- (void) processUnfollowUserWithID:(NSNumber*)userID {
+- (void) processUnfollowUserWithID:(NSNumber*)userID withUserName:(NSString*)username {
     //we need to unfollow a person here
     NSString* activityName = @"PeopleListViewController.processUnfollowUser:";
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
@@ -352,9 +351,8 @@
             LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ Unfollowed relationship for user %@ to unfollow user %@",activityName,loggedInUserID,userID);
             
             ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-            User* user = (User*)[resourceContext resourceWithType:USER withID:userID];
             
-            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Unfollowing %@...", user.username]]];
+            [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!" onFailureMessage:@"Failed :(" inProgressMessages:[NSArray arrayWithObject:[NSString stringWithFormat:@"Unfollowing %@...", username]]];
         }
         else {
             //error case
@@ -366,6 +364,7 @@
         LOG_PEOPLELISTVIEWCONTROLLER(1,@"%@User cannot unfollow themself",activityName);
     }
 }
+
 
 - (IBAction) onFollowButtonPressed:(id)sender {
     NSString* activityName = @"PeopleListViewController.onFollowButtonPressed:";
@@ -389,11 +388,11 @@
             //logged in user wants to follow this person
             if (self.listType == kFOLLOWING) {
                 LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,follow.userid);
-                [self processFollowUserWithID:follow.userid];
+                [self processFollowUserWithID:follow.userid withUserName:follow.username];
             }
             else {
                 LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,follow.followeruserid);
-                [self processFollowUserWithID:follow.followeruserid];
+                [self processFollowUserWithID:follow.followeruserid withUserName:follow.followername];
             }
             [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
         }
@@ -401,11 +400,11 @@
             //logged in user wants to unfollow this person
             if (self.listType == kFOLLOWING) {
                 LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,follow.userid);
-                [self processUnfollowUserWithID:follow.userid];
+                [self processUnfollowUserWithID:follow.userid withUserName:follow.username];
             }
             else {
                 LOG_PEOPLELISTVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,follow.followeruserid);
-                [self processUnfollowUserWithID:follow.followeruserid];
+                [self processUnfollowUserWithID:follow.followeruserid withUserName:follow.followername];
             }
             [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
         }
