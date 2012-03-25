@@ -14,6 +14,8 @@
 @dynamic userid;
 @dynamic followeruserid;
 @dynamic username;
+@dynamic followerimageurl;
+@dynamic userimageurl;
 
 
 #pragma mark - Static Methods
