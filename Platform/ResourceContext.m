@@ -60,7 +60,7 @@ static ResourceContext* sharedInstance;
     NSThread* thread = [NSThread currentThread];
     
     if ([thread isMainThread]) {
-        LOG_RESOURCECONTEXT(0, @"%@Main thread being returned managedObjectContext at memory %p",activityName,appDelegate.managedObjectContext);
+       // LOG_RESOURCECONTEXT(0, @"%@Main thread being returned managedObjectContext at memory %p",activityName,appDelegate.managedObjectContext);
         return appDelegate.managedObjectContext;
     }
     else {
@@ -75,7 +75,7 @@ static ResourceContext* sharedInstance;
             [threadContext setMergePolicy:NSRollbackMergePolicy];
            // [threadContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             //[threadContext setMergePolicy:NSOverwriteMergePolicy];
-            LOG_RESOURCECONTEXT(0, @"%@Background thread being returned context at address %p",activityName,threadContext);
+          //  LOG_RESOURCECONTEXT(0, @"%@Background thread being returned context at address %p",activityName,threadContext);
             NSUndoManager* contextUndoManager = [[NSUndoManager alloc]init];
             [contextUndoManager setLevelsOfUndo:20];
             threadContext.undoManager = contextUndoManager;

@@ -77,28 +77,28 @@ withChangedAttributes:(NSArray*)changedAttributes
     
     [self setChangedAttributesList:changedAttributes];
     
-    NSMutableArray* cr = [[NSMutableArray alloc]init];
-    self.childRequests = cr;
-    [cr release];
+//    NSMutableArray* cr = [[NSMutableArray alloc]init];
+//    self.childRequests = cr;
+//    [cr release];
     
-    if (opcode != kMODIFYATTACHMENT && 
-        opcode != kCREATE &&
-        opcode != kDELETE) {
-        //attachments dont have children
-        //we do not process attachments for creates
-        //we do not process attachments for deletes
-        
-        NSArray* attachmentsInThisRequest = [self attachmentAttributesInRequest];
-        //we have a list of all attachments that will need to be processed
-        //we iterate through them and create child Requests for them
-        for (NSString* attributeName in attachmentsInThisRequest) {
-            Request* childRequest = [Request createAttachmentRequestFrom:self forAttribute:attributeName];            
-            //add the request to our child collection
-            [self.childRequests addObject:childRequest];
-        }
-
-        
-    }
+//    if (opcode != kMODIFYATTACHMENT && 
+//        opcode != kCREATE &&
+//        opcode != kDELETE) {
+//        //attachments dont have children
+//        //we do not process attachments for creates
+//        //we do not process attachments for deletes
+//        
+//        NSArray* attachmentsInThisRequest = [self attachmentAttributesInRequest];
+//        //we have a list of all attachments that will need to be processed
+//        //we iterate through them and create child Requests for them
+//        for (NSString* attributeName in attachmentsInThisRequest) {
+//            Request* childRequest = [Request createAttachmentRequestFrom:self forAttribute:attributeName];            
+//            //add the request to our child collection
+//            [self.childRequests addObject:childRequest];
+//        }
+//
+//        
+//    }
     
     LOG_REQUEST(0, @"%@Initialized new Request %@ for TargetID:%@, TargetType:%@, OperationCode:%d, #ChildRequests:%d",activityName,self.objectid,objectid,objecttype,opcode,[self.childRequests count]);
     

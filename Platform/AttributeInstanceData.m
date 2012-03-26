@@ -131,7 +131,7 @@ insertIntoResourceContext:(ResourceContext *)context
     
     //we mark the thumbnail, numberoffollowers, numberffollowing attribute on the user local
     if ([type isEqualToString:USER]) {
-        if ([lowerCaseName isEqualToString:THUMBNAILURL] ||
+        if (
             [lowerCaseName isEqualToString:NUMBEROFFOLLOWERS] ||
             [lowerCaseName isEqualToString:NUMBERFOLLOWING] ||
             [lowerCaseName isEqualToString:NUMBEROFPOINTS]) {

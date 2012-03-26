@@ -565,17 +565,20 @@ machineNameSettings()
         NSString* thumbnailFilename = [NSString stringWithFormat:@"%@-thumbnailurl",self.userID];
         self.user.thumbnailurl = [imageManager saveImage:thumbnailImage withFileName:thumbnailFilename];
         
-        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
-        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
         
         // Profile picture change was successful, go back to profile to show the user
         [self dismissModalViewControllerAnimated:YES];
+
+        
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        
+
         
         [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds onSuccessMessage:@"Success!\n\nLooking good, hot stuff." onFailureMessage:@"Failed :(\n\nTry your good side." inProgressMessages:[NSArray arrayWithObject:@"Updating your profile picture..."]];
     }
     
 
-    
 }
 
 - (void) onCancel {
