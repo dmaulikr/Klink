@@ -36,6 +36,9 @@
 @dynamic finishedphotoid;
 @dynamic numberofflags;
 @dynamic topvotedcaptionid;
+@dynamic finishedwriterid;
+@dynamic finishedillustratorid;
+
 
 #pragma mark - Instance Methods
 - (NSArray*) hashtagList {

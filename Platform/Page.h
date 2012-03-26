@@ -35,6 +35,8 @@
 @property (nonatomic,retain) NSNumber* datedraftexpires;
 @property (nonatomic,retain) NSNumber* finishedphotoid;
 @property (nonatomic,retain) NSNumber* topvotedcaptionid;
+@property (nonatomic,retain) NSNumber* finishedwriterid;
+@property (nonatomic,retain) NSNumber* finishedillustratorid;
 
 
 - (NSArray*) hashtagList;
