@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="PlatformDataModel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="applicationsettings" representedClassName="ApplicationSettings" parentEntity="resource">
         <attribute name="base_url" optional="YES" attributeType="String"/>
         <attribute name="caption_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -88,7 +88,9 @@
         <attribute name="descr" optional="YES" attributeType="String"/>
         <attribute name="displayname" optional="YES" attributeType="String"/>
         <attribute name="finishedcaptionid" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="finishedillustratorid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="finishedphotoid" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="finishedwriterid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hashtags" optional="YES" attributeType="String"/>
         <attribute name="imageurl" optional="YES" attributeType="String"/>
         <attribute name="numberofcaptions" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -176,20 +178,20 @@
         <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="bookmark" positionX="189" positionY="27" width="128" height="90"/>
-        <element name="user" positionX="241" positionY="990" width="128" height="360"/>
-        <element name="authenticationcontext" positionX="-198" positionY="336" width="128" height="150"/>
-        <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
         <element name="applicationsettings" positionX="18" positionY="810" width="128" height="420"/>
-        <element name="caption" positionX="-171" positionY="666" width="128" height="180"/>
-        <element name="poll" positionX="-11" positionY="-180" width="128" height="135"/>
-        <element name="feed" positionX="367" positionY="576" width="128" height="180"/>
         <element name="AttributeInstanceData" positionX="-216" positionY="-141" width="128" height="150"/>
-        <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
-        <element name="request" positionX="340" positionY="90" width="128" height="165"/>
-        <element name="page" positionX="259" positionY="-306" width="128" height="300"/>
-        <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
-        <element name="photo" positionX="-216" positionY="72" width="128" height="240"/>
+        <element name="authenticationcontext" positionX="-198" positionY="336" width="128" height="150"/>
+        <element name="bookmark" positionX="189" positionY="27" width="128" height="90"/>
+        <element name="caption" positionX="-171" positionY="666" width="128" height="180"/>
+        <element name="feed" positionX="367" positionY="576" width="128" height="180"/>
         <element name="follow" positionX="-216" positionY="-342" width="128" height="135"/>
+        <element name="page" positionX="259" positionY="-306" width="128" height="300"/>
+        <element name="photo" positionX="-216" positionY="72" width="128" height="240"/>
+        <element name="poll" positionX="-11" positionY="-180" width="128" height="135"/>
+        <element name="request" positionX="340" positionY="90" width="128" height="165"/>
+        <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
+        <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
+        <element name="user" positionX="241" positionY="990" width="128" height="360"/>
+        <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
     </elements>
 </model>

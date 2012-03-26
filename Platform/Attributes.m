@@ -98,3 +98,7 @@ NSString* const FOLLOWERUSERID          =@"followeruserid";
 NSString* const DELETEDOBJECTID         =@"deletedobjectid";
 NSString* const FOLLOWERIMAGEURL        =@"followerimageurl";
 NSString* const USERIMAGEURL            =@"userimageurl";
+NSString* const FINISHEDILLUSTRATORID   =@"finishedillustratorid";
+NSString* const FINISHEDWRITERID        =@"finishedwriterid";
+
+

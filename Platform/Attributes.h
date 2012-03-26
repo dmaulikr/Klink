@@ -105,3 +105,5 @@ extern NSString* const FOLLOWERNAME;
 extern NSString* const DELETEDOBJECTID;
 extern NSString* const FOLLOWERIMAGEURL;
 extern NSString* const USERIMAGEURL;
+extern NSString* const FINISHEDILLUSTRATORID;
+extern NSString* const FINISHEDWRITERID;
