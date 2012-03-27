@@ -12,7 +12,16 @@
 
 @class BookTableOfContentsViewController;
 
+@protocol BookTableOfContentsViewControllerDelegate
+
+@optional
+
+
+@end
+
 @interface BookTableOfContentsViewController : BaseViewController < NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate > {
+    
+    id<BookTableOfContentsViewControllerDelegate> m_delegate;
     
     NSDictionary*           m_allPages;
     NSNumber*               m_userID; //represents the ID of the user if we are tring to build a book just of a specific user's published pages
@@ -26,6 +35,8 @@
     UISearchBar*            m_sb_searchBar;
     UIButton*               m_btn_backgroundButton;
 }
+
+@property (assign) id<BookTableOfContentsViewControllerDelegate>    delegate;
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 

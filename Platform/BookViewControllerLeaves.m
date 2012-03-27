@@ -406,7 +406,7 @@
 
 #pragma mark - Render Page from BookPageViewController
 -(void)renderPage {
-    //NSString* activityName = @"BookViewControllerLeaves.controller.renderPage:";
+    [super renderPage];
     
     int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
@@ -680,6 +680,20 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [super onTableOfContentsButtonPressed:sender];
+    
+    BookTableOfContentsViewController* bookTableOfContentsViewController;
+    if (self.userID != nil) {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
+    }
+    else {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
+    }
+    bookTableOfContentsViewController.delegate = self;
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:navigationController animated:YES];
+    [navigationController release];
 }
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {

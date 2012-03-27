@@ -220,7 +220,7 @@
 
 #pragma mark - Render Page from BookPageViewController
 -(void)renderPage {
-    //NSString* activityName = @"BookViewController.controller.renderPage:";
+    [super renderPage];
     
     UIViewController* bookPageViewController = nil;
     
@@ -495,6 +495,20 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [super onTableOfContentsButtonPressed:sender];
+    
+    BookTableOfContentsViewController* bookTableOfContentsViewController;
+    if (self.userID != nil) {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
+    }
+    else {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
+    }
+    bookTableOfContentsViewController.delegate = self;
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:navigationController animated:YES];
+    [navigationController release];
 }
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {

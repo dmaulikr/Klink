@@ -136,7 +136,7 @@
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     
     if (progressView.didSucceed) {
-        // Username change was successful, go back to profile to show the user
+        // Change was successful, go back to profile to show the user
         [self dismissModalViewControllerAnimated:YES];
     }
     else {

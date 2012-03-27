@@ -12,6 +12,7 @@
 #import "PageState.h"
 #import "UITOCTableViewCell.h"
 #import "BookViewControllerBase.h"
+#import "BookViewControllerPageView.h"
 #import "DateTimeHelper.h"
 #import "NSDictionary-MutableDeepCopy.h"
 
@@ -29,6 +30,15 @@
 @synthesize sb_searchBar            = m_sb_searchBar;
 @synthesize btn_backgroundButton    = m_btn_backgroundButton;
 
+#pragma mark - Property Definitions
+- (id)delegate {
+    return m_delegate;
+}
+
+- (void)setDelegate:(id<BookTableOfContentsViewControllerDelegate>)del
+{
+    m_delegate = del;
+}
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all published pages
@@ -494,7 +504,20 @@
     if ([indexPath row] < pageCount) {
         Page* page = [pageSection objectAtIndex:row];
         
-        // We launch the BookViewController and open it up to the page we specified
+        BookViewControllerBase* bookViewController = (BookViewControllerBase*)self.delegate;
+        bookViewController.pageID = page.objectid;
+        bookViewController.userID = self.userID;
+        
+        bookViewController.shouldOpenBookCover = NO;
+        bookViewController.shouldOpenToSpecificPage = YES;
+        bookViewController.shouldOpenToTitlePage = NO;
+        bookViewController.shouldAnimatePageTurn = NO;
+        
+        [bookViewController renderPage];
+        
+        [self dismissModalViewControllerAnimated:YES];
+        
+        /*// We launch the BookViewController and open it up to the page we specified
         BookViewControllerBase* bookViewController;
         if (self.userID != nil) {
             bookViewController = [BookViewControllerBase createInstanceWithPageID:page.objectid withUserID:self.userID];
@@ -508,32 +531,11 @@
         // Modal naviation
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        
         [self presentModalViewController:navigationController animated:YES];
         
-        [navigationController release];
+        [navigationController release];*/
         
     }
-    
-    /*// Old way without month sections
-    int pageCount = [[self.frc_published_pages fetchedObjects]count];
-    
-    if ([indexPath row] < pageCount) {
-        Page* page = [[self.frc_published_pages fetchedObjects] objectAtIndex:[indexPath row]];
-        
-        // We launch the BookViewController and open it up to the page we specified
-        BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:page.objectid];
-        bookViewController.shouldOpenBookCover = NO;
-        
-        // Modal naviation
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
-        navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        
-        [self presentModalViewController:navigationController animated:YES];
-        
-        [navigationController release];
-        
-    }*/
 }
 
 #pragma mark - Scroll View Delegate Methods

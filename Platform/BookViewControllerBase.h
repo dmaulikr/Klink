@@ -60,6 +60,7 @@
 
 - (void)openBook;
 - (void)closeBook;
+- (void)renderPage;
 
 // Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender;

@@ -379,18 +379,19 @@
     self.shouldOpenToTitlePage = NO;
     self.shouldAnimatePageTurn = NO;
     
-    BookTableOfContentsViewController* bookTableOfContentsViewController;
+    /*BookTableOfContentsViewController* bookTableOfContentsViewController;
     if (self.userID != nil) {
         bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
     }
     else {
         bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
     }
+    bookTableOfContentsViewController.delegate = self;
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:navigationController animated:YES];
-    [navigationController release];
+    [navigationController release];*/
 }
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
@@ -538,6 +539,10 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - Render Page from BookPageViewController
+- (void)renderPage {
+    
+}
 
 #pragma mark - View lifecycle
 
