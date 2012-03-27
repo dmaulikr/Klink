@@ -176,6 +176,14 @@
     //is not one that was created by a download of json by the web service, then it will return true
     BOOL retVal = YES;
     
+    //hack to ensure follows are always uploaded to the cloud
+    if ([self.objecttype isEqualToString:FOLLOW])
+    {
+        retVal = YES;
+        return retVal;
+    }
+    
+    
     if (self.typeinstancedata == nil ||
         self.attributeinstancedata == nil) {
         retVal = NO;

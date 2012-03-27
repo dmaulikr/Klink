@@ -9,6 +9,7 @@
 #import "TypeInstanceData.h"
 #import "ResourceContext.h"
 #import "Types.h"
+#import "Macros.h"
 @implementation TypeInstanceData
 @dynamic iscloudtype;
 @dynamic typename;
@@ -16,6 +17,7 @@
 
 
 + (TypeInstanceData*) typeForType:(NSString *)typeName withResourceContext:(ResourceContext*)context {
+    NSString* activityName = @"TypeInstanceData.typeForType:";
     NSEntityDescription* entity = [NSEntityDescription entityForName:TYPEINSTANCEDATA inManagedObjectContext:context.managedObjectContext];
     TypeInstanceData* newType = [[TypeInstanceData alloc]initWithEntity:entity insertIntoManagedObjectContext:context.managedObjectContext];
     
@@ -31,7 +33,9 @@
         newType.issingleton = [NSNumber numberWithBool:NO];
     }
     
-    
+    if (newType == nil) {
+        LOG_RESOURCE(1, @"%@ Unable to create valid type representation for type %@",activityName,typeName);
+    }
     
     
     [newType autorelease];
