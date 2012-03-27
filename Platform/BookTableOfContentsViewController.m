@@ -19,7 +19,8 @@
 
 @implementation BookTableOfContentsViewController
 @synthesize frc_published_pages     = __frc_published_pages;
-@synthesize allPages                   = m_allPages;
+@synthesize allPages                = m_allPages;
+@synthesize userID                  = m_userID;
 @synthesize pagesSearch             = m_pagesSearch;
 @synthesize months                  = m_months;
 @synthesize monthsDeepCopy          = m_monthsDeepCopy;
@@ -45,7 +46,17 @@
     
     //add predicate to test for being published
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
+    
+    NSPredicate* predicate;
+    if (self.userID != nil) {
+        //add predicate to gather only pages for a specific userID
+        predicate = [NSPredicate predicateWithFormat:@"%K=%d AND (%K=%@ OR %K=%@)", stateAttributeNameStringValue, kPUBLISHED, FINISHEDILLUSTRATORID, self.userID, FINISHEDWRITERID, self.userID];
+    }
+    else {
+        //add predicate to gather all published pages
+        predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
+    }
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -296,9 +307,12 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
+    __frc_published_pages = nil;
+    self.frc_published_pages = nil;
+    self.userID = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -481,7 +495,14 @@
         Page* page = [pageSection objectAtIndex:row];
         
         // We launch the BookViewController and open it up to the page we specified
-        BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:page.objectid];
+        BookViewControllerBase* bookViewController;
+        if (self.userID != nil) {
+            bookViewController = [BookViewControllerBase createInstanceWithPageID:page.objectid withUserID:self.userID];
+        }
+        else {
+            bookViewController = [BookViewControllerBase createInstanceWithPageID:page.objectid];
+        }
+        
         bookViewController.shouldOpenBookCover = NO;
         
         // Modal naviation
@@ -593,6 +614,14 @@
 #pragma mark - Static Initializer
 + (BookTableOfContentsViewController*)createInstance {
     BookTableOfContentsViewController* bookTableOfContentsViewController = [[BookTableOfContentsViewController alloc]initWithNibName:@"BookTableOfContentsViewController" bundle:nil];
+    bookTableOfContentsViewController.userID = nil;
+    [bookTableOfContentsViewController autorelease];
+    return bookTableOfContentsViewController;
+}
+
++ (BookTableOfContentsViewController*)createInstanceWithUserID:(NSNumber*)userID {
+    BookTableOfContentsViewController* bookTableOfContentsViewController = [[BookTableOfContentsViewController alloc]initWithNibName:@"BookTableOfContentsViewController" bundle:nil];
+    bookTableOfContentsViewController.userID = userID;
     [bookTableOfContentsViewController autorelease];
     return bookTableOfContentsViewController;
 }

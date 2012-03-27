@@ -26,9 +26,11 @@
 #import "UIStrings.h"
 #import "BookTableOfContentsViewController.h"
 #import "FullScreenPhotoViewController.h"
+#import "Attributes.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
+@synthesize userID              = m_userID;
 @synthesize topVotedPhotoID     = m_topVotedPhotoID;
 @synthesize topVotedCaptionID   = m_topVotedCaptionID;
 @synthesize frc_published_pages = __frc_published_pages;
@@ -60,18 +62,17 @@
     
     //add predicate to test for being published
     NSString* stateAttributeNameStringValue = [NSString stringWithFormat:@"%@",STATE];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
+    //NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
     
-    /*NSPredicate* predicate;
+    NSPredicate* predicate;
     if (self.userID != nil) {
         //add predicate to gather only pages for a specific userID
-        predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@ OR %K=%@", stateAttributeNameStringValue, kPUBLISHED, PHOTOBYID, self.userID, CAPTIONBYID, self.userID];
+        predicate = [NSPredicate predicateWithFormat:@"%K=%d AND (%K=%@ OR %K=%@)", stateAttributeNameStringValue, kPUBLISHED, FINISHEDILLUSTRATORID, self.userID, FINISHEDWRITERID, self.userID];
     }
     else {
         //add predicate to gather all published pages
         predicate = [NSPredicate predicateWithFormat:@"%K=%d",stateAttributeNameStringValue, kPUBLISHED];
-    }*/
-    
+    }
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
@@ -378,7 +379,13 @@
     self.shouldOpenToTitlePage = NO;
     self.shouldAnimatePageTurn = NO;
     
-    BookTableOfContentsViewController* bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
+    BookTableOfContentsViewController* bookTableOfContentsViewController;
+    if (self.userID != nil) {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
+    }
+    else {
+        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
+    }
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -476,6 +483,10 @@
             //[self showProfileViewController];
         //}
     }
+}
+
+- (IBAction) onUserWritersLogButtonClicked:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -616,6 +627,14 @@
     }
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    __frc_published_pages = nil;
+    self.frc_published_pages = nil;
+    self.userID = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
@@ -725,6 +744,8 @@
 	if (NSClassFromString(@"UIPageViewController")) {
 		// iOS 5 UIPageViewController style with native page curling
         BookViewControllerPageView* pageViewInstance = [[BookViewControllerPageView alloc]initWithNibName:@"BookViewControllerPageView" bundle:nil];
+        pageViewInstance.pageID = nil;
+        pageViewInstance.userID = nil;
         
         // by default the book should always open to the title page on first load
         pageViewInstance.shouldOpenBookCover = YES;
@@ -737,6 +758,8 @@
     else {
 		// iOS 3-4x LeaveViewController style with custom page curling
         BookViewControllerLeaves* leavesInstance = [[BookViewControllerLeaves alloc]initWithNibName:@"BookViewControllerLeaves" bundle:nil];
+        leavesInstance.pageID = nil;
+        leavesInstance.userID = nil;
         
         // by default the book should always open to the title page on first load
         leavesInstance.shouldOpenBookCover = YES;
@@ -748,9 +771,30 @@
 	}
 }
 
-+ (BookViewControllerBase*) createInstanceWithPageID:(NSNumber *)pageID {
++ (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID {
     BookViewControllerBase* vc = [BookViewControllerBase createInstance];
     vc.pageID = pageID;
+    vc.shouldOpenBookCover = YES;
+    vc.shouldOpenToTitlePage = NO;
+    vc.shouldOpenToSpecificPage = YES;
+    vc.shouldAnimatePageTurn = YES;
+    return vc;
+}
+
++ (BookViewControllerBase*) createInstanceWithUserID:(NSNumber*)userID {
+    BookViewControllerBase* vc = [BookViewControllerBase createInstance];
+    vc.userID = userID;
+    vc.shouldOpenBookCover = YES;
+    vc.shouldOpenToTitlePage = YES;
+    vc.shouldOpenToSpecificPage = NO;
+    vc.shouldAnimatePageTurn = YES;
+    return vc;
+}
+
++ (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID withUserID:(NSNumber*)userID {
+    BookViewControllerBase* vc = [BookViewControllerBase createInstance];
+    vc.pageID = pageID;
+    vc.userID = userID;
     vc.shouldOpenBookCover = YES;
     vc.shouldOpenToTitlePage = NO;
     vc.shouldOpenToSpecificPage = YES;

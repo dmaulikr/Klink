@@ -25,9 +25,15 @@
 @synthesize controlVisibilityTimer  = m_controlVisibilityTimer;
 @synthesize btn_illustratedBy       = m_btn_illustratedBy;
 @synthesize btn_writtenBy           = m_btn_writtenBy;
+
 @synthesize btn_readButton          = m_btn_readButton;
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
 @synthesize btn_writersLogButton    = m_btn_writersLogButton;
+
+@synthesize btn_userReadButton      = m_btn_userReadButton;
+@synthesize btn_userWritersLogButton = m_btn_userWritersLogButton;
+@synthesize btn_userWritersLogButtonLastPage = m_btn_userWritersLogButtonLastPage;
+
 @synthesize btn_homeButton          = m_btn_homeButton;
 @synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
 @synthesize btn_zoomOutPhoto        = m_btn_zoomOutPhoto;
@@ -115,27 +121,55 @@
 }
 
 - (void) bringHomePageButtonsToFront {
-    [self.view bringSubviewToFront:self.btn_readButton];
-    [self.view bringSubviewToFront:self.btn_productionLogButton];
-    [self.view bringSubviewToFront:self.btn_writersLogButton];
+    // determine which set of title page buttons to show, default or user specific
+    if (self.userID != nil) {
+        [self.view bringSubviewToFront:self.btn_userReadButton];
+        [self.view bringSubviewToFront:self.btn_userWritersLogButton];
+    }
+    else {
+        [self.view bringSubviewToFront:self.btn_readButton];
+        [self.view bringSubviewToFront:self.btn_productionLogButton];
+        [self.view bringSubviewToFront:self.btn_writersLogButton];
+    }
 }
 
 - (void) sendHomePageButtonsToBack {
-    [self.view sendSubviewToBack:self.btn_readButton];
-    [self.view sendSubviewToBack:self.btn_productionLogButton];
-    [self.view sendSubviewToBack:self.btn_writersLogButton];
+    // determine which set of title page buttons to hide, default or user specific
+    if (self.userID != nil) {
+        [self.view sendSubviewToBack:self.btn_userReadButton];
+        [self.view sendSubviewToBack:self.btn_userWritersLogButton];
+    }
+    else {
+        [self.view sendSubviewToBack:self.btn_readButton];
+        [self.view sendSubviewToBack:self.btn_productionLogButton];
+        [self.view sendSubviewToBack:self.btn_writersLogButton];
+    }
 }
 
 - (void) bringLastPageButtonsToFront {
+    // determine which set of last page buttons to show, default or user specific
+    if (self.userID != nil) {
+        [self.view bringSubviewToFront:self.btn_userWritersLogButtonLastPage];
+    }
+    else {
+        [self.view bringSubviewToFront:self.btn_productionLogButton];
+    }
+    
     [self.view bringSubviewToFront:self.btn_homeButton];
     [self.view bringSubviewToFront:self.btn_tableOfContentsButton];
-    [self.view bringSubviewToFront:self.btn_productionLogButton];
 }
 
 - (void) sendLastPageButtonsToBack {
+    // determine which set of last page buttons to hide, default or user specific
+    if (self.userID != nil) {
+        [self.view sendSubviewToBack:self.btn_userWritersLogButtonLastPage];
+    }
+    else {
+        [self.view sendSubviewToBack:self.btn_productionLogButton];
+    }
+    
     [self.view sendSubviewToBack:self.btn_homeButton];
     [self.view sendSubviewToBack:self.btn_tableOfContentsButton];
-    [self.view sendSubviewToBack:self.btn_productionLogButton];
 }
 
 #pragma mark - Initializers
@@ -271,7 +305,13 @@
     
     if (index == 0) {
         // Return the title page, HomeViewController
-        HomeViewController* homeViewController = [HomeViewController createInstance];
+        HomeViewController* homeViewController;
+        if (self.userID != nil) {
+            homeViewController = [HomeViewController createInstanceWithUserID:self.userID];
+        }
+        else {
+            homeViewController = [HomeViewController createInstance];
+        }
         homeViewController.view.backgroundColor = [UIColor clearColor];
         homeViewController.delegate = self;
         
@@ -285,7 +325,14 @@
     }
     else if (index == publishedPageCount + 1) {
         // Return the last page placeholder, BookLastPageViewController
-        BookLastPageViewController* bookLastPageViewController = [BookLastPageViewController createInstance];
+        BookLastPageViewController* bookLastPageViewController;
+        if (self.userID != nil) {
+            bookLastPageViewController = [BookLastPageViewController createInstanceWithUserID:self.userID];
+        }
+        else {
+            bookLastPageViewController = [BookLastPageViewController createInstance];
+        }
+        bookLastPageViewController.delegate = self;
         bookLastPageViewController.view.backgroundColor = [UIColor clearColor];
         bookLastPageViewController.delegate = self;
         
@@ -665,6 +712,11 @@
     
 }
 
+- (IBAction) onUserWritersLogButtonClicked:(id)sender {
+    //called when the writer's log button is pressed from the user specific book
+    [super onUserWritersLogButtonClicked:sender];
+}
+
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
@@ -753,9 +805,17 @@
     
     // NSString* activityName = @"BookViewControllerLeaves.controller.onEnumerateComplete:";
     
-    [self.leavesView reloadData];
+    if (enumerator == self.pageCloudEnumerator) {
+        if ([results count] > 0) {
+            [self.leavesView reloadData];
+            
+            [self renderPage];
+        }
+    }
     
-    [self renderPage];
+    //[self.leavesView reloadData];
+    
+    //[self renderPage];
     
 }
 

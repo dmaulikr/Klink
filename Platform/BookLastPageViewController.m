@@ -18,8 +18,12 @@
 @synthesize frc_draft_pages         = __frc_draft_pages;
 @synthesize btn_homeButton          = m_btn_homeButton;
 @synthesize btn_tableOfContentsButton = m_btn_tableOfContentsButton;
+@synthesize lbl_statementLabel      = m_lbl_statementLabel;
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
 @synthesize lbl_numDrafts           = m_lbl_numDrafts;
+@synthesize userID                  = m_userID;
+@synthesize btn_userWritersLogButton = m_btn_userWritersLogButton;
+@synthesize lbl_userWritersLogSubtext = m_lbl_userWritersLogSubtext;
 
 #pragma mark - Properties
 - (id)delegate {
@@ -96,12 +100,61 @@
     }
 }
 
-- (void)updateLabels {
+- (void)updateDefaultBookLabels {
     // update the count of open drafts
     [self updateDraftCount];
     
+    self.lbl_statementLabel.text = @"the next page of Bahndr has yet to be written...";
+    
     [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
     
+}
+
+- (void)updateUserBookLabels {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    
+    self.lbl_statementLabel.text = [NSString stringWithFormat:@"%@'s next page in Bahndr has yet to be written...", user.username];
+    
+    [self.btn_userWritersLogButton setTitle:@"Back" forState:UIControlStateNormal];
+    
+    self.lbl_userWritersLogSubtext.text = [NSString stringWithFormat:@"%@'s profile", user.username];
+}
+
+- (void)render {
+    NSString* activityName = @"BookLastPageViewController.render:";
+    if (self.cloudDraftEnumerator == nil) 
+    {
+        self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+        self.cloudDraftEnumerator.delegate = self;
+    }
+    
+    if ([self.cloudDraftEnumerator canEnumerate]) 
+    {
+        LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+    }
+    
+    
+    // determine which type of last page to show, default or user specific
+    if (self.userID != nil) {
+        [self.btn_productionLogButton setHidden:YES];
+        [self.lbl_numDrafts setHidden:YES];
+        [self.btn_userWritersLogButton setHidden:NO];
+        [self.lbl_userWritersLogSubtext setHidden:NO];
+        
+        // update all the labels of the last page for the user book case
+        [self updateUserBookLabels];
+    }
+    else {
+        [self.btn_userWritersLogButton setHidden:YES];
+        [self.lbl_userWritersLogSubtext setHidden:YES];
+        [self.btn_productionLogButton setHidden:NO];
+        [self.lbl_numDrafts setHidden:NO];
+        
+        // update all the labels of the last page for the default book case
+        [self updateDefaultBookLabels];
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -128,28 +181,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSString* activityName = @"HomeViewController.viewDidLoad:";
-    
     NSString *reqSysVer = @"5.0";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     if ([currSysVer compare:reqSysVer options:NSNumericSearch] == NSOrderedAscending) {
         // in pre iOS 5 devices, we need to check the FRC and update UI
         // labels in viewDidLoad to populate the LeavesViewController
         
-        if (self.cloudDraftEnumerator == nil) 
-        {
-            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-            self.cloudDraftEnumerator.delegate = self;
-        }
-        
-        if ([self.cloudDraftEnumerator canEnumerate]) 
-        {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-        }
-        
-        // update all the labels of the UI
-        [self updateLabels];
+        [self render];
     }
 }
 
@@ -163,10 +201,12 @@
     self.btn_tableOfContentsButton = nil;
     self.btn_productionLogButton = nil;
     self.lbl_numDrafts = nil;
+    self.lbl_statementLabel = nil;
+    self.btn_userWritersLogButton = nil;
+    self.lbl_userWritersLogSubtext = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    NSString* activityName = @"BookLastViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     // Make sure the status bar is visible
@@ -183,19 +223,7 @@
         // in iOS 5 and above devices, we need to check the FRC and update UI
         // labels in viewWillAppear to populate up to date data for the UIPageViewController
         
-        if (self.cloudDraftEnumerator == nil)
-        {
-            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-            self.cloudDraftEnumerator.delegate = self;
-        }
-        if ([self.cloudDraftEnumerator canEnumerate]) 
-        {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-        }
-        
-        // update all the labels of the UI
-        [self updateLabels];
+        [self render];
     }
     
     // Setup table of contents button
@@ -227,6 +255,10 @@
 
 - (IBAction) onProductionLogButtonClicked:(id)sender {   
     [self.delegate onProductionLogButtonClicked:sender];
+}
+
+- (IBAction) onUserWritersLogButtonClicked:(id)sender {
+    [self.delegate onUserWritersLogButtonClicked:sender];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
@@ -267,6 +299,14 @@
 #pragma mark - Static Initializer
 + (BookLastPageViewController*)createInstance {
     BookLastPageViewController* bookLastPageViewController = [[BookLastPageViewController alloc]initWithNibName:@"BookLastPageViewController" bundle:nil];
+    bookLastPageViewController.userID = nil;
+    [bookLastPageViewController autorelease];
+    return bookLastPageViewController;
+}
+
++ (BookLastPageViewController*)createInstanceWithUserID:(NSNumber *)userID {
+    BookLastPageViewController* bookLastPageViewController = [[BookLastPageViewController alloc]initWithNibName:@"BookLastPageViewController" bundle:nil];
+    bookLastPageViewController.userID = userID;
     [bookLastPageViewController autorelease];
     return bookLastPageViewController;
 }

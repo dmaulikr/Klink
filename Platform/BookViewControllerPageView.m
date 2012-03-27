@@ -56,14 +56,26 @@
     
     if (index == 0) {
         // Return the title page, HomeViewController
-        HomeViewController* homeViewController = [HomeViewController createInstance];
+        HomeViewController* homeViewController;
+        if (self.userID != nil) {
+            homeViewController = [HomeViewController createInstanceWithUserID:self.userID];
+        }
+        else {
+            homeViewController = [HomeViewController createInstance];
+        }
         homeViewController.delegate = self;
         
         return homeViewController;
     }
     else if (index == publishedPageCount + 1) {
         // Return the last page placeholder, BookLastPageViewController
-        BookLastPageViewController* bookLastPageViewController = [BookLastPageViewController createInstance];
+        BookLastPageViewController* bookLastPageViewController;
+        if (self.userID != nil) {
+            bookLastPageViewController = [BookLastPageViewController createInstanceWithUserID:self.userID];
+        }
+        else {
+            bookLastPageViewController = [BookLastPageViewController createInstance];
+        }
         bookLastPageViewController.delegate = self;
         
         return bookLastPageViewController;
@@ -431,7 +443,13 @@
 - (IBAction) onHomeButtonPressed:(id)sender {
     [super onHomeButtonPressed:sender];
     
-    HomeViewController* homeViewController = [HomeViewController createInstance];
+    HomeViewController* homeViewController;
+    if (self.userID != nil) {
+        homeViewController = [HomeViewController createInstanceWithUserID:self.userID];
+    }
+    else {
+        homeViewController = [HomeViewController createInstance];
+    }
     homeViewController.delegate = self;
     
     if (homeViewController) {

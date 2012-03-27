@@ -7,12 +7,7 @@
 //
 
 #import "HomeViewController.h"
-//#import "DraftViewController.h"
-//#import "ContributeViewController.h"
 #import "CallbackResult.h"
-//#import "ProductionLogViewController.h"
-//#import "BookViewControllerBase.h"
-//#import "NotificationsViewController.h"
 #import "ApplicationSettings.h"
 #import "ApplicationSettingsManager.h"
 #import "AuthenticationManager.h"
@@ -21,17 +16,32 @@
 #import "Macros.h"
 #import "CloudEnumeratorFactory.h"
 #import "UIStrings.h"
+#import "User.h"
+#import "ImageManager.h"
+#import "ImageDownloadResponse.h"
+
+#define kUSERID                    @"userid"
 
 @implementation HomeViewController
 
 @synthesize cloudDraftEnumerator    = m_cloudDraftEnumerator;
 @synthesize frc_draft_pages         = __frc_draft_pages;
+
+@synthesize v_defaultBookContainer  = m_v_defaultBookContainer;
 @synthesize btn_readButton          = m_btn_readButton;
 @synthesize btn_productionLogButton = m_btn_productionLogButton;
 @synthesize btn_writersLogButton    = m_btn_writersLogButton;
 @synthesize lbl_numDrafts           = m_lbl_numDrafts;
 @synthesize lbl_writersLogSubtext   = m_lbl_writersLogSubtext;
 @synthesize lbl_numContributors     = m_lbl_numContributors;
+
+@synthesize v_userBookContainer     = m_v_userBookContainer;
+@synthesize userID                  = m_userID;
+@synthesize lbl_userSubtitle        = m_lbl_userSubtitle;
+@synthesize iv_profilePicture       = m_iv_profilePicture;
+@synthesize btn_userReadButton      = m_btn_userReadButton;
+@synthesize btn_userWritersLogButton = m_btn_userWritersLogButton;
+@synthesize lbl_userWritersLogSubtext = m_lbl_userWritersLogSubtext;
 
 
 #pragma mark - Properties
@@ -125,10 +135,51 @@
     [self.btn_writersLogButton setTitle:writersLogBtnString forState:UIControlStateHighlighted];
 }
 
-- (void)updateLabels {
+- (void)updateDefaultBookContainerView {
     // update the count of open drafts
     [self updateDraftCount];
     
+    [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];    
+    [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
+    
+    // set the appropriate text for the Writer's log button
+    [self updateWritersLogButtonText];
+    
+}
+
+- (void)updateUserBookContainerView {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    
+    self.lbl_userSubtitle.text = [NSString stringWithFormat:@"As published by:\n%@", user.username];
+    
+    //Show profile picture
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
+    
+    if (user.imageurl != nil && ![user.imageurl isEqualToString:@""]) {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        UIImage* image = [imageManager downloadImage:user.imageurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            self.iv_profilePicture.image = image;
+        }
+    }
+    else {
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    }
+
+    
+    [self.btn_userReadButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];    
+    [self.btn_userWritersLogButton setTitle:@"Back" forState:UIControlStateNormal];
+    
+    self.lbl_userWritersLogSubtext.text = [NSString stringWithFormat:@"%@'s profile", user.username];
+    
+}
+
+- (void)updateNumberOfContributorsLabel {
     // set number of contributors label
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     int numContributors = [settings.num_users intValue];
@@ -145,13 +196,72 @@
         [numberFormatter release];
         self.lbl_numContributors.text = [NSString stringWithFormat:@"%@ contributors", numContributorsCommaString];
     }
+}
+
+- (void)render {
+    NSString* activityName = @"HomeViewController.render:";
+    if (self.cloudDraftEnumerator == nil) 
+    {
+        self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+        self.cloudDraftEnumerator.delegate = self;
+    }
     
-    [self.btn_readButton setTitle:ui_PUBLISHEDPAGES forState:UIControlStateNormal];    
-    [self.btn_productionLogButton setTitle:ui_PRODUCTIONLOG forState:UIControlStateNormal];
+    if (!self.cloudDraftEnumerator.isLoading)
+    {
+        //enumerator is not loading, so we can go ahead and reset it and run it
+        
+        if ([self.cloudDraftEnumerator canEnumerate]) 
+        {
+            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
+        else
+        {
+            //the enumerator is not ready to run, but we reset it and away we go
+            [self.cloudDraftEnumerator reset];
+            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+        }
+    }
     
-    // set the appropriate text for the Writer's log button
-    [self updateWritersLogButtonText];
+    /*if (self.cloudDraftEnumerator == nil) 
+     {
+     self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
+     self.cloudDraftEnumerator.delegate = self;
+     }
+     
+     if ([self.cloudDraftEnumerator canEnumerate]) 
+     {
+     LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
+     [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+     }*/
     
+    // refresh the notification feed
+    Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
+    BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
+    
+    if (isEnumeratingFeed) 
+    {
+        LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
+    }
+    
+    // set number of contributors label
+    [self updateNumberOfContributorsLabel];
+    
+    // determine which type of title page to show, default or user specific
+    if (self.userID != nil) {
+        [self.v_defaultBookContainer setHidden:YES];
+        [self.v_userBookContainer setHidden:NO];
+        
+        // update all the labels of the title page for the user book case
+        [self updateUserBookContainerView];
+    }
+    else {
+        [self.v_userBookContainer setHidden:YES];
+        [self.v_defaultBookContainer setHidden:NO];
+        
+        // update all the labels of the title page for the default book case
+        [self updateDefaultBookContainerView];
+    }
 }
 
 #pragma mark - Initializers
@@ -189,7 +299,6 @@
 
 - (void)viewDidLoad
 {
-    NSString* activityName = @"HomeViewController.viewDidLoad:";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
@@ -199,52 +308,7 @@
         // in pre iOS 5 devices, we need to check the FRC and update UI
         // labels in viewDidLoad to populate the LeavesViewController
         
-        if (self.cloudDraftEnumerator == nil) 
-        {
-            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-            self.cloudDraftEnumerator.delegate = self;
-        }
-        
-        if (!self.cloudDraftEnumerator.isLoading) 
-        {
-            //enumerator is not loading, so we can go ahead and reset it and run it
-            
-            if ([self.cloudDraftEnumerator canEnumerate]) 
-            {
-                LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-            }
-            else
-            {
-                //the enumerator is not ready to run, but we reset it and away we go
-                [self.cloudDraftEnumerator reset];
-                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-            }
-        }
-        
-        /*if (self.cloudDraftEnumerator == nil) 
-        {
-            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-            self.cloudDraftEnumerator.delegate = self;
-        }
-        
-        if ([self.cloudDraftEnumerator canEnumerate]) 
-        {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-            [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-        }*/
-        
-        // refresh the notification feed
-        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
-        
-        if (isEnumeratingFeed) 
-        {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
-        }
-        
-        // update all the labels of the UI
-        [self updateLabels];
+        [self render];
     }
     
 }
@@ -255,12 +319,20 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     
+    self.v_defaultBookContainer = nil;
     self.btn_readButton = nil;
     self.btn_productionLogButton = nil;
     self.btn_writersLogButton = nil;
     self.lbl_numDrafts = nil;
     self.lbl_writersLogSubtext = nil;
     self.lbl_numContributors = nil;
+    
+    self.v_userBookContainer = nil;
+    self.lbl_userSubtitle = nil;
+    self.iv_profilePicture = nil;
+    self.btn_userReadButton = nil;
+    self.btn_userWritersLogButton = nil;
+    self.lbl_userWritersLogSubtext = nil;
     
 }
 
@@ -275,7 +347,6 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    NSString* activityName = @"HomeViewController.viewWillAppear:";
     [super viewWillAppear:animated];
     
     // Make sure the status bar is visible
@@ -292,52 +363,7 @@
         // in iOS 5 and above devices, we need to check the FRC and update UI
         // labels in viewWillAppear to populate up to date data for the UIPageViewController
         
-        if (self.cloudDraftEnumerator == nil) 
-        {
-            self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-            self.cloudDraftEnumerator.delegate = self;
-        }
-        
-        if (!self.cloudDraftEnumerator.isLoading) 
-        {
-            //enumerator is not loading, so we can go ahead and reset it and run it
-            
-            if ([self.cloudDraftEnumerator canEnumerate]) 
-            {
-                LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-            }
-            else
-            {
-                //the enumerator is not ready to run, but we reset it and away we go
-                [self.cloudDraftEnumerator reset];
-                [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-            }
-        }
-        
-        /*if (self.cloudDraftEnumerator == nil) 
-         {
-         self.cloudDraftEnumerator = [[CloudEnumeratorFactory instance]enumeratorForDrafts];
-         self.cloudDraftEnumerator.delegate = self;
-         }
-         
-         if ([self.cloudDraftEnumerator canEnumerate]) 
-         {
-         LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing draft count from cloud",activityName);
-         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
-         }*/
-        
-        // refresh the notification feed
-        Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];
-        BOOL isEnumeratingFeed = [[FeedManager instance]tryRefreshFeedOnFinish:callback];
-        
-        if (isEnumeratingFeed) 
-        {
-            LOG_HOMEVIEWCONTROLLER(0, @"%@Refreshing user's notification feed",activityName);
-        }
-        
-        // update all the labels of the UI
-        [self updateLabels];
+        [self render];
     }
     
 }
@@ -364,6 +390,34 @@
 
 - (IBAction) onWritersLogButtonClicked:(id)sender {
     [self.delegate onWritersLogButtonClicked:sender];
+}
+
+- (IBAction) onUserWritersLogButtonClicked:(id)sender {
+    [self.delegate onUserWritersLogButtonClicked:sender];
+}
+
+#pragma mark - Async callbacks
+- (void)onImageDownloadComplete:(CallbackResult*)result {
+    NSDictionary* userInfo = result.context;
+    NSNumber* userID = [userInfo valueForKey:kUSERID];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        if ([userID isEqualToNumber:self.userID]) {
+            //we only draw the image if this view hasnt been repurposed for another user
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+        }
+        
+        [self.view setNeedsDisplay];
+    }
+    else {
+        // show the photo placeholder icon
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+        
+        [self.view setNeedsDisplay];
+    }
 }
 
 #pragma mark - FeedRefreshCallback Handler
@@ -410,6 +464,14 @@
 #pragma mark - Static Initializer
 + (HomeViewController*)createInstance {
     HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
+    homeViewController.userID = nil;
+    [homeViewController autorelease];
+    return homeViewController;
+}
+
++ (HomeViewController*)createInstanceWithUserID:(NSNumber *)userID {
+    HomeViewController* homeViewController = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
+    homeViewController.userID = userID;
     [homeViewController autorelease];
     return homeViewController;
 }

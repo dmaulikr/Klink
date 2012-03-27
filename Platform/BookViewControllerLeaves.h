@@ -27,6 +27,10 @@
     UIButton*   m_btn_productionLogButton;
     UIButton*   m_btn_writersLogButton;
     
+    UIButton*   m_btn_userReadButton;
+    UIButton*   m_btn_userWritersLogButton;
+    UIButton*   m_btn_userWritersLogButtonLastPage;
+    
     UIButton*   m_btn_homeButton;
     UIButton*   m_btn_tableOfContentsButton;
     UIButton*   m_btn_zoomOutPhoto;
@@ -42,6 +46,10 @@
 @property (nonatomic,retain) IBOutlet UIButton*     btn_readButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_productionLogButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_writersLogButton;
+
+@property (nonatomic,retain) IBOutlet UIButton*     btn_userReadButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_userWritersLogButton;
+@property (nonatomic,retain) IBOutlet UIButton*     btn_userWritersLogButtonLastPage;
 
 @property (strong, nonatomic) IBOutlet UIButton*    btn_homeButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_tableOfContentsButton;

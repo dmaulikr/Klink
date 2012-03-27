@@ -8,20 +8,17 @@
 
 #import "ProfileViewController.h"
 #import "DateTimeHelper.h"
-
 #import "PlatformAppDelegate.h"
-//#import "UIProgressHUDView.h"
-//#import "CloudEnumerator.h"
 #import "Macros.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "SettingsViewController.h"
-//#import <sys/utsname.h>
 #import "PeopleListViewController.h"
 #import "Follow.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
 #import "PeopleListType.h"
+#import "BookViewControllerBase.h"
 
 #define kUSERID                    @"userid"
 
@@ -35,15 +32,6 @@
 @synthesize lbl_username            = m_lbl_username;
 @synthesize lbl_currentLevel        = m_lbl_currentLevel;
 @synthesize lbl_currentLevelDate    = m_lbl_currentLevelDate;
-
-@synthesize lbl_numPages            = m_lbl_numPages;
-//@synthesize lbl_numVotes            = m_lbl_numVotes;
-//@synthesize lbl_numSubmissions      = m_lbl_numSubmissions;
-@synthesize lbl_numFollowers        = m_lbl_numFollowers;
-@synthesize lbl_numFollowing        = m_lbl_numFollowing;
-@synthesize lbl_pagesLabel          = m_lbl_pagesLabel;
-@synthesize lbl_votesLabel          = m_lbl_votesLabel;
-@synthesize lbl_submissionsLabel    = m_lbl_submissionsLabel;
 
 @synthesize btn_numPages            = m_btn_numPages;
 @synthesize btn_numFollowers        = m_btn_numFollowers;
@@ -247,14 +235,6 @@
     self.lbl_username = nil;
     self.lbl_currentLevel = nil;
     self.lbl_currentLevelDate = nil;
-    self.lbl_numPages = nil;
-    //self.lbl_numVotes = nil;
-    //self.lbl_numSubmissions = nil;
-    self.lbl_numFollowers = nil;
-    self.lbl_numFollowing = nil;
-    self.lbl_pagesLabel = nil;
-    self.lbl_votesLabel = nil;
-    self.lbl_submissionsLabel = nil;
     self.btn_numPages = nil;
     self.btn_numFollowers = nil;
     self.btn_numFollowing = nil;
@@ -339,19 +319,9 @@
         self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     }
     
-    /*self.lbl_numPages.text = [self.user.numberofpagespublished stringValue];
-    //self.lbl_numVotes.text = [self.user.numberofvotes stringValue];
-    self.lbl_numFollowers.text = [self.user.numberoffollowers stringValue];
-    self.lbl_numFollowing.text = [self.user.numberfollowing stringValue];*/
-    
     [self.btn_numPages setTitle:[self.user.numberofpagespublished stringValue] forState:UIControlStateNormal];
     [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
     [self.btn_numFollowing setTitle:[self.user.numberfollowing stringValue] forState:UIControlStateNormal];
-    
-    /*int totalSubmissions = [self.user.numberofcaptions intValue]
-        + [self.user.numberofphotos intValue]
-        + [self.user.numberofdraftscreated intValue];
-    self.lbl_numSubmissions.text = [NSString stringWithFormat:@"%d", totalSubmissions];*/
     
     self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
     self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
@@ -480,6 +450,19 @@
     self.cameraActionSheet = [UICameraActionSheet createCameraActionSheetWithTitle:@"Change Profile Picture" allowsEditing:YES];
     self.cameraActionSheet.a_delegate = self;
     [self.cameraActionSheet showInView:self.view];
+}
+
+- (IBAction) onPublishedButtonPressed:(id)sender {
+    // We launch the BookViewController and open it up to the page we specified
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithUserID:self.userID];
+    
+    // Modal naviation
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 - (IBAction) onFollowersButtonPressed:(id)sender {

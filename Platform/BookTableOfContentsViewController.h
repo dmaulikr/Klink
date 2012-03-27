@@ -15,6 +15,7 @@
 @interface BookTableOfContentsViewController : BaseViewController < NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate > {
     
     NSDictionary*           m_allPages;
+    NSNumber*               m_userID; //represents the ID of the user if we are tring to build a book just of a specific user's published pages
     NSMutableDictionary*    m_pagesSearch;
     NSMutableArray*         m_months;
     NSMutableArray*         m_monthsDeepCopy;
@@ -29,6 +30,7 @@
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
 
 @property (nonatomic,retain) NSDictionary*                  allPages;
+@property (nonatomic,retain) NSNumber*                      userID;
 @property (nonatomic,retain) NSMutableDictionary*           pagesSearch;
 @property (nonatomic,retain) NSMutableArray*                months;
 @property (nonatomic,retain) NSMutableArray*                monthsDeepCopy;
@@ -46,5 +48,6 @@
 - (void)handleSearchForTerm:(NSString *)searchTerm;
 
 + (BookTableOfContentsViewController*)createInstance;
++ (BookTableOfContentsViewController*)createInstanceWithUserID:(NSNumber*)userID;
 
 @end

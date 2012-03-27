@@ -21,15 +21,6 @@
     UILabel* m_lbl_currentLevel;
     UILabel* m_lbl_currentLevelDate;
     
-    UILabel* m_lbl_numPages;
-    //UILabel* m_lbl_numVotes;
-    //UILabel* m_lbl_numSubmissions;
-    UILabel* m_lbl_numFollowers;
-    UILabel* m_lbl_numFollowing;
-    UILabel* m_lbl_pagesLabel;
-    UILabel* m_lbl_votesLabel;
-    UILabel* m_lbl_submissionsLabel;
-    
     UIButton* m_btn_numPages;
     UIButton* m_btn_numFollowers;
     UIButton* m_btn_numFollowing;
@@ -74,15 +65,6 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_currentLevelDate;
 
-@property (nonatomic, retain) IBOutlet UILabel* lbl_numPages;
-//@property (nonatomic, retain) IBOutlet UILabel* lbl_numVotes;
-//@property (nonatomic, retain) IBOutlet UILabel* lbl_numSubmissions;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_numFollowers;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_numFollowing;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_pagesLabel;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_votesLabel;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLabel;
-
 @property (nonatomic, retain) IBOutlet UIButton* btn_numPages;
 @property (nonatomic, retain) IBOutlet UIButton* btn_numFollowers;
 @property (nonatomic, retain) IBOutlet UIButton* btn_numFollowing;
@@ -119,6 +101,7 @@
 
 
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
+- (IBAction) onPublishedButtonPressed:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 - (IBAction) onFollowButtonPressed:(id)sender;

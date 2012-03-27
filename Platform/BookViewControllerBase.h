@@ -15,6 +15,7 @@
 @interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
+    NSNumber*           m_userID; //represents the ID of the user if we are tring to build a book just of a specific user's published pages
     NSNumber*           m_topVotedPhotoID;
     NSNumber*           m_topVotedCaptionID;
     CloudEnumerator*    m_pageCloudEnumerator;
@@ -32,6 +33,7 @@
 }
 
 @property (nonatomic,retain) NSNumber*                      pageID;
+@property (nonatomic,retain) NSNumber*                      userID;
 @property (nonatomic,retain) NSNumber*                      topVotedPhotoID;
 @property (nonatomic,retain) NSNumber*                      topVotedCaptionID;
 @property (nonatomic,retain) NSFetchedResultsController*    frc_published_pages;
@@ -63,6 +65,7 @@
 - (IBAction) onReadButtonClicked:(id)sender;
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
+- (IBAction) onUserWritersLogButtonClicked:(id)sender;
 - (IBAction) onLinkButtonClicked:(id)sender;
 
 // Book Page Delegate Methods
@@ -74,5 +77,7 @@
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;
++ (BookViewControllerBase*) createInstanceWithUserID:(NSNumber*)userID;
++ (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID withUserID:(NSNumber*)userID;
 
 @end
