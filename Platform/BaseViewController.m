@@ -234,7 +234,7 @@
     
     
     //first check if this view controller is the top level visible controller
-    if (self.navigationController.visibleViewController == self) {
+   // if (self.navigationController.visibleViewController == self) {
        
         [progressView removeAllSubviews];
         
@@ -255,7 +255,7 @@
         {
             [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         }
-    }
+    //}
 
 }
 
