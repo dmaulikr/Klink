@@ -4,6 +4,7 @@
         <attribute name="base_url" optional="YES" attributeType="String"/>
         <attribute name="caption_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="caption_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="delete_objects_after" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="editor_minimum" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="fb_app_id" optional="YES" attributeType="String"/>
         <attribute name="feed_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -18,7 +19,6 @@
         <attribute name="page_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="page_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="pagesize" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
-        <attribute name="performance_logging_level" optional="YES" attributeType="Integer 64"/>
         <attribute name="photo_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="poll_expiry_seconds" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="poll_num_pages" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
