@@ -24,7 +24,7 @@
 #import "Caption.h"
 #import "Feed.h"
 #import "UserDefaultSettings.h"
-
+#import "PageState.h"
 #import "ImageManager.h"
 @implementation PlatformAppDelegate
 
@@ -214,31 +214,34 @@
         
         for (Page* expiredPageToDelete in expiredPagesToDelete) 
         {
-            LOG_APPLICATIONSETTINGSMANAGER(0, @"%@Deleting expired page with id:%@ and displayName:%@",activityName,expiredPageToDelete.objectid,expiredPageToDelete.displayname);
-            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
-            //we get all captions and photos associated with this object
-            NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
-            
-            NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:THEMEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
-            
-            //now we also delete all these objects
-            for (Caption* caption in captions) 
-            {
-                //delete this caption
-                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Caption %@ associated with expired Page: %@",activityName,caption.objectid,expiredPageToDelete.objectid);
-                [resourceContext delete:caption.objectid withType:caption.objecttype];
-            }
-            
-            for (Photo* photo in photos) 
-            {
-                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Photo %@ associated with expired Page: %@",activityName,photo.objectid,expiredPageToDelete.objectid);
-                [resourceContext delete:photo.objectid withType:photo.objecttype];
+            //we only delete non published pages
+            if ([expiredPageToDelete.state intValue] != kPUBLISHED) {
+                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@Deleting expired page with id:%@ and displayName:%@",activityName,expiredPageToDelete.objectid,expiredPageToDelete.displayname);
+                NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:YES];
+                //we get all captions and photos associated with this object
+                NSArray* captions = [resourceContext resourcesWithType:CAPTION withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:PAGEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
                 
-                //we add the image and photo urls for this page to the delete images array
-                [imageURLSToDelete addObject:photo.imageurl];
-                [imageURLSToDelete addObject:photo.thumbnailurl];
+                NSArray* photos = [resourceContext resourcesWithType:PHOTO withValueEqual:[expiredPageToDelete.objectid stringValue] forAttribute:THEMEID sortBy:[NSArray arrayWithObject:sortDescriptor]];
+                
+                //now we also delete all these objects
+                for (Caption* caption in captions) 
+                {
+                    //delete this caption
+                    LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Caption %@ associated with expired Page: %@",activityName,caption.objectid,expiredPageToDelete.objectid);
+                    [resourceContext delete:caption.objectid withType:caption.objecttype];
+                }
+                
+                for (Photo* photo in photos) 
+                {
+                    LOG_APPLICATIONSETTINGSMANAGER(0, @"%@ Deleting Photo %@ associated with expired Page: %@",activityName,photo.objectid,expiredPageToDelete.objectid);
+                    [resourceContext delete:photo.objectid withType:photo.objecttype];
+                    
+                    //we add the image and photo urls for this page to the delete images array
+                    [imageURLSToDelete addObject:photo.imageurl];
+                    [imageURLSToDelete addObject:photo.thumbnailurl];
+                }
+                [resourceContext delete:expiredPageToDelete.objectid withType:expiredPageToDelete.objecttype];
             }
-            [resourceContext delete:expiredPageToDelete.objectid withType:expiredPageToDelete.objecttype];
             
         }
         //now lets clean up old images from our application cache directory
@@ -384,14 +387,14 @@
      */
     
     
-//    void (^block)(NSNumber*) = ^(NSNumber* number) {
-//        [self deleteExpiredObjectsOlderThan:number];
-//    };
-//    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-//    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.clean_after intValue]];
-//    
-//    NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
-//    dispatch_async(backgroundQueue, ^{block(localThreshold);});
+    void (^block)(NSNumber*) = ^(NSNumber* number) {
+        [self deleteExpiredObjectsOlderThan:number];
+    };
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_objects_after intValue]];
+    
+   // NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+    dispatch_async(backgroundQueue, ^{block(localThreshold);});
     
     
         
