@@ -40,6 +40,7 @@
     UILabel*        m_lbl_title;
     UIImageView*    m_iv_photo;
     UIImageView*    m_iv_photoFrame;
+    UILabel*        m_lbl_downloading;
     UILabel*        m_lbl_caption;
     UILabel*        m_lbl_photoby;
     UILabel*        m_lbl_captionby;
@@ -71,6 +72,7 @@
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_caption;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_photo;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_photoFrame;
+@property (nonatomic,retain) IBOutlet UILabel*      lbl_downloading;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_photoby;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_captionby;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_publishDate;

@@ -57,6 +57,7 @@
 @synthesize photoMetaData           = m_photoMetaData;
 @synthesize iv_photo                = m_iv_photo;
 @synthesize iv_photoLandscape       = m_iv_photoLandscape;
+@synthesize lbl_downloading         = m_lbl_downloading;
 //@synthesize pg_captionPageIndicator = m_pg_captionPageIndicator;
 @synthesize iv_leftArrow            = m_iv_leftArrow;
 @synthesize iv_rightArrow           = m_iv_rightArrow;
@@ -813,6 +814,7 @@
     self.photoMetaData = nil;
     self.iv_photo = nil;
     self.iv_photoLandscape = nil;
+    self.lbl_downloading = nil;
     //self.pg_captionPageIndicator = nil;
     self.iv_leftArrow = nil;
     self.iv_rightArrow = nil;
@@ -1320,6 +1322,8 @@
                     [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
                     self.iv_photo.image = image;
                     
+                    [self.lbl_downloading setHidden:YES];
+                    
                     //enable gesture events on the photo
                     [self.iv_photo setUserInteractionEnabled:YES];
                 }
@@ -1327,6 +1331,8 @@
                     // show the photo placeholder icon
                     [self.iv_photo setContentMode:UIViewContentModeCenter];
                     self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+                    
+                    [self.lbl_downloading setHidden:NO];
                     
                     //disable gesture events on the photo
                     [self.iv_photo setUserInteractionEnabled:NO];
@@ -1338,6 +1344,8 @@
                 // show the photo placeholder icon
                 [self.iv_photo setContentMode:UIViewContentModeCenter];
                 self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+                
+                [self.lbl_downloading setHidden:YES];
             }
             
             [self.photoViewSlider addSubview:self.iv_photo];
@@ -1484,6 +1492,7 @@
                 LOG_IMAGE(1,@"%@settings UIImage object equal to downloaded response",activityName);
                 [imageView performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
                 imageView.contentMode = UIViewContentModeScaleAspectFit;
+                [self.lbl_downloading setHidden:YES];
                 //[imageView setNeedsDisplay];
             }
         }
@@ -1493,6 +1502,7 @@
         // show the photo placeholder icon
         [self.iv_photo setContentMode:UIViewContentModeCenter];
         self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+        [self.lbl_downloading setHidden:YES];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 }

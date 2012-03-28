@@ -23,6 +23,7 @@
     UIPhotoMetaDataView*    m_photoMetaData;
     UIImageView*        m_iv_photo;
     UIImageView*        m_iv_photoLandscape;
+    UILabel*            m_lbl_downloading;
     //UIPageControl*      m_pg_captionPageIndicator;
     UIImageView*        m_iv_leftArrow;
     UIImageView*        m_iv_rightArrow;
@@ -55,6 +56,7 @@
 @property (nonatomic,retain) IBOutlet UIPhotoMetaDataView*  photoMetaData;
 @property (nonatomic,retain)          UIImageView*          iv_photo;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_photoLandscape;
+@property (nonatomic,retain) IBOutlet UILabel*              lbl_downloading;
 //@property (nonatomic,retain) IBOutlet UIPageControl*        pg_captionPageIndicator;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_leftArrow;
 @property (nonatomic,retain) IBOutlet UIImageView*          iv_rightArrow;

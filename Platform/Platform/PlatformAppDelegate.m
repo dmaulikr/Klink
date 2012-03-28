@@ -23,6 +23,7 @@
 #import "DateTimeHelper.h"
 #import "Caption.h"
 #import "Feed.h"
+#import "UserDefaultSettings.h"
 
 #import "ImageManager.h"
 @implementation PlatformAppDelegate
@@ -150,7 +151,15 @@
     
     // Launch the BookView to the last page
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
-    bookViewController.shouldOpenToLastPage = YES;
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+        //this is the first time opening, so we show a welcome message
+        bookViewController.shouldOpenToLastPage = NO;
+    }
+    else {
+        bookViewController.shouldOpenToLastPage = YES;
+    }
     
     self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
     

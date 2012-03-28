@@ -41,7 +41,7 @@
 }
 
 //This is where the "by JordanG 2 minutes ago" string is created
-- (NSString*) getMetadataStringForCaption:(Caption*)caption {
+/*- (NSString*) getMetadataStringForCaption:(Caption*)caption {
     NSDate* now = [NSDate date];
     NSTimeInterval intervalSinceCreated = [now timeIntervalSinceDate:[DateTimeHelper parseWebServiceDateDouble:caption.datecreated]];
     NSString* timeSinceCreated = nil;
@@ -53,7 +53,7 @@
     }
     
     return [NSString stringWithFormat:@"By %@, %@ ago",caption.creatorname,timeSinceCreated];
-}
+}*/
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -71,7 +71,7 @@
     
     if (caption != nil) {
         self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-        self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
+        //self.lbl_metaData.text = [self getMetadataStringForCaption:caption];
         self.lbl_numVotes.text = [caption.numberofvotes stringValue];
     }
     

@@ -117,6 +117,8 @@
         self.pageCloudEnumerator = [CloudEnumerator enumeratorForPages];
         self.pageCloudEnumerator.delegate = self;
         [self.pageCloudEnumerator enumerateUntilEnd:nil];
+        
+        [self showHUDForBookDownload];
     }
 }
 
@@ -494,6 +496,23 @@
 
 
 #pragma mark - Initializers
+- (void)showHUDForBookDownload {
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    NSNumber* heartbeat = [NSNumber numberWithInt:5];
+    
+    //we need to construc the appropriate success, failure and progress messages for the book download
+    NSString* failureMessage = @"Failed!\nSomeone has an overdue book out.";
+    NSString* successMessage = @"Success!";
+    NSArray* progressMessage = [NSArray arrayWithObjects:@"Downloading Bahndr...", @"Searching Library of Alexandria...", @"Enscribing pages...", @"Breaking for afternoon tea...", @"Binding pages...", nil];
+    
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    
+    [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+}
+
 - (void) commonInit {
     //common setup for the view controller
     NSString* activityName = @"BookViewControllerBase.commonInit";
@@ -519,6 +538,8 @@
             [self.pageCloudEnumerator reset];
             [self.pageCloudEnumerator enumerateUntilEnd:nil];
         }
+        
+        //[self showHUDForBookDownload];
     }
     
 }
@@ -627,8 +648,11 @@
         self.pageCloudEnumerator.delegate = self;
         if ([self.pageCloudEnumerator canEnumerate]) 
         {
-            LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+            LOG_BOOKVIEWCONTROLLER(0, @"%@Refreshing book from cloud",activityName);
+            
             [self.pageCloudEnumerator enumerateUntilEnd:nil];
+            
+            [self showHUDForBookDownload];
         }
     }
     
@@ -686,6 +710,33 @@
     }
 }
 
+#pragma mark -  MBProgressHUD Delegate
+-(void)hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"ProfileViewController.hudWasHidden";
+    [self hideProgressBar];
+    
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    
+    if (progressView.didSucceed) {
+        //enumeration was sucesful
+        LOG_REQUEST(0, @"%@ Enumeration request was successful",activityName);
+        
+    }
+    else {
+        //enumeration failed
+        LOG_REQUEST(0, @"%@ Enumeration request failure",activityName);
+    
+    }
+}
+
+- (void) progressViewHeartbeat:(UIProgressHUDView *)progressView 
+          timeElapsedInSeconds:(NSNumber *)elapsedTimeInSeconds
+{
+    //heart beat processing
+    //NSString* activityName = @"BookViewControllerBase.progressViewHeartbeat:";
+    
+}
+
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
 - (void) controller:(NSFetchedResultsController *)controller 
@@ -723,6 +774,9 @@
                 withUserInfo:(NSDictionary *)userInfo 
 {
     NSString* activityName = @"BookViewController.onEnumerateComplete:";
+    
+    [self hideProgressBar];
+    
     //on this method we need to enumerate all the captions that are part of the pages
     //to do this, we enumerate through each page and extract the finished caption ID
     //and make a fixed ID enumerate call to it.

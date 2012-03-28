@@ -32,11 +32,11 @@
 @synthesize cellType                = m_cellType;
 @synthesize iv_photo                = m_iv_photo;
 @synthesize iv_photoFrame           = m_iv_photoFrame;
+@synthesize lbl_downloading     = m_lbl_downloading;
 @synthesize lbl_caption             = m_lbl_caption;
 @synthesize lbl_photoby             = m_lbl_photoby;
 @synthesize lbl_captionby           = m_lbl_captionby;
 @synthesize lbl_numVotes            = m_lbl_numVotes;
-//@synthesize lbl_numCaptions         = m_lbl_numCaptions;
 @synthesize iv_unreadCaptionBadge   = m_iv_unreadCaptionBadge;
 @synthesize btn_writtenBy           = m_btn_writtenBy;
 @synthesize btn_illustratedBy       = m_btn_illustratedBy;
@@ -80,7 +80,48 @@
 - (void)render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
+    // reset labels to defualt values
+    self.lbl_numVotes.text = @"0";
+    self.lbl_caption.textColor = [UIColor darkGrayColor];
+    self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
+    
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    if (caption != nil) {
+        // Update unread flag
+        if ([caption.hasseen boolValue] == YES) {
+            [self.iv_unreadCaptionBadge setHidden:YES];
+        }
+        else {
+            // show the unread badge 
+            [self.iv_unreadCaptionBadge setHidden:NO];
+        }
+        
+        if (caption.caption1 == nil || [caption.caption1 isEqualToString:@""] || [caption.caption1 isEqualToString:@" "]) {
+            //[self.lbl_caption setHidden:YES];
+            [self.lbl_captionby setHidden:YES];
+            [self.btn_writtenBy setHidden:YES];
+        }
+        else {
+            self.lbl_caption.textColor = [UIColor blackColor];
+            self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
+            self.lbl_captionby.text = [NSString stringWithFormat:@"- written by "];
+            [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
+        }
+        
+        self.lbl_numVotes.text = [caption.numberofvotes stringValue];
+        
+    }
+    else {
+        //[self.lbl_caption setHidden:YES];
+        [self.lbl_captionby setHidden:YES];
+        [self.btn_writtenBy setHidden:YES];
+    }
+    
+    //self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
+    //[self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
+    //[self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
+    
     
     self.photoID = caption.photoid;
     
@@ -100,13 +141,16 @@
                     self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                     self.iv_photo.image = image;
                     
+                    [self.lbl_downloading setHidden:YES];
+                    
                     [self displayPhotoFrameOnImage:image];
-                   
+                    
                 }
             }
             else {
                 self.iv_photo.contentMode = UIViewContentModeCenter;
                 self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+                [self.lbl_downloading setHidden:YES];
             }
         }
         else {
@@ -122,44 +166,20 @@
             else {
                 self.iv_photo.contentMode = UIViewContentModeCenter;
                 self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+                [self.lbl_photoby setHidden:YES];
             }
         }
         
-    }
-    
-    // Update unread flag
-    if ([caption.hasseen boolValue] == YES) {
-        [self.iv_unreadCaptionBadge setHidden:YES];
+        self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
+        [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
+        [self.btn_illustratedBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
     }
     else {
-        // show the unread badge 
-        [self.iv_unreadCaptionBadge setHidden:NO];
+        [self.lbl_downloading setHidden:NO];
+        [self.lbl_downloading setText:@"This draft is unillustrated! Go ahead, add one..."];
+        [self.lbl_photoby setHidden:YES];
+        [self.btn_illustratedBy setHidden:YES];
     }
-    
-    // reset labels to defualt values
-    self.lbl_numVotes.text = @"0";
-    //self.lbl_numCaptions.text = @"0";
-    self.lbl_caption.textColor = [UIColor darkGrayColor];
-    self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
-    
-    
-    //let us render the caption here
-    self.lbl_caption.textColor = [UIColor blackColor];
-    self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-    self.lbl_numVotes.text = [caption.numberofvotes stringValue];
-  //  self.lbl_numCaptions.text = [photo.numberofcaptions stringValue];
-    
-    
-
-    
-    self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
-    [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
-    [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
-    
-    self.lbl_photoby.text = [NSString stringWithFormat:@"- illustrated by"];
-    [self.btn_illustratedBy renderWithObjectID:photo.creatorid withName:photo.creatorname];
-    
-    [self.btn_illustratedBy setTitle:[NSString stringWithFormat:@"%@",photo.creatorname] forState:UIControlStateNormal];
     
     [self setNeedsDisplay];
 }
@@ -225,9 +245,13 @@
     self.captionID = nil;
     self.draftTableViewCell = nil;
     self.iv_photo = nil;
+    self.iv_photoFrame = nil;
+    self.lbl_downloading = nil;
     self.lbl_caption = nil;
+    self.lbl_photoby = nil;
+    self.lbl_captionby = nil;
     self.lbl_numVotes = nil;
-  //  self.lbl_numCaptions = nil;
+    self.iv_unreadCaptionBadge = nil;
     self.btn_illustratedBy = nil;
     self.btn_writtenBy = nil;
     
@@ -249,6 +273,7 @@
             LOG_IMAGE(0,@"%@settings UIImage object equal to downloaded response",activityName);
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            [self.lbl_downloading setHidden:YES];
             
             if (self.cellType == kDRAFTTABLEVIEWCELL_TOP) {
                 [self displayPhotoFrameOnImage:response.image];
@@ -262,6 +287,7 @@
         // show the photo placeholder icon
         [self.iv_photo setContentMode:UIViewContentModeCenter];
         self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+        [self.lbl_downloading setHidden:YES];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 

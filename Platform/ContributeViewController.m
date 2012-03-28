@@ -862,7 +862,7 @@
     NSNumber* heartbeat = [NSNumber numberWithInt:5];
     self.idEnumerator = nil;
     
-    //we need to construc tthe appropriate success, failure and progress messages for the submission
+    //we need to construc the appropriate success, failure and progress messages for the submission
     NSString* failureMessage = [self failureMessage];
     NSString* successMessage = [self successMessage];
     NSArray* progressMessage = [self progressMessages];

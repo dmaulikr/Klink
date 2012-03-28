@@ -36,6 +36,7 @@
 @synthesize lbl_title           = m_lbl_title;
 @synthesize iv_photo            = m_iv_photo;
 @synthesize iv_photoFrame       = m_iv_photoFrame;
+@synthesize lbl_downloading     = m_lbl_downloading;
 @synthesize lbl_caption         = m_lbl_caption;
 @synthesize lbl_photoby         = m_lbl_photoby;
 @synthesize lbl_captionby       = m_lbl_captionby;
@@ -192,9 +193,16 @@
         
         // page caption
         if (caption != nil) {
-            self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
-            self.lbl_captionby.text = [NSString stringWithFormat:@"- written by "];
-            [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
+            if (caption.caption1 == nil || [caption.caption1 isEqualToString:@""] || [caption.caption1 isEqualToString:@" "]) {
+                [self.lbl_caption setHidden:YES];
+                [self.lbl_captionby setHidden:YES];
+                [self.btn_writtenBy setHidden:YES];
+            }
+            else {
+                self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];\
+                self.lbl_captionby.text = [NSString stringWithFormat:@"- written by "];
+                [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
+            }
         }
         else {
             [self.lbl_caption setHidden:YES];
@@ -225,15 +233,20 @@
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
                 
+                [self.lbl_downloading setHidden:YES];
+                
                 [self.lbl_photoby setHidden:NO];
                 
                 [self displayPhotoFrameOnImage:image];
+            }
+            else {
+                [self.lbl_downloading setHidden:NO];
             }
         }
         else {
             self.iv_photo.contentMode = UIViewContentModeCenter;
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
-            
+            [self.lbl_downloading setText:@"This page was unillustrated"];
             [self.lbl_photoby setHidden:YES];
         }
         
@@ -269,6 +282,7 @@
     self.iv_openBookPageImage = nil;
     self.iv_photo = nil;
     self.iv_photoFrame = nil;
+    self.lbl_downloading = nil;
     self.btn_homeButton = nil;
     self.btn_tableOfContentsButton = nil;
     self.btn_zoomOutPhoto = nil;
@@ -378,6 +392,8 @@
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             
+            [self.lbl_downloading setHidden:YES];
+            
             [self displayPhotoFrameOnImage:response.image];
             [self.view setNeedsDisplay];
             
@@ -390,7 +406,9 @@
         //self.iv_photo.backgroundColor = [UIColor redColor];
         // show the photo placeholder icon
         [self.iv_photo setContentMode:UIViewContentModeCenter];
-        self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+        [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"icon-pics2-large.png"] waitUntilDone:NO];
+        //self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+        [self.lbl_downloading setHidden:YES];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
     }
 
