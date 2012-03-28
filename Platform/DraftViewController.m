@@ -672,6 +672,11 @@
         caption.hasseen = [NSNumber numberWithBool:YES];
     }
     
+    //we should recompute the total of value of unread captions 
+    //on the page
+    Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    page.numberofunreadcaptions = [NSNumber numberWithInt:[page calculateNumberOfUnreadCaptions]];
+    
     //save the change locally
     [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     

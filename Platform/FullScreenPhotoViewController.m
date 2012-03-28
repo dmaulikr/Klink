@@ -365,6 +365,9 @@
     // mark the caption as read if it has not been already
     if ([caption.hasseen boolValue] == NO) {
         caption.hasseen = [NSNumber numberWithBool:YES];
+        //also mark the page
+        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+        page.numberofunreadcaptions  =[NSNumber numberWithInt:[page calculateNumberOfUnreadCaptions]];
         
         //save the change
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];

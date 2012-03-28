@@ -107,3 +107,4 @@ extern NSString* const FOLLOWERIMAGEURL;
 extern NSString* const USERIMAGEURL;
 extern NSString* const FINISHEDILLUSTRATORID;
 extern NSString* const FINISHEDWRITERID;
+extern NSString* const NUMBEROFUNREADCAPTIONS;

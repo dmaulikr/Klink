@@ -173,7 +173,7 @@
         self.lbl_draftTitle.text =  draft.displayname;
        
         // Update caption count labels
-        [self updateCaptionCountLabels];
+       [self updateCaptionCountLabels];
         
         Photo* topPhoto = [draft photoWithHighestVotes];
         self.topVotedPhotoID = topPhoto.objectid;

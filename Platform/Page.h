@@ -37,12 +37,13 @@
 @property (nonatomic,retain) NSNumber* topvotedcaptionid;
 @property (nonatomic,retain) NSNumber* finishedwriterid;
 @property (nonatomic,retain) NSNumber* finishedillustratorid;
-
+@property (nonatomic,retain) NSNumber* numberofunreadcaptions;
 
 - (NSArray*) hashtagList;
 - (Photo*) photoWithHighestVotes;
 - (Caption*) captionWithHighestVotes;
 - (int) numberOfUnreadCaptions;
+- (int) calculateNumberOfUnreadCaptions;
 
 - (void) updateCaptionWithHighestVotes;
 - (void) updateCaptionWithHighestVotes:(Caption*)caption;

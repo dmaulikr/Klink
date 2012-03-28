@@ -97,6 +97,7 @@
         <attribute name="numberofflags" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="numberofphotos" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="numberofpublishvotes" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="numberofunreadcaptions" optional="YES" attributeType="Integer 64" defaultValueString="-1" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="thumbnailurl" optional="YES" attributeType="String"/>
         <attribute name="topvotedcaptionid" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -185,7 +186,7 @@
         <element name="caption" positionX="-171" positionY="666" width="128" height="180"/>
         <element name="feed" positionX="367" positionY="576" width="128" height="180"/>
         <element name="follow" positionX="-216" positionY="-342" width="128" height="135"/>
-        <element name="page" positionX="259" positionY="-306" width="128" height="300"/>
+        <element name="page" positionX="259" positionY="-306" width="173" height="300"/>
         <element name="photo" positionX="-216" positionY="72" width="128" height="240"/>
         <element name="poll" positionX="-11" positionY="-180" width="128" height="135"/>
         <element name="request" positionX="340" positionY="90" width="128" height="165"/>

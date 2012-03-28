@@ -38,7 +38,7 @@
 @dynamic topvotedcaptionid;
 @dynamic finishedwriterid;
 @dynamic finishedillustratorid;
-
+@dynamic numberofunreadcaptions;
 
 #pragma mark - Instance Methods
 - (NSArray*) hashtagList {
@@ -128,7 +128,27 @@
 }
 
 //returns the number of unread Captions in the store
-- (int) numberOfUnreadCaptions {
+- (int) numberOfUnreadCaptions 
+{
+  //  NSString* activityName = @"Page.numberOfUnreadCaptions:";
+    if ([self.numberofunreadcaptions intValue] == -1) 
+    {
+        int numberOfUnReadCaptions = [self calculateNumberOfUnreadCaptions];
+        ResourceContext* resourceContext = [ResourceContext instance];
+       // int numberOfUnReadCaptions = [self.numberofcaptions intValue];
+        self.numberofunreadcaptions = [NSNumber numberWithInt:numberOfUnReadCaptions];
+        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+        return [self.numberofunreadcaptions intValue];
+    }
+    else 
+    {
+        //in this leg we just return the cached value and do not recompute it
+        return [self.numberofunreadcaptions intValue];
+    }
+}
+
+- (int) calculateNumberOfUnreadCaptions
+{
     ResourceContext* resourceContext = [ResourceContext instance];
     NSArray* valuesArray = [NSArray arrayWithObjects:[self.objectid stringValue], [NSNumber numberWithBool:NO], nil];
     NSArray* attributesArray = [NSArray arrayWithObjects:PAGEID, HASSEEN, nil];
