@@ -510,6 +510,7 @@
         
         bookViewController.shouldOpenBookCover = NO;
         bookViewController.shouldOpenToSpecificPage = YES;
+        bookViewController.shouldOpenToLastPage = NO;
         bookViewController.shouldOpenToTitlePage = NO;
         bookViewController.shouldAnimatePageTurn = NO;
         

@@ -148,8 +148,10 @@
     //CloudEnumerator* pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     //[pageCloudEnumerator enumerateUntilEnd:nil];
     
-    // Launch the BookView home page
+    // Launch the BookView to the last page
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+    bookViewController.shouldOpenToLastPage = YES;
+    
     self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
     
     self.window.rootViewController = self.navigationController;

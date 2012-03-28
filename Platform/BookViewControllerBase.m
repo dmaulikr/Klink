@@ -42,7 +42,9 @@
 @synthesize shouldCloseBookCover   = m_shouldCloseBookCover;
 @synthesize shouldOpenToTitlePage  = m_shouldOpenToTitlePage;
 @synthesize shouldOpenToSpecificPage = m_shouldOpenToSpecificPage;
+@synthesize shouldOpenToLastPage   = m_shouldOpenToLastPage;
 @synthesize shouldAnimatePageTurn  = m_shouldAnimatePageTurn;
+@synthesize tempLastViewedPage     = m_tempLastViewedPage;
 
 #define kENUMERATIONTHRESHOLD   1
 
@@ -540,6 +542,31 @@
 }
 
 #pragma mark - Render Page from BookPageViewController
+- (void)savePageIndex:(int)index {
+    if (self.userID == nil) {
+        //we only save the last viewed page if we are not in a user specific book
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:index forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+    }
+    else {
+        //we temporarily store the last viewed page index for user specific books
+        self.tempLastViewedPage = index;
+    }
+}
+
+- (int)getLastViewedPageIndex {
+    if (self.userID == nil) {
+        //we only check the user default settings for the last page of the book the user viewed if we are not in a user specific book
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        int lastViewedPublishedPageIndex = [userDefaults integerForKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+        return lastViewedPublishedPageIndex;
+    }
+    else {
+        //return the temporary stored value of the last viewed page for user specific books
+        return self.tempLastViewedPage;
+    }
+}
+
 - (void)renderPage {
     
 }
@@ -756,6 +783,7 @@
         pageViewInstance.shouldOpenBookCover = YES;
         pageViewInstance.shouldOpenToTitlePage = YES;
         pageViewInstance.shouldOpenToSpecificPage = NO;
+        pageViewInstance.shouldOpenToLastPage = NO;
         pageViewInstance.shouldAnimatePageTurn = NO;
         [pageViewInstance autorelease];
         return pageViewInstance;
@@ -770,6 +798,7 @@
         leavesInstance.shouldOpenBookCover = YES;
         leavesInstance.shouldOpenToTitlePage = YES;
         leavesInstance.shouldOpenToSpecificPage = NO;
+        leavesInstance.shouldOpenToLastPage = NO;
         leavesInstance.shouldAnimatePageTurn = NO;
         [leavesInstance autorelease];
         return leavesInstance;
@@ -782,6 +811,7 @@
     vc.shouldOpenBookCover = YES;
     vc.shouldOpenToTitlePage = NO;
     vc.shouldOpenToSpecificPage = YES;
+    vc.shouldOpenToLastPage = NO;
     vc.shouldAnimatePageTurn = YES;
     return vc;
 }
@@ -792,6 +822,7 @@
     vc.shouldOpenBookCover = YES;
     vc.shouldOpenToTitlePage = YES;
     vc.shouldOpenToSpecificPage = NO;
+    vc.shouldOpenToLastPage = NO;
     vc.shouldAnimatePageTurn = YES;
     return vc;
 }
@@ -803,6 +834,7 @@
     vc.shouldOpenBookCover = YES;
     vc.shouldOpenToTitlePage = NO;
     vc.shouldOpenToSpecificPage = YES;
+    vc.shouldOpenToLastPage = NO;
     vc.shouldAnimatePageTurn = YES;
     return vc;
 }

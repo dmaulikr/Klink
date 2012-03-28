@@ -191,6 +191,15 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - Page Index Methods
+- (void)savePageIndex:(int)index {
+    [super savePageIndex:index];
+}
+
+- (int)getLastViewedPageIndex {
+    return [super getLastViewedPageIndex];
+}
+
 
 #pragma mark - LeavesViewController Delegate Methods (for iOS 3-4x)
 - (NSUInteger) numberOfPagesInLeavesView:(LeavesView*)leavesView {
@@ -214,9 +223,14 @@
         // Do nothing, we are turning to the last placeholder page
     }
     else {
-        if (index < self.leavesView.currentPageIndex) {
+        if (index == leavesView.currentPageIndex) {
             // paging backwards, need to make sure view reloads
             self.shouldOpenToSpecificPage = YES;
+            
+            int publishedPageIndex = index - 1;  // 1 is subtracted from the index to account for the title page which is not in the frc
+            
+            Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
+            self.pageID = page.objectid;
         }
         
         index--;    // we need to subtract one from the index to account for the title page which is not in the frc
@@ -264,8 +278,6 @@
         [self showControls];
         [self hideControlsAfterDelay:2.5];
         
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        
         if (publishedPageCount != NSNotFound && index != NSNotFound) {
             
             NSUInteger publishedPageIndex = index - 1;  // 1 is subtracted from the index to account for the title page which is not in the frc
@@ -284,17 +296,17 @@
                 self.topVotedCaptionID = caption.objectid;
                 
                 // we update the userDefault setting for the last page viewed by the user
-                [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                [self savePageIndex:publishedPageIndex];
                 
                 // mark this page as the page that the book should open to
                 self.shouldOpenToSpecificPage = YES;
             }
             else {
-                [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                [self savePageIndex:0];
             }
         }
         else {
-            [userDefaults setInteger:(0) forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+            [self savePageIndex:0];
         }
     }
 }
@@ -411,13 +423,20 @@
     int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
     
     // we check the user default settings for the last page of the book the user viewed
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSInteger lastViewedPublishedPageIndex = [userDefaults integerForKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+    int lastViewedPublishedPageIndex = [self getLastViewedPageIndex];
     
     int indexForPage = 0;
     
     // check to determine which page to render first
-    if (self.shouldOpenToTitlePage) {
+    if (self.shouldOpenToLastPage) {
+        // cancel further opening to the last page
+        self.shouldOpenToLastPage = NO;
+        
+        // go to last page immidiately
+        indexForPage = publishedPageCount;
+        [self setCurrentPageIndex:indexForPage];
+    }
+    else if (self.shouldOpenToTitlePage) {
         // go to title page immidiately
         indexForPage = 0;
         [self setCurrentPageIndex:indexForPage];
@@ -433,8 +452,7 @@
                 indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
                 
                 // we update the userDefault setting for the last page viewed by the user to be this page
-                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                [self savePageIndex:publishedPageIndex];
                 
                 [self setCurrentPageIndex:indexForPage];
             }
@@ -465,8 +483,7 @@
                 indexForPage = publishedPageIndex + 1;  // we add 1 to the index to account for the title page of the book which is not in the frc
                 
                 // we update the userDefault setting for the last page viewed by the user to be this page
-                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setInteger:publishedPageIndex forKey:setting_LASTVIEWEDPUBLISHEDPAGEINDEX];
+                [self savePageIndex:publishedPageIndex];
                 
                 [self setCurrentPageIndex:indexForPage];
             }
@@ -557,6 +574,9 @@
 {
     [super viewDidUnload];
     
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+    
     self.btn_writtenBy = nil;
     self.btn_illustratedBy = nil;
     self.btn_readButton = nil;
@@ -572,9 +592,6 @@
 		[self.controlVisibilityTimer invalidate];
 		self.controlVisibilityTimer = nil;
 	}
-    
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -734,9 +751,9 @@
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
-    //NSDictionary* userInfo = result.response;
-    //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
-    //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    NSDictionary* userInfo = result.response;
+    NSNumber* draftID = [userInfo valueForKey:kPAGEID];
+    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
     /*int count = [[self.frc_published_pages fetchedObjects]count];
     int nextPageIndex = self.leavesView.currentPageIndex;
@@ -776,9 +793,21 @@
         }
     }*/
     
-    [self.leavesView reloadData];
+    Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:self.leavesView.currentPageIndex];
+    
+    //[self.leavesView reloadData];
+    [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];
     
     [self renderPage];
+    //[self performSelectorOnMainThread:@selector(renderPage) withObject:nil waitUntilDone:NO];
+    
+    
+    /*Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:self.leavesView.currentPageIndex];
+    if ([draftID isEqualToNumber:page.objectid]) {
+        [self.leavesView reloadData];
+        
+        [self renderPage];
+    }*/
     
 }
 
@@ -821,9 +850,11 @@
     
     if (enumerator == self.pageCloudEnumerator) {
         if ([results count] > 0) {
-            [self.leavesView reloadData];
+            //[self.leavesView reloadData];
+            [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];
             
             [self renderPage];
+            //[self performSelectorOnMainThread:@selector(renderPage) withObject:nil waitUntilDone:NO];
         }
     }
     
@@ -840,6 +871,7 @@
     // by default the book should always open to the title page on first load
     instance.shouldOpenToTitlePage = YES;
     instance.shouldOpenToSpecificPage = NO;
+    instance.shouldOpenToLastPage = NO;
     instance.shouldAnimatePageTurn = NO;
     [instance autorelease];
     return instance;
@@ -850,6 +882,7 @@
     vc.pageID = pageID;
     vc.shouldOpenToTitlePage = NO;
     vc.shouldOpenToSpecificPage = YES;
+    vc.shouldOpenToLastPage = NO;
     vc.shouldAnimatePageTurn = YES;
     return vc;
 }

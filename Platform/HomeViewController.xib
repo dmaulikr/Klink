@@ -112,7 +112,7 @@
 					<object class="IBUIImageView" id="189128830">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{145, 375}, {30, 30}}</string>
+						<string key="NSFrame">{{145, 380}, {30, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1022489482"/>
@@ -128,7 +128,7 @@
 					<object class="IBUILabel" id="433573812">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{32, 401}, {256, 21}}</string>
+						<string key="NSFrame">{{32, 406}, {256, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="189128830"/>
@@ -164,7 +164,7 @@
 					</object>
 					<object class="IBUILabel" id="1022489482">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{32, 414}, {256, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -190,16 +190,17 @@
 					<object class="IBUILabel" id="601390554">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{32, 427}, {256, 21}}</string>
+						<string key="NSFrame">{{32, 422}, {256, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">worldwide</string>
+						<string key="IBUIText">Blue Label Labs</string>
 						<reference key="IBUITextColor" ref="774697434"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="690742783"/>

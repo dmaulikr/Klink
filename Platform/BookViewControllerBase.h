@@ -28,7 +28,10 @@
     BOOL                m_shouldCloseBookCover;
     BOOL                m_shouldOpenToTitlePage;
     BOOL                m_shouldOpenToSpecificPage;
+    BOOL                m_shouldOpenToLastPage;
     BOOL                m_shouldAnimatePageTurn;
+    
+    int                 m_tempLastViewedPage;
     
 }
 
@@ -47,9 +50,15 @@
 @property (nonatomic)                 BOOL                  shouldCloseBookCover;
 @property (nonatomic)                 BOOL                  shouldOpenToTitlePage;
 @property (nonatomic)                 BOOL                  shouldOpenToSpecificPage;
+@property (nonatomic)                 BOOL                  shouldOpenToLastPage;
 @property (nonatomic)                 BOOL                  shouldAnimatePageTurn;
 
+@property (nonatomic)                 int                   tempLastViewedPage;
 
+
+
+- (void)savePageIndex:(int)index;
+- (int)getLastViewedPageIndex;
 - (int) indexOfPageWithID:(NSNumber*)pageid;
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 

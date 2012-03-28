@@ -245,7 +245,7 @@
     }
     
     // set number of contributors label
-    [self updateNumberOfContributorsLabel];
+    //[self updateNumberOfContributorsLabel];
     
     // determine which type of title page to show, default or user specific
     if (self.userID != nil) {
