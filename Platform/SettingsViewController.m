@@ -17,6 +17,7 @@
 #import "UIStrings.h"
 #import "ImageManager.h"
 #import <sys/utsname.h>
+#import "Attributes.h"
 
 @interface SettingsViewController ()
 
@@ -150,10 +151,39 @@
         NSError* error = nil;
         [resourceContext.managedObjectContext save:&error];
         
+        
+        NSString* title = nil;
+        NSString* message = nil;
+        //we need to determine what operation failed
+        
+        
+        Request* request = [progressView.requests objectAtIndex:0];
+        //now we have the request
+        NSArray* changedAttributes = request.changedAttributesList;
+        //list of all changed attributes
+        //we take the first one and base our messaging off that
+        NSString* attributeName = [changedAttributes objectAtIndex:0];
+        
+        
+        if ([attributeName isEqualToString:USERNAME]) 
+        {
+            //username change failed
+            title = @"Change Username";
+            message = [NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.",duplicateUsername];
+        }
+        else if ([attributeName isEqualToString:SHARINGLEVEL])
+        {
+            //seamless sharing change failed
+            // handle fail on change of seamless sharing option
+            self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+            
+        }
+
+        
         // Show the Change Username alert view again
         UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                    initWithTitle:@"Change Username"
-                                    message:[NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.", duplicateUsername]
+                                    initWithTitle:title
+                                    message:[NSString stringWithFormat:message]
                                     delegate:self
                                     cancelButtonTitle:@"Cancel"
                                     otherButtonTitles:@"Change", nil];
@@ -161,11 +191,10 @@
         [alert show];
         [alert release];
         
-        // handle fail on change of seamless sharing option
-        self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-    }
+           }
     
 }
+
 
 #pragma mark - Feedback Mail Helper	
 NSString*	

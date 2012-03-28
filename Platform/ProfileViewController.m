@@ -592,7 +592,8 @@
         // Follow/Unfollow request was successful
         
     }
-    else {
+    else 
+    {
         //we need to undo the operation that was last performed
         LOG_REQUEST(0, @"%@ Rolling back actions due to request failure",activityName);
         ResourceContext* resourceContext = [ResourceContext instance];
@@ -601,15 +602,31 @@
         NSError* error = nil;
         [resourceContext.managedObjectContext save:&error];
         
-        //toggle the state of the follow button back
-        [self.btn_follow setSelected:!self.btn_follow.selected];
-        if (self.btn_follow.selected == YES) {
-            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
-        }
-        else {
-            [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
-        }
         
+        //we need to determine that if this was a photo change or a follow change
+        NSArray* requests = progressView.requests;
+        Request* request = [requests objectAtIndex:0];
+        NSArray* changedAttributes = request.changedAttributesList;
+        NSString* changedAttribute = [changedAttributes objectAtIndex:0];
+        
+        if ([changedAttribute isEqualToString:IMAGEURL] ||
+            [changedAttribute isEqualToString:THUMBNAILURL]) 
+        {
+            //it was a failed attempt to change their picture
+            //we do nothing
+        }
+        else 
+        {
+            //toggle the state of the follow button back
+            
+            [self.btn_follow setSelected:!self.btn_follow.selected];
+            if (self.btn_follow.selected == YES) {
+                [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+            }
+            else {
+                [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+            }
+        }
         [self render];
     }
 }

@@ -108,3 +108,4 @@ extern NSString* const USERIMAGEURL;
 extern NSString* const FINISHEDILLUSTRATORID;
 extern NSString* const FINISHEDWRITERID;
 extern NSString* const NUMBEROFUNREADCAPTIONS;
+extern NSString* const SHARINGLEVEL;
