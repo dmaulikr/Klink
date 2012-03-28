@@ -224,14 +224,21 @@
     }
     else {
         if (index == leavesView.currentPageIndex) {
-            // paging backwards, need to make sure view reloads
+            // paging backwards, need to make sure view reloads to specific page
             self.shouldOpenToSpecificPage = YES;
             self.shouldOpenToLastPage = NO;
+            self.shouldOpenToTitlePage = NO;
             
             int publishedPageIndex = index - 1;  // 1 is subtracted from the index to account for the title page which is not in the frc
             
             Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
             self.pageID = page.objectid;
+        }
+        else {
+            // paging forwards, need to make sure view reloads to specific page
+            self.shouldOpenToSpecificPage = YES;
+            self.shouldOpenToLastPage = NO;
+            self.shouldOpenToTitlePage = NO;
         }
         
         index--;    // we need to subtract one from the index to account for the title page which is not in the frc
