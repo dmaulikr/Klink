@@ -315,6 +315,7 @@
 						<string key="NSFrame">{{110, 427}, {100, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -487,12 +488,13 @@
 					<object class="IBUIButton" id="267883399">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{265, 7}, {30, 30}}</string>
+						<string key="NSFrame">{{260, 2}, {40, 40}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="257990783"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
+						<int key="IBUIContentMode">4</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
@@ -502,11 +504,11 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="957247106"/>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage">
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">book_button_zoomOut_highlighted.png</string>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">book_button_zoomOut.png</string>
 						</object>
@@ -903,7 +905,7 @@
 				<string key="65.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="65.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="70.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="70.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="1" key="70.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="74.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>

@@ -46,7 +46,7 @@
 @synthesize shouldAnimatePageTurn  = m_shouldAnimatePageTurn;
 @synthesize tempLastViewedPage     = m_tempLastViewedPage;
 
-#define kENUMERATIONTHRESHOLD   1
+#define kENUMERATIONTHRESHOLD   0
 
 #pragma mark - Properties
 //this NSFetchedResultsController will query for all published pages
@@ -633,6 +633,8 @@
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+        [self showHUDForBookDownload];
+        
         //this is the first time opening, so we show a welcome message
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
         

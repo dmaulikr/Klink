@@ -226,6 +226,7 @@
         if (index == leavesView.currentPageIndex) {
             // paging backwards, need to make sure view reloads
             self.shouldOpenToSpecificPage = YES;
+            self.shouldOpenToLastPage = NO;
             
             int publishedPageIndex = index - 1;  // 1 is subtracted from the index to account for the title page which is not in the frc
             
@@ -430,7 +431,7 @@
     // check to determine which page to render first
     if (self.shouldOpenToLastPage) {
         // cancel further opening to the last page
-        self.shouldOpenToLastPage = NO;
+        //self.shouldOpenToLastPage = NO;
         
         // go to last page immidiately
         indexForPage = publishedPageCount;
@@ -752,8 +753,8 @@
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
     NSDictionary* userInfo = result.response;
-    NSNumber* draftID = [userInfo valueForKey:kPAGEID];
-    NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
+    //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
+    //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     
     /*int count = [[self.frc_published_pages fetchedObjects]count];
     int nextPageIndex = self.leavesView.currentPageIndex;
@@ -793,7 +794,7 @@
         }
     }*/
     
-    Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:self.leavesView.currentPageIndex];
+    //Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:self.leavesView.currentPageIndex];
     
     //[self.leavesView reloadData];
     [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];

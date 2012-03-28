@@ -184,6 +184,8 @@
         else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
             // we are still showing a regular page view
             
+            self.shouldOpenToLastPage = NO;
+            
             int index = [self indexOfViewController:currentViewController];
             int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];
             
@@ -238,7 +240,12 @@
     // check to determine which page to render first
     if (self.shouldOpenToLastPage) {
         // cancel further opening to the last page
-        self.shouldOpenToLastPage = NO;
+        //self.shouldOpenToLastPage = NO;
+        
+        int publishedPageIndex = publishedPageCount - 1;
+        
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
+        self.pageID = page.objectid;
         
         // go to last page immidiately
         bookPageViewController = [self viewControllerAtIndex:publishedPageCount];

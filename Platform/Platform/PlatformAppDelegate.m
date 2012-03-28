@@ -156,9 +156,11 @@
     if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
         //this is the first time opening, so we show a welcome message
         bookViewController.shouldOpenToLastPage = NO;
+        bookViewController.shouldOpenToTitlePage = YES;
     }
     else {
         bookViewController.shouldOpenToLastPage = YES;
+        bookViewController.shouldOpenToTitlePage = NO;
     }
     
     self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
