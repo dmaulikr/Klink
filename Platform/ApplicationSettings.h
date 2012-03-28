@@ -31,6 +31,7 @@
 //Photo settings
 @property (nonatomic,retain) NSNumber* photo_maxnumtodownload;
 
+
 //Page settings
 @property (nonatomic,retain) NSNumber* page_maxnumtodownload;
 
@@ -54,6 +55,8 @@
 //Follow settings
 @property (nonatomic,retain) NSNumber* follow_maxnumtodownload;
 @property (nonatomic,retain) NSNumber* follow_enumeration_timegap;
+
+
 
 
 
