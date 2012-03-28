@@ -383,7 +383,7 @@
     self.shouldOpenToTitlePage = NO;
     self.shouldAnimatePageTurn = NO;
     
-    /*BookTableOfContentsViewController* bookTableOfContentsViewController;
+    BookTableOfContentsViewController* bookTableOfContentsViewController;
     if (self.userID != nil) {
         bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
     }
@@ -395,7 +395,7 @@
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:navigationController animated:YES];
-    [navigationController release];*/
+    [navigationController release];
 }
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
@@ -496,23 +496,6 @@
 
 
 #pragma mark - Initializers
-- (void)showHUDForBookDownload {
-    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-    UIProgressHUDView* progressView = appDelegate.progressView;
-    progressView.delegate = self;
-    
-    NSNumber* heartbeat = [NSNumber numberWithInt:5];
-    
-    //we need to construc the appropriate success, failure and progress messages for the book download
-    NSString* failureMessage = @"Failed!\nSomeone has an overdue book out.";
-    NSString* successMessage = @"Success!";
-    NSArray* progressMessage = [NSArray arrayWithObjects:@"Downloading Bahndr...", @"Searching Library of Alexandria...", @"Enscribing pages...", @"Breaking for afternoon tea...", @"Binding pages...", nil];
-    
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    
-    [self showDeterminateProgressBarWithMaximumDisplayTime:settings.http_timeout_seconds withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
-}
-
 - (void) commonInit {
     //common setup for the view controller
     NSString* activityName = @"BookViewControllerBase.commonInit";
@@ -538,8 +521,6 @@
             [self.pageCloudEnumerator reset];
             [self.pageCloudEnumerator enumerateUntilEnd:nil];
         }
-        
-        //[self showHUDForBookDownload];
     }
     
 }
@@ -563,6 +544,26 @@
 }
 
 #pragma mark - Render Page from BookPageViewController
+- (void)showHUDForBookDownload {
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    NSNumber* heartbeat = [NSNumber numberWithInt:5];
+    
+    //we need to construc the appropriate success, failure and progress messages for the book download
+    NSString* failureMessage = @"Failed!\nSomeone has an overdue book out.";
+    NSString* successMessage = @"Success!";
+    NSArray* progressMessage = [NSArray arrayWithObjects:@"Downloading pages of Bahndr...", @"Searching Library of Alexandria...", @"Enscribing pages...", @"Breaking for afternoon tea...", @"Binding pages...", nil];
+    
+    //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    //NSNumber* maxDisplayTime = settings.http_timeout_seconds;
+    
+    NSNumber* maxDisplayTime = [NSNumber numberWithInt:5];
+    
+    [self showDeterminateProgressBarWithMaximumDisplayTime:maxDisplayTime withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+}
+
 - (void)savePageIndex:(int)index {
     if (self.userID == nil) {
         //we only save the last viewed page if we are not in a user specific book
@@ -690,7 +691,6 @@
     
     __frc_published_pages = nil;
     self.frc_published_pages = nil;
-    self.userID = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

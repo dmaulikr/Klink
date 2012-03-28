@@ -209,7 +209,7 @@
     NSMutableDictionary* tempDictionary = [[NSMutableDictionary alloc] init];
     NSMutableArray* tempPageSection = [[NSMutableArray alloc] init];
     NSString* pageMonth = nil;
-    NSString* monthKey = @"first";
+    NSString* monthKey = @"Month";
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMMM, YYY"];
     
@@ -217,7 +217,7 @@
         
         pageMonth = [formatter stringFromDate:[DateTimeHelper parseWebServiceDateDouble:page.datepublished]];
         
-        if ([monthKey isEqualToString:@"first"] || [pageMonth isEqualToString:monthKey]) {
+        if ([monthKey isEqualToString:@"Month"] || [pageMonth isEqualToString:monthKey]) {
             [tempPageSection addObject:page];
         }
         else {
@@ -410,10 +410,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if ([self.months count] == 0)
+    if ([self.months count] == 0) {
         return nil;
-    NSString* month = [self.months objectAtIndex:section];
-    return month;
+    }
+    else {
+        NSString* month = [self.months objectAtIndex:section];
+        return month;
+    }
 }
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section 

@@ -14,7 +14,6 @@
 #import "LeavesViewController.h"
 #import "UIResourceLinkButton.h"
 #import "BookLastPageViewController.h"
-#import "BookTableOfContentsViewController.h"
 
 @interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate > {
     

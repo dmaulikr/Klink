@@ -11,7 +11,6 @@
 #import "BookPageViewController.h"
 #import "HomeViewController.h"
 #import "BookLastPageViewController.h"
-#import "BookTableOfContentsViewController.h"
 
 @interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate, HomeViewControllerDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate > {
     

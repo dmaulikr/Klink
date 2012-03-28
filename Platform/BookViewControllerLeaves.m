@@ -433,6 +433,11 @@
         // cancel further opening to the last page
         //self.shouldOpenToLastPage = NO;
         
+        int publishedPageIndex = publishedPageCount - 1;
+        
+        Page* page = [[self.frc_published_pages fetchedObjects]objectAtIndex:publishedPageIndex];
+        self.pageID = page.objectid;
+        
         // go to last page immidiately
         indexForPage = publishedPageCount;
         [self setCurrentPageIndex:indexForPage];
@@ -698,20 +703,6 @@
 
 - (IBAction) onTableOfContentsButtonPressed:(id)sender {
     [super onTableOfContentsButtonPressed:sender];
-    
-    BookTableOfContentsViewController* bookTableOfContentsViewController;
-    if (self.userID != nil) {
-        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstanceWithUserID:self.userID];
-    }
-    else {
-        bookTableOfContentsViewController = [BookTableOfContentsViewController createInstance];
-    }
-    bookTableOfContentsViewController.delegate = self;
-    
-    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookTableOfContentsViewController];
-    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:navigationController animated:YES];
-    [navigationController release];
 }
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
@@ -752,7 +743,7 @@
 
 #pragma mark - Callback Event Handlers
 - (void) onPageViewPhotoDownloaded:(CallbackResult*)result {
-    NSDictionary* userInfo = result.response;
+    //NSDictionary* userInfo = result.response;
     //NSNumber* draftID = [userInfo valueForKey:kPAGEID];
     //NSNumber* photoID = [userInfo valueForKey:kPHOTOID];
     

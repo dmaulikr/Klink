@@ -106,6 +106,7 @@
             self.lbl_caption.textColor = [UIColor blackColor];
             self.lbl_caption.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
             self.lbl_captionby.text = [NSString stringWithFormat:@"- written by "];
+            [self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
             [self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
         }
         

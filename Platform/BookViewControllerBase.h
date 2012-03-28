@@ -11,8 +11,9 @@
 #import "BaseViewController.h"
 #import "CloudEnumerator.h"
 #import "MBProgressHUD.h"
+#import "BookTableOfContentsViewController.h"
 
-@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate > {
+@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate, BookTableOfContentsViewControllerDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*           m_userID; //represents the ID of the user if we are tring to build a book just of a specific user's published pages
