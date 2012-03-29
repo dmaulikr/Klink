@@ -264,6 +264,26 @@
     
 }
 
+- (void) showProfilePicture {
+    //Show profile picture
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
+    
+    if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            self.iv_profilePicture.image = image;
+        }
+    }
+    else {
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    }
+}
+
 - (void) render {
     //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
     if ([self.loggedInUser.objectid longValue] == [self.userID longValue]) {
@@ -307,7 +327,8 @@
     }
     
     //Show profile picture
-    ImageManager* imageManager = [ImageManager instance];
+    [self showProfilePicture];
+    /*ImageManager* imageManager = [ImageManager instance];
     NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
     
     if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
@@ -322,7 +343,7 @@
     else {
         self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
         self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
-    }
+    }*/
     
     [self.btn_numPages setTitle:[self.user.numberofpagespublished stringValue] forState:UIControlStateNormal];
     [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
@@ -593,8 +614,20 @@
     
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     
+    NSArray* requests = progressView.requests;
+    Request* request = [requests objectAtIndex:0];
+    NSArray* changedAttributes = request.changedAttributesList;
+    NSString* changedAttribute = [changedAttributes objectAtIndex:0];
+    
     if (progressView.didSucceed) {
-        // Follow/Unfollow request was successful
+        if ([changedAttribute isEqualToString:IMAGEURL] ||
+            [changedAttribute isEqualToString:THUMBNAILURL]) 
+        {
+            // profile picture change was successful
+            [self showProfilePicture];
+        }
+        
+        // else Follow/Unfollow request was successful
         
     }
     else 
@@ -609,16 +642,11 @@
         
         
         //we need to determine that if this was a photo change or a follow change
-        NSArray* requests = progressView.requests;
-        Request* request = [requests objectAtIndex:0];
-        NSArray* changedAttributes = request.changedAttributesList;
-        NSString* changedAttribute = [changedAttributes objectAtIndex:0];
-        
         if ([changedAttribute isEqualToString:IMAGEURL] ||
             [changedAttribute isEqualToString:THUMBNAILURL]) 
         {
             //it was a failed attempt to change their picture
-            //we do nothing
+            [self showProfilePicture];
         }
         else 
         {

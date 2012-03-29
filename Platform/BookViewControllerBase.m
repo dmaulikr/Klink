@@ -380,6 +380,7 @@
     self.shouldCloseBookCover = NO;
     self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = NO;
+    self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
     
     BookTableOfContentsViewController* bookTableOfContentsViewController;
@@ -402,6 +403,7 @@
     self.shouldCloseBookCover = NO;
     self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = NO;
+    self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
     
     FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
@@ -416,6 +418,7 @@
     self.shouldCloseBookCover = NO;
     self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = NO;
+    self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = YES;
     
 }
@@ -427,6 +430,7 @@
     self.shouldCloseBookCover = YES;
     self.shouldOpenBookCover = YES;
     self.shouldOpenToTitlePage = YES;
+    self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
     
     // navigation to the production log happens after the book is closed
@@ -460,6 +464,7 @@
     self.shouldCloseBookCover = NO;
     self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = YES;
+    self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
     
     //called when the writer's log button is pressed
