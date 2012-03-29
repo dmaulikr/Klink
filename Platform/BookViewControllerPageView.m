@@ -184,7 +184,9 @@
         else if ([currentViewController isKindOfClass:[BookPageViewController class]]) {
             // we are still showing a regular page view
             
+            self.shouldOpenToSpecificPage = YES;
             self.shouldOpenToLastPage = NO;
+            self.shouldOpenToTitlePage = NO;
             
             int index = [self indexOfViewController:currentViewController];
             int publishedPageCount = [[self.frc_published_pages fetchedObjects]count];

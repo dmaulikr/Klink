@@ -100,8 +100,8 @@
             [self renderProfilePicWithImageURL:follow.userimageurl];
             
             //set the appropriate state for the follow button
-            if ([loggedInUserID longValue] != [follow.userid longValue]) {
-                //this is not the logged in user, show the follow button
+            if ([authenticationManager isUserAuthenticated] && ([loggedInUserID longValue] != [follow.userid longValue])) {
+                //this is not the logged in user, but the user is logged in, show the follow button
                 [self.btn_follow setHidden:NO];
                 
                 if (![Follow doesFollowExistFor:follow.userid withFollowerID:loggedInUserID]) {
@@ -115,7 +115,7 @@
                     [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
                 }
             } else {
-                //this is the logged in user, hide the follow button
+                //this is the logged in user, or the user is not logged in, hide the follow button
                 [self.btn_follow setHidden:YES];
             }
             
@@ -125,8 +125,8 @@
             [self renderProfilePicWithImageURL:follow.followerimageurl];
             
             //set the appropriate state for the follow button
-            if ([loggedInUserID longValue] != [follow.followeruserid longValue]) {
-                //this is not the logged in user, show the follow button
+            if ([authenticationManager isUserAuthenticated] && ([loggedInUserID longValue] != [follow.followeruserid longValue])) {
+                //this is not the logged in user, but the user is logged in, show the follow button
                 [self.btn_follow setHidden:NO];
                 
                 if (![Follow doesFollowExistFor:follow.followeruserid withFollowerID:loggedInUserID]) {
@@ -140,7 +140,7 @@
                     [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
                 }
             } else {
-                //this is the logged in user, hide the follow button
+                //this is the logged in user, or the user is not logged in, hide the follow button
                 [self.btn_follow setHidden:YES];
             }
         }        

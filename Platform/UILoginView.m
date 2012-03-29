@@ -341,7 +341,7 @@
     LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
     
     //show the progress bar
-    [self.parentViewController showProgressBar:@"Getting Facebook data..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimeFacebookLogin]];
+    [self.parentViewController showProgressBar:@"Logging in..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimeFacebookLogin]];
     
     //the user has authorized our app, now we get his user object to complete authentication
     self.fbProfileRequest = [facebook requestWithGraphPath:@"me" andDelegate:self];

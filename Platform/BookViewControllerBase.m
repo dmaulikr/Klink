@@ -521,8 +521,9 @@
             [self.pageCloudEnumerator reset];
             [self.pageCloudEnumerator enumerateUntilEnd:nil];
         }
+        
+        //[self showHUDForBookDownload];
     }
-    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

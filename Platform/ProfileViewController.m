@@ -271,8 +271,8 @@
         self.v_leaderboardContainer.hidden = NO;
         self.v_followControlsContainer.hidden = YES;
     }
-    else {
-        //no it isnt
+    else if ([self.authenticationManager isUserAuthenticated]) {
+        //no it isnt, but the user is logged in
         self.v_leaderboardContainer.hidden = YES;
         self.v_followControlsContainer.hidden = NO;
         
@@ -287,6 +287,11 @@
             [self.btn_follow setSelected:YES];
             [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
         }
+    }
+    else {
+        //user is not logged in
+        self.v_leaderboardContainer.hidden = YES;
+        self.v_followControlsContainer.hidden = YES;
     }
     
     self.lbl_username.text = self.user.username;
