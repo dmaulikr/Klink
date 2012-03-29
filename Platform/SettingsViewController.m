@@ -520,6 +520,10 @@ machineNameSettings()
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 30;
+}
+
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {    
     // Set section title style with typewriter font 
