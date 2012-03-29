@@ -555,8 +555,7 @@
     //we need to construc the appropriate success, failure and progress messages for the book download
     NSString* failureMessage = @"Failed!\nSomeone has an overdue book out.";
     NSString* successMessage = @"Success!";
-    NSArray* progressMessage = [NSArray arrayWithObject:@"Downloading pages of Bahndr..."];
-    //NSArray* progressMessage = [NSArray arrayWithObjects:@"Downloading pages of Bahndr...", @"Searching Library of Alexandria...", @"Enscribing pages...", @"Breaking for afternoon tea...", @"Binding pages...", nil];
+    NSArray* progressMessage = [NSArray arrayWithObjects:@"Downloading pages of Bahndr...", @"Searching Library of Alexandria...", @"Retrieving pages...", @"Breaking for afternoon tea...", @"Binding book...", nil];
     
     //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
     //NSNumber* maxDisplayTime = settings.http_timeout_seconds;

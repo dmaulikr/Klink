@@ -102,7 +102,7 @@ static  AuthenticationManager* sharedManager;
     NSString* activityName = @"AuthenticationManager.fbDidLogin:";
     LOG_SECURITY(0,@"%@%@", activityName,@" completed facebook authentication, beginning download os user profile from Facebook");
     //get the user object
-    [[EventManager instance]raiseShowProgressViewEvent:@"Getting Facebook data" withCustomView:nil withMaximumDisplayTime:nil];
+    [[EventManager instance]raiseShowProgressViewEvent:@"Logging in..." withCustomView:nil withMaximumDisplayTime:nil];
     
     PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     Facebook* facebook = appDelegate.facebook;
