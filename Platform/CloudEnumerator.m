@@ -454,13 +454,13 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     if (page == nil || !hasDownloadedBook) {
         //in this case we dont have any pages
         query = [Query queryPages];
-         queryOptions.primary_results_sortascending = YES;
+         
     }
    else {
         query = [Query queryPages:page.datepublished];
     }
-    
-    //enumerationContext.maximumNumberOfResults  = [NSNumber numberWithInt:10];
+    queryOptions.primary_results_sortascending = NO;
+    enumerationContext.maximumNumberOfResults  = [NSNumber numberWithInt:10];
     queryOptions.maxlinksreturnedperobject = 5;
    
 

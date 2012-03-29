@@ -833,9 +833,9 @@
 
 - (void) hudWasHidden:(MBProgressHUD *)hud
 {
-    [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];
-    
-    [self renderPage];
+//    [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];
+//    
+//    [self renderPage];
     [super hudWasHidden:hud];
 }
 
