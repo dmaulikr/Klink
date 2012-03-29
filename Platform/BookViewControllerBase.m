@@ -550,7 +550,7 @@
     UIProgressHUDView* progressView = appDelegate.progressView;
     progressView.delegate = self;
     
-    NSNumber* heartbeat = [NSNumber numberWithInt:5];
+    NSNumber* heartbeat = [NSNumber numberWithInt:10];
     
     //we need to construc the appropriate success, failure and progress messages for the book download
     NSString* failureMessage = @"Failed!\nSomeone has an overdue book out.";
@@ -561,7 +561,7 @@
     //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
     //NSNumber* maxDisplayTime = settings.http_timeout_seconds;
     
-    NSNumber* maxDisplayTime = [NSNumber numberWithInt:5];
+    NSNumber* maxDisplayTime = [NSNumber numberWithInt:25];
     
     [self showDeterminateProgressBarWithMaximumDisplayTime:maxDisplayTime withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
 }

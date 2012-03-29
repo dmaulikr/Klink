@@ -838,6 +838,14 @@
     }
 }
 
+- (void) hudWasHidden:(MBProgressHUD *)hud
+{
+    [self.leavesView performSelectorInBackground:@selector(reloadData) withObject:nil];
+    
+    [self renderPage];
+    [super hudWasHidden:hud];
+}
+
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 

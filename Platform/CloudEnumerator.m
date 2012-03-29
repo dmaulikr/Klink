@@ -447,17 +447,23 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     BOOL hasDownloadedBook = [defaults boolForKey:setting_HASDOWNLOADEDBOOK];
     
     Query* query = nil;
+    QueryOptions* queryOptions = [QueryOptions queryForPages];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForPages];
+    
     
     if (page == nil || !hasDownloadedBook) {
         //in this case we dont have any pages
         query = [Query queryPages];
+        
     }
-    else {
+   else {
         query = [Query queryPages:page.datepublished];
     }
     
-    QueryOptions* queryOptions = [QueryOptions queryForPages];
-    EnumerationContext* enumerationContext = [EnumerationContext contextForPages];
+    enumerationContext.maximumNumberOfResults  = [NSNumber numberWithInt:10];
+    queryOptions.maxlinksreturnedperobject = 5;
+    queryOptions.primary_results_sortascending = NO;
+
     query.queryOptions = queryOptions;
     
     CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
