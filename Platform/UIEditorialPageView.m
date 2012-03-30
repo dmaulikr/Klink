@@ -37,6 +37,7 @@
 @synthesize lbl_draftTitle = m_lbl_draftTitle;
 @synthesize iv_photo = m_iv_photo;
 @synthesize iv_photoFrame = m_iv_photoFrame;
+@synthesize lbl_downloading = m_lbl_downloading;
 @synthesize lbl_caption = m_lbl_caption;
 @synthesize lbl_photoby = m_lbl_photoby;
 @synthesize lbl_captionby = m_lbl_captionby;
@@ -105,12 +106,15 @@
                 self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
                 self.iv_photo.image = image;
                 
+                [self.lbl_downloading setHidden:YES];
+                
                 [self displayPhotoFrameOnImage:image];
             }
         }
         else {
             self.iv_photo.contentMode = UIViewContentModeCenter;
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+            [self.lbl_downloading setHidden:YES];
         }
     }
     
@@ -232,7 +236,7 @@
     self.lbl_caption = nil;
     self.lbl_captionby = nil;
     self.lbl_photoby = nil;
-    
+    self.lbl_downloading = nil;
     self.v_publishedVotesView = nil;
     self.lbl_numPublishedVotes = nil;
     self.iv_publishedStamp = nil;
@@ -256,6 +260,8 @@
             [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             
+            [self.lbl_downloading setHidden:YES];
+            
             [self displayPhotoFrameOnImage:response.image];
             
             [self setNeedsDisplay];
@@ -264,6 +270,7 @@
     else {
         //self.iv_photo.backgroundColor = [UIColor redColor];
         // show the photo placeholder icon
+        [self.lbl_downloading setHidden:YES];
         [self.iv_photo setContentMode:UIViewContentModeCenter];
         self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         LOG_IMAGE(1,@"%@Image failed to download",activityName);
