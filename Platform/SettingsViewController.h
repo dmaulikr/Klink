@@ -20,6 +20,7 @@
     UITableViewCell*    m_tc_changeUsernameTableViewCell;
     UITableViewCell*    m_tc_logoutTableViewCell;
     UITableViewCell*    m_tc_emailTableViewCell;
+    UITableViewCell*    m_tc_inviteTableViewCell;
     UITableViewCell*    m_tc_facebookSwitchTableViewCell;
     UILabel*            m_lbl_facebookTableViewCellLabel;
     UISwitch*           m_sw_seamlessFacebookSharing;
@@ -31,6 +32,7 @@
 @property (nonatomic, retain) IBOutlet UITableViewCell*     tc_changeUsernameTableViewCell;
 @property (nonatomic, retain) IBOutlet UITableViewCell*     tc_logoutTableViewCell;
 @property (nonatomic, retain) IBOutlet UITableViewCell*     tc_emailTableViewCell;
+@property (nonatomic, retain) IBOutlet UITableViewCell*     tc_inviteTableViewCell;
 @property (nonatomic, retain) IBOutlet UITableViewCell*     tc_facebookSwitchTableViewCell;
 @property (nonatomic, retain) IBOutlet UILabel*             lbl_facebookTableViewCellLabel;
 @property (nonatomic, retain) IBOutlet UISwitch*            sw_seamlessFacebookSharing;

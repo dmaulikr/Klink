@@ -29,6 +29,7 @@
 @synthesize tc_changeUsernameTableViewCell  = m_tc_changeUsernameTableViewCell;
 @synthesize tc_logoutTableViewCell          = m_tc_logoutTableViewCell;
 @synthesize tc_emailTableViewCell           = m_tc_emailTableViewCell;
+@synthesize tc_inviteTableViewCell          = m_tc_inviteTableViewCell;
 @synthesize tc_facebookSwitchTableViewCell  = m_tc_facebookSwitchTableViewCell;
 @synthesize lbl_facebookTableViewCellLabel  = m_lbl_facebookTableViewCellLabel;
 @synthesize sw_seamlessFacebookSharing      = m_sw_seamlessFacebookSharing;
@@ -80,7 +81,6 @@
     
     
     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
-    
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -99,6 +99,7 @@
     self.tc_changeUsernameTableViewCell = nil;
     self.tc_logoutTableViewCell = nil;
     self.tc_emailTableViewCell = nil;
+    self.tc_inviteTableViewCell = nil;
     self.tc_facebookSwitchTableViewCell = nil;
     self.lbl_facebookTableViewCellLabel = nil;
     self.sw_seamlessFacebookSharing = nil;
@@ -219,8 +220,24 @@ machineNameSettings()
     NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bahndr.com", nil];
     [picker setToRecipients:toRecipients];
     
-    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.\n\n--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
-    [picker setMessageBody:messageHeader isHTML:NO];
+    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.<br><br>--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
+    [picker setMessageBody:messageHeader isHTML:YES];
+    
+    // Present the mail composition interface
+    [self presentModalViewController:picker animated:YES];
+    [picker release]; // Can safely release the controller now.
+}
+
+- (void)composeInviteMail {
+    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+    // Set the email subject
+    [picker setSubject:[NSString stringWithFormat:@"Start %@ing with me!", appName]];
+    
+    NSString *messageHeader = [NSString stringWithFormat:@"I've just started using this new app called %@. I think you'll find it interesting. You should download it and start %@ing with me.<br><br><a href='http://bit.ly/yzgdw3'>Download Bahndr from the AppStore</a><br><br>%@", appName, appName, self.user.displayname];
+    [picker setMessageBody:messageHeader isHTML:YES];
     
     // Present the mail composition interface
     [self presentModalViewController:picker animated:YES];
@@ -303,7 +320,7 @@ machineNameSettings()
     }
     else if (section == 1) {
         // Feedback section
-        return 1;
+        return 2;
     }
     else if (section == 2) {
         // Facebook section
@@ -393,14 +410,37 @@ machineNameSettings()
     }
     else if (indexPath.section == 1) {
         // Feedback section
-        static NSString *CellIdentifier = @"Email";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
-        if (cell == nil) {
-            cell = self.tc_emailTableViewCell;
+        if (indexPath.row == 0) {
+            static NSString *CellIdentifier = @"Email";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                cell = self.tc_emailTableViewCell;
+            }
+            
+            return cell;
         }
-        
-        return cell;
+        else if (indexPath.row == 1) {
+            static NSString *CellIdentifier = @"Invite";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                cell = self.tc_inviteTableViewCell;
+            }
+            
+            return cell;
+        }
+        else {
+            static NSString *CellIdentifier = @"Cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            }
+            
+            return cell;
+        }
     }
     else if (indexPath.section == 2) {
         // Facebook section
@@ -510,7 +550,13 @@ machineNameSettings()
     }
     else if (indexPath.section == 1) {
         // Feedback section
-        [self composeFeedbackMail];
+        
+        if (indexPath.row == 0) {
+            [self composeFeedbackMail];
+        }
+        else {
+            [self composeInviteMail];
+        }
     }
     else {
         // Facebook section
@@ -519,7 +565,7 @@ machineNameSettings()
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30;
+    return 32;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
