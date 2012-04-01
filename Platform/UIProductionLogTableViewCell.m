@@ -186,7 +186,7 @@
                                        selector:@selector(timeRemaining:)
                                        userInfo:nil
                                         repeats:YES];
-        [self timeRemaining:nil];
+        [self timeRemaining:self.deadlineTimer];
     
     }
     [self setNeedsDisplay];
@@ -195,12 +195,14 @@
 - (void) renderDraftWithID:(NSNumber*)pageID {
     self.pageID = pageID;
     
+    // reset defalts
     self.topVotedPhotoID = nil;
     self.deadline = nil;
     self.lbl_draftTitle.text = nil;
     //self.lbl_numPhotos.text = nil;
     self.lbl_numCaptions.text = nil;
     self.btn_unreadCaptionsBadge.titleLabel.text = nil;
+    [self.btn_unreadCaptionsBadge setHidden:YES];
     self.lbl_deadline.text = nil;
     self.iv_photo.image = nil;
     

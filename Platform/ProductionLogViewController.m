@@ -884,14 +884,14 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
--(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tbl_productionTableView endUpdates];
+/*-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    //[self.tbl_productionTableView endUpdates];
     [self.tbl_productionTableView reloadData];
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tbl_productionTableView beginUpdates];
-}
+    //[self.tbl_productionTableView beginUpdates];
+}*/
 
 
 - (void) controller:(NSFetchedResultsController *)controller 
@@ -967,6 +967,7 @@
 - (void) onNewPhoto:(CallbackResult*)result {
     [self.tbl_productionTableView reloadData];
 }
+
 #define kGCDQueueName   @"com.bluelabellabs.bahndr"
 
 - (void) onNewCaptionVote_Async:(NSNumber*)captionid
