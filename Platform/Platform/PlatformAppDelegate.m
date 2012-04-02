@@ -196,7 +196,7 @@
 - (void) deleteExpiredObjectsOlderThan:(NSNumber*)daysAfterExpiry 
 {
     NSString* activityName = @"PlatformAppDelegate.deleteExpiredObjectsOlderThan:";
-    if (daysAfterExpiry > 0) 
+    if ([daysAfterExpiry intValue] > 0) 
     {
         //we need to calculate the date to query expired objects by
         NSDate* now = [NSDate date];
