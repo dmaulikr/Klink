@@ -432,7 +432,7 @@
     }
     
     if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {
-        // Only enable the Account button for the logged in user
+        // Only enable the Account button and profile picture button for the logged in user
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
                                        initWithTitle:@"Settings"
                                        style:UIBarButtonItemStylePlain
@@ -440,10 +440,14 @@
                                        action:@selector(onAccountButtonPressed:)];
         self.navigationItem.leftBarButtonItem = leftButton;
         [leftButton release];
+        
+        [self.btn_changeProfilePicture setEnabled:YES];
     }
     else {
         self.navigationItem.leftBarButtonItem = nil;
-        // TO DO Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
+        
+        // Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
+        [self.btn_changeProfilePicture setEnabled:NO];
     }
     
 }
