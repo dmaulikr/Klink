@@ -134,10 +134,10 @@
     if ([self.numberofunreadcaptions intValue] == -1) 
     {
         int numberOfUnReadCaptions = [self calculateNumberOfUnreadCaptions];
-        ResourceContext* resourceContext = [ResourceContext instance];
+       // ResourceContext* resourceContext = [ResourceContext instance];
        // int numberOfUnReadCaptions = [self.numberofcaptions intValue];
         self.numberofunreadcaptions = [NSNumber numberWithInt:numberOfUnReadCaptions];
-        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
+        //[resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         return [self.numberofunreadcaptions intValue];
     }
     else 
