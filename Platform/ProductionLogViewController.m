@@ -884,14 +884,14 @@
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate methods
-/*-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    //[self.tbl_productionTableView endUpdates];
-    [self.tbl_productionTableView reloadData];
+-(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tbl_productionTableView endUpdates];
+    //[self.tbl_productionTableView reloadData];
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    //[self.tbl_productionTableView beginUpdates];
-}*/
+    [self.tbl_productionTableView beginUpdates];
+}
 
 
 - (void) controller:(NSFetchedResultsController *)controller 

@@ -93,6 +93,7 @@
 #define LOG_EDITORVOTEVIEWCONTROLLER(...)   do{}while(0)
 #define LOG_APPLICATIONSETTINGSMANAGER(...)   do{}while(0)
 #define LOG_BOOKLASTPAGEVIEWCONTROLLER (...)    do{}while(0)
+#define LOG_PEOPLELISTVIEWCONTROLLER(level, ...)   do{}while(0)
 
 
 
