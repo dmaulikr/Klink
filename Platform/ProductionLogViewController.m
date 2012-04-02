@@ -886,7 +886,7 @@
 #pragma mark - NSFetchedResultsControllerDelegate methods
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_productionTableView endUpdates];
-    //[self.tbl_productionTableView reloadData];
+    [self.tbl_productionTableView reloadData];
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
