@@ -15,8 +15,9 @@
 @interface PutResponse : Response <IJSONSerializable> {
     id      m_modifiedResource;
     NSArray *m_secondaryResults;
+    NSArray* m_consequentialUpdates;
 }
-
+@property (nonatomic,retain) NSArray* consequentialUpdates;
 @property (nonatomic,retain) id         modifiedResource;
 @property (nonatomic,retain) NSArray*   secondaryResults;
 

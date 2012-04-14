@@ -102,5 +102,5 @@ NSString* const FINISHEDILLUSTRATORID   =@"finishedillustratorid";
 NSString* const FINISHEDWRITERID        =@"finishedwriterid";
 NSString* const NUMBEROFUNREADCAPTIONS  =@"numberofunreadcaptions";
 NSString* const SHARINGLEVEL            =@"sharinglevel";
-
+NSString* const CONSEQUENTIALUPDATES    =@"consequentialupdates";
 

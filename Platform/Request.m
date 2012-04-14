@@ -22,6 +22,7 @@
 @synthesize childRequests       = m_childRequests;
 @synthesize parentRequest       = m_parentRequest;
 @synthesize progress            = m_progress;
+@synthesize consequentialUpdates= m_consequentialUpdates;
 @dynamic targetresourceid;
 @dynamic operationcode;
 @dynamic statuscode;
@@ -44,7 +45,7 @@
         self.downloadSize = 0;
         self.downloadedBytes = 0;
         self.parentRequest = nil;
-        
+        self.consequentialUpdates = nil;
         NSMutableArray* cr = [[NSMutableArray alloc]init];
         self.childRequests = cr;
         [cr release];
@@ -74,7 +75,7 @@ withChangedAttributes:(NSArray*)changedAttributes
     self.sentBytes = 0;
     self.downloadSize = 0;
     self.downloadedBytes = 0;
-    
+    self.consequentialUpdates = nil;
     [self setChangedAttributesList:changedAttributes];
     
 //    NSMutableArray* cr = [[NSMutableArray alloc]init];

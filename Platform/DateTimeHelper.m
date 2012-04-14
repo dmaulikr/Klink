@@ -96,12 +96,16 @@
 }
 
 + (NSDate*) parseWebServiceDateDouble:(NSNumber*)datePointer {
-    NSNumberFormatter* f = [[NSNumberFormatter alloc] init];
-    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-    NSNumber* dateInSeconds = [f numberFromString:[datePointer stringValue]];
-    NSDate* retVal  = [[NSDate alloc] initWithTimeIntervalSince1970:[dateInSeconds doubleValue]];
-    [f release];
-    [retVal autorelease];
+//    NSNumberFormatter* f = [[NSNumberFormatter alloc] init];
+//    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+//    NSNumber* dateInSeconds = [f numberFromString:[datePointer stringValue]];
+//    NSDate* retVal  = [[NSDate alloc] initWithTimeIntervalSince1970:[dateInSeconds doubleValue]];
+//    [f release];
+//    [retVal autorelease];
+//    return retVal;
+    
+    
+    NSDate* retVal = [NSDate dateWithTimeIntervalSince1970:[datePointer doubleValue]];
     return retVal;
 }
 

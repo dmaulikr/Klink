@@ -52,6 +52,9 @@ typedef enum {
     
     NSMutableArray* m_childRequests;
     Request*        m_parentRequest;
+    
+    NSArray*        m_consequentialUpdates;
+    
 }
 
 @property (nonatomic,retain) NSDictionary* userInfo;
@@ -72,6 +75,7 @@ typedef enum {
 @property (nonatomic,retain) NSMutableArray*    childRequests;
 @property (nonatomic,retain) Request*           parentRequest;
 @property (nonatomic,retain) NSNumber*  objectid;
+@property (nonatomic,retain) NSArray*   consequentialUpdates;
 
 @property (nonatomic,retain) id<RequestProgressDelegate> delegate;
 

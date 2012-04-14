@@ -14,7 +14,8 @@
 
 @interface DeleteResponse : Response <IJSONSerializable> {
     NSNumber* m_deletedObjectID;
+    NSArray* m_consequentialUpdates;
 }
-
+@property (nonatomic,retain) NSArray* consequentialUpdates;
 @property (nonatomic,retain) NSNumber* deletedObejctID;
 @end

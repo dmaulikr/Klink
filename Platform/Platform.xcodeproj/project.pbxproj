@@ -249,6 +249,7 @@
 		C522FD3D147A5EB400F691A4 /* PollData.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3C147A5EB400F691A4 /* PollData.m */; };
 		C522FD40147A612A00F691A4 /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3F147A612900F691A4 /* Bookmark.m */; };
 		C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */; };
+		C54C3C201536426C005D5475 /* AttributeChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C54C3C1F1536426C005D5475 /* AttributeChange.m */; };
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
 		C554DEF5144CABE000CD6E85 /* PutResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF3144CABE000CD6E85 /* PutResponse.m */; };
@@ -683,6 +684,8 @@
 		C522FD3F147A612900F691A4 /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		C52FB3C914AFCD160048D2C4 /* UIResourceLinkButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIResourceLinkButton.h; sourceTree = "<group>"; };
 		C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIResourceLinkButton.m; sourceTree = "<group>"; };
+		C54C3C1E1536426C005D5475 /* AttributeChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeChange.h; sourceTree = "<group>"; };
+		C54C3C1F1536426C005D5475 /* AttributeChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeChange.m; sourceTree = "<group>"; };
 		C554DEE9144C941900CD6E85 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		C554DEED144CA93C00CD6E85 /* GetAuthenticatorResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAuthenticatorResponse.h; sourceTree = "<group>"; };
 		C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAuthenticatorResponse.m; sourceTree = "<group>"; };
@@ -1625,6 +1628,8 @@
 				C55BF281148C76B8004ED3A8 /* PutAttributeOperation.m */,
 				52BAB48C151CE2C1002EF515 /* DeleteResponse.h */,
 				52BAB48D151CE2C1002EF515 /* DeleteResponse.m */,
+				C54C3C1E1536426C005D5475 /* AttributeChange.h */,
+				C54C3C1F1536426C005D5475 /* AttributeChange.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -2474,6 +2479,7 @@
 				52BAB48E151CE2C1002EF515 /* DeleteResponse.m in Sources */,
 				52BAB4A3151D403B002EF515 /* UIPeopleListTableViewCell.m in Sources */,
 				52BAB4A7151D62B2002EF515 /* ProfileViewController.m in Sources */,
+				C54C3C201536426C005D5475 /* AttributeChange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

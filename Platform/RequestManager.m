@@ -699,6 +699,15 @@ static RequestManager* sharedInstance;
              LOG_REQUEST(0, @"%@ response from cloud did not include any secondary objects, skipping refresh",activityName);
         }
         
+        //we need to process consequential updates
+        if (putResponse.consequentialUpdates != nil)
+        {
+            //we have consequential updates to process
+            //we simply assign them to the original request
+            request.consequentialUpdates = putResponse.consequentialUpdates;
+        }
+        
+        
         //we need to unlock any attachment attributes that are still pending processing
         //on this original request
 //        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
@@ -773,6 +782,14 @@ static RequestManager* sharedInstance;
 	
     if ([deleteResponse.didSucceed boolValue]) {
         LOG_REQUEST(0, @"%@Delete request succeeded",activityName);
+        
+        //we need to process consequential updates
+        if (deleteResponse.consequentialUpdates != nil)
+        {
+            //we have consequential updates to process
+            //we simply assign them to the original request
+            request.consequentialUpdates = deleteResponse.consequentialUpdates;
+        }
     }
     else {
         LOG_REQUEST(1, @"%@Delete request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,deleteResponse.errorMessage);
@@ -806,13 +823,6 @@ static RequestManager* sharedInstance;
         [existingResource refreshWith:newResource];
         
         
-        //we need to unlock the attachment attributes as they were purposely
-        //locked on the submission to prevent them from being overwritten in the r
-        //response
-       // NSArray* attachmentAttributesInRequest = [self attachmentAttributesInRequest:request];
-        
-       // [existingResource unlockAttributes:attachmentAttributesInRequest];
-        
         //we mark all of the attributes that were committed by this Create to the server
         //as being clean, except those which are either locked, or attachment attributes
         for (NSString* attributeName in request.changedAttributesList) {
@@ -827,8 +837,13 @@ static RequestManager* sharedInstance;
         //we now save the changes we made
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
-        //we now process all of the attachment attributes in the Request
-       // [self processAttachmentsForRequest:request];
+        //we need to process consequential updates
+        if (createResponse.consequentialUpdates != nil)
+        {
+            //we have consequential updates to process
+            //we simply assign them to the original request
+            request.consequentialUpdates = createResponse.consequentialUpdates;
+        }
     }
     else {
         LOG_REQUEST(1, @"%@Create request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,createResponse.errorMessage);
