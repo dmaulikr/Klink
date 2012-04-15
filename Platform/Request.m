@@ -14,13 +14,13 @@
 @synthesize onFailCallback      = m_onFailCallback;
 @synthesize onSuccessCallback   = m_onSuccessCallback;
 @synthesize userInfo            = m_userInfo;
-@synthesize downloadSize        = m_downloadSize;
-@synthesize uploadSize          = m_uploadSize;
-@synthesize sentBytes           = m_sentBytes;
-@synthesize downloadedBytes     = m_downloadedBytes;
+//@synthesize downloadSize        = m_downloadSize;
+//@synthesize uploadSize          = m_uploadSize;
+//@synthesize sentBytes           = m_sentBytes;
+//@synthesize downloadedBytes     = m_downloadedBytes;
 @synthesize delegate            = m_delegate;
-@synthesize childRequests       = m_childRequests;
-@synthesize parentRequest       = m_parentRequest;
+//@synthesize childRequests       = m_childRequests;
+//@synthesize parentRequest       = m_parentRequest;
 @synthesize progress            = m_progress;
 @synthesize consequentialUpdates= m_consequentialUpdates;
 @dynamic targetresourceid;
@@ -40,14 +40,14 @@
     self = [super initWithEntity:entity insertIntoManagedObjectContext:resourceContext.managedObjectContext];
     if (self) {
         self.statuscode = [NSNumber numberWithInt:kPENDING];
-        self.downloadSize = 0;
-        self.sentBytes = 0;
-        self.downloadSize = 0;
-        self.downloadedBytes = 0;
-        self.parentRequest = nil;
+    //    self.downloadSize = 0;
+     //   self.sentBytes = 0;
+     //   self.downloadSize = 0;
+     //   self.downloadedBytes = 0;
+     //   self.parentRequest = nil;
         self.consequentialUpdates = nil;
         NSMutableArray* cr = [[NSMutableArray alloc]init];
-        self.childRequests = cr;
+      //  self.childRequests = cr;
         [cr release];
     }
     return self;
@@ -71,10 +71,10 @@ withChangedAttributes:(NSArray*)changedAttributes
     self.onFailCallback = onFailureCallback;
     self.onSuccessCallback = onSuccessCallback;
     self.userInfo = userInfo;
-    self.downloadSize = 0;
-    self.sentBytes = 0;
-    self.downloadSize = 0;
-    self.downloadedBytes = 0;
+ //   self.downloadSize = 0;
+ //   self.sentBytes = 0;
+  //  self.downloadSize = 0;
+  //  self.downloadedBytes = 0;
     self.consequentialUpdates = nil;
     [self setChangedAttributesList:changedAttributes];
     
@@ -101,7 +101,7 @@ withChangedAttributes:(NSArray*)changedAttributes
 //        
 //    }
     
-    LOG_REQUEST(0, @"%@Initialized new Request %@ for TargetID:%@, TargetType:%@, OperationCode:%d, #ChildRequests:%d",activityName,self.objectid,objectid,objecttype,opcode,[self.childRequests count]);
+   // LOG_REQUEST(0, @"%@Initialized new Request %@ for TargetID:%@, TargetType:%@, OperationCode:%d, #ChildRequests:%d",activityName,self.objectid,objectid,objecttype,opcode,[self.childRequests count]);
     
     return self;
 }
@@ -144,21 +144,21 @@ withChangedAttributes:(NSArray*)changedAttributes
 }
 
 - (void) dealloc {
-    self.childRequests = nil;
-    self.parentRequest = nil;
+   // self.childRequests = nil;
+   // self.parentRequest = nil;
 }
 
-- (int) numberOfChildRequestsCompleted {
-    //returns an integer representing the number of childrequests that are in the pending state
-    int retVal = 0;
-    
-    for (Request* request in self.childRequests) {
-        if ([request.statuscode intValue] != kPENDING) {
-            retVal++;
-        }
-    }
-    return retVal;
-}
+//- (int) numberOfChildRequestsCompleted {
+//    //returns an integer representing the number of childrequests that are in the pending state
+//    int retVal = 0;
+//    
+//    for (Request* request in self.childRequests) {
+//        if ([request.statuscode intValue] != kPENDING) {
+//            retVal++;
+//        }
+//    }
+//    return retVal;
+//}
 
 - (void) updateRequestProgressIndicator {
     NSString* activityName = @"Request.updateRequestProgressIndicator:";
@@ -169,24 +169,24 @@ withChangedAttributes:(NSArray*)changedAttributes
         progressNumerator++;
     }
     
-    if ([self.childRequests count] > 0) {
-        //has child requests
-        
-        //we need to set the progress float to being a proportion of the number
-        //of child requests still pending
-        progressNumerator += [self numberOfChildRequestsCompleted];
-        progressDenominator += [self.childRequests count];
-        
-        
-    }
+//    if ([self.childRequests count] > 0) {
+//        //has child requests
+//        
+//        //we need to set the progress float to being a proportion of the number
+//        //of child requests still pending
+//        progressNumerator += [self numberOfChildRequestsCompleted];
+//        progressDenominator += [self.childRequests count];
+//        
+//        
+//    }
     
     //now we update our progress float
     self.progress = progressNumerator / progressDenominator;
     LOG_REQUEST(0, @"%@Updating Request %@ progress indicator to be %f (%f/%f)",activityName,self.objectid,self.progress,progressNumerator,progressDenominator);
     //we also need to update the Parent's request progres indicator
-    if (self.parentRequest != nil) {
-        [self.parentRequest updateRequestProgressIndicator];
-    }
+//    if (self.parentRequest != nil) {
+//        [self.parentRequest updateRequestProgressIndicator];
+//    }
     
         //we report back to the delegate about the request's progress change
         [self.delegate request:self setProgress:self.progress];
@@ -224,25 +224,25 @@ withChangedAttributes:(NSArray*)changedAttributes
 
 - (void) request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
  //   NSString* activityName = @"Request.requestDidSendBytes:";
-    self.sentBytes += bytes;
+   // self.sentBytes += bytes;
     //LOG_REQUEST(0, @"%@Sent %qi bytes, total bytes sent: %qi, total upload size:%qi",activityName,bytes,self.sentBytes,self.uploadSize);
 }
 
 - (void) request:(ASIHTTPRequest *)request incrementUploadSizeBy:(long long)newLength {
 //     NSString* activityName = @"Request.incrementUploadSizeBy::";
-    self.uploadSize += newLength;
+  //  self.uploadSize += newLength;
     //LOG_REQUEST(0, @"%@Incrementing upload size by %qi bytes, total upload size:%qi",activityName,newLength,self.uploadSize);
 }
 
 - (void) request:(ASIHTTPRequest *)request incrementDownloadSizeBy:(long long)newLength {
   //   NSString* activityName = @"Request.incrementDownloadSizeBy:";
-    self.downloadSize += newLength;
+  //  self.downloadSize += newLength;
     //LOG_REQUEST(0, @"%@Incrementing download size by %qi bytes, total download size:%qi",activityName,newLength,self.downloadSize);
 }
 
 - (void) request:(ASIHTTPRequest *)request didReceiveBytes:(long long)bytes {
  //    NSString* activityName = @"Request.requestDidReceiveBytes:";
-    self.downloadedBytes += bytes;
+ //   self.downloadedBytes += bytes;
     //LOG_REQUEST(0, @"%@Received %qi bytes, total bytes received: %qi, total download size:%qi",activityName,bytes,self.downloadedBytes,self.downloadSize);
 
 }
@@ -284,7 +284,7 @@ withChangedAttributes:(NSArray*)changedAttributes
     newRequest.statuscode =[NSNumber numberWithInt:kPENDING];
     [newRequest setChangedAttributesList:[NSArray arrayWithObject:attributeName]];
     
-    newRequest.parentRequest = request;
+   // newRequest.parentRequest = request;
     return newRequest;
     
 }

@@ -1937,7 +1937,6 @@
 		C5C9E273146700C300838934 /* MGTwitterEngine */ = {
 			isa = PBXGroup;
 			children = (
-				C5C9E274146700C300838934 /* MGTwitterEngine.h */,
 				C5C9E275146700C300838934 /* MGTwitterEngine.m */,
 				C5C9E276146700C300838934 /* MGTwitterEngineDelegate.h */,
 				C5C9E277146700C300838934 /* MGTwitterEngineGlobalHeader.h */,
@@ -1960,6 +1959,7 @@
 				C5C9E288146700C300838934 /* MGTwitterStatusesParser.h */,
 				C5C9E289146700C300838934 /* MGTwitterStatusesParser.m */,
 				C5C9E28A146700C300838934 /* MGTwitterUsersLibXMLParser.h */,
+				C5C9E274146700C300838934 /* MGTwitterEngine.h */,
 				C5C9E28B146700C300838934 /* MGTwitterUsersLibXMLParser.m */,
 				C5C9E28C146700C300838934 /* MGTwitterUsersParser.h */,
 				C5C9E28D146700C300838934 /* MGTwitterUsersParser.m */,

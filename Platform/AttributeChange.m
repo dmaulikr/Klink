@@ -21,6 +21,8 @@
 @dynamic newvalue;
 @dynamic opcode;
 @dynamic hasbeenprocessed;
+@dynamic justification;
+@dynamic datecreated;
 
 
 //Extracts values from a apassed in JSON instance and populates attributes

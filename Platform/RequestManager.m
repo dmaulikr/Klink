@@ -195,34 +195,34 @@ static RequestManager* sharedInstance;
 
 }
 
-- (void) processAttachmentsForRequest:(Request*)request {
-    NSString* activityName = @"RequestManager.processAttachmentsForRequest:";
-//    NSArray* attachmentAttributeNames = [self attachmentAttributesInRequest:request];
+//- (void) processAttachmentsForRequest:(Request*)request {
+//    NSString* activityName = @"RequestManager.processAttachmentsForRequest:";
+////    NSArray* attachmentAttributeNames = [self attachmentAttributesInRequest:request];
+////    
+////    //we create a new request to handle attachment processing
+////    Request* newRequest = [Request createAttachmentRequestFrom:request];
+////    
+////    for (NSString* attachmentAttributeName in attachmentAttributeNames) {
+////        //submit the attachment for processing
+////        LOG_REQUEST(0,@"%@Processing Request attachment upload for attribute %@",activityName,attachmentAttributeName);
+////        [self processAttachmentFor:attachmentAttributeName associatedWith:newRequest];
+////    }
 //    
-//    //we create a new request to handle attachment processing
-//    Request* newRequest = [Request createAttachmentRequestFrom:request];
-//    
-//    for (NSString* attachmentAttributeName in attachmentAttributeNames) {
+//    //iterate through the child requests and process them
+//    for (Request* childRequest in request.childRequests) {
 //        //submit the attachment for processing
-//        LOG_REQUEST(0,@"%@Processing Request attachment upload for attribute %@",activityName,attachmentAttributeName);
-//        [self processAttachmentFor:attachmentAttributeName associatedWith:newRequest];
+//        NSArray* attachmentAttributes = [childRequest changedAttributesList];
+//        if ([attachmentAttributes count] != 1) {
+//            //error condition, have more than one attachment attribute in the request
+//            LOG_REQUEST(1, @"%@Child attachment request has more than 1 attachment attribute",activityName);
+//        }
+//        else {
+//            NSString* attachmentAttributeName = [attachmentAttributes objectAtIndex:0];
+//            LOG_REQUEST(0,@"%@Processing Attachment Request %@ upload for attribute %@",activityName,childRequest.objectid,attachmentAttributeName);
+//            [self processAttachmentFor:attachmentAttributeName associatedWith:childRequest];
+//         }
 //    }
-    
-    //iterate through the child requests and process them
-    for (Request* childRequest in request.childRequests) {
-        //submit the attachment for processing
-        NSArray* attachmentAttributes = [childRequest changedAttributesList];
-        if ([attachmentAttributes count] != 1) {
-            //error condition, have more than one attachment attribute in the request
-            LOG_REQUEST(1, @"%@Child attachment request has more than 1 attachment attribute",activityName);
-        }
-        else {
-            NSString* attachmentAttributeName = [attachmentAttributes objectAtIndex:0];
-            LOG_REQUEST(0,@"%@Processing Attachment Request %@ upload for attribute %@",activityName,childRequest.objectid,attachmentAttributeName);
-            [self processAttachmentFor:attachmentAttributeName associatedWith:childRequest];
-         }
-    }
-}
+//}
 
 
 

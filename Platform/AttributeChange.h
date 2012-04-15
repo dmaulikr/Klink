@@ -25,4 +25,6 @@
 @property (nonatomic,retain) NSString* newvalue;
 @property (nonatomic,retain) NSNumber* opcode;
 @property (nonatomic,retain) NSNumber* hasbeenprocessed;
+@property (nonatomic,retain) NSNumber* datecreated;
+@property (nonatomic,retain) NSString*  justification;
 @end

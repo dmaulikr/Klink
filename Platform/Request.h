@@ -50,8 +50,8 @@ typedef enum {
     
     NSString*       m_errorMessage;
     
-    NSMutableArray* m_childRequests;
-    Request*        m_parentRequest;
+   // NSMutableArray* m_childRequests;
+   // Request*        m_parentRequest;
     
     NSArray*        m_consequentialUpdates;
     
@@ -66,14 +66,14 @@ typedef enum {
 @property (nonatomic,retain) NSString*  url;
 @property (nonatomic,retain) NSString*  changedattributes;
 @property (nonatomic,retain) NSString*  targetresourcetype;
-@property                    long long  downloadSize;
-@property                    long long  uploadSize;
-@property                    long long  sentBytes;
-@property                    long long  downloadedBytes;
+//@property                    long long  downloadSize;
+//@property                    long long  uploadSize;
+//@property                    long long  sentBytes;
+//@property                    long long  downloadedBytes;
 @property (nonatomic,retain) NSString*  errormessage;
 @property                    float      progress;
-@property (nonatomic,retain) NSMutableArray*    childRequests;
-@property (nonatomic,retain) Request*           parentRequest;
+//@property (nonatomic,retain) NSMutableArray*    childRequests;
+//@property (nonatomic,retain) Request*           parentRequest;
 @property (nonatomic,retain) NSNumber*  objectid;
 @property (nonatomic,retain) NSArray*   consequentialUpdates;
 

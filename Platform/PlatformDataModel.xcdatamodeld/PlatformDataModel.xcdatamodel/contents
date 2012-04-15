@@ -29,8 +29,10 @@
     </entity>
     <entity name="attributechange" representedClassName="AttributeChange" syncable="YES">
         <attribute name="attributename" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="datecreated" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="delta" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hasbeenprocessed" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="justification" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="newvalue" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="oldvalue" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="opcode" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -190,6 +192,7 @@
     </entity>
     <elements>
         <element name="applicationsettings" positionX="18" positionY="810" width="128" height="420"/>
+        <element name="attributechange" positionX="-207" positionY="1017" width="128" height="195"/>
         <element name="AttributeInstanceData" positionX="-216" positionY="-141" width="128" height="150"/>
         <element name="authenticationcontext" positionX="-198" positionY="336" width="128" height="150"/>
         <element name="bookmark" positionX="189" positionY="27" width="128" height="90"/>
@@ -204,6 +207,5 @@
         <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
         <element name="user" positionX="241" positionY="990" width="128" height="360"/>
         <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
-        <element name="attributechange" positionX="-207" positionY="1017" width="128" height="165"/>
     </elements>
 </model>
