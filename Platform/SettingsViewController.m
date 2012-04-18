@@ -212,15 +212,20 @@ machineNameSettings()
     NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
     NSString* deviceType = machineNameSettings();
     NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
+    
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
     MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
     picker.mailComposeDelegate = self;
+    
     // Set the email subject
     [picker setSubject:[NSString stringWithFormat:@"%@ Feedback!", appName]];
     
     NSArray *toRecipients = [NSArray arrayWithObjects:@"contact@bahndr.com", nil];
     [picker setToRecipients:toRecipients];
     
-    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@.<br><br>--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer];
+    NSString *messageHeader = [NSString stringWithFormat:@"I'm using %@ version %@ on my %@ running iOS %@, %@.<br><br>--- Please add your message below this line ---", appName, appVersionNum, deviceType, currSysVer, [loggedInUserID stringValue]];
     [picker setMessageBody:messageHeader isHTML:YES];
     
     // Present the mail composition interface
