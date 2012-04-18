@@ -395,6 +395,8 @@
 		C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AA71458ACB7001AFCA8 /* Page.m */; };
 		C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AAB1458ADE2001AFCA8 /* Feed.m */; };
 		C5F4630D1444BCA400170835 /* OpCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F4630C1444BCA400170835 /* OpCodes.m */; };
+		C5FB5C07153C6EC20032C505 /* UIRequestSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */; };
+		C5FB5C0B153C6F6C0032C505 /* UIRequestSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FB5C0A153C6F6C0032C505 /* UIRequestSummaryView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -981,6 +983,9 @@
 		C5F4630B1444BCA400170835 /* OpCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpCodes.h; sourceTree = "<group>"; };
 		C5F4630C1444BCA400170835 /* OpCodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpCodes.m; sourceTree = "<group>"; };
 		C5F4630F1444C0A000170835 /* IJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJSONSerializable.h; sourceTree = "<group>"; };
+		C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIRequestSummaryView.xib; sourceTree = "<group>"; };
+		C5FB5C09153C6F6C0032C505 /* UIRequestSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRequestSummaryView.h; sourceTree = "<group>"; };
+		C5FB5C0A153C6F6C0032C505 /* UIRequestSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIRequestSummaryView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1813,6 +1818,9 @@
 				52BAB4A1151D403A002EF515 /* UIPeopleListTableViewCell.h */,
 				52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */,
 				52BAB493151D1DBA002EF515 /* UIPeopleListTableViewCell.xib */,
+				C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */,
+				C5FB5C09153C6F6C0032C505 /* UIRequestSummaryView.h */,
+				C5FB5C0A153C6F6C0032C505 /* UIRequestSummaryView.m */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2316,6 +2324,7 @@
 				52BAB49F151D2494002EF515 /* button_standardcontrol_lightgrey_selected.png in Resources */,
 				52BAB4A0151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png in Resources */,
 				52BAB4A8151D62B2002EF515 /* ProfileViewController.xib in Resources */,
+				C5FB5C07153C6EC20032C505 /* UIRequestSummaryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2480,6 +2489,7 @@
 				52BAB4A3151D403B002EF515 /* UIPeopleListTableViewCell.m in Sources */,
 				52BAB4A7151D62B2002EF515 /* ProfileViewController.m in Sources */,
 				C54C3C201536426C005D5475 /* AttributeChange.m in Sources */,
+				C5FB5C0B153C6F6C0032C505 /* UIRequestSummaryView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -708,15 +708,7 @@ static RequestManager* sharedInstance;
         }
         
         
-        //we need to unlock any attachment attributes that are still pending processing
-        //on this original request
-//        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
-//        [existingResource unlockAttributes:attachmentAttributes];
-//        
-//        
-//        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-        
-//        [self processAttachmentsForRequest:request];
+
         LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@ along with %d secondary objects",activityName,request.targetresourceid,request.targetresourcetype, [putResponse.secondaryResults count]);
 
         
@@ -741,11 +733,23 @@ static RequestManager* sharedInstance;
     NSString* activityName = @"RequestManager.processShareResponse:";
     NSDictionary* jsonDictionary = [responseString objectFromJSONString];
     
-    Response* response = [[Response alloc]initFromJSONDictionary:jsonDictionary];
+   // Response* response = [[Response alloc]initFromJSONDictionary:jsonDictionary];
+    PutResponse* response = [[PutResponse alloc] initFromJSONDictionary:jsonDictionary];
     
     if ([response.didSucceed boolValue]) {
+        //we need to process consequential updates
+        if (response.consequentialUpdates != nil)
+        {
+            //we have consequential updates to process
+            //we simply assign them to the original request
+            request.consequentialUpdates = response.consequentialUpdates;
+        }
+
+        
+        
         //when we share, we dont need to do any actions on the response
         LOG_REQUEST(0, @"%@Share request succeeded",activityName);
+        
 
     }
     else {
