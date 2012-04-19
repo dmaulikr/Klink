@@ -33,6 +33,7 @@
 @property (nonatomic,retain) NSNumber* numberfollowing;
 @property (nonatomic,retain) NSNumber* numberoffollowers;
 @property (nonatomic,retain) NSNumber* numberofpoints;
+@property (nonatomic,retain) NSNumber* numberofpointslw;
 
 
 + (int) unopenedNotificationsFor:(NSNumber*)objectid;

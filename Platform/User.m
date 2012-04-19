@@ -34,6 +34,7 @@
 @dynamic numberoffollowers;
 @dynamic numberfollowing;
 @dynamic numberofpoints;
+@dynamic numberofpointslw;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];

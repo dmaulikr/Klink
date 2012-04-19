@@ -107,5 +107,5 @@ NSString* const POSITION                =@"position";
 NSString* const POINTS                  =@"points";
 NSString* const TYPE                    =@"type";
 NSString* const RELATIVETO              =@"relativeto";
-
+NSString* const NUMBEROFPOINTSLW        =@"numberofpointslw";
 
