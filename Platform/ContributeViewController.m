@@ -68,6 +68,9 @@
 
 @synthesize requests = m_requests;
 @synthesize idEnumerator = m_idEnumerator;
+@synthesize newPageObjectID     = m_newPageObjectID;
+@synthesize newPhotoObjectID    = m_newPhotoObjectID;
+@synthesize newCaptionObjectID  = m_newCaptionObjectID;
 
 
 #pragma mark - Deadline Date Timers
@@ -219,6 +222,11 @@
     
     // disable Submit button until user has completed all required fields
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    
+    self.newCaptionObjectID = nil;
+    self.newPhotoObjectID = nil;
+    self.newPageObjectID = nil;
 
 }
 
@@ -1109,7 +1117,11 @@
     
     //we dismiss this controller if the operation succeeded
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
-    if (progressView.didSucceed) {
+    if (progressView.didSucceed) 
+    {
+        self.newCaptionObjectID     = nil;
+        self.newPhotoObjectID       = nil;
+        self.newPageObjectID        = nil;
      [self dismissModalViewControllerAnimated:YES];
     }
     else {

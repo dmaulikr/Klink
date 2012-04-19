@@ -186,6 +186,8 @@
         double currentDateInSeconds =  [DateTimeHelper convertDateToDouble:[NSDate date]];
         //add the expiry date default
         retVal.datedraftexpires =[NSNumber numberWithDouble:(currentDateInSeconds + [settings.page_draftexpiry_seconds doubleValue])];
+        //we set the object id now
+        
         
     }
    

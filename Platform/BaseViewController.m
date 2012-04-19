@@ -392,6 +392,18 @@
        
         
         Page* page = [Page createNewDraftPage];
+        if (controller.newPageObjectID == nil)
+        {
+            //this is the first page being created with this controller
+            controller.newPageObjectID = page.objectid;
+        
+        }
+        else 
+        {
+            //in this case we know there was a previous submission for new page
+            //so we set the id the same so we dont possibly recreate the page on the server
+            page.objectid = controller.newPageObjectID;
+        }
         
         page.displayname = controller.draftTitle;
         page.descr = nil;
@@ -403,6 +415,14 @@
         Photo* photo = nil;
         if (controller.img_photo != nil && controller.img_thumbnail != nil) {
             photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
+            
+            if (controller.newPhotoObjectID == nil)
+            {
+                controller.newPhotoObjectID = photo.objectid;
+            }
+            else {
+                photo.objectid = controller.newPhotoObjectID;
+            }
             
             //we set the initial number of photos to 1
             page.numberofphotos = [NSNumber numberWithInt:1];
@@ -417,6 +437,15 @@
                 controller.caption = ui_EMPTY_CAPTION;
             }
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
+            
+            if (controller.newCaptionObjectID == nil)
+            {
+                controller.newCaptionObjectID = caption.objectid;
+            }
+            else
+            {
+                caption.objectid = controller.newCaptionObjectID;
+            }
             
             //we set the initial number of votes on the caption to 0
             caption.numberofvotes = [NSNumber numberWithInt:0];

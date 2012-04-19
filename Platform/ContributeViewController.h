@@ -56,6 +56,11 @@
     NSArray*            m_objectTypesBeingCreated;
     NSLock*             m_oidArrayLock;
     NSNumber*           m_secondsToWaitBeforeExecutingValidationEnumeration;
+    
+    
+    NSNumber*       m_newPageObjectID;
+    NSNumber*       m_newCaptionObjectID;
+    NSNumber*       m_newPhotoObjectID;
 }
 
 @property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
@@ -97,6 +102,11 @@
 @property (nonatomic, retain) NSArray*                  objectIDsBeingCreated;
 @property (nonatomic, retain) NSArray*                  objectTypesBeingCreated;
 @property (nonatomic, retain) NSLock*                   oidArrayLock;
+
+
+@property (nonatomic, retain) NSNumber*                 newPageObjectID;
+@property (nonatomic, retain) NSNumber*                 newPhotoObjectID;
+@property (nonatomic, retain) NSNumber*                 newCaptionObjectID;
 
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;
