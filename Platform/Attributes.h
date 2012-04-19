@@ -110,4 +110,8 @@ extern NSString* const FINISHEDWRITERID;
 extern NSString* const NUMBEROFUNREADCAPTIONS;
 extern NSString* const SHARINGLEVEL;
 extern NSString* const CONSEQUENTIALUPDATES;
+extern NSString* const POSITION;
+extern NSString* const POINTS;
+extern NSString* const TYPE;
+extern NSString* const RELATIVETO;
 

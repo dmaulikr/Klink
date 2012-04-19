@@ -223,6 +223,34 @@
     return query;
 }
 
++ (id) queryForLeaderboard:(NSNumber*)userid 
+                    ofType:(LeaderboardTypes)type 
+                relativeTo:(LeaderboardRelativeTo)relativeTo
+{
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = LEADERBOARD;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+    queryExpression2.attributeName = TYPE;
+    queryExpression2.opCode = opcode_QUERYEQUALITY;
+    queryExpression2.value = [NSString stringWithFormat:@"%d",type];
+    
+    QueryExpression* queryExpression3 = [[QueryExpression alloc]init];
+    queryExpression3.attributeName = RELATIVETO ;
+    queryExpression3.opCode = opcode_QUERYEQUALITY;
+    queryExpression3.value = [NSString stringWithFormat:@"%d",relativeTo];
+    
+    query.attributeExpressions = [NSArray arrayWithObjects:queryExpression,queryExpression2,queryExpression3,nil];
+    
+    [queryExpression release];
+    return query;
+}
+
 + (Query*)queryPages:(NSNumber*)afterDate {
     Query* query =  [[[Query alloc] init]autorelease];
     

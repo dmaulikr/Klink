@@ -37,6 +37,7 @@
 + (EnumerationContext*) contextForApplicationSettings:(NSNumber*)userid;
 + (EnumerationContext*) contextForFollowers:    (NSNumber*)userid;
 + (EnumerationContext*) contextForFollowing:    (NSNumber*)userid;
++ (EnumerationContext*) contextForLeaderboard;
 - (id) init;
 - (NSString*) toJSON;
 @end

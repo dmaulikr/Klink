@@ -24,4 +24,5 @@ extern NSString* const POLL;
 extern NSString* const VOTE;
 extern NSString* const FOLLOW;
 extern NSString* const ATTRIBUTECHANGE;
+extern NSString* const LEADERBOARD;
 

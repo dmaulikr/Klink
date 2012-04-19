@@ -488,6 +488,21 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     
     
 }
+
++ (CloudEnumerator*) enumeratorForLeaderboard:(NSNumber*)userid 
+                                       ofType:(LeaderboardTypes)type 
+                                   relativeTo:(LeaderboardRelativeTo)relativeTo;
+{
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    Query* query = [Query queryForLeaderboard:userid ofType:type relativeTo:relativeTo];
+    QueryOptions* queryOptions = [QueryOptions queryForLeaderboard];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForLeaderboard];
+    
+    query.queryOptions = queryOptions;
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
+    return enumerator;
+}
 + (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid {
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     Query* query = [Query queryApplicationSettings:userid];

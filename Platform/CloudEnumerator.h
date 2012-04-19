@@ -10,6 +10,8 @@
 #import "Query.h"
 #import "QueryOptions.h"
 #import "EnumerationContext.h"
+#import "LeaderboardTypes.h"
+#import "LeaderboardRelativeTo.h"
 @class CloudEnumerator;
 @protocol CloudEnumeratorDelegate <NSObject> 
 @optional
@@ -80,4 +82,5 @@
 + (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
                             withTypes:(NSArray*)objectTypes;
 + (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid;
++ (CloudEnumerator*) enumeratorForLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo;
 @end

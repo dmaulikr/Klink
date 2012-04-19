@@ -323,6 +323,8 @@
 		C5A04A8D14434F620037FA7B /* AuthenticationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A8C14434F620037FA7B /* AuthenticationContext.m */; };
 		C5A04A901443557E0037FA7B /* Request.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A8F1443557E0037FA7B /* Request.m */; };
 		C5A04A93144356CA0037FA7B /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A04A92144356CA0037FA7B /* RequestManager.m */; };
+		C5A1CA6F153FC09400F09370 /* Leaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A1CA6E153FC09400F09370 /* Leaderboard.m */; };
+		C5A1CA73153FC1D600F09370 /* LeaderboardEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A1CA72153FC1D600F09370 /* LeaderboardEntry.m */; };
 		C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A82D761466667E00E77675 /* UICameraActionSheet.m */; };
 		C5B3003C1447AE0A00236F52 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */; };
 		C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B8B85714BA640A0085B092 /* UIStrings.m */; };
@@ -828,6 +830,12 @@
 		C5A04A8F1443557E0037FA7B /* Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Request.m; sourceTree = "<group>"; };
 		C5A04A91144356CA0037FA7B /* RequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestManager.h; sourceTree = "<group>"; };
 		C5A04A92144356CA0037FA7B /* RequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestManager.m; sourceTree = "<group>"; };
+		C5A1CA6D153FC09400F09370 /* Leaderboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaderboard.h; sourceTree = "<group>"; };
+		C5A1CA6E153FC09400F09370 /* Leaderboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Leaderboard.m; sourceTree = "<group>"; };
+		C5A1CA71153FC1D600F09370 /* LeaderboardEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardEntry.h; sourceTree = "<group>"; };
+		C5A1CA72153FC1D600F09370 /* LeaderboardEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardEntry.m; sourceTree = "<group>"; };
+		C5A1CA74153FC48000F09370 /* LeaderboardTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardTypes.h; sourceTree = "<group>"; };
+		C5A1CA75153FC52600F09370 /* LeaderboardRelativeTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardRelativeTo.h; sourceTree = "<group>"; };
 		C5A82D671465ABD900E77675 /* PageState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageState.h; sourceTree = "<group>"; };
 		C5A82D751466667E00E77675 /* UICameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICameraActionSheet.h; sourceTree = "<group>"; };
 		C5A82D761466667E00E77675 /* UICameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICameraActionSheet.m; sourceTree = "<group>"; };
@@ -1078,6 +1086,10 @@
 				C522FD3F147A612900F691A4 /* Bookmark.m */,
 				C58E348B151A325D003CD1EC /* Follow.h */,
 				C58E348C151A325D003CD1EC /* Follow.m */,
+				C5A1CA6D153FC09400F09370 /* Leaderboard.h */,
+				C5A1CA6E153FC09400F09370 /* Leaderboard.m */,
+				C5A1CA71153FC1D600F09370 /* LeaderboardEntry.h */,
+				C5A1CA72153FC1D600F09370 /* LeaderboardEntry.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -1685,6 +1697,8 @@
 				C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */,
 				C5B8B85614BA640A0085B092 /* UIStrings.h */,
 				C5B8B85714BA640A0085B092 /* UIStrings.m */,
+				C5A1CA74153FC48000F09370 /* LeaderboardTypes.h */,
+				C5A1CA75153FC52600F09370 /* LeaderboardRelativeTo.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -2490,6 +2504,8 @@
 				52BAB4A7151D62B2002EF515 /* ProfileViewController.m in Sources */,
 				C54C3C201536426C005D5475 /* AttributeChange.m in Sources */,
 				C5FB5C0B153C6F6C0032C505 /* UIRequestSummaryView.m in Sources */,
+				C5A1CA6F153FC09400F09370 /* Leaderboard.m in Sources */,
+				C5A1CA73153FC1D600F09370 /* LeaderboardEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

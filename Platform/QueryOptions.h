@@ -46,4 +46,5 @@
 +(QueryOptions*)queryForApplicationSettings:(NSNumber*)userid;
 +(QueryOptions*)queryForFollowers;
 +(QueryOptions*)queryForFollowing;
++(QueryOptions*)queryForLeaderboard;
 @end

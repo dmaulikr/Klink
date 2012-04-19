@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "QueryOptions.h"
 #import "IJSONSerializable.h"
+#import "LeaderboardRelativeTo.h"
+#import "LeaderboardTypes.h"
 
 @interface Query : NSObject <IJSONSerializable> {
     NSArray*        m_attributeExpressions;
@@ -39,5 +41,6 @@
 + (id) queryApplicationSettings:(NSNumber*)userid;
 + (id) queryForFollowers:(NSNumber*)userid;
 + (id) queryForFollowing:(NSNumber*)userid;
++ (id) queryForLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo;
 
 @end

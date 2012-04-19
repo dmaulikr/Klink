@@ -67,6 +67,18 @@
 }
 
 #pragma mark - Static Initializers
++(QueryOptions*)queryForLeaderboard
+{
+    
+    QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
+    
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = POINTS;
+    return newQuery;
+
+}
+
 +(QueryOptions*)queryForPhotos {
     ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance]settings];
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];

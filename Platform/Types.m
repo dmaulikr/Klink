@@ -24,3 +24,4 @@ NSString* const POLL                        =@"poll";
 NSString* const VOTE                        =@"vote";
 NSString* const FOLLOW                      =@"follow";
 NSString* const ATTRIBUTECHANGE             =@"attributechange";
+NSString* const LEADERBOARD                 =@"leaderboard";	
