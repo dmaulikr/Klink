@@ -10,6 +10,8 @@
 #import <MessageUI/MessageUI.h>
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
+#import "UILeaderboard3Up.h"
+#import "Leaderboard.h"
 
 @interface ProfileViewController : BaseViewController < UIProgressHUDViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate, UICameraActionSheetDelegate > {
     
@@ -39,22 +41,32 @@
     UILabel* m_lbl_photosLabel;
     UILabel* m_lbl_captionsLabel;
     UILabel* m_lbl_totalLabel;
+    UILabel* m_lbl_pointsLast7Days;
     
     UIImageView* m_iv_progressBarContainer;
     UIImageView* m_iv_progressDrafts;
     UIImageView* m_iv_progressPhotos;
     UIImageView* m_iv_progressCaptions;
+    UIImageView* m_iv_progressPoints;
     UIImageView* m_iv_editorMinimumLine;
     UIImageView* m_iv_userBestLine;
     
     UIView* m_v_leaderboardContainer;
+    UISegmentedControl* m_sgmt_leaderboardType;
+    UILeaderboard3Up* m_v_leaderboard3Up;
+    
     UIView* m_v_followControlsContainer;
     UIButton* m_btn_follow;
     
     User*   m_user;
     NSNumber* m_userID;
     
+    Leaderboard*    m_allLeaderboard;
+    Leaderboard*    m_friendsLeaderboard;
+    
     CloudEnumerator* m_profileCloudEnumerator;
+    CloudEnumerator* m_allLeaderboardCloudEnumerator;
+    CloudEnumerator* m_friendsLeaderboardCloudEnumerator;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
@@ -84,20 +96,31 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_photosLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_totalLabel;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_pointsLast7Days;
+
 @property (atomic, retain) User* user;
 @property (atomic, retain) NSNumber* userID;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressCaptions;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_progressPoints;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 
-@property (nonatomic, retain) IBOutlet UIView*      v_leaderboardContainer;
+@property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
+@property (nonatomic, retain) IBOutlet UISegmentedControl*  sgmt_leaderboardType;
+@property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
+
 @property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
 
+@property (nonatomic, retain) Leaderboard*          allLeaderboard;
+@property (nonatomic, retain) Leaderboard*          friendsLeaderboard;
+
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator*      allLeaderboardCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
 
 
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
@@ -105,6 +128,8 @@
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 - (IBAction) onFollowButtonPressed:(id)sender;
+
+- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;
 
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;

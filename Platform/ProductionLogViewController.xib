@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIButton</string>
@@ -102,14 +102,14 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{17, 38}, {285, 30}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="873029372"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Production Log</string>
+						<string key="IBUIText">Mallard Co.</string>
 						<nil key="IBUIHighlightedColor"/>
 						<object class="NSColor" key="IBUIShadowColor" id="517224660">
 							<int key="NSColorSpace">3</int>
@@ -581,6 +581,6 @@
 			<string key="typewriter_key-profile.png">{80, 80}</string>
 			<string key="typewriterframe.png">{320, 100}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>
