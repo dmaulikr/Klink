@@ -33,3 +33,5 @@ extern NSString* const param_DEVICETOKEN;
 extern NSString* const param_ATTRIBUTENAMES;
 extern NSString* const param_ATTRIBUTEVALUES;
 extern NSString* const param_OPERATIONCODE;
+extern NSString* const param_PASSWORD;
+extern NSString* const param_USERNAME;

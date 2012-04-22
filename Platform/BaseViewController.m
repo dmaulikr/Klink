@@ -18,6 +18,7 @@
 #import "NotificationsViewController.h"
 #import "ProfileViewController.h"
 #import "UIStrings.h"
+#import "LoginViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -278,7 +279,7 @@
 
     
     //first check if this view controller is the top level visible controller
-    if (self.navigationController.visibleViewController == self) {
+   // if (self.navigationController.visibleViewController == self) {
         progressView.labelText = message;
         [progressView removeAllSubviews];
         
@@ -303,7 +304,7 @@
         NSString* failureMessage = @"Failure!";
         [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         
-    }
+    //}
 }
 
 - (void) hideProgressBar {
@@ -347,6 +348,20 @@
     }
 }
 
+
+- (void) authenticateAndGetFacebook:(BOOL)getFaceobook 
+                         getTwitter:(BOOL)getTwitter 
+                  onSuccessCallback:(Callback*)successCallback 
+                  onFailureCallback:(Callback*)failCallback 
+{
+    LoginViewController* loginViewController = [LoginViewController createAuthenticationInstance:getFaceobook shouldGetTwitter:getTwitter onSuccessCallback:successCallback onFailureCallback:failCallback];
+   
+    [self  presentModalViewController:loginViewController animated:YES];
+    
+    
+    
+    
+}
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 
      onFinishSelector:(SEL)sel 
@@ -602,13 +617,13 @@
 - (void) onAuthenticationFailed:(CallbackResult*)result {
     NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
     //we handle an authentication failed by requiring they authenticate again against facebook
-    if ( [self isViewLoaded] && self.view.window) {
-        // we only process if this view controller is on top
-        LOG_BASEVIEWCONTROLLER(0, @"%@Processing Authentication Failed Event",activityName);
-        AuthenticationManager* authnManager = [AuthenticationManager instance];
-        [authnManager logoff];
-        [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:nil withObject:nil];
-    }
+//    if ( [self isViewLoaded] && self.view.window) {
+//        // we only process if this view controller is on top
+//        LOG_BASEVIEWCONTROLLER(0, @"%@Processing Authentication Failed Event",activityName);
+//        AuthenticationManager* authnManager = [AuthenticationManager instance];
+//        [authnManager logoff];
+//        [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:nil withObject:nil];
+//    }
 }
 
 - (void) onApplicationWentToBackground:(CallbackResult*)result {

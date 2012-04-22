@@ -244,6 +244,8 @@
 		C507BC871459AA0C004D9359 /* ImageDownloadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC861459AA0C004D9359 /* ImageDownloadResponse.m */; };
 		C5156A21146B4A2A00D1FC0B /* UILoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5156A20146B4A2A00D1FC0B /* UILoginView.m */; };
 		C51729FA1479A072005AE7B0 /* FeedData.m in Sources */ = {isa = PBXBuildFile; fileRef = C51729F91479A072005AE7B0 /* FeedData.m */; };
+		C51F21211541B9EE008BCE1E /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51F211F1541B9EE008BCE1E /* LoginViewController.m */; };
+		C51F21221541B9EE008BCE1E /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C51F21201541B9EE008BCE1E /* LoginViewController.xib */; };
 		C522FD36147A5D6900F691A4 /* Vote.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD35147A5D6900F691A4 /* Vote.m */; };
 		C522FD3A147A5DDD00F691A4 /* Poll.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD39147A5DDD00F691A4 /* Poll.m */; };
 		C522FD3D147A5EB400F691A4 /* PollData.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3C147A5EB400F691A4 /* PollData.m */; };
@@ -260,6 +262,8 @@
 		C55EC752145FA3B000BA66FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74D145FA3B000BA66FA /* InfoPlist.strings */; };
 		C55EC75D145FA50800BA66FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C55EC75F145FA50800BA66FA /* main.m */; };
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
+		C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C568388A1543365C00D3EAD2 /* SignUpViewController.m */; };
+		C568388D1543365C00D3EAD2 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C568388B1543365C00D3EAD2 /* SignUpViewController.xib */; };
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
@@ -678,6 +682,9 @@
 		C5156A20146B4A2A00D1FC0B /* UILoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILoginView.m; sourceTree = "<group>"; };
 		C51729F81479A072005AE7B0 /* FeedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedData.h; sourceTree = "<group>"; };
 		C51729F91479A072005AE7B0 /* FeedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedData.m; sourceTree = "<group>"; };
+		C51F211E1541B9EE008BCE1E /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		C51F211F1541B9EE008BCE1E /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		C51F21201541B9EE008BCE1E /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C522FD34147A5D6900F691A4 /* Vote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vote.h; sourceTree = "<group>"; };
 		C522FD35147A5D6900F691A4 /* Vote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vote.m; sourceTree = "<group>"; };
 		C522FD38147A5DDD00F691A4 /* Poll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Poll.h; sourceTree = "<group>"; };
@@ -709,6 +716,9 @@
 		C55EC750145FA3B000BA66FA /* Platform-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Platform-Info.plist"; sourceTree = "<group>"; };
 		C55EC751145FA3B000BA66FA /* Platform-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Platform-Prefix.pch"; sourceTree = "<group>"; };
 		C55EC75E145FA50800BA66FA /* en */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = en; path = en.lproj/main.m; sourceTree = "<group>"; };
+		C56838891543365C00D3EAD2 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		C568388A1543365C00D3EAD2 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		C568388B1543365C00D3EAD2 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
 		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
 		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
@@ -1766,6 +1776,12 @@
 				5293E2E2151918B000854686 /* PeopleListViewController.h */,
 				5293E2E3151918B000854686 /* PeopleListViewController.m */,
 				5293E2E4151918B000854686 /* PeopleListViewController.xib */,
+				C51F211E1541B9EE008BCE1E /* LoginViewController.h */,
+				C51F211F1541B9EE008BCE1E /* LoginViewController.m */,
+				C51F21201541B9EE008BCE1E /* LoginViewController.xib */,
+				C56838891543365C00D3EAD2 /* SignUpViewController.h */,
+				C568388A1543365C00D3EAD2 /* SignUpViewController.m */,
+				C568388B1543365C00D3EAD2 /* SignUpViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2339,6 +2355,9 @@
 				52BAB4A0151D2494002EF515 /* button_standardcontrol_lightgrey_selected@2x.png in Resources */,
 				52BAB4A8151D62B2002EF515 /* ProfileViewController.xib in Resources */,
 				C5FB5C07153C6EC20032C505 /* UIRequestSummaryView.xib in Resources */,
+				C51F21221541B9EE008BCE1E /* LoginViewController.xib in Resources */,
+				C568388D1543365C00D3EAD2 /* SignUpViewController.xib in Resources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2506,6 +2525,9 @@
 				C5FB5C0B153C6F6C0032C505 /* UIRequestSummaryView.m in Sources */,
 				C5A1CA6F153FC09400F09370 /* Leaderboard.m in Sources */,
 				C5A1CA73153FC1D600F09370 /* LeaderboardEntry.m in Sources */,
+				C51F21211541B9EE008BCE1E /* LoginViewController.m in Sources */,
+				C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

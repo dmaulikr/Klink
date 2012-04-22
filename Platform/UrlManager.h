@@ -34,6 +34,15 @@
                withObjectTypes:(NSArray*)objectTypes 
      withAuthenticationContext:(id)authenticationContext;
 
++ (NSURL*) urlForPasswordAuthentication:(NSString*)email 
+                       withPassword:(NSString*)password
+                        withDeviceToken:(NSString*)deviceToken;
+
++ (NSURL*)urlForCreateUserAccount:(NSString*)email 
+                     withPassword:(NSString*)password
+                  withDisplayName:(NSString*)displayname
+                     withUsername:(NSString*)username 
+                  withDeviceToken:(NSString*)deviceToken;
 
 + (NSURL*) urlForAuthentication:(NSNumber*)facebookID 
                        withName:(NSString*)name
@@ -58,7 +67,12 @@
                               withToken:(NSString *)twitterAccessToken 
                         withTokenSecret:(NSString*)twitterAccessTokenSecret
                              withExpiry:(NSString*)twitterAccessTokenExpiry 
-              withAuthenticationContext:(id)context; 
+              withAuthenticationContext:(id)context;
+
++ (NSURL*) urlForUpdateAuthenticatorWithFacebookURL:(NSString *)facebookID 
+                              withToken:(NSString *)facebookAccessToken 
+                             withExpiry:(NSDate *)facebookAccessTokenExpiry 
+              withAuthenticationContext:(id)context;
 
 
 + (NSURL*) urlForShareObject:(NSNumber*)objectid 

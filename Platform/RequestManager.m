@@ -1092,14 +1092,14 @@ static RequestManager* sharedInstance;
             [self processRequestResponse:request withResponse:response];
                       
             //we need to process any attachments (if any)
-            if ([userInfo valueForKey:kATTACHMENTLIST] != nil) {
-                NSArray* attributesWithAttachments = [userInfo valueForKey:kATTACHMENTLIST];
-                
-                //we process each attachment individually
-                for (NSString* attribute in attributesWithAttachments) {
-                    [self processAttachmentFor:attribute associatedWith:request];
-                }
-            }
+//            if ([userInfo valueForKey:kATTACHMENTLIST] != nil) {
+//                NSArray* attributesWithAttachments = [userInfo valueForKey:kATTACHMENTLIST];
+//                
+//                //we process each attachment individually
+//                for (NSString* attribute in attributesWithAttachments) {
+//                    [self processAttachmentFor:attribute associatedWith:request];
+//                }
+//            }
         }
         
     }

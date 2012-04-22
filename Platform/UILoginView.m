@@ -420,24 +420,6 @@
     //dismiss the progress bar
     [self.parentViewController hideProgressBar];
     [self saveAuthenticatorResponse:response];
-    
-    //now we also see if the user is a first time user and if so, we upload their facebook photo
-//    AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
-//    PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
-//    Facebook* facebook = appDelegate.facebook;
-//
-//    if ([authenticationContext.isfirsttime boolValue] &&
-//        facebook.isSessionValid) 
-//    {
-//        //its the user's first time logging in
-//        LOG_SECURITY(0, @"%@ Detected its the user's first login, downloading and uploading their Facebook profile picture",activityName);
-//      //  self.fbPictureRequest = [facebook requestWithGraphPath:@"me/picture" andDelegate:self];
-//
-//    }
-//    else if (!facebook.isSessionValid) 
-//    {
-//        LOG_SECURITY(1, @"%@ Cannot download facebook profile photo as the facebook session is not valid",activityName);
-//    }
 
 }
 

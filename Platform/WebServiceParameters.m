@@ -34,3 +34,5 @@ NSString* const param_DEVICETOKEN = @"devicetoken";
 NSString* const param_ATTRIBUTENAMES = @"attributenames";
 NSString* const param_ATTRIBUTEVALUES = @"attributevalues";
 NSString* const param_OPERATIONCODE = @"operationcodes";
+NSString* const param_PASSWORD=@"password";
+NSString* const param_USERNAME=@"username";
