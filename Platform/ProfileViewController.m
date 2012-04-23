@@ -19,6 +19,8 @@
 #import "ImageDownloadResponse.h"
 #import "PeopleListType.h"
 #import "BookViewControllerBase.h"
+#import "LeaderboardTypes.h"
+#import "LeaderboardRelativeTo.h"
 
 #define kUSERID                    @"userid"
 
@@ -51,27 +53,117 @@
 @synthesize lbl_photosLabel         = m_lbl_photosLabel;
 @synthesize lbl_captionsLabel       = m_lbl_captionsLabel;
 @synthesize lbl_totalLabel          = m_lbl_totalLabel;
+@synthesize lbl_pointsLast7Days     = m_lbl_pointsLast7Days;
+
 @synthesize iv_progressBarContainer = m_iv_progressBarContainer;
 @synthesize iv_progressDrafts       = m_iv_progressDrafts;
 @synthesize iv_progressPhotos       = m_iv_progressPhotos;
 @synthesize iv_progressCaptions     = m_iv_progressCaptions;
+@synthesize iv_progressPoints       = m_iv_progressPoints;
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
 @synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
-@synthesize profileCloudEnumerator  = m_profileCloudEnumerator;
+@synthesize sgmt_leaderboardType    = m_sgmt_leaderboardType;
+@synthesize v_leaderboard3Up        = m_v_leaderboard3Up;
 @synthesize v_followControlsContainer = m_v_followControlsContainer;
 @synthesize btn_follow              = m_btn_follow;
 
-#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
-#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
+@synthesize allLeaderboard          = m_allLeaderboard;
+@synthesize friendsLeaderboard      = m_friendsLeaderboard;
+
+@synthesize profileCloudEnumerator              = m_profileCloudEnumerator;
+@synthesize allLeaderboardCloudEnumerator       = m_allLeaderboardCloudEnumerator;
+@synthesize friendsLeaderboardCloudEnumerator   = m_friendsLeaderboardCloudEnumerator;
+
+//#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
+//#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
 #define kPROGRESSBARCONTAINERXORIGINOFFSET 22.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
+
+#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.1
+#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.0
+#define kPROGRESSBARCONTAINERINSETPOINTSLABEL 40.0
 
 
 #pragma mark - Progress Bar methods 
 - (void)drawProgressBar {
+    
+    int pointsLast7Days = [self.user.numberofpointslw intValue];
+    //int pointsLast7Days = 200;  // used for testing
+    
+    float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETPOINTSLABEL;
+    float editorMinimumLineMidPoint = (float)self.iv_editorMinimumLine.frame.size.width / (float)2;
+    float editorMinimumLabelMidPoint = (float)self.lbl_editorMinimumLabel.frame.size.width / (float)2;
+    float userBestLineMidPoint = (float)self.iv_userBestLine.frame.size.width / (float)2;
+    float userBestLabelMidPoint = (float)self.lbl_userBestLabel.frame.size.width / (float)2;
+    
+    
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    int editorMinimum = [settings.editor_minimum intValue];
+    
+    int userBest = [self.user.maxweeklyparticipation intValue];
+    
+    // determine which value will set the scale (max value) for the progress bar
+    float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)pointsLast7Days);
+    
+    if (progressBarMaxValue == (float)userBest) {
+        // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+        progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
+    }
+    else if (progressBarMaxValue == (float)editorMinimum) {
+        // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
+        progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM;
+    }
+    else {
+        // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container for the points label
+    }
+    
+    float scaleEditorMinimum = 0.0f;
+    float scaleUserBest = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        scaleEditorMinimum = (float)editorMinimum / (float)progressBarMaxValue;
+        scaleUserBest = (float)userBest / (float)progressBarMaxValue;
+    }
+    
+    // move the editor threshold line
+    float editorMinimumLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleEditorMinimum * progressBarContainerWidth) - editorMinimumLineMidPoint);
+    self.iv_editorMinimumLine.frame = CGRectMake(editorMinimumLineXOrigin, self.iv_editorMinimumLine.frame.origin.y, self.iv_editorMinimumLine.frame.size.width, self.iv_editorMinimumLine.frame.size.height);
+    float editorMinimumWidth = (float)self.iv_editorMinimumLine.frame.origin.x + (float)editorMinimumLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
+    
+    // move the editor threshold label
+    float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
+    self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
+    
+    // move the user best threshold line
+    float userBestLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleUserBest * progressBarContainerWidth) - userBestLineMidPoint);
+    self.iv_userBestLine.frame = CGRectMake(userBestLineXOrigin, self.iv_userBestLine.frame.origin.y, self.iv_userBestLine.frame.size.width, self.iv_userBestLine.frame.size.height);
+    float userBestWidth = (float)self.iv_userBestLine.frame.origin.x + (float)userBestLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
+    
+    // move the user best threshold label
+    float userBestLabelXOrigin = 0.0f;
+    if ([self.user.maxweeklyparticipation intValue] == 0) {
+        userBestLabelXOrigin = MIN(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    }
+    else {
+        userBestLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
+    }
+    self.lbl_userBestLabel.frame = CGRectMake(userBestLabelXOrigin, self.lbl_userBestLabel.frame.origin.y, self.lbl_userBestLabel.frame.size.width, self.lbl_userBestLabel.frame.size.height);
+    
+    
+    // now draw the progress bar of the points count for the last 7 days
+    float progressPoints = 0.0f;
+    if ((float)progressBarMaxValue != 0.0) {
+        progressPoints = ((float)pointsLast7Days) / (float)progressBarMaxValue;
+    }
+    //progressPoints = (float)20 / (float)progressBarMaxValue;
+    self.iv_progressPoints.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressPoints.frame.origin.y,(progressPoints * progressBarContainerWidth), self.iv_progressPoints.frame.size.height);
+    [self.iv_progressPoints setHidden:NO];
+    
+}
+
+/*- (void)drawProgressBar {
     
     int totalSubmissionsLast7Days = [self.user.numberofdraftscreatedlw intValue]
     + [self.user.numberofphotoslw intValue]
@@ -164,7 +256,7 @@
     self.iv_progressCaptions.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET + self.iv_progressDrafts.frame.size.width +  + self.iv_progressPhotos.frame.size.width, self.iv_progressCaptions.frame.origin.y,(progressCaptions * progressBarContainerWidth), self.iv_progressCaptions.frame.size.height);
     [self.iv_progressCaptions setHidden:NO];
     
-}
+}*/
 
 #pragma mark - Initializers
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -252,13 +344,17 @@
     self.lbl_photosLabel = nil;
     self.lbl_captionsLabel = nil;
     self.lbl_totalLabel = nil;
+    self.lbl_pointsLast7Days = nil;
     self.iv_progressDrafts = nil;
     self.iv_progressPhotos = nil;
     self.iv_progressCaptions = nil;
+    self.iv_progressPoints = nil;
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
     self.v_leaderboardContainer = nil;
+    self.sgmt_leaderboardType = nil;
+    self.v_leaderboard3Up = nil;
     self.v_followControlsContainer = nil;
     self.btn_follow = nil;
     
@@ -284,7 +380,21 @@
     }
 }
 
-- (void) render {
+- (void) showLeaderBoardOfType:(int)type {
+    CGRect frame = CGRectMake(20, 68, 280, 109);
+    self.v_leaderboard3Up = [[[UILeaderboard3Up alloc] initWithFrame:frame] autorelease];
+    
+    if (type == kALL) {
+        //[self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.leaderboardentries];
+    }
+    else if (type == kPEOPLEIKNOW) {
+        //[self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.leaderboardentries];
+    }
+    
+    [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
+}
+
+- (void) render {    
     //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
     if ([self.loggedInUser.objectid longValue] == [self.userID longValue]) {
         //yes it is
@@ -328,28 +438,12 @@
     
     //Show profile picture
     [self showProfilePicture];
-    /*ImageManager* imageManager = [ImageManager instance];
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
-    
-    if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
-        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
-        UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
-        [callback release];
-        if (image != nil) {
-            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
-            self.iv_profilePicture.image = image;
-        }
-    }
-    else {
-        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
-        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
-    }*/
     
     [self.btn_numPages setTitle:[self.user.numberofpagespublished stringValue] forState:UIControlStateNormal];
     [self.btn_numFollowers setTitle:[self.user.numberoffollowers stringValue] forState:UIControlStateNormal];
     [self.btn_numFollowing setTitle:[self.user.numberfollowing stringValue] forState:UIControlStateNormal];
     
-    self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
+    /*self.lbl_draftsLast7Days.text = [self.user.numberofdraftscreatedlw stringValue];
     self.lbl_photosLast7Days.text = [self.user.numberofphotoslw stringValue];
     self.lbl_captionsLast7Days.text = [self.user.numberofcaptionslw stringValue];
     
@@ -357,22 +451,39 @@
         + [self.user.numberofphotoslw intValue]
         + [self.user.numberofdraftscreatedlw intValue];
     self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
-    //self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];
+    //self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];*/
+    
+    self.lbl_pointsLast7Days.text = [self.user.numberofpointslw stringValue];
+    //self.lbl_pointsLast7Days.text = @"100000";
     
     self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
     [self drawProgressBar];
 }
 
-- (void) refreshProfile:(NSNumber*)userid 
+- (void) enumerateUser:(NSNumber*)userid 
 {
     //object doesnt exist in the store, we need to grab it from the cloud
-    NSArray* objectIDs = [NSArray arrayWithObject:userid];
-    NSArray* objectTypes = [NSArray arrayWithObject:USER];
+    //NSArray* objectIDs = [NSArray arrayWithObject:userid];
+    //NSArray* objectTypes = [NSArray arrayWithObject:USER];
+    
     self.profileCloudEnumerator = nil;
-    self.profileCloudEnumerator = [CloudEnumerator enumeratorForIDs:objectIDs withTypes:objectTypes];
+    self.profileCloudEnumerator = [CloudEnumerator enumeratorForUser:userid];
     self.profileCloudEnumerator.delegate = self;
     [self.profileCloudEnumerator enumerateUntilEnd:nil];
+}
+
+- (void) enumerateLeaderboards:(NSNumber*)userid 
+{
+    self.allLeaderboardCloudEnumerator = nil;
+    self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
+    self.allLeaderboardCloudEnumerator.delegate = self;
+    [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    
+    self.friendsLeaderboardCloudEnumerator = nil;
+    self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
+    self.friendsLeaderboardCloudEnumerator.delegate = self;
+    [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -415,22 +526,21 @@
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
     
+    // Ensure we have the user object for this profile
     if (self.user == nil) {
-        //we need to retrieve the id specified
-        ResourceContext* resourceContext = [ResourceContext instance];
-        self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-        [self refreshProfile:self.userID];
-        
-        if (self.user != nil) {
-            [self render];             
-        }
-    }
-    else {
-        self.userID = self.user.objectid;
-        [self refreshProfile:self.userID];
-        [self render];
+        // Enumerate the User object for this profile
+        [self enumerateUser:self.userID];
     }
     
+    // Enumerate the leaderboards for this user
+    [self enumerateLeaderboards:self.userID];
+    
+    // Render the profile view
+    if (self.user != nil) {
+        [self render];             
+    }
+    
+    // Setup appropriate Navbar buttons
     if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {
         // Only enable the Account button and profile picture button for the logged in user
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
@@ -472,6 +582,18 @@
     [self presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
+}
+
+#pragma mark - Segmented Control management
+- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl {
+    NSUInteger index = segmentedControl.selectedSegmentIndex;
+    
+    if (index == 1) {
+        [self showLeaderBoardOfType:kPEOPLEIKNOW];
+    }
+    else if (index == 2) {
+        [self showLeaderBoardOfType:kALL];
+    }
 }
 
 #pragma mark - UIButton Handlers
@@ -611,6 +733,7 @@
     
 }
 
+
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {
     NSString* activityName = @"ProfileViewController.hudWasHidden";
@@ -712,10 +835,34 @@
     User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
     NSNumber* userid = user.objectid;
     
-    self.user = user;
-    self.userID = userid;
-    if (self.user != nil && self.userID != nil) {
-        [self render];
+    if (enumerator == self.profileCloudEnumerator) {
+        self.user = user;
+        self.userID = userid;
+        if (self.user != nil && self.userID != nil) {
+            [self render];
+        }
+    }
+    else if (enumerator == self.allLeaderboardCloudEnumerator) {
+        // Get the leaderboad object from the resource context
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALL], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        
+        [self showLeaderBoardOfType:kALL];
+    }
+    else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
+        // Get the leaderboad object from the resource context
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.friendsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        
+        [self showLeaderBoardOfType:kPEOPLEIKNOW];
     }
 }
 
@@ -746,18 +893,21 @@
 #pragma mark - Static Initializers
 + (ProfileViewController*)createInstance {
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
-    //sets the user property to the curretly logged on user
+    //sets the user property to the currently logged on user
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     ResourceContext* resourceContext = [ResourceContext instance];
-    instance.user = (User*)[resourceContext resourceWithType:USER withID:authenticationManager.m_LoggedInUserID];
     instance.userID = authenticationManager.m_LoggedInUserID;
+    instance.user = (User*)[resourceContext resourceWithType:USER withID:instance.userID];
     return instance;
 }
 
 + (ProfileViewController*)createInstanceForUser:(NSNumber *)userID {
     //returns an instance of the ProfileViewController configured for the specified user
     ProfileViewController* instance = [[[ProfileViewController alloc]initWithNibName:@"ProfileViewController" bundle:nil]autorelease];
+    //sets the user property to the userid passed in
+    ResourceContext* resourceContext = [ResourceContext instance];
     instance.userID = userID;
+    instance.user = (User*)[resourceContext resourceWithType:USER withID:instance.userID];
     return instance;
 }
 

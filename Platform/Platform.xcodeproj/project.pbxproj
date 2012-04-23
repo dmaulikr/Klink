@@ -177,6 +177,8 @@
 		5281EEFC1485B8E400AB1BF0 /* tableviewcell_separator_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */; };
 		5281EEFD1485B8E400AB1BF0 /* tableviewcell_separator_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */; };
 		528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 528A49B814AD01F000881A99 /* MessageUI.framework */; };
+		528DCE0C1542BCD300F83AA9 /* mallard.png in Resources */ = {isa = PBXBuildFile; fileRef = 528DCE0A1542BCD300F83AA9 /* mallard.png */; };
+		528DCE0D1542BCD300F83AA9 /* mallard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 528DCE0B1542BCD300F83AA9 /* mallard@2x.png */; };
 		5293E2E5151918B000854686 /* PeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293E2E3151918B000854686 /* PeopleListViewController.m */; };
 		5293E2E6151918B000854686 /* PeopleListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E4151918B000854686 /* PeopleListViewController.xib */; };
 		5293E2E8151940C500854686 /* icon-profile-large-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E7151940C500854686 /* icon-profile-large-highlighted.png */; };
@@ -232,6 +234,8 @@
 		52BAB4A3151D403B002EF515 /* UIPeopleListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */; };
 		52BAB4A7151D62B2002EF515 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAB4A5151D62B1002EF515 /* ProfileViewController.m */; };
 		52BAB4A8151D62B2002EF515 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB4A6151D62B2002EF515 /* ProfileViewController.xib */; };
+		52BC08371540B9C60092A760 /* UILeaderboard3Up.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BC08361540B9C60092A760 /* UILeaderboard3Up.m */; };
+		52BC083A1540B9D80092A760 /* UILeaderboard3Up.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -599,6 +603,8 @@
 		5281EEFA1485B8E300AB1BF0 /* tableviewcell_separator_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableviewcell_separator_scetched.png; sourceTree = "<group>"; };
 		5281EEFB1485B8E300AB1BF0 /* tableviewcell_separator_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tableviewcell_separator_scetched@2x.png"; sourceTree = "<group>"; };
 		528A49B814AD01F000881A99 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		528DCE0A1542BCD300F83AA9 /* mallard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mallard.png; sourceTree = "<group>"; };
+		528DCE0B1542BCD300F83AA9 /* mallard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard@2x.png"; sourceTree = "<group>"; };
 		5293E2E2151918B000854686 /* PeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleListViewController.h; sourceTree = "<group>"; };
 		5293E2E3151918B000854686 /* PeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleListViewController.m; sourceTree = "<group>"; };
 		5293E2E4151918B000854686 /* PeopleListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeopleListViewController.xib; sourceTree = "<group>"; };
@@ -661,6 +667,9 @@
 		52BAB4A4151D62B0002EF515 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		52BAB4A5151D62B1002EF515 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		52BAB4A6151D62B2002EF515 /* ProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
+		52BC08351540B9C60092A760 /* UILeaderboard3Up.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILeaderboard3Up.h; sourceTree = "<group>"; };
+		52BC08361540B9C60092A760 /* UILeaderboard3Up.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILeaderboard3Up.m; sourceTree = "<group>"; };
+		52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UILeaderboard3Up.xib; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -1136,6 +1145,8 @@
 				527A753314E738AF0012B229 /* Message.css */,
 				529E666714D0FBA500394EE9 /* Bahndr_appIcon-29.png */,
 				529E666514D0FB9100394EE9 /* Bahndr_appIcon-58.png */,
+				528DCE0A1542BCD300F83AA9 /* mallard.png */,
+				528DCE0B1542BCD300F83AA9 /* mallard@2x.png */,
 				52680C7914CD2E0B0050BCBB /* voted_stamp.png */,
 				52680C7A14CD2E0B0050BCBB /* voted_stamp@2x.png */,
 				529F0CC614BEE8B80063E4AC /* published_stamp.png */,
@@ -1848,9 +1859,12 @@
 				52BAB4A1151D403A002EF515 /* UIPeopleListTableViewCell.h */,
 				52BAB4A2151D403A002EF515 /* UIPeopleListTableViewCell.m */,
 				52BAB493151D1DBA002EF515 /* UIPeopleListTableViewCell.xib */,
-				C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */,
 				C5FB5C09153C6F6C0032C505 /* UIRequestSummaryView.h */,
 				C5FB5C0A153C6F6C0032C505 /* UIRequestSummaryView.m */,
+				C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */,
+				52BC08351540B9C60092A760 /* UILeaderboard3Up.h */,
+				52BC08361540B9C60092A760 /* UILeaderboard3Up.m */,
+				52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2357,6 +2371,9 @@
 				C5FB5C07153C6EC20032C505 /* UIRequestSummaryView.xib in Resources */,
 				C51F21221541B9EE008BCE1E /* LoginViewController.xib in Resources */,
 				C568388D1543365C00D3EAD2 /* SignUpViewController.xib in Resources */,
+				52BC083A1540B9D80092A760 /* UILeaderboard3Up.xib in Resources */,
+				528DCE0C1542BCD300F83AA9 /* mallard.png in Resources */,
+				528DCE0D1542BCD300F83AA9 /* mallard@2x.png in Resources */,
 
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2527,7 +2544,7 @@
 				C5A1CA73153FC1D600F09370 /* LeaderboardEntry.m in Sources */,
 				C51F21211541B9EE008BCE1E /* LoginViewController.m in Sources */,
 				C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */,
-
+				52BC08371540B9C60092A760 /* UILeaderboard3Up.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
