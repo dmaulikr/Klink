@@ -53,7 +53,7 @@ static ResourceContext* sharedInstance;
 
 
 - (NSManagedObjectContext*)managedObjectContext {
-    NSString* activityName = @"ResourceContext.managedObjectContext:";
+   // NSString* activityName = @"ResourceContext.managedObjectContext:";
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     
     
@@ -245,7 +245,7 @@ static ResourceContext* sharedInstance;
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
-    NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
+   // NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
     
    
     
@@ -417,7 +417,7 @@ static ResourceContext* sharedInstance;
     [self.managedObjectContext processPendingChanges];
     
     //we loop through all updated objects now to ensure we have the latest versions
-    updatedObjects = [self.managedObjectContext updatedObjects];
+  //  updatedObjects = [self.managedObjectContext updatedObjects];
 //    NSArray* uArray = [updatedObjects allObjects];
 //    for (NSManagedObject* object in uArray) {
 //       [self.managedObjectContext refreshObject:object mergeChanges:YES];

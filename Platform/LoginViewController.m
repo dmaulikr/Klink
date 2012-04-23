@@ -408,6 +408,7 @@
                                                withExpiryDate:@""  
                                               withDeviceToken:deviceToken 
                                                onFinishNotify:callback];
+            [callback release];
         }
         else
         {

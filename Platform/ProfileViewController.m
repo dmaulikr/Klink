@@ -385,10 +385,10 @@
     self.v_leaderboard3Up = [[[UILeaderboard3Up alloc] initWithFrame:frame] autorelease];
     
     if (type == kALL) {
-        //[self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.leaderboardentries];
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.entries];
     }
     else if (type == kPEOPLEIKNOW) {
-        //[self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.leaderboardentries];
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.entries];
     }
     
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
@@ -475,12 +475,12 @@
 
 - (void) enumerateLeaderboards:(NSNumber*)userid 
 {
-    self.allLeaderboardCloudEnumerator = nil;
+    //self.allLeaderboardCloudEnumerator = nil;
     self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
     self.allLeaderboardCloudEnumerator.delegate = self;
     [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
     
-    self.friendsLeaderboardCloudEnumerator = nil;
+    //self.friendsLeaderboardCloudEnumerator = nil;
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.friendsLeaderboardCloudEnumerator.delegate = self;
     [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
@@ -846,7 +846,7 @@
         // Get the leaderboad object from the resource context
         NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
         NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALL], nil];
-        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
         self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
@@ -857,7 +857,7 @@
         // Get the leaderboad object from the resource context
         NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
         NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
-        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
         self.friendsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];

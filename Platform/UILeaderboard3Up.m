@@ -65,24 +65,24 @@
 
 - (void)dealloc
 {
-    [self.lbl_position1 dealloc];
-    [self.lbl_position2 dealloc];
-    [self.lbl_position3 dealloc];
+    self.lbl_position1 = nil;
+    self.lbl_position2 = nil;
+    self.lbl_position3 = nil;
     
-    [self.iv_profilePic1 dealloc];
-    [self.iv_profilePic2 dealloc];
-    [self.iv_profilePic3 dealloc];
+    self.iv_profilePic1 = nil;
+    self.iv_profilePic2 = nil;
+    self.iv_profilePic3 = nil;
     
-    [self.lbl_username1 dealloc];
-    [self.lbl_username2 dealloc];
-    [self.lbl_username3 dealloc];
+    self.lbl_username1 = nil;
+    self.lbl_username2 = nil;
+    self.lbl_username3 = nil;
     
-    [self.lbl_numPoints1 dealloc];
-    [self.lbl_numPoints2 dealloc];
-    [self.lbl_numPoints3 dealloc];
+    self.lbl_numPoints1 = nil;
+    self.lbl_numPoints2 = nil;
+    self.lbl_numPoints3 = nil;
     
     self.entries = nil;
-    [self.entries dealloc];
+  //  [self.entries dealloc];
     
     [super dealloc];
     
@@ -119,9 +119,9 @@
 }
 
 - (void) renderLeaderboardWithEntries:(NSArray*)entries {
-    //self.entries = entries;
+    self.entries = entries;
     
-    //[self render];
+    [self render];
 }
 
 @end

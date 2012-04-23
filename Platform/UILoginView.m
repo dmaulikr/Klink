@@ -414,7 +414,7 @@
 
 - (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result 
 {
-    NSString* activityName = @"UILoginView.onGetAuthenticationContextDownloaded:";
+   // NSString* activityName = @"UILoginView.onGetAuthenticationContextDownloaded:";
     GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
     
     //dismiss the progress bar

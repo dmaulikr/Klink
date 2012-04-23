@@ -12,13 +12,13 @@
 @dynamic userid;
 @dynamic type;
 @dynamic relativeto;
-@synthesize leaderboardentries = __leaderboardentries;
+@synthesize entries = __entries;
 
-- (NSArray*) leaderboardentries
+- (NSArray*) entries
 {
-    if (__leaderboardentries != nil)
+    if (__entries != nil)
     {
-        return __leaderboardentries;
+        return __entries;
     }
     
     NSMutableArray* retVal = [[NSMutableArray alloc]init];
@@ -30,13 +30,13 @@
         [retVal addObject:leaderboardEntry];
         [leaderboardEntry release];
     }
-    __leaderboardentries = retVal;
-    return __leaderboardentries;
+    __entries = retVal;
+    return __entries;
 }
 
 - (void) dealloc
 {
-    [__leaderboardentries release];
+    [__entries release];
     [super dealloc];
 }
 @end

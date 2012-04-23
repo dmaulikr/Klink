@@ -89,7 +89,7 @@
 {
     //called when the user presses the join button
     NSString* password = self.tf_password.text;
-    NSString* password2 = self.tf_password2.text;
+ //   NSString* password2 = self.tf_password2.text;
     NSString* username = self.tf_username.text;
     NSString* email = self.tf_email.text;
     NSString* displayName = self.tf_displayName.text;

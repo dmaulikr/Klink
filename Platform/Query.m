@@ -248,6 +248,8 @@
     query.attributeExpressions = [NSArray arrayWithObjects:queryExpression,queryExpression2,queryExpression3,nil];
     
     [queryExpression release];
+    [queryExpression2 release];
+    [queryExpression3 release];
     return query;
 }
 

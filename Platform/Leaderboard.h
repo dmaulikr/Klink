@@ -13,5 +13,5 @@
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSNumber* type;
 @property (nonatomic,retain) NSNumber* relativeto;
-@property (nonatomic,retain) NSArray* leaderboardentries;
+@property (nonatomic,retain) NSArray* entries;
 @end
