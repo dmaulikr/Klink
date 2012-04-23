@@ -51,6 +51,14 @@
         withFacebookTokenExpiry:(NSDate*)date
                 withDeviceToken:(NSString*)deviceToken;
 
+
++ (NSURL*) urlForAuthenticationWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName
+                           withAccessToken:(NSString*)twitterAccessToken
+                     withAccessTokenSecret:(NSString*)twitterAccessTokenSecret 
+                            withExpiryDate:(NSString*)twitterTokenExpiry
+                           withDeviceToken:(NSString*)deviceToken;
+
 + (NSURL*) urlForPutObject:(NSNumber*)objectid 
             withObjectType:(NSString*)objectType 
  withAuthenticationContext:(id)authenticationContext;

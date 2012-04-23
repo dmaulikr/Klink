@@ -205,6 +205,43 @@
     
 }
 
+
++ (NSURL*) urlForAuthenticationWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName
+                           withAccessToken:(NSString*)twitterAccessToken
+                     withAccessTokenSecret:(NSString*)twitterAccessTokenSecret 
+                            withExpiryDate:(NSString*)twitterTokenExpiry
+                           withDeviceToken:(NSString*)deviceToken
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    
+    NSString* verbName = verb_GETAUTHENTICATORWITHTWITTER;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    
+    
+    NSString* twitterIDParamName = param_TWITTERUSERID;
+    [parameters appendFormat:@"%@=%@",twitterIDParamName,[twitterID stringValue]];
+    NSString* twitterNameParamName = param_TWITTERNAME;
+    [parameters appendFormat:@"&%@=%@",twitterNameParamName,twitterName];
+    NSString* twitterAccessTokenParamName = param_TWITTERACCESSTOKEN;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenParamName,twitterAccessToken];
+    NSString* twitterAccessTokenSecretParamName = param_TWITTERACCESSTOKENSECRET;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenSecretParamName,twitterAccessTokenSecret];
+    NSString* twitterAccessTokenExpiryParamName = param_TWITTERACCESSTOKENEXPIRY;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenExpiryParamName,twitterTokenExpiry];
+    NSString* deviceTokenParamName = param_DEVICETOKEN;
+    [parameters appendFormat:@"&%@=%@",deviceTokenParamName,deviceToken];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
+    
+}
+
 + (NSURL*) urlForAuthentication:(NSNumber *)facebookID 
                        withName:(NSString *)name 
                       withEmail:(NSString*)email

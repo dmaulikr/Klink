@@ -15,6 +15,7 @@
 #import "User.h"
 #import "GetAuthenticatorResponse.h"
 #import "Response.h"
+#import "NSStringGUIDCategory.h"
 #import "SignUpViewController.h"
 
 #define kMaximumBusyWaitTimeFacebookLogin       30
@@ -43,10 +44,18 @@
         return __twitterEngine;
     }
     ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance] settings];
-    __twitterEngine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
-	__twitterEngine.consumerKey = settingsObjects.twitter_consumerkey;
-	__twitterEngine.consumerSecret = settingsObjects.twitter_consumersecret;
     
+        NSString* consumerKey = settingsObjects.twitter_consumerkey;
+        NSString* consumerSecret = settingsObjects.twitter_consumersecret;
+    
+    if (consumerKey != nil && 
+        consumerSecret != nil)
+    {
+        __twitterEngine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
+        __twitterEngine.consumerKey = consumerKey;
+        __twitterEngine.consumerSecret = consumerSecret;
+    }
+
     return __twitterEngine;
     
 }
@@ -188,11 +197,8 @@
     //we check to see if the user has supplied their Twitter accessToken, if not, then we move to the next page
     //and display a twitter authn screen
     NSString* activityName = @"UILoginView.beginTwitterAuthentication:";
-    AuthenticationContext* newContext = [[AuthenticationManager instance]contextForLoggedInUser];
+   
     
-    
-    if (newContext != nil) 
-    {
         NSString* message = [NSString stringWithFormat:@"Beginning twitter authentication"];
         LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
         
@@ -208,12 +214,7 @@
             [self dismissWithResult:YES];
         }
         
-    }
-    else {
-        //error condition
-        LOG_LOGINVIEWCONTROLLER(1, @"%@Cannot authenticate to Twitter without being authenticated to Facebook",activityName);
-        [self dismissWithResult:NO];
-    }
+   
     
     
 }
@@ -384,21 +385,47 @@
         NSString* oAuthToken = [[[components objectAtIndex:0]componentsSeparatedByString:@"="]objectAtIndex:1];
         NSString* oAuthTokenSecret = [[[components objectAtIndex:1]componentsSeparatedByString:@"="]objectAtIndex:1];
         NSString* twitterUserName = [[[components objectAtIndex:3]componentsSeparatedByString:@"="]objectAtIndex:1];
+        NSString* tID = [[[components objectAtIndex:2]componentsSeparatedByString:@"="]objectAtIndex:1];
+        NSNumber* twitterID = [tID numberValue];
         
         //need to dismiss the Twitter view controller here
         [self dismissModalViewControllerAnimated:YES];
         
-        //display progress indicator
-        [self showProgressBar:@"Communicating with Twitter..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimePutAuthenticator]];
+        AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
+        if (authenticationContext == nil)
+        {
+            //user is not logged in
+            [self showProgressBar:@"Logging in..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimePutAuthenticator]];
+            Callback* callback = [[Callback alloc] initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+            
+            PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[UIApplication sharedApplication].delegate;
+            NSString* deviceToken = appDelegate.deviceToken;
+            
+            [resourceContext getAuthenticatorTokenWithTwitter:twitterID 
+                                              withTwitterName:twitterUserName 
+                                              withAccessToken:oAuthToken 
+                                        withAccessTokenSecret:oAuthTokenSecret 
+                                               withExpiryDate:@""  
+                                              withDeviceToken:deviceToken 
+                                               onFinishNotify:callback];
+        }
+        else
+        {
+            //user logged in
+            //display progress indicator
+            [self showProgressBar:@"Communicating with Twitter..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimePutAuthenticator]];
+            
+            Callback* callback = [[Callback alloc] initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+            
+            [resourceContext updateAuthenticatorWithTwitter:twitterUserName 
+                                            withAccessToken:oAuthToken 
+                                      withAccessTokenSecret:oAuthTokenSecret 
+                                             withExpiryDate:@"" 
+                                             onFinishNotify:callback];
+            [callback release];
+
+        }
         
-        Callback* callback = [[Callback alloc] initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
-        
-        [resourceContext updateAuthenticatorWithTwitter:twitterUserName 
-                                        withAccessToken:oAuthToken 
-                                  withAccessTokenSecret:oAuthTokenSecret 
-                                         withExpiryDate:@"" 
-                                         onFinishNotify:callback];
-        [callback release];
     }
     else {
         //error condition
@@ -466,7 +493,7 @@
 }
 - (IBAction) onTwitterButtonPressed:(id)sender
 {
-    
+    [self beginTwitterAuthentication];
 }
 - (IBAction) onNewUserButtonPressed:(id)sender
 {

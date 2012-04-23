@@ -10,7 +10,7 @@
 
 
 //this URL is to connect to BOBBY's development environment
-NSString* const default_BASEURL = @"http://108.6.2.14/bonobo/rest";
+//NSString* const default_BASEURL = @"http://108.6.2.14/bonobo/rest";
 
 //this URL is to connect to BOBBY's development environment from his internal network
 //NSString* const default_BASEURL = @"http://192.168.1.102/bonobo/rest";
@@ -26,7 +26,7 @@ NSString* const default_BASEURL = @"http://108.6.2.14/bonobo/rest";
 
 
 //this URL is to connect to the PRODUCTION #2 environment in the cloud
-//NSString* const default_BASEURL = @"http://bahndr.com/service/rest";
+NSString* const default_BASEURL = @"http://bahndr.com/service/rest";
 
 
 int const progress_MAXSECONDSTODISPLAY = 45;
@@ -43,8 +43,8 @@ int const threshold_PAGE_ENUMERATION_TIME_GAP=60;
 int const threshold_FOLLOW_ENUMERATION_TIME_GAP = 60;
 int const page_size_LINKEDOBJECTS = 5;
 int const page_DRAFTEXPIRES_SECONDS = 86400;
-NSString* const twitter_CONSUMERKEY=@"";
-NSString* const twitter_CONSUMERSECRET=@"";
+NSString* const twitter_CONSUMERKEY=@"oy2bDqBeASOP7fXXwqOAQ";
+NSString* const twitter_CONSUMERSECRET=@"E3Rl4smkXxB6C4UZxqxK7CyXsiab1pkgIc8UIBHgQ";
 int const progress_WHEELSPINTIME = 8;
 int const default_POLL_EXPIRY_IN_SECONDS = 36000;
 int const default_POLL_NUM_PAGES = 3;

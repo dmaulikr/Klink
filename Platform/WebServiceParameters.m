@@ -36,3 +36,4 @@ NSString* const param_ATTRIBUTEVALUES = @"attributevalues";
 NSString* const param_OPERATIONCODE = @"operationcodes";
 NSString* const param_PASSWORD=@"password";
 NSString* const param_USERNAME=@"username";
+NSString* const param_TWITTERNAME = @"twittername";

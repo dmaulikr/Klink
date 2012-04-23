@@ -65,6 +65,14 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                            withDeviceToken:(NSString*)deviceToken 
                             onFinishNotify:(Callback*)callback;
 
+- (void) getAuthenticatorTokenWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName 
+                        withAccessToken:(NSString*)twitterAccessToken 
+                         withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                           withExpiryDate:(NSString*)twitterTokenExpiry 
+                          withDeviceToken:(NSString*)deviceToken
+                           onFinishNotify:(Callback*)callback;
+
 - (void) updateAuthenticatorWithTwitter:(NSString*)twitterUserID 
                       withAccessToken:(NSString*)twitterAccessToken
                 withAccessTokenSecret:(NSString*)twitterAccessTokenSecret

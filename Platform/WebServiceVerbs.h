@@ -22,3 +22,4 @@ extern NSString* const verb_UPDATEAUTHENTICATOR;
 extern NSString* const verb_UPDATEOBJECTATTRIBUTES;
 extern NSString* const verb_GETAUTHENTICATORWITHPASSWORD;
 extern NSString* const verb_CREATEUSERAUTHENTICATE;
+extern NSString* const verb_GETAUTHENTICATORWITHTWITTER;

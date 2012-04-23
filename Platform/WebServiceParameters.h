@@ -35,3 +35,4 @@ extern NSString* const param_ATTRIBUTEVALUES;
 extern NSString* const param_OPERATIONCODE;
 extern NSString* const param_PASSWORD;
 extern NSString* const param_USERNAME;
+extern NSString* const param_TWITTERNAME;

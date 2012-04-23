@@ -669,6 +669,35 @@ static ResourceContext* sharedInstance;
 }
 
 
+- (void) getAuthenticatorTokenWithTwitter:(NSNumber*)twitterID 
+                          withTwitterName:(NSString*)twitterName 
+                          withAccessToken:(NSString*)twitterAccessToken 
+                    withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                           withExpiryDate:(NSString*)twitterTokenExpiry 
+                          withDeviceToken:(NSString*)deviceToken
+                           onFinishNotify:(Callback*)callback
+{
+    NSString* activityName  = @"ResourceContext.getAuthenticatorToken:";
+    
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    
+    [request updateRequestStatus:kPENDING];
+    //request.statuscode =[NSNumber numberWithInt:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kAUTHENTICATE];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    NSURL* url = [UrlManager urlForAuthenticationWithTwitter:twitterID withTwitterName:twitterName withAccessToken:twitterAccessToken withAccessTokenSecret:twitterAccessTokenSecret withExpiryDate:twitterTokenExpiry withDeviceToken:deviceToken];
+    
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting Authentication request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+
+    
+}
+
 
 - (void) getAuthenticatorToken:(NSNumber *)facebookID 
                       withName:(NSString *)displayName 
