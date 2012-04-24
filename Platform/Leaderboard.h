@@ -7,11 +7,14 @@
 //
 
 #import "Resource.h"
-
+#import "LeaderboardTypes.h"
+#import "LeaderboardRelativeTo.h"
 @interface Leaderboard : Resource
 
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSNumber* type;
 @property (nonatomic,retain) NSNumber* relativeto;
 @property (nonatomic,retain) NSArray* entries;
+
++ (Leaderboard*) leaderboardForType:(LeaderboardTypes)type andRelativeTo:(LeaderboardRelativeTo)relativeTo;
 @end

@@ -93,7 +93,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="leaderboard" representedClassName="Leaderboard" parentEntity="resource" syncable="YES">
-        <attribute name="leaderboardentries" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="leaderboardentries" optional="YES" attributeType="Transformable"/>
         <attribute name="relativeto" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>

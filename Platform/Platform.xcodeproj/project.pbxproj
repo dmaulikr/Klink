@@ -255,6 +255,10 @@
 		C522FD3D147A5EB400F691A4 /* PollData.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3C147A5EB400F691A4 /* PollData.m */; };
 		C522FD40147A612A00F691A4 /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3F147A612900F691A4 /* Bookmark.m */; };
 		C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */; };
+		C533FB971546E7A500552DAA /* LeaderboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533FB951546E7A500552DAA /* LeaderboardViewController.m */; };
+		C533FB981546E7A500552DAA /* LeaderboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533FB961546E7A500552DAA /* LeaderboardViewController.xib */; };
+		C533FB9B1546EF4D00552DAA /* UILeaderboardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */; };
+		C533FB9E1546EF6300552DAA /* UILeaderboardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */; };
 		C54C3C201536426C005D5475 /* AttributeChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C54C3C1F1536426C005D5475 /* AttributeChange.m */; };
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
@@ -704,6 +708,12 @@
 		C522FD3F147A612900F691A4 /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
 		C52FB3C914AFCD160048D2C4 /* UIResourceLinkButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIResourceLinkButton.h; sourceTree = "<group>"; };
 		C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIResourceLinkButton.m; sourceTree = "<group>"; };
+		C533FB941546E7A500552DAA /* LeaderboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardViewController.h; sourceTree = "<group>"; };
+		C533FB951546E7A500552DAA /* LeaderboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaderboardViewController.m; sourceTree = "<group>"; };
+		C533FB961546E7A500552DAA /* LeaderboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeaderboardViewController.xib; sourceTree = "<group>"; };
+		C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UILeaderboardTableViewCell.xib; sourceTree = "<group>"; };
+		C533FB9C1546EF6300552DAA /* UILeaderboardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILeaderboardTableViewCell.h; sourceTree = "<group>"; };
+		C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILeaderboardTableViewCell.m; sourceTree = "<group>"; };
 		C54C3C1E1536426C005D5475 /* AttributeChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeChange.h; sourceTree = "<group>"; };
 		C54C3C1F1536426C005D5475 /* AttributeChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeChange.m; sourceTree = "<group>"; };
 		C554DEE9144C941900CD6E85 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
@@ -1793,6 +1803,9 @@
 				C56838891543365C00D3EAD2 /* SignUpViewController.h */,
 				C568388A1543365C00D3EAD2 /* SignUpViewController.m */,
 				C568388B1543365C00D3EAD2 /* SignUpViewController.xib */,
+				C533FB941546E7A500552DAA /* LeaderboardViewController.h */,
+				C533FB951546E7A500552DAA /* LeaderboardViewController.m */,
+				C533FB961546E7A500552DAA /* LeaderboardViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1865,6 +1878,9 @@
 				52BC08351540B9C60092A760 /* UILeaderboard3Up.h */,
 				52BC08361540B9C60092A760 /* UILeaderboard3Up.m */,
 				52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */,
+				C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */,
+				C533FB9C1546EF6300552DAA /* UILeaderboardTableViewCell.h */,
+				C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2374,7 +2390,8 @@
 				52BC083A1540B9D80092A760 /* UILeaderboard3Up.xib in Resources */,
 				528DCE0C1542BCD300F83AA9 /* mallard.png in Resources */,
 				528DCE0D1542BCD300F83AA9 /* mallard@2x.png in Resources */,
-
+				C533FB981546E7A500552DAA /* LeaderboardViewController.xib in Resources */,
+				C533FB9B1546EF4D00552DAA /* UILeaderboardTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2545,6 +2562,8 @@
 				C51F21211541B9EE008BCE1E /* LoginViewController.m in Sources */,
 				C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */,
 				52BC08371540B9C60092A760 /* UILeaderboard3Up.m in Sources */,
+				C533FB971546E7A500552DAA /* LeaderboardViewController.m in Sources */,
+				C533FB9E1546EF6300552DAA /* UILeaderboardTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

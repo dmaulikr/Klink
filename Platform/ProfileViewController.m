@@ -21,7 +21,7 @@
 #import "BookViewControllerBase.h"
 #import "LeaderboardTypes.h"
 #import "LeaderboardRelativeTo.h"
-
+#import "LeaderboardViewController.h"
 #define kUSERID                    @"userid"
 
 
@@ -69,6 +69,7 @@
 @synthesize v_leaderboard3Up        = m_v_leaderboard3Up;
 @synthesize v_followControlsContainer = m_v_followControlsContainer;
 @synthesize btn_follow              = m_btn_follow;
+@synthesize btn_leaderboard3UpClick = m_btn_leaderboard3UpClick;
 
 @synthesize allLeaderboard          = m_allLeaderboard;
 @synthesize friendsLeaderboard      = m_friendsLeaderboard;
@@ -315,6 +316,12 @@
     UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:73 topCapHeight:22];
     [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];
     
+    
+    self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
+    self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
+    self.allLeaderboardCloudEnumerator.delegate = self;
+    self.friendsLeaderboardCloudEnumerator = self;
+    
 }
 
 - (void)viewDidUnload
@@ -382,16 +389,22 @@
 
 - (void) showLeaderBoardOfType:(int)type {
     CGRect frame = CGRectMake(20, 68, 280, 109);
-    self.v_leaderboard3Up = [[[UILeaderboard3Up alloc] initWithFrame:frame] autorelease];
+    
+    self.v_leaderboard3Up = [[UILeaderboard3Up alloc] initWithFrame:frame];
+    self.btn_leaderboard3UpClick = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.btn_leaderboard3UpClick.frame = frame;
+    [self.btn_leaderboard3UpClick addTarget:self action:@selector(onLeaderboardClicked:) forControlEvents:UIControlEventTouchUpInside];
+
     
     if (type == kALL) {
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.entries];
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.entries forLeaderboard:self.allLeaderboard.objectid];
     }
     else if (type == kPEOPLEIKNOW) {
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.entries];
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.entries forLeaderboard:self.friendsLeaderboard.objectid];
     }
     
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
+    [self.v_leaderboardContainer addSubview:self.btn_leaderboard3UpClick];
 }
 
 - (void) render {    
@@ -461,16 +474,23 @@
     [self drawProgressBar];
 }
 
+
 - (void) enumerateUser:(NSNumber*)userid 
 {
     //object doesnt exist in the store, we need to grab it from the cloud
     //NSArray* objectIDs = [NSArray arrayWithObject:userid];
     //NSArray* objectTypes = [NSArray arrayWithObject:USER];
     
-    self.profileCloudEnumerator = nil;
-    self.profileCloudEnumerator = [CloudEnumerator enumeratorForUser:userid];
-    self.profileCloudEnumerator.delegate = self;
-    [self.profileCloudEnumerator enumerateUntilEnd:nil];
+    if (self.profileCloudEnumerator != nil) {
+        [self.profileCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else 
+    {
+        self.profileCloudEnumerator = nil;
+        self.profileCloudEnumerator = [CloudEnumerator enumeratorForUser:userid];
+        self.profileCloudEnumerator.delegate = self;
+        [self.profileCloudEnumerator enumerateUntilEnd:nil];
+    }
 }
 
 - (void) enumerateLeaderboards:(NSNumber*)userid 
@@ -478,11 +498,14 @@
     //self.allLeaderboardCloudEnumerator = nil;
     self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
     self.allLeaderboardCloudEnumerator.delegate = self;
+    
     [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
     
-    //self.friendsLeaderboardCloudEnumerator = nil;
+    
+    
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.friendsLeaderboardCloudEnumerator.delegate = self;
+    
     [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
 }
 
@@ -597,6 +620,18 @@
 }
 
 #pragma mark - UIButton Handlers
+- (IBAction) onLeaderboardClicked:(id)sender
+{
+    //we need to launch the leaderboard view controller
+    //we are going to launch with the friends leaderboard
+    LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid];
+    UINavigationController* nav = [[UINavigationController alloc]initWithRootViewController:lvc];
+    
+    //now we launch it modally
+    [self presentModalViewController:nav animated:YES];
+    
+    [nav release];
+}
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender {
     //Change profile picture button pressed
     self.cameraActionSheet = [UICameraActionSheet createCameraActionSheetWithTitle:@"Change Profile Picture" allowsEditing:YES];

@@ -28,7 +28,7 @@
     UILabel*    m_lbl_numPoints3;
     
     NSArray*    m_entries;
-    
+    NSNumber*   m_leaderboardID;
 }
 
 @property (nonatomic, retain) IBOutlet UIView*  view;
@@ -50,8 +50,9 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numPoints3;
 
 @property (nonatomic, retain) NSArray* entries;
+@property (nonatomic, retain) NSNumber* leaderboardID;
 
 
-- (void) renderLeaderboardWithEntries:(NSArray*)entries;
+- (void) renderLeaderboardWithEntries:(NSArray*)entries forLeaderboard:(NSNumber*)leaderboardID;
 
 @end

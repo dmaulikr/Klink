@@ -8,6 +8,11 @@
 
 #import "Leaderboard.h"
 #import "LeaderboardEntry.h"
+#import "LeaderboardRelativeTo.h"
+#import "LeaderboardTypes.h"
+#import "AuthenticationManager.h"
+#import "Types.h"
+
 @implementation Leaderboard
 @dynamic userid;
 @dynamic type;
@@ -30,6 +35,22 @@
         [retVal addObject:leaderboardEntry];
         [leaderboardEntry release];
     }
+    
+//    if (leaderboardentryArray != nil &&
+//        [leaderboardentryArray count] > 0) 
+//    {
+//        NSDictionary* leaderboardEntryDictionary  = [leaderboardentryArray objectAtIndex:0];
+//        NSArray* keyArray = [leaderboardEntryDictionary allKeys];
+//        int count = [keyArray count];
+//        
+//        for (int i = 0; i < count; i++)
+//        {
+//            
+//        }
+//        
+//        
+//
+//    }
     __entries = retVal;
     return __entries;
 }
@@ -38,5 +59,31 @@
 {
     [__entries release];
     [super dealloc];
+}
+
++ (Leaderboard*) leaderboardForType:(LeaderboardTypes)type andRelativeTo:(LeaderboardRelativeTo)relativeTo
+{
+    Leaderboard* retVal = nil;
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    
+    if (authenticationManager.isUserAuthenticated)
+    {
+        NSNumber* loggedInUserID = [authenticationManager m_LoggedInUserID];
+       
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[loggedInUserID stringValue], [NSString stringWithFormat:@"%d",relativeTo],[NSString stringWithFormat:@"%d",type], nil];
+        
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO,TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        retVal = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        return retVal;
+    }
+    else
+    {
+        return nil;
+    }
 }
 @end
