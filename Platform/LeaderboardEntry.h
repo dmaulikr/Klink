@@ -15,11 +15,12 @@
     NSNumber* m_userid;
     NSString* m_username;
     NSNumber* m_points;
+    NSString* m_imageurl;
 }
 
 @property (nonatomic,retain) NSNumber* position;
 @property (nonatomic,retain) NSNumber* userid;
 @property (nonatomic,retain) NSString* username;
 @property (nonatomic,retain) NSNumber* points;
-
+@property (nonatomic,retain) NSString* imageurl;
 @end

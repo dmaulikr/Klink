@@ -128,7 +128,7 @@
                     self.iv_profilePic3.hidden = NO;
                     
                     self.lbl_position3.text = [entry.position stringValue];
-                    //self.iv_profilePic3
+                    
                     self.lbl_username3.text = entry.username;
                     self.lbl_numPoints3.text = [entry.points stringValue];
                 }
