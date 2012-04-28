@@ -12,10 +12,12 @@
 #import "UILeaderboardTableViewCell.h"
 #import "LeaderboardTypes.h"
 #import "LeaderboardRelativeTo.h"
+#import "AuthenticationManager.h"
 
 @implementation LeaderboardViewController
 @synthesize leaderboardID = m_leaderboardID;
 @synthesize leaderboard = m_leaderboard;
+@synthesize userID = m_userID;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -269,9 +271,9 @@
     
 }
 #pragma mark - Event handlers
-- (void) onBackButtonClicked : (id)sender
+- (IBAction) onBackButtonClicked : (id)sender
 {
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void) onSwitchButtonClicked : (id)sender
@@ -299,7 +301,7 @@
     
     LeaderboardTypes type = [self.leaderboard.type intValue];
     //lets get the leaderboard
-    Leaderboard* newLeaderboard = [Leaderboard leaderboardForType:type andRelativeTo:relativeTo];
+    Leaderboard* newLeaderboard = [Leaderboard leaderboardForUserID:self.userID withType:type andRelativeTo:relativeTo];
     if (newLeaderboard != nil)
     {
         self.leaderboard = newLeaderboard;
@@ -335,7 +337,7 @@
     
     LeaderboardRelativeTo relativeTo = [self.leaderboard.relativeto intValue];
     //lets get the leaderboard
-    Leaderboard* newLeaderboard = [Leaderboard leaderboardForType:type andRelativeTo:relativeTo];
+    Leaderboard* newLeaderboard = [Leaderboard leaderboardForUserID:self.userID withType:type andRelativeTo:relativeTo];
     if (newLeaderboard != nil)
     {
         self.leaderboard = newLeaderboard;
@@ -359,8 +361,28 @@
     ResourceContext* resourceContext = [ResourceContext instance];
     lvc.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withID:leaderboardID];
     
-    
+    AuthenticationContext* context = [[AuthenticationManager instance]contextForLoggedInUser];
+    if (context != nil)
+    {
+        lvc.userID = context.userid;
+    }
+    else {
+        lvc.userID = nil;
+    }
     [lvc autorelease];
+    return lvc;
+    
+}
+
++ (LeaderboardViewController*) createInstanceFor:(NSNumber *)leaderboardID forUserID:(NSNumber*)userID
+{
+    LeaderboardViewController* lvc  = [[LeaderboardViewController alloc]initWithNibName:@"LeaderboardViewController" bundle:nil];
+    lvc.leaderboardID = leaderboardID;
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    lvc.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withID:leaderboardID];
+    lvc.userID = userID;
+        [lvc autorelease];
     return lvc;
     
 }

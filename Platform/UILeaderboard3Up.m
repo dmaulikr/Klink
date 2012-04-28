@@ -105,7 +105,12 @@
         if (count > 1) 
         {
             entry = [self.entries objectAtIndex:1];
-            if (entry != nil) {
+            if (entry != nil) 
+            {
+                self.lbl_position2.hidden = NO;
+                self.lbl_username2.hidden = NO;
+                self.lbl_numPoints2.hidden = NO;
+                self.iv_profilePic2.hidden = NO;
                 self.lbl_position2.text = [entry.position stringValue];
                 //self.iv_profilePic2
                 self.lbl_username2.text = entry.username;
@@ -115,13 +120,40 @@
             if (count > 2)
             {
                 entry = [self.entries objectAtIndex:2];
-                if (entry != nil) {
+                if (entry != nil) 
+                {
+                    self.lbl_position3.hidden = NO;
+                    self.lbl_username3.hidden = NO;
+                    self.lbl_numPoints3.hidden = NO;
+                    self.iv_profilePic3.hidden = NO;
+                    
                     self.lbl_position3.text = [entry.position stringValue];
                     //self.iv_profilePic3
                     self.lbl_username3.text = entry.username;
                     self.lbl_numPoints3.text = [entry.points stringValue];
                 }
             }
+            else
+            {
+                                
+                self.lbl_position3.hidden = YES;
+                self.lbl_username3.hidden = YES;
+                self.lbl_numPoints3.hidden = YES;
+                self.iv_profilePic3.hidden = YES;
+            }
+        }
+        else {
+            //only one entry
+            self.lbl_position2.hidden = YES;
+            self.lbl_username2.hidden = YES;
+            self.lbl_numPoints2.hidden = YES;
+            self.iv_profilePic2.hidden = YES;
+            
+            self.lbl_position3.hidden = YES;
+            self.lbl_username3.hidden = YES;
+            self.lbl_numPoints3.hidden = YES;
+            self.iv_profilePic2.hidden = YES;
+            
         }
         [self setNeedsDisplay];
     }

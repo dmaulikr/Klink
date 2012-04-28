@@ -86,4 +86,25 @@
         return nil;
     }
 }
+
+
++ (Leaderboard*) leaderboardForUserID:(NSNumber*)userID 
+                             withType:(LeaderboardTypes)type 
+                        andRelativeTo:(LeaderboardRelativeTo)relativeTo
+{
+    Leaderboard* retVal = nil;
+
+      
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[userID stringValue], [NSString stringWithFormat:@"%d",relativeTo],[NSString stringWithFormat:@"%d",type], nil];
+        
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO,TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        retVal = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        return retVal;
+    }
 @end

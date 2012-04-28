@@ -83,4 +83,6 @@
                             withTypes:(NSArray*)objectTypes;
 + (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid;
 + (CloudEnumerator*) enumeratorForLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo;
++ (CloudEnumerator*) enumeratorForPairsLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type forTarget:(NSNumber*)userid2;
+
 @end

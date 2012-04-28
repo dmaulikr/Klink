@@ -64,10 +64,12 @@
     
     Leaderboard*    m_allLeaderboard;
     Leaderboard*    m_friendsLeaderboard;
+    Leaderboard*    m_pairsLeaderboard;
     
     CloudEnumerator* m_profileCloudEnumerator;
     CloudEnumerator* m_allLeaderboardCloudEnumerator;
     CloudEnumerator* m_friendsLeaderboardCloudEnumerator;
+    CloudEnumerator* m_pairsLeaderboardCloudEnumerator;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
@@ -119,10 +121,13 @@
 
 @property (nonatomic, retain) Leaderboard*          allLeaderboard;
 @property (nonatomic, retain) Leaderboard*          friendsLeaderboard;
+@property (nonatomic, retain) Leaderboard*          pairsLeaderboard;
 
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      allLeaderboardCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
+
+@property (nonatomic, retain) CloudEnumerator*      pairsLeaderboardCloudEnumerator;
 
 - (IBAction) onLeaderboardClicked:(id)sender;
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
@@ -130,6 +135,7 @@
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 - (IBAction) onFollowButtonPressed:(id)sender;
+
 
 - (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;
 

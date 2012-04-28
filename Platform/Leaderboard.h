@@ -17,4 +17,5 @@
 @property (nonatomic,retain) NSArray* entries;
 
 + (Leaderboard*) leaderboardForType:(LeaderboardTypes)type andRelativeTo:(LeaderboardRelativeTo)relativeTo;
++ (Leaderboard*) leaderboardForUserID:(NSNumber*)userID withType:(LeaderboardTypes)type andRelativeTo:(LeaderboardRelativeTo)relativeTo;
 @end

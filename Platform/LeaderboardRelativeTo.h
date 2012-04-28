@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    kALL, kPEOPLEIKNOW
+    kALL, kPEOPLEIKNOW, kONEPERSON
     
 } LeaderboardRelativeTo;

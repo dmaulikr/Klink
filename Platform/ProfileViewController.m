@@ -73,10 +73,12 @@
 
 @synthesize allLeaderboard          = m_allLeaderboard;
 @synthesize friendsLeaderboard      = m_friendsLeaderboard;
+@synthesize pairsLeaderboard         = m_pairsLeaderboard;
 
 @synthesize profileCloudEnumerator              = m_profileCloudEnumerator;
 @synthesize allLeaderboardCloudEnumerator       = m_allLeaderboardCloudEnumerator;
 @synthesize friendsLeaderboardCloudEnumerator   = m_friendsLeaderboardCloudEnumerator;
+@synthesize pairsLeaderboardCloudEnumerator     = m_pairsLeaderboardCloudEnumerator;
 
 //#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 //#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
@@ -390,7 +392,10 @@
 - (void) showLeaderBoardOfType:(int)type {
     CGRect frame = CGRectMake(20, 68, 280, 109);
     
-    self.v_leaderboard3Up = [[UILeaderboard3Up alloc] initWithFrame:frame];
+    UILeaderboard3Up* leaderboard = [[UILeaderboard3Up alloc] initWithFrame:frame];
+    self.v_leaderboard3Up = leaderboard;
+    [leaderboard release];
+    
     self.btn_leaderboard3UpClick = [UIButton buttonWithType:UIButtonTypeCustom];
     self.btn_leaderboard3UpClick.frame = frame;
     [self.btn_leaderboard3UpClick addTarget:self action:@selector(onLeaderboardClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -401,6 +406,10 @@
     }
     else if (type == kPEOPLEIKNOW) {
         [self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.entries forLeaderboard:self.friendsLeaderboard.objectid];
+    }
+    else if (type == kONEPERSON)
+    {
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.pairsLeaderboard.entries forLeaderboard:self.pairsLeaderboard.objectid];
     }
     
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
@@ -416,7 +425,7 @@
     }
     else if ([self.authenticationManager isUserAuthenticated]) {
         //no it isnt, but the user is logged in
-        self.v_leaderboardContainer.hidden = YES;
+        self.v_leaderboardContainer.hidden = NO;
         self.v_followControlsContainer.hidden = NO;
         
         //set the appropriate state for the follow button
@@ -433,7 +442,7 @@
     }
     else {
         //user is not logged in
-        self.v_leaderboardContainer.hidden = YES;
+        self.v_leaderboardContainer.hidden = NO;
         self.v_followControlsContainer.hidden = YES;
     }
     
@@ -490,6 +499,24 @@
         self.profileCloudEnumerator = [CloudEnumerator enumeratorForUser:userid];
         self.profileCloudEnumerator.delegate = self;
         [self.profileCloudEnumerator enumerateUntilEnd:nil];
+    }
+}
+
+- (void) enumeratePairsLeaderboard
+{
+    //will take the current userid and the logged inuserid and request a pairs leaderboard for them
+    if (self.pairsLeaderboardCloudEnumerator != nil)
+    {
+        [self.pairsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else
+    {
+        self.pairsLeaderboardCloudEnumerator = nil;
+        self.pairsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForPairsLeaderboard:self.loggedInUser.objectid ofType:kWEEKLY forTarget:self.userID];
+        self.pairsLeaderboardCloudEnumerator.delegate = self;
+        
+        [self.pairsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+        
     }
 }
 
@@ -556,7 +583,35 @@
     }
     
     // Enumerate the leaderboards for this user
-    [self enumerateLeaderboards:self.userID];
+    if (self.loggedInUser)
+    {
+        if (![self.userID isEqualToNumber:self.loggedInUser.objectid])
+        {
+            //not the current user we are looking at, show a pairs leaderboard
+            [self enumeratePairsLeaderboard];
+        }
+        else
+        {
+            //it is the currently logged on user, show normal leaderboard
+            [self enumerateLeaderboards:self.userID];
+        }
+    }
+    else
+    {
+        //no user logged in, we show the normal leaderboard
+        [self enumerateLeaderboards:self.userID];
+    }
+    
+    if (self.loggedInUser &&
+        [self.userID isEqualToNumber:self.loggedInUser.objectid])
+    {
+        [self enumerateLeaderboards:self.userID];
+    }
+    else if (self.loggedInUser)
+    {
+        //user is not the logged in user, so we display a pairs leaderboard
+        [self enumeratePairsLeaderboard];
+    }
     
     // Render the profile view
     if (self.user != nil) {
@@ -624,7 +679,8 @@
 {
     //we need to launch the leaderboard view controller
     //we are going to launch with the friends leaderboard
-    LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid];
+   // LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid];
+    LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid forUserID:self.userID] ;
     UINavigationController* nav = [[UINavigationController alloc]initWithRootViewController:lvc];
     
     //now we launch it modally
@@ -886,7 +942,7 @@
         
         self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
-        [self showLeaderBoardOfType:kALL];
+        //[self showLeaderBoardOfType:kALL];
     }
     else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
         // Get the leaderboad object from the resource context
@@ -898,6 +954,16 @@
         self.friendsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
         [self showLeaderBoardOfType:kPEOPLEIKNOW];
+    }
+    else if (enumerator == self.pairsLeaderboardCloudEnumerator)
+    {
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kONEPERSON], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.pairsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        [self showLeaderBoardOfType:kONEPERSON];
     }
 }
 
