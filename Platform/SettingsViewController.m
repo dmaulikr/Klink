@@ -208,7 +208,7 @@ machineNameSettings()
 - (void)composeFeedbackMail {
     // Get version information about the app and phone to prepopulate in the email
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString* appVersionNum = [infoDict objectForKey:@"CFBundleVersion"];
+    NSString* appVersionNum = [infoDict objectForKey:@"CFBundleShortVersionString"];
     NSString* appName = [infoDict objectForKey:@"CFBundleDisplayName"];
     NSString* deviceType = machineNameSettings();
     NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
