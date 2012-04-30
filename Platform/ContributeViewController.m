@@ -68,9 +68,9 @@
 
 @synthesize requests = m_requests;
 @synthesize idEnumerator = m_idEnumerator;
-@synthesize newPageObjectID     = m_newPageObjectID;
-@synthesize newPhotoObjectID    = m_newPhotoObjectID;
-@synthesize newCaptionObjectID  = m_newCaptionObjectID;
+@synthesize nPageObjectID     = m_newPageObjectID;
+@synthesize nPhotoObjectID    = m_newPhotoObjectID;
+@synthesize nCaptionObjectID  = m_newCaptionObjectID;
 
 
 #pragma mark - Deadline Date Timers
@@ -224,9 +224,9 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     
-    self.newCaptionObjectID = nil;
-    self.newPhotoObjectID = nil;
-    self.newPageObjectID = nil;
+    self.nCaptionObjectID = nil;
+    self.nPhotoObjectID = nil;
+    self.nPageObjectID = nil;
 
 }
 
@@ -1119,9 +1119,9 @@
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     if (progressView.didSucceed) 
     {
-        self.newCaptionObjectID     = nil;
-        self.newPhotoObjectID       = nil;
-        self.newPageObjectID        = nil;
+        self.nCaptionObjectID     = nil;
+        self.nPhotoObjectID       = nil;
+        self.nPageObjectID        = nil;
      [self dismissModalViewControllerAnimated:YES];
     }
     else {

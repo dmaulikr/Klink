@@ -14,13 +14,7 @@
 @synthesize onFailCallback      = m_onFailCallback;
 @synthesize onSuccessCallback   = m_onSuccessCallback;
 @synthesize userInfo            = m_userInfo;
-//@synthesize downloadSize        = m_downloadSize;
-//@synthesize uploadSize          = m_uploadSize;
-//@synthesize sentBytes           = m_sentBytes;
-//@synthesize downloadedBytes     = m_downloadedBytes;
 @synthesize delegate            = m_delegate;
-//@synthesize childRequests       = m_childRequests;
-//@synthesize parentRequest       = m_parentRequest;
 @synthesize progress            = m_progress;
 @synthesize consequentialUpdates= m_consequentialUpdates;
 @dynamic targetresourceid;
@@ -40,14 +34,8 @@
     self = [super initWithEntity:entity insertIntoManagedObjectContext:resourceContext.managedObjectContext];
     if (self) {
         self.statuscode = [NSNumber numberWithInt:kPENDING];
-    //    self.downloadSize = 0;
-     //   self.sentBytes = 0;
-     //   self.downloadSize = 0;
-     //   self.downloadedBytes = 0;
-     //   self.parentRequest = nil;
         self.consequentialUpdates = nil;
         NSMutableArray* cr = [[NSMutableArray alloc]init];
-      //  self.childRequests = cr;
         [cr release];
     }
     return self;
@@ -61,7 +49,7 @@ withChangedAttributes:(NSArray*)changedAttributes
      onFailure:(Callback *)onFailureCallback 
 {
    
-    NSString* activityName = @"Request.initRequest:";
+    //NSString* activityName = @"Request.initRequest:";
     
     //initialize the request to be pending
     self.statuscode = [NSNumber numberWithInt:kPENDING];
@@ -71,37 +59,10 @@ withChangedAttributes:(NSArray*)changedAttributes
     self.onFailCallback = onFailureCallback;
     self.onSuccessCallback = onSuccessCallback;
     self.userInfo = userInfo;
- //   self.downloadSize = 0;
- //   self.sentBytes = 0;
-  //  self.downloadSize = 0;
-  //  self.downloadedBytes = 0;
+
     self.consequentialUpdates = nil;
     [self setChangedAttributesList:changedAttributes];
-    
-//    NSMutableArray* cr = [[NSMutableArray alloc]init];
-//    self.childRequests = cr;
-//    [cr release];
-    
-//    if (opcode != kMODIFYATTACHMENT && 
-//        opcode != kCREATE &&
-//        opcode != kDELETE) {
-//        //attachments dont have children
-//        //we do not process attachments for creates
-//        //we do not process attachments for deletes
-//        
-//        NSArray* attachmentsInThisRequest = [self attachmentAttributesInRequest];
-//        //we have a list of all attachments that will need to be processed
-//        //we iterate through them and create child Requests for them
-//        for (NSString* attributeName in attachmentsInThisRequest) {
-//            Request* childRequest = [Request createAttachmentRequestFrom:self forAttribute:attributeName];            
-//            //add the request to our child collection
-//            [self.childRequests addObject:childRequest];
-//        }
-//
-//        
-//    }
-    
-   // LOG_REQUEST(0, @"%@Initialized new Request %@ for TargetID:%@, TargetType:%@, OperationCode:%d, #ChildRequests:%d",activityName,self.objectid,objectid,objecttype,opcode,[self.childRequests count]);
+
     
     return self;
 }
@@ -148,17 +109,7 @@ withChangedAttributes:(NSArray*)changedAttributes
    // self.parentRequest = nil;
 }
 
-//- (int) numberOfChildRequestsCompleted {
-//    //returns an integer representing the number of childrequests that are in the pending state
-//    int retVal = 0;
-//    
-//    for (Request* request in self.childRequests) {
-//        if ([request.statuscode intValue] != kPENDING) {
-//            retVal++;
-//        }
-//    }
-//    return retVal;
-//}
+
 
 - (void) updateRequestProgressIndicator {
     NSString* activityName = @"Request.updateRequestProgressIndicator:";
@@ -169,25 +120,11 @@ withChangedAttributes:(NSArray*)changedAttributes
         progressNumerator++;
     }
     
-//    if ([self.childRequests count] > 0) {
-//        //has child requests
-//        
-//        //we need to set the progress float to being a proportion of the number
-//        //of child requests still pending
-//        progressNumerator += [self numberOfChildRequestsCompleted];
-//        progressDenominator += [self.childRequests count];
-//        
-//        
-//    }
+
     
     //now we update our progress float
     self.progress = progressNumerator / progressDenominator;
     LOG_REQUEST(0, @"%@Updating Request %@ progress indicator to be %f (%f/%f)",activityName,self.objectid,self.progress,progressNumerator,progressDenominator);
-    //we also need to update the Parent's request progres indicator
-//    if (self.parentRequest != nil) {
-//        [self.parentRequest updateRequestProgressIndicator];
-//    }
-    
         //we report back to the delegate about the request's progress change
         [self.delegate request:self setProgress:self.progress];
     

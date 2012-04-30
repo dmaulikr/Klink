@@ -54,6 +54,7 @@
     UIView* m_v_leaderboardContainer;
     UISegmentedControl* m_sgmt_leaderboardType;
     UILeaderboard3Up* m_v_leaderboard3Up;
+    UIButton* m_btn_leaderboard3UpClick;
     
     UIView* m_v_followControlsContainer;
     UIButton* m_btn_follow;
@@ -63,10 +64,12 @@
     
     Leaderboard*    m_allLeaderboard;
     Leaderboard*    m_friendsLeaderboard;
+    Leaderboard*    m_pairsLeaderboard;
     
     CloudEnumerator* m_profileCloudEnumerator;
     CloudEnumerator* m_allLeaderboardCloudEnumerator;
     CloudEnumerator* m_friendsLeaderboardCloudEnumerator;
+    CloudEnumerator* m_pairsLeaderboardCloudEnumerator;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
@@ -111,23 +114,28 @@
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UISegmentedControl*  sgmt_leaderboardType;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
+@property (nonatomic, retain) IBOutlet UIButton*            btn_leaderboard3UpClick;
 
 @property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
 
 @property (nonatomic, retain) Leaderboard*          allLeaderboard;
 @property (nonatomic, retain) Leaderboard*          friendsLeaderboard;
+@property (nonatomic, retain) Leaderboard*          pairsLeaderboard;
 
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      allLeaderboardCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
 
+@property (nonatomic, retain) CloudEnumerator*      pairsLeaderboardCloudEnumerator;
 
+- (IBAction) onLeaderboardClicked:(id)sender;
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
 - (IBAction) onPublishedButtonPressed:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 - (IBAction) onFollowButtonPressed:(id)sender;
+
 
 - (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;
 

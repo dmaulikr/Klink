@@ -208,7 +208,9 @@ static  AuthenticationManager* sharedManager;
     
 }
 
-- (BOOL)saveAuthenticationContextToKeychainForUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context {
+- (BOOL)saveAuthenticationContextToKeychainForUser:(NSNumber*)userID 
+                         withAuthenticationContext:(AuthenticationContext*)context 
+{
     NSString* activityName = @"AuthenticationManager.saveAuthenticationContextToKeychain:";
     NSError* error = nil;
     NSString* json = [context toJSON];
@@ -323,6 +325,59 @@ withAuthenticationContext:(AuthenticationContext *)context
 
 - (BOOL) isUserAuthenticated {
     return (m_LoggedInUserID != nil && [m_LoggedInUserID intValue] != 0);
+}
+
+- (BOOL) processAuthenticationResponse:(CallbackResult*)result
+{
+    NSString* activityName = @"AuthenticationManager.onGetAuthenticationContextDownloaded:";
+    ResourceContext* resourceContext = [ResourceContext instance];
+    GetAuthenticatorResponse* response = (GetAuthenticatorResponse*)result.response;
+    if ([response.didSucceed boolValue] == YES) 
+    {
+        
+        EventManager* eventManager = [EventManager instance];
+        
+        AuthenticationContext* newContext = response.authenticationcontext;
+        User* returnedUser = response.user;
+        
+        Resource* existingUser = [resourceContext resourceWithType:USER withID:returnedUser.objectid];
+        
+        
+        [eventManager raiseHideProgressViewEvent];
+        //save the user object that is returned to us in the database
+        if (existingUser != nil) {
+            [existingUser refreshWith:returnedUser];
+        }
+        else {
+            //need to insert the new user into the resource context
+            [resourceContext insert:returnedUser];
+        }
+        [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+        
+        BOOL contextSavedToKeyChain = [self saveAuthenticationContextToKeychainForUser:newContext.userid withAuthenticationContext:newContext];
+        
+        if (contextSavedToKeyChain) {
+            BOOL result = [self loginUser:newContext.userid withAuthenticationContext:newContext isSavedLogin:NO];
+            if (result) {
+                LOG_SECURITY(0,@"%@Login completed successfully",activityName);
+                return YES;
+            }
+            else {
+                LOG_SECURITY(1,@"%@Login failed for unknown reasons",activityName);
+                return NO;
+            }
+        }
+        else {
+            //unable to login user due to inability to save the credential to key chain
+            //raise global error
+            LOG_SECURITY(1, @"%@Could not complete login due to failure in saving credential to key chain",activityName);
+            
+            
+            [eventManager raiseUserLoginFailedEvent:nil];
+            return NO;
+        }
+    }
+
 }
 
 #pragma mark - Async Callback Handlers

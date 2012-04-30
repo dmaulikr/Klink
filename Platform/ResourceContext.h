@@ -51,11 +51,40 @@ shouldEnumerateSinglePage:(BOOL) shouldEnumerateSinglePage
                withDeviceToken:(NSString*)deviceToken
                 onFinishNotify:(Callback*)callback;
 
+- (void) createUserAndGetAuthenticatorTokenWithEmail:(NSString*)email 
+                                        withPassword:(NSString*)password 
+                                     withDisplayName:(NSString*)displayName
+                                        withUsername:(NSString*)username 
+                                     withDeviceToken:(NSString*)deviceToken 
+                                      onFinishNotify:(Callback*)callback
+                                   trackProgressWith:(id<RequestProgressDelegate>)progressDelegate;
+
+
+- (void) getAuthenticatorTokenWithEmail:(NSString*)email 
+                              withPassword:(NSString*)password 
+                           withDeviceToken:(NSString*)deviceToken 
+                            onFinishNotify:(Callback*)callback;
+
+- (void) getAuthenticatorTokenWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName 
+                        withAccessToken:(NSString*)twitterAccessToken 
+                         withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                           withExpiryDate:(NSString*)twitterTokenExpiry 
+                          withDeviceToken:(NSString*)deviceToken
+                           onFinishNotify:(Callback*)callback;
+
 - (void) updateAuthenticatorWithTwitter:(NSString*)twitterUserID 
                       withAccessToken:(NSString*)twitterAccessToken
                 withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
                        withExpiryDate:(NSString*)twitterTokenExpiry
                        onFinishNotify:(Callback*)callback;
+
+
+- (void) updateAuthenticatorWithFacebook:(NSString*)facebookID 
+                        withAccessToken:(NSString*)facebookAccessToken
+                         withExpiryDate:(NSDate*)facebookAccessTokenExpiry
+                         onFinishNotify:(Callback*)callback;
+
 
 - (BOOL) doesExistInLocalStore:(NSNumber*)resourceID;
 

@@ -420,14 +420,9 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
 }
 
 + (CloudEnumerator*) enumeratorForUser:(NSNumber *)userid {
-    Query* query = [Query queryUser:userid];
-    QueryOptions* queryOptions = [QueryOptions queryForUser:userid];
-    EnumerationContext* enumerationContext = [EnumerationContext contextForUser:userid];
-    query.queryOptions = queryOptions;
-    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
-    enumerator.identifier = [userid stringValue];
-    enumerator.secondsBetweenConsecutiveSearches = 5;
-    return enumerator;
+
+    CloudEnumerator* retVal = [CloudEnumerator enumeratorForIDs:[NSArray arrayWithObject:userid] withTypes:[NSArray arrayWithObject:USER]];
+    return retVal;
 }
 
 
@@ -503,6 +498,22 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
     return enumerator;
 }
+
++ (CloudEnumerator*) enumeratorForPairsLeaderboard:(NSNumber*)userid 
+                                            ofType:(LeaderboardTypes)type 
+                                         forTarget:(NSNumber*)userid2
+{
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    Query* query = [Query queryForPairsLeaderboard:userid ofType:type target:userid2];
+    QueryOptions* queryOptions = [QueryOptions queryForLeaderboard];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForLeaderboard];
+    
+    query.queryOptions = queryOptions;
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];
+    return enumerator;
+}
+
 + (CloudEnumerator*) enumeratorForApplicationSettings:(NSNumber*)userid {
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     Query* query = [Query queryApplicationSettings:userid];

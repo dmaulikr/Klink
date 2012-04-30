@@ -8,17 +8,22 @@
 
 #import "Leaderboard.h"
 #import "LeaderboardEntry.h"
+#import "LeaderboardRelativeTo.h"
+#import "LeaderboardTypes.h"
+#import "AuthenticationManager.h"
+#import "Types.h"
+
 @implementation Leaderboard
 @dynamic userid;
 @dynamic type;
 @dynamic relativeto;
-@synthesize leaderboardentries = __leaderboardentries;
+@synthesize entries = __entries;
 
-- (NSArray*) leaderboardentries
+- (NSArray*) entries
 {
-    if (__leaderboardentries != nil)
+    if (__entries != nil)
     {
-        return __leaderboardentries;
+        return __entries;
     }
     
     NSMutableArray* retVal = [[NSMutableArray alloc]init];
@@ -30,13 +35,76 @@
         [retVal addObject:leaderboardEntry];
         [leaderboardEntry release];
     }
-    __leaderboardentries = retVal;
-    return __leaderboardentries;
+    
+//    if (leaderboardentryArray != nil &&
+//        [leaderboardentryArray count] > 0) 
+//    {
+//        NSDictionary* leaderboardEntryDictionary  = [leaderboardentryArray objectAtIndex:0];
+//        NSArray* keyArray = [leaderboardEntryDictionary allKeys];
+//        int count = [keyArray count];
+//        
+//        for (int i = 0; i < count; i++)
+//        {
+//            
+//        }
+//        
+//        
+//
+//    }
+    __entries = retVal;
+    return __entries;
 }
 
 - (void) dealloc
 {
-    [__leaderboardentries release];
+    [__entries release];
     [super dealloc];
 }
+
++ (Leaderboard*) leaderboardForType:(LeaderboardTypes)type andRelativeTo:(LeaderboardRelativeTo)relativeTo
+{
+    Leaderboard* retVal = nil;
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    
+    if (authenticationManager.isUserAuthenticated)
+    {
+        NSNumber* loggedInUserID = [authenticationManager m_LoggedInUserID];
+       
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[loggedInUserID stringValue], [NSString stringWithFormat:@"%d",relativeTo],[NSString stringWithFormat:@"%d",type], nil];
+        
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO,TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        retVal = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        return retVal;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+
++ (Leaderboard*) leaderboardForUserID:(NSNumber*)userID 
+                             withType:(LeaderboardTypes)type 
+                        andRelativeTo:(LeaderboardRelativeTo)relativeTo
+{
+    Leaderboard* retVal = nil;
+
+      
+        
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[userID stringValue], [NSString stringWithFormat:@"%d",relativeTo],[NSString stringWithFormat:@"%d",type], nil];
+        
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO,TYPE, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        retVal = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        return retVal;
+    }
 @end

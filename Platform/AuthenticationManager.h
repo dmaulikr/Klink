@@ -35,7 +35,7 @@
 - (BOOL) loginUser:(NSNumber*)userID 
 withAuthenticationContext:(AuthenticationContext*)context  isSavedLogin:(BOOL)isSavedLogin;
 
-
+- (BOOL)processAuthenticationResponse:(CallbackResult*)result;
 - (BOOL)saveAuthenticationContextToKeychainForUser:(NSNumber*)userID withAuthenticationContext:(AuthenticationContext*)context;
 - (void) logoff;
 + (id) instance;

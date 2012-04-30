@@ -53,7 +53,7 @@ static ResourceContext* sharedInstance;
 
 
 - (NSManagedObjectContext*)managedObjectContext {
-    NSString* activityName = @"ResourceContext.managedObjectContext:";
+   // NSString* activityName = @"ResourceContext.managedObjectContext:";
     PlatformAppDelegate *appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     
     
@@ -245,7 +245,7 @@ static ResourceContext* sharedInstance;
     NSMutableArray* resourcesToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceIDsToCreateInCloud = [[NSMutableArray alloc]init];
     NSMutableArray* resourceTypesToCreateInCloud = [[NSMutableArray alloc]init];
-    NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
+   // NSMutableArray* resourcesToDeleteInCloud = [[NSMutableArray alloc]init];
     
    
     
@@ -417,7 +417,7 @@ static ResourceContext* sharedInstance;
     [self.managedObjectContext processPendingChanges];
     
     //we loop through all updated objects now to ensure we have the latest versions
-    updatedObjects = [self.managedObjectContext updatedObjects];
+  //  updatedObjects = [self.managedObjectContext updatedObjects];
 //    NSArray* uArray = [updatedObjects allObjects];
 //    for (NSManagedObject* object in uArray) {
 //       [self.managedObjectContext refreshObject:object mergeChanges:YES];
@@ -589,6 +589,116 @@ static ResourceContext* sharedInstance;
 }
 
 #pragma mark - Authentication Enumeration
+- (void) createUserAndGetAuthenticatorTokenWithEmail:(NSString*)email 
+                                        withPassword:(NSString*)password
+                                     withDisplayName:(NSString*)displayName
+                                        withUsername:(NSString*)username 
+                                     withDeviceToken:(NSString*)deviceToken 
+                                      onFinishNotify:(Callback*)callback
+                                   trackProgressWith:(id<RequestProgressDelegate>)progressDelegate
+{
+        //this method creates a user account ont he server and logs the user in
+    NSString* activityName = @"ResourceContext.createUserAndGetAuthenticatorTokenWithEmail:";
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    [request updateRequestStatus:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kUPDATEAUTHENTICATOR];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    NSURL* url = [UrlManager urlForCreateUserAccount:email withPassword:password withDisplayName:displayName withUsername:(NSString*)username withDeviceToken:deviceToken];
+    request.url = [url absoluteString];
+    request.delegate = progressDelegate;
+    LOG_SECURITY(0, @"%@Submitting Create User and Authenticate request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+   
+    
+    [progressDelegate initializeWith:[NSArray arrayWithObject:request]];
+    
+     [requestManager submitRequest:request];
+
+}
+
+- (void) updateAuthenticatorWithFacebook:(NSString*)facebookID 
+                         withAccessToken:(NSString*)facebookAccessToken
+                          withExpiryDate:(NSDate*)facebookAccessTokenExpiry
+                          onFinishNotify:(Callback*)callback
+{
+    NSString* activityName = @"ResourceContext.updateAuthenticatorWithFacebook:";
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    
+    [request updateRequestStatus:kPENDING];
+    //request.statuscode =[NSNumber numberWithInt:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kUPDATEAUTHENTICATOR];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    AuthenticationContext* context = [[AuthenticationManager instance]contextForLoggedInUser];
+    
+    NSURL* url = [UrlManager urlForUpdateAuthenticatorWithFacebookURL:facebookID withToken:facebookAccessToken withExpiry:facebookAccessTokenExpiry withAuthenticationContext:context];
+
+    
+    
+    
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting update authentication with Facebook request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+    
+}
+
+- (void) getAuthenticatorTokenWithEmail:(NSString*)email 
+                              withPassword:(NSString*)password 
+                           withDeviceToken:(NSString*)deviceToken 
+                            onFinishNotify:(Callback*)callback
+{
+    NSString* activityName = @"ResourceContext.getAuthenticatorTokenWithPassword:";
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    [request updateRequestStatus:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kAUTHENTICATE];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    NSURL* url = [UrlManager urlForPasswordAuthentication:email withPassword:password withDeviceToken:deviceToken];
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting Password Authentication request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+    
+}
+
+
+- (void) getAuthenticatorTokenWithTwitter:(NSNumber*)twitterID 
+                          withTwitterName:(NSString*)twitterName 
+                          withAccessToken:(NSString*)twitterAccessToken 
+                    withAccessTokenSecret:(NSString*)twitterAccessTokenSecret
+                           withExpiryDate:(NSString*)twitterTokenExpiry 
+                          withDeviceToken:(NSString*)deviceToken
+                           onFinishNotify:(Callback*)callback
+{
+    NSString* activityName  = @"ResourceContext.getAuthenticatorToken:";
+    
+    Request* request = (Request*)[Request createInstanceOfRequest];
+    
+    [request updateRequestStatus:kPENDING];
+    //request.statuscode =[NSNumber numberWithInt:kPENDING];
+    request.operationcode =[NSNumber numberWithInt:kAUTHENTICATE];
+    request.onSuccessCallback = callback;
+    request.onFailCallback = callback;
+    
+    NSURL* url = [UrlManager urlForAuthenticationWithTwitter:twitterID withTwitterName:twitterName withAccessToken:twitterAccessToken withAccessTokenSecret:twitterAccessTokenSecret withExpiryDate:twitterTokenExpiry withDeviceToken:deviceToken];
+    
+    request.url = [url absoluteString];
+    
+    LOG_SECURITY(0, @"%@Submitting Authentication request to RequestManager with url %@",activityName,request.url);
+    RequestManager* requestManager = [RequestManager instance];
+    [requestManager submitRequest:request];
+
+    
+}
+
+
 - (void) getAuthenticatorToken:(NSNumber *)facebookID 
                       withName:(NSString *)displayName 
                      withEmail:(NSString *)email

@@ -1003,9 +1003,14 @@
 #pragma mark - Toolbar Button Event Handlers
 - (void) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
-    if (![self.authenticationManager isUserAuthenticated]) {
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
+    AuthenticationContext* loggedInContext = [[AuthenticationManager instance]contextForLoggedInUser];
+    if (loggedInContext == nil ||
+        loggedInContext.hasFacebook == NO) 
+    {
+        //user is not logged in, must log in first and also ensure they have a facebook account
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onFacebookButtonPressed:)  fireOnMainThread:YES];
+        [self authenticateAndGetFacebook:YES getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+
     }
     else {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -1029,10 +1034,16 @@
 
 - (void) onTwitterButtonPressed:(id)sender {
     //we check to ensure the user is logged in to Twitter first
-    if (![self.authenticationManager isUserAuthenticated] ||
-         ![[self.authenticationManager contextForLoggedInUser]hasTwitter]) {
+    AuthenticationContext* loggedInContext = [[AuthenticationManager instance]contextForLoggedInUser];
+
+    if (loggedInContext == nil ||
+        loggedInContext.hasTwitter == NO) 
+    {
         //user is not logged in, must log in first
-        [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onTwitterButtonPressed:)  fireOnMainThread:YES];
+     
+        [self authenticateAndGetFacebook:NO getTwitter:YES onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+    
     }
     else {
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -1059,18 +1070,24 @@
 
 - (void) onCameraButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onCameraButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                              initWithTitle:ui_LOGIN_TITLE
+//                              message:ui_LOGIN_REQUIRED
+//                              delegate:self
+//                              onFinishSelector:@selector(onCameraButtonPressed:)
+//                              onTargetObject:self
+//                              withObject:nil
+//                              cancelButtonTitle:@"Cancel"
+//                              otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        
+        //user is not logged in, must log in first
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
         int index = [self.photoViewSlider getPageIndex];
@@ -1131,20 +1148,25 @@
    // NSString* activityName = @"FullScreenPhotoViewController.onVoteButtonPressed:";
     
     //we check to ensure the user is logged in first
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onVoteButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                              initWithTitle:ui_LOGIN_TITLE
+//                              message:ui_LOGIN_REQUIRED
+//                              delegate:self
+//                              onFinishSelector:@selector(onVoteButtonPressed:)
+//                              onTargetObject:self
+//                              withObject:nil
+//                              cancelButtonTitle:@"Cancel"
+//                              otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
-    else {
+    else 
+    {
         
         //display progress view on the submission of a vote
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
@@ -1165,17 +1187,20 @@
 - (void) onCaptionButtonPressed:(id)sender {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onCaptionButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                              initWithTitle:ui_LOGIN_TITLE
+//                              message:ui_LOGIN_REQUIRED
+//                              delegate:self
+//                              onFinishSelector:@selector(onCaptionButtonPressed:)
+//                              onTargetObject:self
+//                              withObject:nil
+//                              cancelButtonTitle:@"Cancel"
+//                              otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
         int index = [self.photoViewSlider getPageIndex];

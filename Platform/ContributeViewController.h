@@ -104,9 +104,9 @@
 @property (nonatomic, retain) NSLock*                   oidArrayLock;
 
 
-@property (nonatomic, retain) NSNumber*                 newPageObjectID;
-@property (nonatomic, retain) NSNumber*                 newPhotoObjectID;
-@property (nonatomic, retain) NSNumber*                 newCaptionObjectID;
+@property (nonatomic, retain) NSNumber*                 nPageObjectID;
+@property (nonatomic, retain) NSNumber*                 nPhotoObjectID;
+@property (nonatomic, retain) NSNumber*                 nCaptionObjectID;
 
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;

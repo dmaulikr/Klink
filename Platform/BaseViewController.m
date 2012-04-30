@@ -18,6 +18,7 @@
 #import "NotificationsViewController.h"
 #import "ProfileViewController.h"
 #import "UIStrings.h"
+#import "LoginViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -278,7 +279,7 @@
 
     
     //first check if this view controller is the top level visible controller
-    if (self.navigationController.visibleViewController == self) {
+   // if (self.navigationController.visibleViewController == self) {
         progressView.labelText = message;
         [progressView removeAllSubviews];
         
@@ -303,7 +304,7 @@
         NSString* failureMessage = @"Failure!";
         [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         
-    }
+    //}
 }
 
 - (void) hideProgressBar {
@@ -347,6 +348,20 @@
     }
 }
 
+
+- (void) authenticateAndGetFacebook:(BOOL)getFaceobook 
+                         getTwitter:(BOOL)getTwitter 
+                  onSuccessCallback:(Callback*)successCallback 
+                  onFailureCallback:(Callback*)failCallback 
+{
+    LoginViewController* loginViewController = [LoginViewController createAuthenticationInstance:getFaceobook shouldGetTwitter:getTwitter onSuccessCallback:successCallback onFailureCallback:failCallback];
+   
+    [self  presentModalViewController:loginViewController animated:YES];
+    
+    
+    
+    
+}
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 
      onFinishSelector:(SEL)sel 
@@ -392,17 +407,17 @@
        
         
         Page* page = [Page createNewDraftPage];
-        if (controller.newPageObjectID == nil)
+        if (controller.nPageObjectID == nil)
         {
             //this is the first page being created with this controller
-            controller.newPageObjectID = page.objectid;
+            controller.nPageObjectID = page.objectid;
         
         }
         else 
         {
             //in this case we know there was a previous submission for new page
             //so we set the id the same so we dont possibly recreate the page on the server
-            page.objectid = controller.newPageObjectID;
+            page.objectid = controller.nPageObjectID;
         }
         
         page.displayname = controller.draftTitle;
@@ -416,12 +431,12 @@
         if (controller.img_photo != nil && controller.img_thumbnail != nil) {
             photo = [Photo createPhotoInPage:page.objectid withThumbnailImage:controller.img_thumbnail withImage:controller.img_photo];
             
-            if (controller.newPhotoObjectID == nil)
+            if (controller.nPhotoObjectID == nil)
             {
-                controller.newPhotoObjectID = photo.objectid;
+                controller.nPhotoObjectID = photo.objectid;
             }
             else {
-                photo.objectid = controller.newPhotoObjectID;
+                photo.objectid = controller.nPhotoObjectID;
             }
             
             //we set the initial number of photos to 1
@@ -438,13 +453,13 @@
             }
             Caption* caption = [Caption createCaptionForPhoto:photo.objectid withCaption:controller.caption];
             
-            if (controller.newCaptionObjectID == nil)
+            if (controller.nCaptionObjectID == nil)
             {
-                controller.newCaptionObjectID = caption.objectid;
+                controller.nCaptionObjectID = caption.objectid;
             }
             else
             {
-                caption.objectid = controller.newCaptionObjectID;
+                caption.objectid = controller.nCaptionObjectID;
             }
             
             //we set the initial number of votes on the caption to 0
@@ -600,15 +615,15 @@
     LOG_BASEVIEWCONTROLLER(0,@"%@Unknown request failure",activityName);
 }
 - (void) onAuthenticationFailed:(CallbackResult*)result {
-    NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
+   // NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
     //we handle an authentication failed by requiring they authenticate again against facebook
-    if ( [self isViewLoaded] && self.view.window) {
-        // we only process if this view controller is on top
-        LOG_BASEVIEWCONTROLLER(0, @"%@Processing Authentication Failed Event",activityName);
-        AuthenticationManager* authnManager = [AuthenticationManager instance];
-        [authnManager logoff];
-        [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:nil withObject:nil];
-    }
+//    if ( [self isViewLoaded] && self.view.window) {
+//        // we only process if this view controller is on top
+//        LOG_BASEVIEWCONTROLLER(0, @"%@Processing Authentication Failed Event",activityName);
+//        AuthenticationManager* authnManager = [AuthenticationManager instance];
+//        [authnManager logoff];
+//        [self authenticate:YES withTwitter:NO onFinishSelector:nil onTargetObject:nil withObject:nil];
+//    }
 }
 
 - (void) onApplicationWentToBackground:(CallbackResult*)result {

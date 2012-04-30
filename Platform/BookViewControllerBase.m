@@ -469,17 +469,21 @@
     
     //called when the writer's log button is pressed
     if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:ui_LOGIN_TITLE
-                                    message:ui_LOGIN_REQUIRED
-                                    delegate:self
-                                    onFinishSelector:@selector(showProfileViewController)
-                                    onTargetObject:self
-                                    withObject:nil
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                                    initWithTitle:ui_LOGIN_TITLE
+//                                    message:ui_LOGIN_REQUIRED
+//                                    delegate:self
+//                                    onFinishSelector:@selector(showProfileViewController)
+//                                    onTargetObject:self
+//                                    withObject:nil
+//                                    cancelButtonTitle:@"Cancel"
+//                                    otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onWritersLogButtonClicked:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+
     }
     else 
     {

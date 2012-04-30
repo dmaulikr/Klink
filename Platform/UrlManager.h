@@ -34,6 +34,15 @@
                withObjectTypes:(NSArray*)objectTypes 
      withAuthenticationContext:(id)authenticationContext;
 
++ (NSURL*) urlForPasswordAuthentication:(NSString*)email 
+                       withPassword:(NSString*)password
+                        withDeviceToken:(NSString*)deviceToken;
+
++ (NSURL*)urlForCreateUserAccount:(NSString*)email 
+                     withPassword:(NSString*)password
+                  withDisplayName:(NSString*)displayname
+                     withUsername:(NSString*)username 
+                  withDeviceToken:(NSString*)deviceToken;
 
 + (NSURL*) urlForAuthentication:(NSNumber*)facebookID 
                        withName:(NSString*)name
@@ -41,6 +50,14 @@
         withFacebookAccessToken:(NSString*)facebookAccessToken 
         withFacebookTokenExpiry:(NSDate*)date
                 withDeviceToken:(NSString*)deviceToken;
+
+
++ (NSURL*) urlForAuthenticationWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName
+                           withAccessToken:(NSString*)twitterAccessToken
+                     withAccessTokenSecret:(NSString*)twitterAccessTokenSecret 
+                            withExpiryDate:(NSString*)twitterTokenExpiry
+                           withDeviceToken:(NSString*)deviceToken;
 
 + (NSURL*) urlForPutObject:(NSNumber*)objectid 
             withObjectType:(NSString*)objectType 
@@ -58,7 +75,12 @@
                               withToken:(NSString *)twitterAccessToken 
                         withTokenSecret:(NSString*)twitterAccessTokenSecret
                              withExpiry:(NSString*)twitterAccessTokenExpiry 
-              withAuthenticationContext:(id)context; 
+              withAuthenticationContext:(id)context;
+
++ (NSURL*) urlForUpdateAuthenticatorWithFacebookURL:(NSString *)facebookID 
+                              withToken:(NSString *)facebookAccessToken 
+                             withExpiry:(NSDate *)facebookAccessTokenExpiry 
+              withAuthenticationContext:(id)context;
 
 
 + (NSURL*) urlForShareObject:(NSNumber*)objectid 

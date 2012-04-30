@@ -248,7 +248,46 @@
     query.attributeExpressions = [NSArray arrayWithObjects:queryExpression,queryExpression2,queryExpression3,nil];
     
     [queryExpression release];
+    [queryExpression2 release];
+    [queryExpression3 release];
     return query;
+}
+
++ (id) queryForPairsLeaderboard:(NSNumber*)userid 
+                         ofType:(LeaderboardTypes)type 
+                         target:(NSNumber*)userid2
+{
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = LEADERBOARD;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    QueryExpression* queryExpression2 = [[QueryExpression alloc]init];
+    queryExpression2.attributeName = TYPE;
+    queryExpression2.opCode = opcode_QUERYEQUALITY;
+    queryExpression2.value = [NSString stringWithFormat:@"%d",type];
+    
+    QueryExpression* queryExpression3 = [[QueryExpression alloc]init];
+    queryExpression3.attributeName = RELATIVETO ;
+    queryExpression3.opCode = opcode_QUERYEQUALITY;
+    queryExpression3.value = [NSString stringWithFormat:@"%d",kONEPERSON];
+    
+    QueryExpression* queryExpression4 = [[QueryExpression alloc]init];
+    queryExpression4.attributeName = TARGETID ;
+    queryExpression4.opCode = opcode_QUERYEQUALITY;
+    queryExpression4.value = [userid2 stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObjects:queryExpression,queryExpression2,queryExpression3,queryExpression4, nil];
+    
+    [queryExpression release];
+    [queryExpression2 release];
+    [queryExpression3 release];
+    [queryExpression4 release];
+    return query;
+    
 }
 
 + (Query*)queryPages:(NSNumber*)afterDate {
@@ -299,9 +338,9 @@
     
     
     QueryExpression* queryExpression = [[QueryExpression alloc]init];
-    queryExpression.attributeName = STATE;
+    queryExpression.attributeName = OBJECTID;
     queryExpression.opCode = opcode_QUERYEQUALITY;
-    queryExpression.value = [NSString stringWithFormat:@"%d",kPUBLISHED];
+    queryExpression.value = [userid stringValue];
     
     query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
     

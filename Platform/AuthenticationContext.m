@@ -168,6 +168,7 @@
     LOG_SECURITY(0, @"%@Serializing dictionary to JSON String...",activityName);
     NSString* retVal = [objectAsDictionary JSONStringWithOptions:JKSerializeOptionNone error:&error];
     [objectAsDictionary release];
+    [attributeDescriptions release];
     if (error != nil) {
         //error in json serialization
         LOG_SECURITY(1,@"%@Failure to serialize context object to JSON due to %@",activityName,[error userInfo]);

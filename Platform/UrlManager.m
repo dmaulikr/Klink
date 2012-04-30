@@ -110,10 +110,143 @@
     
 }
 
++ (NSURL*) urlForUpdateAuthenticatorWithFacebookURL:(NSString *)facebookID 
+                                          withToken:(NSString *)facebookAccessToken 
+                                         withExpiry:(NSDate *)facebookAccessTokenExpiry 
+                          withAuthenticationContext:(id)context
+{
+    NSString* verbName = verb_UPDATEAUTHENTICATOR;
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    NSString* baseURL = settingsObject.base_url;
+    
+    double expiryDateInEpochSeconds = [facebookAccessTokenExpiry timeIntervalSince1970];
+    
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* twitterUserIdParamName = param_FACEBOOKID;
+    NSString* twitterAccessTokenParamName = param_FACEBOOKACCESSTOKEN;
+    NSString* twitterTokenExpiryName = param_FACEBOOKACCESSTOKENEXPIRY;
+    
+    NSString* authenticationContextParamName = param_AUTHENTICATIONCONTEXT;
+    NSString* jsonAuthenticationContext = [context toJSON];
+    jsonAuthenticationContext = [jsonAuthenticationContext encodeString:NSUTF8StringEncoding];
+    
+    [parameters appendFormat:@"%@=%@",twitterUserIdParamName,facebookID];
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenParamName,facebookAccessToken];
+    [parameters appendFormat:@"&%@=%f",twitterTokenExpiryName,expiryDateInEpochSeconds];
+    [parameters appendFormat:@"&%@=%@",authenticationContextParamName,jsonAuthenticationContext];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    [parameters release];
+    return url;
+}
+
++ (NSURL*) urlForPasswordAuthentication:(NSString*)email 
+                           withPassword:(NSString*)password
+                        withDeviceToken:(NSString*)deviceToken
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    
+    NSString* verbName = verb_GETAUTHENTICATORWITHPASSWORD;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    
+    
+    NSString* emailParamName = param_EMAIL;
+    [parameters appendFormat:@"%@=%@",emailParamName,email];
+    NSString* passwordParamName = param_PASSWORD;
+    [parameters appendFormat:@"&%@=%@",passwordParamName,password];    
+    NSString* deviceTokenParamName = param_DEVICETOKEN;
+    [parameters appendFormat:@"&%@=%@",deviceTokenParamName,deviceToken];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
+
+}
+
++ (NSURL*) urlForCreateUserAccount:(NSString *)email 
+                      withPassword:(NSString *)password
+                   withDisplayName:(NSString *)displayName
+                      withUsername:(NSString *)username 
+                   withDeviceToken:(NSString *)deviceToken
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    NSString* verbName = verb_CREATEUSERAUTHENTICATE;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    NSString* emailParamName = param_EMAIL;
+    [parameters appendFormat:@"%@=%@",emailParamName,email];
+    
+    NSString* passwordParamName = param_PASSWORD;
+    [parameters appendFormat:@"&%@=%@",passwordParamName,password];
+    
+    NSString* displayNameParamName = param_DISPLAYNAME;
+    [parameters appendFormat:@"&%@=%@",displayNameParamName,displayName];
+    
+    NSString* usernameParamName = param_USERNAME;
+    [parameters appendFormat:@"&%@=%@",usernameParamName,username];
+    
+    NSString* deviceTokenParamName = param_DEVICETOKEN;
+    [parameters appendFormat:@"&%@=%@",deviceTokenParamName,deviceToken];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
+
+    
+    
+}
+
+
++ (NSURL*) urlForAuthenticationWithTwitter:(NSNumber*)twitterID 
+                           withTwitterName:(NSString*)twitterName
+                           withAccessToken:(NSString*)twitterAccessToken
+                     withAccessTokenSecret:(NSString*)twitterAccessTokenSecret 
+                            withExpiryDate:(NSString*)twitterTokenExpiry
+                           withDeviceToken:(NSString*)deviceToken
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    
+    NSString* verbName = verb_GETAUTHENTICATORWITHTWITTER;
+    NSString* baseURL = settingsObject.base_url;
+    NSMutableString *parameters = [[NSMutableString alloc] initWithFormat:@"%@/%@?",baseURL,verbName] ;
+    
+    
+    
+    NSString* twitterIDParamName = param_TWITTERUSERID;
+    [parameters appendFormat:@"%@=%@",twitterIDParamName,[twitterID stringValue]];
+    NSString* twitterNameParamName = param_TWITTERNAME;
+    [parameters appendFormat:@"&%@=%@",twitterNameParamName,twitterName];
+    NSString* twitterAccessTokenParamName = param_TWITTERACCESSTOKEN;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenParamName,twitterAccessToken];
+    NSString* twitterAccessTokenSecretParamName = param_TWITTERACCESSTOKENSECRET;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenSecretParamName,twitterAccessTokenSecret];
+    NSString* twitterAccessTokenExpiryParamName = param_TWITTERACCESSTOKENEXPIRY;
+    [parameters appendFormat:@"&%@=%@",twitterAccessTokenExpiryParamName,twitterTokenExpiry];
+    NSString* deviceTokenParamName = param_DEVICETOKEN;
+    [parameters appendFormat:@"&%@=%@",deviceTokenParamName,deviceToken];
+    
+    NSString* escapedURL = [parameters stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL* url = [[[NSURL alloc]initWithString:escapedURL]autorelease];
+    
+    [parameters release];
+    return url;
+    
+}
+
 + (NSURL*) urlForAuthentication:(NSNumber *)facebookID 
                        withName:(NSString *)name 
                       withEmail:(NSString*)email
-        withFacebookAccessToken:(NSString *)facebookAccessToken withFacebookTokenExpiry:(NSDate *)date 
+        withFacebookAccessToken:(NSString *)facebookAccessToken 
+        withFacebookTokenExpiry:(NSDate *)date 
                 withDeviceToken:(NSString *)deviceToken {
     
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];

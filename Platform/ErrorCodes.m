@@ -10,3 +10,5 @@
 
 
 int const ec_FAILED_AUTHENTICATION = 3;
+int const ec_USERNAME_NOT_UNIQUE = 28;
+int const ec_USER_ALREADY_REGISTERED = 32;

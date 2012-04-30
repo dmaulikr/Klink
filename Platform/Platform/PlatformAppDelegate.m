@@ -102,7 +102,7 @@
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons
-    NSManagedObjectContext* context = self.managedObjectContext;
+//    NSManagedObjectContext* context = self.managedObjectContext;
     [self.applicationSettingsManager settings];    
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
    

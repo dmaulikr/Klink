@@ -13,6 +13,7 @@
 @synthesize points = m_points;
 @synthesize position = m_position;
 @synthesize username = m_username;
+@synthesize imageurl = m_imageurl;
 
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
@@ -20,6 +21,7 @@
     self.username = [jsonDictionary valueForKey:USERNAME];
     self.position = [jsonDictionary valueForKey:POSITION];
     self.points = [jsonDictionary valueForKey:POINTS];
+    self.imageurl = [jsonDictionary valueForKey:IMAGEURL];
     return self;
 }
 

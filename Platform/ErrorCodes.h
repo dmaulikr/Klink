@@ -10,3 +10,5 @@
 
 
 extern int const ec_FAILED_AUTHENTICATION;
+extern int const ec_USERNAME_NOT_UNIQUE;
+extern int const ec_USER_ALREADY_REGISTERED;

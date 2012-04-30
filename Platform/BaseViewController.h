@@ -47,6 +47,11 @@
        onTargetObject:(id)targetObject 
            withObject:(id)parameter;
 
+- (void) authenticateAndGetFacebook:(BOOL)getFaceobook 
+                         getTwitter:(BOOL)getTwitter 
+                  onSuccessCallback:(Callback*)successCallback 
+                  onFailureCallback:(Callback*)failCallback;
+
 - (void) onUserLoggedIn:(CallbackResult*)result;
 - (void) onUserLoggedOut:(CallbackResult*)result;
 

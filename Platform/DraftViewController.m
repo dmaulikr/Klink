@@ -971,18 +971,23 @@
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;
     
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onProfileButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                              initWithTitle:ui_LOGIN_TITLE
+//                              message:ui_LOGIN_REQUIRED
+//                              delegate:self
+//                              onFinishSelector:@selector(onProfileButtonPressed:)
+//                              onTargetObject:self
+//                              withObject:nil
+//                              cancelButtonTitle:@"Cancel"
+//                              otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onProfileButtonPressed:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
         ProfileViewController* profileViewController = [ProfileViewController createInstance];
@@ -1003,17 +1008,20 @@
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onCameraButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                              initWithTitle:ui_LOGIN_TITLE
+//                              message:ui_LOGIN_REQUIRED
+//                              delegate:self
+//                              onFinishSelector:@selector(onCameraButtonPressed:)
+//                              onTargetObject:self
+//                              withObject:nil
+//                              cancelButtonTitle:@"Cancel"
+//                              otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];
@@ -1034,18 +1042,23 @@
     self.shouldOpenTypewriter = NO;
     
     //we check to ensure the user is logged in first
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:ui_LOGIN_TITLE
-                                    message:ui_LOGIN_REQUIRED
-                                    delegate:self
-                                    onFinishSelector:@selector(onNotificationsButtonPressed:)
-                                    onTargetObject:self
-                                    withObject:nil
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+//        UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                                    initWithTitle:ui_LOGIN_TITLE
+//                                    message:ui_LOGIN_REQUIRED
+//                                    delegate:self
+//                                    onFinishSelector:@selector(onNotificationsButtonPressed:)
+//                                    onTargetObject:self
+//                                    withObject:nil
+//                                    cancelButtonTitle:@"Cancel"
+//                                    otherButtonTitles:@"Login", nil];
+//        [alert show];
+//        [alert release];
+        
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onNotificationsButtonClicked:)  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
         NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];

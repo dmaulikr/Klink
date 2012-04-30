@@ -31,6 +31,7 @@
 @synthesize lbl_numPoints3  = m_lbl_numPoints3;
 
 @synthesize entries         = m_entries;
+@synthesize leaderboardID   = m_leaderboardID;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -65,24 +66,24 @@
 
 - (void)dealloc
 {
-    [self.lbl_position1 dealloc];
-    [self.lbl_position2 dealloc];
-    [self.lbl_position3 dealloc];
+    self.lbl_position1 = nil;
+    self.lbl_position2 = nil;
+    self.lbl_position3 = nil;
     
-    [self.iv_profilePic1 dealloc];
-    [self.iv_profilePic2 dealloc];
-    [self.iv_profilePic3 dealloc];
+    self.iv_profilePic1 = nil;
+    self.iv_profilePic2 = nil;
+    self.iv_profilePic3 = nil;
     
-    [self.lbl_username1 dealloc];
-    [self.lbl_username2 dealloc];
-    [self.lbl_username3 dealloc];
+    self.lbl_username1 = nil;
+    self.lbl_username2 = nil;
+    self.lbl_username3 = nil;
     
-    [self.lbl_numPoints1 dealloc];
-    [self.lbl_numPoints2 dealloc];
-    [self.lbl_numPoints3 dealloc];
+    self.lbl_numPoints1 = nil;
+    self.lbl_numPoints2 = nil;
+    self.lbl_numPoints3 = nil;
     
     self.entries = nil;
-    [self.entries dealloc];
+  //  [self.entries dealloc];
     
     [super dealloc];
     
@@ -90,38 +91,80 @@
 
 - (void) render {    
     LeaderboardEntry* entry;
-    
-    entry = [self.entries objectAtIndex:0];
-    if (entry != nil) {
-        self.lbl_position1.text = [entry.position stringValue];
-        //self.iv_profilePic1
-        self.lbl_username1.text = entry.username;
-        self.lbl_numPoints1.text = [entry.points stringValue];
+    int count = [self.entries count];
+    if (count > 0) 
+    {
+        entry = [self.entries objectAtIndex:0];
+        if (entry != nil) {
+            self.lbl_position1.text = [entry.position stringValue];
+            //self.iv_profilePic1
+            self.lbl_username1.text = entry.username;
+            self.lbl_numPoints1.text = [entry.points stringValue];
+        }
+        
+        if (count > 1) 
+        {
+            entry = [self.entries objectAtIndex:1];
+            if (entry != nil) 
+            {
+                self.lbl_position2.hidden = NO;
+                self.lbl_username2.hidden = NO;
+                self.lbl_numPoints2.hidden = NO;
+                self.iv_profilePic2.hidden = NO;
+                self.lbl_position2.text = [entry.position stringValue];
+                //self.iv_profilePic2
+                self.lbl_username2.text = entry.username;
+                self.lbl_numPoints2.text = [entry.points stringValue];
+            }
+            
+            if (count > 2)
+            {
+                entry = [self.entries objectAtIndex:2];
+                if (entry != nil) 
+                {
+                    self.lbl_position3.hidden = NO;
+                    self.lbl_username3.hidden = NO;
+                    self.lbl_numPoints3.hidden = NO;
+                    self.iv_profilePic3.hidden = NO;
+                    
+                    self.lbl_position3.text = [entry.position stringValue];
+                    
+                    self.lbl_username3.text = entry.username;
+                    self.lbl_numPoints3.text = [entry.points stringValue];
+                }
+            }
+            else
+            {
+                                
+                self.lbl_position3.hidden = YES;
+                self.lbl_username3.hidden = YES;
+                self.lbl_numPoints3.hidden = YES;
+                self.iv_profilePic3.hidden = YES;
+            }
+        }
+        else {
+            //only one entry
+            self.lbl_position2.hidden = YES;
+            self.lbl_username2.hidden = YES;
+            self.lbl_numPoints2.hidden = YES;
+            self.iv_profilePic2.hidden = YES;
+            
+            self.lbl_position3.hidden = YES;
+            self.lbl_username3.hidden = YES;
+            self.lbl_numPoints3.hidden = YES;
+            self.iv_profilePic2.hidden = YES;
+            
+        }
+        [self setNeedsDisplay];
     }
-    
-    entry = [self.entries objectAtIndex:1];
-    if (entry != nil) {
-        self.lbl_position2.text = [entry.position stringValue];
-        //self.iv_profilePic2
-        self.lbl_username2.text = entry.username;
-        self.lbl_numPoints2.text = [entry.points stringValue];
-    }
-    
-    entry = [self.entries objectAtIndex:2];
-    if (entry != nil) {
-        self.lbl_position3.text = [entry.position stringValue];
-        //self.iv_profilePic3
-        self.lbl_username3.text = entry.username;
-        self.lbl_numPoints3.text = [entry.points stringValue];
-    }
-    
-    [self setNeedsDisplay];
 }
 
-- (void) renderLeaderboardWithEntries:(NSArray*)entries {
-    //self.entries = entries;
+- (void) renderLeaderboardWithEntries:(NSArray*)entries forLeaderboard:(NSNumber *)leaderboardID 
+{
+    self.entries = entries;
+    self.leaderboardID = leaderboardID;
     
-    //[self render];
+    [self render];
 }
 
 @end

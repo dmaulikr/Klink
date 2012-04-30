@@ -27,6 +27,7 @@
 #import "BookViewControllerBase.h"
 #import "NotificationsViewController.h"
 #import "DateTimeHelper.h"
+#import "LoginViewController.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -718,6 +719,8 @@
 }
 */
 
+
+
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UICustomAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [super alertView:alertView clickedButtonAtIndex:buttonIndex];
@@ -746,20 +749,17 @@
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;
     
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onProfileButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+
+        Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onProfileButtonPressed:) withContext:nil];        
+        Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
         
         
-        [alert show];
-        [alert release];
+
+        [onSucccessCallback release];
+        [onFailCallback release];
     }
     else {
         ProfileViewController* profileViewController = [ProfileViewController createInstance];
@@ -780,17 +780,14 @@
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                              initWithTitle:ui_LOGIN_TITLE
-                              message:ui_LOGIN_REQUIRED
-                              delegate:self
-                              onFinishSelector:@selector(onPageButtonPressed:)
-                              onTargetObject:self
-                              withObject:nil
-                              cancelButtonTitle:@"Cancel"
-                              otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+        
+        Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageButtonPressed:) withContext:nil];        
+        Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
+        
+         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
+        [onSucccessCallback release];
+        [onFailCallback release];
+
     }
     else {
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewDraft];
@@ -801,7 +798,7 @@
         [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
-        [contributeViewController release];
+       
     }
 }
 
@@ -811,18 +808,15 @@
     self.shouldOpenTypewriter = NO;
     
     //we check to ensure the user is logged in first
-    if (![self.authenticationManager isUserAuthenticated]) {
-        UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                    initWithTitle:ui_LOGIN_TITLE
-                                    message:ui_LOGIN_REQUIRED
-                                    delegate:self
-                                    onFinishSelector:@selector(onNotificationsButtonPressed:)
-                                    onTargetObject:self
-                                    withObject:nil
-                                    cancelButtonTitle:@"Cancel"
-                                    otherButtonTitles:@"Login", nil];
-        [alert show];
-        [alert release];
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+        Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onNotificationsButtonClicked:) withContext:nil];        
+        Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
+         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
+        
+        
+        [onSucccessCallback release];
+        [onFailCallback release];
     }
     else {
         NotificationsViewController* notificationsViewController = [NotificationsViewController createInstance];
