@@ -15,15 +15,25 @@
 #import "AuthenticationManager.h"
 
 @implementation LeaderboardViewController
-@synthesize leaderboardID = m_leaderboardID;
-@synthesize leaderboard = m_leaderboard;
-@synthesize userID = m_userID;
+@synthesize leaderboardID   = m_leaderboardID;
+@synthesize leaderboard     = m_leaderboard;
+@synthesize userID          = m_userID;
+@synthesize tbl_leaderboard = m_tbl_leaderboard;
+@synthesize sc_relativeTo   = m_sc_relativeTo;
+@synthesize sc_type         = m_sc_type;
+@synthesize allLeaderboardCloudEnumerator = m_allLeaderboardCloudEnumerator;
+@synthesize friendsLeaderboardCloudEnumerator = m_friendsLeaderboardCloudEnumerator;
 
-- (id)initWithStyle:(UITableViewStyle)style
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
+        self.tbl_leaderboard.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
     }
     return self;
 }
@@ -39,10 +49,9 @@
 
 - (void) render
 {
-    
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
+    [self.tbl_leaderboard reloadData];
 
-            
 }
 
 #pragma mark - View lifecycle
@@ -56,11 +65,21 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    UIBarButtonItem* backButton = [[UIBarButtonItem alloc]initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(onBackButtonClicked:)];
-    
-    self.navigationItem.leftBarButtonItem = backButton;
-    self.navigationItem.title = @"Leaderboard";
-    [backButton release];
+
+    // Set Navigation bar title style with typewriter font
+    CGSize labelSize = [@"Leaderboard" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
+    titleLabel.text = @"Leaderboard";
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
 
 }
 
@@ -69,11 +88,41 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.tbl_leaderboard = nil;
+    self.sc_relativeTo = nil;
+    self.sc_type = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // We need to indicate selected states on the segmented controls
+    // based on the current entry values
+    
+    if ([self.leaderboard.relativeto intValue] == kPEOPLEIKNOW)
+    {
+        [self.sc_relativeTo setSelectedSegmentIndex:0];
+    }
+    else 
+    {
+        [self.sc_relativeTo setSelectedSegmentIndex:1];
+    }
+    
+    if ([self.leaderboard.type intValue] == kWEEKLY)
+    {
+        [self.sc_type setSelectedSegmentIndex:0];
+    }
+    else
+    {
+        [self.sc_type setSelectedSegmentIndex:1];
+    }
+    
+    // Enumerate leaderboards of All Time type
+    [self enumerateLeaderboardOfType:kALLTIME relativeTo:kPEOPLEIKNOW];
+    [self enumerateLeaderboardOfType:kALLTIME relativeTo:kALL];
+    
     [self render];
 }
 
@@ -112,9 +161,11 @@
     // Return the number of rows in the section.
     //we add one to insert a title row for switching controls
     int count = [self.leaderboard.entries count];
-    return count + 1;
+    //return count + 1;
+    return count;
 }
-#define kSegmentControlHeight 21
+
+/*#define kSegmentControlHeight 21
 #define kSegmentControlWidth 200
 #define kSegmentControlVMargin 5
 #define kSegmentControlX 50
@@ -132,7 +183,7 @@
     {
         return kCellHeight;
     }
-}
+}*/
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -141,7 +192,7 @@
     UILeaderboardTableViewCell *cell = nil;
     
     
-    if (index == 0)
+    /*if (index == 0)
     {
         CGRect frameForSC = CGRectMake(kSegmentControlX, kSegmentControlVMargin, kSegmentControlWidth, kSegmentControlHeight);
         CGRect frameForSC2 = CGRectMake(kSegmentControlX, kSegmentControlVMargin*2+kSegmentControlHeight, kSegmentControlWidth, kSegmentControlHeight);
@@ -196,7 +247,7 @@
     
     }
     else if (index < [self.leaderboard.entries count]+1)
-    { 
+    {*/ 
         CellIdentifier = @"Cell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
@@ -204,9 +255,10 @@
         }
         
         //grab the leaderboard entry in question
-        LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:(index-1)];
+        //LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:(index-1)];
+        LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:index];
         [cell renderWithEntry:entry];
-    }
+    //}
     return cell;
 }
 
@@ -268,21 +320,69 @@
 #pragma mark - Enumerations
 - (void) enumerateLeaderboardOfType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo
 {
+    self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+    self.allLeaderboardCloudEnumerator.delegate = self;
     
+    [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    
+    self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+    self.friendsLeaderboardCloudEnumerator.delegate = self;
+    
+    [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
 }
+
+#pragma mark - CloudEnumeratorDelegate
+- (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
+                 withResults:(NSArray *)results 
+                withUserInfo:(NSDictionary *)userInfo
+{
+    /*ResourceContext* resourceContext = [ResourceContext instance];
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    NSNumber* userid = user.objectid;
+    
+    if (enumerator == self.profileCloudEnumerator) {
+        self.user = user;
+        self.userID = userid;
+        if (self.user != nil && self.userID != nil) {
+            [self render];
+        }
+    }
+    else if (enumerator == self.allLeaderboardCloudEnumerator) {
+        // Get the leaderboad object from the resource context
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALL], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        
+        //[self showLeaderBoardOfType:kALL];
+    }
+    else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
+        // Get the leaderboad object from the resource context
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.friendsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        
+        [self showLeaderBoardOfType:kPEOPLEIKNOW];
+    }
+    else if (enumerator == self.pairsLeaderboardCloudEnumerator)
+    {
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kONEPERSON], nil];
+        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
+        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        self.pairsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        [self showLeaderBoardOfType:kONEPERSON];
+    }*/
+}
+
 #pragma mark - Event handlers
-- (IBAction) onBackButtonClicked : (id)sender
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void) onSwitchButtonClicked : (id)sender
-{
-    
-}
-
-- (void) onRelativeSelectionChanged : (id)sender
-{
+- (IBAction)onRelativeSelectionChanged:(id)sender {
     //the user has selected a different relative to leaderboard
     UISegmentedControl* segmentControl = (UISegmentedControl*)sender;
     
@@ -300,6 +400,7 @@
     }
     
     LeaderboardTypes type = [self.leaderboard.type intValue];
+    
     //lets get the leaderboard
     Leaderboard* newLeaderboard = [Leaderboard leaderboardForUserID:self.userID withType:type andRelativeTo:relativeTo];
     if (newLeaderboard != nil)
@@ -317,9 +418,7 @@
     
 }
 
-- (void) onTypeSelectionChanged : (id)sender
-{
-
+- (IBAction)onTypeSelectionChanged:(id)sender {
     //the user has selected a different relative to leaderboard
     UISegmentedControl* segmentControl = (UISegmentedControl*)sender;
     
@@ -336,6 +435,7 @@
     }
     
     LeaderboardRelativeTo relativeTo = [self.leaderboard.relativeto intValue];
+    
     //lets get the leaderboard
     Leaderboard* newLeaderboard = [Leaderboard leaderboardForUserID:self.userID withType:type andRelativeTo:relativeTo];
     if (newLeaderboard != nil)

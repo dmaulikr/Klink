@@ -96,7 +96,7 @@
     {
         entry = [self.entries objectAtIndex:0];
         if (entry != nil) {
-            self.lbl_position1.text = [entry.position stringValue];
+            self.lbl_position1.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
             //self.iv_profilePic1
             self.lbl_username1.text = entry.username;
             self.lbl_numPoints1.text = [entry.points stringValue];
@@ -111,7 +111,7 @@
                 self.lbl_username2.hidden = NO;
                 self.lbl_numPoints2.hidden = NO;
                 self.iv_profilePic2.hidden = NO;
-                self.lbl_position2.text = [entry.position stringValue];
+                self.lbl_position2.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
                 //self.iv_profilePic2
                 self.lbl_username2.text = entry.username;
                 self.lbl_numPoints2.text = [entry.points stringValue];
@@ -127,7 +127,7 @@
                     self.lbl_numPoints3.hidden = NO;
                     self.iv_profilePic3.hidden = NO;
                     
-                    self.lbl_position3.text = [entry.position stringValue];
+                    self.lbl_position3.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
                     
                     self.lbl_username3.text = entry.username;
                     self.lbl_numPoints3.text = [entry.points stringValue];
@@ -135,7 +135,6 @@
             }
             else
             {
-                                
                 self.lbl_position3.hidden = YES;
                 self.lbl_username3.hidden = YES;
                 self.lbl_numPoints3.hidden = YES;

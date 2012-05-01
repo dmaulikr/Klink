@@ -22,6 +22,7 @@
 #define kMaximumBusyWaitTimePutAuthenticator    30
 
 @implementation LoginViewController
+@synthesize sv_scrollView       = m_sv_scrollView;
 @synthesize btn_login           = m_btn_login;
 @synthesize btn_newUser         = m_btn_newUser;
 @synthesize btn_loginTwitter    = m_btn_loginTwitter;
@@ -65,6 +66,51 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+        // Set background pattern
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]]];
+        
+        // Add rounded corners to custom buttons
+        self.btn_loginFacebook.layer.cornerRadius = 8;
+        self.btn_loginTwitter.layer.cornerRadius = 8;
+        self.btn_login.layer.cornerRadius = 8;
+        self.btn_newUser.layer.cornerRadius = 8;
+        
+        // Add border to custom buttons
+        [self.btn_loginFacebook.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+        [self.btn_loginFacebook.layer setBorderWidth: 1.0];
+        [self.btn_loginTwitter.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+        [self.btn_loginTwitter.layer setBorderWidth: 1.0];
+        [self.btn_login.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+        [self.btn_login.layer setBorderWidth: 1.0];
+        [self.btn_newUser.layer setBorderColor: [[UIColor lightGrayColor] CGColor]];
+        [self.btn_newUser.layer setBorderWidth: 1.0];
+        
+        // Add mask on custom buttons
+        [self.btn_loginFacebook.layer setMasksToBounds:YES];
+        [self.btn_loginTwitter.layer setMasksToBounds:YES];
+        [self.btn_login.layer setMasksToBounds:YES];
+        [self.btn_newUser.layer setMasksToBounds:YES];
+        
+        // Set text shadow of custom buttons
+        [self.btn_loginFacebook.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        [self.btn_loginTwitter.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        //[self.btn_login.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        //[self.btn_newUser.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+        
+        // Set highlight state background color of custom buttons
+        CGRect rect = CGRectMake(0, 0, 1, 1);
+        UIGraphicsBeginImageContext(rect.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, [[UIColor lightGrayColor] CGColor]);
+        CGContextFillRect(context, rect);
+        UIImage *lightGreyImg = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        [self.btn_login setBackgroundImage:lightGreyImg forState:UIControlStateHighlighted];
+        [self.btn_newUser setBackgroundImage:lightGreyImg forState:UIControlStateHighlighted];
+        [self.btn_login setTitleShadowColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+        [self.btn_newUser setTitleShadowColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
     }
     return self;
 }
@@ -107,9 +153,6 @@
         }
         
     }
-    
-    
-    
 }
 
 
@@ -118,30 +161,24 @@
     
     BOOL result = YES;
     
-    
     AuthenticationContext* userContext = [[AuthenticationManager instance]contextForLoggedInUser];
     if (userContext != nil)
     {
-        
         if (self.shouldGetFacebook && ![userContext hasFacebook]) 
         {
             //we still need to get facebook credentials
             [self performSelectorOnMainThread:@selector(beginFacebookAuthentication) withObject:nil waitUntilDone:NO];
         }
         
-        
         if (self.shouldGetTwitter && ![userContext hasTwitter]) {
             //twitter authentication failed or hasnt happened, we begin twitter auth
             [self performSelectorOnMainThread:@selector(beginTwitterAuthentication) withObject:nil waitUntilDone:NO];
-            
-            
         }
         else 
         {
             [self dismissWithResult:result];
         }
     }
-    
 }
 
 #pragma mark - View lifecycle
@@ -151,9 +188,50 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    // Navigation bar
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTintColor:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     
-
+    // Navigation Bar Buttons
+    UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
+                                     initWithTitle:@"Cancel"
+                                     style:UIBarButtonItemStylePlain
+                                     target:self
+                                     action:@selector(onCancelButtonPressed:)] autorelease];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
+    // Set Navigation bar title style with typewriter font
+    CGSize labelSize = [@"Bahndr" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
+    titleLabel.text = @"Bahndr";
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
+    
+    // Register for keyboard notifications to slide view up when typing
+    [self registerForKeyboardNotifications];
+    
+    // Enable the gesture recognizer on the view to handle a single tap to hide the keyboard
+    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundClick:)] autorelease];
+    // Set required taps and number of touches
+    [oneFingerTap setNumberOfTapsRequired:1];
+    [oneFingerTap setNumberOfTouchesRequired:1];
+    [oneFingerTap setCancelsTouchesInView:NO];
+    // Add the gesture to the view
+    [self.sv_scrollView addGestureRecognizer:oneFingerTap];
+    
+    // Hide Login Error label
     self.lbl_error.hidden = YES;
+
 }
 
 - (void)viewDidUnload
@@ -161,12 +239,21 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.sv_scrollView = nil;
+    self.btn_login = nil;
+    self.btn_loginFacebook = nil;
+    self.btn_loginTwitter = nil;
+    self.btn_newUser = nil;
+    self.tf_email = nil;
+    self.tf_password = nil;
+    self.lbl_error = nil;
+    self.tf_active = nil;
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     
 }
 
@@ -213,10 +300,6 @@
             LOG_LOGINVIEWCONTROLLER(0, @"%@ user already logged into twitter, skipping authentication",activityName);
             [self dismissWithResult:YES];
         }
-        
-   
-    
-    
 }
 
 -(void) beginFacebookAuthentication {
@@ -436,9 +519,6 @@
         [self dismissWithResult:NO];
     }
     
-    
-    
-    
 }
 
 - (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username {
@@ -458,9 +538,84 @@
 - (void) textFieldDidBeginEditing:(UITextField *)textField
 {
     self.tf_active = textField;
+    self.lbl_error.hidden = YES;
+}
+
+#pragma mark - Keyboard Handlers
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.sv_scrollView.contentInset = contentInsets;
+    self.sv_scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    //if (!CGRectContainsPoint(aRect, self.tf_active.frame.origin)) {
+    //CGPoint scrollPoint = CGPointMake(0.0, self.tf_active.frame.origin.y+(self.tf_active.frame.size.height*1.5)-kbSize.height);
+    
+    CGPoint scrollPoint = CGPointMake(0.0, self.tf_active.frame.origin.y-(self.tf_active.frame.size.height*1.5));
+    [self.sv_scrollView setContentOffset:scrollPoint animated:YES];
+    //}
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    
+    [UIView beginAnimations:@"keyboardWillBeHiddenAnimation" context:nil];
+    [UIView setAnimationDuration:0.35];
+    
+    self.sv_scrollView.contentInset = contentInsets;
+    self.sv_scrollView.scrollIndicatorInsets = contentInsets;
+    
+    [UIView commitAnimations];
+}
+
+// Handles keyboard Return button pressed while editing a textfield to dismiss the keyboard
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    NSInteger nextTag = textField.tag + 1;
+    // Try to find next responder
+    UIResponder* nextResponder = [textField.superview viewWithTag:nextTag];
+    if (nextResponder) {
+        // Found next responder, so set it.
+        [textField resignFirstResponder];
+        [nextResponder becomeFirstResponder];
+    } else {
+        // Not found, so remove keyboard.
+        [textField resignFirstResponder];
+    }
+    return NO; // We do not want UITextField to insert line-breaks.
+}
+
+// Hides Keyboard when user touches screen outside of editable text view or field
+- (IBAction)backgroundClick:(id)sender
+{
+    [self.tf_active resignFirstResponder];
 }
 
 #pragma mark - IBAction handlers
+- (void)onCancelButtonPressed:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 - (IBAction) onLoginButtonPressed:(id)sender
 {
@@ -471,7 +626,9 @@
     self.lbl_error.hidden = YES;
     
     if (email != nil &&
-        password != nil)
+        password != nil &&
+        ![email isEqualToString: @""] &&
+        ![password isEqualToString: @""])
     {
     
         PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
@@ -485,23 +642,34 @@
         
         [callback release];
     }
+    else {
+        self.lbl_error.hidden = NO;
+    }
     
 }
+
 - (IBAction) onFacebookButtonPressed:(id)sender
 {
     //let us begin the facebook authentication process
     [self beginFacebookAuthentication];
 }
+
 - (IBAction) onTwitterButtonPressed:(id)sender
 {
     [self beginTwitterAuthentication];
 }
+
 - (IBAction) onNewUserButtonPressed:(id)sender
 {
     //lets load up the signup controller in modal view
     SignUpViewController* signUpViewController = [SignUpViewController createInstance];
     
-    [self presentModalViewController:signUpViewController animated:YES];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:signUpViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    
+    [self presentModalViewController:navigationController animated:YES];
+    [navigationController release];
 }
 
 
@@ -509,7 +677,7 @@
 - (void) onAuthenticationFailed:(Callback*)callback
 {
 //   NSString* activityName = @"LoginViewController.onAuthenticationFailed:";
-//    self.lbl_error.hidden = NO; 
+    self.lbl_error.hidden = NO; 
 }
 
 - (void) onUserLoggedIn:(CallbackResult *)result
@@ -517,8 +685,7 @@
 //    NSString* activityName = @"LoginViewController.onUserLoggedIn:";
 //    
 //    
-//    [self dismissModalViewControllerAnimated:YES];
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void) onGetAuthenticationContextDownloaded:(CallbackResult*)result 

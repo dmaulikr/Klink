@@ -33,3 +33,9 @@ h1,h2,h3,h4,h5,h6,p {
     word-wrap:break-word;
      
 }
+
+ul {
+    /* Sets the font size in lists slightly smaller than the default for the page */
+    font-size:0.8em;
+     
+}

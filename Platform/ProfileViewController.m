@@ -65,11 +65,9 @@
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
 @synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
-@synthesize sgmt_leaderboardType    = m_sgmt_leaderboardType;
 @synthesize v_leaderboard3Up        = m_v_leaderboard3Up;
-@synthesize v_followControlsContainer = m_v_followControlsContainer;
 @synthesize btn_follow              = m_btn_follow;
-@synthesize btn_leaderboard3UpClick = m_btn_leaderboard3UpClick;
+@synthesize btn_leaderboard3UpButton = m_btn_leaderboard3UpButton;
 
 @synthesize allLeaderboard          = m_allLeaderboard;
 @synthesize friendsLeaderboard      = m_friendsLeaderboard;
@@ -309,16 +307,47 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
-    // Setup follow and unfollow buttons
+    /*// Setup follow and unfollow buttons
     UIImage* followButtonImageNormal = [UIImage imageNamed:@"button_roundrect_blue.png"];
     UIImage* stretchablefollowButtonImageNormal = [followButtonImageNormal stretchableImageWithLeftCapWidth:73 topCapHeight:22];
     [self.btn_follow setBackgroundImage:stretchablefollowButtonImageNormal forState:UIControlStateNormal];
     
     UIImage* followButtonImageSelected = [UIImage imageNamed:@"button_roundrect_lightgrey_selected.png"];
     UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:73 topCapHeight:22];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];*/
+    
+    // Setup follow and unfollow buttons
+    UIImage* followButtonImageNormal = [UIImage imageNamed:@"button_standardcontrol_blue.png"];
+    UIImage* stretchablefollowButtonImageNormal = [followButtonImageNormal stretchableImageWithLeftCapWidth:26 topCapHeight:16];
+    [self.btn_follow setBackgroundImage:stretchablefollowButtonImageNormal forState:UIControlStateNormal];
+    
+    UIImage* followButtonImageSelected = [UIImage imageNamed:@"button_standardcontrol_lightgrey_selected.png"];
+    UIImage* stretchablefollowButtonImageSelected = [followButtonImageSelected stretchableImageWithLeftCapWidth:26 topCapHeight:16];
     [self.btn_follow setBackgroundImage:stretchablefollowButtonImageSelected forState:UIControlStateSelected];
     
+    // Add rounded corners to leaderboard custom button
+    self.btn_leaderboard3UpButton.layer.cornerRadius = 8;
     
+    // Add border to custom leaderboard button
+    //[self.btn_leaderboard3UpButton.layer setBorderColor: [[UIColor clearColor] CGColor]];
+    //[self.btn_leaderboard3UpButton.layer setBorderWidth: 1.0];
+    
+    // Add mask on custom buttons
+    [self.btn_leaderboard3UpButton.layer setMasksToBounds:YES];
+    
+    // Set highlight state background color of leaderboard custom buttons
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *lightGreyImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [self.btn_leaderboard3UpButton setBackgroundImage:lightGreyImg forState:UIControlStateHighlighted];
+    
+    
+    // Set up cloud enumerator for leaderboards
     self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.allLeaderboardCloudEnumerator.delegate = self;
@@ -362,9 +391,7 @@
     self.iv_userBestLine = nil;
     self.iv_progressBarContainer = nil;
     self.v_leaderboardContainer = nil;
-    self.sgmt_leaderboardType = nil;
     self.v_leaderboard3Up = nil;
-    self.v_followControlsContainer = nil;
     self.btn_follow = nil;
     
 }
@@ -390,15 +417,16 @@
 }
 
 - (void) showLeaderBoardOfType:(int)type {
-    CGRect frame = CGRectMake(20, 68, 280, 109);
+    //CGRect frame = CGRectMake(20, 68, 280, 109);
+    CGRect frame = self.v_leaderboard3Up.frame;
     
     UILeaderboard3Up* leaderboard = [[UILeaderboard3Up alloc] initWithFrame:frame];
     self.v_leaderboard3Up = leaderboard;
     [leaderboard release];
     
-    self.btn_leaderboard3UpClick = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.btn_leaderboard3UpClick.frame = frame;
-    [self.btn_leaderboard3UpClick addTarget:self action:@selector(onLeaderboardClicked:) forControlEvents:UIControlEventTouchUpInside];
+    //self.btn_leaderboard3UpClick = [UIButton buttonWithType:UIButtonTypeCustom];
+    //self.btn_leaderboard3UpClick.frame = frame;
+    //[self.btn_leaderboard3UpClick addTarget:self action:@selector(onLeaderboardClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     
     if (type == kALL) {
@@ -413,20 +441,20 @@
     }
     
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
-    [self.v_leaderboardContainer addSubview:self.btn_leaderboard3UpClick];
+    [self.v_leaderboardContainer addSubview:self.btn_leaderboard3UpButton];
 }
 
 - (void) render {    
-    //if the user is the currently logged in user, we then enable the leaderboard container, else show the follow controls container
+    //if the user is the currently logged in user, we then enable the leaderboard container, and show the follow button
     if ([self.loggedInUser.objectid longValue] == [self.userID longValue]) {
         //yes it is
         self.v_leaderboardContainer.hidden = NO;
-        self.v_followControlsContainer.hidden = YES;
+        self.btn_follow.hidden = YES;
     }
     else if ([self.authenticationManager isUserAuthenticated]) {
         //no it isnt, but the user is logged in
         self.v_leaderboardContainer.hidden = NO;
-        self.v_followControlsContainer.hidden = NO;
+        self.btn_follow.hidden = NO;
         
         //set the appropriate state for the follow button
         if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
@@ -443,7 +471,7 @@
     else {
         //user is not logged in
         self.v_leaderboardContainer.hidden = NO;
-        self.v_followControlsContainer.hidden = YES;
+        self.btn_follow.hidden = YES;
     }
     
     self.lbl_username.text = self.user.username;
@@ -522,13 +550,10 @@
 
 - (void) enumerateLeaderboards:(NSNumber*)userid 
 {
-    //self.allLeaderboardCloudEnumerator = nil;
     self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
     self.allLeaderboardCloudEnumerator.delegate = self;
     
     [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
-    
-    
     
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.friendsLeaderboardCloudEnumerator.delegate = self;
@@ -675,19 +700,23 @@
 }
 
 #pragma mark - UIButton Handlers
-- (IBAction) onLeaderboardClicked:(id)sender
+- (IBAction) onLeaderboardButtonPressed:(id)sender
 {
     //we need to launch the leaderboard view controller
     //we are going to launch with the friends leaderboard
-   // LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid];
-    LeaderboardViewController* lvc = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid forUserID:self.userID] ;
-    UINavigationController* nav = [[UINavigationController alloc]initWithRootViewController:lvc];
+    LeaderboardViewController* leaderBoardViewController = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid forUserID:self.userID] ;
     
-    //now we launch it modally
-    [self presentModalViewController:nav animated:YES];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                   initWithTitle: @"User" 
+                                   style: UIBarButtonItemStyleBordered
+                                   target: nil action: nil];
     
-    [nav release];
+    [self.navigationItem setBackBarButtonItem: backButton];
+    [backButton release];
+    
+    [self.navigationController pushViewController:leaderBoardViewController animated:YES];
 }
+
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender {
     //Change profile picture button pressed
     self.cameraActionSheet = [UICameraActionSheet createCameraActionSheetWithTitle:@"Change Profile Picture" allowsEditing:YES];
@@ -711,11 +740,27 @@
 - (IBAction) onFollowersButtonPressed:(id)sender {
     PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWERS withUserID:self.userID];
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                   initWithTitle: @"User" 
+                                   style: UIBarButtonItemStyleBordered
+                                   target: nil action: nil];
+    
+    [self.navigationItem setBackBarButtonItem: backButton];
+    [backButton release];
+    
     [self.navigationController pushViewController:peopleListViewController animated:YES];
 }
 
 - (IBAction) onFollowingButtonPressed:(id)sender {
     PeopleListViewController* peopleListViewController = [PeopleListViewController createInstanceOfListType:kFOLLOWING withUserID:self.userID];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                   initWithTitle: @"User" 
+                                   style: UIBarButtonItemStyleBordered
+                                   target: nil action: nil];
+    
+    [self.navigationItem setBackBarButtonItem: backButton];
+    [backButton release];
     
     [self.navigationController pushViewController:peopleListViewController animated:YES];
 }

@@ -47,6 +47,8 @@
     if (self) {
         // Custom initialization
         
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
+        
     }
     return self;
 }
@@ -54,8 +56,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
     
     // Navigation Bar Buttons
     UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
@@ -78,7 +78,6 @@
     [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
-    
     
     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
 

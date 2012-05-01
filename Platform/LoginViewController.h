@@ -10,6 +10,8 @@
 
 @interface LoginViewController : BaseViewController <SA_OAuthTwitterControllerDelegate, SA_OAuthTwitterEngineDelegate, FBSessionDelegate, FBRequestDelegate, UITextFieldDelegate>
 {
+    UIScrollView    *m_sv_scrollView;
+    
     UIButton* m_btn_login;
     UIButton* m_btn_loginFacebook;
     UIButton* m_btn_loginTwitter;
@@ -30,6 +32,7 @@
     Callback* m_onSuccessCallback;
 }
 
+@property (nonatomic,retain) IBOutlet UIScrollView      *sv_scrollView;
 @property (nonatomic, retain)   FBRequest*              fbProfileRequest;
 @property (nonatomic, retain)   FBRequest*              fbPictureRequest;
 @property (nonatomic,retain)    SA_OAuthTwitterEngine*  twitterEngine;

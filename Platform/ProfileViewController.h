@@ -52,11 +52,9 @@
     UIImageView* m_iv_userBestLine;
     
     UIView* m_v_leaderboardContainer;
-    UISegmentedControl* m_sgmt_leaderboardType;
     UILeaderboard3Up* m_v_leaderboard3Up;
-    UIButton* m_btn_leaderboard3UpClick;
+    UIButton* m_btn_leaderboard3UpButton;
     
-    UIView* m_v_followControlsContainer;
     UIButton* m_btn_follow;
     
     User*   m_user;
@@ -112,11 +110,9 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
 
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
-@property (nonatomic, retain) IBOutlet UISegmentedControl*  sgmt_leaderboardType;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
-@property (nonatomic, retain) IBOutlet UIButton*            btn_leaderboard3UpClick;
+@property (nonatomic, retain) IBOutlet UIButton*            btn_leaderboard3UpButton;
 
-@property (nonatomic, retain) IBOutlet UIView*      v_followControlsContainer;
 @property (nonatomic, retain) IBOutlet UIButton*    btn_follow;
 
 @property (nonatomic, retain) Leaderboard*          allLeaderboard;
@@ -129,7 +125,7 @@
 
 @property (nonatomic, retain) CloudEnumerator*      pairsLeaderboardCloudEnumerator;
 
-- (IBAction) onLeaderboardClicked:(id)sender;
+- (IBAction) onLeaderboardButtonPressed:(id)sender;
 - (IBAction) onChangeProfilePictureButtonPressed:(id)sender;
 - (IBAction) onPublishedButtonPressed:(id)sender;
 - (IBAction) onFollowersButtonPressed:(id)sender;

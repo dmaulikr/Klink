@@ -17,6 +17,10 @@
 		520800BB14AF77C8007E5C7D /* UIPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520800BA14AF77C7007E5C7D /* UIPromptAlertView.m */; };
 		520A097C148C4F94007567D2 /* UIPhotoMetaDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */; };
 		520A097F148C4FC4007567D2 /* UIPhotoMetaDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */; };
+		520AF5B2154F242F00A82555 /* icon-facebook-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5AE154F242F00A82555 /* icon-facebook-white.png */; };
+		520AF5B3154F242F00A82555 /* icon-facebook-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5AF154F242F00A82555 /* icon-facebook-white@2x.png */; };
+		520AF5B4154F242F00A82555 /* icon-twitter-t-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5B0154F242F00A82555 /* icon-twitter-t-white.png */; };
+		520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
 		521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */; };
 		521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */; };
@@ -428,6 +432,10 @@
 		520A097B148C4F94007567D2 /* UIPhotoMetaDataView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPhotoMetaDataView.xib; sourceTree = "<group>"; };
 		520A097D148C4FC4007567D2 /* UIPhotoMetaDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPhotoMetaDataView.h; sourceTree = "<group>"; };
 		520A097E148C4FC4007567D2 /* UIPhotoMetaDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPhotoMetaDataView.m; sourceTree = "<group>"; };
+		520AF5AE154F242F00A82555 /* icon-facebook-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook-white.png"; sourceTree = "<group>"; };
+		520AF5AF154F242F00A82555 /* icon-facebook-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook-white@2x.png"; sourceTree = "<group>"; };
+		520AF5B0154F242F00A82555 /* icon-twitter-t-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t-white.png"; sourceTree = "<group>"; };
+		520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t-white@2x.png"; sourceTree = "<group>"; };
 		521232C81491437600CC9F93 /* arrow_left_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched.png; sourceTree = "<group>"; };
 		521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_scetched@2x.png"; sourceTree = "<group>"; };
 		521D6DC614D347CE00FA08E3 /* BookTableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookTableOfContentsViewController.h; sourceTree = "<group>"; };
@@ -1289,8 +1297,6 @@
 				5270A1A314C2372C00BE60FE /* icon-community@2x.png */,
 				525AE04D14C8DE6F00DE15DC /* icon-compose.png */,
 				525AE04E14C8DE6F00DE15DC /* icon-compose@2x.png */,
-				5270A1A614C2372C00BE60FE /* icon-facebook.png */,
-				5270A1A714C2372C00BE60FE /* icon-facebook@2x.png */,
 				5270A1A814C2372C00BE60FE /* icon-flag.png */,
 				5270A1A914C2372C00BE60FE /* icon-flag@2x.png */,
 				5270A1AA14C2372C00BE60FE /* icon-globe.png */,
@@ -1319,6 +1325,12 @@
 				5270A1BB14C2372D00BE60FE /* icon-thumbUp@2x.png */,
 				5270A1BC14C2372D00BE60FE /* icon-trophy.png */,
 				5270A1BD14C2372D00BE60FE /* icon-trophy@2x.png */,
+				520AF5AE154F242F00A82555 /* icon-facebook-white.png */,
+				520AF5AF154F242F00A82555 /* icon-facebook-white@2x.png */,
+				5270A1A614C2372C00BE60FE /* icon-facebook.png */,
+				5270A1A714C2372C00BE60FE /* icon-facebook@2x.png */,
+				520AF5B0154F242F00A82555 /* icon-twitter-t-white.png */,
+				520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */,
 				5270A1BE14C2372D00BE60FE /* icon-twitter-t.png */,
 				5270A1BF14C2372D00BE60FE /* icon-twitter-t@2x.png */,
 				522010211477387700C47C00 /* icon-bulb1.png */,
@@ -2392,6 +2404,10 @@
 				528DCE0D1542BCD300F83AA9 /* mallard@2x.png in Resources */,
 				C533FB981546E7A500552DAA /* LeaderboardViewController.xib in Resources */,
 				C533FB9B1546EF4D00552DAA /* UILeaderboardTableViewCell.xib in Resources */,
+				520AF5B2154F242F00A82555 /* icon-facebook-white.png in Resources */,
+				520AF5B3154F242F00A82555 /* icon-facebook-white@2x.png in Resources */,
+				520AF5B4154F242F00A82555 /* icon-twitter-t-white.png in Resources */,
+				520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

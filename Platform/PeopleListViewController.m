@@ -88,6 +88,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
         
     }
@@ -334,11 +335,21 @@
             profileViewController = [ProfileViewController createInstanceForUser:follow.followeruserid];
         }
     
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
+        /*UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:navigationController animated:YES];
     
-        [navigationController release];
+        [navigationController release];*/
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                       initWithTitle: self.title 
+                                       style: UIBarButtonItemStyleBordered
+                                       target: nil action: nil];
+        
+        [self.navigationItem setBackBarButtonItem: backButton];
+        [backButton release];
+        
+        [self.navigationController pushViewController:profileViewController animated:YES];
     }
 }
 
