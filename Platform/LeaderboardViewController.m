@@ -49,7 +49,6 @@
 
 - (void) render
 {
-    //[self.tableView reloadData];
     [self.tbl_leaderboard reloadData];
 
 }
@@ -336,27 +335,18 @@
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
 {
-    /*ResourceContext* resourceContext = [ResourceContext instance];
-    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
-    NSNumber* userid = user.objectid;
+    ResourceContext* resourceContext = [ResourceContext instance];
     
-    if (enumerator == self.profileCloudEnumerator) {
-        self.user = user;
-        self.userID = userid;
-        if (self.user != nil && self.userID != nil) {
-            [self render];
-        }
-    }
-    else if (enumerator == self.allLeaderboardCloudEnumerator) {
+    if (enumerator == self.allLeaderboardCloudEnumerator) {
         // Get the leaderboad object from the resource context
         NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
         NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALL], nil];
         NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
-        self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
-        //[self showLeaderBoardOfType:kALL];
+        [self render];
     }
     else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
         // Get the leaderboad object from the resource context
@@ -365,20 +355,10 @@
         NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
-        self.friendsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
-        [self showLeaderBoardOfType:kPEOPLEIKNOW];
+        [self render];
     }
-    else if (enumerator == self.pairsLeaderboardCloudEnumerator)
-    {
-        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
-        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kONEPERSON], nil];
-        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
-        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        
-        self.pairsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
-        [self showLeaderBoardOfType:kONEPERSON];
-    }*/
 }
 
 #pragma mark - Event handlers
