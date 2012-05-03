@@ -19,6 +19,7 @@
     UITextField* m_tf_email;
     UITextField* m_tf_password;
     UILabel*    m_lbl_error;
+    UIButton    *m_btn_forgotPW;
     
     FBRequest*          m_fbProfileRequest;
     FBRequest*          m_fbPictureRequest;
@@ -43,6 +44,8 @@
 @property (nonatomic,retain) IBOutlet UITextField* tf_email;
 @property (nonatomic,retain) IBOutlet UITextField* tf_password;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_error;
+@property (nonatomic,retain) IBOutlet UIButton *btn_forgotPW;
+
 @property (nonatomic,retain)  UITextField* tf_active;
 @property (nonatomic,retain) Callback* onSuccessCallback;
 @property (nonatomic,retain) Callback* onFailureCallback;
@@ -54,6 +57,7 @@
 - (IBAction) onTwitterButtonPressed:(id)sender;
 - (IBAction) onNewUserButtonPressed:(id)sender;
 - (IBAction) hideKeyboard:(id)sender;
+- (IBAction) onForgotPWButtonPressed:(id)sender;
 
 + (LoginViewController*)createAuthenticationInstance:(BOOL)shouldGetFacebook 
                                     shouldGetTwitter:(BOOL)shouldGetTwitter

@@ -49,7 +49,10 @@
 
 - (void) render
 {
-    [self.tbl_leaderboard reloadData];
+    //[self.tbl_leaderboard reloadData];
+    
+    // Reload the tableview with animation
+    [self.tbl_leaderboard reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
 
 }
 
@@ -344,7 +347,7 @@
         NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
-        self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        //self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
         [self render];
     }
@@ -355,7 +358,7 @@
         NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
         NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         
-        self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+        //self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
         [self render];
     }
@@ -394,7 +397,6 @@
         //we need to enumerate it from the web service
         [self enumerateLeaderboardOfType:type relativeTo:relativeTo];
     }
-    
     
 }
 

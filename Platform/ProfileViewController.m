@@ -285,13 +285,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    // Navigation Bar Buttons
-    UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                     target:self
-                                     action:@selector(onDoneButtonPressed:)] autorelease];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    
     // Set Navigation bar title style with typewriter font
     CGSize labelSize = [@"Writers's Log" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
@@ -654,10 +647,41 @@
         self.navigationItem.leftBarButtonItem = leftButton;
         [leftButton release];
         
+        UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
+                                         initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                         target:self
+                                         action:@selector(onDoneButtonPressed:)] autorelease];
+        self.navigationItem.rightBarButtonItem = rightButton;
+        
         [self.btn_changeProfilePicture setEnabled:YES];
     }
     else {
         self.navigationItem.leftBarButtonItem = nil;
+        
+        //set the appropriate title for the follow button
+        /*NSString* followButtonTitle;
+        if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
+            //logged in user does not follow this person, enable the follow button
+            followButtonTitle = @"Follow";
+        }
+        else {
+            //logged in user does follow this person, set follow button as selected already
+             followButtonTitle = @"Unfollow";
+        }
+        
+        UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
+                                         initWithTitle:followButtonTitle
+                                         style:UIBarButtonItemStyleDone
+                                         target:self
+                                        action:@selector(onFollowButtonPressed:)] autorelease];
+        self.navigationItem.rightBarButtonItem = rightButton;*/
+        
+        // Show Done button
+        UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                        target:self
+                                        action:@selector(onDoneButtonPressed:)] autorelease];
+        self.navigationItem.rightBarButtonItem = rightButton;
         
         // Disable/hide any profile objects that should not be presented or enabled for a user who is not logged in
         [self.btn_changeProfilePicture setEnabled:NO];
@@ -854,7 +878,8 @@
     //first we toggle the state of the follow button
     [self.btn_follow setSelected:!self.btn_follow.selected];
     
-    if (self.btn_follow.selected == YES) {
+    //if (self.btn_follow.selected == YES) {
+    if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
         //logged in user wants to follow this person
         LOG_PERSONALLOGVIEWCONTROLLER(0, @"%@ User %@ wants to follow user %@",activityName,loggedInUserID,self.userID);
         [self processFollowUser];
@@ -889,8 +914,21 @@
             // profile picture change was successful
             [self showProfilePicture];
         }
-        
-        // else Follow/Unfollow request was successful
+        else {
+            // Follow/Unfollow request was successful
+            // set the appropriate title for the follow button on the nav bar
+            /*NSString* followButtonTitle;
+            if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
+                //logged in user does not follow this person, enable the follow button
+                followButtonTitle = @"Follow";
+            }
+            else {
+                //logged in user does follow this person, set follow button as selected already
+                followButtonTitle = @"Unfollow";
+            }
+            
+            self.navigationItem.rightBarButtonItem.title = followButtonTitle;*/
+        }
         
     }
     else 
@@ -913,7 +951,19 @@
         }
         else 
         {
-            //toggle the state of the follow button back
+            // Follow/Unfollow request was unsuccessful
+            // set the appropriate title for the follow button on the nav bar
+            /*NSString* followButtonTitle;
+            if (![Follow doesFollowExistFor:self.userID withFollowerID:self.loggedInUser.objectid]) {
+                //logged in user does not follow this person, enable the follow button
+                followButtonTitle = @"Follow";
+            }
+            else {
+                //logged in user does follow this person, set follow button as selected already
+                followButtonTitle = @"Unfollow";
+            }
+            
+            self.navigationItem.rightBarButtonItem.title = followButtonTitle;*/
             
             [self.btn_follow setSelected:!self.btn_follow.selected];
             if (self.btn_follow.selected == YES) {

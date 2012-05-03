@@ -186,13 +186,14 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{32, 422}, {256, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Mallard Co.</string>
+						<string key="IBUIText">Mallard &amp; Co.</string>
 						<reference key="IBUITextColor" ref="774697434"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="690742783"/>

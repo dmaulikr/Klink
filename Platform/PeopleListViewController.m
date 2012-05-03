@@ -341,8 +341,16 @@
     
         [navigationController release];*/
         
+        NSString* navBarTitle;
+        if (self.listType == kFOLLOWING) {
+            navBarTitle = @"Following";
+        }
+        else {
+            navBarTitle = @"Followers";
+        }
+        
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
-                                       initWithTitle: self.title 
+                                       initWithTitle: navBarTitle 
                                        style: UIBarButtonItemStyleBordered
                                        target: nil action: nil];
         

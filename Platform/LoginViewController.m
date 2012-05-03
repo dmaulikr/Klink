@@ -30,6 +30,7 @@
 @synthesize tf_email            = m_tf_email;
 @synthesize tf_password         = m_tf_password;
 @synthesize lbl_error           = m_lbl_error;
+@synthesize btn_forgotPW        = m_btn_forgotPW;
 @synthesize fbPictureRequest    = m_fbPictureRequest;
 @synthesize fbProfileRequest    = m_fbProfileRequest;
 @synthesize shouldGetTwitter    = m_shouldGetTwitter;
@@ -670,6 +671,12 @@
     
     [self presentModalViewController:navigationController animated:YES];
     [navigationController release];
+}
+
+- (IBAction) onForgotPWButtonPressed:(id)sender {
+    NSURL *passwordResetURL = [NSURL URLWithString:@"http://www.bahndr.com/bahndr.web"];
+    
+    [[UIApplication sharedApplication] openURL:passwordResetURL];
 }
 
 
