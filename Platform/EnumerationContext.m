@@ -81,8 +81,10 @@
 {
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
     EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
-    enumerationContext.pageSize = settingsObject.pagesize;
-    enumerationContext.maximumNumberOfResults = settingsObject.pagesize;    
+    //enumerationContext.pageSize = settingsObject.pagesize;
+    //enumerationContext.maximumNumberOfResults = settingsObject.pagesize;
+    enumerationContext.pageSize = [NSNumber numberWithInt:10];
+    enumerationContext.maximumNumberOfResults = [NSNumber numberWithInt:10];
     return enumerationContext;
 }
 
