@@ -410,23 +410,47 @@
 }
 
 - (void) showLeaderBoardOfType:(int)type {
-    //CGRect frame = CGRectMake(20, 68, 280, 109);
     CGRect frame = self.v_leaderboard3Up.frame;
     
     UILeaderboard3Up* leaderboard = [[UILeaderboard3Up alloc] initWithFrame:frame];
     self.v_leaderboard3Up = leaderboard;
     [leaderboard release];
     
-    //self.btn_leaderboard3UpClick = [UIButton buttonWithType:UIButtonTypeCustom];
-    //self.btn_leaderboard3UpClick.frame = frame;
-    //[self.btn_leaderboard3UpClick addTarget:self action:@selector(onLeaderboardClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-    
     if (type == kALL) {
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.allLeaderboard.entries forLeaderboard:self.allLeaderboard.objectid];
+        // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
+        NSArray *threeUpEntryArray = [[NSArray alloc]autorelease];
+        
+        LeaderboardEntry *entry;
+        for (int i = 0; i < self.allLeaderboard.entries.count; i++) {
+            
+            entry = [self.allLeaderboard.entries objectAtIndex:i];
+            
+            // We search for the index of the logged in user's entry, then take the entry before and after that index
+            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) {
+                threeUpEntryArray = [NSArray arrayWithObjects:[self.allLeaderboard.entries objectAtIndex:(i-1)], [self.allLeaderboard.entries objectAtIndex:i], [self.allLeaderboard.entries objectAtIndex:(i+1)], nil];
+                break;
+            }
+        }
+        
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.allLeaderboard.objectid];
     }
     else if (type == kPEOPLEIKNOW) {
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.friendsLeaderboard.entries forLeaderboard:self.friendsLeaderboard.objectid];
+        // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
+        NSArray *threeUpEntryArray = [[NSArray alloc]autorelease];
+        
+        LeaderboardEntry *entry;
+        for (int i = 0; i < self.allLeaderboard.entries.count; i++) {
+            
+            entry = [self.friendsLeaderboard.entries objectAtIndex:i];
+            
+            // We search for the index of the logged in user's entry, then take the entry before and after that index
+            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) {
+                threeUpEntryArray = [NSArray arrayWithObjects:[self.friendsLeaderboard.entries objectAtIndex:(i-1)], [self.friendsLeaderboard.entries objectAtIndex:i], [self.friendsLeaderboard.entries objectAtIndex:(i+1)], nil];
+                break;
+            }
+        }
+        
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid];
     }
     else if (type == kONEPERSON)
     {

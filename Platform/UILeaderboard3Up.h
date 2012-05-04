@@ -27,8 +27,12 @@
     UILabel*    m_lbl_numPoints2;
     UILabel*    m_lbl_numPoints3;
     
+    UIImageView     *m_iv_container;
+    UIView          *m_v_userHighlight;
+    
     NSArray*    m_entries;
     NSNumber*   m_leaderboardID;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UIView*  view;
@@ -48,6 +52,9 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numPoints1;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numPoints2;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numPoints3;
+
+@property (nonatomic, retain) IBOutlet UIImageView  *iv_container;
+@property (nonatomic, retain) IBOutlet UIView       *v_userHighlight;
 
 @property (nonatomic, retain) NSArray* entries;
 @property (nonatomic, retain) NSNumber* leaderboardID;

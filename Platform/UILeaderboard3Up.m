@@ -9,6 +9,7 @@
 #import "UILeaderboard3Up.h"
 #import <QuartzCore/QuartzCore.h>
 #import "LeaderboardEntry.h"
+#import "AuthenticationManager.h"
 
 @implementation UILeaderboard3Up
 
@@ -30,6 +31,9 @@
 @synthesize lbl_numPoints2  = m_lbl_numPoints2;
 @synthesize lbl_numPoints3  = m_lbl_numPoints3;
 
+@synthesize iv_container    = m_iv_container;
+@synthesize v_userHighlight = m_v_userHighlight;
+
 @synthesize entries         = m_entries;
 @synthesize leaderboardID   = m_leaderboardID;
 
@@ -48,9 +52,6 @@
         
         [self addSubview:self.view];
         
-        //[self.view.layer setCornerRadius:10];
-        //[self.view.layer setBorderWidth:1.0];
-        //[self.view.layer setBorderColor:[[UIColor blackColor]CGColor]];
     }
     return self;
 }
@@ -82,8 +83,10 @@
     self.lbl_numPoints2 = nil;
     self.lbl_numPoints3 = nil;
     
+    self.iv_container = nil;
+    self.v_userHighlight = nil;
+    
     self.entries = nil;
-  //  [self.entries dealloc];
     
     [super dealloc];
     
@@ -96,7 +99,7 @@
     {
         entry = [self.entries objectAtIndex:0];
         if (entry != nil) {
-            self.lbl_position1.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
+            self.lbl_position1.text = [NSString stringWithFormat:@"# %@", [entry.position stringValue]];
             //self.iv_profilePic1
             self.lbl_username1.text = entry.username;
             self.lbl_numPoints1.text = [entry.points stringValue];
@@ -111,7 +114,7 @@
                 self.lbl_username2.hidden = NO;
                 self.lbl_numPoints2.hidden = NO;
                 self.iv_profilePic2.hidden = NO;
-                self.lbl_position2.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
+                self.lbl_position2.text = [NSString stringWithFormat:@"# %@", [entry.position stringValue]];
                 //self.iv_profilePic2
                 self.lbl_username2.text = entry.username;
                 self.lbl_numPoints2.text = [entry.points stringValue];
@@ -127,7 +130,7 @@
                     self.lbl_numPoints3.hidden = NO;
                     self.iv_profilePic3.hidden = NO;
                     
-                    self.lbl_position3.text = [NSString stringWithFormat:@"#%@", [entry.position stringValue]];
+                    self.lbl_position3.text = [NSString stringWithFormat:@"# %@", [entry.position stringValue]];
                     
                     self.lbl_username3.text = entry.username;
                     self.lbl_numPoints3.text = [entry.points stringValue];
@@ -135,10 +138,14 @@
             }
             else
             {
+                //only two entries
                 self.lbl_position3.hidden = YES;
                 self.lbl_username3.hidden = YES;
                 self.lbl_numPoints3.hidden = YES;
                 self.iv_profilePic3.hidden = YES;
+                
+                self.iv_container.frame = CGRectMake(0, 0, 280, 77);
+                self.view.frame = CGRectMake(0, 0, 280, 73);
             }
         }
         else {
@@ -153,7 +160,77 @@
             self.lbl_numPoints3.hidden = YES;
             self.iv_profilePic2.hidden = YES;
             
+            self.iv_container.frame = CGRectMake(0, 0, 280, 40);
+            self.view.frame = CGRectMake(0, 0, 280, 37);
+            
         }
+        
+        // We need to move the userHighlight view to the appropriate spot
+        LeaderboardEntry *entry;
+        AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+        for (int i = 0; i < self.entries.count; i++) {
+            
+            entry = [self.entries objectAtIndex:i];
+            
+            // We search for the index of the logged in user's entry, then take the entry before and after that index
+            if ([entry.userid isEqualToNumber:authenticationManager.m_LoggedInUserID]) {
+                CGRect frame;
+                
+                if (i == 0) {
+                    frame = CGRectMake(3, 4, 274, 34);
+                    
+                    // Set text font color to white
+                    self.lbl_position1.textColor = [UIColor whiteColor];
+                    self.lbl_username1.textColor = [UIColor whiteColor];
+                    self.lbl_numPoints1.textColor = [UIColor whiteColor];
+                    
+                    // Set text shadow of labels
+                    [self.lbl_position1 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_username1 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_numPoints1 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_position1 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_username1 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_numPoints1 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                }
+                else if (i == 1) {
+                    frame = CGRectMake(3, 38, 274, 34);
+                    
+                    // Set text font color to white
+                    self.lbl_position2.textColor = [UIColor whiteColor];
+                    self.lbl_username2.textColor = [UIColor whiteColor];
+                    self.lbl_numPoints2.textColor = [UIColor whiteColor];
+                    
+                    // Set text shadow of labels
+                    [self.lbl_position2 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_username2 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_numPoints2 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_position2 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_username2 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_numPoints2 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                }
+                else {
+                    frame = CGRectMake(3, 71, 274, 34);
+                    
+                    // Set text font color to white
+                    self.lbl_position3.textColor = [UIColor whiteColor];
+                    self.lbl_username3.textColor = [UIColor whiteColor];
+                    self.lbl_numPoints3.textColor = [UIColor whiteColor];
+                    
+                    // Set text shadow of labels
+                    [self.lbl_position3 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_username3 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_numPoints3 setShadowColor:[UIColor blackColor]];
+                    [self.lbl_position3 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_username3 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                    [self.lbl_numPoints3 setShadowOffset:CGSizeMake(0.0, -1.0)];
+                }
+                
+                self.v_userHighlight.frame = frame;
+                
+                break;
+            }
+        }
+        
         [self setNeedsDisplay];
     }
 }

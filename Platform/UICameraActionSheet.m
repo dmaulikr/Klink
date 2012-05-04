@@ -190,7 +190,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 + (UICameraActionSheet*)createCameraActionSheet {
     UICameraActionSheet* retVal = [[UICameraActionSheet alloc]initWithTitle:nil delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
     retVal.delegate = retVal;
-    retVal.allowsEditing = NO;
+    retVal.allowsEditing = YES;
     [retVal autorelease];
     return retVal;
 }

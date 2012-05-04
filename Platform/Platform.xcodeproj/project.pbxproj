@@ -1890,9 +1890,9 @@
 				52BC08351540B9C60092A760 /* UILeaderboard3Up.h */,
 				52BC08361540B9C60092A760 /* UILeaderboard3Up.m */,
 				52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */,
-				C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */,
 				C533FB9C1546EF6300552DAA /* UILeaderboardTableViewCell.h */,
 				C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */,
+				C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";

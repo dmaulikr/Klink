@@ -13,6 +13,9 @@
 #import "LeaderboardTypes.h"
 #import "LeaderboardRelativeTo.h"
 #import "AuthenticationManager.h"
+#import "ProfileViewController.h"
+
+#define kLEADERBOARDTABLEVIEWCELLHEIGHT 50
 
 @implementation LeaderboardViewController
 @synthesize leaderboardID   = m_leaderboardID;
@@ -47,12 +50,15 @@
 }
 
 
-- (void) render
+- (void)renderWithAnimation:(BOOL)animation
 {
-    //[self.tbl_leaderboard reloadData];
-    
-    // Reload the tableview with animation
-    [self.tbl_leaderboard reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+    if (animation == YES) {
+        // Reload the tableview with animation
+        [self.tbl_leaderboard reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    else {
+        [self.tbl_leaderboard reloadData];
+    }
 
 }
 
@@ -125,7 +131,7 @@
     [self enumerateLeaderboardOfType:kALLTIME relativeTo:kPEOPLEIKNOW];
     [self enumerateLeaderboardOfType:kALLTIME relativeTo:kALL];
     
-    [self render];
+    [self renderWithAnimation:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -306,17 +312,33 @@
 
 
 #pragma mark - Table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kLEADERBOARDTABLEVIEWCELLHEIGHT;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    int leaderBoardEntryCount = [self.leaderboard.entries count];
+    
+    if ([indexPath row] < leaderBoardEntryCount) {
+        LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:[indexPath row]];
+        
+        ProfileViewController* profileViewController = [ProfileViewController createInstanceForUser:entry.userid];
+        
+        NSString* navBarTitle = @"Leaderboard";
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                       initWithTitle: navBarTitle 
+                                       style: UIBarButtonItemStyleBordered
+                                       target: nil action: nil];
+        
+        [self.navigationItem setBackBarButtonItem: backButton];
+        [backButton release];
+        
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    }
 }
 
 #pragma mark - Enumerations
@@ -338,29 +360,48 @@
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
 {
-    ResourceContext* resourceContext = [ResourceContext instance];
     
     if (enumerator == self.allLeaderboardCloudEnumerator) {
-        // Get the leaderboad object from the resource context
-        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
-        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALL], nil];
-        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
-        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        if (self.sc_type.selectedSegmentIndex == 1 &&
+            self.sc_relativeTo.selectedSegmentIndex == 1) {
+            
+            // We only reset the leaderboard and reload the data if user
+            // has selected ALLTIME relative to EVERYONE in segmented controls
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            // Get the leaderboard object from the resource context
+            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+            NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALLTIME], [NSString stringWithFormat:@"%d",kALL], nil];
+            NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+            NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            
+            self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+            
+            [self renderWithAnimation:YES];
+        }
         
-        //self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
-        
-        [self render];
     }
     else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
-        // Get the leaderboad object from the resource context
-        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
-        NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
-        NSArray* attributesArray = [NSArray arrayWithObjects:USERID, RELATIVETO, nil];
-        NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        if (self.sc_type.selectedSegmentIndex == 1 &&
+            self.sc_relativeTo.selectedSegmentIndex == 0) {
+            
+            // We only reset the leaderboard and reload the data if user
+            // has selected ALLTIME relative to FRIENDS in segmented controls
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            // Get the leaderboard object from the resource context
+            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+            NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALLTIME], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+            NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+            NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            
+            self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+            
+            [self renderWithAnimation:YES];
+        }
         
-        //self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
-        
-        [self render];
     }
 }
 
@@ -390,7 +431,7 @@
     {
         self.leaderboard = newLeaderboard;
         self.leaderboardID = newLeaderboard.objectid;
-        [self render];
+        [self renderWithAnimation:YES];
     }
     else
     {
@@ -424,7 +465,7 @@
     {
         self.leaderboard = newLeaderboard;
         self.leaderboardID = newLeaderboard.objectid;
-        [self render];
+        [self renderWithAnimation:YES];
     }
     else
     {

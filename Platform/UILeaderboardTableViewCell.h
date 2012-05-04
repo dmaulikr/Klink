@@ -12,6 +12,7 @@
 @interface UILeaderboardTableViewCell : UITableViewCell
 {
     UITableViewCell*    m_leaderboardTableViewCell;
+    UIView              *m_v_background;
     UILabel*            m_lbl_position;
     UIImageView*        m_iv_profilePicture;
     UILabel*            m_lbl_username;
@@ -22,6 +23,7 @@
 
 
 @property (nonatomic, retain) IBOutlet UITableViewCell* leaderboardTableViewCell;
+@property (nonatomic, retain) IBOutlet UIView   *v_background;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_position;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
