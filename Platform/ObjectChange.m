@@ -1,43 +1,22 @@
 //
-//  AttributeChange.m
+//  ObjectChange.m
 //  Platform
 //
-//  Created by Jasjeet Gill on 4/11/12.
+//  Created by Jasjeet Gill on 5/4/12.
 //  Copyright (c) 2012 Blue Label Solutions LLC. All rights reserved.
 //
 
-#import "AttributeChange.h"
-#import "Attributes.h"
-#import "Types.h"
+#import "ObjectChange.h"
 #import "Macros.h"
 #import "NSStringGUIDCategory.h"
-
-@implementation AttributeChange
+@implementation ObjectChange
 @dynamic targetobjectid;
 @dynamic targetobjecttype;
-@dynamic attributename;
-@dynamic delta;
-@dynamic oldvalue;
-@dynamic newvalue;
-@dynamic opcode;
-@dynamic hasbeenprocessed;
-
+@dynamic objectchange;
 @dynamic datecreated;
-@synthesize scorejustifications = __scorejustifications;
 
-- (NSArray*) scorejustifications
-{
-    if (__scorejustifications != nil)
-    {
-        return __scorejustifications;
-    }
-    
-    //NSMutableArray* retVal = [[NSMutableArray alloc]init];
-    NSArray* justificationArray = [self valueForKey:@"justifications"];
-    
-    __scorejustifications = justificationArray;
-    return __scorejustifications;
-}
+
+
 //Extracts values from a apassed in JSON instance and populates attributes
 //on this object accordingly
 - (void) readAttributesFromJSONDictionary:(NSDictionary*)jsonDictionary {
@@ -77,7 +56,7 @@
                 else if (attrType == NSTransformableAttributeType) {
                     [self setValue:value forKey:[attrDesc name]];
                 }
-               
+                
                 else {
                     //unsupported attribute type
                     LOG_RESOURCE(1,@"%@Unsupported attribute type in JSON string: %d",activityName,attrType);
@@ -88,6 +67,7 @@
     
     
 }
+
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary 
         withEntityDescription:(NSEntityDescription*)entity 
@@ -115,16 +95,17 @@
     
     ResourceContext* resourceContext = [ResourceContext instance];
     NSManagedObjectContext* context = [[ResourceContext instance]managedObjectContext];
-    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:ATTRIBUTECHANGE inManagedObjectContext:context];
+    NSEntityDescription* entityDescription = [NSEntityDescription entityForName:OBJECTCHANGE inManagedObjectContext:context];
     return [self initFromJSONDictionary:jsonDictionary withEntityDescription:entityDescription insertIntoResourceContext:resourceContext];
 }
 
 
-+ (id) createInstanceOfAttributeChangeFromJSON:(NSDictionary *)jsonDictionary 
+
++ (id) createInstanceOfObjectChangeFromJSON:(NSDictionary *)jsonDictionary 
 {
     ResourceContext* resourceContext = [ResourceContext instance];
-    NSEntityDescription* entity = [NSEntityDescription entityForName:ATTRIBUTECHANGE inManagedObjectContext:resourceContext.managedObjectContext];
-    AttributeChange* retVal = [[AttributeChange alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entity insertIntoResourceContext:nil];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:OBJECTCHANGE inManagedObjectContext:resourceContext.managedObjectContext];
+    ObjectChange* retVal = [[ObjectChange alloc]initFromJSONDictionary:jsonDictionary withEntityDescription:entity insertIntoResourceContext:nil];
     [retVal autorelease];
     return retVal;
 }

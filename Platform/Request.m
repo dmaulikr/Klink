@@ -17,6 +17,8 @@
 @synthesize delegate            = m_delegate;
 @synthesize progress            = m_progress;
 @synthesize consequentialUpdates= m_consequentialUpdates;
+@synthesize consequentialInserts= m_consequentialInserts;
+
 @dynamic targetresourceid;
 @dynamic operationcode;
 @dynamic statuscode;
@@ -35,6 +37,7 @@
     if (self) {
         self.statuscode = [NSNumber numberWithInt:kPENDING];
         self.consequentialUpdates = nil;
+        self.consequentialInserts = nil;
         NSMutableArray* cr = [[NSMutableArray alloc]init];
         [cr release];
     }
@@ -61,6 +64,7 @@ withChangedAttributes:(NSArray*)changedAttributes
     self.userInfo = userInfo;
 
     self.consequentialUpdates = nil;
+    self.consequentialInserts = nil;
     [self setChangedAttributesList:changedAttributes];
 
     

@@ -707,6 +707,11 @@ static RequestManager* sharedInstance;
             request.consequentialUpdates = putResponse.consequentialUpdates;
         }
         
+        if (putResponse.consequentialInserts != nil)
+        {
+            request.consequentialInserts = putResponse.consequentialInserts;
+        }
+        
         
 
         LOG_REQUEST(0, @"%@Put response successfully processed for ID:%@ with Type:%@ along with %d secondary objects",activityName,request.targetresourceid,request.targetresourcetype, [putResponse.secondaryResults count]);
@@ -716,13 +721,7 @@ static RequestManager* sharedInstance;
     else {
          LOG_REQUEST(1, @"%@Put request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,putResponse.errorMessage);
         
-        //we need to unlock any attachment attributes that were locked by this request to begin with
-//         Resource* existingResource = nil;
-//        existingResource = [resourceContext resourceWithType:request.targetresourcetype withID:request.targetresourceid];
-//        NSArray* attachmentAttributes = [self attachmentAttributesInRequest:request];
-//        [existingResource unlockAttributes:attachmentAttributes];
-//        [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
-        
+
     }
     [putResponse autorelease];
     return putResponse;
@@ -838,6 +837,40 @@ static RequestManager* sharedInstance;
             }
         }
         
+        //we need to process the other newly created objects to ensure they are properly done
+        if (createResponse.createdResources != nil &&
+            [createResponse.createdResources count] > 0) {
+        
+            for (Resource* otherCreatedResource in createResponse.createdResources)
+            {
+                //ensure its not the target object
+                if (![otherCreatedResource.objectid isEqualToNumber:request.targetresourceid] &&
+                    ![otherCreatedResource.objecttype isEqualToString:request.targetresourcetype])
+                {
+                    //now we refresh the object
+                    existingResource = nil;
+                    BOOL isSingletonType = [TypeInstanceData isSingletonType:otherCreatedResource.objecttype];
+                    
+                    if (!isSingletonType) {
+                        existingResource = [resourceContext resourceWithType:otherCreatedResource.objecttype withID:otherCreatedResource.objectid];
+                    }
+                    else {
+                        existingResource = [resourceContext singletonResourceWithType:otherCreatedResource.objecttype];
+                    }
+                    
+                    if (existingResource != nil) {
+                        [existingResource refreshWith:otherCreatedResource];
+                    }
+                    else {
+                        //new object , need to create it
+                        [resourceContext insert:otherCreatedResource];
+                    }
+
+                    
+                }
+            }
+            
+        }
         //we now save the changes we made
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
         
@@ -848,6 +881,12 @@ static RequestManager* sharedInstance;
             //we simply assign them to the original request
             request.consequentialUpdates = createResponse.consequentialUpdates;
         }
+        
+        if (createResponse.consequentialInserts != nil)
+        {
+            request.consequentialInserts = createResponse.consequentialInserts;
+        }
+        
     }
     else {
         LOG_REQUEST(1, @"%@Create request failed for ID:%@ with Type:%@ due to Error:%@",activityName,request.targetresourceid,request.targetresourcetype,createResponse.errorMessage);

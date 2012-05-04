@@ -14,12 +14,14 @@
     UILabel* m_lbl_scoreIncrement;
     UILabel* m_lbl_totalScore;
     UILabel* m_lbl_oldScore;
+    UILabel* m_lbl_achievements;
 }
 
 @property (nonatomic,retain) IBOutlet UIView* view;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_scoreIncrement;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_totalScore;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_oldScore;
+@property (nonatomic,retain) IBOutlet UILabel* lbl_achievements;
 
 - (void) renderCompletedRequests:(NSArray*)completedRequests;
 

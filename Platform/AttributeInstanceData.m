@@ -99,7 +99,8 @@ insertIntoResourceContext:(ResourceContext *)context
     
     //we mark topcaptionid as being a local variable
     if ([lowerCaseName isEqualToString:TOPVOTEDCAPTIONID] ||
-        [lowerCaseName isEqualToString:NUMBEROFUNREADCAPTIONS])
+        [lowerCaseName isEqualToString:NUMBEROFUNREADCAPTIONS] ||
+        [lowerCaseName isEqualToString:NUMBEROFPOINTSLW])
     {
         retVal.islocal = [NSNumber numberWithBool:YES];
     }

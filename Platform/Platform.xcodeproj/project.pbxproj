@@ -342,6 +342,8 @@
 		C5A1CA6F153FC09400F09370 /* Leaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A1CA6E153FC09400F09370 /* Leaderboard.m */; };
 		C5A1CA73153FC1D600F09370 /* LeaderboardEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A1CA72153FC1D600F09370 /* LeaderboardEntry.m */; };
 		C5A82D771466667E00E77675 /* UICameraActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A82D761466667E00E77675 /* UICameraActionSheet.m */; };
+		C5B026F715541FF8004019E1 /* ObjectChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B026F615541FF8004019E1 /* ObjectChange.m */; };
+		C5B026FB155423CD004019E1 /* Achievement.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B026FA155423CD004019E1 /* Achievement.m */; };
 		C5B3003C1447AE0A00236F52 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */; };
 		C5B8B85814BA640A0085B092 /* UIStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5B8B85714BA640A0085B092 /* UIStrings.m */; };
 		C5C298D0144B9CE100206D07 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C298CF144B9CE100206D07 /* EventManager.m */; };
@@ -876,6 +878,10 @@
 		C5A82D671465ABD900E77675 /* PageState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageState.h; sourceTree = "<group>"; };
 		C5A82D751466667E00E77675 /* UICameraActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICameraActionSheet.h; sourceTree = "<group>"; };
 		C5A82D761466667E00E77675 /* UICameraActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICameraActionSheet.m; sourceTree = "<group>"; };
+		C5B026F515541FF8004019E1 /* ObjectChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectChange.h; sourceTree = "<group>"; };
+		C5B026F615541FF8004019E1 /* ObjectChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectChange.m; sourceTree = "<group>"; };
+		C5B026F9155423CD004019E1 /* Achievement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Achievement.h; sourceTree = "<group>"; };
+		C5B026FA155423CD004019E1 /* Achievement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Achievement.m; sourceTree = "<group>"; };
 		C5B3003A1447AE0A00236F52 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		C5B3003B1447AE0A00236F52 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
 		C5B8B85614BA640A0085B092 /* UIStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIStrings.h; sourceTree = "<group>"; };
@@ -1127,6 +1133,8 @@
 				C5A1CA6E153FC09400F09370 /* Leaderboard.m */,
 				C5A1CA71153FC1D600F09370 /* LeaderboardEntry.h */,
 				C5A1CA72153FC1D600F09370 /* LeaderboardEntry.m */,
+				C5B026F9155423CD004019E1 /* Achievement.h */,
+				C5B026FA155423CD004019E1 /* Achievement.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -1690,6 +1698,8 @@
 				52BAB48D151CE2C1002EF515 /* DeleteResponse.m */,
 				C54C3C1E1536426C005D5475 /* AttributeChange.h */,
 				C54C3C1F1536426C005D5475 /* AttributeChange.m */,
+				C5B026F515541FF8004019E1 /* ObjectChange.h */,
+				C5B026F615541FF8004019E1 /* ObjectChange.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -2580,6 +2590,8 @@
 				52BC08371540B9C60092A760 /* UILeaderboard3Up.m in Sources */,
 				C533FB971546E7A500552DAA /* LeaderboardViewController.m in Sources */,
 				C533FB9E1546EF6300552DAA /* UILeaderboardTableViewCell.m in Sources */,
+				C5B026F715541FF8004019E1 /* ObjectChange.m in Sources */,
+				C5B026FB155423CD004019E1 /* Achievement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

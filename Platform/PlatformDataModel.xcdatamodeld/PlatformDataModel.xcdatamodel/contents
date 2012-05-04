@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="achievement" representedClassName="Achievement" parentEntity="resource" syncable="YES">
+        <attribute name="dateexpires" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageurl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="applicationsettings" representedClassName="ApplicationSettings" parentEntity="resource">
         <attribute name="base_url" optional="YES" attributeType="String"/>
         <attribute name="caption_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -32,7 +40,7 @@
         <attribute name="datecreated" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="delta" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hasbeenprocessed" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
-        <attribute name="justification" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="justifications" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="newvalue" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="oldvalue" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="opcode" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -97,6 +105,12 @@
         <attribute name="relativeto" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="objectchange" representedClassName="ObjectChange" syncable="YES">
+        <attribute name="datecreated" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="objectchange" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjectid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="page" representedClassName="Page" parentEntity="resource">
         <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
@@ -215,5 +229,7 @@
         <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
         <element name="user" positionX="241" positionY="990" width="128" height="375"/>
         <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
+        <element name="objectchange" positionX="-389" positionY="1017" width="128" height="105"/>
+        <element name="achievement" positionX="-378" positionY="-99" width="128" height="135"/>
     </elements>
 </model>
