@@ -10,10 +10,12 @@
 #import "JSONKit.h"
 #import "Resource.h"
 #import "AttributeChange.h"
+#import "ObjectChange.h"
+
 @implementation CreateResponse
 @synthesize createdResources;
 @synthesize consequentialUpdates = m_consequentialUpdates;
-
+@synthesize consequentialInserts = m_consequentialInserts;
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
    
@@ -53,6 +55,24 @@
             }
             self.consequentialUpdates = attributeChanges;
             [attributeChanges release];
+        }
+        
+        NSArray* jsonConsequentialInserts = [jsonDictionary valueForKey:CONSEQUENTIALINSERTS];
+        
+        if (jsonConsequentialInserts != nil &&
+            jsonConsequentialInserts != [NSNull null] &&
+            [jsonConsequentialInserts count] > 0) {
+            
+            NSMutableArray* objectInsertions = [[NSMutableArray alloc]init];
+            
+            for (int j = 0; j < [jsonConsequentialInserts count]; j++)
+            {
+                id obj = [jsonConsequentialInserts objectAtIndex:j];
+                ObjectChange* objectChange = [ObjectChange createInstanceOfObjectChangeFromJSON:obj];
+                [objectInsertions addObject:objectChange];
+            }
+            self.consequentialInserts = objectInsertions;
+            [objectInsertions release];
         }
        
      

@@ -16,9 +16,11 @@
     id      m_modifiedResource;
     NSArray *m_secondaryResults;
     NSArray* m_consequentialUpdates;
+    NSArray* m_consequentialInserts;
 }
 @property (nonatomic,retain) NSArray* consequentialUpdates;
 @property (nonatomic,retain) id         modifiedResource;
 @property (nonatomic,retain) NSArray*   secondaryResults;
+@property (nonatomic,retain) NSArray* consequentialInserts;
 
 @end

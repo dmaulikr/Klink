@@ -25,4 +25,5 @@ extern NSString* const VOTE;
 extern NSString* const FOLLOW;
 extern NSString* const ATTRIBUTECHANGE;
 extern NSString* const LEADERBOARD;
-
+extern NSString* const ACHIEVEMENT;
+extern NSString* const OBJECTCHANGE;

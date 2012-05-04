@@ -103,6 +103,7 @@ NSString* const FINISHEDWRITERID        =@"finishedwriterid";
 NSString* const NUMBEROFUNREADCAPTIONS  =@"numberofunreadcaptions";
 NSString* const SHARINGLEVEL            =@"sharinglevel";
 NSString* const CONSEQUENTIALUPDATES    =@"consequentialupdates";
+NSString* const CONSEQUENTIALINSERTS    =@"consequentialinserts";
 NSString* const POSITION                =@"position";
 NSString* const POINTS                  =@"points";
 NSString* const TYPE                    =@"type";

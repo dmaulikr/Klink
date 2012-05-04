@@ -54,6 +54,7 @@ typedef enum {
    // Request*        m_parentRequest;
     
     NSArray*        m_consequentialUpdates;
+    NSArray*        m_consequentialInserts;
     
 }
 
@@ -76,6 +77,7 @@ typedef enum {
 //@property (nonatomic,retain) Request*           parentRequest;
 @property (nonatomic,retain) NSNumber*  objectid;
 @property (nonatomic,retain) NSArray*   consequentialUpdates;
+@property (nonatomic,retain) NSArray*   consequentialInserts;
 
 @property (nonatomic,retain) id<RequestProgressDelegate> delegate;
 

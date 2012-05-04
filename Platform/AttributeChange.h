@@ -26,5 +26,5 @@
 @property (nonatomic,retain) NSNumber* opcode;
 @property (nonatomic,retain) NSNumber* hasbeenprocessed;
 @property (nonatomic,retain) NSNumber* datecreated;
-@property (nonatomic,retain) NSString*  justification;
+@property (nonatomic,retain) NSArray*  scorejustifications;
 @end

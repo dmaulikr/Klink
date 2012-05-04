@@ -8,11 +8,13 @@
 
 #import "PutResponse.h"
 #import "AttributeChange.h"
+#import "ObjectChange.h"
 
 @implementation PutResponse
 @synthesize modifiedResource = m_modifiedResource;
 @synthesize secondaryResults = m_secondaryResults;
 @synthesize consequentialUpdates = m_consequentialUpdates;
+@synthesize consequentialInserts = m_consequentialInserts;
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
 
@@ -54,21 +56,42 @@
             jsonConsequentialUpdates != [NSNull null] &&
             [jsonConsequentialUpdates count] > 0)
         {
-            NSMutableArray* attributeChanges = [[NSMutableArray alloc]initWithCapacity:[jsonConsequentialUpdates count]];
+            NSMutableArray* attributeChanges = [[NSMutableArray alloc]init];
+            int count = [jsonConsequentialUpdates count];
+            //NSMutableArray* attributeChanges = [[NSMutableArray alloc]initWithCapacity:[jsonConsequentialUpdates count]];
             
-            for (int j = 0; j < [attributeChanges count]; j++)
+            for (int j = 0; j < count; j++)
             {
                 //we iterate through the JSON fragments and deserialize the
                 //attribute change objects
                 //now we process any consequential attribute changes
-                id obj = [attributeChanges objectAtIndex:j];
+                id obj = [jsonConsequentialUpdates objectAtIndex:j];
                 //now lets deserialize the json payload into instances of this
                 AttributeChange* attributeChange = [AttributeChange createInstanceOfAttributeChangeFromJSON:obj];
                 //now lets add this attribute change to our array
                 [attributeChanges addObject:attributeChange];
             }
             self.consequentialUpdates = attributeChanges;
+            
             [attributeChanges release];
+        }
+        
+        NSArray* jsonConsequentialInserts = [jsonDictionary valueForKey:CONSEQUENTIALINSERTS];
+        
+        if (jsonConsequentialInserts != nil &&
+            jsonConsequentialInserts != [NSNull null] &&
+            [jsonConsequentialInserts count] > 0) {
+            
+            NSMutableArray* objectInsertions = [[NSMutableArray alloc]init];
+            
+            for (int j = 0; j < [jsonConsequentialInserts count]; j++)
+            {
+                id obj = [jsonConsequentialInserts objectAtIndex:j];
+                ObjectChange* objectChange = [ObjectChange createInstanceOfObjectChangeFromJSON:obj];
+                [objectInsertions addObject:objectChange];
+            }
+            self.consequentialInserts = objectInsertions;
+            [objectInsertions release];
         }
     }
     return self;
