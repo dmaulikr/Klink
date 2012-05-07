@@ -85,6 +85,23 @@
         [self.lbl_position setShadowOffset:CGSizeMake(0.0, -1.0)];
         [self.lbl_username setShadowOffset:CGSizeMake(0.0, -1.0)];
     }
+    else {
+        [self.v_background setHidden:YES];
+        
+        self.lbl_total.textColor = [UIColor blackColor];
+        self.lbl_position.textColor = [UIColor darkGrayColor];
+        self.lbl_username.textColor = [UIColor blackColor];
+        
+        self.lbl_username.font = [UIFont fontWithName:@"AmericanTypewriter" size:15.0];
+        
+        // Set text shadow of labels
+        [self.lbl_total setShadowColor:[UIColor whiteColor]];
+        [self.lbl_position setShadowColor:[UIColor whiteColor]];
+        [self.lbl_username setShadowColor:[UIColor whiteColor]];
+        [self.lbl_total setShadowOffset:CGSizeMake(0.0, 1.0)];
+        [self.lbl_position setShadowOffset:CGSizeMake(0.0, 1.0)];
+        [self.lbl_username setShadowOffset:CGSizeMake(0.0, 1.0)];
+    }
 }
 
 - (void) renderWithEntry:(LeaderboardEntry*)entry
