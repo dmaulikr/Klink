@@ -457,6 +457,10 @@
         [self.v_leaderboard3Up renderLeaderboardWithEntries:self.pairsLeaderboard.entries forLeaderboard:self.pairsLeaderboard.objectid];
     }
     
+    // Reset the frame of the leaderboard button height now that the leaderboard has been rendered
+    CGRect leaderboardButtonFrame = CGRectMake(self.btn_leaderboard3UpButton.frame.origin.x, self.btn_leaderboard3UpButton.frame.origin.y, self.btn_leaderboard3UpButton.frame.size.width, self.v_leaderboard3Up.frame.size.height-5);
+    [self.btn_leaderboard3UpButton setFrame:leaderboardButtonFrame];
+    
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
     [self.v_leaderboardContainer addSubview:self.btn_leaderboard3UpButton];
 }
