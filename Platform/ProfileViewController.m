@@ -344,7 +344,7 @@
     self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kALL];
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.allLeaderboardCloudEnumerator.delegate = self;
-    self.friendsLeaderboardCloudEnumerator = self;
+    self.friendsLeaderboardCloudEnumerator.delegate = self;
     
 }
 
@@ -418,7 +418,7 @@
     
     if (type == kALL) {
         // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
-        NSArray *threeUpEntryArray = [[NSArray alloc]autorelease];
+        NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
         LeaderboardEntry *entry;
         for (int i = 0; i < self.allLeaderboard.entries.count; i++) {
@@ -426,17 +426,36 @@
             entry = [self.allLeaderboard.entries objectAtIndex:i];
             
             // We search for the index of the logged in user's entry, then take the entry before and after that index
-            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) {
-                threeUpEntryArray = [NSArray arrayWithObjects:[self.allLeaderboard.entries objectAtIndex:(i-1)], [self.allLeaderboard.entries objectAtIndex:i], [self.allLeaderboard.entries objectAtIndex:(i+1)], nil];
+            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
+            {
+                int k = i - 1;
+                int j = i + 1;
+                LeaderboardEntry* entry1 = nil;
+                LeaderboardEntry* entry2 = nil;
+
+                if (k >= 0) {
+                    entry1 = [self.allLeaderboard.entries objectAtIndex:k];
+                    [threeUpEntryArray addObject:entry1];
+                }
+                
+                [threeUpEntryArray addObject:entry];
+                
+                if (j < [self.allLeaderboard.entries count])
+                {
+                    entry2 = [self.allLeaderboard.entries objectAtIndex:j];
+                    [threeUpEntryArray addObject:entry2];
+                }
                 break;
+
             }
         }
         
         [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.allLeaderboard.objectid];
+        [threeUpEntryArray release];
     }
     else if (type == kPEOPLEIKNOW) {
         // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
-        NSArray *threeUpEntryArray = [[NSArray alloc]autorelease];
+        NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
         LeaderboardEntry *entry;
         for (int i = 0; i < self.allLeaderboard.entries.count; i++) {
@@ -444,13 +463,32 @@
             entry = [self.friendsLeaderboard.entries objectAtIndex:i];
             
             // We search for the index of the logged in user's entry, then take the entry before and after that index
-            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) {
-                threeUpEntryArray = [NSArray arrayWithObjects:[self.friendsLeaderboard.entries objectAtIndex:(i-1)], [self.friendsLeaderboard.entries objectAtIndex:i], [self.friendsLeaderboard.entries objectAtIndex:(i+1)], nil];
+            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
+            {
+                int k = i - 1;
+                int j = i + 1;
+                LeaderboardEntry* entry1 = nil;
+                LeaderboardEntry* entry2 = nil;
+            
+                
+                if (k >= 0) {
+                    entry1 = [self.friendsLeaderboard.entries objectAtIndex:k];
+                    [threeUpEntryArray addObject:entry1];
+                }
+                
+                [threeUpEntryArray addObject:entry];
+                
+                if (j < [self.friendsLeaderboard.entries count])
+                {
+                    entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
+                    [threeUpEntryArray addObject:entry2];
+                }
                 break;
             }
         }
         
         [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid];
+        [threeUpEntryArray release];
     }
     else if (type == kONEPERSON)
     {

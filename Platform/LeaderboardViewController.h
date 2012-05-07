@@ -39,6 +39,7 @@
 
 - (IBAction)onRelativeSelectionChanged:(id)sender;
 - (IBAction)onTypeSelectionChanged:(id)sender;
+- (void) enumerateLeaderboardOfType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo;
 
 + (LeaderboardViewController*)createInstanceFor:(NSNumber*)leaderboardID;
 + (LeaderboardViewController*)createInstanceFor:(NSNumber *)leaderboardID forUserID:(NSNumber*)userID;
