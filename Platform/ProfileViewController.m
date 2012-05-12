@@ -582,17 +582,6 @@
     [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    //we mark that the user has viewed this viewcontroller at least once
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC]==NO) {
-        [userDefaults setBool:YES forKey:setting_HASVIEWEDPROFILEVC];
-        [userDefaults synchronize];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -631,6 +620,26 @@
     // Enumerate the leaderboards for this user
     if (self.loggedInUser)
     {
+        if ([self.userID isEqualToNumber:self.loggedInUser.objectid])
+        {
+            //it is the currently logged on user, show normal leaderboard
+            [self enumerateLeaderboards:self.userID];
+        }
+        else
+        {
+            //not the current user we are looking at, show a pairs leaderboard
+            [self enumeratePairsLeaderboard];
+        }
+    }
+    else
+    {
+        //no user logged in, we show the normal leaderboard
+        [self enumerateLeaderboards:self.userID];
+    }
+    
+    
+    /*if (self.loggedInUser)
+    {
         if (![self.userID isEqualToNumber:self.loggedInUser.objectid])
         {
             //not the current user we are looking at, show a pairs leaderboard
@@ -648,6 +657,10 @@
         [self enumerateLeaderboards:self.userID];
     }
     
+    
+    
+    
+    
     if (self.loggedInUser &&
         [self.userID isEqualToNumber:self.loggedInUser.objectid])
     {
@@ -657,7 +670,7 @@
     {
         //user is not the logged in user, so we display a pairs leaderboard
         [self enumeratePairsLeaderboard];
-    }
+    }*/
     
     // Render the profile view
     if (self.user != nil) {
@@ -715,6 +728,17 @@
         [self.btn_changeProfilePicture setEnabled:NO];
     }
     
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC]==NO) {
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDPROFILEVC];
+        [userDefaults synchronize];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

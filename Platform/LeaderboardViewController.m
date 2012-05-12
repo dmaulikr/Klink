@@ -24,8 +24,10 @@
 @synthesize tbl_leaderboard = m_tbl_leaderboard;
 @synthesize sc_relativeTo   = m_sc_relativeTo;
 @synthesize sc_type         = m_sc_type;
-@synthesize allLeaderboardCloudEnumerator = m_allLeaderboardCloudEnumerator;
-@synthesize friendsLeaderboardCloudEnumerator = m_friendsLeaderboardCloudEnumerator;
+@synthesize allALLTIMELeaderboardCloudEnumerator = m_allALLTIMELeaderboardCloudEnumerator;
+@synthesize allWEEKLYLeaderboardCloudEnumerator = m_allWEEKLYLeaderboardCloudEnumerator;
+@synthesize friendsALLTIMELeaderboardCloudEnumerator = m_friendsALLTIMELeaderboardCloudEnumerator;
+@synthesize friendsWEEKLYLeaderboardCloudEnumerator = m_friendsWEEKLYLeaderboardCloudEnumerator;
 
 
 
@@ -106,28 +108,69 @@
 {
     [super viewWillAppear:animated];
     
-    // We need to indicate selected states on the segmented controls
-    // based on the current entry values
+    /*ResourceContext* resourceContext = [ResourceContext instance];
     
-    if ([self.leaderboard.relativeto intValue] == kPEOPLEIKNOW)
-    {
-        [self.sc_relativeTo setSelectedSegmentIndex:0];
+    // Get the deafult leaderboard object from the resource context
+    // The Full leaderboard always opens to the weekly friends leaderboard first
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+    NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kWEEKLY], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+    NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+    NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+    
+    if (self.leaderboard == nil) {
+        // The leaderboard object we want is not in the local stroe, enumerate it
+        [self enumerateLeaderboardOfType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     }
-    else 
-    {
-        [self.sc_relativeTo setSelectedSegmentIndex:1];
+    else {
+        // We need to indicate selected states on the segmented controls
+        // based on the current entry values
+        if ([self.leaderboard.relativeto intValue] == kPEOPLEIKNOW)
+        {
+            [self.sc_relativeTo setSelectedSegmentIndex:0];
+        }
+        else 
+        {
+            [self.sc_relativeTo setSelectedSegmentIndex:1];
+        }
+        
+        if ([self.leaderboard.type intValue] == kWEEKLY)
+        {
+            [self.sc_type setSelectedSegmentIndex:0];
+        }
+        else
+        {
+            [self.sc_type setSelectedSegmentIndex:1];
+        }
+    }*/
+    
+    // Set defualts of segmented controls to WEEKLY leaderboard for FRIENDS
+    [self.sc_relativeTo setSelectedSegmentIndex:0];
+    [self.sc_type setSelectedSegmentIndex:0];
+    
+    // Reset the leaderboard array to force a cloud update of the latest
+    //self.leaderboard = nil;
+    
+    // Get the deafult leaderboard object from the resource context
+    // The Full leaderboard always opens to the weekly friends leaderboard first
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+    NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kWEEKLY], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+    NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+    NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+    
+    if (self.leaderboard == nil) {
+        // The leaderboard object we want is not in the local store, enumerate it
+        [self enumerateLeaderboardOfType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     }
     
-    if ([self.leaderboard.type intValue] == kWEEKLY)
-    {
-        [self.sc_type setSelectedSegmentIndex:0];
-    }
-    else
-    {
-        [self.sc_type setSelectedSegmentIndex:1];
-    }
-    
-    // Enumerate leaderboards of All Time type
+    // Enumerate the rest of the leaderboards
+    //[self enumerateLeaderboardOfType:kWEEKLY relativeTo:kPEOPLEIKNOW];
+    [self enumerateLeaderboardOfType:kWEEKLY relativeTo:kALL];
     [self enumerateLeaderboardOfType:kALLTIME relativeTo:kPEOPLEIKNOW];
     [self enumerateLeaderboardOfType:kALLTIME relativeTo:kALL];
     
@@ -344,15 +387,30 @@
 #pragma mark - Enumerations
 - (void) enumerateLeaderboardOfType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo
 {
-    self.allLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
-    self.allLeaderboardCloudEnumerator.delegate = self;
-    
-    [self.allLeaderboardCloudEnumerator enumerateUntilEnd:nil];
-    
-    self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
-    self.friendsLeaderboardCloudEnumerator.delegate = self;
-    
-    [self.friendsLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    if (type == kWEEKLY && relativeTo == kPEOPLEIKNOW) {
+        self.friendsWEEKLYLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+        self.friendsWEEKLYLeaderboardCloudEnumerator.delegate = self;
+        
+        [self.friendsWEEKLYLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else if (type == kALLTIME && relativeTo == kPEOPLEIKNOW) {
+        self.friendsALLTIMELeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+        self.friendsALLTIMELeaderboardCloudEnumerator.delegate = self;
+        
+        [self.friendsALLTIMELeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else if (type == kWEEKLY && relativeTo == kALL) {
+        self.allWEEKLYLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+        self.allWEEKLYLeaderboardCloudEnumerator.delegate = self;
+        
+        [self.allWEEKLYLeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else if (type == kALLTIME && relativeTo == kALL) {
+        self.allALLTIMELeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:type relativeTo:relativeTo];
+        self.allALLTIMELeaderboardCloudEnumerator.delegate = self;
+        
+        [self.allALLTIMELeaderboardCloudEnumerator enumerateUntilEnd:nil];
+    }
 }
 
 #pragma mark - CloudEnumeratorDelegate
@@ -361,7 +419,7 @@
                 withUserInfo:(NSDictionary *)userInfo
 {
     
-    if (enumerator == self.allLeaderboardCloudEnumerator) {
+    if (enumerator == self.allALLTIMELeaderboardCloudEnumerator) {
         if (self.sc_type.selectedSegmentIndex == 1 &&
             self.sc_relativeTo.selectedSegmentIndex == 1) {
             
@@ -382,7 +440,7 @@
         }
         
     }
-    else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
+    else if (enumerator == self.friendsALLTIMELeaderboardCloudEnumerator) {
         if (self.sc_type.selectedSegmentIndex == 1 &&
             self.sc_relativeTo.selectedSegmentIndex == 0) {
             
@@ -394,6 +452,48 @@
             // Get the leaderboard object from the resource context
             NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
             NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kALLTIME], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
+            NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+            NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            
+            self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+            
+            [self renderWithAnimation:YES];
+        }
+        
+    }
+    else if (enumerator == self.allWEEKLYLeaderboardCloudEnumerator) {
+        if (self.sc_type.selectedSegmentIndex == 0 &&
+            self.sc_relativeTo.selectedSegmentIndex == 1) {
+            
+            // We only reset the leaderboard and reload the data if user
+            // has selected WEEKLY relative to EVERYONE in segmented controls
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            // Get the leaderboard object from the resource context
+            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+            NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kWEEKLY], [NSString stringWithFormat:@"%d",kALL], nil];
+            NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
+            NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            
+            self.leaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
+            
+            [self renderWithAnimation:YES];
+        }
+        
+    }
+    else if (enumerator == self.friendsWEEKLYLeaderboardCloudEnumerator) {
+        if (self.sc_type.selectedSegmentIndex == 0 &&
+            self.sc_relativeTo.selectedSegmentIndex == 0) {
+            
+            // We only reset the leaderboard and reload the data if user
+            // has selected WEEKLY relative to FRIENDS in segmented controls
+            
+            ResourceContext* resourceContext = [ResourceContext instance];
+            
+            // Get the leaderboard object from the resource context
+            NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];
+            NSArray* valuesArray = [NSArray arrayWithObjects:[self.userID stringValue], [NSString stringWithFormat:@"%d",kWEEKLY], [NSString stringWithFormat:@"%d",kPEOPLEIKNOW], nil];
             NSArray* attributesArray = [NSArray arrayWithObjects:USERID, TYPE, RELATIVETO, nil];
             NSArray* sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
             

@@ -21,8 +21,10 @@
     UISegmentedControl  *m_sc_relativeTo;
     UISegmentedControl  *m_sc_type;
     
-    CloudEnumerator* m_allLeaderboardCloudEnumerator;
-    CloudEnumerator* m_friendsLeaderboardCloudEnumerator;
+    CloudEnumerator* m_allALLTIMELeaderboardCloudEnumerator;
+    CloudEnumerator* m_allWEEKLYLeaderboardCloudEnumerator;
+    CloudEnumerator* m_friendsALLTIMELeaderboardCloudEnumerator;
+    CloudEnumerator* m_friendsWEEKLYLeaderboardCloudEnumerator;
    
 }
 
@@ -34,8 +36,10 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl   *sc_relativeTo;
 @property (nonatomic, retain) IBOutlet UISegmentedControl   *sc_type;
 
-@property (nonatomic, retain) CloudEnumerator               *allLeaderboardCloudEnumerator;
-@property (nonatomic, retain) CloudEnumerator               *friendsLeaderboardCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator               *allALLTIMELeaderboardCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator               *allWEEKLYLeaderboardCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator               *friendsALLTIMELeaderboardCloudEnumerator;
+@property (nonatomic, retain) CloudEnumerator               *friendsWEEKLYLeaderboardCloudEnumerator;
 
 - (IBAction)onRelativeSelectionChanged:(id)sender;
 - (IBAction)onTypeSelectionChanged:(id)sender;

@@ -122,7 +122,6 @@
 @property (nonatomic, retain) CloudEnumerator*      profileCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      allLeaderboardCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
-
 @property (nonatomic, retain) CloudEnumerator*      pairsLeaderboardCloudEnumerator;
 
 - (IBAction) onLeaderboardButtonPressed:(id)sender;
