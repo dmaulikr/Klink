@@ -674,7 +674,7 @@
 }
 
 - (IBAction) onForgotPWButtonPressed:(id)sender {
-    NSURL *passwordResetURL = [NSURL URLWithString:@"http://www.bahndr.com/bahndr.web"];
+    NSURL *passwordResetURL = [NSURL URLWithString:@"http://www.bahndr.com/bahndr.web/User/ResetPassword"];
     
     [[UIApplication sharedApplication] openURL:passwordResetURL];
 }
