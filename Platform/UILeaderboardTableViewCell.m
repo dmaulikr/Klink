@@ -17,6 +17,7 @@
 @synthesize iv_profilePicture           = m_iv_profilePicture;
 @synthesize leaderboardTableViewCell    = m_leaderboardTableViewCell;
 @synthesize leaderboardEntry            = m_leaderboardEntry;
+@synthesize userID                      = m_userID;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -65,9 +66,12 @@
     self.lbl_position.text = [NSString stringWithFormat:@"# %@", [self.leaderboardEntry.position stringValue]];
     self.lbl_username.text = self.leaderboardEntry.username;
     
-    // If this entry if for the current logged in user, we need to apply special cell formatting
+    /*// If this entry if for the current logged in user, we need to apply special cell formatting
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
-    if ([self.leaderboardEntry.userid isEqualToNumber:authenticationManager.m_LoggedInUserID]) {
+    if ([self.leaderboardEntry.userid isEqualToNumber:authenticationManager.m_LoggedInUserID]) {*/
+    
+    // If this entry if for the profile user, we need to apply special cell formatting
+    if ([self.leaderboardEntry.userid isEqualToNumber:self.userID]) {
         
         [self.v_background setHidden:NO];
         
@@ -104,9 +108,10 @@
     }
 }
 
-- (void) renderWithEntry:(LeaderboardEntry*)entry
+- (void) renderWithEntry:(LeaderboardEntry*)entry forUserWithID:(NSNumber *)userID
 {
     self.leaderboardEntry = entry;
+    self.userID = userID;
     [self render];
 }
 

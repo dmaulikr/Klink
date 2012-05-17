@@ -29,9 +29,11 @@
     
     UIImageView     *m_iv_container;
     UIView          *m_v_userHighlight;
+    UIImageView     *m_iv_arrow;
     
     NSArray*    m_entries;
     NSNumber*   m_leaderboardID;
+    NSNumber*   m_userID;
     
 }
 
@@ -55,11 +57,13 @@
 
 @property (nonatomic, retain) IBOutlet UIImageView  *iv_container;
 @property (nonatomic, retain) IBOutlet UIView       *v_userHighlight;
+@property (nonatomic, retain) IBOutlet UIImageView  *iv_arrow;
 
 @property (nonatomic, retain) NSArray* entries;
 @property (nonatomic, retain) NSNumber* leaderboardID;
+@property (nonatomic, retain) NSNumber* userID;
 
 
-- (void) renderLeaderboardWithEntries:(NSArray*)entries forLeaderboard:(NSNumber*)leaderboardID;
+- (void) renderLeaderboardWithEntries:(NSArray*)entries forLeaderboard:(NSNumber*)leaderboardID forUserWithID:(NSNumber *)userID;
 
 @end

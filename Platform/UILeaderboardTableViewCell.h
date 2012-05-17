@@ -19,6 +19,7 @@
     UILabel*            m_lbl_total;
     
     LeaderboardEntry*   m_leaderboardEntry;
+    NSNumber*           m_userID;
 }
 
 
@@ -28,7 +29,10 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_profilePicture;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_username;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_total;
-@property (nonatomic, retain) LeaderboardEntry* leaderboardEntry;
 
-- (void) renderWithEntry:(LeaderboardEntry*)entry;
+@property (nonatomic, retain) LeaderboardEntry* leaderboardEntry;
+@property (nonatomic, retain) NSNumber* userID;
+
+- (void) renderWithEntry:(LeaderboardEntry*)entry forUserWithID:(NSNumber *)userID;
+
 @end

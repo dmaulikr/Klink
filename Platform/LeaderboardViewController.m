@@ -308,7 +308,7 @@
         //grab the leaderboard entry in question
         //LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:(index-1)];
         LeaderboardEntry* entry = [self.leaderboard.entries objectAtIndex:index];
-        [cell renderWithEntry:entry];
+        [cell renderWithEntry:entry forUserWithID:self.userID];
     //}
     return cell;
 }

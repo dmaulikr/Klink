@@ -426,7 +426,7 @@
             entry = [self.allLeaderboard.entries objectAtIndex:i];
             
             // We search for the index of the logged in user's entry, then take the entry before and after that index
-            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
+            if ((self.loggedInUser != nil) && [entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
             {
                 int k = i - 1;
                 int j = i + 1;
@@ -450,7 +450,7 @@
             }
         }
         
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.allLeaderboard.objectid];
+        [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.allLeaderboard.objectid forUserWithID:self.userID];
         [threeUpEntryArray release];
     }
     else if (type == kPEOPLEIKNOW) {
@@ -458,12 +458,12 @@
         NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
         LeaderboardEntry *entry;
-        for (int i = 0; i < self.allLeaderboard.entries.count; i++) {
+        for (int i = 0; i < self.friendsLeaderboard.entries.count; i++) {
             
             entry = [self.friendsLeaderboard.entries objectAtIndex:i];
             
             // We search for the index of the logged in user's entry, then take the entry before and after that index
-            if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
+            /*if ((self.loggedInUser != nil) && [entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
             {
                 int k = i - 1;
                 int j = i + 1;
@@ -484,19 +484,80 @@
                     [threeUpEntryArray addObject:entry2];
                 }
                 break;
+            }*/
+            
+            
+            if ([self.authenticationManager isUserAuthenticated] && self.loggedInUser != nil) {
+                // We search for the index of the logged in user's entry, then take the entry before and after that index
+                if ([entry.userid isEqualToNumber:self.loggedInUser.objectid]) {
+                    int k = i - 1;
+                    int j = i + 1;
+                    LeaderboardEntry* entry1 = nil;
+                    LeaderboardEntry* entry2 = nil;
+                    
+                    
+                    if (k >= 0) {
+                        entry1 = [self.friendsLeaderboard.entries objectAtIndex:k];
+                        [threeUpEntryArray addObject:entry1];
+                    }
+                    
+                    [threeUpEntryArray addObject:entry];
+                    
+                    if (j < [self.friendsLeaderboard.entries count])
+                    {
+                        entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
+                        [threeUpEntryArray addObject:entry2];
+                    }
+                    
+                    [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.loggedInUser.objectid];
+                    
+                    break;
+                }
+            }
+            else {
+                // We search for the index of this user profile in user's entry, then take the entry before and after that index
+                if ([entry.userid isEqualToNumber:self.userID]) {
+                    int k = i - 1;
+                    int j = i + 1;
+                    LeaderboardEntry* entry1 = nil;
+                    LeaderboardEntry* entry2 = nil;
+                    
+                    
+                    if (k >= 0) {
+                        entry1 = [self.friendsLeaderboard.entries objectAtIndex:k];
+                        [threeUpEntryArray addObject:entry1];
+                    }
+                    
+                    [threeUpEntryArray addObject:entry];
+                    
+                    if (j < [self.friendsLeaderboard.entries count])
+                    {
+                        entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
+                        [threeUpEntryArray addObject:entry2];
+                    }
+                    
+                    [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.userID];
+                    
+                    break;
+                }
             }
         }
         
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid];
+        //[self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid];
         [threeUpEntryArray release];
     }
     else if (type == kONEPERSON)
     {
-        [self.v_leaderboard3Up renderLeaderboardWithEntries:self.pairsLeaderboard.entries forLeaderboard:self.pairsLeaderboard.objectid];
+        if ([self.authenticationManager isUserAuthenticated] && self.loggedInUser != nil) {
+            [self.v_leaderboard3Up renderLeaderboardWithEntries:self.pairsLeaderboard.entries forLeaderboard:self.pairsLeaderboard.objectid forUserWithID:self.loggedInUser.objectid];
+        }
+        else {
+            [self.v_leaderboard3Up renderLeaderboardWithEntries:self.pairsLeaderboard.entries forLeaderboard:self.pairsLeaderboard.objectid forUserWithID:self.userID];
+        }
     }
     
     // Reset the frame of the leaderboard button height now that the leaderboard has been rendered
-    CGRect leaderboardButtonFrame = CGRectMake(self.btn_leaderboard3UpButton.frame.origin.x, self.btn_leaderboard3UpButton.frame.origin.y, self.btn_leaderboard3UpButton.frame.size.width, self.v_leaderboard3Up.frame.size.height-5);
+    CGRect leaderboardButtonFrame = CGRectMake(self.btn_leaderboard3UpButton.frame.origin.x, self.btn_leaderboard3UpButton.frame.origin.y, self.btn_leaderboard3UpButton.frame.size.width, self.v_leaderboard3Up.view.frame.size.height);
     [self.btn_leaderboard3UpButton setFrame:leaderboardButtonFrame];
     
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
@@ -656,7 +717,7 @@
     }
     
     // Enumerate the leaderboards for this user
-    if (self.loggedInUser)
+    if ([self.authenticationManager isUserAuthenticated] && self.loggedInUser && self.userID)
     {
         if ([self.userID isEqualToNumber:self.loggedInUser.objectid])
         {
@@ -818,7 +879,7 @@
 {
     //we need to launch the leaderboard view controller
     //we are going to launch with the friends leaderboard
-    LeaderboardViewController* leaderBoardViewController = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid forUserID:self.userID] ;
+    LeaderboardViewController* leaderBoardViewController = [LeaderboardViewController createInstanceFor:self.friendsLeaderboard.objectid forUserID:self.userID];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
                                    initWithTitle: @"User" 
