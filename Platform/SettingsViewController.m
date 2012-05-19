@@ -79,7 +79,7 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
-    self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+    
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -120,6 +120,8 @@
     
     // Hide toolbar
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
     
 }
 
