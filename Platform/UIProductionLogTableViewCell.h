@@ -48,6 +48,8 @@
 @property (nonatomic, retain)          EventManager*        eventManager;
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
+- (void) renderPhoto;
+
 + (NSString*) cellIdentifier;
 
 @end

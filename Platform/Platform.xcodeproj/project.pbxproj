@@ -245,6 +245,8 @@
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
+		52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EFF38415673C0000962F3A /* UIPointsProgressBar.m */; };
+		52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
@@ -691,6 +693,9 @@
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
+		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
+		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
+		52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPointsProgressBar.xib; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
@@ -1903,6 +1908,9 @@
 				C533FB9C1546EF6300552DAA /* UILeaderboardTableViewCell.h */,
 				C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */,
 				C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */,
+				52EFF38315673C0000962F3A /* UIPointsProgressBar.h */,
+				52EFF38415673C0000962F3A /* UIPointsProgressBar.m */,
+				52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2419,6 +2427,7 @@
 				520AF5B3154F242F00A82555 /* icon-facebook-white@2x.png in Resources */,
 				520AF5B4154F242F00A82555 /* icon-twitter-t-white.png in Resources */,
 				520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */,
+				52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2609,6 +2618,7 @@
 				C533FB9E1546EF6300552DAA /* UILeaderboardTableViewCell.m in Sources */,
 				C5B026F715541FF8004019E1 /* ObjectChange.m in Sources */,
 				C5B026FB155423CD004019E1 /* Achievement.m in Sources */,
+				52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

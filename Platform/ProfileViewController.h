@@ -11,6 +11,7 @@
 #import "BaseViewController.h"
 #import "UICameraActionSheet.h"
 #import "UILeaderboard3Up.h"
+#import "UIPointsProgressBar.h"
 #import "Leaderboard.h"
 
 @interface ProfileViewController : BaseViewController < UIProgressHUDViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, CloudEnumeratorDelegate, UICameraActionSheetDelegate > {
@@ -51,14 +52,16 @@
     UIImageView* m_iv_editorMinimumLine;
     UIImageView* m_iv_userBestLine;
     
+    UIPointsProgressBar* m_v_pointsProgressBar;
+    
     UIView* m_v_leaderboardContainer;
     UILeaderboard3Up* m_v_leaderboard3Up;
     UIButton* m_btn_leaderboard3UpButton;
     
     UIButton* m_btn_follow;
     
-    User*   m_user;
-    NSNumber* m_userID;
+    User*       m_user;
+    NSNumber*   m_userID;
     
     Leaderboard*    m_allLeaderboard;
     Leaderboard*    m_friendsLeaderboard;
@@ -101,6 +104,7 @@
 
 @property (atomic, retain) User* user;
 @property (atomic, retain) NSNumber* userID;
+
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;
@@ -108,6 +112,8 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPoints;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
+
+@property (nonatomic, retain) IBOutlet UIPointsProgressBar* v_pointsProgressBar;
 
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;

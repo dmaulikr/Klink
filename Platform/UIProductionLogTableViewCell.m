@@ -163,6 +163,40 @@
     [self setNeedsDisplay];
 }
 
+- (void) renderPhoto {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    Photo* photo = [draft photoWithHighestVotes];
+    self.topVotedPhotoID = photo.objectid;
+    //[self renderPhoto:topPhoto];
+    
+    ImageManager* imageManager = [ImageManager instance];
+    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
+    
+    //add the photo id to the context
+    [userInfo setValue:photo.objectid forKey:kPHOTOID];
+    
+    if (photo.thumbnailurl != nil && 
+        ![photo.thumbnailurl isEqualToString:@""]) 
+    {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+        callback.fireOnMainThread = YES;
+        UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+            self.iv_photo.image = image;
+        }
+    }
+    else {
+        self.iv_photo.contentMode = UIViewContentModeCenter;
+        self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
+    }
+    
+    [self setNeedsDisplay];
+}
+
 - (void) render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -175,9 +209,9 @@
         // Update caption count labels
        [self updateCaptionCountLabels];
         
-        Photo* topPhoto = [draft photoWithHighestVotes];
+        /*Photo* topPhoto = [draft photoWithHighestVotes];
         self.topVotedPhotoID = topPhoto.objectid;
-        [self renderPhoto:topPhoto];
+        [self renderPhoto:topPhoto];*/
         
         // Set deadline
         self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
@@ -204,7 +238,10 @@
     self.btn_unreadCaptionsBadge.titleLabel.text = nil;
     [self.btn_unreadCaptionsBadge setHidden:YES];
     self.lbl_deadline.text = nil;
+    
     self.iv_photo.image = nil;
+    self.iv_photo.contentMode = UIViewContentModeCenter;
+    self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
     
     [self.deadlineTimer invalidate];
     

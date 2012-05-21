@@ -11,7 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "UIProductionLogTableViewCell.h"
 
-@interface ProductionLogViewController : BaseViewController < UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate,CloudEnumeratorDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate > {
+@interface ProductionLogViewController : BaseViewController < UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate,CloudEnumeratorDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate > {
     
     UITableView* m_tbl_productionTableView;
     CloudEnumerator* m_cloudDraftEnumerator;

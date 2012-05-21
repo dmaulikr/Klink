@@ -461,6 +461,18 @@
 }
 
 #pragma mark - View lifecycle
+- (void)showThumbnailsOnVisibleCells {
+    NSArray* visibleCells = [self.tbl_productionTableView visibleCells];
+    
+    UIProductionLogTableViewCell* prodLogCell;
+    
+    for (int i = 0; i < [visibleCells count]; i++) {
+        prodLogCell = [visibleCells objectAtIndex:i];
+        
+        [prodLogCell renderPhoto];
+    }
+}
+
 
 - (void)viewDidLoad
 {
@@ -611,6 +623,9 @@
         [userDefaults synchronize];
     }*/
     
+    // Show tumbnails for the cells currently visible
+    //[self showThumbnailsOnVisibleCells];
+    
     if (self.shouldCloseTypewriter) {
         [self closeTypewriter];
     }
@@ -678,6 +693,14 @@
     else {
         return nil;
     }
+}
+
+- (void)customReloadData {
+    // We need to capture each relaodData call on the Tableview
+    // so we can show the thumbnails after each reload
+    [self.tbl_productionTableView reloadData];
+    
+    [self showThumbnailsOnVisibleCells];
 }
 
 /*
@@ -830,11 +853,7 @@
 }
 
 #pragma mark - Table view delegate
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
-}
-
--(void) scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.refreshHeader egoRefreshScrollViewDidScroll:scrollView];
 }
 
@@ -845,6 +864,13 @@
     //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
 
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self showThumbnailsOnVisibleCells];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    
@@ -880,7 +906,8 @@
 #pragma mark - NSFetchedResultsControllerDelegate methods
 -(void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tbl_productionTableView endUpdates];
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -955,11 +982,13 @@
      //dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 //    dispatch_async(backgroundQueue, ^{ block(pageID); });
 //    [pageID release];
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 - (void) onNewPhoto:(CallbackResult*)result {
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 #define kGCDQueueName   @"com.bluelabellabs.bahndr"
@@ -1010,11 +1039,13 @@
 //    }
     
 //     [captionID release];
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 - (void) onNewPhotoVote:(CallbackResult*)result {
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 
@@ -1042,11 +1073,13 @@
 //    
 //    }
 //    [captionID release];
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 - (void) onUnreadCaptionUpdate:(CallbackResult*)result {
-    [self.tbl_productionTableView reloadData];
+    //[self.tbl_productionTableView reloadData];
+    [self customReloadData];
 }
 
 

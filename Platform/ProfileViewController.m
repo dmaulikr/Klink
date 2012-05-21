@@ -55,6 +55,9 @@
 @synthesize lbl_totalLabel          = m_lbl_totalLabel;
 @synthesize lbl_pointsLast7Days     = m_lbl_pointsLast7Days;
 
+@synthesize user                    = m_user;
+@synthesize userID                  = m_userID;
+
 @synthesize iv_progressBarContainer = m_iv_progressBarContainer;
 @synthesize iv_progressDrafts       = m_iv_progressDrafts;
 @synthesize iv_progressPhotos       = m_iv_progressPhotos;
@@ -62,8 +65,9 @@
 @synthesize iv_progressPoints       = m_iv_progressPoints;
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
 @synthesize iv_userBestLine         = m_iv_userBestLine;
-@synthesize user                    = m_user;
-@synthesize userID                  = m_userID;
+
+@synthesize v_pointsProgressBar          = m_v_pointsProgressBar;
+
 @synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
 @synthesize v_leaderboard3Up        = m_v_leaderboard3Up;
 @synthesize btn_follow              = m_btn_follow;
@@ -386,6 +390,7 @@
     self.v_leaderboardContainer = nil;
     self.v_leaderboard3Up = nil;
     self.btn_follow = nil;
+    self.v_pointsProgressBar = nil;
     
 }
 
@@ -416,7 +421,7 @@
     self.v_leaderboard3Up = leaderboard;
     [leaderboard release];
     
-    if (type == kALL) {
+    /*if (type == kALL) {
         // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
         NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
@@ -453,7 +458,8 @@
         [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.allLeaderboard.objectid forUserWithID:self.userID];
         [threeUpEntryArray release];
     }
-    else if (type == kPEOPLEIKNOW) {
+    else */
+    if (type == kPEOPLEIKNOW) {
         // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
         NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
@@ -461,31 +467,6 @@
         for (int i = 0; i < self.friendsLeaderboard.entries.count; i++) {
             
             entry = [self.friendsLeaderboard.entries objectAtIndex:i];
-            
-            // We search for the index of the logged in user's entry, then take the entry before and after that index
-            /*if ((self.loggedInUser != nil) && [entry.userid isEqualToNumber:self.loggedInUser.objectid]) 
-            {
-                int k = i - 1;
-                int j = i + 1;
-                LeaderboardEntry* entry1 = nil;
-                LeaderboardEntry* entry2 = nil;
-            
-                
-                if (k >= 0) {
-                    entry1 = [self.friendsLeaderboard.entries objectAtIndex:k];
-                    [threeUpEntryArray addObject:entry1];
-                }
-                
-                [threeUpEntryArray addObject:entry];
-                
-                if (j < [self.friendsLeaderboard.entries count])
-                {
-                    entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
-                    [threeUpEntryArray addObject:entry2];
-                }
-                break;
-            }*/
-            
             
             if ([self.authenticationManager isUserAuthenticated] && self.loggedInUser != nil) {
                 // We search for the index of the logged in user's entry, then take the entry before and after that index
@@ -543,7 +524,6 @@
             }
         }
         
-        //[self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid];
         [threeUpEntryArray release];
     }
     else if (type == kONEPERSON)
@@ -623,12 +603,20 @@
     self.lbl_totalLast7Days.text = [NSString stringWithFormat:@"%d", totalLast7Days];
     //self.lbl_totalLast7Days.text = [self.user.numberofpoints stringValue];*/
     
-    self.lbl_pointsLast7Days.text = [self.user.numberofpointslw stringValue];
+    //self.lbl_pointsLast7Days.text = [self.user.numberofpointslw stringValue];
     //self.lbl_pointsLast7Days.text = @"100000";
     
-    self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
+    //self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
-    [self drawProgressBar];
+    // Show the progress bar
+    //[self drawProgressBar];
+    CGRect frame = self.v_pointsProgressBar.frame;
+    UIPointsProgressBar* progressBar = [[UIPointsProgressBar alloc] initWithFrame:frame];
+    [progressBar renderProgressBarForUserWithID:self.userID];
+    self.v_pointsProgressBar = progressBar;
+    [self.view addSubview:self.v_pointsProgressBar];
+    [progressBar release];
+    //[self.v_pointsProgressBar setHidden:YES];
 }
 
 
@@ -1188,7 +1176,7 @@
         
         self.allLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         
-        //[self showLeaderBoardOfType:kALL];
+        //[self showLeaderBoardOfType:kALL]; In the profile, we don't show the leaderboard relative to all people
     }
     else if (enumerator == self.friendsLeaderboardCloudEnumerator) {
         // Get the leaderboad object from the resource context

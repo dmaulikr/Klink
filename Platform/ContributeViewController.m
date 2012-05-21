@@ -148,25 +148,25 @@
     [self.tv_caption removeObserver:self forKeyPath:@"contentSize"];
     
     self.scrollView = nil;
-     self.activeTextView=nil;
-        self.activeTextField=nil;
+    self.activeTextView=nil;
+    self.activeTextField=nil;
         
-        self.configurationType=nil;
+    self.configurationType=nil;
         
-        self.lbl_draftTitle =nil;
-        self.draftTitle =nil;
-        self.tf_newDraftTitle=nil;
-        self.lbl_titleRequired=nil;
+    self.lbl_draftTitle =nil;
+    self.draftTitle =nil;
+    self.tf_newDraftTitle=nil;
+    self.lbl_titleRequired=nil;
         
-        self.btn_cameraButton =nil;
-        self.iv_photo=nil;
-        self.img_photo=nil;
-        self.lbl_photoOptional=nil;
-        self.lbl_photoRequired=nil;
+    self.btn_cameraButton =nil;
+    self.iv_photo=nil;
+    self.img_photo=nil;
+    self.lbl_photoOptional=nil;
+    self.lbl_photoRequired=nil;
         
-        self.tv_caption =nil;
-        self.lbl_captionOptional=nil;
-        self.lbl_captionRequired=nil;
+    self.tv_caption =nil;
+    self.lbl_captionOptional=nil;
+    self.lbl_captionRequired=nil;
     
     self.requests = nil;
        
@@ -731,12 +731,15 @@
     self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
     self.img_photo = image;
     self.img_thumbnail = thumbnailImage;
-    self.iv_photo.image = self.img_photo;
+    //self.iv_photo.image = image;
+    [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
     
     [self displayPhotoFrameOnImage:image];
     
     // enable Submit button if ok
     self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
+    
+    [self.view setNeedsDisplay];
 }
 
 - (void) onCancel {
