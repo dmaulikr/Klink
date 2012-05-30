@@ -693,7 +693,7 @@
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
-		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
+		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
 		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
 		52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPointsProgressBar.xib; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
