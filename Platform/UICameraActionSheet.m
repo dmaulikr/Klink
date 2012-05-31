@@ -186,6 +186,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self.picker dismissModalViewControllerAnimated:YES];
 }
 
+
+- (UIImage*)cropImage:(UIImage*)original toSize:(CGSize)thumbnailImageSize {
+    // Crop the new shrunken thumbnail image to the fit the target frame size
+    CGRect thumbnailCropRect = CGRectMake((thumbnailImageSize.width - (kThumbnailWidth * kScale))/2, (thumbnailImageSize.height - (kThumbnailHeight * kScale))/2, kThumbnailWidth * kScale, kThumbnailHeight * kScale);
+    CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([original CGImage], thumbnailCropRect);
+    UIImage* thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
+    return thumbnailImage;
+}
+
 #pragma mark - Static Initializers
 + (UICameraActionSheet*)createCameraActionSheet {
     UICameraActionSheet* retVal = [[UICameraActionSheet alloc]initWithTitle:nil delegate:nil cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Take Photo" otherButtonTitles:@"Choose Existing", nil];
