@@ -117,3 +117,4 @@ extern NSString* const TYPE;
 extern NSString* const RELATIVETO;
 extern NSString* const NUMBEROFPOINTSLW;
 extern NSString* const JUSTIFICATION;
+extern NSString* const ACHIEVEMENTTHRESHOLD;

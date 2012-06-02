@@ -182,6 +182,7 @@
         <relationship name="resource" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="resource" inverseName="typeinstancedata" inverseEntity="resource" indexed="YES"/>
     </entity>
     <entity name="user" representedClassName="User" parentEntity="resource">
+        <attribute name="achievementthreshold" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="datebecameeditor" optional="YES" attributeType="Double" defaultValueString="0"/>
         <attribute name="displayname" optional="YES" attributeType="String"/>
         <attribute name="email" optional="YES" attributeType="String"/>
@@ -212,6 +213,7 @@
         <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="achievement" positionX="-378" positionY="-99" width="128" height="135"/>
         <element name="applicationsettings" positionX="18" positionY="810" width="128" height="420"/>
         <element name="attributechange" positionX="-207" positionY="1017" width="128" height="195"/>
         <element name="AttributeInstanceData" positionX="-216" positionY="-141" width="128" height="150"/>
@@ -221,15 +223,14 @@
         <element name="feed" positionX="367" positionY="576" width="128" height="180"/>
         <element name="follow" positionX="-216" positionY="-342" width="128" height="135"/>
         <element name="leaderboard" positionX="-198" positionY="891" width="128" height="105"/>
+        <element name="objectchange" positionX="-389" positionY="1017" width="128" height="105"/>
         <element name="page" positionX="259" positionY="-306" width="173" height="300"/>
         <element name="photo" positionX="-216" positionY="72" width="128" height="240"/>
         <element name="poll" positionX="-11" positionY="-180" width="128" height="135"/>
         <element name="request" positionX="340" positionY="90" width="128" height="165"/>
         <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
         <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
-        <element name="user" positionX="241" positionY="990" width="128" height="375"/>
+        <element name="user" positionX="241" positionY="990" width="128" height="390"/>
         <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
-        <element name="objectchange" positionX="-389" positionY="1017" width="128" height="105"/>
-        <element name="achievement" positionX="-378" positionY="-99" width="128" height="135"/>
     </elements>
 </model>
