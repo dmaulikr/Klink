@@ -265,6 +265,8 @@
 		C533FB981546E7A500552DAA /* LeaderboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533FB961546E7A500552DAA /* LeaderboardViewController.xib */; };
 		C533FB9B1546EF4D00552DAA /* UILeaderboardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */; };
 		C533FB9E1546EF6300552DAA /* UILeaderboardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */; };
+		C542EA4E15770B4100FCBC92 /* RequestSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C542EA4C15770B4100FCBC92 /* RequestSummaryViewController.m */; };
+		C542EA4F15770B4100FCBC92 /* RequestSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C542EA4D15770B4100FCBC92 /* RequestSummaryViewController.xib */; };
 		C54C3C201536426C005D5475 /* AttributeChange.m in Sources */ = {isa = PBXBuildFile; fileRef = C54C3C1F1536426C005D5475 /* AttributeChange.m */; };
 		C554DEEF144CA93C00CD6E85 /* GetAuthenticatorResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEEE144CA93C00CD6E85 /* GetAuthenticatorResponse.m */; };
 		C554DEF4144CABE000CD6E85 /* CreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = C554DEF1144CABDF00CD6E85 /* CreateResponse.m */; };
@@ -412,10 +414,15 @@
 		C5DB5A58144FAF3300D6D6AE /* IDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A56144FAF3300D6D6AE /* IDGenerator.m */; };
 		C5DB5A5C14520DB800D6D6AE /* CloudEnumeratorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A5B14520DB800D6D6AE /* CloudEnumeratorFactory.m */; };
 		C5DB5A5F14520DF300D6D6AE /* CloudEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A5E14520DF300D6D6AE /* CloudEnumerator.m */; };
+		C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E1F0CC15791283004310A0 /* ScoreJustification.m */; };
 		C5E425901487017B00BB1264 /* SocialSharingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E4258F1487017B00BB1264 /* SocialSharingManager.m */; };
 		C5E42594148705E300BB1264 /* SharingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E42593148705E300BB1264 /* SharingOptions.m */; };
 		C5ED8AA81458ACB7001AFCA8 /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AA71458ACB7001AFCA8 /* Page.m */; };
 		C5ED8AAC1458ADE2001AFCA8 /* Feed.m in Sources */ = {isa = PBXBuildFile; fileRef = C5ED8AAB1458ADE2001AFCA8 /* Feed.m */; };
+		C5EF37041577A787003C2B01 /* UIScoreChangeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5EF37031577A787003C2B01 /* UIScoreChangeView.xib */; };
+		C5EF37081577A7A3003C2B01 /* UIScoreChangeView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EF37071577A7A3003C2B01 /* UIScoreChangeView.m */; };
+		C5EF370B1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EF370A1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m */; };
+		C5EF370D1577B5D7003C2B01 /* UIScoreChangeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5EF370C1577B5D6003C2B01 /* UIScoreChangeTableViewCell.xib */; };
 		C5F4630D1444BCA400170835 /* OpCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F4630C1444BCA400170835 /* OpCodes.m */; };
 		C5FB5C07153C6EC20032C505 /* UIRequestSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5FB5C06153C6EC20032C505 /* UIRequestSummaryView.xib */; };
 		C5FB5C0B153C6F6C0032C505 /* UIRequestSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5FB5C0A153C6F6C0032C505 /* UIRequestSummaryView.m */; };
@@ -729,6 +736,9 @@
 		C533FB9A1546EF4D00552DAA /* UILeaderboardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UILeaderboardTableViewCell.xib; sourceTree = "<group>"; };
 		C533FB9C1546EF6300552DAA /* UILeaderboardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILeaderboardTableViewCell.h; sourceTree = "<group>"; };
 		C533FB9D1546EF6300552DAA /* UILeaderboardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILeaderboardTableViewCell.m; sourceTree = "<group>"; };
+		C542EA4B15770B4100FCBC92 /* RequestSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestSummaryViewController.h; sourceTree = "<group>"; };
+		C542EA4C15770B4100FCBC92 /* RequestSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestSummaryViewController.m; sourceTree = "<group>"; };
+		C542EA4D15770B4100FCBC92 /* RequestSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestSummaryViewController.xib; sourceTree = "<group>"; };
 		C54C3C1E1536426C005D5475 /* AttributeChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeChange.h; sourceTree = "<group>"; };
 		C54C3C1F1536426C005D5475 /* AttributeChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeChange.m; sourceTree = "<group>"; };
 		C554DEE9144C941900CD6E85 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
@@ -1025,6 +1035,8 @@
 		C5DB5A5B14520DB800D6D6AE /* CloudEnumeratorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumeratorFactory.m; sourceTree = "<group>"; };
 		C5DB5A5D14520DF300D6D6AE /* CloudEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloudEnumerator.h; sourceTree = "<group>"; };
 		C5DB5A5E14520DF300D6D6AE /* CloudEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloudEnumerator.m; sourceTree = "<group>"; };
+		C5E1F0CB15791283004310A0 /* ScoreJustification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreJustification.h; sourceTree = "<group>"; };
+		C5E1F0CC15791283004310A0 /* ScoreJustification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreJustification.m; sourceTree = "<group>"; };
 		C5E4258E1487017B00BB1264 /* SocialSharingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialSharingManager.h; sourceTree = "<group>"; };
 		C5E4258F1487017B00BB1264 /* SocialSharingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialSharingManager.m; sourceTree = "<group>"; };
 		C5E42592148705E300BB1264 /* SharingOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingOptions.h; sourceTree = "<group>"; };
@@ -1033,6 +1045,12 @@
 		C5ED8AA71458ACB7001AFCA8 /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		C5ED8AAA1458ADE2001AFCA8 /* Feed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Feed.h; sourceTree = "<group>"; };
 		C5ED8AAB1458ADE2001AFCA8 /* Feed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Feed.m; sourceTree = "<group>"; };
+		C5EF37031577A787003C2B01 /* UIScoreChangeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIScoreChangeView.xib; sourceTree = "<group>"; };
+		C5EF37061577A7A3003C2B01 /* UIScoreChangeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScoreChangeView.h; sourceTree = "<group>"; };
+		C5EF37071577A7A3003C2B01 /* UIScoreChangeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScoreChangeView.m; sourceTree = "<group>"; };
+		C5EF37091577B5BD003C2B01 /* UIScoreChangeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScoreChangeTableViewCell.h; sourceTree = "<group>"; };
+		C5EF370A1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScoreChangeTableViewCell.m; sourceTree = "<group>"; };
+		C5EF370C1577B5D6003C2B01 /* UIScoreChangeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIScoreChangeTableViewCell.xib; sourceTree = "<group>"; };
 		C5F3A569149EC00E0045EFF6 /* UIRequestTrackingProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRequestTrackingProgressView.h; sourceTree = "<group>"; };
 		C5F3A56A149EC00E0045EFF6 /* UIRequestTrackingProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIRequestTrackingProgressView.m; sourceTree = "<group>"; };
 		C5F3AE6B1485B3FA00877C5B /* PollState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollState.h; sourceTree = "<group>"; };
@@ -1705,6 +1723,8 @@
 				C54C3C1F1536426C005D5475 /* AttributeChange.m */,
 				C5B026F515541FF8004019E1 /* ObjectChange.h */,
 				C5B026F615541FF8004019E1 /* ObjectChange.m */,
+				C5E1F0CB15791283004310A0 /* ScoreJustification.h */,
+				C5E1F0CC15791283004310A0 /* ScoreJustification.m */,
 			);
 			name = Transport;
 			sourceTree = "<group>";
@@ -1833,6 +1853,9 @@
 				C533FB941546E7A500552DAA /* LeaderboardViewController.h */,
 				C533FB951546E7A500552DAA /* LeaderboardViewController.m */,
 				C533FB961546E7A500552DAA /* LeaderboardViewController.xib */,
+				C542EA4B15770B4100FCBC92 /* RequestSummaryViewController.h */,
+				C542EA4C15770B4100FCBC92 /* RequestSummaryViewController.m */,
+				C542EA4D15770B4100FCBC92 /* RequestSummaryViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -1911,6 +1934,12 @@
 				52EFF38315673C0000962F3A /* UIPointsProgressBar.h */,
 				52EFF38415673C0000962F3A /* UIPointsProgressBar.m */,
 				52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */,
+				C5EF37031577A787003C2B01 /* UIScoreChangeView.xib */,
+				C5EF37061577A7A3003C2B01 /* UIScoreChangeView.h */,
+				C5EF37071577A7A3003C2B01 /* UIScoreChangeView.m */,
+				C5EF37091577B5BD003C2B01 /* UIScoreChangeTableViewCell.h */,
+				C5EF370A1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m */,
+				C5EF370C1577B5D6003C2B01 /* UIScoreChangeTableViewCell.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2428,6 +2457,9 @@
 				520AF5B4154F242F00A82555 /* icon-twitter-t-white.png in Resources */,
 				520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */,
 				52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */,
+				C542EA4F15770B4100FCBC92 /* RequestSummaryViewController.xib in Resources */,
+				C5EF37041577A787003C2B01 /* UIScoreChangeView.xib in Resources */,
+				C5EF370D1577B5D7003C2B01 /* UIScoreChangeTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2619,6 +2651,10 @@
 				C5B026F715541FF8004019E1 /* ObjectChange.m in Sources */,
 				C5B026FB155423CD004019E1 /* Achievement.m in Sources */,
 				52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */,
+				C542EA4E15770B4100FCBC92 /* RequestSummaryViewController.m in Sources */,
+				C5EF37081577A7A3003C2B01 /* UIScoreChangeView.m in Sources */,
+				C5EF370B1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m in Sources */,
+				C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

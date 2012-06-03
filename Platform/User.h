@@ -34,6 +34,7 @@
 @property (nonatomic,retain) NSNumber* numberoffollowers;
 @property (nonatomic,retain) NSNumber* numberofpoints;
 @property (nonatomic,retain) NSNumber* numberofpointslw;
+@property (nonatomic,retain) NSNumber* achievementthreshold;
 
 
 + (int) unopenedNotificationsFor:(NSNumber*)objectid;

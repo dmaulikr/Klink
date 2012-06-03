@@ -35,6 +35,7 @@
 @dynamic numberfollowing;
 @dynamic numberofpoints;
 @dynamic numberofpointslw;
+@dynamic achievementthreshold;
 
 - (id) initFromJSONDictionary:(NSDictionary *)jsonDictionary {
     ResourceContext* resourceContext = [ResourceContext instance];

@@ -61,6 +61,7 @@
     NSNumber*       m_newPageObjectID;
     NSNumber*       m_newCaptionObjectID;
     NSNumber*       m_newPhotoObjectID;
+    BOOL            m_isDone;
 }
 
 @property (nonatomic, assign) id<ContributeViewControllerDelegate> delegate;
@@ -107,6 +108,7 @@
 @property (nonatomic, retain) NSNumber*                 nPageObjectID;
 @property (nonatomic, retain) NSNumber*                 nPhotoObjectID;
 @property (nonatomic, retain) NSNumber*                 nCaptionObjectID;
+@property                     BOOL                      isDone;
 
 - (void)registerForKeyboardNotifications;
 - (IBAction)backgroundClick:(id)sender;

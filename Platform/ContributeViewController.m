@@ -26,7 +26,7 @@
 #import "UIImageView+UIImageViewCategory.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
-
+#import "RequestSummaryViewController.h"
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
 #define kPHOTOFRAMETHICKNESS    30
@@ -71,7 +71,7 @@
 @synthesize nPageObjectID     = m_newPageObjectID;
 @synthesize nPhotoObjectID    = m_newPhotoObjectID;
 @synthesize nCaptionObjectID  = m_newCaptionObjectID;
-
+@synthesize isDone                      = m_isDone;
 
 #pragma mark - Deadline Date Timers
 - (void) updateDeadlineDate:(NSTimer *)timer {
@@ -134,7 +134,7 @@
         
         NSLock* lock = [[NSLock alloc]init];
         self.oidArrayLock = lock;
-        
+                self.isDone = NO;
         [lock release];
     }
     return self;
@@ -541,6 +541,12 @@
     if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC]==NO) {
         [userDefaults setBool:YES forKey:setting_HASVIEWEDCONTRIBUTEVC];
         [userDefaults synchronize];
+    }
+    
+    //we check to see if the view controller has been marked 'done', which
+    //means it is now only being shown as a result of the request summary civew controller dismissing
+    if (self.isDone == YES) {
+        [self dismissModalViewControllerAnimated:YES];
     }
 }
 
@@ -1230,7 +1236,20 @@
         self.nCaptionObjectID     = nil;
         self.nPhotoObjectID       = nil;
         self.nPageObjectID        = nil;
-     [self dismissModalViewControllerAnimated:YES];
+        self.isDone               = YES;
+        //instead of closing, we want to launch the RequestSummaryViewController
+        RequestSummaryViewController* rvc = [RequestSummaryViewController createForRequests:progressView.requests];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:rvc];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+
+        
+        
+     
+        //[self dismissModalViewControllerAnimated:YES];
     }
     else {
         //otherwise we keep the current view open

@@ -109,4 +109,8 @@ NSString* const POINTS                  =@"points";
 NSString* const TYPE                    =@"type";
 NSString* const RELATIVETO              =@"relativeto";
 NSString* const NUMBEROFPOINTSLW        =@"numberofpointslw";
+NSString* const JUSTIFICATION           =@"justification";
+NSString* const ACHIEVEMENTTHRESHOLD    =@"achievementthreshold";
+
+
 

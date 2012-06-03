@@ -11,6 +11,8 @@
 #import "Types.h"
 #import "Macros.h"
 #import "NSStringGUIDCategory.h"
+#import "ScoreJustification.h"
+#import "JSONKit.h"
 
 @implementation AttributeChange
 @dynamic targetobjectid;
@@ -34,8 +36,19 @@
     
     //NSMutableArray* retVal = [[NSMutableArray alloc]init];
     NSArray* justificationArray = [self valueForKey:@"justifications"];
+    NSMutableArray* retVal = [[NSMutableArray alloc]init];
     
-    __scorejustifications = justificationArray;
+    //now let us parse the json in each element
+    for (NSString* justificationJSON in justificationArray)
+    {
+        NSDictionary* jsonDictionary = [justificationJSON objectFromJSONString];
+        ScoreJustification* sj = [[ScoreJustification alloc]initFromJSONDictionary:jsonDictionary];
+        [retVal addObject:sj];
+        [sj release];
+        
+    }
+    
+    __scorejustifications = retVal;
     return __scorejustifications;
 }
 //Extracts values from a apassed in JSON instance and populates attributes
