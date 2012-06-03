@@ -192,6 +192,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     CGRect thumbnailCropRect = CGRectMake((thumbnailImageSize.width - (kThumbnailWidth * kScale))/2, (thumbnailImageSize.height - (kThumbnailHeight * kScale))/2, kThumbnailWidth * kScale, kThumbnailHeight * kScale);
     CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([original CGImage], thumbnailCropRect);
     UIImage* thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
+    CGImageRelease(croppedThumbnailImage);
     return thumbnailImage;
 }
 

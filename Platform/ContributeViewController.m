@@ -227,6 +227,111 @@
     self.nCaptionObjectID = nil;
     self.nPhotoObjectID = nil;
     self.nPageObjectID = nil;
+    
+    
+//    ResourceContext* resourceContext = [ResourceContext instance];
+//    
+//    // Set up the view for the appropriate configuration type
+//    if (self.configurationType == PAGE) {
+//        // New Draft
+//        //self.navigationItem.title = @"New Draft";
+//        [self setNavigationBarTitle:@"New Draft"];
+//        self.lbl_draftTitle.hidden = YES;
+//        self.tf_newDraftTitle.hidden = NO;
+//        self.tf_newDraftTitle.enabled = YES;
+//        self.lbl_titleRequired.hidden = NO;
+//        
+//        // Photo is optional because user is creating a new draft
+//        self.btn_cameraButton.hidden = NO;
+//        self.btn_cameraButton.enabled = YES;
+//        self.lbl_photoOptional.hidden = NO;
+//        self.lbl_photoRequired.hidden = YES;
+//        
+//        // Caption is optional because user is creating a new draft
+//        self.lbl_captionOptional.hidden = NO;
+//        self.lbl_captionRequired.hidden = YES;
+//        
+//        self.tf_newDraftTitle.text = self.draftTitle;
+//    }
+//    else if (self.configurationType == PHOTO) {
+//        // New Photo
+//        //self.navigationItem.title = @"New Photo";
+//        [self setNavigationBarTitle:@"New Photo"];
+//        self.btn_cameraButton.hidden = NO;
+//        self.btn_cameraButton.enabled = YES;
+//        self.lbl_photoOptional.hidden = YES;
+//        self.lbl_photoRequired.hidden = NO;
+//        
+//        // Show existing draft title since user is adding a photo
+//        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+//        self.draftTitle = currentPage.displayname;
+//        self.lbl_draftTitle.text = self.draftTitle;
+//        self.lbl_draftTitle.hidden = NO;
+//        self.tf_newDraftTitle.hidden = YES;
+//        self.tf_newDraftTitle.enabled = NO;
+//        self.lbl_titleRequired.hidden = YES;
+//        
+//        // Caption is optional because user is adding a new photo
+//        self.lbl_captionOptional.hidden = NO;
+//        self.lbl_captionRequired.hidden = YES;
+//        
+//        if (!self.img_photo) {
+//            // ContributeViewController was just lanuched from user pressing the camera button from the draft view, immidiately launch cameraActionSheet
+//            [self onCameraButtonPressed:nil];
+//        }
+//    }
+//    else if (self.configurationType == CAPTION) {
+//        // New Caption
+//        //self.navigationItem.title = @"New Caption";
+//        [self setNavigationBarTitle:@"New Caption"];
+//        self.lbl_captionOptional.hidden = YES;
+//        self.lbl_captionRequired.hidden = NO;
+//        
+//        // Show existing draft title since user is adding a caption
+//        Page* currentPage = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+//        self.draftTitle = currentPage.displayname;
+//        self.lbl_draftTitle.text = self.draftTitle;
+//        self.lbl_draftTitle.hidden = NO;
+//        self.tf_newDraftTitle.hidden = YES;
+//        self.tf_newDraftTitle.enabled = NO;
+//        self.lbl_titleRequired.hidden = YES;
+//        
+//        // Show existing photo but disabled cameraButton since user is adding a caption
+//        Photo* currentPhoto = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
+//        
+//        ImageManager* imageManager = [ImageManager instance];
+//        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:currentPhoto.objectid forKey:kPHOTOID];
+//        
+//        if (currentPhoto.imageurl != nil && ![currentPhoto.imageurl isEqualToString:@""]) {
+//            Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
+//            callback.fireOnMainThread = YES;
+//            UIImage* image = [imageManager downloadImage:currentPhoto.imageurl withUserInfo:nil atCallback:callback];
+//            [callback release];
+//            if (image != nil) {
+//                self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
+//                self.img_photo = image;
+//                self.iv_photo.image = self.img_photo;
+//                
+//                [self displayPhotoFrameOnImage:image];
+//            }
+//        }
+//        
+//        //self.iv_photo.image = self.img_photo;
+//        self.btn_cameraButton.hidden = YES;
+//        self.btn_cameraButton.enabled = NO;
+//        self.lbl_photoOptional.hidden = YES;
+//        self.lbl_photoRequired.hidden = YES;
+//        
+//        [self.view setNeedsDisplay];
+//        
+//        // show keyboard ready for text entry
+//        [self.tv_caption becomeFirstResponder];
+//        
+//    }
+//    else {
+//        // error state - Configuration type not specified
+//        //LOG_CONTRIBUTEVIEWCONTROLLER(1,@"%@Could not determine configuration type",activityName);
+//    }
 
 }
 
@@ -732,7 +837,7 @@
     self.img_photo = image;
     self.img_thumbnail = thumbnailImage;
     //self.iv_photo.image = image;
-    [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+    [self.iv_photo performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
     
     [self displayPhotoFrameOnImage:image];
     

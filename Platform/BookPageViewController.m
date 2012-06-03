@@ -97,7 +97,7 @@
 	// Control hiding timer
 	// Will cancel existing timer but only begin hiding if
 	// they are visible
-	[self hideControlsAfterDelay:5];
+//	[self hideControlsAfterDelay:5];
 	
 }
 
@@ -329,7 +329,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self hideControlsAfterDelay:2.5];
+//    [self hideControlsAfterDelay:2.5];
     
 }
 

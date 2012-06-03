@@ -85,7 +85,7 @@
 	// Control hiding timer
 	// Will cancel existing timer but only begin hiding if
 	// they are visible
-	[self hideControlsAfterDelay:5];
+//	[self hideControlsAfterDelay:5];
 	
 }
 
@@ -284,7 +284,7 @@
         [self bringBookPageButtonsToFront];
         
         [self showControls];
-        [self hideControlsAfterDelay:2.5];
+//        [self hideControlsAfterDelay:2.5];
         
         if (publishedPageCount != NSNotFound && index != NSNotFound) {
             
@@ -417,7 +417,7 @@
         [self sendLastPageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
-        [self hideControlsAfterDelay:2.5];
+//        [self hideControlsAfterDelay:2.5];
     }
     
     [self.leavesView setCurrentPageIndex:aCurrentPageIndex];

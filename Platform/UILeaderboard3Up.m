@@ -52,6 +52,8 @@
             NSLog(@"Error! Could not load UILeaderboard3Up file.\n");
         }
         
+        self.v_userHighlight.layer.cornerRadius = 5;
+        
         [self addSubview:self.view];
         
     }
