@@ -177,6 +177,9 @@
 
 - (void) renderProgressBarForUserWithID:(NSNumber *)userID
 {
+    self.lbl_numNextAchievement.text = @" ";
+    self.lbl_numPoints.text = @" ";
+    
     ResourceContext* resourceContext = [ResourceContext instance];
     self.userID = userID;
     self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
