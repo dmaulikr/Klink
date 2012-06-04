@@ -48,6 +48,7 @@
 @property (atomic, retain) User* user;
 @property (atomic, retain) NSNumber* userID;
 @property (nonatomic,retain) Request* request;
+
 @property (nonatomic, retain) IBOutlet UIPointsProgressBar* v_pointsProgressBar;
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
@@ -61,10 +62,10 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_achievementImage;
 @property (nonatomic, retain) IBOutlet UILabel*     lbl_achievementTitle;
 
-@property (nonatomic,retain) IBOutlet UIView* v_scoreChangeContainer;
-@property (nonatomic,retain) IBOutlet UIView* v_achievementsContainer;
-@property (nonatomic,retain) IBOutlet UIView* v_newAchievementContainer;
-@property (nonatomic,retain) IBOutlet UIView* v_noNewAchievementContainer;
+@property (nonatomic, retain) IBOutlet UIView* v_scoreChangeContainer;
+@property (nonatomic, retain) IBOutlet UIView* v_achievementsContainer;
+@property (nonatomic, retain) IBOutlet UIView* v_newAchievementContainer;
+@property (nonatomic, retain) IBOutlet UIView* v_noNewAchievementContainer;
 
 @property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
 @property (nonatomic, retain) Leaderboard*          friendsLeaderboard;

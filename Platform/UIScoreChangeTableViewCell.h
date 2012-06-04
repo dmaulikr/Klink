@@ -22,6 +22,5 @@
 @property (nonatomic,retain) IBOutlet UILabel* lbl_description;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_score;
 
-
 - (void) renderScoreChange:(ScoreJustification*)scoreJustification;
 @end

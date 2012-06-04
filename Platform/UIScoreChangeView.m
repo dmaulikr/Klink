@@ -21,10 +21,11 @@
 @synthesize tbl_scoreChanges                = m_tbl_scoreChanges;
 @synthesize lbl_topMessage                  = m_lbl_topMessage;
 @synthesize lbl_totalScoreChange            = m_lbl_totalScoreChange;
-@synthesize v_totalScoreChangeBackground    = m_v_totalScoreChangeBackground;
-@synthesize completedRequest               = m_completedRequest;
-@synthesize scoreChangeInRequest          = m_scoreChangeInRequest;
-@synthesize scoreJustifications              = m_scoreJustifications;
+@synthesize iv_coin                         = iv_coin;
+
+@synthesize completedRequest                = m_completedRequest;
+@synthesize scoreChangeInRequest            = m_scoreChangeInRequest;
+@synthesize scoreJustifications             = m_scoreJustifications;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -41,6 +42,17 @@
         [self addSubview:self.view];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    self.view = nil;
+    self.tbl_scoreChanges = nil;
+    self.lbl_topMessage = nil;
+    self.lbl_totalScoreChange = nil;
+    self.iv_coin = nil;
+    
+    [super dealloc];
 }
 
 
@@ -81,15 +93,21 @@
     if (totalPointsEarned == 0) {
         //no points earned
         self.lbl_topMessage.text = @"Good post, but you didn't earn any coins.";
-        self.v_totalScoreChangeBackground.hidden = YES;
+        self.iv_coin.hidden = YES;
     }
     else {
-        self.lbl_topMessage.text = @"Nice work! You earned some coins:";
-        self.v_totalScoreChangeBackground.hidden = NO;
+        self.lbl_topMessage.text = @"Nice work!\nYou earned some coins:";
+        self.iv_coin.hidden = NO;
     }
     
     //now lets set the total score label
-    self.lbl_totalScoreChange.text = [NSString stringWithFormat:@"+%d",totalPointsEarned];
+    NSString* scoreChange = [NSString stringWithFormat:@"+%d", totalPointsEarned];
+    self.lbl_totalScoreChange.text = scoreChange;
+    
+    // Move the coin icon next to the score label
+    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20];
+    CGSize size = [scoreChange sizeWithFont:font constrainedToSize:CGSizeMake(68, 20) lineBreakMode:UILineBreakModeTailTruncation];
+    self.iv_coin.center = CGPointMake(285 - size.width, self.iv_coin.center.y);
        
     [self.tbl_scoreChanges reloadData];
 }
@@ -110,9 +128,10 @@
     ScoreJustification* sj = [self.scoreJustifications objectAtIndex:[indexPath row]];
     NSString* text = sj.justification;
     UIFont* font = [UIFont fontWithName:@"American Typewriter" size:13];
-    CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(228,10000)];
+    CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(228,10000) lineBreakMode:UILineBreakModeWordWrap];
     return size.height;
 }
+
 #pragma mark - UITableDataSourceDelegate
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -145,4 +164,5 @@
         return nil;
     }
 }
+
 @end

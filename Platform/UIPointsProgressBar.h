@@ -18,6 +18,8 @@
     UILabel*    m_lbl_editorMinimumLabel;
     UILabel*    m_lbl_userBestLabel;
     UILabel*    m_lbl_numPoints;
+    UILabel*    m_lbl_numNextAchievement;
+    UILabel*    m_lbl_nextAchievement;
     
     UIImageView* m_iv_progressBarContainer;
     UIImageView* m_iv_progressPoints;
@@ -34,6 +36,8 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_editorMinimumLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_userBestLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_numPoints;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_numNextAchievement;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_nextAchievement;
 
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPoints;
