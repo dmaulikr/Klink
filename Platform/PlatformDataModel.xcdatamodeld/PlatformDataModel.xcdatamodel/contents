@@ -201,7 +201,9 @@
         <attribute name="numberofphotoslw" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="numberofpoints" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="numberofpointslw" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberofpointssw" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="numberofvotes" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
+        <attribute name="prevachievementthreshold" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sharinglevel" optional="YES" attributeType="Boolean" defaultValueString="0"/>
         <attribute name="thumbnailurl" optional="YES" attributeType="String"/>
         <attribute name="username" optional="YES" attributeType="String"/>
@@ -230,7 +232,7 @@
         <element name="request" positionX="340" positionY="90" width="128" height="165"/>
         <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
         <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
-        <element name="user" positionX="241" positionY="990" width="128" height="390"/>
+        <element name="user" positionX="153" positionY="810" width="128" height="420"/>
         <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
     </elements>
 </model>
