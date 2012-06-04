@@ -43,6 +43,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
+//        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
 
     }
     return self;
@@ -62,6 +64,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
     
     //now lets add a done button 
     UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(onDoneButtonPressed:)];
@@ -94,6 +98,23 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.v_pointsProgressBar = nil;
+    self.v_leaderboardContainer = nil;
+    self.v_leaderboard3Up = nil;
+    self.v_scoreChangeView = nil;
+    self.btn_leaderboard3UpButton = nil;
+    self.iv_progressBarContainer = nil;
+    self.iv_progressDrafts = nil;
+    self.iv_progressPhotos = nil;
+    self.iv_progressCaptions = nil;
+    self.iv_progressPoints = nil;
+    self.iv_achievementImage = nil;
+    self.lbl_achievementTitle = nil;
+    self.v_scoreChangeContainer = nil;
+    self.v_achievementsContainer = nil;
+    self.v_newAchievementContainer = nil;
+    self.v_noNewAchievementContainer = nil;
 }
 
 - (void) enumerateLeaderboards:(NSNumber*)userid 
@@ -154,7 +175,7 @@
 }
 
 //this method will analyze the request and display any achievement related information to the user
-- (void)    renderAchievements {
+- (void) renderAchievements {
     
     //we first see if the user has gained any achievements at all
     
@@ -214,6 +235,12 @@
         self.v_noNewAchievementContainer.hidden = NO;
         
         //let us render the progress bar
+        CGRect frame = self.v_pointsProgressBar.frame;
+        UIPointsProgressBar* progressBar = [[UIPointsProgressBar alloc] initWithFrame:frame];
+        [progressBar renderProgressBarForUserWithID:self.userID];
+        self.v_pointsProgressBar = progressBar;
+        [self.v_noNewAchievementContainer addSubview:self.v_pointsProgressBar];
+        [progressBar release];
     }
     
 }
@@ -222,12 +249,11 @@
 {
     
     [super viewWillAppear:animated];
-    
 
-    
-    CGSize labelSize = [@"Success" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    // Set title
+    CGSize labelSize = [@"Success!" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
-    titleLabel.text = @"Success";
+    titleLabel.text = @"Success!";
     titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
     titleLabel.textAlignment = UITextAlignmentCenter;
     titleLabel.textColor = [UIColor whiteColor];

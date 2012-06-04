@@ -18,7 +18,9 @@
 
 @synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
 @synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
-@synthesize lbl_numPoints     = m_lbl_numPoints;
+@synthesize lbl_numPoints           = m_lbl_numPoints;
+@synthesize lbl_numNextAchievement     = m_lbl_numNextAchievement;
+@synthesize lbl_nextAchievement     = m_lbl_nextAchievement;
 
 @synthesize iv_progressBarContainer = m_iv_progressBarContainer;
 @synthesize iv_progressPoints       = m_iv_progressPoints;
@@ -27,7 +29,7 @@
 
 //#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.2
 //#define kPROGRESSBARCONTAINERBUFFER_USERBEST 1.1
-#define kPROGRESSBARCONTAINERXORIGINOFFSET 20.0
+#define kPROGRESSBARCONTAINERXORIGINOFFSET 21.0
 #define kPROGRESSBARCONTAINERINSETRIGHT 4.0
 
 /*#define kPROGRESSBARCONTAINERBUFFER_EDITORMINIMUM 1.1
@@ -70,6 +72,8 @@
     self.lbl_editorMinimumLabel = nil;
     self.lbl_userBestLabel = nil;
     self.lbl_numPoints = nil;
+    self.lbl_numNextAchievement = nil;
+    self.lbl_nextAchievement = nil;
     
     self.iv_progressBarContainer = nil;
     self.iv_progressPoints = nil;
@@ -82,25 +86,28 @@
 
 - (void)drawProgressBar {
     
-    int pointsLast7Days = [self.user.numberofpoints intValue];
-    //int pointsLast7Days = 200;  // used for testing
+    int numCoinsTotal = [self.user.numberofpoints intValue];
+    int nextAchievment = [self.user.achievementthreshold intValue];
+    //int coinsEarned = 200;  // used for testing
     
     float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETPOINTSLABEL;
     float editorMinimumLineMidPoint = (float)self.iv_editorMinimumLine.frame.size.width / (float)2;
     float editorMinimumLabelMidPoint = (float)self.lbl_editorMinimumLabel.frame.size.width / (float)2;
-    float userBestLineMidPoint = (float)self.iv_userBestLine.frame.size.width / (float)2;
-    float userBestLabelMidPoint = (float)self.lbl_userBestLabel.frame.size.width / (float)2;
+    //float userBestLineMidPoint = (float)self.iv_userBestLine.frame.size.width / (float)2;
+    //float userBestLabelMidPoint = (float)self.lbl_userBestLabel.frame.size.width / (float)2;
     
     
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     int editorMinimum = [settings.editor_minimum intValue];
     
-    int userBest = [self.user.maxweeklyparticipation intValue];
+    //int userBest = [self.user.maxweeklyparticipation intValue];
     
     // determine which value will set the scale (max value) for the progress bar
-    float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)pointsLast7Days);
+    //float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)coinsEarned);
+    float progressBarMaxValue = (float)nextAchievment;
+    //float progressBarMaxValue = 2;  // used for testing
     
-    if (progressBarMaxValue == (float)userBest) {
+    /*if (progressBarMaxValue == (float)userBest) {
         // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container 
         progressBarMaxValue = (float)progressBarMaxValue * (float)kPROGRESSBARCONTAINERBUFFER_USERBEST;
     }
@@ -110,13 +117,13 @@
     }
     else {
         // extend the max value of the progress bar to leave an appropriate whitespace buffer in the container for the points label
-    }
+    }*/
     
     float scaleEditorMinimum = 0.0f;
-    float scaleUserBest = 0.0f;
+    //float scaleUserBest = 0.0f;
     if ((float)progressBarMaxValue != 0.0) {
         scaleEditorMinimum = (float)editorMinimum / (float)progressBarMaxValue;
-        scaleUserBest = (float)userBest / (float)progressBarMaxValue;
+        //scaleUserBest = (float)userBest / (float)progressBarMaxValue;
     }
     
     // move the editor threshold line
@@ -128,7 +135,7 @@
     float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
     self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
     
-    // move the user best threshold line
+    /*// move the user best threshold line
     float userBestLineXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + (scaleUserBest * progressBarContainerWidth) - userBestLineMidPoint);
     self.iv_userBestLine.frame = CGRectMake(userBestLineXOrigin, self.iv_userBestLine.frame.origin.y, self.iv_userBestLine.frame.size.width, self.iv_userBestLine.frame.size.height);
     float userBestWidth = (float)self.iv_userBestLine.frame.origin.x + (float)userBestLineMidPoint - (float)kPROGRESSBARCONTAINERXORIGINOFFSET;
@@ -141,13 +148,13 @@
     else {
         userBestLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + userBestWidth - userBestLabelMidPoint);
     }
-    self.lbl_userBestLabel.frame = CGRectMake(userBestLabelXOrigin, self.lbl_userBestLabel.frame.origin.y, self.lbl_userBestLabel.frame.size.width, self.lbl_userBestLabel.frame.size.height);
+    self.lbl_userBestLabel.frame = CGRectMake(userBestLabelXOrigin, self.lbl_userBestLabel.frame.origin.y, self.lbl_userBestLabel.frame.size.width, self.lbl_userBestLabel.frame.size.height);*/
     
     
-    // now draw the progress bar of the points count for the last 7 days
+    // now draw the progress bar of the total coins count
     float progressPoints = 0.0f;
     if ((float)progressBarMaxValue != 0.0) {
-        progressPoints = ((float)pointsLast7Days) / (float)progressBarMaxValue;
+        progressPoints = ((float)numCoinsTotal) / (float)progressBarMaxValue;
     }
     //progressPoints = (float)20 / (float)progressBarMaxValue;
     self.iv_progressPoints.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressPoints.frame.origin.y,(progressPoints * progressBarContainerWidth), self.iv_progressPoints.frame.size.height);
@@ -165,9 +172,17 @@
     self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
     
     self.lbl_numPoints.text = [self.user.numberofpoints stringValue];
-    //self.lbl_pointsLast7Days.text = @"100000";
+    //self.lbl_numPoints.text = @"100000";    // used for testing
     
-    self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
+    NSString* nextAchievement = [self.user.achievementthreshold stringValue];
+    self.lbl_numNextAchievement.text = nextAchievement;
+    
+    // Move the achievement description label next to the achievement number label
+    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:14];
+    CGSize size = [nextAchievement sizeWithFont:font constrainedToSize:CGSizeMake(55, 20) lineBreakMode:UILineBreakModeTailTruncation];
+    self.lbl_nextAchievement.center = CGPointMake(248 - size.width, self.lbl_nextAchievement.center.y);
+    
+    //self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     
     [self drawProgressBar];
 }

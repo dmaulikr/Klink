@@ -32,6 +32,15 @@
     return self;
 }
 
+- (void)dealloc
+{
+    self.tableCellView = nil;
+    self.lbl_score = nil;
+    self.lbl_description = nil;
+    
+    [super dealloc];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -63,7 +72,6 @@
     
     self.lbl_score.text = [NSString stringWithFormat:@"+%@",scoreJustification.points];
     self.lbl_description.text = text;
-    
 
 }
 
