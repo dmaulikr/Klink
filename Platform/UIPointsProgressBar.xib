@@ -65,7 +65,7 @@
 					</object>
 					<object class="IBUIImageView" id="359074059">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{20, 29}, {240, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView" ref="16262850"/>
@@ -163,7 +163,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{48, 2}, {80, 20}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="80137262"/>
+						<reference key="NSNextKeyView" ref="1040046311"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -187,12 +187,12 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUILabel" id="80137262">
+					<object class="IBUILabel" id="1040046311">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{141, 4}, {101, 19}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="665616965"/>
+						<reference key="NSNextKeyView" ref="695803576"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -217,7 +217,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUILabel" id="665616965">
+					<object class="IBUILabel" id="695803576">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{245, 3}, {55, 20}}</string>
@@ -328,7 +328,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lbl_numNextAchievement</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="665616965"/>
+						<reference key="destination" ref="695803576"/>
 					</object>
 					<int key="connectionID">29</int>
 				</object>
@@ -336,7 +336,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lbl_nextAchievement</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="80137262"/>
+						<reference key="destination" ref="1040046311"/>
 					</object>
 					<int key="connectionID">30</int>
 				</object>
@@ -361,8 +361,8 @@
 							<reference ref="412562357"/>
 							<reference ref="26673342"/>
 							<reference ref="40791805"/>
-							<reference ref="665616965"/>
-							<reference ref="80137262"/>
+							<reference ref="695803576"/>
+							<reference ref="1040046311"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -424,12 +424,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
-						<reference key="object" ref="80137262"/>
+						<reference key="object" ref="1040046311"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
-						<reference key="object" ref="665616965"/>
+						<reference key="object" ref="695803576"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Label - numNextAchievement</string>
 					</object>
