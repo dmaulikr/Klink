@@ -338,11 +338,11 @@
                 linkClickSelector:(SEL)selector 
 {
     // Reset tableviewcell properties
-    self.iv_separatorLine.frame = CGRectMake(26, 71, 267, 4);
-    self.iv_notificationTypeImage.frame = CGRectMake(77, 45, 25, 25);
-    self.lbl_notificationDate.frame = CGRectMake(107, 47, 135, 21);
-    self.v_coinChange.frame = CGRectMake(-2, 48, 62, 20);
     self.btn_notificationBadge.frame = CGRectMake(-2, 3, 38, 43);
+    self.v_coinChange.frame = CGRectMake(-2, 48, 62, 20);
+    self.iv_notificationTypeImage.frame = CGRectMake(66, 45, 25, 25);
+    self.lbl_notificationDate.frame = CGRectMake(96, 47, 135, 21);
+    self.iv_separatorLine.frame = CGRectMake(26, 71, 267, 4);
     
     self.lbl_notificationMessage.frame = CGRectMake(34, 6, 212, 19);
     
