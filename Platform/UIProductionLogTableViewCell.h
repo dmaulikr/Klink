@@ -49,6 +49,7 @@
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 - (void) renderPhoto;
+- (void) renderUnreadCaptions;
 
 + (NSString*) cellIdentifier;
 

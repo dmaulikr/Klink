@@ -461,7 +461,7 @@
 }
 
 #pragma mark - View lifecycle
-- (void)showThumbnailsOnVisibleCells {
+- (void)updateVisibleCells {
     NSArray* visibleCells = [self.tbl_productionTableView visibleCells];
     
     UIProductionLogTableViewCell* prodLogCell;
@@ -470,6 +470,7 @@
         prodLogCell = [visibleCells objectAtIndex:i];
         
         [prodLogCell renderPhoto];
+        [prodLogCell renderUnreadCaptions];
     }
 }
 
@@ -700,7 +701,7 @@
     // so we can show the thumbnails after each reload
     [self.tbl_productionTableView reloadData];
     
-    [self showThumbnailsOnVisibleCells];
+    [self updateVisibleCells];
 }
 
 /*
@@ -865,7 +866,7 @@
 }
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self showThumbnailsOnVisibleCells];
+    [self updateVisibleCells];
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
