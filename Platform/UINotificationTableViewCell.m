@@ -24,16 +24,19 @@
 #define kUSERREGEX                  @"\\{.*?\\}"
 
 @implementation UINotificationTableViewCell
-@synthesize notificationID = m_notificationID;
-@synthesize notificationTableViewCell = m_notificationTableViewCell;
-@synthesize resourceLinkButton = m_resourceLinkButton;
-@synthesize lbl_notificationMessage = m_lbl_notificationMessage;
-@synthesize lbl_notificationDate = m_lbl_notificationDate;
-@synthesize iv_notificationImage = m_iv_notificationImage;
-@synthesize iv_notificationTypeImage = m_iv_notificationTypeImage;
-@synthesize btn_notificationBadge = m_btn_notificationBadge;
-@synthesize selector = m_selector;
-@synthesize target = m_target;
+@synthesize notificationID              = m_notificationID;
+@synthesize notificationTableViewCell   = m_notificationTableViewCell;
+@synthesize resourceLinkButton          = m_resourceLinkButton;
+@synthesize lbl_notificationMessage     = m_lbl_notificationMessage;
+@synthesize lbl_notificationDate        = m_lbl_notificationDate;
+@synthesize iv_notificationImage        = m_iv_notificationImage;
+@synthesize iv_notificationTypeImage    = m_iv_notificationTypeImage;
+@synthesize btn_notificationBadge       = m_btn_notificationBadge;
+@synthesize iv_separatorLine            = m_iv_separatorLine;
+@synthesize v_coinChange                = m_v_coinChange;
+@synthesize lbl_numCoins                = m_lbl_numCoins;
+@synthesize selector                    = m_selector;
+@synthesize target                      = m_target;
 
 - (NSString*) getDateStringForNotification:(NSDate*)notificationDate {
     NSDate* now = [NSDate date];
@@ -54,7 +57,7 @@
 {	
     // If not dragging, send event to next responder
 
-        [self.nextResponder touchesEnded: touches withEvent:event]; 
+    [self.nextResponder touchesEnded: touches withEvent:event]; 
 
 }
 
@@ -82,11 +85,13 @@
     ResourceContext* resourceContext = [ResourceContext instance];
         
     Feed* notification = (Feed*)[resourceContext resourceWithType:FEED withID:self.notificationID];
-   
+    
+    float newMessageHeight = 0.0;
     
     if (notification != nil) {
         NSDate* dateSent = [DateTimeHelper parseWebServiceDateDouble:notification.datecreated];
         self.lbl_notificationDate.text = [self getDateStringForNotification:dateSent];
+        
         NSError* error = NULL;
         NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
         NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
@@ -176,7 +181,8 @@
                     indentSize = [indent sizeWithFont:font];
                 }
                 
-                CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
+                //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
+                CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
                 remainder = [NSString stringWithFormat:@"%@%@", indent, remainder];
                 CGSize remainderSize = [remainder sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
                  
@@ -184,21 +190,59 @@
                 
                 self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, remainderSize.width, remainderSize.height);
                 
+                newMessageHeight = newMessageHeight + remainderSize.height;
+                
             }
             
         }
         else {
             //no embedded user links found
+            
+            //NSString* tempString = @"This is a long string. It should wrap two lines. With this extra part, the string should now wrap at least 3 lines.";    //Used for testing
+            //[self.lbl_notificationMessage setText:tempString];
+            
             [self.lbl_notificationMessage setText:notification.message];
             
-            CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
+            //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);   //Old value before dynamic cell height
+            CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
             CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
+            //CGSize messageSize = [tempString sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];   //Used for testing
             
             self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, messageSize.width, messageSize.height);
-            
+                        
             [self.resourceLinkButton setEnabled:NO];
             [self.resourceLinkButton setHidden:YES];
+            
+            newMessageHeight = newMessageHeight + messageSize.height;
            
+        }
+        
+        if (newMessageHeight > 38.0) {
+            // Move the detail views down according to the new label height
+            float yOffset = self.lbl_notificationMessage.frame.origin.y + self.lbl_notificationMessage.frame.size.height;
+            
+            self.v_coinChange.frame = CGRectMake(self.v_coinChange.frame.origin.x,
+                                                 yOffset + 5,
+                                                 self.v_coinChange.frame.size.width,
+                                                 self.v_coinChange.frame.size.height);
+            
+            self.iv_notificationTypeImage.frame = CGRectMake(self.iv_notificationTypeImage.frame.origin.x,
+                                                             yOffset + 2,
+                                                             self.iv_notificationTypeImage.frame.size.width,
+                                                             self.iv_notificationTypeImage.frame.size.height);
+            
+            self.lbl_notificationDate.frame = CGRectMake(self.lbl_notificationDate.frame.origin.x,
+                                                         yOffset + 4,
+                                                         self.lbl_notificationDate.frame.size.width,
+                                                         self.lbl_notificationDate.frame.size.height);
+            
+            self.iv_separatorLine.frame = CGRectMake(self.iv_separatorLine.frame.origin.x,
+                                                     yOffset + 31,
+                                                     self.iv_separatorLine.frame.size.width,
+                                                     self.iv_separatorLine.frame.size.height);
+            
+            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.v_coinChange.frame.origin.y / 2);
+            
         }
        
         //need to check if the notification has been opened before
@@ -210,6 +254,19 @@
             //has been read, hide the unreaad badge
             [self.btn_notificationBadge setHidden:YES];
         }
+        
+        /*//Check if notification comes with coins to display
+        if ([notification.numCoins intValue] > 0) {
+            //there are coins to show
+            [self.v_coinChange setHidden:NO];
+            [self.lbl_numCoins.text = [notification.numCoins stringValue];
+        }
+        else {
+            //there are no coins to show, hide the ribbon
+            [self.v_coinChange setHidden:YES];
+            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.contentView.frame.size.height / 2);
+        }*/
+        
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE ||
             [notification.feedevent intValue] == kPHOTO_VOTE ||
@@ -281,11 +338,19 @@
                 linkClickSelector:(SEL)selector 
 {
     // Reset tableviewcell properties
+    self.iv_separatorLine.frame = CGRectMake(26, 71, 267, 4);
+    self.iv_notificationTypeImage.frame = CGRectMake(77, 45, 25, 25);
+    self.lbl_notificationDate.frame = CGRectMake(107, 47, 135, 21);
+    self.v_coinChange.frame = CGRectMake(-2, 48, 62, 20);
+    self.btn_notificationBadge.frame = CGRectMake(-2, 3, 38, 43);
+    
     self.lbl_notificationMessage.frame = CGRectMake(34, 6, 212, 19);
+    
     self.lbl_notificationDate.text = nil;
     self.target = target;
     self.selector = selector;
     self.notificationID = notificationID;
+    
     [self render];
 }
 
@@ -332,6 +397,8 @@
     self.iv_notificationImage = nil;
     self.iv_notificationTypeImage = nil;
     self.btn_notificationBadge = nil;
+    self.v_coinChange = nil;
+    self.lbl_numCoins = nil;
     
     [super dealloc];
 }

@@ -19,6 +19,10 @@
     UIImageView*    m_iv_notificationImage;
     UIImageView*    m_iv_notificationTypeImage;
     UIButton*       m_btn_notificationBadge;
+    UIImageView*    m_iv_separatorLine;
+    
+    UIView*         m_v_coinChange;
+    UILabel*        m_lbl_numCoins;
     
     id m_target;
     SEL m_selector;
@@ -33,6 +37,10 @@
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationImage;
 @property (nonatomic,retain) IBOutlet UIImageView*      iv_notificationTypeImage;
 @property (nonatomic,retain) IBOutlet UIButton*         btn_notificationBadge;
+@property (nonatomic,retain) IBOutlet UIImageView*      iv_separatorLine;
+
+@property (nonatomic,retain) IBOutlet UIView*           v_coinChange;
+@property (nonatomic,retain) IBOutlet UILabel*          lbl_numCoins;
 
 @property (nonatomic,retain) id                         target;
 @property                    SEL                        selector;

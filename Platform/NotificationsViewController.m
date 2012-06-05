@@ -22,6 +22,7 @@
 #import "WebViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
+#define kUSERREGEX @"\\{.*?\\}"
 
 @implementation NotificationsViewController
 @synthesize tbl_notificationsTableView = m_tbl_notificationsTableVIew;
@@ -538,17 +539,97 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
+    //return kNOTIFICATIONTABLEVIEWCELLHEIGHT;
     
-    /*// Dynamic height based on feed message size
-     Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
+    NSString* message = @"";
+    
+    // Dynamic height based on feed message size
+    int defaultTableViewCellHeight = kNOTIFICATIONTABLEVIEWCELLHEIGHT;
+    int textLabelTopMargin = 8;
+    int textLabelBottomMargin = 35;
+    
+    Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
      
-     UIFont* font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
+    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
+    
+    CGSize maximumSize;
+    if (notification.imageurl != nil &&
+        ![notification.imageurl isEqualToString:@""]) {
+        // there is an image with this notifiction
+        maximumSize = CGSizeMake(212, 1000);
+    }
+    else {
+        maximumSize = CGSizeMake(259, 1000);
+    }
+    
+    // Grab the message, we'll need to parse the JSON
+    if (notification != nil) {
+        NSError* error = NULL;
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
+        NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
+        
+        // Set up notification message
+        if (numberOfMatches > 0) {
+            //we have matches for embedded user links
+            
+            NSArray* matches = [regex matchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
+            NSMutableArray* newMessageArray = [NSMutableArray arrayWithCapacity:[matches count]];
+            
+            int startIndex = 0;
+            NSRange range;
+            NSString* indent = [NSString stringWithFormat:@" "];
+            CGSize indentSize = [indent sizeWithFont:font];
+            CGSize resourceLinkButtonSize = CGSizeMake(0, 0);
+            
+            for (NSTextCheckingResult *match in matches) {
+                range = [match range];
+                //need to grab the matched substring
+                NSString* jsonString = [notification.message substringWithRange:range];
+                //we grab the string token to the left of the substring
+                int leftStringEndIndex = range.location;
+                if (leftStringEndIndex > 0) 
+                {
+                    NSRange leftStringRange = NSMakeRange(startIndex, leftStringEndIndex);
+                    NSString* leftString = [notification.message substringWithRange:leftStringRange];
+                    [newMessageArray addObject:leftString];
+                    
+                }
+                startIndex = range.location + range.length;
+                //now we parse into a NSDictionary
+                NSDictionary* jsonDictionary = [jsonString objectFromJSONString];
+                //now we have a json dictionary
+                NSString* username = [jsonDictionary valueForKey:USERNAME];
+                
+                resourceLinkButtonSize = [username sizeWithFont:font];
+            }
+            
+            //we need to grab the rest of the string from the last range
+            if (startIndex < [notification.message length]) {
+                NSString* remainder = [notification.message substringFromIndex:startIndex];
+                
+                for (int i; indentSize.width < resourceLinkButtonSize.width; i++) {
+                    // add a space until the indent equals the size of the username resourceLinkButton
+                    indent = [NSString stringWithFormat:@"%@ ", indent];
+                    indentSize = [indent sizeWithFont:font];
+                }
+                
+                message = [NSString stringWithFormat:@"%@%@", indent, remainder];
+            }
+            
+        }
+        else {
+            //no embedded user links found
+            message = notification.message;
+            //message = @"This is a long string. It should wrap two lines. With this extra part, the string should now wrap at least 3 lines.";   // Used for testing
+            
+        }
+    }
+    
+    CGSize messageSize = [message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeTailTruncation];
+    
+    CGFloat height = MAX(messageSize.height + textLabelTopMargin + textLabelBottomMargin, defaultTableViewCellHeight);
      
-     CGSize maximumSize = CGSizeMake(219, 57);
-     CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeTailTruncation];
-     
-     return messageSize.height + 35;*/
+    return height;
 }
 
 - (NSIndexPath*)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
