@@ -25,4 +25,5 @@
 @property (nonatomic,retain) NSArray* feeddata;
 @property (nonatomic,retain) NSNumber* rendertype;
 @property (nonatomic,retain) NSString* html;
+@property (nonatomic,retain) NSNumber* points;
 @end
