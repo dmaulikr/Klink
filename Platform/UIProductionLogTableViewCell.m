@@ -104,15 +104,13 @@
     [super dealloc];
 }
 
-
-- (void)updateCaptionCountLabels {
+- (void) renderUnreadCaptions {
     ResourceContext* resourceContext = [ResourceContext instance];
-    
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
     
     if (draft != nil) {
         // self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
-        self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
+        //self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
         
         int newCaptions = [draft numberOfUnreadCaptions];
         
@@ -134,6 +132,39 @@
             [self.iv_captionIcon setHidden:NO];
             [self.btn_unreadCaptionsBadge setHidden:YES];
         }
+    }
+}
+
+
+- (void)updateCaptionCountLabels {
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    if (draft != nil) {
+        // self.lbl_numPhotos.text = [draft.numberofphotos stringValue];
+        self.lbl_numCaptions.text = [draft.numberofcaptions stringValue];
+        
+        /*int newCaptions = [draft numberOfUnreadCaptions];
+        
+        if (newCaptions > 0) {
+            if (newCaptions > 99) {
+                // limit the label to "99"
+                newCaptions = 99;
+            }
+            
+            [self.btn_unreadCaptionsBadge setTitle:[NSString stringWithFormat:@"%d", newCaptions] forState:UIControlStateNormal];
+            [self.btn_unreadCaptionsBadge setTitle:[NSString stringWithFormat:@"%d", newCaptions] forState:UIControlStateDisabled];
+            
+            [self.lbl_numCaptions setHidden:YES];
+            [self.iv_captionIcon setHidden:YES];
+            [self.btn_unreadCaptionsBadge setHidden:NO];
+        }
+        else {*/
+            [self.lbl_numCaptions setHidden:NO];
+            [self.iv_captionIcon setHidden:NO];
+            [self.btn_unreadCaptionsBadge setHidden:YES];
+        //}
     }
 }
 

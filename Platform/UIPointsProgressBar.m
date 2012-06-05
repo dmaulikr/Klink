@@ -87,7 +87,11 @@
 - (void)drawProgressBar {
     
     int numCoinsTotal = [self.user.numberofpoints intValue];
+    int previousAchievement = [self.user.prevachievementthreshold intValue];
+    numCoinsTotal = numCoinsTotal - previousAchievement;
+    
     int nextAchievment = [self.user.achievementthreshold intValue];
+    nextAchievment = nextAchievment - previousAchievement;
     //int coinsEarned = 200;  // used for testing
     
     float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETPOINTSLABEL;
@@ -99,12 +103,14 @@
     
     ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
     int editorMinimum = [settings.editor_minimum intValue];
+    int numberofcoinslw = [self.user.numberofpointssw intValue];
+    editorMinimum = editorMinimum + numberofcoinslw;
     
     //int userBest = [self.user.maxweeklyparticipation intValue];
     
     // determine which value will set the scale (max value) for the progress bar
     //float progressBarMaxValue = MAX(MAX((float)userBest, (float)editorMinimum), (float)coinsEarned);
-    float progressBarMaxValue = (float)nextAchievment;
+    float progressBarMaxValue = MAX((float)nextAchievment, (float)editorMinimum);
     //float progressBarMaxValue = 2;  // used for testing
     
     /*if (progressBarMaxValue == (float)userBest) {
@@ -133,6 +139,10 @@
     
     // move the editor threshold label
     float editorMinimumLabelXOrigin = MAX(kPROGRESSBARCONTAINERXORIGINOFFSET, kPROGRESSBARCONTAINERXORIGINOFFSET + editorMinimumWidth - editorMinimumLabelMidPoint);
+    if (editorMinimumLabelXOrigin > 230) {
+        // Make sure the label does not go off the screen
+        editorMinimumLabelXOrigin = 230;
+    }
     self.lbl_editorMinimumLabel.frame = CGRectMake(editorMinimumLabelXOrigin, self.lbl_editorMinimumLabel.frame.origin.y, self.lbl_editorMinimumLabel.frame.size.width, self.lbl_editorMinimumLabel.frame.size.height);
     
     /*// move the user best threshold line
@@ -167,6 +177,9 @@
 
 - (void) renderProgressBarForUserWithID:(NSNumber *)userID
 {
+    self.lbl_numNextAchievement.text = @" ";
+    self.lbl_numPoints.text = @" ";
+    
     ResourceContext* resourceContext = [ResourceContext instance];
     self.userID = userID;
     self.user = (User*)[resourceContext resourceWithType:USER withID:self.userID];

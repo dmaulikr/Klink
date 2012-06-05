@@ -212,7 +212,7 @@
     [self.tv_caption addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
     
     // Navigation Bar Buttons
-    UIBarButtonItem* rb = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleBordered target:self action:@selector(onSubmitButtonPressed:)];
+    UIBarButtonItem* rb = [[UIBarButtonItem alloc]initWithTitle:@"Submit" style:UIBarButtonItemStyleDone target:self action:@selector(onSubmitButtonPressed:)];
     self.navigationItem.rightBarButtonItem = rb;
     [rb release];
     
