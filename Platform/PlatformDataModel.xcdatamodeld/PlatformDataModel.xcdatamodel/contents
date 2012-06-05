@@ -89,6 +89,7 @@
         <attribute name="html" optional="YES" attributeType="String"/>
         <attribute name="imageurl" optional="YES" attributeType="String"/>
         <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="points" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="rendertype" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
         <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0"/>
     </entity>
@@ -222,7 +223,7 @@
         <element name="authenticationcontext" positionX="-198" positionY="336" width="128" height="150"/>
         <element name="bookmark" positionX="189" positionY="27" width="128" height="90"/>
         <element name="caption" positionX="-171" positionY="666" width="128" height="180"/>
-        <element name="feed" positionX="367" positionY="576" width="128" height="180"/>
+        <element name="feed" positionX="367" positionY="576" width="128" height="195"/>
         <element name="follow" positionX="-216" positionY="-342" width="128" height="135"/>
         <element name="leaderboard" positionX="-198" positionY="891" width="128" height="105"/>
         <element name="objectchange" positionX="-389" positionY="1017" width="128" height="105"/>

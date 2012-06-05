@@ -18,7 +18,7 @@
 @dynamic imageurl;
 @dynamic rendertype;
 @dynamic html;
-
+@dynamic points;
 @synthesize feeddata = __feeddata;
 
 #pragma mark - Properties
