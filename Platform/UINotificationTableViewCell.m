@@ -255,17 +255,17 @@
             [self.btn_notificationBadge setHidden:YES];
         }
         
-        /*//Check if notification comes with coins to display
-        if ([notification.numCoins intValue] > 0) {
+        //Check if notification comes with coins to display
+        if ([notification.points intValue] > 0) {
             //there are coins to show
             [self.v_coinChange setHidden:NO];
-            [self.lbl_numCoins.text = [notification.numCoins stringValue];
+            self.lbl_numCoins.text = [notification.points stringValue];
         }
         else {
             //there are no coins to show, hide the ribbon
             [self.v_coinChange setHidden:YES];
             self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.contentView.frame.size.height / 2);
-        }*/
+        }
         
         
         if ([notification.feedevent intValue] == kCAPTION_VOTE ||
