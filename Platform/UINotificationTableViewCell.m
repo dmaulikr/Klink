@@ -241,7 +241,7 @@
                                                      self.iv_separatorLine.frame.size.width,
                                                      self.iv_separatorLine.frame.size.height);
             
-            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.v_coinChange.frame.origin.y / 2);
+            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.contentView.frame.size.height / 2);
             
         }
        
@@ -260,11 +260,13 @@
             //there are coins to show
             [self.v_coinChange setHidden:NO];
             self.lbl_numCoins.text = [notification.points stringValue];
+            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.v_coinChange.frame.origin.y / 2);
+            self.iv_notificationTypeImage.frame = CGRectMake(66, self.iv_notificationTypeImage.frame.origin.y, self.iv_notificationTypeImage.frame.size.width, self.iv_notificationTypeImage.frame.size.height);
+            self.lbl_notificationDate.frame = CGRectMake(96, self.lbl_notificationDate.frame.origin.y, self.lbl_notificationDate.frame.size.width, self.lbl_notificationDate.frame.size.height);
         }
         else {
             //there are no coins to show, hide the ribbon
             [self.v_coinChange setHidden:YES];
-            self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.contentView.frame.size.height / 2);
         }
         
         
@@ -338,10 +340,10 @@
                 linkClickSelector:(SEL)selector 
 {
     // Reset tableviewcell properties
-    self.btn_notificationBadge.frame = CGRectMake(-2, 3, 38, 43);
+    self.btn_notificationBadge.frame = CGRectMake(-2, 15, 38, 43);
     self.v_coinChange.frame = CGRectMake(-2, 48, 62, 20);
-    self.iv_notificationTypeImage.frame = CGRectMake(66, 45, 25, 25);
-    self.lbl_notificationDate.frame = CGRectMake(96, 47, 135, 21);
+    self.iv_notificationTypeImage.frame = CGRectMake(34, 45, 25, 25);
+    self.lbl_notificationDate.frame = CGRectMake(64, 47, 135, 21);
     self.iv_separatorLine.frame = CGRectMake(26, 71, 267, 4);
     
     self.lbl_notificationMessage.frame = CGRectMake(34, 6, 212, 19);
