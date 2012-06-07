@@ -183,14 +183,15 @@
                 
                 //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
                 CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
+                
                 remainder = [NSString stringWithFormat:@"%@%@", indent, remainder];
-                CGSize remainderSize = [remainder sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
+                CGSize remainderSize = [remainder sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter" size:13] constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
                  
                 [self.lbl_notificationMessage setText:[NSString stringWithFormat:@"%@", remainder]];
                 
                 self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, remainderSize.width, remainderSize.height);
                 
-                newMessageHeight = newMessageHeight + remainderSize.height;
+                newMessageHeight = remainderSize.height;
                 
             }
             
@@ -205,7 +206,7 @@
             
             //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);   //Old value before dynamic cell height
             CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
-            CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];
+            CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
             //CGSize messageSize = [tempString sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];   //Used for testing
             
             self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, messageSize.width, messageSize.height);
@@ -213,12 +214,12 @@
             [self.resourceLinkButton setEnabled:NO];
             [self.resourceLinkButton setHidden:YES];
             
-            newMessageHeight = newMessageHeight + messageSize.height;
+            newMessageHeight = messageSize.height;
            
         }
         
-        if (newMessageHeight > 38.0) {
-            // Move the detail views down according to the new label height
+        if (newMessageHeight > 32.0) {
+            // The message is at least 3 lines. Move the detail views down according to the new label height
             float yOffset = self.lbl_notificationMessage.frame.origin.y + self.lbl_notificationMessage.frame.size.height;
             
             self.v_coinChange.frame = CGRectMake(self.v_coinChange.frame.origin.x,

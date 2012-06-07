@@ -545,21 +545,21 @@
     
     // Dynamic height based on feed message size
     int defaultTableViewCellHeight = kNOTIFICATIONTABLEVIEWCELLHEIGHT;
-    int textLabelTopMargin = 8;
+    int textLabelTopMargin = 6;
     int textLabelBottomMargin = 35;
     
     Feed* notification = [[self.frc_notifications fetchedObjects] objectAtIndex:[indexPath row]];
      
-    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
+    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
     
     CGSize maximumSize;
     if (notification.imageurl != nil &&
         ![notification.imageurl isEqualToString:@""]) {
         // there is an image with this notifiction
-        maximumSize = CGSizeMake(212, 1000);
+        maximumSize = CGSizeMake(208, 1000);
     }
     else {
-        maximumSize = CGSizeMake(259, 1000);
+        maximumSize = CGSizeMake(280, 1000);
     }
     
     // Grab the message, we'll need to parse the JSON
@@ -625,9 +625,19 @@
         }
     }
     
-    CGSize messageSize = [message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeTailTruncation];
+    CGSize messageSize = [message sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter" size:13] constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
     
-    CGFloat height = MAX(messageSize.height + textLabelTopMargin + textLabelBottomMargin, defaultTableViewCellHeight);
+    
+    CGFloat height = defaultTableViewCellHeight; 
+    
+    if (messageSize.height > 32.0) {
+        // Message is more than two lines
+        height = messageSize.height + textLabelTopMargin + textLabelBottomMargin;
+    }
+    
+    //CGFloat heightWithMessage = messageSize.height + textLabelTopMargin + textLabelBottomMargin;
+    
+    //CGFloat height = MAX(heightWithMessage, defaultTableViewCellHeight);
      
     return height;
 }
