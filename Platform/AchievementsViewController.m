@@ -30,7 +30,7 @@
     // Do any additional setup after loading the view from its nib.
     
     // Set up the scroll view
-    self.sv_scrollView.contentSize = CGSizeMake(320, 836);
+    self.sv_scrollView.contentSize = CGSizeMake(320, 730);
     self.sv_scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookshelf.png"]];
     
     // Apply the bookshelf nav bar background
@@ -60,6 +60,21 @@
     UIImage* buttonImage = [[UIImage imageNamed:@"bookshelf_button.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
     [btn_rightButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:btn_rightButton] autorelease];
+    
+    // Set Navigation bar title style with typewriter font
+    CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
+    titleLabel.text = @"Mallard & Co.";
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor brownColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor whiteColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, 1.0)];
+    self.navigationItem.titleView = titleLabel;
+    [titleLabel release];
     
 }
 

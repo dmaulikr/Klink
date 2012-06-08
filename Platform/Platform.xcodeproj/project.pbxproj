@@ -261,6 +261,10 @@
 		52BC828F1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */; };
 		52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */; };
 		52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */; };
+		52BC82961581C539009DC6C5 /* mallard-teaboy-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82921581C539009DC6C5 /* mallard-teaboy-disabled.png */; };
+		52BC82971581C539009DC6C5 /* mallard-teaboy-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82931581C539009DC6C5 /* mallard-teaboy-disabled@2x.png */; };
+		52BC82981581C539009DC6C5 /* mallard-teaboy.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82941581C539009DC6C5 /* mallard-teaboy.png */; };
+		52BC82991581C539009DC6C5 /* mallard-teaboy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82951581C539009DC6C5 /* mallard-teaboy@2x.png */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -737,6 +741,10 @@
 		52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky-disabled@2x.png"; sourceTree = "<group>"; };
 		52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky.png"; sourceTree = "<group>"; };
 		52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky@2x.png"; sourceTree = "<group>"; };
+		52BC82921581C539009DC6C5 /* mallard-teaboy-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-teaboy-disabled.png"; sourceTree = "<group>"; };
+		52BC82931581C539009DC6C5 /* mallard-teaboy-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-teaboy-disabled@2x.png"; sourceTree = "<group>"; };
+		52BC82941581C539009DC6C5 /* mallard-teaboy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-teaboy.png"; sourceTree = "<group>"; };
+		52BC82951581C539009DC6C5 /* mallard-teaboy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-teaboy@2x.png"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -1430,6 +1438,10 @@
 				52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */,
 				52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */,
 				52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */,
+				52BC82921581C539009DC6C5 /* mallard-teaboy-disabled.png */,
+				52BC82931581C539009DC6C5 /* mallard-teaboy-disabled@2x.png */,
+				52BC82941581C539009DC6C5 /* mallard-teaboy.png */,
+				52BC82951581C539009DC6C5 /* mallard-teaboy@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2546,6 +2558,10 @@
 				52BC828F1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png in Resources */,
 				52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */,
 				52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */,
+				52BC82961581C539009DC6C5 /* mallard-teaboy-disabled.png in Resources */,
+				52BC82971581C539009DC6C5 /* mallard-teaboy-disabled@2x.png in Resources */,
+				52BC82981581C539009DC6C5 /* mallard-teaboy.png in Resources */,
+				52BC82991581C539009DC6C5 /* mallard-teaboy@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
