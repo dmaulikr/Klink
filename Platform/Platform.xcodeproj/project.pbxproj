@@ -254,7 +254,6 @@
 		52BC82781581A1E6009DC6C5 /* bookshelf_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82741581A1E6009DC6C5 /* bookshelf_top@2x.png */; };
 		52BC82791581A1E6009DC6C5 /* bookshelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82751581A1E6009DC6C5 /* bookshelf.png */; };
 		52BC827A1581A1E6009DC6C5 /* bookshelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */; };
-		52BC82811581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */; };
 		52BC82881581B755009DC6C5 /* bookshelf_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82861581B754009DC6C5 /* bookshelf_button.png */; };
 		52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */; };
 		52BC828E1581BD4E009DC6C5 /* mallard-sparky-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828A1581BD4E009DC6C5 /* mallard-sparky-disabled.png */; };
@@ -733,8 +732,6 @@
 		52BC82741581A1E6009DC6C5 /* bookshelf_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_top@2x.png"; sourceTree = "<group>"; };
 		52BC82751581A1E6009DC6C5 /* bookshelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf.png; sourceTree = "<group>"; };
 		52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf@2x.png"; sourceTree = "<group>"; };
-		52BC827F1581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+UINavigationBarCategory.h"; sourceTree = "<group>"; };
-		52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+UINavigationBarCategory.m"; sourceTree = "<group>"; };
 		52BC82861581B754009DC6C5 /* bookshelf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_button.png; sourceTree = "<group>"; };
 		52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_button@2x.png"; sourceTree = "<group>"; };
 		52BC828A1581BD4E009DC6C5 /* mallard-sparky-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky-disabled.png"; sourceTree = "<group>"; };
@@ -2073,8 +2070,6 @@
 				525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */,
 				527A754814ED7EDE0012B229 /* NSDictionary-MutableDeepCopy.h */,
 				527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */,
-				52BC827F1581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.h */,
-				52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2758,7 +2753,6 @@
 				C5EF370B1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m in Sources */,
 				C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */,
 				52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */,
-				52BC82811581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
