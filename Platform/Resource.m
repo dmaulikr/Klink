@@ -497,7 +497,7 @@
         NSString* attributeName = [attrDesc name];
         if ([attributeName isEqualToString:POLL_NUM_PAGES])
         {
-            NSLog(@"Dick");
+            NSLog(@"Polling num pages");
         }
         
         if ([attrDesc isKindOfClass:[NSAttributeDescription class]]) {
@@ -541,7 +541,7 @@
         //now we have the default value for this AID
         //we now reset the current the value to that one
         if ([originalAID.attributename isEqualToString:POLL_NUM_PAGES]) {
-            NSLog(@"Dick");
+            NSLog(@"Polling num pages");
         }
         [currentAID resetTo:originalAID];
     }
