@@ -22,9 +22,9 @@
 
  NSString* const ui_WELCOME_BOOK                = @"Each day, one new story is written into the Bahndr memory book.\n\nYou create the content, you choose what gets published, you write the Bahndr story.\n\nDismiss this alert, and flick the page to kick start your Bahndr-ing...";
 
- NSString* const ui_WELCOME_FULLSCREEN          = @"Use this view to browse through the photos and captions in this Draft.\n\nAdd your own photos and captions to this draft with the toolbar.\n\nRemember to use the 'thumb up' button to up-vote your favorite entries.";
+ NSString* const ui_WELCOME_FULLSCREEN          = @"Use this view to browse through the photos and captions in this Draft.\n\nAdd your own photos and captions to this draft with the toolbar.\n\nRemember to use the 'thumb up' button to like your favorite entries.";
 
- NSString* const ui_WELCOME_DRAFT               = @"A Draft consists of a hashtag title and any number of photos and captions.\n\nBefore a Draft reaches its deadline, any Bahndrer can add their own photo or caption to it, or up-vote their favorite entries to the top.\n\nAt the deadline, only the highest voted photo and caption is considered for publishing.";
+ NSString* const ui_WELCOME_DRAFT               = @"A Draft consists of a hashtag title and any number of photos and captions.\n\nBefore a Draft reaches its deadline, any Bahndrer can add their own photo or caption to it, or like their favorite entries to the top.\n\nAt the deadline, only the photo and caption with the most likes is considered for publishing.";
 
  NSString* const ui_WELCOME_PROFILE             = @"Welcome! Use the Profile screen to track your Bahndr activity. Contribute enough drafts, photos and captions each week and you'll be promoted to Editor.\n\nRemember, while any Bahndrer can write, its the Editors that decide what is published.";
 
