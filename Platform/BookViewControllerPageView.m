@@ -392,6 +392,9 @@
     // Add the gesture to the photo image view
     [self.iv_background addGestureRecognizer:oneFingerTap];*/
     
+    // Add the Page View Controllers gesture recognizer to the parent view
+    self.view.gestureRecognizers = self.pageController.gestureRecognizers;
+    
     // Bring the book cover subview to the front
     [self.view bringSubviewToFront:self.iv_bookCover];
 

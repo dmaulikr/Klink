@@ -14,6 +14,7 @@
 #import "ObjectChange.h"
 #import "Achievement.h"
 #import "ImageManager.h"
+#import "AchievementsViewController.h"
 
 @implementation RequestSummaryViewController
 @synthesize user                        = m_user;
@@ -67,11 +68,12 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"page_pattern.png"]];
     
-    //now lets add a done button 
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(onDoneButtonPressed:)];
+    // Add a done button to the navigation bar
+    UIBarButtonItem* rightButton = [[[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                     target:self
+                                     action:@selector(onDoneButtonPressed:)] autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
-    
-    [rightButton release];
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
@@ -243,6 +245,19 @@
         [progressBar release];
     }
     
+    // Create gesture recognizer for the achievements container to handle a single tap
+    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAchievements)] autorelease];
+    
+    // Set required taps and number of touches
+    [oneFingerTap setNumberOfTapsRequired:1];
+    [oneFingerTap setNumberOfTouchesRequired:1];
+    
+    // Add the gesture to the achievements and progress bar containers
+    [self.v_achievementsContainer addGestureRecognizer:oneFingerTap];
+    
+    //enable gesture events on the achievements and progress bar containers
+    [self.v_achievementsContainer setUserInteractionEnabled:YES];
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -304,7 +319,6 @@
 
 - (void) onDoneButtonPressed: (id) sender {
     [self dismissModalViewControllerAnimated:YES];
-    
 }
 
 
@@ -405,6 +419,16 @@
     [backButton release];
     
     [self.navigationController pushViewController:leaderBoardViewController animated:YES];
+}
+
+- (void)showAchievements {
+    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:achievementsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 #pragma mark - ImageManager call back

@@ -22,6 +22,8 @@
 #import "LeaderboardTypes.h"
 #import "LeaderboardRelativeTo.h"
 #import "LeaderboardViewController.h"
+#import "AchievementsViewController.h"
+
 #define kUSERID                    @"userid"
 
 
@@ -617,6 +619,19 @@
     [self.view addSubview:self.v_pointsProgressBar];
     [progressBar release];
     //[self.v_pointsProgressBar setHidden:YES];
+    
+    // Create gesture recognizer for the points progress bar view to handle a single tap
+    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAchievements)] autorelease];
+    
+    // Set required taps and number of touches
+    [oneFingerTap setNumberOfTapsRequired:1];
+    [oneFingerTap setNumberOfTouchesRequired:1];
+    
+    // Add the gesture to the points progress bar view view
+    [self.v_pointsProgressBar addGestureRecognizer:oneFingerTap];
+    
+    //enable gesture events on the points progress bar view
+    [self.v_pointsProgressBar setUserInteractionEnabled:YES];
 }
 
 
@@ -1031,6 +1046,16 @@
         [self.btn_follow.titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
     }
     
+}
+
+- (void)showAchievements {
+    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:achievementsViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
 }
 
 

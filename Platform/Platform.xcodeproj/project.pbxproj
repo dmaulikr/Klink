@@ -248,6 +248,19 @@
 		52BAB4A8151D62B2002EF515 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BAB4A6151D62B2002EF515 /* ProfileViewController.xib */; };
 		52BC08371540B9C60092A760 /* UILeaderboard3Up.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BC08361540B9C60092A760 /* UILeaderboard3Up.m */; };
 		52BC083A1540B9D80092A760 /* UILeaderboard3Up.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */; };
+		52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BC825815818168009DC6C5 /* AchievementsViewController.m */; };
+		52BC825B15818168009DC6C5 /* AchievementsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BC825915818168009DC6C5 /* AchievementsViewController.xib */; };
+		52BC82771581A1E6009DC6C5 /* bookshelf_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82731581A1E6009DC6C5 /* bookshelf_top.png */; };
+		52BC82781581A1E6009DC6C5 /* bookshelf_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82741581A1E6009DC6C5 /* bookshelf_top@2x.png */; };
+		52BC82791581A1E6009DC6C5 /* bookshelf.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82751581A1E6009DC6C5 /* bookshelf.png */; };
+		52BC827A1581A1E6009DC6C5 /* bookshelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */; };
+		52BC82811581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */; };
+		52BC82881581B755009DC6C5 /* bookshelf_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82861581B754009DC6C5 /* bookshelf_button.png */; };
+		52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */; };
+		52BC828E1581BD4E009DC6C5 /* mallard-sparky-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828A1581BD4E009DC6C5 /* mallard-sparky-disabled.png */; };
+		52BC828F1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */; };
+		52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */; };
+		52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -709,6 +722,21 @@
 		52BC08351540B9C60092A760 /* UILeaderboard3Up.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILeaderboard3Up.h; sourceTree = "<group>"; };
 		52BC08361540B9C60092A760 /* UILeaderboard3Up.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILeaderboard3Up.m; sourceTree = "<group>"; };
 		52BC08391540B9D80092A760 /* UILeaderboard3Up.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UILeaderboard3Up.xib; sourceTree = "<group>"; };
+		52BC825715818168009DC6C5 /* AchievementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementsViewController.h; sourceTree = "<group>"; };
+		52BC825815818168009DC6C5 /* AchievementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AchievementsViewController.m; sourceTree = "<group>"; };
+		52BC825915818168009DC6C5 /* AchievementsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AchievementsViewController.xib; sourceTree = "<group>"; };
+		52BC82731581A1E6009DC6C5 /* bookshelf_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_top.png; sourceTree = "<group>"; };
+		52BC82741581A1E6009DC6C5 /* bookshelf_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_top@2x.png"; sourceTree = "<group>"; };
+		52BC82751581A1E6009DC6C5 /* bookshelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf.png; sourceTree = "<group>"; };
+		52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf@2x.png"; sourceTree = "<group>"; };
+		52BC827F1581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+UINavigationBarCategory.h"; sourceTree = "<group>"; };
+		52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+UINavigationBarCategory.m"; sourceTree = "<group>"; };
+		52BC82861581B754009DC6C5 /* bookshelf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_button.png; sourceTree = "<group>"; };
+		52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_button@2x.png"; sourceTree = "<group>"; };
+		52BC828A1581BD4E009DC6C5 /* mallard-sparky-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky-disabled.png"; sourceTree = "<group>"; };
+		52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky-disabled@2x.png"; sourceTree = "<group>"; };
+		52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky.png"; sourceTree = "<group>"; };
+		52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky@2x.png"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -1392,6 +1420,16 @@
 				52759956157C8FB900203B71 /* mallard_outline@2x.png */,
 				5275995D157D0FD500203B71 /* banner_red.png */,
 				5275995E157D0FD500203B71 /* banner_red@2x.png */,
+				52BC82731581A1E6009DC6C5 /* bookshelf_top.png */,
+				52BC82741581A1E6009DC6C5 /* bookshelf_top@2x.png */,
+				52BC82751581A1E6009DC6C5 /* bookshelf.png */,
+				52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */,
+				52BC82861581B754009DC6C5 /* bookshelf_button.png */,
+				52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */,
+				52BC828A1581BD4E009DC6C5 /* mallard-sparky-disabled.png */,
+				52BC828B1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png */,
+				52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */,
+				52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1880,6 +1918,9 @@
 				C542EA4B15770B4100FCBC92 /* RequestSummaryViewController.h */,
 				C542EA4C15770B4100FCBC92 /* RequestSummaryViewController.m */,
 				C542EA4D15770B4100FCBC92 /* RequestSummaryViewController.xib */,
+				52BC825715818168009DC6C5 /* AchievementsViewController.h */,
+				52BC825815818168009DC6C5 /* AchievementsViewController.m */,
+				52BC825915818168009DC6C5 /* AchievementsViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2020,6 +2061,8 @@
 				525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */,
 				527A754814ED7EDE0012B229 /* NSDictionary-MutableDeepCopy.h */,
 				527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */,
+				52BC827F1581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.h */,
+				52BC82801581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2492,6 +2535,17 @@
 				52759968157D59A800203B71 /* progressBar_bluefill@2x.png in Resources */,
 				52877406157EA478008BD2EF /* icon-twitter-bird.png in Resources */,
 				5287740A157EA562008BD2EF /* icon-twitter-bird@2x.png in Resources */,
+				52BC825B15818168009DC6C5 /* AchievementsViewController.xib in Resources */,
+				52BC82771581A1E6009DC6C5 /* bookshelf_top.png in Resources */,
+				52BC82781581A1E6009DC6C5 /* bookshelf_top@2x.png in Resources */,
+				52BC82791581A1E6009DC6C5 /* bookshelf.png in Resources */,
+				52BC827A1581A1E6009DC6C5 /* bookshelf@2x.png in Resources */,
+				52BC82881581B755009DC6C5 /* bookshelf_button.png in Resources */,
+				52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */,
+				52BC828E1581BD4E009DC6C5 /* mallard-sparky-disabled.png in Resources */,
+				52BC828F1581BD4E009DC6C5 /* mallard-sparky-disabled@2x.png in Resources */,
+				52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */,
+				52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2687,6 +2741,8 @@
 				C5EF37081577A7A3003C2B01 /* UIScoreChangeView.m in Sources */,
 				C5EF370B1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m in Sources */,
 				C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */,
+				52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */,
+				52BC82811581A932009DC6C5 /* UINavigationBar+UINavigationBarCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
