@@ -35,6 +35,7 @@
 @synthesize iv_separatorLine            = m_iv_separatorLine;
 @synthesize v_coinChange                = m_v_coinChange;
 @synthesize lbl_numCoins                = m_lbl_numCoins;
+@synthesize iv_pointsBanner             = m_iv_pointsBanner;
 @synthesize selector                    = m_selector;
 @synthesize target                      = m_target;
 
@@ -261,9 +262,18 @@
             //there are coins to show
             [self.v_coinChange setHidden:NO];
             self.lbl_numCoins.text = [notification.points stringValue];
+            //self.lbl_numCoins.text = @"100";    //Used for testing
+            
+            // Move the points banner to fully wrap the number of points label
+            UIFont* pointsFont = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:15];
+            CGSize pointsSize = [self.lbl_numCoins.text sizeWithFont:pointsFont constrainedToSize:CGSizeMake(80, 20) lineBreakMode:UILineBreakModeTailTruncation];
+            self.iv_pointsBanner.frame = CGRectMake(-2, self.iv_pointsBanner.frame.origin.y, self.lbl_numCoins.frame.origin.x + pointsSize.width + 15, self.iv_pointsBanner.frame.size.height);
+            self.v_coinChange.frame = CGRectMake(self.v_coinChange.frame.origin.x, self.v_coinChange.frame.origin.y, self.iv_pointsBanner.frame.size.width, self.v_coinChange.frame.size.height);
+            
+            // Move the date and notification badge views to the left of the points banner
             self.btn_notificationBadge.center = CGPointMake(self.btn_notificationBadge.center.x, self.v_coinChange.frame.origin.y / 2);
-            self.iv_notificationTypeImage.frame = CGRectMake(66, self.iv_notificationTypeImage.frame.origin.y, self.iv_notificationTypeImage.frame.size.width, self.iv_notificationTypeImage.frame.size.height);
-            self.lbl_notificationDate.frame = CGRectMake(96, self.lbl_notificationDate.frame.origin.y, self.lbl_notificationDate.frame.size.width, self.lbl_notificationDate.frame.size.height);
+            self.iv_notificationTypeImage.frame = CGRectMake(self.v_coinChange.frame.size.width + 5, self.iv_notificationTypeImage.frame.origin.y, self.iv_notificationTypeImage.frame.size.width, self.iv_notificationTypeImage.frame.size.height);
+            self.lbl_notificationDate.frame = CGRectMake(self.iv_notificationTypeImage.frame.origin.x + self.iv_notificationTypeImage.frame.size.width + 5, self.lbl_notificationDate.frame.origin.y, self.lbl_notificationDate.frame.size.width, self.lbl_notificationDate.frame.size.height);
         }
         else {
             //there are no coins to show, hide the ribbon
@@ -342,7 +352,7 @@
 {
     // Reset tableviewcell properties
     self.btn_notificationBadge.frame = CGRectMake(-2, 15, 38, 43);
-    self.v_coinChange.frame = CGRectMake(-2, 48, 62, 20);
+    self.v_coinChange.frame = CGRectMake(-2, 48, 70, 20);
     self.iv_notificationTypeImage.frame = CGRectMake(34, 45, 25, 25);
     self.lbl_notificationDate.frame = CGRectMake(64, 47, 135, 21);
     self.iv_separatorLine.frame = CGRectMake(26, 71, 267, 4);

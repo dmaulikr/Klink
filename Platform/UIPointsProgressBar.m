@@ -19,11 +19,14 @@
 @synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
 @synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
 @synthesize lbl_numPoints           = m_lbl_numPoints;
-@synthesize lbl_numNextAchievement     = m_lbl_numNextAchievement;
+
+@synthesize v_nextAchievementContainer  = m_v_nextAchievementContainer;
+@synthesize lbl_numNextAchievement  = m_lbl_numNextAchievement;
 @synthesize lbl_nextAchievement     = m_lbl_nextAchievement;
 
 @synthesize iv_progressBarContainer = m_iv_progressBarContainer;
 @synthesize iv_progressPoints       = m_iv_progressPoints;
+@synthesize iv_pointsBanner         = m_iv_pointsBanner;
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
 @synthesize iv_userBestLine         = m_iv_userBestLine;
 
@@ -72,11 +75,14 @@
     self.lbl_editorMinimumLabel = nil;
     self.lbl_userBestLabel = nil;
     self.lbl_numPoints = nil;
+    
+    self.v_nextAchievementContainer = nil;
     self.lbl_numNextAchievement = nil;
     self.lbl_nextAchievement = nil;
     
     self.iv_progressBarContainer = nil;
     self.iv_progressPoints = nil;
+    self.iv_pointsBanner = nil;
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
     
@@ -187,13 +193,20 @@
     self.lbl_numPoints.text = [self.user.numberofpoints stringValue];
     //self.lbl_numPoints.text = @"100000";    // used for testing
     
+    // Move the points banner to fully wrap the number of points label
+    UIFont* pointsFont = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:16];
+    CGSize pointsSize = [self.lbl_numPoints.text sizeWithFont:pointsFont constrainedToSize:CGSizeMake(80, 20) lineBreakMode:UILineBreakModeTailTruncation];
+    self.iv_pointsBanner.frame = CGRectMake(-2, self.iv_pointsBanner.frame.origin.y, self.lbl_numPoints.frame.origin.x + pointsSize.width + 15, self.iv_pointsBanner.frame.size.height);
+    
     NSString* nextAchievement = [self.user.achievementthreshold stringValue];
     self.lbl_numNextAchievement.text = nextAchievement;
+    //self.lbl_numNextAchievement.text = @"100000";    // used for testing
     
     // Move the achievement description label next to the achievement number label
-    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:14];
-    CGSize size = [nextAchievement sizeWithFont:font constrainedToSize:CGSizeMake(55, 20) lineBreakMode:UILineBreakModeTailTruncation];
-    self.lbl_nextAchievement.center = CGPointMake(248 - size.width, self.lbl_nextAchievement.center.y);
+    UIFont* achievementFont = [UIFont fontWithName:@"AmericanTypewriter" size:14];
+    CGSize achievementsSize = [self.lbl_numNextAchievement.text sizeWithFont:achievementFont constrainedToSize:CGSizeMake(55, 20) lineBreakMode:UILineBreakModeTailTruncation];
+    //self.lbl_nextAchievement.center = CGPointMake(243 - achievementsSize.width, self.lbl_nextAchievement.center.y);
+    self.v_nextAchievementContainer.center = CGPointMake(250 - achievementsSize.width, self.v_nextAchievementContainer.center.y);
     
     //self.lbl_userBestLabel.text = [NSString stringWithFormat:@"Best: %d", [self.user.maxweeklyparticipation intValue]];
     

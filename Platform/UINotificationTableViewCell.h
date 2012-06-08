@@ -23,6 +23,7 @@
     
     UIView*         m_v_coinChange;
     UILabel*        m_lbl_numCoins;
+    UIImageView*    m_iv_pointsBanner;
     
     id m_target;
     SEL m_selector;
@@ -41,6 +42,7 @@
 
 @property (nonatomic,retain) IBOutlet UIView*           v_coinChange;
 @property (nonatomic,retain) IBOutlet UILabel*          lbl_numCoins;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_pointsBanner;
 
 @property (nonatomic,retain) id                         target;
 @property                    SEL                        selector;
