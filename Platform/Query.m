@@ -290,6 +290,22 @@
     
 }
 
++ (Query*)queryForAchievements:(NSNumber*)userid 
+{
+    Query* query = [[[Query alloc]init]autorelease];
+    query.filterObjectType = ACHIEVEMENT;
+    
+    QueryExpression* queryExpression = [[QueryExpression alloc]init];
+    queryExpression.attributeName = USERID;
+    queryExpression.opCode = opcode_QUERYEQUALITY;
+    queryExpression.value = [userid stringValue];
+    
+    query.attributeExpressions = [NSArray arrayWithObject:queryExpression];
+    [queryExpression release];
+    return query;
+
+}
+
 + (Query*)queryPages:(NSNumber*)afterDate {
     Query* query =  [[[Query alloc] init]autorelease];
     

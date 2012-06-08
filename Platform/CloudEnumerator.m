@@ -554,6 +554,19 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     return enumerator;
 }
 
++ (CloudEnumerator*) enumeratorForAchievements:(NSNumber *)userid
+{
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+    Query* query = [Query queryForAchievements:userid];
+    QueryOptions* queryOptions = [QueryOptions queryForAchievements:userid];
+    EnumerationContext* enumerationContext = [EnumerationContext contextForFollowing:userid];
+    query.queryOptions = queryOptions;
+    
+    CloudEnumerator* enumerator = [[[CloudEnumerator alloc]initWithEnumerationContext:enumerationContext withQuery:query withQueryOptions:queryOptions]autorelease];
+    enumerator.secondsBetweenConsecutiveSearches = [settings.page_enumeration_timegap intValue];    
+    return enumerator;
+}
+
 #pragma mark - Static Initializers for Defined Queries
 + (CloudEnumerator*) enumeratorForIDs:(NSArray*)objectIDs 
             withTypes:(NSArray*)objectTypes 
@@ -571,4 +584,5 @@ static NSLock* _lock; //lock used to synchronize the processing of enumeration r
     
     
 }
+
 @end
