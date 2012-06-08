@@ -77,6 +77,16 @@
 
 }
 
++ (EnumerationContext*)contextForAchievements:(NSNumber *)userid
+{
+    ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];
+    EnumerationContext* enumerationContext = [[[EnumerationContext alloc]init] autorelease];
+    enumerationContext.pageSize = settingsObject.pagesize;
+    enumerationContext.maximumNumberOfResults = settingsObject.pagesize;
+    return enumerationContext;
+}
+
+
 + (EnumerationContext*) contextForLeaderboard
 {
     ApplicationSettings* settingsObject = [[ApplicationSettingsManager instance] settings];

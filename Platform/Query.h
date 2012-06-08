@@ -43,4 +43,5 @@
 + (id) queryForFollowing:(NSNumber*)userid;
 + (id) queryForLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type relativeTo:(LeaderboardRelativeTo)relativeTo;
 + (id) queryForPairsLeaderboard:(NSNumber*)userid ofType:(LeaderboardTypes)type target:(NSNumber*)userid2;
++ (id) queryForAchievements:(NSNumber*)userid;
 @end

@@ -116,6 +116,17 @@
     return newQuery;
 }
 
++ (QueryOptions*) queryForAchievements:(NSNumber*)userID
+{
+    QueryOptions* newQuery = [[QueryOptions alloc]autorelease];
+    newQuery.includelinkedobjects = NO;
+    newQuery.primary_results_sortascending = NO;
+    newQuery.primary_results_sortattribute = DATECREATED;  
+    return newQuery;
+
+}
+
+
 +(QueryOptions*)queryForPhotosInTheme {
     QueryOptions *newQuery = [[QueryOptions alloc]autorelease];
     newQuery.includelinkedobjects = YES;

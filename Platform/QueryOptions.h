@@ -47,4 +47,5 @@
 +(QueryOptions*)queryForFollowers;
 +(QueryOptions*)queryForFollowing;
 +(QueryOptions*)queryForLeaderboard;
++(QueryOptions*)queryForAchievements:(NSNumber*)userID;
 @end
