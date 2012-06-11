@@ -843,6 +843,15 @@
     }
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
+    [self.v_pointsProgressBar removeFromSuperview];
+    [self.v_leaderboard3Up removeFromSuperview];
+    [self.btn_leaderboard3UpButton removeFromSuperview];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
@@ -1049,7 +1058,7 @@
 }
 
 - (void)showAchievements {
-    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstance];
+    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstanceForUserWithID:self.userID];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:achievementsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -1224,6 +1233,8 @@
         self.pairsLeaderboard = (Leaderboard*)[resourceContext resourceWithType:LEADERBOARD withValuesEqual:valuesArray forAttributes:attributesArray sortBy:sortDescriptors];
         [self showLeaderBoardOfType:kONEPERSON];
     }
+    
+    [self.view setNeedsDisplay];
 }
 
 #pragma mark - Async callbacks

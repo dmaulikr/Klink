@@ -556,10 +556,10 @@
     if (notification.imageurl != nil &&
         ![notification.imageurl isEqualToString:@""]) {
         // there is an image with this notifiction
-        maximumSize = CGSizeMake(208, 1000);
+        maximumSize = CGSizeMake(202, 1000);
     }
     else {
-        maximumSize = CGSizeMake(280, 1000);
+        maximumSize = CGSizeMake(270, 1000);
     }
     
     // Grab the message, we'll need to parse the JSON

@@ -210,6 +210,7 @@
 						<string key="NSFrame">{{261, 29}, {7, 29}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUIImage" ref="154937034"/>
@@ -292,7 +293,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">mallard-sparky-disabled.png</string>
+									<string key="NSResourceName">mallard-original-disabled-small.png</string>
 								</object>
 							</object>
 						</array>
@@ -666,7 +667,7 @@
 			<string key="arrow_right_scetched_highlighted.png">{16, 26}</string>
 			<string key="banner_red.png">{48, 25}</string>
 			<string key="gold_coin.png">{20, 20}</string>
-			<string key="mallard-sparky-disabled.png">{103, 95}</string>
+			<string key="mallard-original-disabled-small.png">{52, 48}</string>
 			<string key="progressBar_bluefill.png">{280, 20}</string>
 			<string key="progressBar_container.png">{280, 21}</string>
 			<string key="progress_threshold.png">{7, 29}</string>

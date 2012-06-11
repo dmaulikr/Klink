@@ -7,13 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface AchievementsViewController : UIViewController < UIScrollViewDelegate > {
-    UIScrollView* m_sv_scrollView;
+@interface AchievementsViewController : BaseViewController < UIScrollViewDelegate, CloudEnumeratorDelegate, NSFetchedResultsControllerDelegate > {
+    NSNumber*       m_userID;
+    
+    CloudEnumerator* m_achivementCloudEnumerator;
+    
+    UIScrollView*   m_sv_scrollView;
 }
 
-@property (nonatomic,retain) IBOutlet UIScrollView* sv_scrollView;
+@property (nonatomic, retain) NSFetchedResultsController* frc_achievements;
+@property (atomic, retain) NSNumber* userID;
+@property (nonatomic, retain) CloudEnumerator* achievementCloudEnumerator;
+
+@property (nonatomic, retain) IBOutlet UIScrollView* sv_scrollView;
 
 + (AchievementsViewController*)createInstance;
++ (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID;
 
 @end

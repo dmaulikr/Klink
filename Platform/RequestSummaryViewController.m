@@ -87,11 +87,17 @@
     
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.friendsLeaderboardCloudEnumerator.delegate = self;
+    
 }
 
-- (void) viewDidAppear:(BOOL)animated
-{
-
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
+    [self.v_scoreChangeView removeFromSuperview];
+    [self.v_pointsProgressBar removeFromSuperview];
+    [self.v_leaderboard3Up removeFromSuperview];
+    [self.btn_leaderboard3UpButton removeFromSuperview];
 }
 
 
@@ -297,7 +303,6 @@
     
     [self enumerateLeaderboards:self.userID];
     
-    
     //we then need to render the score change view
     CGRect frame = self.v_scoreChangeView.frame;
     UIScoreChangeView* scoreChangeView = [[UIScoreChangeView alloc]initWithFrame:frame];
@@ -306,8 +311,8 @@
     [scoreChangeView renderCompletedRequest:self.request];
     [self.v_scoreChangeContainer addSubview:self.v_scoreChangeView];
     
+    //we then need to render the achievements view
     [self renderAchievements];
-    
    
 }
 
@@ -422,7 +427,7 @@
 }
 
 - (void)showAchievements {
-    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstance];
+    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstanceForUserWithID:self.userID];
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:achievementsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -448,8 +453,6 @@
             self.iv_achievementImage.image = image;
         }
     }
-    
-    
 }
 
 #pragma mark - CloudEnumeratorDelegate
@@ -457,7 +460,7 @@
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
 {
-     ResourceContext* resourceContext = [ResourceContext instance];
+    ResourceContext* resourceContext = [ResourceContext instance];
     if (self.friendsLeaderboardCloudEnumerator == enumerator)
     {
         // Get the leaderboad object from the resource context
