@@ -97,6 +97,8 @@
         NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:kUSERREGEX options:NSRegularExpressionCaseInsensitive error:&error];
         NSUInteger numberOfMatches = [regex numberOfMatchesInString:notification.message options:0 range:NSMakeRange(0, [notification.message length])];
         
+        float maxMessageWidth = 280.0;
+        
         // Set up notification image
         self.iv_notificationImage.image = nil;
         ImageManager* imageManager = [ImageManager instance];
@@ -118,10 +120,16 @@
                 self.iv_notificationImage.contentMode = UIViewContentModeCenter;
                 self.iv_notificationImage.image = [UIImage imageNamed:@"icon-pics2-large.png"];
             }
+            
+            // There is an image reduce the width of the message frame
+            maxMessageWidth = 212.0;
         }
         else {
             self.lbl_notificationMessage.frame = CGRectMake(self.lbl_notificationMessage.frame.origin.x, self.lbl_notificationMessage.frame.origin.y, self.iv_notificationImage.frame.origin.x + self.iv_notificationImage.frame.size.width/2, self.lbl_notificationMessage.frame.size.height);
             self.iv_notificationImage.hidden = YES;
+            
+            // There is no image to display, set the full width of the message frame
+            maxMessageWidth = 280.0;
         }
         
         
@@ -183,7 +191,7 @@
                 }
                 
                 //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);
-                CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
+                CGSize maximumSize = CGSizeMake(maxMessageWidth, 1000);
                 
                 remainder = [NSString stringWithFormat:@"%@%@", indent, remainder];
                 CGSize remainderSize = [remainder sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter" size:13] constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
@@ -206,7 +214,7 @@
             [self.lbl_notificationMessage setText:notification.message];
             
             //CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 38);   //Old value before dynamic cell height
-            CGSize maximumSize = CGSizeMake(self.lbl_notificationMessage.frame.size.width, 1000);
+            CGSize maximumSize = CGSizeMake(maxMessageWidth, 1000);
             CGSize messageSize = [notification.message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
             //CGSize messageSize = [tempString sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:self.lbl_notificationMessage.lineBreakMode];   //Used for testing
             
