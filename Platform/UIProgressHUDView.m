@@ -141,19 +141,19 @@
 
 - (void) renderSuccessfulCompletion 
 {
-    //UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    UIImageView* iv  = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
     
-    //CGRect iv_frame = iv.frame;
+   // CGRect iv_frame = iv.frame;
     
-    //self.customView = iv;
-    //[iv release];
+    self.customView = iv;
+    [iv release];
     
-    CGRect frameForRequestSummary = CGRectMake(0, 0, 246, 149);
-    UIRequestSummaryView* rv = [[UIRequestSummaryView alloc]initWithFrame:frameForRequestSummary];
-    
-    [rv renderCompletedRequests:self.requests];
-    self.customView = rv;
-    [rv release];
+//    CGRect frameForRequestSummary = CGRectMake(0, 0, 246, 149);
+//    UIRequestSummaryView* rv = [[UIRequestSummaryView alloc]initWithFrame:frameForRequestSummary];
+//    
+//    [rv renderCompletedRequests:self.requests];
+//    self.customView = rv;
+//    [rv release];
     
     self.mode = MBProgressHUDModeCustomView;
     self.labelText = self.onSuccessMessage;

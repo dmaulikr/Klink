@@ -10,7 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "LeaderboardEntry.h"
 #import "AuthenticationManager.h"
-
+#import "ImageManager.h"
+#import "Callback.h"
+#import "CallbackResult.h"
 @implementation UILeaderboard3Up
 
 @synthesize view    = m_view;
@@ -97,8 +99,11 @@
     
 }
 
+#define kIMAGEVIEW  @"ImageView"
+
 - (void) render {    
     LeaderboardEntry* entry;
+    ImageManager* imageManager = [ImageManager instance];
     int count = [self.entries count];
     if (count > 0) 
     {
@@ -108,6 +113,17 @@
             //self.iv_profilePic1
             self.lbl_username1.text = entry.username;
             self.lbl_numPoints1.text = [entry.points stringValue];
+            
+            //image handling code
+            Callback* imageCallback = [Callback callbackForTarget:self selector:@selector(onImageDownloadComplete:) fireOnMainThread:YES];
+            NSMutableDictionary* payload = [NSMutableDictionary dictionaryWithObject:self.iv_profilePic1 forKey:kIMAGEVIEW];
+            [payload setValue:entry.imageurl forKey:IMAGEURL];
+            imageCallback.context = payload;
+            UIImage* image = [imageManager downloadImage:entry.imageurl withUserInfo:nil atCallback:imageCallback];
+            
+            if (image != nil) {
+                self.iv_profilePic1.image = image;
+            }
         }
         
         if (count > 1) 
@@ -123,6 +139,18 @@
                 //self.iv_profilePic2
                 self.lbl_username2.text = entry.username;
                 self.lbl_numPoints2.text = [entry.points stringValue];
+                
+                //image handling code
+                Callback* imageCallback = [Callback callbackForTarget:self selector:@selector(onImageDownloadComplete:) fireOnMainThread:YES];
+                NSMutableDictionary* payload = [NSMutableDictionary dictionaryWithObject:self.iv_profilePic2 forKey:kIMAGEVIEW];
+                [payload setValue:entry.imageurl forKey:IMAGEURL];
+                imageCallback.context = payload;
+                UIImage* image = [imageManager downloadImage:entry.imageurl withUserInfo:nil atCallback:imageCallback];
+                
+                if (image != nil) {
+                    self.iv_profilePic2.image = image;
+                }
+
             }
             
             if (count > 2)
@@ -139,6 +167,18 @@
                     
                     self.lbl_username3.text = entry.username;
                     self.lbl_numPoints3.text = [entry.points stringValue];
+                    
+                    //image handling code
+                    Callback* imageCallback = [Callback callbackForTarget:self selector:@selector(onImageDownloadComplete:) fireOnMainThread:YES];
+                    NSMutableDictionary* payload = [NSMutableDictionary dictionaryWithObject:self.iv_profilePic3 forKey:kIMAGEVIEW];
+                    [payload setValue:entry.imageurl forKey:IMAGEURL];
+                    imageCallback.context = payload;
+                    UIImage* image = [imageManager downloadImage:entry.imageurl withUserInfo:nil atCallback:imageCallback];
+                    
+                    if (image != nil) {
+                        self.iv_profilePic3.image = image;
+                    }
+
                 }
                 
                 self.iv_container.frame = CGRectMake(0, 0, 280, 109);
@@ -260,4 +300,16 @@
     [self render];
 }
 
+                              
+#pragma mark - Image downlopad methods
+- (void) onImageDownloadComplete: (CallbackResult*)result
+{
+    NSDictionary* context = result.context;
+    UIImageView* imageView = [context valueForKey:kIMAGEVIEW];
+    NSString* imageURL = [context valueForKey:IMAGEURL];
+    ImageManager* imageManager = [ImageManager instance];
+    UIImage* image = [imageManager downloadImage:imageURL withUserInfo:nil atCallback:nil];
+    imageView.image = image;
+    
+}
 @end

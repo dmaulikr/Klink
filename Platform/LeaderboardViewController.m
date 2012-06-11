@@ -15,6 +15,7 @@
 #import "AuthenticationManager.h"
 #import "ProfileViewController.h"
 
+
 #define kLEADERBOARDTABLEVIEWCELLHEIGHT 50
 
 @implementation LeaderboardViewController
