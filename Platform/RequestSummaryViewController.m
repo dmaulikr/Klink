@@ -188,14 +188,16 @@
     //we first see if the user has gained any achievements at all
     
     BOOL didEarnAchievement = [self didEarnNewAchievement];
+    NSArray* achievements = [self achievementsEarnedInRequest];
     
-    if (didEarnAchievement)
+    if (didEarnAchievement &&
+        [achievements count] > 0)
     {
         //we have a new achievement to render to the user
         self.v_noNewAchievementContainer.hidden = YES;
         self.v_newAchievementContainer.hidden = NO;
         
-        NSArray* achievements = [self achievementsEarnedInRequest];
+        
         
         Achievement* firstAchievement = [achievements objectAtIndex:0];
         

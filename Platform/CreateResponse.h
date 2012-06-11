@@ -13,6 +13,7 @@
 #import "IJSONSerializable.h"
 @interface CreateResponse : Response <IJSONSerializable> {
     NSArray* createdResources;
+    NSArray* m_secondaryResults;
     NSArray* m_consequentialUpdates;
     NSArray* m_consequentialInserts;
 }
@@ -20,5 +21,6 @@
 @property (nonatomic,retain) NSArray* createdResources;
 @property (nonatomic,retain) NSArray* consequentialUpdates;
 @property (nonatomic,retain) NSArray* consequentialInserts;
+@property (nonatomic,retain) NSArray* secondaryResults;
 -(Resource*) createdResourceWith:(NSNumber*)resourceid withTargetResourceType:(NSString*)targetresourcetype;
 @end

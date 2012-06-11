@@ -22,6 +22,7 @@
     Request*            m_completedRequest;
     AttributeChange*    m_scoreChangeInRequest;
     NSArray*            m_scoreJustifications;
+    NSArray*            m_otherPeopleScoreJustifications;
 }
 
 @property (nonatomic,retain) IBOutlet UIView*       view;
@@ -33,7 +34,9 @@
 @property (nonatomic,retain) Request* completedRequest;
 @property (nonatomic,retain) AttributeChange* scoreChangeInRequest;
 @property (nonatomic,retain) NSArray*   scoreJustifications;
+@property (nonatomic,retain) NSArray*   otherPeoplesScoreJustifications;
 
 
 - (void) renderCompletedRequest:(Request*)request;
++ (NSArray*) reformatOtherPeoplesScoreJustifications:(NSArray*)otherPeoplesScoreChanges;
 @end
