@@ -138,14 +138,18 @@
     
     UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
     
-    Request* request = [progressView.requests objectAtIndex:0];
-    //now we have the request
-    NSArray* changedAttributes = request.changedAttributesList;
-    //list of all changed attributes
-    //we take the first one and base our messaging off that
-    NSString* attributeName = [changedAttributes objectAtIndex:0];
+    
+    
+   
     
     if (progressView.didSucceed) {
+        Request* request = [progressView.requests objectAtIndex:0];
+        //now we have the request
+        NSArray* changedAttributes = request.changedAttributesList;
+        //list of all changed attributes
+        //we take the first one and base our messaging off that
+        NSString* attributeName = [changedAttributes objectAtIndex:0];
+        
         if (![attributeName isEqualToString:SHARINGLEVEL]) {
             // Change was successful, go back to profile to show the user
             [self dismissModalViewControllerAnimated:YES];
@@ -167,29 +171,39 @@
         NSString* message = nil;
         //we need to determine what operation failed
         
-        
-        if ([attributeName isEqualToString:USERNAME]) 
+        if ([progressView.requests count] > 0) 
         {
-            //username change failed
-            title = @"Change Username";
-            message = [NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.",duplicateUsername];
+            Request* request = [progressView.requests objectAtIndex:0];
+            //now we have the request
+            NSArray* changedAttributes = request.changedAttributesList;
+            //list of all changed attributes
+            //we take the first one and base our messaging off that
+            NSString* attributeName = [changedAttributes objectAtIndex:0];
             
-            // Show the Change Username alert view again
-            UIPromptAlertView* alert = [[UIPromptAlertView alloc]
-                                        initWithTitle:title
-                                        message:[NSString stringWithFormat:message]
-                                        delegate:self
-                                        cancelButtonTitle:@"Cancel"
-                                        otherButtonTitles:@"Change", nil];
-            [alert setMaxTextLength:kMAXUSERNAMELENGTH];
-            [alert show];
-            [alert release];
-        }
-        else if ([attributeName isEqualToString:SHARINGLEVEL])
-        {
-            //seamless sharing change failed
-            // handle fail on change of seamless sharing option
-            self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+            
+            if ([attributeName isEqualToString:USERNAME]) 
+            {
+                //username change failed
+                title = @"Change Username";
+                message = [NSString stringWithFormat:@"\n\n\"%@\" is not available. Please try another username.",duplicateUsername];
+                
+                // Show the Change Username alert view again
+                UIPromptAlertView* alert = [[UIPromptAlertView alloc]
+                                            initWithTitle:title
+                                            message:[NSString stringWithFormat:message]
+                                            delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Change", nil];
+                [alert setMaxTextLength:kMAXUSERNAMELENGTH];
+                [alert show];
+                [alert release];
+            }
+            else if ([attributeName isEqualToString:SHARINGLEVEL])
+            {
+                //seamless sharing change failed
+                // handle fail on change of seamless sharing option
+                self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
+            }
         }
     }
     

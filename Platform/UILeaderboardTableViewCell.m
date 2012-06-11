@@ -8,6 +8,9 @@
 
 #import "UILeaderboardTableViewCell.h"
 #import "AuthenticationManager.h"
+#import "ImageManager.h"
+#import "CallbackResult.h"
+#import "Callback.h"
 
 @implementation UILeaderboardTableViewCell
 @synthesize v_background                = m_v_background;
@@ -62,9 +65,18 @@
 
 - (void) render
 {
+    ImageManager* imageManager = [ImageManager instance];
     self.lbl_total.text  = [self.leaderboardEntry.points stringValue];
     self.lbl_position.text = [NSString stringWithFormat:@"# %@", [self.leaderboardEntry.position stringValue]];
     self.lbl_username.text = self.leaderboardEntry.username;
+    
+    NSMutableDictionary* context = [NSMutableDictionary dictionaryWithObject:self.userID forKey:USERID];
+    Callback* callback = [Callback callbackForTarget:self selector:@selector(onImageDownloadComplete:) fireOnMainThread:YES];
+    callback.context = context;
+    UIImage* image = [imageManager downloadImage:self.leaderboardEntry.imageurl withUserInfo:nil atCallback:callback];
+    if (image != nil) {
+        self.iv_profilePicture.image = image;
+    }
     
     /*// If this entry if for the current logged in user, we need to apply special cell formatting
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
@@ -113,6 +125,18 @@
     self.leaderboardEntry = entry;
     self.userID = userID;
     [self render];
+}
+                          
+#pragma mark - Image Download Handler
+- (void) onImageDownloadComplete:(CallbackResult*)result
+{
+    NSNumber* userID = [result.context valueForKey:USERID];
+    if ([self.userID isEqualToNumber:userID])
+    {
+        ImageManager* imageManager = [ImageManager instance];
+        UIImage* image = [imageManager downloadImage:self.leaderboardEntry.imageurl withUserInfo:nil atCallback:nil];
+        self.iv_profilePicture.image = image;
+    }
 }
 
 @end
