@@ -16,6 +16,7 @@
 @synthesize createdResources;
 @synthesize consequentialUpdates = m_consequentialUpdates;
 @synthesize consequentialInserts = m_consequentialInserts;
+@synthesize secondaryResults = m_secondaryResults;
 
 - (id) initFromJSONDictionary:(NSDictionary*)jsonDictionary {
    
@@ -34,6 +35,27 @@
         }
         self.createdResources = newObjects;
         [newObjects release];
+        
+        //each put response can contain a secondary set of objects that are updated
+        //or relevant to the request
+        NSArray* secondaryResultsJSON = [jsonDictionary valueForKey:SECONDARYRESULTS];
+
+        if (secondaryResultsJSON != nil && ![secondaryResultsJSON isEqual: [NSNull null]]) {
+            NSMutableArray* secondaryResults = [[NSMutableArray alloc]init];
+            
+            
+            for (int i = 0; i < [secondaryResultsJSON count]; i++) {
+                NSDictionary* obj_i = [secondaryResultsJSON objectAtIndex:i];
+                id resource = [Resource createInstanceOfTypeFromJSON:obj_i];
+                [secondaryResults addObject:resource];
+                
+                
+            }
+            self.secondaryResults = secondaryResults;
+            [secondaryResults release];
+        }
+
+
         
         NSArray* jsonConsequentialUpdates = [jsonDictionary valueForKey:CONSEQUENTIALUPDATES];
         if (jsonConsequentialUpdates != nil &&
