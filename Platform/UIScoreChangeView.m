@@ -22,6 +22,7 @@
 @synthesize lbl_topMessage                  = m_lbl_topMessage;
 @synthesize lbl_totalScoreChange            = m_lbl_totalScoreChange;
 @synthesize iv_coin                         = iv_coin;
+@synthesize otherPeoplesScoreJustifications = m_otherPeopleScoreJustifications;
 
 @synthesize completedRequest                = m_completedRequest;
 @synthesize scoreChangeInRequest            = m_scoreChangeInRequest;
@@ -109,6 +110,27 @@
     CGSize size = [scoreChange sizeWithFont:font constrainedToSize:CGSizeMake(68, 20) lineBreakMode:UILineBreakModeTailTruncation];
     self.iv_coin.center = CGPointMake(285 - size.width, self.iv_coin.center.y);
        
+    
+    //now we need to grab all the justifications for other users
+    consequentialUpdatesInRequest = request.consequentialUpdates;
+    NSMutableArray* otherPeoplesScoreChanges = [[NSMutableArray alloc]init];
+    
+    for (AttributeChange* ac in consequentialUpdatesInRequest)
+    {
+        if (![ac.targetobjectid isEqualToNumber:currentUserID])
+        {
+            //change corresponds to current logged in user
+            if ([ac.attributename isEqualToString:NUMBEROFPOINTS])
+            {
+                //change is in the points value
+                //we add it to the score changes array
+                [otherPeoplesScoreChanges addObject:ac];
+            }
+        }
+    }
+
+    //now we have all the other people's score changes
+    self.otherPeoplesScoreJustifications = [UIScoreChangeView reformatOtherPeoplesScoreJustifications:otherPeoplesScoreChanges];
     [self.tbl_scoreChanges reloadData];
 }
 
@@ -125,7 +147,20 @@
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ScoreJustification* sj = [self.scoreJustifications objectAtIndex:[indexPath row]];
+    int index = [indexPath row];
+    int count = [self.scoreJustifications count];
+    
+    
+    ScoreJustification* sj = nil;
+    if (index < count) {
+        sj = [self.scoreJustifications objectAtIndex:index];
+
+    }
+    else
+    {
+        sj = [self.otherPeoplesScoreJustifications objectAtIndex:(index - count)];
+    }
+    
     NSString* text = sj.justification;
     UIFont* font = [UIFont fontWithName:@"American Typewriter" size:13];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(228,10000) lineBreakMode:UILineBreakModeWordWrap];
@@ -140,16 +175,29 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.scoreJustifications count];
+    return ([self.scoreJustifications count] +
+            [self.otherPeoplesScoreJustifications count]);
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int count = [self.scoreJustifications count];
+    int otherPeoplesCount = [self.otherPeoplesScoreJustifications count];
+    int index = [indexPath row];
     
-    if ([indexPath row] < count) 
-    {
-        ScoreJustification* sj = [self.scoreJustifications objectAtIndex:[indexPath row]];
+    ScoreJustification* sj = nil;
+    
+    if (index < (count + otherPeoplesCount)) {
+        
+        if (index < count) 
+        {
+            sj = [self.scoreJustifications objectAtIndex:index];
+        }
+        else {
+            //its other person's score change
+            sj = [self.otherPeoplesScoreJustifications objectAtIndex:(index - count)];
+        }
+        
         UIScoreChangeTableViewCell* cell = [self.tbl_scoreChanges dequeueReusableCellWithIdentifier:kCELLIDENTIFIER];
         if (cell == nil) 
         {
@@ -163,6 +211,41 @@
     else {
         return nil;
     }
+   
+       
+    
+}
+
+//returns a list of score justification objects that have been modified so that they display
+//the desired other people's score formats
++ (NSArray*) reformatOtherPeoplesScoreJustifications:(NSArray*)otherPeoplesScoreChanges
+{
+    NSMutableArray* retVal = [[[NSMutableArray alloc]init]autorelease];
+    for (AttributeChange* ac in otherPeoplesScoreChanges) {
+        NSArray* scoreJustifications = ac.scorejustifications;
+        
+        //we iterate through each 
+        for (ScoreJustification* sj in scoreJustifications)
+        {
+            //we create a new justification string by concatenating the amount with the string
+            //and then we 0 out the score 
+            
+            //is it more than 1 point
+            NSString* coinString = @"coin";
+            if ([sj.points intValue] > 1) 
+            {
+                coinString = @"coins";
+                
+            }
+            
+            NSString* modifiedDescription = [NSString stringWithFormat:@"%@ %@ %@",sj.justification,sj.points,coinString];
+            sj.justification = modifiedDescription;
+            sj.points = 0;
+            [retVal addObject:sj];
+        }
+    }
+    
+    return retVal;
 }
 
 @end

@@ -70,7 +70,15 @@
     
     self.lbl_score.frame = CGRectMake(self.lbl_score.frame.origin.x,self.lbl_description.frame.origin.y,self.lbl_score.frame.size.width,size.height);
     
-    self.lbl_score.text = [NSString stringWithFormat:@"+%@",scoreJustification.points];
+    
+    if ([scoreJustification.points intValue] > 0) 
+    {
+        self.lbl_score.text = [NSString stringWithFormat:@"+%@",scoreJustification.points];
+    }
+    else 
+    {
+        self.lbl_score.text = @"";
+    }
     self.lbl_description.text = text;
 
 }

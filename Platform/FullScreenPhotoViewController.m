@@ -27,6 +27,7 @@
 #import "UIStrings.h"
 #import "PageState.h"
 #import "DateTimeHelper.h"
+#import "RequestSummaryViewController.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -1248,6 +1249,15 @@
     }
     else {
         [self.captionViewSlider.tableView reloadData];
+        
+        RequestSummaryViewController* rvc = [RequestSummaryViewController createForRequests:pv.requests];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:rvc];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+
     }
 }
 
