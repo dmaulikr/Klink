@@ -20,6 +20,7 @@
 #import "BookViewControllerBase.h"
 #import "ProfileViewController.h"
 #import "WebViewController.h"
+#import "AchievementsViewController.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 #define kUSERREGEX @"\\{.*?\\}"
@@ -406,6 +407,17 @@
     
 }
 
+- (void) processGenericAchievementNotification:(Feed*)notification
+{
+    //NSString* activityName = @"NotificationViewController.processGenericAchievementNotification:";
+    
+    AchievementsViewController* avc = [AchievementsViewController createInstance];
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:avc];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    [navigationController release];
+}
+
 - (void) processGenericEditorialBoardPostVoteNotification:(Feed*)notification {
     //will display the editorial board view, designed to show the post-vote scene for the user
     
@@ -693,6 +705,9 @@
         else if ([notification.rendertype intValue] == kGENERIC_BOOK) {
             //generic book display
             [self processGenericBookNotification:notification];
+        }
+        else if ([notification.rendertype intValue] == kGENERIC_ACHIEVEMENT) {
+            [self processGenericAchievementNotification:notification];
         }
     }
     

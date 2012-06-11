@@ -45,5 +45,6 @@ typedef enum {
     kGENERIC_USER,
     kGENERIC_MESSAGE,
     kGENERIC_BOOK,
-    kGENERIC_EDITORIAL
+    kGENERIC_EDITORIAL,
+    kGENERIC_ACHIEVEMENT
 } FeedRenderType;
