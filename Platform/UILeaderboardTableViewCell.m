@@ -9,6 +9,7 @@
 #import "UILeaderboardTableViewCell.h"
 #import "AuthenticationManager.h"
 #import "ImageManager.h"
+#import "ImageDownloadResponse.h"
 #import "CallbackResult.h"
 #import "Callback.h"
 
@@ -131,12 +132,30 @@
 - (void) onImageDownloadComplete:(CallbackResult*)result
 {
     NSNumber* userID = [result.context valueForKey:USERID];
-    if ([self.userID isEqualToNumber:userID])
-    {
-        ImageManager* imageManager = [ImageManager instance];
-        UIImage* image = [imageManager downloadImage:self.leaderboardEntry.imageurl withUserInfo:nil atCallback:nil];
-        self.iv_profilePicture.image = image;
+    
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        if ([self.userID isEqualToNumber:userID]) {
+            //we only draw the image if this view hasnt been repurposed for another follow object
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+        }
     }
+    else {
+        // show the photo placeholder icon
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    }
+    
+    [self setNeedsDisplay];
+    
+//    if ([self.userID isEqualToNumber:userID])
+//    {
+//        ImageManager* imageManager = [ImageManager instance];
+//        UIImage* image = [imageManager downloadImage:self.leaderboardEntry.imageurl withUserInfo:nil atCallback:nil];
+//        self.iv_profilePicture.image = image;
+//    }
 }
 
 @end

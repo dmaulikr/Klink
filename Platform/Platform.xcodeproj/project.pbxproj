@@ -62,6 +62,9 @@
 		522FD66815868D2800EEA2BD /* mallard-original-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66215868D2800EEA2BD /* mallard-original-small.png */; };
 		522FD66915868D2800EEA2BD /* mallard-original.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66315868D2800EEA2BD /* mallard-original.png */; };
 		522FD66A15868D2800EEA2BD /* mallard-original@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66415868D2800EEA2BD /* mallard-original@2x.png */; };
+		522FD66C1586F36D00EEA2BD /* bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66B1586F36D00EEA2BD /* bigger.png */; };
+		522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522FD66E1586F3B800EEA2BD /* UIAchievementView.m */; };
+		522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */; };
 		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
 		52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */; };
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
@@ -518,6 +521,10 @@
 		522FD66215868D2800EEA2BD /* mallard-original-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original-small.png"; sourceTree = "<group>"; };
 		522FD66315868D2800EEA2BD /* mallard-original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original.png"; sourceTree = "<group>"; };
 		522FD66415868D2800EEA2BD /* mallard-original@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original@2x.png"; sourceTree = "<group>"; };
+		522FD66B1586F36D00EEA2BD /* bigger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigger.png; sourceTree = "<group>"; };
+		522FD66D1586F3B800EEA2BD /* UIAchievementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAchievementView.h; sourceTree = "<group>"; };
+		522FD66E1586F3B800EEA2BD /* UIAchievementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAchievementView.m; sourceTree = "<group>"; };
+		522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIAchievementView.xib; sourceTree = "<group>"; };
 		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
@@ -1445,6 +1452,7 @@
 				522FD66215868D2800EEA2BD /* mallard-original-small.png */,
 				522FD66315868D2800EEA2BD /* mallard-original.png */,
 				522FD66415868D2800EEA2BD /* mallard-original@2x.png */,
+				522FD66B1586F36D00EEA2BD /* bigger.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2020,6 +2028,9 @@
 				C5EF37091577B5BD003C2B01 /* UIScoreChangeTableViewCell.h */,
 				C5EF370A1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m */,
 				C5EF370C1577B5D6003C2B01 /* UIScoreChangeTableViewCell.xib */,
+				522FD66D1586F3B800EEA2BD /* UIAchievementView.h */,
+				522FD66E1586F3B800EEA2BD /* UIAchievementView.m */,
+				522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2565,6 +2576,8 @@
 				522FD66815868D2800EEA2BD /* mallard-original-small.png in Resources */,
 				522FD66915868D2800EEA2BD /* mallard-original.png in Resources */,
 				522FD66A15868D2800EEA2BD /* mallard-original@2x.png in Resources */,
+				522FD66C1586F36D00EEA2BD /* bigger.png in Resources */,
+				522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2761,6 +2774,7 @@
 				C5EF370B1577B5BE003C2B01 /* UIScoreChangeTableViewCell.m in Sources */,
 				C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */,
 				52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */,
+				522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

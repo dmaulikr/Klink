@@ -542,6 +542,11 @@
     CGRect leaderboardButtonFrame = CGRectMake(self.btn_leaderboard3UpButton.frame.origin.x, self.btn_leaderboard3UpButton.frame.origin.y, self.btn_leaderboard3UpButton.frame.size.width, self.v_leaderboard3Up.view.frame.size.height);
     [self.btn_leaderboard3UpButton setFrame:leaderboardButtonFrame];
     
+    // Make sure any previous subviews of this type are not present
+    [self.v_leaderboard3Up removeFromSuperview];
+    [self.btn_leaderboard3UpButton removeFromSuperview];
+    
+    // Add these subviews to the view
     [self.v_leaderboardContainer addSubview:self.v_leaderboard3Up];
     [self.v_leaderboardContainer addSubview:self.btn_leaderboard3UpButton];
 }
@@ -848,8 +853,8 @@
     
     // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
     [self.v_pointsProgressBar removeFromSuperview];
-    [self.v_leaderboard3Up removeFromSuperview];
-    [self.btn_leaderboard3UpButton removeFromSuperview];
+//    [self.v_leaderboard3Up removeFromSuperview];
+//    [self.btn_leaderboard3UpButton removeFromSuperview];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

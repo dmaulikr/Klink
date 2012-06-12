@@ -162,29 +162,11 @@
                 }
             }
         }
-        
-//        // Now render the last row of achievments, including the next placeholder
-//        for (int c = 0; c < remainderColumns; c++) {
-//            UIImageView* iv_achievement = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-sparky.png"]] autorelease];
-//            
-//            float x = leftMargin + c*(innerMargin + achievmentWidth);
-//            float y = topMarginRow1 + rows*(topMargin + achievmentHeight);
-//            
-//            iv_achievement.frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);
-//            
-//            [self.sv_scrollView addSubview:iv_achievement];
-//            
-//            index++;
-//        }
-        
-//        // Now render a placeholder mallard for the next mallard to be achieved
-//        UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-original-disabled.png"]] autorelease];
-//        float x = leftMargin + (remainderColumns)*(innerMargin + achievmentWidth);
-//        float y = topMarginRow1 + (rows-1)*(topMargin + achievmentHeight);
-//        iv_placeholder.frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);
-//        [self.sv_scrollView addSubview:iv_placeholder];
-        
     }
+    
+    // Update the scroll view size based on the number of achievments shown
+    float scrollViewHeight = MAX(730, (rows+3)*(topMargin + achievmentHeight));
+    self.sv_scrollView.contentSize = CGSizeMake(320, scrollViewHeight);
     
     [self.view setNeedsDisplay];
 }
