@@ -311,7 +311,6 @@
     NSString* activityName = @"BaseViewController.hideProgressBar:";
     PlatformAppDelegate* delegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     UIProgressHUDView* progressView = delegate.progressView;
-
     
     if (self.navigationController.visibleViewController == self) {
         LOG_BASEVIEWCONTROLLER(0, @"%@Hiding progress bar and removing it from this view",activityName);
@@ -322,8 +321,7 @@
         }
         progressView.delegate = nil;
         delegate.progressView = nil;
-        
-        
+
     }
 }
 

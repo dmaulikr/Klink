@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "MBProgressHUD.h"
 
-@interface AchievementsViewController : BaseViewController < UIScrollViewDelegate, CloudEnumeratorDelegate, NSFetchedResultsControllerDelegate > {
+@interface AchievementsViewController : BaseViewController < UIScrollViewDelegate, CloudEnumeratorDelegate, NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate > {
     NSNumber*       m_userID;
     
     CloudEnumerator* m_achivementCloudEnumerator;

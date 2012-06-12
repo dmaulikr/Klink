@@ -11,6 +11,7 @@
 #import "Macros.h"
 #import "Achievement.h"
 #import "ImageManager.h"
+#import "UIAchievementView.h"
 
 #define kIMAGEVIEW @"imageview"
 
@@ -76,6 +77,27 @@
     return self;
 }
 
+- (void)showHUDForAchievementsDownload {
+    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    NSNumber* heartbeat = [NSNumber numberWithInt:10];
+    
+    //we need to construct the appropriate success, failure and progress messages for the achievements download
+    NSString* failureMessage = @"Failed!\nCould not download awards.";
+    NSString* successMessage = @"Success!";
+    NSArray* progressMessage = [NSArray arrayWithObjects:@"Looking for awards...", @"Downloading awards...", @"Searching bookshelf...", @"Wow, quite the achiever...", nil];
+    
+    //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+    //NSNumber* maxDisplayTime = settings.http_timeout_seconds;
+    
+    NSNumber* maxDisplayTime = [NSNumber numberWithInt:120];
+    
+    [self showDeterminateProgressBarWithMaximumDisplayTime:maxDisplayTime withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+    
+}
+
 - (void) enumerateAchievementsForUserWithID:(NSNumber*)userid 
 {    
     if (self.achievementCloudEnumerator != nil) {
@@ -88,6 +110,8 @@
         self.achievementCloudEnumerator.delegate = self;
         [self.achievementCloudEnumerator enumerateUntilEnd:nil];
     }
+    
+    [self showHUDForAchievementsDownload];
 }
 
 - (void) renderAchievements {
@@ -122,6 +146,7 @@
                     CGRect frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);
                     
                     UIImageView* iv_achievement = [[[UIImageView alloc] initWithFrame:frame] autorelease];
+                    iv_achievement.tag = index + 1;     // we need to add 1 because a view's tag cannot be set to 0
                     
                     // Get the image for the acheivement
                     Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
@@ -144,6 +169,19 @@
                         // show the placeholder image
                         iv_achievement.image = [UIImage imageNamed:@"mallard-original-disabled.png"];
                     }
+                    
+                    // Create gesture recognizer for the achievement to handle a single tap
+                    UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAchievement:)] autorelease];
+                    
+                    // Set required taps and number of touches
+                    [oneFingerTap setNumberOfTapsRequired:1];
+                    [oneFingerTap setNumberOfTouchesRequired:1];
+                    
+                    // Add the gesture to the achievement image view
+                    [iv_achievement addGestureRecognizer:oneFingerTap];
+                    
+                    // Enable gesture events on the achievement image view
+                    [iv_achievement setUserInteractionEnabled:YES];
                     
                     [self.sv_scrollView addSubview:iv_achievement];
                     
@@ -254,6 +292,23 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - UI Gesture Handlers
+- (void)showAchievement:(UITapGestureRecognizer *)gestureRecognizer {
+    UIImageView* iv_achievement = (UIImageView *)gestureRecognizer.view;
+    
+    int index = iv_achievement.tag - 1;
+    
+    // Get the acheivement object
+    Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
+    
+    CGRect frame = CGRectMake(20, 20, 280, 356);
+    UIAchievementView* v_achievementView = [[UIAchievementView alloc] initWithFrame:frame];
+    
+    [self.view addSubview:v_achievementView];
+    [v_achievementView release];
+    
+}
+
 #pragma mark - Navigation Bar button handler 
 - (void)onDoneButtonPressed:(id)sender {    
     [self dismissModalViewControllerAnimated:YES];
@@ -302,13 +357,36 @@
     }
 }
 
+#pragma mark -  MBProgressHUD Delegate
+-(void)hudWasHidden:(MBProgressHUD *)hud {
+    NSString* activityName = @"AchievementsViewController.hudWasHidden";
+    [self hideProgressBar];
+    
+    UIProgressHUDView* progressView = (UIProgressHUDView*)hud;
+    
+    if (progressView.didSucceed) {
+        //enumeration was sucesful
+        LOG_REQUEST(0, @"%@ Enumeration request was successful", activityName);
+        
+        [self renderAchievements];
+        
+    }
+    else {
+        //enumeration failed
+        LOG_REQUEST(0, @"%@ Enumeration request failure", activityName);
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - CloudEnumeratorDelegate
 - (void) onEnumerateComplete:(CloudEnumerator*)enumerator 
                  withResults:(NSArray *)results 
                 withUserInfo:(NSDictionary *)userInfo
 {
     if (enumerator == self.achievementCloudEnumerator) {
-        [self renderAchievements];
+        //[self renderAchievements];
+        [self hideProgressBar];
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "UIAchievementView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation UIAchievementView
 @synthesize view    = m_view;
@@ -22,6 +23,9 @@
         if (topLevelObjs == nil) {
             NSLog(@"Error, could not load UIAchievementView");
         }
+        
+        // Add rounded corners to he view frame
+//        self.view.layer.cornerRadius = 8;
         
         [self addSubview:self.view];
     }
