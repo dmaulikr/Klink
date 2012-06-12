@@ -65,6 +65,33 @@
 
 }
 
+- (void)setTitleWithString:(NSString *)title {
+    // Set Navigation bar title style with typewriter font and gold coin
+    UIImageView* iv_coin = [[UIImageView alloc] initWithFrame:CGRectMake(0, 12, 20, 20)];
+    iv_coin.image = [UIImage imageNamed:@"gold_coin.png"];
+    
+    CGSize labelSize = [title sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(27, 0, labelSize.width, 44)];
+    titleLabel.text = title;
+    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    // emboss so that the label looks OK
+    [titleLabel setShadowColor:[UIColor blackColor]];
+    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
+    
+    UIView* customTitleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 27 + labelSize.width, 44)];
+    [customTitleView addSubview:iv_coin];
+    [customTitleView addSubview:titleLabel];
+    
+    self.navigationItem.titleView = customTitleView;
+    [iv_coin release];
+    [titleLabel release];
+    [customTitleView release];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -77,20 +104,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    // Set Navigation bar title style with typewriter font
-    CGSize labelSize = [@"Leaderboard" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
-    titleLabel.text = @"Leaderboard";
-    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
-    titleLabel.textAlignment = UITextAlignmentCenter;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    // emboss so that the label looks OK
-    [titleLabel setShadowColor:[UIColor blackColor]];
-    [titleLabel setShadowOffset:CGSizeMake(0.0, -1.0)];
-    self.navigationItem.titleView = titleLabel;
-    [titleLabel release];
+    // Set Navigation bar title style with typewriter font and gold coin
+    [self setTitleWithString:@"Earned - This Week"];
 
 }
 
@@ -552,10 +567,12 @@
     if (selectedIndex == 0)
     {
         type = kWEEKLY;
+        [self setTitleWithString:@"Earned - This Week"];
     }
     else
     {
         type = kALLTIME;
+        [self setTitleWithString:@"Earned - All Time"];
     }
     
     LeaderboardRelativeTo relativeTo = [self.leaderboard.relativeto intValue];

@@ -65,6 +65,8 @@
 		522FD66C1586F36D00EEA2BD /* bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66B1586F36D00EEA2BD /* bigger.png */; };
 		522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522FD66E1586F3B800EEA2BD /* UIAchievementView.m */; };
 		522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */; };
+		522FD67C1587AA4E00EEA2BD /* gold_coin.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD67A1587AA4E00EEA2BD /* gold_coin.png */; };
+		522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */; };
 		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
 		52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */; };
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
@@ -164,8 +166,6 @@
 		5270A1E314C2372D00BE60FE /* icon-trophy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A1BD14C2372D00BE60FE /* icon-trophy@2x.png */; };
 		5270A1E414C2372D00BE60FE /* icon-twitter-t.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A1BE14C2372D00BE60FE /* icon-twitter-t.png */; };
 		5270A1E514C2372D00BE60FE /* icon-twitter-t@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A1BF14C2372D00BE60FE /* icon-twitter-t@2x.png */; };
-		52759953157C870700203B71 /* gold_coin.png in Resources */ = {isa = PBXBuildFile; fileRef = 52759951157C870700203B71 /* gold_coin.png */; };
-		52759954157C870700203B71 /* gold_coin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52759952157C870700203B71 /* gold_coin@2x.png */; };
 		52759957157C8FB900203B71 /* mallard_outline.png in Resources */ = {isa = PBXBuildFile; fileRef = 52759955157C8FB900203B71 /* mallard_outline.png */; };
 		52759958157C8FB900203B71 /* mallard_outline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52759956157C8FB900203B71 /* mallard_outline@2x.png */; };
 		5275995F157D0FD500203B71 /* banner_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 5275995D157D0FD500203B71 /* banner_red.png */; };
@@ -525,6 +525,8 @@
 		522FD66D1586F3B800EEA2BD /* UIAchievementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAchievementView.h; sourceTree = "<group>"; };
 		522FD66E1586F3B800EEA2BD /* UIAchievementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAchievementView.m; sourceTree = "<group>"; };
 		522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIAchievementView.xib; sourceTree = "<group>"; };
+		522FD67A1587AA4E00EEA2BD /* gold_coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold_coin.png; sourceTree = "<group>"; };
+		522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gold_coin@2x.png"; sourceTree = "<group>"; };
 		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
@@ -638,8 +640,6 @@
 		5270A1BD14C2372D00BE60FE /* icon-trophy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-trophy@2x.png"; sourceTree = "<group>"; };
 		5270A1BE14C2372D00BE60FE /* icon-twitter-t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t.png"; sourceTree = "<group>"; };
 		5270A1BF14C2372D00BE60FE /* icon-twitter-t@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t@2x.png"; sourceTree = "<group>"; };
-		52759951157C870700203B71 /* gold_coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gold_coin.png; sourceTree = "<group>"; };
-		52759952157C870700203B71 /* gold_coin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gold_coin@2x.png"; sourceTree = "<group>"; };
 		52759955157C8FB900203B71 /* mallard_outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mallard_outline.png; sourceTree = "<group>"; };
 		52759956157C8FB900203B71 /* mallard_outline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard_outline@2x.png"; sourceTree = "<group>"; };
 		5275995D157D0FD500203B71 /* banner_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = banner_red.png; sourceTree = "<group>"; };
@@ -1430,8 +1430,8 @@
 				522010221477387700C47C00 /* icon-bulb1@2x.png */,
 				522010231477387700C47C00 /* icon-bulb2.png */,
 				522010241477387700C47C00 /* icon-bulb2@2x.png */,
-				52759951157C870700203B71 /* gold_coin.png */,
-				52759952157C870700203B71 /* gold_coin@2x.png */,
+				522FD67A1587AA4E00EEA2BD /* gold_coin.png */,
+				522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */,
 				52759955157C8FB900203B71 /* mallard_outline.png */,
 				52759956157C8FB900203B71 /* mallard_outline@2x.png */,
 				5275995D157D0FD500203B71 /* banner_red.png */,
@@ -2549,8 +2549,6 @@
 				C542EA4F15770B4100FCBC92 /* RequestSummaryViewController.xib in Resources */,
 				C5EF37041577A787003C2B01 /* UIScoreChangeView.xib in Resources */,
 				C5EF370D1577B5D7003C2B01 /* UIScoreChangeTableViewCell.xib in Resources */,
-				52759953157C870700203B71 /* gold_coin.png in Resources */,
-				52759954157C870700203B71 /* gold_coin@2x.png in Resources */,
 				52759957157C8FB900203B71 /* mallard_outline.png in Resources */,
 				52759958157C8FB900203B71 /* mallard_outline@2x.png in Resources */,
 				5275995F157D0FD500203B71 /* banner_red.png in Resources */,
@@ -2578,6 +2576,8 @@
 				522FD66A15868D2800EEA2BD /* mallard-original@2x.png in Resources */,
 				522FD66C1586F36D00EEA2BD /* bigger.png in Resources */,
 				522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */,
+				522FD67C1587AA4E00EEA2BD /* gold_coin.png in Resources */,
+				522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

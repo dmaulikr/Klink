@@ -123,6 +123,13 @@
 
 - (void) renderWithEntry:(LeaderboardEntry*)entry forUserWithID:(NSNumber *)userID
 {
+    // Reset tableviewcell properties
+    self.userID = nil;
+    self.lbl_position.text = nil;
+    self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    self.lbl_username.text = nil;
+    self.lbl_total.text = nil;
+    
     self.leaderboardEntry = entry;
     self.userID = userID;
     [self render];

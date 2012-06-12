@@ -152,7 +152,7 @@
 - (void) renderCellOfPeopleListType:(int)peopleListType withFollowID:(NSNumber*)followID {
     // Reset tableviewcell properties
     self.followID = nil;
-    self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-highlighted.png"];
+    self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     self.lbl_username.text = nil;
     [self.btn_follow setSelected:NO];
     
