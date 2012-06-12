@@ -20,10 +20,11 @@
 @end
 
 @implementation AchievementsViewController
-@synthesize frc_achievements    = __frc_achievements;
-@synthesize userID          = m_userID;
+@synthesize frc_achievements        = __frc_achievements;
+@synthesize userID                  = m_userID;
+@synthesize loadedAchievementID     = m_loadedAchievementID;
 @synthesize achievementCloudEnumerator = m_achivementCloudEnumerator;
-@synthesize sv_scrollView   = m_sv_scrollView;
+@synthesize sv_scrollView           = m_sv_scrollView;
 
 
 //this NSFetchedResultsController will query for all draft pages
@@ -78,23 +79,31 @@
 }
 
 - (void)showHUDForAchievementsDownload {
+//    PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
+//    UIProgressHUDView* progressView = appDelegate.progressView;
+//    progressView.delegate = self;
+//    
+//    NSNumber* heartbeat = [NSNumber numberWithInt:10];
+//    
+//    //we need to construct the appropriate success, failure and progress messages for the achievements download
+//    NSString* failureMessage = @"Failed!\nCould not download awards.";
+//    NSString* successMessage = @"Success!";
+//    NSArray* progressMessage = [NSArray arrayWithObjects:@"Looking for awards...", @"Downloading awards...", @"Searching bookshelf...", @"Wow, quite the achiever...", nil];
+//    
+//    //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+//    //NSNumber* maxDisplayTime = settings.http_timeout_seconds;
+//    
+//    NSNumber* maxDisplayTime = [NSNumber numberWithInt:120];
+//    
+//    [self showDeterminateProgressBarWithMaximumDisplayTime:maxDisplayTime withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+    
     PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     UIProgressHUDView* progressView = appDelegate.progressView;
+    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
     progressView.delegate = self;
     
-    NSNumber* heartbeat = [NSNumber numberWithInt:10];
-    
-    //we need to construct the appropriate success, failure and progress messages for the achievements download
-    NSString* failureMessage = @"Failed!\nCould not download awards.";
-    NSString* successMessage = @"Success!";
-    NSArray* progressMessage = [NSArray arrayWithObjects:@"Looking for awards...", @"Downloading awards...", @"Searching bookshelf...", @"Wow, quite the achiever...", nil];
-    
-    //ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    //NSNumber* maxDisplayTime = settings.http_timeout_seconds;
-    
-    NSNumber* maxDisplayTime = [NSNumber numberWithInt:120];
-    
-    [self showDeterminateProgressBarWithMaximumDisplayTime:maxDisplayTime withHeartbeat:heartbeat onSuccessMessage:successMessage onFailureMessage:failureMessage inProgressMessages:progressMessage];
+    NSString* message = @"Looking for awards...";
+    [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
     
 }
 
@@ -281,16 +290,47 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     // Enumerate the achievements for this user
     [self enumerateAchievementsForUserWithID:self.userID];
     
-    //[self renderAchievements];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Check if the controller should open with a specific achievement loaded
+    if (self.loadedAchievementID != nil) {
+        [self showAchievementWithID:self.loadedAchievementID];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#pragma mark - Subview Handlers
+- (void)showAchievementWithID:(NSNumber *)achievementID {
+    //CGRect frame = CGRectMake(20, 20, 280, 356);
+    CGRect frame = self.view.bounds;
+    UIAchievementView* v_achievementView = [[UIAchievementView alloc] initWithFrame:frame];
+    
+    [v_achievementView renderAchievementsWithID:achievementID];
+    
+    // Animate the showing of the view
+    CATransition *loadViewIn = [CATransition animation];
+    [loadViewIn setDuration:0.5];
+    [loadViewIn setType:kCATransitionReveal];
+    [loadViewIn setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [[v_achievementView layer]addAnimation:loadViewIn forKey:kCATransitionReveal];
+    
+    [self.view addSubview:v_achievementView];
+    
+    [v_achievementView release];
+}
+
 
 #pragma mark - UI Gesture Handlers
 - (void)showAchievement:(UITapGestureRecognizer *)gestureRecognizer {
@@ -300,12 +340,9 @@
     
     // Get the acheivement object
     Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
-    
-    CGRect frame = CGRectMake(20, 20, 280, 356);
-    UIAchievementView* v_achievementView = [[UIAchievementView alloc] initWithFrame:frame];
-    
-    [self.view addSubview:v_achievementView];
-    [v_achievementView release];
+    self.loadedAchievementID = achievement.objectid;
+
+    [self showAchievementWithID:self.loadedAchievementID];
     
 }
 
@@ -385,8 +422,8 @@
                 withUserInfo:(NSDictionary *)userInfo
 {
     if (enumerator == self.achievementCloudEnumerator) {
-        //[self renderAchievements];
         [self hideProgressBar];
+        [self renderAchievements];
     }
 }
 
@@ -395,12 +432,21 @@
     AchievementsViewController* instance = [[[AchievementsViewController alloc]initWithNibName:@"AchievementsViewController" bundle:nil] autorelease];
     AuthenticationManager* authenticationManager = [AuthenticationManager instance];
     instance.userID = authenticationManager.m_LoggedInUserID;
+    instance.loadedAchievementID = nil;
     return instance;
 }
 
 + (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID {
     AchievementsViewController* instance = [[[AchievementsViewController alloc]initWithNibName:@"AchievementsViewController" bundle:nil] autorelease];
     instance.userID = userID;
+    instance.loadedAchievementID = nil;
+    return instance;
+}
+
++ (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID preloadedWithAchievementIDorNil:(NSNumber *)achievementID {
+    AchievementsViewController* instance = [[[AchievementsViewController alloc]initWithNibName:@"AchievementsViewController" bundle:nil] autorelease];
+    instance.userID = userID;
+    instance.loadedAchievementID = achievementID;
     return instance;
 }
 

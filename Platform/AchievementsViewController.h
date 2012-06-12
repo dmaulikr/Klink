@@ -12,6 +12,7 @@
 
 @interface AchievementsViewController : BaseViewController < UIScrollViewDelegate, CloudEnumeratorDelegate, NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate > {
     NSNumber*       m_userID;
+    NSNumber*       m_loadedAchievementID;
     
     CloudEnumerator* m_achivementCloudEnumerator;
     
@@ -20,11 +21,13 @@
 
 @property (nonatomic, retain) NSFetchedResultsController* frc_achievements;
 @property (atomic, retain) NSNumber* userID;
+@property (atomic, retain) NSNumber* loadedAchievementID;
 @property (nonatomic, retain) CloudEnumerator* achievementCloudEnumerator;
 
 @property (nonatomic, retain) IBOutlet UIScrollView* sv_scrollView;
 
 + (AchievementsViewController*)createInstance;
 + (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID;
++ (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID preloadedWithAchievementIDorNil:(NSNumber *)achievementID;
 
 @end
