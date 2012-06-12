@@ -912,13 +912,14 @@
         firstMessage = [NSString stringWithFormat:@"Enscribing your caption..."];
     }
     [retVal addObject:firstMessage];
-    [retVal addObject:@"Harmonizing typewriter ribbon..."];
-    [retVal addObject:@"Commence hydrofracking..."];
-    [retVal addObject:@"Releasing the Kraken..."];
-    [retVal addObject:@"Installing Hadoop..."];
+    [retVal addObject:@"Creating shipping label..."];
+    [retVal addObject:@"Balancing hormone levels..."];
+    [retVal addObject:@"Checking local traffic conditions..."];
+    [retVal addObject:@"Phoning home..."];
+    [retVal addObject:@"Unlocking communication syngeries..."];
     [retVal addObject:@"Well this is awkward..."];
     [retVal addObject:@"It usually is much faster..."];
-    [retVal addObject:@"Wilbur, we might have a problem..."];
+    [retVal addObject:@"Lucky, we might have a problem..."];
 
     return retVal;
 }
