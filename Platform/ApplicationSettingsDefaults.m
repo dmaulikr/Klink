@@ -10,7 +10,7 @@
 
 
 //this URL is to connect to BOBBY's development environment
-NSString* const default_BASEURL = @"http://98.113.133.250/bonobo/rest";
+//NSString* const default_BASEURL = @"http://98.113.133.250/bonobo/rest";
 
 //this URL is to connect to BOBBY's development environment from his internal network
 //NSString* const default_BASEURL = @"http://192.168.1.102/bonobo/rest";
