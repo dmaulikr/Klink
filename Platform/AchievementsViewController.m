@@ -146,8 +146,6 @@
                 if (index < count) {
                     // Render the achievement
                     
-                    //UIImageView* iv_achievement = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-sparky.png"]] autorelease];
-                    
                     // Setup the imageview
                     float x = leftMargin + c*(innerMargin + achievmentWidth);
                     float y = topMarginRow1 + r*(topMargin + achievmentHeight);

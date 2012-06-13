@@ -62,14 +62,12 @@
 		522FD66815868D2800EEA2BD /* mallard-original-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66215868D2800EEA2BD /* mallard-original-small.png */; };
 		522FD66915868D2800EEA2BD /* mallard-original.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66315868D2800EEA2BD /* mallard-original.png */; };
 		522FD66A15868D2800EEA2BD /* mallard-original@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66415868D2800EEA2BD /* mallard-original@2x.png */; };
-		522FD66C1586F36D00EEA2BD /* bigger.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD66B1586F36D00EEA2BD /* bigger.png */; };
 		522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522FD66E1586F3B800EEA2BD /* UIAchievementView.m */; };
 		522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */; };
 		522FD67C1587AA4E00EEA2BD /* gold_coin.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD67A1587AA4E00EEA2BD /* gold_coin.png */; };
 		522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */; };
 		522FD6841587EAB900EEA2BD /* icon-close-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6821587EAB900EEA2BD /* icon-close-highlighted.png */; };
 		522FD6851587EAB900EEA2BD /* icon-close-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6831587EAB900EEA2BD /* icon-close-highlighted@2x.png */; };
-		522FD68715881AD100EEA2BD /* mallard-goddess.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD68615881AD100EEA2BD /* mallard-goddess.png */; };
 		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
 		52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */; };
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
@@ -268,8 +266,6 @@
 		52BC827A1581A1E6009DC6C5 /* bookshelf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */; };
 		52BC82881581B755009DC6C5 /* bookshelf_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82861581B754009DC6C5 /* bookshelf_button.png */; };
 		52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */; };
-		52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */; };
-		52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */; };
 		52BC829C1582AD51009DC6C5 /* bookshelf_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */; };
 		52BC829D1582AD51009DC6C5 /* bookshelf_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
@@ -524,7 +520,6 @@
 		522FD66215868D2800EEA2BD /* mallard-original-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original-small.png"; sourceTree = "<group>"; };
 		522FD66315868D2800EEA2BD /* mallard-original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original.png"; sourceTree = "<group>"; };
 		522FD66415868D2800EEA2BD /* mallard-original@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-original@2x.png"; sourceTree = "<group>"; };
-		522FD66B1586F36D00EEA2BD /* bigger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bigger.png; sourceTree = "<group>"; };
 		522FD66D1586F3B800EEA2BD /* UIAchievementView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAchievementView.h; sourceTree = "<group>"; };
 		522FD66E1586F3B800EEA2BD /* UIAchievementView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAchievementView.m; sourceTree = "<group>"; };
 		522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIAchievementView.xib; sourceTree = "<group>"; };
@@ -532,7 +527,6 @@
 		522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gold_coin@2x.png"; sourceTree = "<group>"; };
 		522FD6821587EAB900EEA2BD /* icon-close-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-close-highlighted.png"; sourceTree = "<group>"; };
 		522FD6831587EAB900EEA2BD /* icon-close-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-close-highlighted@2x.png"; sourceTree = "<group>"; };
-		522FD68615881AD100EEA2BD /* mallard-goddess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-goddess.png"; sourceTree = "<group>"; };
 		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
@@ -755,8 +749,6 @@
 		52BC82761581A1E6009DC6C5 /* bookshelf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf@2x.png"; sourceTree = "<group>"; };
 		52BC82861581B754009DC6C5 /* bookshelf_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_button.png; sourceTree = "<group>"; };
 		52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_button@2x.png"; sourceTree = "<group>"; };
-		52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky.png"; sourceTree = "<group>"; };
-		52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-sparky@2x.png"; sourceTree = "<group>"; };
 		52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_shadow.png; sourceTree = "<group>"; };
 		52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_shadow@2x.png"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
@@ -1452,16 +1444,12 @@
 				52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */,
 				52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */,
 				52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */,
-				52BC828C1581BD4E009DC6C5 /* mallard-sparky.png */,
-				52BC828D1581BD4E009DC6C5 /* mallard-sparky@2x.png */,
 				522FD65F15868D2800EEA2BD /* mallard-original-disabled-small.png */,
 				522FD66015868D2800EEA2BD /* mallard-original-disabled.png */,
 				522FD66115868D2800EEA2BD /* mallard-original-disabled@2x.png */,
 				522FD66215868D2800EEA2BD /* mallard-original-small.png */,
 				522FD66315868D2800EEA2BD /* mallard-original.png */,
 				522FD66415868D2800EEA2BD /* mallard-original@2x.png */,
-				522FD66B1586F36D00EEA2BD /* bigger.png */,
-				522FD68615881AD100EEA2BD /* mallard-goddess.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2573,8 +2561,6 @@
 				52BC827A1581A1E6009DC6C5 /* bookshelf@2x.png in Resources */,
 				52BC82881581B755009DC6C5 /* bookshelf_button.png in Resources */,
 				52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */,
-				52BC82901581BD4E009DC6C5 /* mallard-sparky.png in Resources */,
-				52BC82911581BD4E009DC6C5 /* mallard-sparky@2x.png in Resources */,
 				52BC829C1582AD51009DC6C5 /* bookshelf_shadow.png in Resources */,
 				52BC829D1582AD51009DC6C5 /* bookshelf_shadow@2x.png in Resources */,
 				522FD66515868D2800EEA2BD /* mallard-original-disabled-small.png in Resources */,
@@ -2583,13 +2569,11 @@
 				522FD66815868D2800EEA2BD /* mallard-original-small.png in Resources */,
 				522FD66915868D2800EEA2BD /* mallard-original.png in Resources */,
 				522FD66A15868D2800EEA2BD /* mallard-original@2x.png in Resources */,
-				522FD66C1586F36D00EEA2BD /* bigger.png in Resources */,
 				522FD6711586F3CF00EEA2BD /* UIAchievementView.xib in Resources */,
 				522FD67C1587AA4E00EEA2BD /* gold_coin.png in Resources */,
 				522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */,
 				522FD6841587EAB900EEA2BD /* icon-close-highlighted.png in Resources */,
 				522FD6851587EAB900EEA2BD /* icon-close-highlighted@2x.png in Resources */,
-				522FD68715881AD100EEA2BD /* mallard-goddess.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
