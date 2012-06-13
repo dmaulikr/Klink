@@ -69,6 +69,7 @@
 		522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */; };
 		522FD6841587EAB900EEA2BD /* icon-close-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6821587EAB900EEA2BD /* icon-close-highlighted.png */; };
 		522FD6851587EAB900EEA2BD /* icon-close-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD6831587EAB900EEA2BD /* icon-close-highlighted@2x.png */; };
+		522FD68715881AD100EEA2BD /* mallard-goddess.png in Resources */ = {isa = PBXBuildFile; fileRef = 522FD68615881AD100EEA2BD /* mallard-goddess.png */; };
 		52323F1C149A6DFA0055A933 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1B149A6DFA0055A933 /* iCarousel.m */; };
 		52323F21149A6F7E0055A933 /* EditorialVotingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52323F1F149A6F7E0055A933 /* EditorialVotingViewController.m */; };
 		52323F22149A6F7E0055A933 /* EditorialVotingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52323F20149A6F7E0055A933 /* EditorialVotingViewController.xib */; };
@@ -531,6 +532,7 @@
 		522FD67B1587AA4E00EEA2BD /* gold_coin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gold_coin@2x.png"; sourceTree = "<group>"; };
 		522FD6821587EAB900EEA2BD /* icon-close-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-close-highlighted.png"; sourceTree = "<group>"; };
 		522FD6831587EAB900EEA2BD /* icon-close-highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-close-highlighted@2x.png"; sourceTree = "<group>"; };
+		522FD68615881AD100EEA2BD /* mallard-goddess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard-goddess.png"; sourceTree = "<group>"; };
 		52323F1A149A6DFA0055A933 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		52323F1B149A6DFA0055A933 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		52323F1E149A6F7E0055A933 /* EditorialVotingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorialVotingViewController.h; sourceTree = "<group>"; };
@@ -1459,6 +1461,7 @@
 				522FD66315868D2800EEA2BD /* mallard-original.png */,
 				522FD66415868D2800EEA2BD /* mallard-original@2x.png */,
 				522FD66B1586F36D00EEA2BD /* bigger.png */,
+				522FD68615881AD100EEA2BD /* mallard-goddess.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2586,6 +2589,7 @@
 				522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */,
 				522FD6841587EAB900EEA2BD /* icon-close-highlighted.png in Resources */,
 				522FD6851587EAB900EEA2BD /* icon-close-highlighted@2x.png in Resources */,
+				522FD68715881AD100EEA2BD /* mallard-goddess.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

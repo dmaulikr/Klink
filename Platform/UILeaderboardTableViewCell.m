@@ -76,7 +76,12 @@
     callback.context = context;
     UIImage* image = [imageManager downloadImage:self.leaderboardEntry.imageurl withUserInfo:nil atCallback:callback];
     if (image != nil) {
+        self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
         self.iv_profilePicture.image = image;
+    }
+    else {
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     }
     
     /*// If this entry if for the current logged in user, we need to apply special cell formatting
@@ -127,6 +132,7 @@
     self.userID = nil;
     self.lbl_position.text = nil;
     self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
     self.lbl_username.text = nil;
     self.lbl_total.text = nil;
     

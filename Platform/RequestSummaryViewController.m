@@ -197,8 +197,6 @@
         self.v_noNewAchievementContainer.hidden = YES;
         self.v_newAchievementContainer.hidden = NO;
         
-        
-        
         Achievement* firstAchievement = [achievements objectAtIndex:0];
         
         ImageManager* imageManager = [ImageManager instance];
@@ -435,7 +433,20 @@
 }
 
 - (void)showAchievements {
-    AchievementsViewController* achievementsViewController = [AchievementsViewController createInstanceForUserWithID:self.userID];
+    AchievementsViewController* achievementsViewController;
+    
+    // We need to determine if an achievement should be preloaded
+    BOOL didEarnAchievement = [self didEarnNewAchievement];
+    NSArray* achievements = [self achievementsEarnedInRequest];
+    
+    if (didEarnAchievement && [achievements count] > 0) {
+        Achievement* firstAchievement = [achievements objectAtIndex:0];
+        
+        achievementsViewController = [AchievementsViewController createInstanceForUserWithID:self.userID preloadedWithAchievementIDorNil:firstAchievement.objectid];
+    }
+    else {
+        achievementsViewController = [AchievementsViewController createInstanceForUserWithID:self.userID];
+    }
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:achievementsViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;

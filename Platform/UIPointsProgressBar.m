@@ -91,14 +91,16 @@
 }
 
 - (void)drawProgressBar {
-    
     int numCoinsTotal = [self.user.numberofpoints intValue];
-    int previousAchievement = [self.user.prevachievementthreshold intValue];
-    numCoinsTotal = numCoinsTotal - previousAchievement;
     
+    int previousAchievement = [self.user.prevachievementthreshold intValue];
     int nextAchievment = [self.user.achievementthreshold intValue];
-    nextAchievment = nextAchievment - previousAchievement;
-    //int coinsEarned = 200;  // used for testing
+    
+    if ((numCoinsTotal > previousAchievement) && (nextAchievment > previousAchievement)) {
+        numCoinsTotal = numCoinsTotal - previousAchievement;
+        nextAchievment = nextAchievment - previousAchievement;
+    }
+    
     
     float progressBarContainerWidth = self.iv_progressBarContainer.frame.size.width - kPROGRESSBARCONTAINERINSETPOINTSLABEL;
     float editorMinimumLineMidPoint = (float)self.iv_editorMinimumLine.frame.size.width / (float)2;
