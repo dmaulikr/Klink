@@ -406,7 +406,7 @@
     self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
     
-    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
+    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID isSinglePhotoAndCaption:YES];
     [self.navigationController pushViewController:fullScreenController animated:YES];
 }
 

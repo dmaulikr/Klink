@@ -29,6 +29,7 @@
     UILabel*        m_lbl_numPublishedVotes;
     UIImageView*    m_iv_publishedStamp;
     UIImageView*    m_iv_votedStamp;
+    UIButton*       m_btn_zoomOutPhoto;
     
 }
 
@@ -52,8 +53,10 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numPublishedVotes;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_publishedStamp;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_votedStamp;
+@property (nonatomic, retain) IBOutlet UIButton*        btn_zoomOutPhoto;
 
 //- (void)renderWithPageID:(NSNumber*)pageID withPollState:(NSNumber*)pollState;
 - (void)renderWithPageID:(NSNumber*)pageID withPollID:(NSNumber*)pollID;
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender;
 
 @end

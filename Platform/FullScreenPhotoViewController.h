@@ -37,6 +37,8 @@
     UIBarButtonItem*    m_tb_cameraButton;
     UIBarButtonItem*    m_tb_voteButton;
     UIBarButtonItem*    m_tb_captionButton;
+    
+    BOOL                m_isSinglePhotoAndCaption;
 }
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
@@ -68,11 +70,15 @@
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_voteButton;
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_captionButton;
 
+@property                             BOOL                  isSinglePhotoAndCaption;
+
 // Navigation
 - (void) updateNavigation;
+- (void) didRotate;
 
 // Static Initializer
 + (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;
 + (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber *)pageID withPhotoID:(NSNumber *)photoID withCaptionID:(NSNumber*)captionID;
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber *)pageID withPhotoID:(NSNumber *)photoID withCaptionID:(NSNumber*)captionID isSinglePhotoAndCaption:(BOOL)isSingle;
 
 @end

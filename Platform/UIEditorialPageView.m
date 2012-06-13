@@ -46,6 +46,7 @@
 @synthesize lbl_numPublishedVotes = m_lbl_numPublishedVotes;
 @synthesize iv_publishedStamp = m_iv_publishedStamp;
 @synthesize iv_votedStamp = m_iv_votedStamp;
+@synthesize btn_zoomOutPhoto = m_btn_zoomOutPhoto;
 
 
 #pragma mark - Photo Frame Helper

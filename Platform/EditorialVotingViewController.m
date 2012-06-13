@@ -21,6 +21,7 @@
 #import "ApplicationSettingsManager.h"
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
+#import "FullScreenPhotoViewController.h"
 
 @implementation EditorialVotingViewController
 @synthesize poll            = m_poll;
@@ -32,6 +33,8 @@
 //@synthesize userJustVoted   = m_userJustVoted;
 @synthesize v_votingContainerView   = m_v_votingContainerView;
 @synthesize iv_votingDraftView      = m_iv_votingDraftView;
+@synthesize btn_cancelVote          = m_btn_cancelVote;
+@synthesize btn_confirmVote         = m_btn_confirmVote;
 
 #define ITEM_SPACING 313
 //#define INCLUDE_PLACEHOLDERS YES
@@ -236,6 +239,8 @@
     self.lbl_voteStatus = nil;
     self.v_votingContainerView = nil;
     self.iv_votingDraftView = nil;
+    self.btn_cancelVote = nil;
+    self.btn_confirmVote = nil;
     
 }
 
@@ -464,6 +469,9 @@
         //[carouselItem renderWithPageID:page.objectid withPollState:self.poll.state];
         [carouselItem renderWithPageID:page.objectid withPollID:self.poll_ID];
         
+        //setup a tag on the zoom button so we can handle it up if pressed
+        [carouselItem.btn_zoomOutPhoto addTarget:self action:@selector(onZoomOutPhotoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
         [self.ic_coverFlowView addSubview:carouselItem];
         
         return carouselItem;
@@ -486,10 +494,26 @@
     
     if ([carousel itemViewAtIndex:index] == self.ic_coverFlowView.currentItemView && [self.poll.state intValue] != kCLOSED) {
         if (![self.poll.hasvoted boolValue]) {
+            UIEditorialPageView* currentDraftView = (UIEditorialPageView *)self.ic_coverFlowView.currentItemView;
+            
+            // Hide the zoom button
+            [currentDraftView.btn_zoomOutPhoto setHidden:YES];
+            
             // Create an image out of the view for the draft to be used in the voting view
-            UIView* currentDraftView = self.ic_coverFlowView.currentItemView;
             UIImage* img_votingDraft = [self imageWithView:currentDraftView];
             [self.iv_votingDraftView setImage:img_votingDraft];
+            
+            // Check if in orientationand move the vote and cancel buttons down as appropriate
+            if (self.interfaceOrientation == UIInterfaceOrientationPortrait ||
+                self.interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+                
+                self.btn_cancelVote.frame = CGRectMake(20, 409, 72, 37);
+                self.btn_confirmVote.frame = CGRectMake(228, 409, 72, 37);
+            }
+            else {
+                self.btn_cancelVote.frame = CGRectMake(20, 141, 72, 37);
+                self.btn_confirmVote.frame = CGRectMake(388, 141, 72, 37);
+            }
             
             // Fade in the vote casting view
             [self.lbl_voteStatus setAlpha:1];
@@ -530,6 +554,25 @@
             [alert release];
         }
     }
+}
+
+#pragma mark - UIButton handlers
+- (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
+    UIEditorialPageView* currentDraftView = (UIEditorialPageView *)self.ic_coverFlowView.currentItemView;
+    
+    FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:currentDraftView.pageID withPhotoID:currentDraftView.photoID withCaptionID:currentDraftView.captionID isSinglePhotoAndCaption:YES];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                   initWithTitle: @"Back" 
+                                   style: UIBarButtonItemStyleBordered
+                                   target: nil action: nil];
+    
+    [self.navigationItem setBackBarButtonItem:backButton];
+    
+    [self.navigationController pushViewController:fullScreenController animated:YES];
+    [fullScreenController didRotate];
+    
+    [backButton release];
 }
 
 #pragma mark - Vote view button handlers 
@@ -621,7 +664,12 @@
 
 }
 
-- (IBAction)cancelVoteButtonPressed:(id)sender {    
+- (IBAction)cancelVoteButtonPressed:(id)sender {
+    UIEditorialPageView* currentDraftView = (UIEditorialPageView *)self.ic_coverFlowView.currentItemView;
+    
+    // Unhide the zoom button
+    [currentDraftView.btn_zoomOutPhoto setHidden:NO];
+    
     // Fade out the vote casting view
     [self.lbl_voteStatus setAlpha:0];
     [self.v_votingContainerView setAlpha:1];

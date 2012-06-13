@@ -69,6 +69,7 @@
 @synthesize tb_voteButton           = m_tb_voteButton;
 @synthesize tb_captionButton        = m_tb_captionButton;
 
+@synthesize isSinglePhotoAndCaption = m_isSinglePhotoAndCaption;
 
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
@@ -93,7 +94,7 @@
     //add predicate to gather only photos for this pageID
     NSPredicate* predicate;
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    if ([draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kPUBLISHED || self.isSinglePhotoAndCaption == YES) {
         // if this draft has been published, we need to grab only the specific photo and caption requested
         predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", THEMEID, self.pageID, OBJECTID, self.photoID];
     }
@@ -150,7 +151,7 @@
     //add predicate to gather only photos for this pageID
     NSPredicate* predicate;
     Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
-    if ([draft.state intValue] == kPUBLISHED) {
+    if ([draft.state intValue] == kPUBLISHED || self.isSinglePhotoAndCaption == YES) {
         // if this draft has been published, we need to grab only the specific photo and caption requested
         predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K=%@", PHOTOID, self.photoID, OBJECTID, self.captionID];
     }
@@ -787,19 +788,15 @@
 {
     [super viewDidLoad];    
     
-    // Add flag for review button to navigation bar
-    /*UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
-                                    initWithImage:[UIImage imageNamed:@"icon-flag.png"]
-                                    style:UIBarButtonItemStyleBordered
-                                    target:self
-                                    action:@selector(onFlagButtonPressed:)];*/
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
-                                    initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                    target:self
-                                    action:@selector(onFlagButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    [rightButton release];
-  
+    if (self.isSinglePhotoAndCaption == NO) {
+        // The draft is still active. Add flag for review button to navigation bar
+        UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                        initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                        target:self
+                                        action:@selector(onFlagButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = rightButton;
+        [rightButton release];
+    }
     
 }
 
@@ -1621,6 +1618,7 @@
     FullScreenPhotoViewController* photoViewController = [[FullScreenPhotoViewController alloc]initWithNibName:@"FullScreenPhotoViewController" bundle:nil];
     photoViewController.pageID = pageID;
     photoViewController.photoID = photoID;
+    photoViewController.isSinglePhotoAndCaption = NO;
     [photoViewController autorelease];
     return photoViewController;
 }
@@ -1629,6 +1627,16 @@
 {
     FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID];
     photoViewController.captionID = captionID;
+    photoViewController.isSinglePhotoAndCaption = NO;
+    return photoViewController;
+    
+}
+
++ (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber *)pageID withPhotoID:(NSNumber *)photoID withCaptionID:(NSNumber*)captionID isSinglePhotoAndCaption:(BOOL)isSingle
+{
+    FullScreenPhotoViewController* photoViewController = [FullScreenPhotoViewController createInstanceWithPageID:pageID withPhotoID:photoID];
+    photoViewController.captionID = captionID;
+    photoViewController.isSinglePhotoAndCaption = isSingle;
     return photoViewController;
     
 }

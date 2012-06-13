@@ -24,6 +24,8 @@
     
     UIView*         m_v_votingContainerView;
     UIImageView*    m_iv_votingDraftView;
+    UIButton*       m_btn_cancelVote;
+    UIButton*       m_btn_confirmVote;
     
 }
 
@@ -39,6 +41,8 @@
 
 @property (nonatomic, retain) IBOutlet UIView*              v_votingContainerView;
 @property (nonatomic, retain) IBOutlet UIImageView*         iv_votingDraftView;
+@property (nonatomic, retain) IBOutlet UIButton*            btn_cancelVote;
+@property (nonatomic, retain) IBOutlet UIButton*            btn_confirmVote;
 
 - (IBAction)voteButtonPressed:(id)sender;
 - (IBAction)cancelVoteButtonPressed:(id)sender;
