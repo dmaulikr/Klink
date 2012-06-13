@@ -146,8 +146,6 @@
                 if (index < count) {
                     // Render the achievement
                     
-                    //UIImageView* iv_achievement = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-sparky.png"]] autorelease];
-                    
                     // Setup the imageview
                     float x = leftMargin + c*(innerMargin + achievmentWidth);
                     float y = topMarginRow1 + r*(topMargin + achievmentHeight);
@@ -156,6 +154,7 @@
                     
                     UIImageView* iv_achievement = [[[UIImageView alloc] initWithFrame:frame] autorelease];
                     iv_achievement.tag = index + 1;     // we need to add 1 because a view's tag cannot be set to 0
+                    iv_achievement.contentMode = UIViewContentModeScaleAspectFit;
                     
                     // Get the image for the acheivement
                     Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
@@ -201,6 +200,8 @@
                 else {
                     // Now render a placeholder mallard for the next mallard to be achieved
                     UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-original-disabled.png"]] autorelease];
+                    //UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-goddess.png"]] autorelease];
+                    iv_placeholder.contentMode = UIViewContentModeScaleAspectFit;
                     float x = leftMargin + (remainderColumns)*(innerMargin + achievmentWidth);
                     float y = topMarginRow1 + r*(topMargin + achievmentHeight);
                     iv_placeholder.frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);

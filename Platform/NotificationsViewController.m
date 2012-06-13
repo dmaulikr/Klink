@@ -21,6 +21,7 @@
 #import "ProfileViewController.h"
 #import "WebViewController.h"
 #import "AchievementsViewController.h"
+#import "Achievement.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 #define kUSERREGEX @"\\{.*?\\}"
@@ -286,6 +287,8 @@
 #define kDRAFT      @"draft"
 #define kUSER       @"user"
 #define kMESSAGE    @"message"
+#define kACHIEVEMENT    @"achievement"
+
 
 - (void) processClickOfNewVoteNotification:(Feed*)notification {
     NSString* activityName = @"NotificationsViewController.processClickOfNewVoteNotification:";
@@ -410,8 +413,23 @@
 - (void) processGenericAchievementNotification:(Feed*)notification
 {
     //NSString* activityName = @"NotificationViewController.processGenericAchievementNotification:";
+    NSArray* feedObjects = notification.feeddata;
+    NSNumber* achievementID = nil;
     
-    AchievementsViewController* avc = [AchievementsViewController createInstance];
+    for (FeedData* fd in feedObjects) {
+        if ([fd.key isEqualToString:kACHIEVEMENT]) {
+            achievementID = fd.objectid;
+            break;
+        }
+    }
+    
+    // Get the userID from the achievement object
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Achievement* achievement = (Achievement *)[resourceContext resourceWithType:ACHIEVEMENT withID:achievementID];
+    NSNumber* userID = achievement.userid;
+    
+    //AchievementsViewController* avc = [AchievementsViewController createInstance];
+    AchievementsViewController* avc = [AchievementsViewController createInstanceForUserWithID:userID preloadedWithAchievementIDorNil:achievementID];
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:avc];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentModalViewController:navigationController animated:YES];

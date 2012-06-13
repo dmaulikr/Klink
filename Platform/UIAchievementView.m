@@ -40,6 +40,12 @@
         
         // Add rounded corners to the view background
         self.v_background.layer.cornerRadius = 8;
+        
+//        // Add shadow to the view
+//        self.v_background.layer.shadowColor = [UIColor blackColor].CGColor;
+//        self.v_background.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+//        self.v_background.layer.shadowOpacity = 0.7;   
+//        self.v_background.layer.shadowRadius = 5.0;
     }
     return self;
 }
