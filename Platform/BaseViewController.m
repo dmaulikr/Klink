@@ -613,7 +613,11 @@
     LOG_BASEVIEWCONTROLLER(0,@"%@Unknown request failure",activityName);
 }
 - (void) onAuthenticationFailed:(CallbackResult*)result {
-   // NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
+    NSString* activityName = @"BaseViewController.onAuthenticationFailed:";
+   
+    AuthenticationManager* authenticationmanager = [AuthenticationManager instance];
+    [authenticationmanager logoff];
+    [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:nil onFailureCallback:nil];
     //we handle an authentication failed by requiring they authenticate again against facebook
 //    if ( [self isViewLoaded] && self.view.window) {
 //        // we only process if this view controller is on top
