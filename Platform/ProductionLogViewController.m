@@ -633,6 +633,7 @@
     
     //[self pageShowView:self.view duration:0.5];
     
+    [self updateVisibleCells];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

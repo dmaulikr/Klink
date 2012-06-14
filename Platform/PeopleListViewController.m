@@ -214,6 +214,13 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self updateVisibleCells];
+}
+
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
@@ -359,6 +366,22 @@
         
         [self.navigationController pushViewController:profileViewController animated:YES];
     }
+}
+
+- (void)updateVisibleCells {
+    NSArray* visibleCells = [self.tbl_peopleList visibleCells];
+    
+    UIPeopleListTableViewCell* peopleListCell;
+    
+    for (int i = 0; i < [visibleCells count]; i++) {
+        peopleListCell = [visibleCells objectAtIndex:i];
+        
+        [peopleListCell renderProfilePic];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self updateVisibleCells];
 }
 
 #pragma mark - Follow Button Handlers

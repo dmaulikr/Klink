@@ -27,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet UIButton*        btn_follow;
 
 - (void) renderCellOfPeopleListType:(int)peopleListType withFollowID:(NSNumber*)followID;
+- (void) renderProfilePic;
 
 + (NSString*) cellIdentifier;
 

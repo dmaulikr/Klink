@@ -62,7 +62,22 @@
     // Configure the view for the selected state
 }
 
-- (void) renderProfilePicWithImageURL:(NSString*)imageURL {
+//- (void) renderProfilePicWithImageURL:(NSString*)imageURL {
+- (void) renderProfilePic {
+    NSString* imageURL;
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Follow* follow = (Follow*)[resourceContext resourceWithType:FOLLOW withID:self.followID];
+    
+    if (follow != nil) {
+        if (self.listType == kFOLLOWING) {
+            imageURL = follow.userimageurl;
+        }
+        else {
+            imageURL = follow.followerimageurl;
+        }
+    }
+    
     ImageManager* imageManager = [ImageManager instance];
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.followID forKey:kFOLLOWID];
     
@@ -97,7 +112,8 @@
     if (follow != nil) {
         if (self.listType == kFOLLOWING) {
             self.lbl_username.text = follow.username;
-            [self renderProfilePicWithImageURL:follow.userimageurl];
+            //[self renderProfilePicWithImageURL:follow.userimageurl];
+            //[self renderProfilePic];
             
             //set the appropriate state for the follow button
             if ([authenticationManager isUserAuthenticated] && ([loggedInUserID longValue] != [follow.userid longValue])) {
@@ -122,7 +138,8 @@
         }
         else {
             self.lbl_username.text = follow.followername;
-            [self renderProfilePicWithImageURL:follow.followerimageurl];
+            //[self renderProfilePicWithImageURL:follow.followerimageurl];
+            //[self renderProfilePic];
             
             //set the appropriate state for the follow button
             if ([authenticationManager isUserAuthenticated] && ([loggedInUserID longValue] != [follow.followeruserid longValue])) {
@@ -152,6 +169,7 @@
 - (void) renderCellOfPeopleListType:(int)peopleListType withFollowID:(NSNumber*)followID {
     // Reset tableviewcell properties
     self.followID = nil;
+    self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
     self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
     self.lbl_username.text = nil;
     [self.btn_follow setSelected:NO];
