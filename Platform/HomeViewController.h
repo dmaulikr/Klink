@@ -66,6 +66,8 @@
 
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_numContributors;
 
+- (IBAction)onInfoButtonPressed:(id)sender;
+
 + (HomeViewController*) createInstance;
 + (HomeViewController*) createInstanceWithUserID:(NSNumber*)userID;
 

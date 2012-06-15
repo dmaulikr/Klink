@@ -28,6 +28,7 @@
 #import "NotificationsViewController.h"
 #import "DateTimeHelper.h"
 #import "LoginViewController.h"
+#import "UITutorialView.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -759,6 +760,12 @@
 }
 
 #pragma mark - Button Handlers
+- (IBAction)onInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
+
 #pragma mark Navigation Button Handlers
 - (IBAction) onHomeButtonPressed:(id)sender {
     // Setup the typewriter animation

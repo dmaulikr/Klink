@@ -136,6 +136,7 @@
 - (IBAction) onFollowersButtonPressed:(id)sender;
 - (IBAction) onFollowingButtonPressed:(id)sender;
 - (IBAction) onFollowButtonPressed:(id)sender;
+- (IBAction)onInfoButtonPressed:(id)sender;
 
 
 - (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;

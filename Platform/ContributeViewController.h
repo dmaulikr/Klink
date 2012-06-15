@@ -115,6 +115,7 @@
 - (IBAction)onCameraButtonPressed:(id)sender;
 - (void)onSubmitButtonPressed:(id)sender;
 - (void)onCancelButtonPressed:(id)sender;
+- (IBAction)onInfoButtonPressed:(id)sender;
 
 + (ContributeViewController*) createInstanceForNewDraft;
 + (ContributeViewController*) createInstanceForNewPhotoWithPageID:(NSNumber*)pageID;

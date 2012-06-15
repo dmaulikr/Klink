@@ -23,6 +23,7 @@
 #import "LeaderboardRelativeTo.h"
 #import "LeaderboardViewController.h"
 #import "AchievementsViewController.h"
+#import "UITutorialView.h"
 
 #define kUSERID                    @"userid"
 
@@ -1072,6 +1073,11 @@
     [navigationController release];
 }
 
+- (IBAction)onInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
 
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {

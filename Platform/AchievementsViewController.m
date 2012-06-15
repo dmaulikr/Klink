@@ -201,7 +201,9 @@
                     // Now render a placeholder mallard for the next mallard to be achieved
                     UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-original-disabled.png"]] autorelease];
                     //UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-goddess.png"]] autorelease];
+                    iv_placeholder.tag = index + 1;     // we need to add 1 because a view's tag cannot be set to 0
                     iv_placeholder.contentMode = UIViewContentModeScaleAspectFit;
+                    
                     float x = leftMargin + (remainderColumns)*(innerMargin + achievmentWidth);
                     float y = topMarginRow1 + r*(topMargin + achievmentHeight);
                     iv_placeholder.frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);
@@ -210,6 +212,31 @@
                 }
             }
         }
+    }
+    else {
+        // Render a single placeholder mallard for the first mallard to be achieved
+        UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-original-disabled.png"]] autorelease];
+        //UIImageView* iv_placeholder = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mallard-goddess.png"]] autorelease];
+        iv_placeholder.tag = 999;     // make it a large number that will never be reached
+        iv_placeholder.contentMode = UIViewContentModeScaleAspectFit;
+        float x = leftMargin;
+        float y = topMarginRow1;
+        iv_placeholder.frame = CGRectMake(x, y, achievmentWidth, achievmentHeight);
+        
+        // Create gesture recognizer for the achievement to handle a single tap
+        UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showAchievement:)] autorelease];
+        
+        // Set required taps and number of touches
+        [oneFingerTap setNumberOfTapsRequired:1];
+        [oneFingerTap setNumberOfTouchesRequired:1];
+        
+        // Add the gesture to the achievement image view
+        [iv_placeholder addGestureRecognizer:oneFingerTap];
+        
+        // Enable gesture events on the achievement image view
+        [iv_placeholder setUserInteractionEnabled:YES];
+        
+        [self.sv_scrollView addSubview:iv_placeholder];
     }
     
     // Update the scroll view size based on the number of achievments shown
@@ -318,7 +345,18 @@
     CGRect frame = self.view.bounds;
     UIAchievementView* v_achievementView = [[UIAchievementView alloc] initWithFrame:frame];
     
-    [v_achievementView renderAchievementsWithID:achievementID];
+    if (achievementID == nil) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+        
+        int nextAchievment = [user.achievementthreshold intValue];
+        
+        v_achievementView.lbl_description.text = [NSString stringWithFormat:@"You will recieve this award at %d gold coins.", nextAchievment];
+        v_achievementView.lbl_title.text = @"Next Award";
+    }
+    else {
+        [v_achievementView renderAchievementsWithID:achievementID];
+    }
     
     // Animate the showing of the view
     CATransition *loadViewIn = [CATransition animation];
@@ -339,9 +377,17 @@
     
     int index = iv_achievement.tag - 1;
     
-    // Get the acheivement object
-    Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
-    self.loadedAchievementID = achievement.objectid;
+    int count = [[self.frc_achievements fetchedObjects] count];
+    
+    if (count > 0 && index >= 0) {
+        // Get the acheivement object
+        Achievement* achievement = [[self.frc_achievements fetchedObjects] objectAtIndex:index];
+        self.loadedAchievementID = achievement.objectid;
+    }
+    else {
+        // User has not recieved an acheivment yet
+        self.loadedAchievementID = nil;
+    }
 
     [self showAchievementWithID:self.loadedAchievementID];
     

@@ -275,6 +275,16 @@
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EFF38415673C0000962F3A /* UIPointsProgressBar.m */; };
 		52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */; };
+		52F640DE158A93E100AD61D0 /* arrow-leftDown-scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640D6158A93E100AD61D0 /* arrow-leftDown-scetched.png */; };
+		52F640DF158A93E100AD61D0 /* arrow-leftDown-scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640D7158A93E100AD61D0 /* arrow-leftDown-scetched@2x.png */; };
+		52F640E0158A93E100AD61D0 /* arrow-leftUp-scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640D8158A93E100AD61D0 /* arrow-leftUp-scetched.png */; };
+		52F640E1158A93E100AD61D0 /* arrow-leftUp-scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640D9158A93E100AD61D0 /* arrow-leftUp-scetched@2x.png */; };
+		52F640E2158A93E100AD61D0 /* arrow-rightDown-scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640DA158A93E100AD61D0 /* arrow-rightDown-scetched.png */; };
+		52F640E3158A93E100AD61D0 /* arrow-rightDown-scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640DB158A93E100AD61D0 /* arrow-rightDown-scetched@2x.png */; };
+		52F640E4158A93E100AD61D0 /* arrow-rightUp-scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640DC158A93E100AD61D0 /* arrow-rightUp-scetched.png */; };
+		52F640E5158A93E100AD61D0 /* arrow-rightUp-scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F640DD158A93E100AD61D0 /* arrow-rightUp-scetched@2x.png */; };
+		52F640E7158AA41B00AD61D0 /* UITutorialViewContribute.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F640E6158AA41B00AD61D0 /* UITutorialViewContribute.xib */; };
+		52F640EA158AA51A00AD61D0 /* UITutorialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F640E9158AA51A00AD61D0 /* UITutorialView.m */; };
 		52F91400147511D7007E0016 /* UIProductionLogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */; };
 		52F91402147511F6007E0016 /* UIProductionLogTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */; };
 		C507BC7E1459811A004D9359 /* FeedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C507BC7D1459811A004D9359 /* FeedManager.m */; };
@@ -761,6 +771,17 @@
 		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
 		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
 		52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPointsProgressBar.xib; sourceTree = "<group>"; };
+		52F640D6158A93E100AD61D0 /* arrow-leftDown-scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-leftDown-scetched.png"; sourceTree = "<group>"; };
+		52F640D7158A93E100AD61D0 /* arrow-leftDown-scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-leftDown-scetched@2x.png"; sourceTree = "<group>"; };
+		52F640D8158A93E100AD61D0 /* arrow-leftUp-scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-leftUp-scetched.png"; sourceTree = "<group>"; };
+		52F640D9158A93E100AD61D0 /* arrow-leftUp-scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-leftUp-scetched@2x.png"; sourceTree = "<group>"; };
+		52F640DA158A93E100AD61D0 /* arrow-rightDown-scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-rightDown-scetched.png"; sourceTree = "<group>"; };
+		52F640DB158A93E100AD61D0 /* arrow-rightDown-scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-rightDown-scetched@2x.png"; sourceTree = "<group>"; };
+		52F640DC158A93E100AD61D0 /* arrow-rightUp-scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-rightUp-scetched.png"; sourceTree = "<group>"; };
+		52F640DD158A93E100AD61D0 /* arrow-rightUp-scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-rightUp-scetched@2x.png"; sourceTree = "<group>"; };
+		52F640E6158AA41B00AD61D0 /* UITutorialViewContribute.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewContribute.xib; sourceTree = "<group>"; };
+		52F640E8158AA51900AD61D0 /* UITutorialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITutorialView.h; sourceTree = "<group>"; };
+		52F640E9158AA51A00AD61D0 /* UITutorialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITutorialView.m; sourceTree = "<group>"; };
 		52F913FE147511D7007E0016 /* UIProductionLogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIProductionLogTableViewCell.h; sourceTree = "<group>"; };
 		52F913FF147511D7007E0016 /* UIProductionLogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIProductionLogTableViewCell.m; sourceTree = "<group>"; };
 		52F91401147511F6007E0016 /* UIProductionLogTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIProductionLogTableViewCell.xib; sourceTree = "<group>"; };
@@ -1450,6 +1471,14 @@
 				522FD66215868D2800EEA2BD /* mallard-original-small.png */,
 				522FD66315868D2800EEA2BD /* mallard-original.png */,
 				522FD66415868D2800EEA2BD /* mallard-original@2x.png */,
+				52F640D6158A93E100AD61D0 /* arrow-leftDown-scetched.png */,
+				52F640D7158A93E100AD61D0 /* arrow-leftDown-scetched@2x.png */,
+				52F640D8158A93E100AD61D0 /* arrow-leftUp-scetched.png */,
+				52F640D9158A93E100AD61D0 /* arrow-leftUp-scetched@2x.png */,
+				52F640DA158A93E100AD61D0 /* arrow-rightDown-scetched.png */,
+				52F640DB158A93E100AD61D0 /* arrow-rightDown-scetched@2x.png */,
+				52F640DC158A93E100AD61D0 /* arrow-rightUp-scetched.png */,
+				52F640DD158A93E100AD61D0 /* arrow-rightUp-scetched@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2028,6 +2057,9 @@
 				522FD66D1586F3B800EEA2BD /* UIAchievementView.h */,
 				522FD66E1586F3B800EEA2BD /* UIAchievementView.m */,
 				522FD6701586F3CF00EEA2BD /* UIAchievementView.xib */,
+				52F640E8158AA51900AD61D0 /* UITutorialView.h */,
+				52F640E9158AA51A00AD61D0 /* UITutorialView.m */,
+				52F640E6158AA41B00AD61D0 /* UITutorialViewContribute.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2574,6 +2606,15 @@
 				522FD67D1587AA4E00EEA2BD /* gold_coin@2x.png in Resources */,
 				522FD6841587EAB900EEA2BD /* icon-close-highlighted.png in Resources */,
 				522FD6851587EAB900EEA2BD /* icon-close-highlighted@2x.png in Resources */,
+				52F640DE158A93E100AD61D0 /* arrow-leftDown-scetched.png in Resources */,
+				52F640DF158A93E100AD61D0 /* arrow-leftDown-scetched@2x.png in Resources */,
+				52F640E0158A93E100AD61D0 /* arrow-leftUp-scetched.png in Resources */,
+				52F640E1158A93E100AD61D0 /* arrow-leftUp-scetched@2x.png in Resources */,
+				52F640E2158A93E100AD61D0 /* arrow-rightDown-scetched.png in Resources */,
+				52F640E3158A93E100AD61D0 /* arrow-rightDown-scetched@2x.png in Resources */,
+				52F640E4158A93E100AD61D0 /* arrow-rightUp-scetched.png in Resources */,
+				52F640E5158A93E100AD61D0 /* arrow-rightUp-scetched@2x.png in Resources */,
+				52F640E7158AA41B00AD61D0 /* UITutorialViewContribute.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2771,6 +2812,7 @@
 				C5E1F0CD15791283004310A0 /* ScoreJustification.m in Sources */,
 				52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */,
 				522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */,
+				52F640EA158AA51A00AD61D0 /* UITutorialView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

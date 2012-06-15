@@ -58,6 +58,8 @@
 - (IBAction) onPageButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;
 - (void) resetRefreshTableHeaderToNormalPosition;
+- (IBAction)onInfoButtonPressed:(id)sender;
+
 + (ProductionLogViewController*)createInstance;
 
 @end

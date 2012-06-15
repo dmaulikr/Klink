@@ -27,6 +27,8 @@
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "RequestSummaryViewController.h"
+#import "UITutorialView.h"
+
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
 #define kPHOTOFRAMETHICKNESS    30
@@ -823,6 +825,12 @@
 }
 
 #pragma mark - Button Handlers
+- (IBAction)onInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
+
 #pragma mark Photo "Camera" button handler
 - (IBAction)onCameraButtonPressed:(id)sender {    
     self.cameraActionSheet = [UICameraActionSheet createCameraActionSheet];
