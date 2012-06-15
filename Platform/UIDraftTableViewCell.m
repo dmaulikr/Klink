@@ -7,6 +7,8 @@
 //
 
 #import "UIDraftTableViewCell.h"
+#import "User.h"
+#import "Page.h"
 #import "Photo.h"
 #import "Caption.h"
 #import "Types.h"
@@ -17,6 +19,9 @@
 #import "ImageDownloadResponse.h"
 #import "Macros.h"
 #import "UIImageView+UIImageViewCategory.h"
+#import "DateTimeHelper.h"
+#import "AuthenticationManager.h"
+#import "PageState.h"
 
 #define kPHOTOID                    @"photoid"
 #define kCAPTIONID                  @"captionid"
@@ -40,7 +45,18 @@
 @synthesize iv_unreadCaptionBadge   = m_iv_unreadCaptionBadge;
 @synthesize btn_writtenBy           = m_btn_writtenBy;
 @synthesize btn_illustratedBy       = m_btn_illustratedBy;
+@synthesize btn_vote                = m_btn_vote;
+@synthesize btn_caption             = m_btn_caption;
 
+#pragma mark - Property Definitions
+- (id)delegate {
+    return m_delegate;
+}
+
+- (void)setDelegate:(id<UIDraftTableViewCellDelegate>)del
+{
+    m_delegate = del;
+}
 
 #pragma mark - Photo Frame Helper
 - (void) displayPhotoFrameOnImage:(UIImage*)image {
@@ -77,6 +93,53 @@
 }
 
 #pragma mark - Instance Methods
+- (void) disableVoteButton {
+    self.btn_vote.enabled = NO;
+}
+
+- (void) enableVoteButton {
+    self.btn_vote.enabled = YES;
+}
+
+- (void) enableDisableVoteButton {
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:caption.pageid];
+    
+    NSDate* deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+    
+    AuthenticationManager* authenticationManager = [AuthenticationManager instance];
+    NSNumber* loggedInUserID = authenticationManager.m_LoggedInUserID;
+    
+    User* loggedInUser = (User *)[resourceContext resourceWithType:USER withID:loggedInUserID];
+    
+    
+    if ([caption.hasvoted boolValue] == YES) {
+        [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp-highlighted.png"] forState:UIControlStateDisabled];
+    }
+    else {
+        [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
+    }
+    
+    if (loggedInUser.objectid && [loggedInUser.objectid isEqualToNumber:caption.creatorid]) {
+        // if this caption belongs to the currently logged in user, we then disable the voting button
+        [self disableVoteButton];
+        [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
+    }
+    else if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
+        // if this draft has expired, we need to disable the the vote buttons
+        [self disableVoteButton];
+    }
+    else if ([caption.hasvoted boolValue] == YES) {
+        [self disableVoteButton];
+    }
+    else {
+        [self enableVoteButton];
+    }
+}
+
 - (void)render {
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -86,6 +149,9 @@
     self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
     
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
+    
+    self.photoID = caption.photoid;
+    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
     
     if (caption != nil) {
         // Update unread flag
@@ -111,6 +177,9 @@
         }
         
         self.lbl_numVotes.text = [caption.numberofvotes stringValue];
+        [self.btn_vote setTitle:[caption.numberofvotes stringValue] forState:UIControlStateNormal];
+        
+        [self enableDisableVoteButton];
         
     }
     else {
@@ -122,11 +191,6 @@
     //self.lbl_captionby.text = [NSString stringWithFormat:@"- written by"];
     //[self.btn_writtenBy setTitle:[NSString stringWithFormat:@"%@",caption.creatorname] forState:UIControlStateNormal];
     //[self.btn_writtenBy renderWithObjectID:caption.creatorid withName:caption.creatorname];
-    
-    
-    self.photoID = caption.photoid;
-    
-    Photo* photo = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];
     
     if (photo != nil) {        
         ImageManager* imageManager = [ImageManager instance];
@@ -188,11 +252,16 @@
 - (void) renderWithCaptionID:(NSNumber*)captiondid
 {   
     self.captionID = captiondid;
+    
+    self.btn_vote.enabled = YES;
+    
     [self render];
 }
 
 - (void)renderWithPhotoID:(NSNumber*)photoID {
     self.photoID = photoID;
+    
+    self.btn_vote.enabled = YES;
     
     [self render];
 }
@@ -226,6 +295,19 @@
         
         [self.contentView addSubview:self.btn_writtenBy];
         [self.contentView addSubview:self.btn_illustratedBy];
+        [self.contentView addSubview:self.btn_vote];
+        [self.contentView addSubview:self.btn_caption];
+        
+        UIImage* buttonImageNormal = [[UIImage imageNamed:@"button_roundrect_brown.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
+        UIImage* buttonImageHighlighted = [[UIImage imageNamed:@"button_roundrect_brown_highlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
+        [self.btn_vote setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+        [self.btn_vote setBackgroundImage:buttonImageHighlighted forState:UIControlStateHighlighted];
+        [self.btn_vote setBackgroundImage:buttonImageHighlighted forState:UIControlStateSelected];
+        [self.btn_vote setBackgroundImage:buttonImageHighlighted forState:UIControlStateDisabled];
+        [self.btn_caption setBackgroundImage:buttonImageNormal forState:UIControlStateNormal];
+        [self.btn_caption setBackgroundImage:buttonImageHighlighted forState:UIControlStateHighlighted];
+        [self.btn_caption setBackgroundImage:buttonImageHighlighted forState:UIControlStateSelected];
+        [self.btn_caption setBackgroundImage:buttonImageHighlighted forState:UIControlStateDisabled];
         
     }
     return self;
@@ -255,11 +337,23 @@
     self.iv_unreadCaptionBadge = nil;
     self.btn_illustratedBy = nil;
     self.btn_writtenBy = nil;
+    self.btn_vote = nil;
+    self.btn_caption = nil;
     
     [super dealloc];
 
 }
 
+#pragma mark - UIButton Handlers
+- (IBAction) onCaptionButtonPressed:(id)sender {
+    [self.delegate onCaptionButtonPressedForPhotoWithID:self.photoID];
+}
+
+- (IBAction) onVoteButtonPressed:(id)sender {
+    [self.btn_vote setSelected:YES];
+    
+    [self.delegate onVoteButtonPressedForCaptionWithID:self.captionID];
+}
 
 #pragma mark - Async callbacks
 - (void)onImageDownloadComplete:(CallbackResult*)result {

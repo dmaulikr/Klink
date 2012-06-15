@@ -10,7 +10,16 @@
 #import "CloudEnumerator.h"
 #import "UIResourceLinkButton.h"
 
+@protocol UIDraftTableViewCellDelegate
+
+@required
+- (void) onCaptionButtonPressedForPhotoWithID:(NSNumber *)photoID;
+- (void) onVoteButtonPressedForCaptionWithID:(NSNumber *)captionID;
+@end
+
 @interface UIDraftTableViewCell : UITableViewCell {
+    id<UIDraftTableViewCellDelegate> m_delegate;
+    
     NSNumber*       m_photoID;
     NSNumber*       m_captionID;
     
@@ -27,8 +36,12 @@
     UILabel*                    m_lbl_captionby;
     UILabel*                    m_lbl_numVotes;
     UIImageView*                m_iv_unreadCaptionBadge;
+    UIButton*                   m_btn_vote;
+    UIButton*                   m_btn_caption;
     
 }
+
+@property (assign) id<UIDraftTableViewCellDelegate> delegate;
 
 @property (nonatomic, retain) NSNumber* photoID;
 @property (nonatomic, retain) NSNumber* captionID;
@@ -45,10 +58,14 @@
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_captionby;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_numVotes;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_unreadCaptionBadge;
+@property (nonatomic, retain) IBOutlet UIButton*        btn_vote;
+@property (nonatomic, retain) IBOutlet UIButton*        btn_caption;
 
 
 - (void) renderWithCaptionID:(NSNumber*)captionid;
 - (void) renderWithPhotoID:(NSNumber*)photoID;
+- (IBAction) onCaptionButtonPressed:(id)sender;
+- (IBAction) onVoteButtonPressed:(id)sender;
 //- (IBAction) onWrittenByClicked:(id)sender;
 //- (IBAction) onIllustratedByClicked:(id)sender;
 + (NSString*) cellIdentifierTop;

@@ -46,16 +46,18 @@
     PlatformAppDelegate* app = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:FOLLOW inManagedObjectContext:app.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
-    
     NSPredicate* predicate;
+    NSSortDescriptor* sortDescriptor;
+    
     if (self.listType == kFOLLOWING) {
         //we need to query for all the individuals this user is following
         predicate = [NSPredicate predicateWithFormat:@"%K=%@", FOLLOWERUSERID, self.userID];
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:USERNAME ascending:YES];
     }
     else {
         //we need to query for all the individuals that are following this user
         predicate = [NSPredicate predicateWithFormat:@"%K=%@", USERID, self.userID];
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:FOLLOWERNAME ascending:YES];
     }
     
     [fetchRequest setPredicate:predicate];
@@ -267,12 +269,12 @@
             cell = [[[UIPeopleListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[UIPeopleListTableViewCell cellIdentifier]] autorelease];
             
             //setup a tag on the follow button so we can look it up if pressed
-            //cell.btn_follow.tag = indexPath.row;
+            //cell.btn_follow.tag = indexPath.row + 1;
             [cell.btn_follow addTarget:self action:@selector(onFollowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         //setup a tag on the follow button so we can look it up if pressed
-        cell.btn_follow.tag = indexPath.row;
+        cell.btn_follow.tag = indexPath.row + 1;
         
         // Configure the cell...
         [cell renderCellOfPeopleListType:self.listType withFollowID:follow.objectid];
@@ -469,7 +471,7 @@
     [self.btn_follow setSelected:!self.btn_follow.selected];
     
     //then we determine from which row the follow button was pressed using the button tag
-    int row = self.btn_follow.tag;
+    int row = self.btn_follow.tag - 1;
     
     int followCount = [[self.frc_follows fetchedObjects]count];
     

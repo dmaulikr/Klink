@@ -311,8 +311,8 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
     
     // Setup table of contents button
-    UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"book_button_roundrect.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-    UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"book_button_roundrect_highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+    UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"button_roundrect_brown.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
+    UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"button_roundrect_brown_highlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
     [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonBackground forState:UIControlStateNormal];
     [self.btn_tableOfContentsButton setBackgroundImage:tableOfContentButtonHighlightedBackground forState:UIControlStateHighlighted];
     

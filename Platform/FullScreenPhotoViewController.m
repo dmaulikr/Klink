@@ -538,7 +538,6 @@
         [self disableVoteButton];
     }
     else if (captionCount > 0) {
-        
         if ([caption.hasvoted boolValue] == YES) {
             [self disableVoteButton];
         }
@@ -1125,8 +1124,7 @@
     
     photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
     caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
-    
-    
+    caption.hasvoted = [NSNumber numberWithBool:YES];
     
     //now we need to commit to the store
     [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
@@ -1138,7 +1136,7 @@
      //   LOG_FULLSCREENPHOTOVIEWCONTROLLER(1,@"%@Vote metadata update for photo with id: %@ and caption with id: %@ in local store",activityName,photo.objectid, caption.objectid);
     }
     
-    caption.hasvoted = [NSNumber numberWithBool:YES];
+    //caption.hasvoted = [NSNumber numberWithBool:YES];
 }
 
 
@@ -1159,7 +1157,7 @@
 //                              otherButtonTitles:@"Login", nil];
 //        [alert show];
 //        [alert release];
-        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onVoteButtonPressed:)  fireOnMainThread:YES];
         
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }

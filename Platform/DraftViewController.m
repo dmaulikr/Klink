@@ -8,7 +8,6 @@
 
 #import "DraftViewController.h"
 #import "Macros.h"
-#import "UIDraftTableViewCell.h"
 #import "DateTimeHelper.h"
 #import "CloudEnumeratorFactory.h"
 #import "AuthenticationManager.h"
@@ -26,6 +25,9 @@
 #import "NotificationsViewController.h"
 #import "ProductionLogViewController.h"
 #import "PageState.h"
+#import "ApplicationSettings.h"
+#import "RequestSummaryViewController.h"
+#import "PlatformAppDelegate.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -795,8 +797,10 @@
         if (cell == nil) 
         {
             cell = [[[UIDraftTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusableCellIdentifier]autorelease];
+            cell.delegate = self;
             [cell.btn_writtenBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.btn_illustratedBy addTarget:self action:@selector(onLinkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//            [cell.btn_vote addTarget:self action:@selector(onVoteButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         [cell renderWithCaptionID:caption.objectid];
@@ -805,6 +809,9 @@
         if ([caption.hasseen boolValue] == NO) {
             [self.viewedCaptionsArray addObject:caption];
         }
+        
+//        //setup a tag on the follow button so we can look it up if pressed
+//        cell.btn_vote.tag = indexPath.row + 1;
         
         return cell;
     }
@@ -953,7 +960,153 @@
     //}
 }
 
+#pragma mark - MBProgressHudDelegate members
+- (void) hudWasHidden:(MBProgressHUD *)hud {
+    //when the hud is hidden we need to remove it from this view
+    [self hideProgressBar];
+    
+    UIProgressHUDView* pv = (UIProgressHUDView*)hud;
+    
+    if (!pv.didSucceed) {
+        //there was an error upon submission
+        //we undo the request that was attempted to be made
+        ResourceContext* resourceContext = [ResourceContext instance];
+        [resourceContext.managedObjectContext.undoManager undo];
+        
+        NSError* error = nil;
+        [resourceContext.managedObjectContext save:&error];
+        
+        NSArray* visibleRows = [self.tbl_draftTableView indexPathsForVisibleRows];
+        
+        [self.tbl_draftTableView beginUpdates];
+        [self.tbl_draftTableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+        [self.tbl_draftTableView endUpdates]; 
+        
+    }
+    else {
+        [self.tbl_draftTableView reloadData];
+        
+        RequestSummaryViewController* rvc = [RequestSummaryViewController createForRequests:pv.requests];
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:rvc];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        
+    }
+}
+
 #pragma mark - Button Handlers
+- (void) processOnVotePressed:(NSNumber *)captionID 
+{
+    PlatformAppDelegate* appDelegate = (PlatformAppDelegate *)[[UIApplication sharedApplication] delegate];
+    UIProgressHUDView* progressView = appDelegate.progressView;
+    progressView.delegate = self;
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    //we start a new undo group here
+    [resourceContext.managedObjectContext.undoManager beginUndoGrouping];
+    
+    Caption* caption = (Caption *)[resourceContext resourceWithType:CAPTION withID:captionID];
+    Photo* photo = (Photo *)[resourceContext resourceWithType:PHOTO withID:caption.photoid];
+    
+    photo.numberofvotes = [NSNumber numberWithInt:([photo.numberofvotes intValue] + 1)];
+    caption.numberofvotes = [NSNumber numberWithInt:([caption.numberofvotes intValue] + 1)];
+    caption.hasvoted = [NSNumber numberWithBool:YES];
+    
+    //now we need to commit to the store
+    [resourceContext save:YES onFinishCallback:nil trackProgressWith:progressView];
+}
+
+//- (void) onVoteButtonPressed:(id)sender {
+//    //we check to ensure the user is logged in first
+//    if (![self.authenticationManager isUserAuthenticated]) 
+//    {
+//        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:nil fireOnMainThread:YES];
+//        
+//        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+//    }
+//    else 
+//    {
+//        UIButton* btn_vote = (UIButton*)sender;
+//        
+//        // Disable the vote button for this caption
+//        [btn_vote setSelected:!btn_vote.selected];
+//        
+//        //then we determine from which row the follow button was pressed using the button tag
+//        int row = btn_vote.tag - 1;
+//        
+//        int count = [[self.frc_captions fetchedObjects] count];
+//        
+//        if (row < count) {
+//            Caption* caption = [[self.frc_captions fetchedObjects]objectAtIndex:row];
+//            
+//            //display progress view on the submission of a vote
+//            ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+//            NSString* message = @"Casting thy approval...";
+//            [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+//            
+//            [self performSelector:@selector(processOnVotePressed:) withObject:caption.objectid afterDelay:1];
+//            
+//            NSArray* visibleRows = [self.tbl_draftTableView indexPathsForVisibleRows];
+//            
+//            [self.tbl_draftTableView beginUpdates];
+//            [self.tbl_draftTableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+//            [self.tbl_draftTableView endUpdates]; 
+//        }
+//    }
+//    
+//}
+
+- (void) onVoteButtonPressedForCaptionWithID:(NSNumber *)captionID {
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) 
+    {
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:nil fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+    }
+    else 
+    {
+        //display progress view on the submission of a vote
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
+        NSString* message = @"Casting thy approval...";
+        [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
+        
+        [self performSelector:@selector(processOnVotePressed:) withObject:captionID afterDelay:1];
+        
+        NSArray* visibleRows = [self.tbl_draftTableView indexPathsForVisibleRows];
+        
+        [self.tbl_draftTableView beginUpdates];
+        [self.tbl_draftTableView reloadRowsAtIndexPaths:visibleRows withRowAnimation:UITableViewRowAnimationNone];
+        [self.tbl_draftTableView endUpdates];
+    }
+    
+}
+
+- (void) onCaptionButtonPressedForPhotoWithID:(NSNumber *)photoID {
+    //we check to ensure the user is logged in first
+    if (![self.authenticationManager isUserAuthenticated]) {
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:nil  fireOnMainThread:YES];
+        
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+    }
+    else {
+        ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewCaptionWithPageID:self.pageID withPhotoID:photoID];
+        contributeViewController.delegate = self;
+        
+        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
+        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentModalViewController:navigationController animated:YES];
+        
+        [navigationController release];
+        [contributeViewController release];
+        
+    }
+}
+
 #pragma mark Navigation Button Handlers
 - (IBAction) onBackButtonPressed:(id)sender {
     // Setup the typewriter animation

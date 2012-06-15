@@ -11,8 +11,9 @@
 #import "EventManager.h"
 #import "CloudEnumerator.h"
 #import "EGORefreshTableHeaderView.h"
+#import "UIDraftTableViewCell.h"
 
-@interface DraftViewController : BaseViewController <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, CloudEnumeratorDelegate, UIAlertViewDelegate> {
+@interface DraftViewController : BaseViewController < UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate, CloudEnumeratorDelegate, UIAlertViewDelegate, UIProgressHUDViewDelegate, UIDraftTableViewCellDelegate > {
     NSNumber*               m_pageID;
     UIView*                 m_view;
     UILabel*                m_lbl_draftTitle;
