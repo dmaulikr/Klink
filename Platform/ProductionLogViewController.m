@@ -51,6 +51,8 @@
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
 @synthesize btn_homeButton              = m_btn_homeButton;
+@synthesize photos                      = m_photos;
+@synthesize captions                    = m_captions;
 
 
 //this NSFetchedResultsController will query for all draft pages
@@ -471,6 +473,7 @@
         prodLogCell = [visibleCells objectAtIndex:i];
         
         [prodLogCell renderPhoto];
+//        [prodLogCell renderCaption];
         [prodLogCell renderUnreadCaptions];
     }
 }
@@ -880,6 +883,34 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
 }
+
+//- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Dynamic height based on feed message size
+//    int textLabelTopMargin = 37;
+//    int textLabelBottomMargin = 14;
+//    
+//    Page* draft = [[self.frc_draft_pages fetchedObjects] objectAtIndex:[indexPath row]];
+//    
+//    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
+//    
+//    CGSize maximumSize = CGSizeMake(150, 1000);
+//    
+//    // Grab the top photo and caption
+//    Caption* caption = [draft captionWithHighestVotes];
+//    
+//    NSString* message = caption.caption1;
+//    
+//    CGSize messageSize = [message sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
+//    
+//    CGFloat height = kPRODUTIONLOGTABLEVIEWCELLHEIGHT; 
+//    
+//    if (messageSize.height > kPRODUTIONLOGTABLEVIEWCELLHEIGHT) {
+//        // Message is taller than default height
+//        height = messageSize.height + textLabelTopMargin + textLabelBottomMargin;
+//    }
+//    
+//    return height;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {    

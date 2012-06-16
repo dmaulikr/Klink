@@ -22,6 +22,7 @@
     UIButton*       m_btn_unreadCaptionsBadge;
     
     NSNumber*       m_topVotedPhotoID;
+    NSNumber*       m_topVotedCaptionID;
     
     NSDate*         m_deadline;
     
@@ -40,6 +41,7 @@
 @property (nonatomic, retain) IBOutlet UIButton*            btn_unreadCaptionsBadge;
 
 @property (nonatomic, retain)          NSNumber*            topVotedPhotoID;
+@property (nonatomic, retain)          NSNumber*            topVotedCaptionID;
 
 @property (nonatomic, retain)          NSDate*              deadline;
 
@@ -49,6 +51,7 @@
 
 - (void) renderDraftWithID:(NSNumber*)pageID;
 - (void) renderPhoto;
+- (void) renderCaption;
 - (void) renderUnreadCaptions;
 
 + (NSString*) cellIdentifier;

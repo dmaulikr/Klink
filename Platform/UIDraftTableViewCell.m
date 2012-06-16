@@ -101,7 +101,15 @@
     self.btn_vote.enabled = YES;
 }
 
-- (void) enableDisableVoteButton {
+- (void) disableCaptionButton {
+    self.btn_caption.enabled = NO;
+}
+
+- (void) enableCaptionButton {
+    self.btn_caption.enabled = YES;
+}
+
+- (void) enableDisableButtons {
     
     ResourceContext* resourceContext = [ResourceContext instance];
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
@@ -127,16 +135,20 @@
         // if this caption belongs to the currently logged in user, we then disable the voting button
         [self disableVoteButton];
         [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
+        [self enableCaptionButton];
     }
     else if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
         // if this draft has expired, we need to disable the the vote buttons
         [self disableVoteButton];
+        [self disableCaptionButton];
     }
     else if ([caption.hasvoted boolValue] == YES) {
         [self disableVoteButton];
+        [self enableCaptionButton];
     }
     else {
         [self enableVoteButton];
+        [self enableCaptionButton];
     }
 }
 
@@ -179,7 +191,7 @@
         self.lbl_numVotes.text = [caption.numberofvotes stringValue];
         [self.btn_vote setTitle:[caption.numberofvotes stringValue] forState:UIControlStateNormal];
         
-        [self enableDisableVoteButton];
+        [self enableDisableButtons];
         
     }
     else {
