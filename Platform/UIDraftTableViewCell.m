@@ -127,20 +127,23 @@
     if ([caption.hasvoted boolValue] == YES) {
         [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp-highlighted.png"] forState:UIControlStateDisabled];
     }
+    else if (loggedInUser.objectid && [loggedInUser.objectid isEqualToNumber:caption.creatorid]) {
+        [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
+    }
     else {
         [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
     }
     
-    if (loggedInUser.objectid && [loggedInUser.objectid isEqualToNumber:caption.creatorid]) {
-        // if this caption belongs to the currently logged in user, we then disable the voting button
-        [self disableVoteButton];
-        [self.btn_vote setImage:[UIImage imageNamed:@"icon-thumbUp.png"] forState:UIControlStateDisabled];
-        [self enableCaptionButton];
-    }
-    else if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
+    
+    if ([draft.state intValue] == kCLOSED || [draft.state intValue] == kPUBLISHED || [deadline compare:[NSDate date]] == NSOrderedAscending) {
         // if this draft has expired, we need to disable the the vote buttons
         [self disableVoteButton];
         [self disableCaptionButton];
+    }
+    else if (loggedInUser.objectid && [loggedInUser.objectid isEqualToNumber:caption.creatorid]) {
+        // if this caption belongs to the currently logged in user, we then disable the voting button
+        [self disableVoteButton];
+        [self enableCaptionButton];
     }
     else if ([caption.hasvoted boolValue] == YES) {
         [self disableVoteButton];
