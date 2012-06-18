@@ -75,7 +75,8 @@ static ApplicationSettingsManager* instance;
                    
         //let us susbscribe to the LoggedIn events 
         EventManager* eventManager = [EventManager instance];
-        Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:)];
+        Callback* loginCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onUserLoggedIn:) ];
+        loginCallback.fireOnMainThread = YES;
         [eventManager registerCallback:loginCallback forSystemEvent:kUSERLOGGEDIN];
         [loginCallback release];
         

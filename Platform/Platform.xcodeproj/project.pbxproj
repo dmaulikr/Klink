@@ -2331,7 +2331,7 @@
 		C593F7B6143EB191008D25A7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Blue Label Solutions LLC";
 			};
 			buildConfigurationList = C593F7B9143EB191008D25A7 /* Build configuration list for PBXProject "Platform" */;
