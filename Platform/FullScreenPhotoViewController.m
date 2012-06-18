@@ -420,12 +420,20 @@
 	navBarFrame.origin.y = statusBarHeight;
 	self.navigationController.navigationBar.frame = navBarFrame;
 	
-	// Navigation and tool bars
+	// Navigation bar
 	[self.navigationController.navigationBar setAlpha:hidden ? 0 : 1];
+    
+    // Toolbar
     [self.navigationController.toolbar setAlpha:hidden ? 0 : 1];
     
-    // Caption view slider
-    [self.captionViewSlider setAlpha:hidden ? 0 : 1];
+    if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        // Caption view slider
+        [self.captionViewSlider setAlpha:hidden ? 0 : 1];
+    }
+    else {
+        // Always ensure the caption slider is hidden in ladscape mode
+        [self.captionViewSlider setAlpha:0];
+    }
     
     // Photo metadata
     //[self.photoMetaData setAlpha:hidden ? 0 : 1];
@@ -711,7 +719,15 @@
     [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
     [self.navigationController.toolbar setTranslucent:YES];
     [self.navigationController.toolbar setTintColor:nil];
+    
+//    // If in portrait mode, make sure the landscape image view photo is not in the way
+//    if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//        [self.iv_photoLandscape setHidden:YES];
+//    }
 
+    // Adjust layout based on orientation
+    [self didRotate];
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -839,6 +855,7 @@
         //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
         //[self.navigationController.navigationBar setAlpha:0];
         //[self.navigationController.toolbar setAlpha:0];
+        [self.navigationController setToolbarHidden:YES animated:NO];
         //[self.photoMetaData setHidden:YES];
         [self.photoViewSlider setHidden:YES];
         [self.captionViewSlider setHidden:YES];
@@ -878,6 +895,19 @@
             self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
         }
         
+        // Enable the gesture recognizer for the photo image view to handle a single tap
+        UITapGestureRecognizer *oneFingerTap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleControls)] autorelease];
+        
+        // Set required taps and number of touches
+        [oneFingerTap setNumberOfTapsRequired:1];
+        [oneFingerTap setNumberOfTouchesRequired:1];
+        
+        // Add the gesture to the photo image view
+        [self.iv_photoLandscape addGestureRecognizer:oneFingerTap];
+        
+        //enable gesture events on the photo
+        [self.iv_photoLandscape setUserInteractionEnabled:YES];
+        
         // unhide the landscape photo view
         [self.iv_photoLandscape setHidden:NO];
         
@@ -887,6 +917,7 @@
         //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         //[self.navigationController.navigationBar setHidden:NO];
         //[self.navigationController.toolbar setHidden:NO];
+        [self.navigationController setToolbarHidden:NO animated:NO];
         //[self.photoMetaData setHidden:NO];
         [self.photoViewSlider setHidden:NO];
         [self.captionViewSlider setHidden:NO];

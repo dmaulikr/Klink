@@ -351,8 +351,8 @@
         
         int nextAchievment = [user.achievementthreshold intValue];
         
-        v_achievementView.lbl_description.text = [NSString stringWithFormat:@"You will recieve this award at %d gold coins.", nextAchievment];
-        v_achievementView.lbl_title.text = @"Next Award";
+        v_achievementView.lbl_description.text = [NSString stringWithFormat:@"This next mallard will be unlocked at %d gold coins. Keep Bahndring.", nextAchievment];
+        v_achievementView.lbl_title.text = @"Mystery Mallard";
     }
     else {
         [v_achievementView renderAchievementsWithID:achievementID];

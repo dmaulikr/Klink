@@ -32,6 +32,9 @@
     
     dispatch_queue_t backgroundQueue;
     
+    NSMutableArray* m_photos;
+    NSMutableArray* m_captions;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
@@ -51,6 +54,9 @@
 @property (nonatomic)                  BOOL         shouldCloseTypewriter;
 
 @property (nonatomic,retain) IBOutlet UIButton*     btn_homeButton;
+
+@property (nonatomic, retain) NSMutableArray*       photos;
+@property (nonatomic, retain) NSMutableArray*       captions;
 
 
 - (IBAction) onHomeButtonPressed:(id)sender;

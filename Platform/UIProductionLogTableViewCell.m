@@ -30,6 +30,7 @@
 @synthesize iv_captionIcon              = m_iv_captionIcon;
 @synthesize btn_unreadCaptionsBadge     = m_btn_unreadCaptionsBadge;
 @synthesize topVotedPhotoID             = m_topVotedPhotoID;
+@synthesize topVotedCaptionID           = m_topVotedCaptionID;
 @synthesize deadline                    = m_deadline;
 @synthesize deadlineTimer               = m_deadlineTimer;
 @synthesize eventManager                = __eventManager;
@@ -224,6 +225,31 @@
         self.iv_photo.contentMode = UIViewContentModeCenter;
         self.iv_photo.image = [UIImage imageNamed:@"icon-pics2-large.png"];
     }
+    
+    [self setNeedsDisplay];
+}
+
+- (void) renderCaption {
+    self.lbl_deadline.textColor = [UIColor darkGrayColor];
+    self.lbl_deadline.text = @"This photo has no captions! Go ahead, add one...";
+    
+    ResourceContext* resourceContext = [ResourceContext instance];
+    Page* draft = (Page*)[resourceContext resourceWithType:PAGE withID:self.pageID];
+    
+    Caption* caption = [draft captionWithHighestVotes];
+    self.topVotedCaptionID = caption.objectid;
+    
+    if (caption.caption1 != nil && ![caption.caption1 isEqualToString:@""] && ![caption.caption1 isEqualToString:@" "]) {
+        self.lbl_deadline.textColor = [UIColor blackColor];
+        self.lbl_deadline.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
+    }
+    
+    CGSize maximumSize = CGSizeMake(150, 1000);
+    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
+    
+    CGSize messageSize = [caption.caption1 sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
+    
+    self.lbl_deadline.frame = CGRectMake(self.lbl_deadline.frame.origin.x, self.lbl_deadline.frame.origin.y, self.lbl_deadline.frame.size.width, messageSize.height);
     
     [self setNeedsDisplay];
 }
