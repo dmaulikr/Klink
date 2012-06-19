@@ -51,6 +51,10 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{213, 16}, {82, 83}}</string>
 								<reference key="NSSuperview" ref="272843227"/>
+								<object class="NSColor" key="IBUIBackgroundColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC45MDk4MDM5ODY1IDAuODgyMzUzMDA3OCAwLjg1ODgyMzU5NzQAA</bytes>
+								</object>
 								<int key="IBUIContentMode">4</int>
 								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
