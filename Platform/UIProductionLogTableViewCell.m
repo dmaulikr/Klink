@@ -314,7 +314,7 @@
         // Initialization code
         NSArray* topLevelObjs = nil;
         
-        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIProductionLogTableViewCellNew2" owner:self options:nil];
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIProductionLogTableViewCellNew" owner:self options:nil];
         self.topVotedPhotoID = nil;
         if (topLevelObjs == nil)
         {
@@ -387,7 +387,7 @@
 
 #pragma mark - Statics
 + (NSString*) cellIdentifier {
-    return @"productionlogcellnew2";
+    return @"productionlogcellnew";
 }
 
 
