@@ -47,6 +47,8 @@
 @synthesize btn_illustratedBy       = m_btn_illustratedBy;
 @synthesize btn_vote                = m_btn_vote;
 @synthesize btn_caption             = m_btn_caption;
+@synthesize iv_ribbon               = m_iv_ribbon;
+@synthesize lbl_place               = m_lbl_place;
 
 #pragma mark - Property Definitions
 - (id)delegate {
@@ -162,6 +164,8 @@
     self.lbl_numVotes.text = @"0";
     self.lbl_caption.textColor = [UIColor darkGrayColor];
     self.lbl_caption.text = @"This photo has no captions! Go ahead, add one...";
+    self.iv_ribbon.hidden = YES;
+    self.lbl_place.hidden = YES;
     
     Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:self.captionID];
     
@@ -354,6 +358,8 @@
     self.btn_writtenBy = nil;
     self.btn_vote = nil;
     self.btn_caption = nil;
+    self.iv_ribbon = nil;
+    self.lbl_place = nil;
     
     [super dealloc];
 

@@ -35,6 +35,7 @@
     NSMutableArray* m_photos;
     NSMutableArray* m_captions;
     
+    UIImageView*    m_iv_bookBackground;
     UIImageView*    m_iv_bookCover;
     BOOL            m_shouldOpenBookCover;
     
@@ -61,6 +62,7 @@
 @property (nonatomic, retain) NSMutableArray*       photos;
 @property (nonatomic, retain) NSMutableArray*       captions;
 
+@property (nonatomic,retain) IBOutlet UIImageView*  iv_bookBackground;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_bookCover;
 @property (nonatomic)                 BOOL          shouldOpenBookCover;
 
