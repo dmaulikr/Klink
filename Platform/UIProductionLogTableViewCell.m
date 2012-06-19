@@ -244,12 +244,12 @@
         self.lbl_deadline.text = [NSString stringWithFormat:@"\"%@\"", caption.caption1];
     }
     
-    CGSize maximumSize = CGSizeMake(150, 1000);
-    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
-    
-    CGSize messageSize = [caption.caption1 sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
-    
-    self.lbl_deadline.frame = CGRectMake(self.lbl_deadline.frame.origin.x, self.lbl_deadline.frame.origin.y, self.lbl_deadline.frame.size.width, messageSize.height);
+//    CGSize maximumSize = CGSizeMake(150, 1000);
+//    UIFont* font = [UIFont fontWithName:@"AmericanTypewriter" size:13];
+//    
+//    CGSize messageSize = [caption.caption1 sizeWithFont:font constrainedToSize:maximumSize lineBreakMode:UILineBreakModeWordWrap];
+//    
+//    self.lbl_deadline.frame = CGRectMake(self.lbl_deadline.frame.origin.x, self.lbl_deadline.frame.origin.y, self.lbl_deadline.frame.size.width, messageSize.height);
     
     [self setNeedsDisplay];
 }
@@ -270,14 +270,14 @@
         self.topVotedPhotoID = topPhoto.objectid;
         [self renderPhoto:topPhoto];*/
         
-        // Set deadline
-        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
-        self.deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
-                                         target:self
-                                       selector:@selector(timeRemaining:)
-                                       userInfo:nil
-                                        repeats:YES];
-        [self timeRemaining:self.deadlineTimer];
+//        // Set deadline
+//        self.deadline = [DateTimeHelper parseWebServiceDateDouble:draft.datedraftexpires];
+//        self.deadlineTimer = [NSTimer scheduledTimerWithTimeInterval:60.0f
+//                                         target:self
+//                                       selector:@selector(timeRemaining:)
+//                                       userInfo:nil
+//                                        repeats:YES];
+//        [self timeRemaining:self.deadlineTimer];
     
     }
     [self setNeedsDisplay];
@@ -314,7 +314,7 @@
         // Initialization code
         NSArray* topLevelObjs = nil;
         
-        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIProductionLogTableViewCell" owner:self options:nil];
+        topLevelObjs = [[NSBundle mainBundle] loadNibNamed:@"UIProductionLogTableViewCellNew2" owner:self options:nil];
         self.topVotedPhotoID = nil;
         if (topLevelObjs == nil)
         {
@@ -387,7 +387,7 @@
 
 #pragma mark - Statics
 + (NSString*) cellIdentifier {
-    return @"productionlogcell";
+    return @"productionlogcellnew2";
 }
 
 

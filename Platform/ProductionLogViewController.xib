@@ -38,6 +38,19 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
+					<object class="IBUIImageView" id="471592030">
+						<reference key="NSNextResponder" ref="444732660"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrameSize">{310, 460}</string>
+						<reference key="NSSuperview" ref="444732660"/>
+						<string key="NSReuseIdentifierKey">_NS:567</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">book_cover.png</string>
+						</object>
+					</object>
 					<object class="IBUIImageView" id="136593238">
 						<reference key="NSNextResponder" ref="444732660"/>
 						<int key="NSvFlags">292</int>
@@ -57,7 +70,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{5, 7}, {53, 30}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
-						<reference key="NSNextKeyView" ref="789880656"/>
+						<reference key="NSNextKeyView" ref="1055421344"/>
 						<string key="NSReuseIdentifierKey">_NS:225</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -100,7 +113,7 @@
 					<object class="IBUILabel" id="789880656">
 						<reference key="NSNextResponder" ref="444732660"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{17, 38}, {285, 30}}</string>
+						<string key="NSFrame">{{17, 26}, {285, 30}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
 						<reference key="NSNextKeyView" ref="873029372"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
@@ -131,12 +144,26 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
+					<object class="IBUIImageView" id="766553693">
+						<reference key="NSNextResponder" ref="444732660"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{35, 64}, {250, 6}}</string>
+						<reference key="NSSuperview" ref="444732660"/>
+						<reference key="NSNextKeyView" ref="60469860"/>
+						<string key="NSReuseIdentifierKey">_NS:567</string>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">doubleline_bottom.png</string>
+						</object>
+					</object>
 					<object class="IBUITableView" id="873029372">
 						<reference key="NSNextResponder" ref="444732660"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{0, 74}, {320, 386}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
-						<reference key="NSNextKeyView" ref="60469860"/>
+						<reference key="NSNextKeyView" ref="766553693"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="370594246">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -307,6 +334,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{292, 4}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="444732660"/>
+						<reference key="NSNextKeyView" ref="789880656"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="370594246"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -421,6 +449,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">iv_bookCover</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="471592030"/>
+					</object>
+					<int key="connectionID">54</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="873029372"/>
 						<reference key="destination" ref="372490531"/>
@@ -510,6 +546,8 @@
 							<reference ref="873029372"/>
 							<reference ref="789880656"/>
 							<reference ref="1055421344"/>
+							<reference ref="766553693"/>
+							<reference ref="471592030"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -581,6 +619,16 @@
 						<reference key="parent" ref="444732660"/>
 						<string key="objectName">Button - infoButton</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">52</int>
+						<reference key="object" ref="766553693"/>
+						<reference key="parent" ref="444732660"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">53</int>
+						<reference key="object" ref="471592030"/>
+						<reference key="parent" ref="444732660"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -603,12 +651,14 @@
 				<real value="0.0" key="47.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<real value="1" key="47.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="50.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="52.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">51</int>
+			<int key="maxID">56</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -622,6 +672,8 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="book_button_roundrect.png">{49, 30}</string>
 			<string key="book_button_roundrect_highlighted.png">{49, 30}</string>
+			<string key="book_cover.png">{310, 460}</string>
+			<string key="doubleline_bottom.png">{1, 11}</string>
 			<string key="page_curled.png">{320, 480}</string>
 			<string key="tape.png">{46, 40}</string>
 			<string key="typewriter_key-lightbulb.png">{80, 80}</string>

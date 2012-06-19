@@ -10,6 +10,7 @@
 
 NSString* const setting_HASDOWNLOADEDBOOK = @"hasDownloadedBook";
 NSString* const setting_LASTVIEWEDPUBLISHEDPAGEINDEX = @"lastViewedPublishedPageIndex";
+NSString* const setting_HASVIEWEDLATESTPUBLISHEDPAGE = @"hasviewedlatestpublishedpage";
 NSString* const setting_HASVIEWEDBOOKVC = @"hasViewedBookVC";
 NSString* const setting_HASVIEWEDDRAFTVC = @"hasViewedDraftVC";
 NSString* const setting_HASVIEWEDPRODUCTIONLOGVC = @"hasViewedProductionLogVC";

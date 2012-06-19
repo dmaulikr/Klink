@@ -51,6 +51,8 @@
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
 @synthesize btn_homeButton              = m_btn_homeButton;
+@synthesize iv_bookCover                = m_iv_bookCover;
+@synthesize shouldOpenBookCover         = m_shouldOpenBookCover;
 @synthesize photos                      = m_photos;
 @synthesize captions                    = m_captions;
 
@@ -137,6 +139,8 @@
 }
 
 #pragma mark - UIView Animations
+
+#pragma mark Typewriter Animations
 - (void) typewriterOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
     // Remove existing animations before starting new animation
     [viewToOpen.layer removeAllAnimations];
@@ -188,7 +192,7 @@
     theGroup.fillMode = kCAFillModeBoth;
     theGroup.removedOnCompletion = NO;
     // Add the animation group to the layer
-    [viewToOpen.layer addAnimation:theGroup forKey:@"flipViewOpen"];
+    [viewToOpen.layer addAnimation:theGroup forKey:@"flipTypewriterOpen"];
 }
 
 - (void) typewriterCloseView:(UIView *)viewToClose duration:(NSTimeInterval)duration {
@@ -248,7 +252,7 @@
     theGroup.fillMode = kCAFillModeBoth;
     theGroup.removedOnCompletion = NO;
     // Add the animation group to the layer
-    [viewToClose.layer addAnimation:theGroup forKey:@"flipViewClosed"];
+    [viewToClose.layer addAnimation:theGroup forKey:@"flipTypewriterClosed"];
 }
 
 - (void)openTypewriter {
@@ -321,43 +325,90 @@
      ];
 }
 
-
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
     
     // Get the tag from the animation, we use it to find the
     // animated UIView
-    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipViewClosed"];
+//    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipTypewriterClosed"];
     
     if (flag) {
-        for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
-            if ([animationKey isEqualToString:animationKeyClosed]) {
-                // typewriter was closed
-                
-                //self.view.userInteractionEnabled = YES;
-                self.v_typewriter.userInteractionEnabled = YES;
-                
+        if (theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterClosed"] || theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterOpen"]) {
+            for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
+                if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
+                    // typewriter was closed
+                    
+                    //self.view.userInteractionEnabled = YES;
+                    self.v_typewriter.userInteractionEnabled = YES;
+                    
+                }
+                else {
+                    // typewriter was opened, move to draft view
+                    
+                    //[self pageHideView:self.view duration:0.5];
+                    
+                    // Open Draft View
+                    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+                    
+                    [self.navigationController pushViewController:draftViewController animated:YES];
+                    
+                    //[self.navigationController presentModalViewController:draftViewController animated:YES];
+                    
+                    // Now we just hide the animated view since
+                    // animation.removedOnCompletion is not working
+                    // in animation groups. Hiding the view prevents it
+                    // from returning to the original state and showing.
+                    //self.iv_bookCover.hidden = YES;
+                    //[self.view sendSubviewToBack:self.iv_bookCover];
+                }
             }
-            else {
-                // typewriter was opened, move to draft view
-                
-                //[self pageHideView:self.view duration:0.5];
-                
-                // Open Draft View
-                DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
-                
-                [self.navigationController pushViewController:draftViewController animated:YES];
-                
-                //[self.navigationController presentModalViewController:draftViewController animated:YES];
-                
-                // Now we just hide the animated view since
-                // animation.removedOnCompletion is not working
-                // in animation groups. Hiding the view prevents it
-                // from returning to the original state and showing.
-                //self.iv_bookCover.hidden = YES;
-                //[self.view sendSubviewToBack:self.iv_bookCover];
+        }
+        else if (theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverClosed"] || theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverOpen"]) {
+            for (NSString* animationKey in self.iv_bookCover.layer.animationKeys) {
+                if ([animationKey isEqualToString:@"flipBookCoverOpen"]) {
+                    // book was opened, hide the cover
+                    [self.view sendSubviewToBack:self.iv_bookCover];
+                    
+                    // close the typewriter onto the page
+                    [self closeTypewriter];
+                }
+                else {
+                    // book closed
+                    
+                }
             }
         }
     }
+    
+//    if (flag) {
+//        for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
+//            if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
+//                // typewriter was closed
+//                
+//                //self.view.userInteractionEnabled = YES;
+//                self.v_typewriter.userInteractionEnabled = YES;
+//                
+//            }
+//            else {
+//                // typewriter was opened, move to draft view
+//                
+//                //[self pageHideView:self.view duration:0.5];
+//                
+//                // Open Draft View
+//                DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+//                
+//                [self.navigationController pushViewController:draftViewController animated:YES];
+//                
+//                //[self.navigationController presentModalViewController:draftViewController animated:YES];
+//                
+//                // Now we just hide the animated view since
+//                // animation.removedOnCompletion is not working
+//                // in animation groups. Hiding the view prevents it
+//                // from returning to the original state and showing.
+//                //self.iv_bookCover.hidden = YES;
+//                //[self.view sendSubviewToBack:self.iv_bookCover];
+//            }
+//        }
+//    }
     
     /*// Get the tag from the animation, we use it to find the
      // animated UIView
@@ -378,6 +429,123 @@
      }
      }*/
     
+}
+
+#pragma mark Book cover open animation
+- (void) pageOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToOpen.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    //viewToOpen.hidden = NO;
+    [self.view bringSubviewToFront:viewToOpen];
+    
+    // disable the view so it’s not doing anything while animating
+    viewToOpen.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the left edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToOpen.layer.anchorPoint.x != 0.0f) {
+        viewToOpen.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToOpen.center = CGPointMake(viewToOpen.center.x - viewToOpen.bounds.size.width/2.0f, viewToOpen.center.y);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    // start the animation from the current state
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    // this is the basic rotation by 90 degree along the y-axis
+    CATransform3D endTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                           0.0f,
+                                                           -1.0f,
+                                                           0.0f);
+    // these values control the 3D projection outlook
+    endTransform.m34 = 0.001f;
+    endTransform.m14 = -0.0015f;
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:endTransform];
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToOpen.tag] forKey:@"viewToOpenTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToOpen.layer addAnimation:theGroup forKey:@"flipBookCoverOpen"];
+}
+
+- (void) pageCloseView:(UIView *)viewToClose duration:(NSTimeInterval)duration {
+    // Remove existing animations before starting new animation
+    [viewToClose.layer removeAllAnimations];
+    
+    // Make sure view is visible
+    //viewToClose.hidden = NO;
+    [self.view bringSubviewToFront:viewToClose];
+    
+    // disable the view so it’s not doing anything while animating
+    viewToClose.userInteractionEnabled = NO;
+    // Set the CALayer anchorPoint to the left edge and
+    // translate the view to account for the new
+    // anchorPoint. In case you want to reuse the animation
+    // for this view, we only do the translation and
+    // anchor point setting once.
+    if (viewToClose.layer.anchorPoint.x != 0.0f) {
+        viewToClose.layer.anchorPoint = CGPointMake(0.0f, 0.5f);
+        viewToClose.center = CGPointMake(viewToClose.center.x - viewToClose.bounds.size.width/2.0f, viewToClose.center.y);
+    }
+    // create an animation to hold the page turning
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.duration = duration;
+    transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    // start the animation from the open state
+    // this is the basic rotation by 90 degree along the y-axis
+    CATransform3D startTransform = CATransform3DMakeRotation(3.141f/2.0f,
+                                                             0.0f,
+                                                             -1.0f,
+                                                             0.0f);
+    // these values control the 3D projection outlook
+    startTransform.m34 = 0.001f;
+    startTransform.m14 = -0.0015f;
+    transformAnimation.fromValue = [NSValue valueWithCATransform3D:startTransform];
+    
+    // end the transformation at the default state
+    transformAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    
+    // Create an animation group to hold the rotation
+    CAAnimationGroup *theGroup = [CAAnimationGroup animation];
+    
+    // Set self as the delegate to receive notification when the animation finishes
+    theGroup.delegate = self;
+    theGroup.duration = duration;
+    // CAAnimation-objects support arbitrary Key-Value pairs, we add the UIView tag
+    // to identify the animation later when it finishes
+    [theGroup setValue:[NSNumber numberWithInt:viewToClose.tag] forKey:@"viewToCloseTag"];
+    // Here you could add other animations to the array
+    theGroup.animations = [NSArray arrayWithObjects:transformAnimation, nil];
+    theGroup.fillMode = kCAFillModeBoth;
+    theGroup.removedOnCompletion = NO;
+    // Add the animation group to the layer
+    [viewToClose.layer addAnimation:theGroup forKey:@"flipBookCoverClosed"];
+}
+
+- (void)openBook {
+    [self pageOpenView:self.iv_bookCover duration:1.0f];
+}
+
+- (void)closeBook {
+    [self pageCloseView:self.iv_bookCover duration:0.5f];
 }
 
 
@@ -473,7 +641,7 @@
         prodLogCell = [visibleCells objectAtIndex:i];
         
         [prodLogCell renderPhoto];
-//        [prodLogCell renderCaption];
+        [prodLogCell renderCaption];
         [prodLogCell renderUnreadCaptions];
     }
 }
@@ -544,6 +712,8 @@
     self.btn_newPageButton = nil;
     self.btn_notificationsButton = nil;
     self.btn_notificationBadge = nil;
+    self.btn_homeButton = nil;
+    self.iv_bookCover = nil;
     
 }
 
@@ -596,8 +766,16 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
     // Hide the navigation bar and tool bars so our custom bars can be shown
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setToolbarHidden:YES animated:NO];
+    
+    // Make sure the book cover is appropriately positioned if it will be opened
+    if (self.shouldOpenBookCover == YES) {
+        [self.view bringSubviewToFront:self.iv_bookCover];
+    }
+    else {
+        [self.view sendSubviewToBack:self.iv_bookCover];
+    }
     
 }
 
@@ -619,35 +797,24 @@
         [userDefaults synchronize];
     }
     
-    
-    
-    /*//we mark that the user has viewed this viewcontroller at least once
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC]==NO) {
-        [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
-        [userDefaults synchronize];
-    }*/
-    
-    // Show tumbnails for the cells currently visible
-    //[self showThumbnailsOnVisibleCells];
-    
-    if (self.shouldCloseTypewriter) {
+    if (self.shouldOpenBookCover) {
+        self.shouldOpenBookCover = NO;
+        [self openBook];
+    }
+    else if (self.shouldCloseTypewriter) {
         [self closeTypewriter];
     }
     
     //[self pageShowView:self.view duration:0.5];
     
     [self updateVisibleCells];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    // Set Navigation Bar back to default style (iOS5 only)
-    //if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-    //    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    //}
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -775,7 +942,16 @@
     self.shouldCloseTypewriter = YES;
     self.shouldOpenTypewriter = NO;
     
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    
+    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+
 }
 
 #pragma mark Tyewriter Button Handlers
@@ -786,12 +962,9 @@
     
     if (![self.authenticationManager isUserAuthenticated]) 
     {
-
         Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onProfileButtonPressed:) withContext:nil];        
         Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
-        
-        
 
         [onSucccessCallback release];
         [onFailCallback release];
@@ -881,7 +1054,8 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
+//    return kPRODUTIONLOGTABLEVIEWCELLHEIGHT;
+    return 115;
 }
 
 //- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

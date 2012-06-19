@@ -258,6 +258,7 @@
                 // book closed, move to production log
                 
                 ProductionLogViewController* productionLogController = [ProductionLogViewController createInstance];
+                productionLogController.shouldOpenBookCover = NO;
                 
                 // Modal naviation to production log
                 UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:productionLogController];

@@ -243,6 +243,8 @@
     if (self.shouldOpenToLastPage) {
         // cancel further opening to the last page
         //self.shouldOpenToLastPage = NO;
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE];
         
         int publishedPageIndex = publishedPageCount - 1;
         

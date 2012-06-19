@@ -688,11 +688,11 @@
         self.btn_cameraButton.enabled = YES;
     }
     
-    if ([self.activeTextField.text isEqualToString:@""] || [self.activeTextField.text isEqualToString:@"#"] || [self.activeTextField.text isEqualToString:@"#drafttitle"]) {
+    if ([self.activeTextField.text isEqualToString:@""] || [self.activeTextField.text isEqualToString:@"#"] || [self.activeTextField.text isEqualToString:@"#title"]) {
         // Add default text back if title was left empty
         self.draftTitle = nil;
         [self.activeTextField setText:@""];
-        [self.activeTextField setPlaceholder:@"#drafttitle"];
+        [self.activeTextField setPlaceholder:@"#title"];
     }
     else {
         // title is acceptable

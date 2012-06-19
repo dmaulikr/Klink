@@ -26,6 +26,8 @@
 #import "UserDefaultSettings.h"
 #import "PageState.h"
 #import "ImageManager.h"
+#import "ProductionLogViewController.h"
+
 @implementation PlatformAppDelegate
 
 
@@ -149,21 +151,53 @@
     //CloudEnumerator* pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     //[pageCloudEnumerator enumerateUntilEnd:nil];
     
-    // Launch the BookView to the last page
-    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
-    
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-        bookViewController.shouldOpenToLastPage = NO;
-        bookViewController.shouldOpenToTitlePage = YES;
+    
+    if ([userDefaults boolForKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE]) {
+        // User has already viewed the latest published page. Open to production log.
+        ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+        productionLogVC.shouldOpenBookCover = YES;
+        
+        self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
     }
     else {
-        bookViewController.shouldOpenToLastPage = YES;
-        bookViewController.shouldOpenToTitlePage = NO;
+        // Launch the BookView to the last page
+        BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+        
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+            //this is the first time opening, so we show a welcome message
+            bookViewController.shouldOpenToLastPage = NO;
+            bookViewController.shouldOpenToTitlePage = YES;
+        }
+        else {
+            bookViewController.shouldOpenToLastPage = YES;
+            bookViewController.shouldOpenToTitlePage = NO;
+        }
+        
+        self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
     }
     
-    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
+    
+//    // Launch the BookView to the last page
+//    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+//    
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+//        //this is the first time opening, so we show a welcome message
+//        bookViewController.shouldOpenToLastPage = NO;
+//        bookViewController.shouldOpenToTitlePage = YES;
+//    }
+//    else {
+//        bookViewController.shouldOpenToLastPage = YES;
+//        bookViewController.shouldOpenToTitlePage = NO;
+//    }
+//    
+//    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
+//    
+//    ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+//    
+//    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
     
     self.window.rootViewController = self.navigationController;
     
