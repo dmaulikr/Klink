@@ -234,6 +234,7 @@
                 self.iv_photo.image = image;
                 
                 [self.lbl_downloading setHidden:YES];
+                [self.iv_photo setBackgroundColor:[UIColor clearColor]];
                 
                 [self.lbl_photoby setHidden:NO];
                 
@@ -393,6 +394,7 @@
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             
             [self.lbl_downloading setHidden:YES];
+            [self.iv_photo setBackgroundColor:[UIColor clearColor]];
             
             [self displayPhotoFrameOnImage:response.image];
             [self.view setNeedsDisplay];

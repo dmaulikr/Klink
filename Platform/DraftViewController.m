@@ -805,6 +805,18 @@
         
         [cell renderWithCaptionID:caption.objectid];
         
+        // Show the 2nd place ribbion if this is the second entry in the draft
+        if ([indexPath row] == 1) {
+            cell.iv_ribbon.hidden = NO;
+            cell.lbl_place.hidden = NO;
+            cell.iv_unreadCaptionBadge.frame = CGRectMake(251, cell.iv_unreadCaptionBadge.frame.origin.y, cell.iv_unreadCaptionBadge.frame.size.width, cell.iv_unreadCaptionBadge.frame.size.height);
+        }
+        else if ([indexPath row] % 2) {
+            cell.iv_ribbon.hidden = YES;
+            cell.lbl_place.hidden = YES;
+            cell.iv_unreadCaptionBadge.frame = CGRectMake(293, cell.iv_unreadCaptionBadge.frame.origin.y, cell.iv_unreadCaptionBadge.frame.size.width, cell.iv_unreadCaptionBadge.frame.size.height);
+        }
+        
         // Add the caption to the array of viewed captions to mark as read later
         if ([caption.hasseen boolValue] == NO) {
             [self.viewedCaptionsArray addObject:caption];

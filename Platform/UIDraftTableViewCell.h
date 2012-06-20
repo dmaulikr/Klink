@@ -39,6 +39,9 @@
     UIButton*                   m_btn_vote;
     UIButton*                   m_btn_caption;
     
+    UIImageView*                m_iv_ribbon;
+    UILabel*                    m_lbl_place;
+    
 }
 
 @property (assign) id<UIDraftTableViewCellDelegate> delegate;
@@ -60,6 +63,9 @@
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_unreadCaptionBadge;
 @property (nonatomic, retain) IBOutlet UIButton*        btn_vote;
 @property (nonatomic, retain) IBOutlet UIButton*        btn_caption;
+
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_ribbon;
+@property (nonatomic, retain) IBOutlet UILabel*         lbl_place;
 
 
 - (void) renderWithCaptionID:(NSNumber*)captionid;

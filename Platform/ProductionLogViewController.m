@@ -51,6 +51,7 @@
 @synthesize shouldOpenTypewriter        = m_shouldOpenTypewriter;
 @synthesize shouldCloseTypewriter       = m_shouldCloseTypewriter;
 @synthesize btn_homeButton              = m_btn_homeButton;
+@synthesize iv_bookBackground           = m_iv_bookBackground;
 @synthesize iv_bookCover                = m_iv_bookCover;
 @synthesize shouldOpenBookCover         = m_shouldOpenBookCover;
 @synthesize photos                      = m_photos;
@@ -139,6 +140,123 @@
 }
 
 #pragma mark - UIView Animations
+- (void)animationDidStart:(CAAnimation *)theAnimation {
+    if (theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverOpen"]) {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.5];
+        
+        [self.iv_bookBackground setAlpha:0];
+        
+        [UIView commitAnimations];
+    }
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+    
+    // Get the tag from the animation, we use it to find the
+    // animated UIView
+    //    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipTypewriterClosed"];
+    
+    if (flag) {
+        if (theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterClosed"] || theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterOpen"]) {
+            for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
+                if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
+                    // typewriter was closed
+                    
+                    //self.view.userInteractionEnabled = YES;
+                    self.v_typewriter.userInteractionEnabled = YES;
+                    
+                }
+                else {
+                    // typewriter was opened, move to draft view
+                    
+                    //[self pageHideView:self.view duration:0.5];
+                    
+                    // Open Draft View
+                    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+                    
+                    [self.navigationController pushViewController:draftViewController animated:YES];
+                    
+                    //[self.navigationController presentModalViewController:draftViewController animated:YES];
+                    
+                    // Now we just hide the animated view since
+                    // animation.removedOnCompletion is not working
+                    // in animation groups. Hiding the view prevents it
+                    // from returning to the original state and showing.
+                    //self.iv_bookCover.hidden = YES;
+                    //[self.view sendSubviewToBack:self.iv_bookCover];
+                }
+            }
+        }
+        else if (theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverClosed"] || theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverOpen"]) {
+            for (NSString* animationKey in self.iv_bookCover.layer.animationKeys) {
+                if ([animationKey isEqualToString:@"flipBookCoverOpen"]) {
+                    // book was opened, hide the cover
+                    [self.view sendSubviewToBack:self.iv_bookBackground];
+                    [self.view sendSubviewToBack:self.iv_bookCover];
+                    
+                    // close the typewriter onto the page
+                    [self closeTypewriter];
+                }
+                else {
+                    // book closed
+                    
+                }
+            }
+        }
+    }
+    
+    //    if (flag) {
+    //        for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
+    //            if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
+    //                // typewriter was closed
+    //                
+    //                //self.view.userInteractionEnabled = YES;
+    //                self.v_typewriter.userInteractionEnabled = YES;
+    //                
+    //            }
+    //            else {
+    //                // typewriter was opened, move to draft view
+    //                
+    //                //[self pageHideView:self.view duration:0.5];
+    //                
+    //                // Open Draft View
+    //                DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
+    //                
+    //                [self.navigationController pushViewController:draftViewController animated:YES];
+    //                
+    //                //[self.navigationController presentModalViewController:draftViewController animated:YES];
+    //                
+    //                // Now we just hide the animated view since
+    //                // animation.removedOnCompletion is not working
+    //                // in animation groups. Hiding the view prevents it
+    //                // from returning to the original state and showing.
+    //                //self.iv_bookCover.hidden = YES;
+    //                //[self.view sendSubviewToBack:self.iv_bookCover];
+    //            }
+    //        }
+    //    }
+    
+    /*// Get the tag from the animation, we use it to find the
+     // animated UIView
+     NSNumber *tag = [theAnimation valueForKey:@"viewToOpenTag"];
+     // Find the UIView with the tag and do what you want
+     // This only searches the first level subviews
+     for (UIView *subview in self.view.subviews) {
+     if (subview.tag == [tag intValue]) {
+     // Code for what's needed to happen after
+     // the animation finishes goes here.
+     if (flag) {
+     // Now we just hide the animated view since
+     // animation.removedOnCompletion is not working
+     // in animation groups. Hiding the view prevents it
+     // from returning to the original state and showing.
+     subview.hidden = YES;
+     }
+     }
+     }*/
+    
+}
 
 #pragma mark Typewriter Animations
 - (void) typewriterOpenView:(UIView *)viewToOpen duration:(NSTimeInterval)duration {
@@ -323,112 +441,6 @@
                          [self.navigationController pushViewController:draftViewController animated:NO];
                      }
      ];
-}
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
-    
-    // Get the tag from the animation, we use it to find the
-    // animated UIView
-//    NSString *animationKeyClosed = [NSString stringWithFormat:@"flipTypewriterClosed"];
-    
-    if (flag) {
-        if (theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterClosed"] || theAnimation == [self.v_typewriter.layer animationForKey:@"flipTypewriterOpen"]) {
-            for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
-                if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
-                    // typewriter was closed
-                    
-                    //self.view.userInteractionEnabled = YES;
-                    self.v_typewriter.userInteractionEnabled = YES;
-                    
-                }
-                else {
-                    // typewriter was opened, move to draft view
-                    
-                    //[self pageHideView:self.view duration:0.5];
-                    
-                    // Open Draft View
-                    DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
-                    
-                    [self.navigationController pushViewController:draftViewController animated:YES];
-                    
-                    //[self.navigationController presentModalViewController:draftViewController animated:YES];
-                    
-                    // Now we just hide the animated view since
-                    // animation.removedOnCompletion is not working
-                    // in animation groups. Hiding the view prevents it
-                    // from returning to the original state and showing.
-                    //self.iv_bookCover.hidden = YES;
-                    //[self.view sendSubviewToBack:self.iv_bookCover];
-                }
-            }
-        }
-        else if (theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverClosed"] || theAnimation == [self.iv_bookCover.layer animationForKey:@"flipBookCoverOpen"]) {
-            for (NSString* animationKey in self.iv_bookCover.layer.animationKeys) {
-                if ([animationKey isEqualToString:@"flipBookCoverOpen"]) {
-                    // book was opened, hide the cover
-                    [self.view sendSubviewToBack:self.iv_bookCover];
-                    
-                    // close the typewriter onto the page
-                    [self closeTypewriter];
-                }
-                else {
-                    // book closed
-                    
-                }
-            }
-        }
-    }
-    
-//    if (flag) {
-//        for (NSString* animationKey in self.v_typewriter.layer.animationKeys) {
-//            if ([animationKey isEqualToString:@"flipTypewriterClosed"]) {
-//                // typewriter was closed
-//                
-//                //self.view.userInteractionEnabled = YES;
-//                self.v_typewriter.userInteractionEnabled = YES;
-//                
-//            }
-//            else {
-//                // typewriter was opened, move to draft view
-//                
-//                //[self pageHideView:self.view duration:0.5];
-//                
-//                // Open Draft View
-//                DraftViewController* draftViewController = [DraftViewController createInstanceWithPageID:self.selectedDraftID];
-//                
-//                [self.navigationController pushViewController:draftViewController animated:YES];
-//                
-//                //[self.navigationController presentModalViewController:draftViewController animated:YES];
-//                
-//                // Now we just hide the animated view since
-//                // animation.removedOnCompletion is not working
-//                // in animation groups. Hiding the view prevents it
-//                // from returning to the original state and showing.
-//                //self.iv_bookCover.hidden = YES;
-//                //[self.view sendSubviewToBack:self.iv_bookCover];
-//            }
-//        }
-//    }
-    
-    /*// Get the tag from the animation, we use it to find the
-     // animated UIView
-     NSNumber *tag = [theAnimation valueForKey:@"viewToOpenTag"];
-     // Find the UIView with the tag and do what you want
-     // This only searches the first level subviews
-     for (UIView *subview in self.view.subviews) {
-     if (subview.tag == [tag intValue]) {
-     // Code for what's needed to happen after
-     // the animation finishes goes here.
-     if (flag) {
-     // Now we just hide the animated view since
-     // animation.removedOnCompletion is not working
-     // in animation groups. Hiding the view prevents it
-     // from returning to the original state and showing.
-     subview.hidden = YES;
-     }
-     }
-     }*/
-    
 }
 
 #pragma mark Book cover open animation
@@ -713,6 +725,7 @@
     self.btn_notificationsButton = nil;
     self.btn_notificationBadge = nil;
     self.btn_homeButton = nil;
+    self.iv_bookBackground = nil;
     self.iv_bookCover = nil;
     
 }
@@ -771,9 +784,15 @@
     
     // Make sure the book cover is appropriately positioned if it will be opened
     if (self.shouldOpenBookCover == YES) {
+        [self.iv_bookBackground setAlpha:1];
+        [self.iv_bookCover setAlpha:1];
+        [self.view bringSubviewToFront:self.iv_bookBackground];
         [self.view bringSubviewToFront:self.iv_bookCover];
     }
     else {
+        [self.iv_bookBackground setAlpha:0];
+        [self.iv_bookCover setAlpha:0];
+        [self.view sendSubviewToBack:self.iv_bookBackground];
         [self.view sendSubviewToBack:self.iv_bookCover];
     }
     
