@@ -21,6 +21,8 @@
 		520AF5B3154F242F00A82555 /* icon-facebook-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5AF154F242F00A82555 /* icon-facebook-white@2x.png */; };
 		520AF5B4154F242F00A82555 /* icon-twitter-t-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5B0154F242F00A82555 /* icon-twitter-t-white.png */; };
 		520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */; };
+		520FCBE21593980F00441C75 /* typewriter_key-bahndrB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520FCBE01593980F00441C75 /* typewriter_key-bahndrB@2x.png */; };
+		520FCBE515939BC600441C75 /* typewriter_key-bahndrB.png in Resources */ = {isa = PBXBuildFile; fileRef = 520FCBE415939BC600441C75 /* typewriter_key-bahndrB.png */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
 		521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */; };
 		521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */; };
@@ -205,6 +207,8 @@
 		528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 528A49B814AD01F000881A99 /* MessageUI.framework */; };
 		528DCE0C1542BCD300F83AA9 /* mallard.png in Resources */ = {isa = PBXBuildFile; fileRef = 528DCE0A1542BCD300F83AA9 /* mallard.png */; };
 		528DCE0D1542BCD300F83AA9 /* mallard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 528DCE0B1542BCD300F83AA9 /* mallard@2x.png */; };
+		5291892C1592C5EE006DCD32 /* IntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5291892A1592C5EE006DCD32 /* IntroViewController.m */; };
+		5291892D1592C5EE006DCD32 /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5291892B1592C5EE006DCD32 /* IntroViewController.xib */; };
 		5293E2E5151918B000854686 /* PeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293E2E3151918B000854686 /* PeopleListViewController.m */; };
 		5293E2E6151918B000854686 /* PeopleListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E4151918B000854686 /* PeopleListViewController.xib */; };
 		5293E2E8151940C500854686 /* icon-profile-large-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5293E2E7151940C500854686 /* icon-profile-large-highlighted.png */; };
@@ -497,6 +501,8 @@
 		520AF5AF154F242F00A82555 /* icon-facebook-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-facebook-white@2x.png"; sourceTree = "<group>"; };
 		520AF5B0154F242F00A82555 /* icon-twitter-t-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t-white.png"; sourceTree = "<group>"; };
 		520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t-white@2x.png"; sourceTree = "<group>"; };
+		520FCBE01593980F00441C75 /* typewriter_key-bahndrB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-bahndrB@2x.png"; sourceTree = "<group>"; };
+		520FCBE415939BC600441C75 /* typewriter_key-bahndrB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-bahndrB.png"; sourceTree = "<group>"; };
 		521232C81491437600CC9F93 /* arrow_left_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched.png; sourceTree = "<group>"; };
 		521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_scetched@2x.png"; sourceTree = "<group>"; };
 		521D6DC614D347CE00FA08E3 /* BookTableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookTableOfContentsViewController.h; sourceTree = "<group>"; };
@@ -701,6 +707,9 @@
 		528A49B814AD01F000881A99 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		528DCE0A1542BCD300F83AA9 /* mallard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mallard.png; sourceTree = "<group>"; };
 		528DCE0B1542BCD300F83AA9 /* mallard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mallard@2x.png"; sourceTree = "<group>"; };
+		529189291592C5EE006DCD32 /* IntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroViewController.h; sourceTree = "<group>"; };
+		5291892A1592C5EE006DCD32 /* IntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroViewController.m; sourceTree = "<group>"; };
+		5291892B1592C5EE006DCD32 /* IntroViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
 		5293E2E2151918B000854686 /* PeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleListViewController.h; sourceTree = "<group>"; };
 		5293E2E3151918B000854686 /* PeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleListViewController.m; sourceTree = "<group>"; };
 		5293E2E4151918B000854686 /* PeopleListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PeopleListViewController.xib; sourceTree = "<group>"; };
@@ -1359,6 +1368,8 @@
 				52809DC514CA110D00B5BFE3 /* typewriter_key-lightbulb_lit@2x.png */,
 				52AAB10914C7AB0100497FC7 /* typewriter_key-newPage.png */,
 				52AAB10A14C7AB0100497FC7 /* typewriter_key-newPage@2x.png */,
+				520FCBE415939BC600441C75 /* typewriter_key-bahndrB.png */,
+				520FCBE01593980F00441C75 /* typewriter_key-bahndrB@2x.png */,
 				52AAB10B14C7AB0100497FC7 /* typewriter_key-profile.png */,
 				52AAB10C14C7AB0100497FC7 /* typewriter_key-profile@2x.png */,
 				52AAB10D14C7AB0100497FC7 /* typewriterframe.png */,
@@ -2000,6 +2011,9 @@
 				52BC825715818168009DC6C5 /* AchievementsViewController.h */,
 				52BC825815818168009DC6C5 /* AchievementsViewController.m */,
 				52BC825915818168009DC6C5 /* AchievementsViewController.xib */,
+				529189291592C5EE006DCD32 /* IntroViewController.h */,
+				5291892A1592C5EE006DCD32 /* IntroViewController.m */,
+				5291892B1592C5EE006DCD32 /* IntroViewController.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2659,10 +2673,16 @@
 				5273F1D615911B160062D6F0 /* banner_red_right@2x.png in Resources */,
 				5273F1D715911B160062D6F0 /* banner_red.png in Resources */,
 				5273F1D815911B160062D6F0 /* banner_red@2x.png in Resources */,
+
 				C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */,
 				C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */,
 				C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */,
 				C5D4F3541593D33B00B36FCD /* UITutorialViewFullScreen.xib in Resources */,
+
+				5291892D1592C5EE006DCD32 /* IntroViewController.xib in Resources */,
+				520FCBE21593980F00441C75 /* typewriter_key-bahndrB@2x.png in Resources */,
+				520FCBE515939BC600441C75 /* typewriter_key-bahndrB.png in Resources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2861,6 +2881,7 @@
 				52BC825A15818168009DC6C5 /* AchievementsViewController.m in Sources */,
 				522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */,
 				52F640EA158AA51A00AD61D0 /* UITutorialView.m in Sources */,
+				5291892C1592C5EE006DCD32 /* IntroViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
