@@ -719,6 +719,7 @@
     [self saveAuthenticatorResponse:response];
     
 }
+
 #pragma mark - Static Initializers
 + (LoginViewController*)createAuthenticationInstance:(BOOL)shouldGetFacebook 
                                     shouldGetTwitter:(BOOL)shouldGetTwitter
@@ -734,6 +735,7 @@
     return retVal;
 
 }
+
 + (LoginViewController*)createInstance:(BOOL)shouldGetFacebook 
                       shouldGetTwitter:(BOOL)shouldGetTwitter
                      onSuccessCallback:(Callback*)onSuccessCallback 

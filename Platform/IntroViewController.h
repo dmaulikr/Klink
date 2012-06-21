@@ -8,6 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IntroViewController : UIViewController
+@protocol IntroViewControllerDelegate
+
+@required
+    
+@end
+
+@interface IntroViewController : UIViewController {
+    id<IntroViewControllerDelegate> m_delegate;
+    
+    UIButton* m_btn_read;
+    UIButton* m_btn_write;
+}
+
+@property (nonatomic, retain) IBOutlet UIButton* btn_read;
+@property (nonatomic, retain) IBOutlet UIButton* btn_write;
+
+- (IBAction) onReadButtonPressed:(id)sender;
+- (IBAction) onWriteButtonPressed:(id)sender;
+
++ (IntroViewController*)createInstance;
 
 @end

@@ -13,7 +13,21 @@
 @end
 
 @implementation IntroViewController
+@synthesize btn_read    = m_btn_read;
+@synthesize btn_write   = m_btn_write;
 
+#pragma mark - Delegate Definitions
+- (id)delegate {
+    return m_delegate;
+}
+
+- (void)setDelegate:(id<IntroViewControllerDelegate>)del
+{
+    m_delegate = del;
+}
+
+
+#pragma mark - View Lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -39,6 +53,22 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - UIButton Handlers
+- (IBAction) onReadButtonPressed:(id)sender {
+    
+}
+
+- (IBAction) onWriteButtonPressed:(id)sender {
+    
+}
+
+#pragma mark - Static Initializers
++ (IntroViewController*)createInstance {
+    IntroViewController* retVal = [[IntroViewController alloc]initWithNibName:@"IntroViewController" bundle:nil];
+    [retVal autorelease];
+    return retVal;
 }
 
 @end
