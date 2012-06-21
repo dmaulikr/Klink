@@ -419,14 +419,14 @@
     }
     
     //we check to see if the user has been to this viewcontroller before
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Bahndr Drafts" message:ui_WELCOME_CONTRIBUTE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-    }
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC] == NO) {
+//        //this is the first time opening, so we show a welcome message
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Bahndr Drafts" message:ui_WELCOME_CONTRIBUTE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//    }
     
     
     ResourceContext* resourceContext = [ResourceContext instance];
@@ -890,15 +890,15 @@
     
     if (self.configurationType == PAGE) 
     {
-        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+        retVal = [NSString stringWithFormat:@"Oops, please try again"];
     }
     else if (self.configurationType == PHOTO) 
     {
-        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+        retVal = [NSString stringWithFormat:@"Oops, please try again"];
     }
     else 
     {
-        retVal = [NSString stringWithFormat:@"Oops, please submit again"];
+        retVal = [NSString stringWithFormat:@"Oops, please try again"];
     }
     return retVal;
 }

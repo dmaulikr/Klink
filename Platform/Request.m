@@ -188,6 +188,27 @@ withChangedAttributes:(NSArray*)changedAttributes
 
 }
 
+//Returns a boolean indicating whether this request array contains
+//a flag content request
++ (BOOL) isThisAFlagContentRequest:(NSArray *)requests
+{
+    BOOL retVal = NO;
+    
+    for (Request* request in requests) 
+    {
+        NSArray* changedAttributesInRequest = request.changedAttributesList;
+        for (NSString* changedAttribute in changedAttributesInRequest)
+        {
+            if ([changedAttribute isEqualToString:NUMBEROFFLAGS])
+            {
+                retVal = YES;
+            }
+        }
+    }
+    
+    return retVal;
+}
+
 #pragma mark - Static Initializers
 
 + (id) createInstanceOfRequest {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="achievement" representedClassName="Achievement" parentEntity="resource" syncable="YES">
         <attribute name="dateexpires" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
@@ -184,6 +184,7 @@
     </entity>
     <entity name="user" representedClassName="User" parentEntity="resource">
         <attribute name="achievementthreshold" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="app_version" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="datebecameeditor" optional="YES" attributeType="Double" defaultValueString="0"/>
         <attribute name="displayname" optional="YES" attributeType="String"/>
         <attribute name="email" optional="YES" attributeType="String"/>
@@ -233,7 +234,7 @@
         <element name="request" positionX="340" positionY="90" width="128" height="165"/>
         <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
         <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
-        <element name="user" positionX="153" positionY="810" width="128" height="420"/>
+        <element name="user" positionX="153" positionY="810" width="128" height="435"/>
         <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
     </elements>
 </model>

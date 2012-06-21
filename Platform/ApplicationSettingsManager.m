@@ -13,6 +13,7 @@
 #import "Macros.h"
 #import "EventManager.h"
 #import "AuthenticationManager.h"
+#import "User.h"
 
 @implementation ApplicationSettingsManager
 @synthesize settings = m_settings;
@@ -143,6 +144,9 @@ static ApplicationSettingsManager* instance;
     NSString* activityName = @"ApplicationSettingsManager.onUserLoggedIn:";
     LOG_APPLICATIONSETTINGSMANAGER(0, @"%@Detected user login event, refreshing user application settings from the cloud",activityName);
     [self refreshApplicationSettings:nil];
+
+    
+
 }
 
 //Creates a single default settings object in the store
@@ -181,5 +185,12 @@ static ApplicationSettingsManager* instance;
     [context save:YES onFinishCallback:nil trackProgressWith:nil];
     
     return settings;
+}
+
++ (NSString*) getApplicationVersion
+{
+    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString* appVersionNum = [infoDict objectForKey:@"CFBundleShortVersionString"];
+    return appVersionNum;
 }
 @end

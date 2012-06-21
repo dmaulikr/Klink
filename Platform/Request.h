@@ -67,14 +67,8 @@ typedef enum {
 @property (nonatomic,retain) NSString*  url;
 @property (nonatomic,retain) NSString*  changedattributes;
 @property (nonatomic,retain) NSString*  targetresourcetype;
-//@property                    long long  downloadSize;
-//@property                    long long  uploadSize;
-//@property                    long long  sentBytes;
-//@property                    long long  downloadedBytes;
 @property (nonatomic,retain) NSString*  errormessage;
 @property                    float      progress;
-//@property (nonatomic,retain) NSMutableArray*    childRequests;
-//@property (nonatomic,retain) Request*           parentRequest;
 @property (nonatomic,retain) NSNumber*  objectid;
 @property (nonatomic,retain) NSArray*   consequentialUpdates;
 @property (nonatomic,retain) NSArray*   consequentialInserts;
@@ -96,7 +90,7 @@ withChangedAttributes:(NSArray*)changedAttributes
 - (NSArray*) attachmentAttributesInRequest;
 - (NSArray*)changedAttributesList;
 - (void) setChangedAttributesList:(NSArray*)changedAttributeList;
-
++ (BOOL) isThisAFlagContentRequest:(NSArray*)requests;
 + (id)          createInstanceOfRequest;
 + (id)          createAttachmentRequestFrom:(Request*)request 
                                forAttribute:(NSString*)attributeName;

@@ -120,3 +120,4 @@ extern NSString* const JUSTIFICATION;
 extern NSString* const ACHIEVEMENTTHRESHOLD;
 extern NSString* const PREVACHIEVEMENTTHRESHOLD;
 extern NSString* const NUMBEROFPOINTSSW;
+extern NSString* const APP_VERSION;

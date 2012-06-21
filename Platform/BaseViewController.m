@@ -301,7 +301,7 @@
         LOG_BASEVIEWCONTROLLER(0, @"%@showing progress bar", activityName);
         NSArray* progressMessages = [NSArray arrayWithObject:message];
         NSString* successMessage = @"Success!";
-        NSString* failureMessage = @"Failure!";
+        NSString* failureMessage = @"Oops, try again?";
         [progressView show:YES withMaximumDisplayTime:maximumTimeInSeconds showProgressMessages:progressMessages onSuccessShow:successMessage onFailureShow:failureMessage];
         
     //}

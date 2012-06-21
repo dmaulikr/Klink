@@ -113,3 +113,4 @@ NSString* const JUSTIFICATION           =@"justification";
 NSString* const ACHIEVEMENTTHRESHOLD    =@"achievementthreshold";
 NSString* const PREVACHIEVEMENTTHRESHOLD=@"prevachievementthreshold";
 NSString* const NUMBEROFPOINTSSW        =@"numberofpointssw";
+NSString* const APP_VERSION             =@"app_version";

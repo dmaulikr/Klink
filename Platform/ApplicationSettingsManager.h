@@ -23,6 +23,7 @@
 @property (nonatomic, retain) Callback* onFinishCallback;
 - (ApplicationSettings*) createDefaultSettingsObject;
 - (void) refreshApplicationSettings:(Callback*)callback;
++ (NSString*) getApplicationVersion;
 + (id) instance;
 
 

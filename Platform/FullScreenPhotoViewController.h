@@ -75,7 +75,7 @@
 // Navigation
 - (void) updateNavigation;
 - (void) didRotate;
-
+- (IBAction) onInfoButtonPressed:(id)sender;
 // Static Initializer
 + (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID;
 + (FullScreenPhotoViewController*)createInstanceWithPageID:(NSNumber *)pageID withPhotoID:(NSNumber *)photoID withCaptionID:(NSNumber*)captionID;

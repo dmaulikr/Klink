@@ -28,6 +28,7 @@
 #import "ApplicationSettings.h"
 #import "RequestSummaryViewController.h"
 #import "PlatformAppDelegate.h"
+#import "UITutorialView.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -348,6 +349,13 @@
 }
 
 #pragma mark - Notification Button Handlers
+
+- (IBAction)onInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewDraft"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
+
 - (void)updateNotificationButton {
     if ([self.authenticationManager isUserAuthenticated]) {
         int unreadNotifications = [User unopenedNotificationsFor:self.loggedInUser.objectid];
@@ -521,18 +529,18 @@
     [super viewDidAppear:animated];
     
     //we check to see if the user has been to this viewcontroller before
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Concering Drafts..." message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-        
-        //we mark that the user has viewed this viewcontroller at least once
-        [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
-        [userDefaults synchronize];
-    }
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
+//        //this is the first time opening, so we show a welcome message
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Concering Drafts..." message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//        
+//        //we mark that the user has viewed this viewcontroller at least once
+//        [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
+//        [userDefaults synchronize];
+//    }
     
     /*//we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
