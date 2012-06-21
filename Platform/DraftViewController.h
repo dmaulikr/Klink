@@ -66,7 +66,7 @@
 - (IBAction) onProfileButtonPressed:(id)sender;
 - (IBAction) onCameraButtonPressed:(id)sender;
 - (IBAction) onNotificationsButtonClicked:(id)sender;
-
+- (IBAction) onInfoButtonPressed:(id)sender;
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID;
 + (DraftViewController*)createInstanceWithPageID:(NSNumber*)pageID withPhotoID:(NSNumber*)photoID withCaptionID:(NSNumber*)captionID;
 

@@ -37,7 +37,7 @@
 @property (nonatomic,retain) NSNumber* achievementthreshold;
 @property (nonatomic,retain) NSNumber* prevachievementthreshold;
 @property (nonatomic,retain) NSNumber* numberofpointssw;
-
+@property (nonatomic,retain) NSString* app_version;
 
 + (int) unopenedNotificationsFor:(NSNumber*)objectid;
 @end

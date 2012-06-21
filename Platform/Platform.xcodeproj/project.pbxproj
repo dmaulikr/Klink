@@ -445,6 +445,10 @@
 		C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */; };
 		C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */; };
 		C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */; };
+		C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */; };
+		C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */; };
+		C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */; };
+		C5D4F3541593D33B00B36FCD /* UITutorialViewFullScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F3531593D33B00B36FCD /* UITutorialViewFullScreen.xib */; };
 		C5D9AA611466EB6C009AA3D8 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */; };
 		C5D9AA621466EB6C009AA3D8 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA591466EB6C009AA3D8 /* blackArrow.png */; };
 		C5D9AA631466EB6C009AA3D8 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA5A1466EB6C009AA3D8 /* blackArrow@2x.png */; };
@@ -1108,6 +1112,10 @@
 		C5CBA6B014B38E8B006FA4E3 /* UserDefaultSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultSettings.h; sourceTree = "<group>"; };
 		C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultSettings.m; sourceTree = "<group>"; };
 		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
+		C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProductionLog.xib; sourceTree = "<group>"; };
+		C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewDraft.xib; sourceTree = "<group>"; };
+		C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProfile.xib; sourceTree = "<group>"; };
+		C5D4F3531593D33B00B36FCD /* UITutorialViewFullScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewFullScreen.xib; sourceTree = "<group>"; };
 		C5D9AA561466EB6C009AA3D8 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		C5D9AA571466EB6C009AA3D8 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		C5D9AA591466EB6C009AA3D8 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
@@ -2084,6 +2092,10 @@
 				52F640E8158AA51900AD61D0 /* UITutorialView.h */,
 				52F640E9158AA51A00AD61D0 /* UITutorialView.m */,
 				52F640E6158AA41B00AD61D0 /* UITutorialViewContribute.xib */,
+				C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */,
+				C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */,
+				C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */,
+				C5D4F3531593D33B00B36FCD /* UITutorialViewFullScreen.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2647,6 +2659,10 @@
 				5273F1D615911B160062D6F0 /* banner_red_right@2x.png in Resources */,
 				5273F1D715911B160062D6F0 /* banner_red.png in Resources */,
 				5273F1D815911B160062D6F0 /* banner_red@2x.png in Resources */,
+				C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */,
+				C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */,
+				C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */,
+				C5D4F3541593D33B00B36FCD /* UITutorialViewFullScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

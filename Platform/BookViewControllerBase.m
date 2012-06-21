@@ -643,15 +643,15 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
-        [self showHUDForBookDownload];
-        
-        //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-    }
+//    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+//        [self showHUDForBookDownload];
+//        
+//        //this is the first time opening, so we show a welcome message
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//    }
     
     int count = [[self.frc_published_pages fetchedObjects] count];
     if (count == 0) {

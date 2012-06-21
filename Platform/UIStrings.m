@@ -28,7 +28,7 @@
 
  NSString* const ui_WELCOME_PROFILE             = @"Welcome! Use the Profile screen to track your Bahndr activity. Contribute enough drafts, photos and captions each week and you'll be promoted to Editor.\n\nRemember, while any Bahndrer can write, its the Editors that decide what is published.";
 
- NSString* const ui_WELCOME_EDITORIAL           = @"You've made it, you are a Bahndr Editor! Only Editors decide what Draft will be published next.\n\nGo on, cast your vote for your favorite Draft. Remember Bahndr is forever, guard it well.";
+ NSString* const ui_WELCOME_EDITORIAL           = @"You've made it, you are a Bahndr Editor! Only Editors decide what Draft will be published as the next page of Bahndr. \n\nGo on, cast your vote for your favorite Draft. Remember Bahndr is forever, guard it well.";
 
 NSString* const ui_LOGIN_REQUIRED               = @"While anyone can read Bahndr, only logged-in Bahndrers can contribute to it.\n\nBahndr uses Facebook authentication because of its strength and security.\n\nAnd hey, this is one less password for you to remember.";
 

@@ -28,6 +28,7 @@
 #import "PageState.h"
 #import "DateTimeHelper.h"
 #import "RequestSummaryViewController.h"
+#import "UITutorialView.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -637,14 +638,14 @@
                                              selector:@selector(didRotate)
                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Exploring Drafts..." message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-    }
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
+//        //this is the first time opening, so we show a welcome message
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Exploring Drafts..." message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//    }
     [self commonInit];
     
     // we update the toolbar items each time the view controller is shown
@@ -964,17 +965,21 @@
         
         //we check to ensure the user is logged in first
         if (![self.authenticationManager isUserAuthenticated]) {
-            UICustomAlertView *alert = [[UICustomAlertView alloc]
-                                        initWithTitle:ui_LOGIN_TITLE
-                                        message:ui_LOGIN_REQUIRED
-                                        delegate:self
-                                        onFinishSelector:@selector(onFlagButtonPressed:)
-                                        onTargetObject:self
-                                        withObject:nil
-                                        cancelButtonTitle:@"Cancel"
-                                        otherButtonTitles:@"Login", nil];
-            [alert show];
-            [alert release];
+//            UICustomAlertView *alert = [[UICustomAlertView alloc]
+//                                        initWithTitle:ui_LOGIN_TITLE
+//                                        message:ui_LOGIN_REQUIRED
+//                                        delegate:self
+//                                        onFinishSelector:@selector(onFlagButtonPressed:)
+//                                        onTargetObject:self
+//                                        withObject:nil
+//                                        cancelButtonTitle:@"Cancel"
+//                                        otherButtonTitles:@"Login", nil];
+//            [alert show];
+//            [alert release];
+            
+                      
+            [self authenticateAndGetFacebook:NO getTwitter:YES onSuccessCallback:nil onFailureCallback:nil];
+
         }
         else {
             //display progress view on the submission of a vote
@@ -1060,6 +1065,12 @@
     }
 }
 
+- (IBAction) onInfoButtonPressed:(id)sender
+{
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewFullScreen"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
 - (void) onTwitterButtonPressed:(id)sender {
     //we check to ensure the user is logged in to Twitter first
     AuthenticationContext* loggedInContext = [[AuthenticationManager instance]contextForLoggedInUser];
@@ -1100,17 +1111,7 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) 
     {
-//        UICustomAlertView *alert = [[UICustomAlertView alloc]
-//                              initWithTitle:ui_LOGIN_TITLE
-//                              message:ui_LOGIN_REQUIRED
-//                              delegate:self
-//                              onFinishSelector:@selector(onCameraButtonPressed:)
-//                              onTargetObject:self
-//                              withObject:nil
-//                              cancelButtonTitle:@"Cancel"
-//                              otherButtonTitles:@"Login", nil];
-//        [alert show];
-//        [alert release];
+
         
         //user is not logged in, must log in first
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
@@ -1261,11 +1262,7 @@
         [resourceContext.managedObjectContext.undoManager undo];
         
         NSError* error = nil;
-        [resourceContext.managedObjectContext save:&error];
-        
-        //update photo and caption metadata views
-        //[self.photoMetaData renderMetaDataWithID:self.photoID withCaptionID:self.captionID];
-        
+        [resourceContext.managedObjectContext save:&error];        
         UICaptionView* currentCaptionView = (UICaptionView *)[[self.captionViewSlider getVisibleViews] objectAtIndex:0];
         if ([currentCaptionView.captionID isEqualToNumber:self.captionID]) {
             [currentCaptionView setNeedsDisplay];
@@ -1276,13 +1273,18 @@
     else {
         [self.captionViewSlider.tableView reloadData];
         
-        RequestSummaryViewController* rvc = [RequestSummaryViewController createForRequests:pv.requests];
-        
-        UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:rvc];
-        navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentModalViewController:navigationController animated:YES];
-        
-        [navigationController release];
+        //we only show the request summary screen if the Request was not a flag review request
+        if (![Request isThisAFlagContentRequest:pv.requests])
+        {
+            //it is not a flag content request, let us display the request summary screen
+            RequestSummaryViewController* rvc = [RequestSummaryViewController createForRequests:pv.requests];
+            
+            UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:rvc];
+            navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+            [self presentModalViewController:navigationController animated:YES];
+            
+            [navigationController release];
+        }
 
     }
 }

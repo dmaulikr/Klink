@@ -695,16 +695,16 @@
     [super viewWillAppear:animated];
     
     //We show an alert view if this is the first time they have used this VC
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC] == NO) 
-    {
-        //it is the first time, we show the alert screen
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Track your Bahndr impact..." message:ui_WELCOME_PROFILE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-        
-    }
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC] == NO) 
+//    {
+//        //it is the first time, we show the alert screen
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Track your Bahndr impact..." message:ui_WELCOME_PROFILE delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//        
+//    }
     
     // Set status bar style to black
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
@@ -1074,7 +1074,7 @@
 }
 
 - (IBAction)onInfoButtonPressed:(id)sender {
-    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewProfile"];
     [self.view addSubview:infoView];
     [infoView release];
 }

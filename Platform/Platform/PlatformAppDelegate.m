@@ -145,6 +145,21 @@
             //execute the enumerator
             [userEnumerator enumerateUntilEnd:nil];
         }
+        else 
+        {
+            //we perform a check to update the application version if necessary
+            NSString* currentAppVersion = [ApplicationSettingsManager getApplicationVersion];
+            
+            if ([currentUser.app_version isEqualToString:@""] ||
+                ![currentUser.app_version isEqualToString:currentAppVersion] ||
+                currentUser.app_version == nil)
+            {
+                //we need to update the User object because the versions do not match
+                currentUser.app_version = currentAppVersion;
+                LOG_APPLICATIONSETTINGSMANAGER(0, @"%@Updating user's app version number from %@ to %@",activityName,currentUser.app_version,currentAppVersion);
+                [resourceContext save:YES onFinishCallback:nil trackProgressWith:nil];
+            }
+        }
 
     }
     
