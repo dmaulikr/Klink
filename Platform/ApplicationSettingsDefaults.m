@@ -13,7 +13,7 @@
 //NSString* const default_BASEURL = @"http://98.113.133.250/bonobo/rest";
 
 //this URL is to connect to BOBBY's development environment from his internal network
-//NSString* const default_BASEURL = @"http://192.168.1.102/bonobo/rest";
+NSString* const default_BASEURL = @"http://192.168.1.102/bonobo/rest";
 
 //this URL is to connect to JORDAN's development environment over the internet
 //NSString* const default_BASEURL = @"http://216.243.43.184/bonobo/rest";
@@ -26,7 +26,7 @@
 
 
 //this URL is to connect to the PRODUCTION #2 environment in the cloud
-NSString* const default_BASEURL = @"http://bahndr.com/service/rest";
+//NSString* const default_BASEURL = @"http://bahndr.com/service/rest";
 
 
 int const progress_MAXSECONDSTODISPLAY = 45;
