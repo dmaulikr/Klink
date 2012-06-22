@@ -397,18 +397,20 @@
     [self.delegate onUserWritersLogButtonClicked:sender];
 }
 
-- (IBAction)onInfoButtonPressed:(id)sender {
-    IntroViewController* introViewController = [IntroViewController createInstance];
-    introViewController.delegate = self;
+- (IBAction)onHomeInfoButtonPressed:(id)sender {    
+//    IntroViewController* introViewController = [IntroViewController createInstance];
+//    introViewController.delegate = self;
+//    
+////    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:introViewController];
+////    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+////    navigationController.navigationBarHidden = YES;
+//    
+//    [self.navigationController presentModalViewController:introViewController animated:YES];
+//    
+////    [navigationController release];
+//    [introViewController release];
     
-//    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:introViewController];
-//    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    navigationController.navigationBarHidden = YES;
-    
-    [self.navigationController presentModalViewController:introViewController animated:YES];
-    
-//    [navigationController release];
-    [introViewController release];
+    [self.delegate onHomeInfoButtonPressed:sender];
 }
 
 #pragma mark - Async callbacks
@@ -476,14 +478,16 @@
    
 }
 
-#pragma mark - IntroViewControllerDelegate methods
-- (void) introReadButtonPressed {
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void) introWriteButtonPressed {
-    [self dismissModalViewControllerAnimated:YES];
-}
+//#pragma mark - IntroViewControllerDelegate methods
+//- (void) introReadButtonPressed {
+//    [self dismissModalViewControllerAnimated:YES];
+//}
+//
+//- (void) introWriteButtonPressed {
+//    [self dismissModalViewControllerAnimated:YES];
+//    
+//    [self onProductionLogButtonClicked:nil];
+//}
 
 
 #pragma mark - Static Initializer

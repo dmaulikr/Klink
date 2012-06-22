@@ -537,6 +537,22 @@
     [super onProductionLogButtonClicked:sender];
 }
 
+- (IBAction)onHomeInfoButtonPressed:(id)sender {    
+    //called when the info button is pressed on the home/title view
+    [super onHomeInfoButtonPressed:sender];
+}
+
+#pragma mark - IntroViewControllerDelegate methods
+- (void) introReadButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void) introWriteButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+    
+    [super onProductionLogButtonClicked:nil];
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate methods
 - (void) controller:(NSFetchedResultsController *)controller 
     didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath 

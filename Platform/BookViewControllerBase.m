@@ -279,6 +279,17 @@
                 // from returning to the original state and showing.
                 //self.iv_bookCover.hidden = YES;
                 [self.view sendSubviewToBack:self.iv_bookCover];
+                
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+                    //we mark that the user has viewed this viewcontroller at least once
+                    [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
+                    [userDefaults synchronize];
+                    
+                    //this is the first time opening, so we show a intro screen
+                    [self onHomeInfoButtonPressed:nil];
+                    
+                }
             }
         }
     }
@@ -429,7 +440,7 @@
     
     // setup the book animations for when we return to book
     self.shouldCloseBookCover = YES;
-    self.shouldOpenBookCover = YES;
+    self.shouldOpenBookCover = NO;
     self.shouldOpenToTitlePage = YES;
     self.shouldOpenToLastPage = NO;
     self.shouldAnimatePageTurn = NO;
@@ -501,6 +512,27 @@
 
 - (IBAction) onUserWritersLogButtonClicked:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)onHomeInfoButtonPressed:(id)sender {
+    // setup the book animations for when we return to book
+    self.shouldCloseBookCover = NO;
+    self.shouldOpenBookCover = NO;
+    self.shouldOpenToTitlePage = YES;
+    self.shouldOpenToLastPage = NO;
+    self.shouldAnimatePageTurn = NO;
+    
+    IntroViewController* introViewController = [IntroViewController createInstance];
+    introViewController.delegate = self;
+    
+    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:introViewController];
+    navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    navigationController.navigationBarHidden = YES;
+    
+    [self.navigationController presentModalViewController:navigationController animated:YES];
+    
+    [navigationController release];
+    [introViewController release];
 }
 
 
@@ -612,6 +644,8 @@
     
     //NSString* activityName = @"BookViewControllerBase.viewDidLoad:";
     
+    self.shouldOpenBookCover = YES;
+    
 }
 
 - (void)viewDidUnload
@@ -642,15 +676,21 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
     
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+////    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+////        [self showHUDForBookDownload];
+////        
+////        //this is the first time opening, so we show a welcome message
+////        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+////        
+////        [alert show];
+////        [alert release];
+////    }
 //    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
 //        [self showHUDForBookDownload];
 //        
-//        //this is the first time opening, so we show a welcome message
-//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Welcome to Bahndr!" message:ui_WELCOME_BOOK delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-//        
-//        [alert show];
-//        [alert release];
+//        //this is the first time opening, so we show a intro screen
+//        [self onHomeInfoButtonPressed:nil];
 //    }
     
     int count = [[self.frc_published_pages fetchedObjects] count];
@@ -683,17 +723,10 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    //we mark that the user has viewed this viewcontroller at least once
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC]==NO) {
-        [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
-        [userDefaults synchronize];
-    }
-    
-    
     if (self.shouldOpenBookCover) {
         [self openBook];
     }
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

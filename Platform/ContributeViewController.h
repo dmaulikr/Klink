@@ -11,8 +11,8 @@
 #import "UICameraActionSheet.h"
 #import "UIProgressHUDView.h"
 #import "CloudEnumerator.h"
-@class ContributeViewController;
 
+@class ContributeViewController;
 
 @interface ContributeViewController : BaseViewController <UITextViewDelegate, UITextFieldDelegate, UICameraActionSheetDelegate,UIProgressHUDViewDelegate,CloudEnumeratorDelegate> 
 {

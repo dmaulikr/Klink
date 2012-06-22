@@ -19,9 +19,10 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
 - (IBAction) onUserWritersLogButtonClicked:(id)sender;
+- (IBAction) onHomeInfoButtonClicked:(id)sender;
 @end
 
-@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate, IntroViewControllerDelegate > {
+@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate > {
     id<HomeViewControllerDelegate> m_delegate;
     
     CloudEnumerator* m_cloudDraftEnumerator;
@@ -67,7 +68,6 @@
 
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_numContributors;
 
-- (IBAction)onInfoButtonPressed:(id)sender;
 
 + (HomeViewController*) createInstance;
 + (HomeViewController*) createInstanceWithUserID:(NSNumber*)userID;

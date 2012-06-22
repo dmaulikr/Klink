@@ -11,8 +11,9 @@
 #import "BookPageViewController.h"
 #import "HomeViewController.h"
 #import "BookLastPageViewController.h"
+#import "IntroViewController.h"
 
-@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate, HomeViewControllerDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate > {
+@interface BookViewControllerPageView : BookViewControllerBase < UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIGestureRecognizerDelegate, BookPageViewControllerDelegate, HomeViewControllerDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate, IntroViewControllerDelegate > {
     
     UIPageViewController* m_pageController;
     

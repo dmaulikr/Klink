@@ -12,8 +12,9 @@
 #import "CloudEnumerator.h"
 #import "MBProgressHUD.h"
 #import "BookTableOfContentsViewController.h"
+#import "IntroViewController.h"
 
-@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate, BookTableOfContentsViewControllerDelegate > {
+@interface BookViewControllerBase : BaseViewController < NSFetchedResultsControllerDelegate, UIProgressHUDViewDelegate, CloudEnumeratorDelegate, BookTableOfContentsViewControllerDelegate, IntroViewControllerDelegate > {
     
     NSNumber*           m_pageID; //represents the ID of the page which the view controller is currently displaying
     NSNumber*           m_userID; //represents the ID of the user if we are tring to build a book just of a specific user's published pages
@@ -78,6 +79,7 @@
 - (IBAction) onWritersLogButtonClicked:(id)sender;
 - (IBAction) onUserWritersLogButtonClicked:(id)sender;
 - (IBAction) onLinkButtonClicked:(id)sender;
+- (IBAction)onHomeInfoButtonPressed:(id)sender;
 
 // Book Page Delegate Methods
 - (IBAction) onHomeButtonPressed:(id)sender;

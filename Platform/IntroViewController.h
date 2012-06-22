@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "ContributeViewController.h"
 
 @protocol IntroViewControllerDelegate
 - (void) introReadButtonPressed;
@@ -16,17 +17,23 @@
     
 @end
 
-@interface IntroViewController : BaseViewController {
+@interface IntroViewController : BaseViewController < ContributeViewControllerDelegate > {
     id<IntroViewControllerDelegate> m_delegate;
     
-    UIButton* m_btn_read;
-    UIButton* m_btn_write;
+    UIButton*   m_btn_read;
+    UIButton*   m_btn_write;
+    
+    BOOL        m_isReturningFromLogin;
+    BOOL        m_isReturningFromContribute;
 }
 
 @property (assign) id<IntroViewControllerDelegate> delegate;
 
-@property (nonatomic, retain) IBOutlet UIButton* btn_read;
-@property (nonatomic, retain) IBOutlet UIButton* btn_write;
+@property (nonatomic, retain) IBOutlet UIButton*    btn_read;
+@property (nonatomic, retain) IBOutlet UIButton*    btn_write;
+
+@property                              BOOL         isReturningFromLogin;
+@property                              BOOL         isReturningFromContribute;
 
 - (IBAction) onReadButtonPressed:(id)sender;
 - (IBAction) onWriteButtonPressed:(id)sender;
