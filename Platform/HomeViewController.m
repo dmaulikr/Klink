@@ -19,7 +19,7 @@
 #import "User.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
-#import "UITutorialView.h"
+#import "IntroViewController.h"
 
 #define kUSERID                    @"userid"
 
@@ -398,9 +398,17 @@
 }
 
 - (IBAction)onInfoButtonPressed:(id)sender {
-    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
-    [self.view addSubview:infoView];
-    [infoView release];
+    IntroViewController* introViewController = [IntroViewController createInstance];
+    introViewController.delegate = self;
+    
+//    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:introViewController];
+//    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    navigationController.navigationBarHidden = YES;
+    
+    [self.navigationController presentModalViewController:introViewController animated:YES];
+    
+//    [navigationController release];
+    [introViewController release];
 }
 
 #pragma mark - Async callbacks
@@ -467,6 +475,16 @@
 {
    
 }
+
+#pragma mark - IntroViewControllerDelegate methods
+- (void) introReadButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void) introWriteButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 #pragma mark - Static Initializer
 + (HomeViewController*)createInstance {

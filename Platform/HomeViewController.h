@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
+#import "IntroViewController.h"
 
 @class HomeViewController;
 
@@ -20,7 +21,7 @@
 - (IBAction) onUserWritersLogButtonClicked:(id)sender;
 @end
 
-@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate > {
+@interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate, IntroViewControllerDelegate > {
     id<HomeViewControllerDelegate> m_delegate;
     
     CloudEnumerator* m_cloudDraftEnumerator;

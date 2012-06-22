@@ -280,6 +280,7 @@
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
+		52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52EE380B15940DB800D86F8B /* Chalkduster.ttf */; };
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EFF38415673C0000962F3A /* UIPointsProgressBar.m */; };
 		52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */; };
@@ -792,6 +793,7 @@
 		52E66B72148EC7F50079270A /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
+		52EE380B15940DB800D86F8B /* Chalkduster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chalkduster.ttf; sourceTree = "<group>"; };
 		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
 		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
 		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
@@ -1303,6 +1305,7 @@
 		C56F8A1A1462EC9F00E14199 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52EE380B15940DB800D86F8B /* Chalkduster.ttf */,
 				527A753314E738AF0012B229 /* Message.css */,
 				529E666714D0FBA500394EE9 /* Bahndr_appIcon-29.png */,
 				529E666514D0FB9100394EE9 /* Bahndr_appIcon-58.png */,
@@ -2673,16 +2676,14 @@
 				5273F1D615911B160062D6F0 /* banner_red_right@2x.png in Resources */,
 				5273F1D715911B160062D6F0 /* banner_red.png in Resources */,
 				5273F1D815911B160062D6F0 /* banner_red@2x.png in Resources */,
-
 				C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */,
 				C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */,
 				C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */,
 				C5D4F3541593D33B00B36FCD /* UITutorialViewFullScreen.xib in Resources */,
-
 				5291892D1592C5EE006DCD32 /* IntroViewController.xib in Resources */,
 				520FCBE21593980F00441C75 /* typewriter_key-bahndrB@2x.png in Resources */,
 				520FCBE515939BC600441C75 /* typewriter_key-bahndrB.png in Resources */,
-
+				52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
