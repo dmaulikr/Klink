@@ -29,6 +29,7 @@
 #import "RequestSummaryViewController.h"
 #import "PlatformAppDelegate.h"
 #import "UITutorialView.h"
+#import "FlurryAnalytics.h"
 
 #define kPAGEID @"pageid"
 #define kDRAFTTABLEVIEWCELLHEIGHT_TOP 320
@@ -528,6 +529,8 @@
 {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_DRAFTVIEW" timed:YES];
+    
     //we check to see if the user has been to this viewcontroller before
 //    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
 //    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
@@ -674,6 +677,8 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_DRAFTVIEW" withParameters:nil];
     
     ResourceContext* resourceContext = [ResourceContext instance];
     
@@ -1084,12 +1089,16 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) 
     {
+        [FlurryAnalytics logEvent:@"LOGIN_LIKE_DRAFTVIEW"];
+        
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:nil fireOnMainThread:YES];
         
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else 
     {
+        [FlurryAnalytics logEvent:@"LIKE_DRAFTVIEW"];
+        
         //display progress view on the submission of a vote
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
         NSString* message = @"Casting thy approval...";
@@ -1109,11 +1118,15 @@
 - (void) onCaptionButtonPressedForPhotoWithID:(NSNumber *)photoID {
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
+        [FlurryAnalytics logEvent:@"LOGIN_NEW_CAPTION_DRAFTVIEW"];
+        
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:nil  fireOnMainThread:YES];
         
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
+        [FlurryAnalytics logEvent:@"NEW_CAPTION_DRAFTVIEW" timed:YES];
+        
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewCaptionWithPageID:self.pageID withPhotoID:photoID];
         contributeViewController.delegate = self;
         
@@ -1192,11 +1205,16 @@
 //                              otherButtonTitles:@"Login", nil];
 //        [alert show];
 //        [alert release];
+        
+        [FlurryAnalytics logEvent:@"LOGIN_NEW_PHOTO_DRAFTVIEW"];
+        
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
         
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
+        [FlurryAnalytics logEvent:@"NEW_PHOTO_DRAFTVIEW" timed:YES];
+        
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewPhotoWithPageID:self.pageID];
         contributeViewController.delegate = self;
         

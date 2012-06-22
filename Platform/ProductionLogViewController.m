@@ -803,6 +803,8 @@
 {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_PRODUCTIONLOG" timed:YES];
+    
     //if its the first time the user has opened the production log, we display a welcome message
 //    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
 //    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
@@ -840,6 +842,8 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_PRODUCTIONLOG" withParameters:nil];
     
 }
 
@@ -1002,25 +1006,25 @@
 }
 
 - (IBAction) onPageButtonPressed:(id)sender {
-    // Flurry Analytics
-    [FlurryAnalytics logEvent:@"NEW_DRAFT"];
-    
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
+        [FlurryAnalytics logEvent:@"LOGIN_NEW_DRAFT_PRODUCTIONLOG"];
         
         Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageButtonPressed:) withContext:nil];        
         Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
         
-         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
+        [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSucccessCallback onFailureCallback:onFailCallback];
         [onSucccessCallback release];
         [onFailCallback release];
 
     }
     else {
+        [FlurryAnalytics logEvent:@"NEW_DRAFT_PRODUCTIONLOG" timed:YES];
+        
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewDraft];
         contributeViewController.delegate = self;
         

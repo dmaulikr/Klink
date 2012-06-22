@@ -537,6 +537,7 @@
 
 - (void) viewDidAppear:(BOOL)animated 
 {
+    [FlurryAnalytics logEvent:@"VIEWING_CONTRIBUTEVIEW" timed:YES];
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -555,6 +556,14 @@
     if (self.isDone == YES) {
         [self dismissModalViewControllerAnimated:YES];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_CONTRIBUTEVIEW" withParameters:nil];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -981,7 +990,20 @@
     //NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
     
     // Flurry Analytics
-    [FlurryAnalytics logEvent:@"DRAFT_SUBMITTED"];
+    if (self.configurationType == PAGE) 
+    {
+        [FlurryAnalytics endTimedEvent:@"NEW_DRAFT_PRODUCTIONLOG" withParameters:nil];
+    }
+    else if (self.configurationType == PHOTO) 
+    {
+        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_DRAFTVIEW " withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_FULLSCREENVIEW " withParameters:nil];
+    }
+    else 
+    {
+        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_DRAFTVIEW " withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_FULLSCREENVIEW " withParameters:nil];
+    }
     
     //Disable the Submit button
     [self.navigationItem.rightBarButtonItem setEnabled:NO];

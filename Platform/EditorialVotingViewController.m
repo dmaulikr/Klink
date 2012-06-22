@@ -22,6 +22,7 @@
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "FullScreenPhotoViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation EditorialVotingViewController
 @synthesize poll            = m_poll;
@@ -395,13 +396,21 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_EDITORIALVIEW" timed:YES];
+    
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC]==NO) {
         [userDefaults setBool:YES forKey:setting_HASVIEWEDEDITORIALVC];
         [userDefaults synchronize];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
+    [FlurryAnalytics endTimedEvent:@"VIEWING_EDITORIALVIEW" withParameters:nil];
     
 }
 
@@ -577,6 +586,8 @@
 
 #pragma mark - Vote view button handlers 
 - (IBAction)voteButtonPressed:(id)sender {
+    [FlurryAnalytics logEvent:@"VOTE_CAST_EDITORIALVIEW"];
+    
     NSString* activityName = @"EditorialVotingViewController.voteButtonPressed:";
     
     LOG_EDITORVOTEVIEWCONTROLLER(0, @"%@ user has voted for the page at index %d",activityName,index);
@@ -727,7 +738,12 @@
 }
 
 #pragma mark - Navigation Bar button handler 
-- (void)onCancelButtonPressed:(id)sender {    
+- (void)onCancelButtonPressed:(id)sender {
+    if (![self.poll.hasvoted boolValue]) {
+        // user has not voted in this poll
+        [FlurryAnalytics logEvent:@"VOTE_CANCELED_EDITORIALVIEW"];
+    }
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
