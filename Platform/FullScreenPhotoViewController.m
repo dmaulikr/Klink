@@ -875,6 +875,7 @@
         //[self.photoMetaData setHidden:YES];
         [self.photoViewSlider setHidden:YES];
         [self.captionViewSlider setHidden:YES];
+        [self.btn_info setHidden:YES];
         //[self.pg_captionPageIndicator setHidden:YES];
         [self hideControlsAfterDelay:0.25];
         
@@ -937,6 +938,7 @@
         //[self.photoMetaData setHidden:NO];
         [self.photoViewSlider setHidden:NO];
         [self.captionViewSlider setHidden:NO];
+        [self.btn_info setHidden:NO];
         //[self.pg_captionPageIndicator setHidden:NO];
         [self showControls];
         
