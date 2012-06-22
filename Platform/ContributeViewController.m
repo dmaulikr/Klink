@@ -418,7 +418,7 @@
         [self timeRemaining:deadlineTimer];
     }
     
-    //we check to see if the user has been to this viewcontroller before
+//    //we check to see if the user has been to this viewcontroller before
 //    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
 //    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC] == NO) {
 //        //this is the first time opening, so we show a welcome message
@@ -427,6 +427,19 @@
 //        [alert show];
 //        [alert release];
 //    }
+    
+    //we check to see if the user has been to this viewcontroller before
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDCONTRIBUTEVC] == NO) {
+        //this is the first time opening, so we show the tutorail view
+        UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+        [self.view addSubview:infoView];
+        [infoView release];
+    }
+    
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    [self.view addSubview:infoView];
+    [infoView release];
     
     
     ResourceContext* resourceContext = [ResourceContext instance];
