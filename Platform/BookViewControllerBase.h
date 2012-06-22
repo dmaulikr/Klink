@@ -87,6 +87,7 @@
 - (IBAction) onTwitterButtonPressed:(id)sender;
 - (IBAction) onTableOfContentsButtonPressed:(id)sender;
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender;
+- (IBAction)onPageInfoButtonPressed:(id)sender;
 
 + (BookViewControllerBase*) createInstance;
 + (BookViewControllerBase*) createInstanceWithPageID:(NSNumber*)pageID;

@@ -370,6 +370,10 @@
     [self.navigationController pushViewController:fullScreenController animated:YES];*/
 }
 
+- (IBAction)onPageInfoButtonPressed:(id)sender {    
+    [self.delegate onPageInfoButtonPressed:sender];
+}
+
 #pragma mark Username button handler
 - (IBAction) onLinkButtonClicked:(id)sender {
     [self.delegate onLinkButtonClicked:sender];
