@@ -72,6 +72,8 @@
 
 @synthesize isSinglePhotoAndCaption = m_isSinglePhotoAndCaption;
 
+@synthesize btn_info                = m_btn_info;
+
 #pragma mark - Properties
 - (NSFetchedResultsController*) frc_photos {
     if (__frc_photos != nil) {
@@ -839,6 +841,8 @@
     self.tb_cameraButton = nil;
     self.tb_voteButton = nil;
     self.tb_captionButton = nil;
+    
+    self.btn_info = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

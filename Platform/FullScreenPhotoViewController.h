@@ -39,6 +39,8 @@
     UIBarButtonItem*    m_tb_captionButton;
     
     BOOL                m_isSinglePhotoAndCaption;
+    
+    UIButton*           m_btn_info;
 }
 
 @property (nonatomic,retain) NSFetchedResultsController*    frc_photos;
@@ -71,6 +73,8 @@
 @property (nonatomic,retain) IBOutlet UIBarButtonItem*      tb_captionButton;
 
 @property                             BOOL                  isSinglePhotoAndCaption;
+
+@property (nonatomic,retain) IBOutlet UIButton*             btn_info;
 
 // Navigation
 - (void) updateNavigation;
