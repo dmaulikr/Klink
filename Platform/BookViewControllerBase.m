@@ -424,7 +424,7 @@
 }
 
 - (IBAction)onPageInfoButtonPressed:(id)sender {
-    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewProductionLog"];
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewPage"];
     [self.view addSubview:infoView];
     [infoView release];
 }
