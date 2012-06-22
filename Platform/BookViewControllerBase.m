@@ -27,6 +27,7 @@
 #import "BookTableOfContentsViewController.h"
 #import "FullScreenPhotoViewController.h"
 #import "Attributes.h"
+#import "UITutorialView.h"
 
 @implementation BookViewControllerBase
 @synthesize pageID              = m_pageID;
@@ -420,6 +421,12 @@
     
     FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID isSinglePhotoAndCaption:YES];
     [self.navigationController pushViewController:fullScreenController animated:YES];
+}
+
+- (IBAction)onPageInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewProductionLog"];
+    [self.view addSubview:infoView];
+    [infoView release];
 }
 
 #pragma mark Home Page Delegate Methods

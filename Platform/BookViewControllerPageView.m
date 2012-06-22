@@ -524,6 +524,11 @@
     [super onZoomOutPhotoButtonPressed:sender];
 }
 
+- (IBAction)onPageInfoButtonPressed:(id)sender {    
+    //called when the info button is pressed on the home/title view
+    [super onPageInfoButtonPressed:sender];
+}
+
 #pragma mark Home Page Delegate Methods
 - (IBAction) onReadButtonClicked:(id)sender {
     //called when the read button is pressed

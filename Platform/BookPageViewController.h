@@ -23,6 +23,7 @@
 - (IBAction) onLinkButtonClicked:(id)sender;
 - (IBAction) onTableOfContentsButtonPressed:(id)sender;
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender;
+- (IBAction) onPageInfoButtonPressed:(id)sender;
 @end
 
 @interface BookPageViewController : BaseViewController {    
