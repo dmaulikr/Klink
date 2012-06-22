@@ -546,7 +546,7 @@
         [userDefaults synchronize];
         
         //this is the first time opening, so we show the tutorail view
-        UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+        UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContributeFirstTime"];
         [self.view addSubview:infoView];
         [infoView release];
     }
