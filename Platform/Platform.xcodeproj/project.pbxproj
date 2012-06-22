@@ -281,6 +281,7 @@
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
 		52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52EE380B15940DB800D86F8B /* Chalkduster.ttf */; };
+		52EE3810159441CE00D86F8B /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */; };
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EFF38415673C0000962F3A /* UIPointsProgressBar.m */; };
 		52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */; };
@@ -794,6 +795,8 @@
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		52EE380B15940DB800D86F8B /* Chalkduster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chalkduster.ttf; sourceTree = "<group>"; };
+		52EE380E159441CE00D86F8B /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
+		52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
 		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
 		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
 		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
@@ -1197,6 +1200,7 @@
 				C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */,
 				C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */,
 				C5C9E29C146700C300838934 /* libOAuth.a in Frameworks */,
+				52EE3810159441CE00D86F8B /* libFlurryAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1223,6 +1227,15 @@
 				5236458414A26D0F007BD882 /* LeavesViewController.m */,
 			);
 			path = Leaves;
+			sourceTree = "<group>";
+		};
+		52EE380D159441CE00D86F8B /* FlurryAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				52EE380E159441CE00D86F8B /* FlurryAnalytics.h */,
+				52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */,
+			);
+			path = FlurryAnalytics;
 			sourceTree = "<group>";
 		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
@@ -1696,6 +1709,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				52EE380D159441CE00D86F8B /* FlurryAnalytics */,
 				5236457E14A26D0F007BD882 /* Leaves */,
 				52323F19149A6DFA0055A933 /* iCarousel */,
 				C58C6CA314973AAC0068CCD6 /* Airbrake */,
@@ -2964,6 +2978,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
+					"\"$(SRCROOT)/FlurryAnalytics\"",
 				);
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3016,6 +3031,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
+					"\"$(SRCROOT)/FlurryAnalytics\"",
 				);
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3082,6 +3098,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
+					"\"$(SRCROOT)/FlurryAnalytics\"",
 				);
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -3111,6 +3128,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
+					"\"$(SRCROOT)/FlurryAnalytics\"",
 				);
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;

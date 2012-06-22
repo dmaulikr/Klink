@@ -29,6 +29,7 @@
 #import "DateTimeHelper.h"
 #import "LoginViewController.h"
 #import "UITutorialView.h"
+#import "FlurryAnalytics.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -1001,6 +1002,9 @@
 }
 
 - (IBAction) onPageButtonPressed:(id)sender {
+    // Flurry Analytics
+    [FlurryAnalytics logEvent:@"NEW_DRAFT"];
+    
     // Setup the typewriter animation
     self.shouldCloseTypewriter = NO;
     self.shouldOpenTypewriter = NO;

@@ -28,6 +28,7 @@
 #import "UIStrings.h"
 #import "RequestSummaryViewController.h"
 #import "UITutorialView.h"
+#import "FlurryAnalytics.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -979,6 +980,9 @@
 - (void)onSubmitButtonPressed:(id)sender {
     //NSString* activityName = @"ContributeViewController.onSubmitButtonPressed:";
     
+    // Flurry Analytics
+    [FlurryAnalytics logEvent:@"DRAFT_SUBMITTED"];
+    
     //Disable the Submit button
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
     
@@ -1010,8 +1014,9 @@
 }
 
 
-- (void)onCancelButtonPressed:(id)sender {    
-    //[self.delegate onCancelButtonPressed:sender];
+- (void)onCancelButtonPressed:(id)sender {
+    // Flurry Analytics
+    [FlurryAnalytics logEvent:@"DRAFT_CANCELED"];
     
     if (self.configurationType == PHOTO && !self.img_photo) {
         // User just pressed 'Cancel' button on cameraActionSheet right after they first pressed the camera button from the draft view

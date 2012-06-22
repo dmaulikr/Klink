@@ -27,6 +27,7 @@
 #import "PageState.h"
 #import "ImageManager.h"
 #import "ProductionLogViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation PlatformAppDelegate
 
@@ -97,10 +98,20 @@
     
 }
 
+void uncaughtExceptionHandler(NSException *exception) {
+    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSString* activityName = @"PlatformAppDelegate.applicationDidiFinishLoading:";
     // Override point for customization after application launch.
+    
+    // Flurry Analytics Setup
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    [FlurryAnalytics startSession:@"9X2WMNNCMDH7HNM7J697"];
+    // Enable Flurry agent to automatically detect and log page views on the root navigation controller
+    [FlurryAnalytics logAllPageViews:self.navigationController];
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons
