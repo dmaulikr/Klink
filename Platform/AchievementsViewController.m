@@ -397,6 +397,8 @@
 
 #pragma mark - UI Gesture Handlers
 - (void)showAchievement:(UITapGestureRecognizer *)gestureRecognizer {
+    [FlurryAnalytics logEvent:@"AWARDSVIEW_MALLARDVIEWED"];
+    
     UIImageView* iv_achievement = (UIImageView *)gestureRecognizer.view;
     
     int index = iv_achievement.tag - 1;
