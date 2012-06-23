@@ -52,6 +52,7 @@
 @synthesize draftTitle = m_draftTitle;
 @synthesize tf_newDraftTitle = m_tf_newDraftTitle;
 @synthesize lbl_titleRequired = m_lbl_titleRequired;
+@synthesize iv_titleBackground = m_iv_titleBackground;
 
 @synthesize btn_cameraButton = m_btn_cameraButton;
 @synthesize iv_photo = m_iv_photo;
@@ -351,6 +352,7 @@
     self.lbl_draftTitle = nil;
     self.tf_newDraftTitle = nil;
     self.lbl_titleRequired = nil;
+    self.iv_titleBackground = nil;
     
     self.btn_cameraButton = nil;
     self.iv_photo = nil;
@@ -440,6 +442,7 @@
         self.tf_newDraftTitle.hidden = NO;
         self.tf_newDraftTitle.enabled = YES;
         self.lbl_titleRequired.hidden = NO;
+        self.iv_titleBackground.hidden = NO;
         
         // Photo is optional because user is creating a new draft
         self.btn_cameraButton.hidden = NO;
@@ -470,6 +473,7 @@
         self.tf_newDraftTitle.hidden = YES;
         self.tf_newDraftTitle.enabled = NO;
         self.lbl_titleRequired.hidden = YES;
+        self.iv_titleBackground.hidden = YES;
         
         // Caption is optional because user is adding a new photo
         self.lbl_captionOptional.hidden = NO;
@@ -495,6 +499,7 @@
         self.tf_newDraftTitle.hidden = YES;
         self.tf_newDraftTitle.enabled = NO;
         self.lbl_titleRequired.hidden = YES;
+        self.iv_titleBackground.hidden = YES;
 
         // Show existing photo but disabled cameraButton since user is adding a caption
         Photo* currentPhoto = (Photo*)[resourceContext resourceWithType:PHOTO withID:self.photoID];

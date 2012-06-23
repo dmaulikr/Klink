@@ -34,6 +34,7 @@
     NSString*       m_draftTitle;
     UITextField*    m_tf_newDraftTitle;
     UILabel*        m_lbl_titleRequired;
+    UIImageView*    m_iv_titleBackground;
     
     UIButton*       m_btn_cameraButton; //handles when the photo is touched to launch the camera
     UIImageView*    m_iv_photo;
@@ -80,6 +81,7 @@
 @property (nonatomic, retain) NSString*                 draftTitle;
 @property (nonatomic, retain) IBOutlet UITextField*     tf_newDraftTitle;
 @property (nonatomic, retain) IBOutlet UILabel*         lbl_titleRequired;
+@property (nonatomic, retain) IBOutlet UIImageView*     iv_titleBackground;
 
 @property (nonatomic, retain) IBOutlet UIButton*        btn_cameraButton;
 @property (nonatomic, retain) IBOutlet UIImageView*     iv_photo;
