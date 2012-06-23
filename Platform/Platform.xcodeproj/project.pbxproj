@@ -312,6 +312,7 @@
 		C522FD3A147A5DDD00F691A4 /* Poll.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD39147A5DDD00F691A4 /* Poll.m */; };
 		C522FD3D147A5EB400F691A4 /* PollData.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3C147A5EB400F691A4 /* PollData.m */; };
 		C522FD40147A612A00F691A4 /* Bookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C522FD3F147A612900F691A4 /* Bookmark.m */; };
+		C52B62B61595379C0029F379 /* UITutorialViewPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52B62B51595379C0029F379 /* UITutorialViewPage.xib */; };
 		C52FB3CB14AFCD160048D2C4 /* UIResourceLinkButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */; };
 		C533FB971546E7A500552DAA /* LeaderboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533FB951546E7A500552DAA /* LeaderboardViewController.m */; };
 		C533FB981546E7A500552DAA /* LeaderboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533FB961546E7A500552DAA /* LeaderboardViewController.xib */; };
@@ -347,6 +348,7 @@
 		C58C6CD014973AF00068CCD6 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC214973AF00068CCD6 /* DDXMLNode.m */; };
 		C58C6CD114973AF00068CCD6 /* GCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58C6CC714973AF00068CCD6 /* GCAlertView.m */; };
 		C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C58C6CD214973B130068CCD6 /* libicucore.dylib */; };
+		C58D617A15952C3700B6C77D /* UITutorialViewContributeFirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */; };
 		C58E348D151A325D003CD1EC /* Follow.m in Sources */ = {isa = PBXBuildFile; fileRef = C58E348C151A325D003CD1EC /* Follow.m */; };
 		C5913BB01496AFC000C8C2F1 /* ErrorCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = C5913BAF1496AFC000C8C2F1 /* ErrorCodes.m */; };
 		C593F7C4143EB191008D25A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C593F7C3143EB191008D25A7 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -841,6 +843,7 @@
 		C522FD3C147A5EB400F691A4 /* PollData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollData.m; sourceTree = "<group>"; };
 		C522FD3E147A612900F691A4 /* Bookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bookmark.h; sourceTree = "<group>"; };
 		C522FD3F147A612900F691A4 /* Bookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bookmark.m; sourceTree = "<group>"; };
+		C52B62B51595379C0029F379 /* UITutorialViewPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewPage.xib; sourceTree = "<group>"; };
 		C52FB3C914AFCD160048D2C4 /* UIResourceLinkButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIResourceLinkButton.h; sourceTree = "<group>"; };
 		C52FB3CA14AFCD160048D2C4 /* UIResourceLinkButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIResourceLinkButton.m; sourceTree = "<group>"; };
 		C533FB941546E7A500552DAA /* LeaderboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderboardViewController.h; sourceTree = "<group>"; };
@@ -907,6 +910,7 @@
 		C58C6CC614973AF00068CCD6 /* GCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCAlertView.h; sourceTree = "<group>"; };
 		C58C6CC714973AF00068CCD6 /* GCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCAlertView.m; sourceTree = "<group>"; };
 		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewContributeFirstTime.xib; sourceTree = "<group>"; };
 		C58E348B151A325D003CD1EC /* Follow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Follow.h; sourceTree = "<group>"; };
 		C58E348C151A325D003CD1EC /* Follow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Follow.m; sourceTree = "<group>"; };
 		C5913BAE1496AFC000C8C2F1 /* ErrorCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorCodes.h; sourceTree = "<group>"; };
@@ -2127,6 +2131,8 @@
 				C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */,
 				C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */,
 				C5D4F3531593D33B00B36FCD /* UITutorialViewFullScreen.xib */,
+				C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */,
+				C52B62B51595379C0029F379 /* UITutorialViewPage.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2698,6 +2704,8 @@
 				520FCBE21593980F00441C75 /* typewriter_key-bahndrB@2x.png in Resources */,
 				520FCBE515939BC600441C75 /* typewriter_key-bahndrB.png in Resources */,
 				52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */,
+				C58D617A15952C3700B6C77D /* UITutorialViewContributeFirstTime.xib in Resources */,
+				C52B62B61595379C0029F379 /* UITutorialViewPage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
