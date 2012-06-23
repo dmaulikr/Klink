@@ -7,6 +7,7 @@
 //
 
 #import "WebViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation WebViewController
 
@@ -179,6 +180,20 @@
     //[self.wv_webView loadRequest:requestObj];
     [self.wv_webView loadHTMLString:self.htmlString baseURL:self.baseURL];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [FlurryAnalytics logEvent:@"VIEWING_WEBVIEW" timed:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_WEBVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

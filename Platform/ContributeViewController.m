@@ -1001,13 +1001,13 @@
     }
     else if (self.configurationType == PHOTO) 
     {
-        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_DRAFTVIEW " withParameters:nil];
-        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_FULLSCREENVIEW " withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_DRAFTVIEW" withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_FULLSCREENVIEW" withParameters:nil];
     }
     else 
     {
-        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_DRAFTVIEW " withParameters:nil];
-        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_FULLSCREENVIEW " withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_DRAFTVIEW" withParameters:nil];
+        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_FULLSCREENVIEW" withParameters:nil];
     }
     
     //Disable the Submit button

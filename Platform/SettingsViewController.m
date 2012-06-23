@@ -18,6 +18,7 @@
 #import "ImageManager.h"
 #import <sys/utsname.h>
 #import "Attributes.h"
+#import "FlurryAnalytics.h"
 
 @interface SettingsViewController ()
 
@@ -123,6 +124,20 @@
     
     self.sw_seamlessFacebookSharing.on = [self.user.sharinglevel boolValue];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [FlurryAnalytics logEvent:@"VIEWING_SETTINGSVIEW" timed:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_SETTINGSVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -1234,25 +1234,25 @@
 
 #define kGCDQueueName   @"com.bluelabellabs.bahndr"
 
-- (void) onNewCaptionVote_Async:(NSNumber*)captionid
-{
-    //create a dispatch queue
-    void (^block)(NSNumber*) = ^(NSNumber* cid) {
-        ResourceContext* resourceContext = [ResourceContext instance];
-        Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:cid];
-        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:caption.pageid]; 
-        
-        if (page != nil) 
-        {
-            // [page performSelectorInBackground:@selector(updateCaptionWithHighestVotes:) withObject:changedCaption];
-            [page updateCaptionWithHighestVotes:caption];
-            
-        }
-    };
-    
-    //dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(backgroundQueue,^{block(captionid);});
-}
+//- (void) onNewCaptionVote_Async:(NSNumber*)captionid
+//{
+//    //create a dispatch queue
+//    void (^block)(NSNumber*) = ^(NSNumber* cid) {
+//        ResourceContext* resourceContext = [ResourceContext instance];
+//        Caption* caption = (Caption*)[resourceContext resourceWithType:CAPTION withID:cid];
+//        Page* page = (Page*)[resourceContext resourceWithType:PAGE withID:caption.pageid]; 
+//        
+//        if (page != nil) 
+//        {
+//            // [page performSelectorInBackground:@selector(updateCaptionWithHighestVotes:) withObject:changedCaption];
+//            [page updateCaptionWithHighestVotes:caption];
+//            
+//        }
+//    };
+//    
+//    //dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//    dispatch_async(backgroundQueue,^{block(captionid);});
+//}
 
 
 

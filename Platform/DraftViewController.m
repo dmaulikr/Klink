@@ -60,8 +60,14 @@
 - (void) timeRemaining:(NSTimer *)timer {
     NSDate* now = [NSDate date];
     NSTimeInterval remaining = [self.deadline timeIntervalSinceDate:now];
-    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
-    //self.lbl_deadlineNavBar.text = [NSString stringWithFormat:@"deadline: %@", [DateTimeHelper formatTimeInterval:remaining]];
+    NSString* remainingSrtring = [DateTimeHelper formatTimeInterval:remaining];
+    self.lbl_deadline.text = [NSString stringWithFormat:@"deadline: %@", remainingSrtring];
+    if ([remainingSrtring isEqualToString:@"closed!"]) {
+        self.lbl_deadline.textColor = [UIColor redColor];
+    }
+    else {
+        self.lbl_deadline.textColor = [UIColor blackColor];
+    }
 }
 
 #pragma mark - Properties

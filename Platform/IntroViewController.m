@@ -8,6 +8,7 @@
 
 #import "IntroViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "FlurryAnalytics.h"
 
 @interface IntroViewController ()
 
@@ -96,6 +97,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_INTROVIEW" timed:YES];
+    
     if (self.isReturningFromLogin == YES) {
         if ([self.authenticationManager isUserAuthenticated]) {
             self.isReturningFromLogin = NO;
@@ -117,6 +120,13 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_INTROVIEW" withParameters:nil];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -124,10 +134,14 @@
 
 #pragma mark - UIButton Handlers
 - (IBAction) onReadButtonPressed:(id)sender {
+    [FlurryAnalytics logEvent:@"INTROVIEW_EXPLORE_PRESSED"];
+    
     [self.delegate introReadButtonPressed];
 }
 
 - (IBAction) onWriteButtonPressed:(id)sender {
+    [FlurryAnalytics logEvent:@"INTROVIEW_TUTORIAL_PRESSED"];
+    
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
         self.isReturningFromLogin = YES;

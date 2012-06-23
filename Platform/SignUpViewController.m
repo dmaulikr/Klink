@@ -12,6 +12,7 @@
 #import "ApplicationSettingsManager.h"
 #import "GetAuthenticatorResponse.h"
 #import "ErrorCodes.h"
+#import "FlurryAnalytics.h"
 
 @implementation SignUpViewController
 @synthesize sv_scrollView   = m_sv_scrollView;
@@ -131,6 +132,20 @@
 {
     // Hide Login Error label
     self.lbl_error.hidden = YES;
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [FlurryAnalytics logEvent:@"VIEWING_SIGNUPVIEW" timed:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_SIGNUPVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -318,7 +318,7 @@
 					<object class="IBUIButton" id="31117727">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 403}, {136, 37}}</string>
+						<string key="NSFrame">{{19, 403}, {138, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSNextKeyView" ref="445355617"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="108970802">
@@ -330,29 +330,29 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
-						<string key="IBUINormalTitle">Read Bahndr</string>
+						<string key="IBUINormalTitle">Explore Bahndr</string>
 						<reference key="IBUIHighlightedTitleColor" ref="321657383"/>
 						<object class="NSColor" key="IBUINormalTitleColor" id="202827850">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="321657383"/>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="421400305">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="362587482">
 							<string key="name">AmericanTypewriter-Bold</string>
 							<string key="family">American Typewriter</string>
 							<int key="traits">2</int>
-							<double key="pointSize">17</double>
+							<double key="pointSize">16</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="102630559">
+						<object class="NSFont" key="IBUIFont" id="151289309">
 							<string key="NSName">AmericanTypewriter-Bold</string>
-							<double key="NSSize">17</double>
+							<double key="NSSize">16</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
 					<object class="IBUIButton" id="445355617">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{164, 403}, {136, 37}}</string>
+						<string key="NSFrame">{{163, 403}, {138, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="IBUIBackgroundColor" ref="108970802"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -360,12 +360,12 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
-						<string key="IBUINormalTitle">Start Writing</string>
+						<string key="IBUINormalTitle">Take Tutorial</string>
 						<reference key="IBUIHighlightedTitleColor" ref="321657383"/>
 						<reference key="IBUINormalTitleColor" ref="202827850"/>
 						<reference key="IBUINormalTitleShadowColor" ref="321657383"/>
-						<reference key="IBUIFontDescription" ref="421400305"/>
-						<reference key="IBUIFont" ref="102630559"/>
+						<reference key="IBUIFontDescription" ref="362587482"/>
+						<reference key="IBUIFont" ref="151289309"/>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
@@ -560,7 +560,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<real value="0.0" key="13.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="0.0" key="14.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

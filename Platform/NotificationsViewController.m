@@ -22,6 +22,7 @@
 #import "WebViewController.h"
 #import "AchievementsViewController.h"
 #import "Achievement.h"
+#import "FlurryAnalytics.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 #define kUSERREGEX @"\\{.*?\\}"
@@ -242,6 +243,8 @@
 {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_NOTIFICATIONSVIEW" timed:YES];
+    
     //if the user is not logged in, close the view immediately
     if (![self.authenticationManager isUserAuthenticated]) {
         // user is not, or is no longer authenticated, dismiss notifications view immediately
@@ -257,14 +260,11 @@
 
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_NOTIFICATIONSVIEW" withParameters:nil];
 }
 
 - (void) dealloc {

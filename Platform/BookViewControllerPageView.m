@@ -550,6 +550,8 @@
 #pragma mark - IntroViewControllerDelegate methods
 - (void) introReadButtonPressed {
     [self dismissModalViewControllerAnimated:YES];
+    
+    [self onReadButtonClicked:nil];
 }
 
 - (void) introWriteButtonPressed {

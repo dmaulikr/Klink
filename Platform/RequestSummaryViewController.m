@@ -15,6 +15,7 @@
 #import "Achievement.h"
 #import "ImageManager.h"
 #import "AchievementsViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation RequestSummaryViewController
 @synthesize user                        = m_user;
@@ -88,16 +89,6 @@
     self.friendsLeaderboardCloudEnumerator = [CloudEnumerator enumeratorForLeaderboard:self.userID ofType:kWEEKLY relativeTo:kPEOPLEIKNOW];
     self.friendsLeaderboardCloudEnumerator.delegate = self;
     
-}
-
-- (void) viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
-    // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
-    [self.v_scoreChangeView removeFromSuperview];
-    [self.v_pointsProgressBar removeFromSuperview];
-//    [self.v_leaderboard3Up removeFromSuperview];
-//    [self.btn_leaderboard3UpButton removeFromSuperview];
 }
 
 
@@ -314,6 +305,24 @@
     //we then need to render the achievements view
     [self renderAchievements];
    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [FlurryAnalytics logEvent:@"VIEWING_REQUESTSUMMARYVIEW" timed:YES];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_REQUESTSUMMARYVIEW" withParameters:nil];
+    
+    // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
+    [self.v_scoreChangeView removeFromSuperview];
+    [self.v_pointsProgressBar removeFromSuperview];
+    //    [self.v_leaderboard3Up removeFromSuperview];
+    //    [self.btn_leaderboard3UpButton removeFromSuperview];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

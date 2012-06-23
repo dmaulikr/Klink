@@ -12,6 +12,7 @@
 #import "Achievement.h"
 #import "ImageManager.h"
 #import "UIAchievementView.h"
+#import "FlurryAnalytics.h"
 
 #define kIMAGEVIEW @"imageview"
 
@@ -299,11 +300,11 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:btn_rightButton] autorelease];
     
     // Set Navigation bar title style with typewriter font
-    CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    CGSize labelSize = [@"Awards" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
     //CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"Copperplate-Bold" size:24.0]];
     //CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"Baskerville-Bold" size:20.0]];
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
-    titleLabel.text = @"Mallard & Co.";
+    titleLabel.text = @"Awards";
     titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
     //titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:24.0];
     //titleLabel.font = [UIFont fontWithName:@"Baskerville-Bold" size:20.0];
@@ -343,10 +344,18 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_AWARDSVIEW" timed:YES];
+    
     // Check if the controller should open with a specific achievement loaded
     if (self.loadedAchievementID != nil) {
         [self showAchievementWithID:self.loadedAchievementID];
     }
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_AWARDSVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
