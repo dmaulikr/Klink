@@ -52,12 +52,12 @@
     if (self.listType == kFOLLOWING) {
         //we need to query for all the individuals this user is following
         predicate = [NSPredicate predicateWithFormat:@"%K=%@", FOLLOWERUSERID, self.userID];
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:USERNAME ascending:YES];
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:USERNAME ascending:YES selector:@selector(caseInsensitiveCompare:)];
     }
     else {
         //we need to query for all the individuals that are following this user
         predicate = [NSPredicate predicateWithFormat:@"%K=%@", USERID, self.userID];
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:FOLLOWERNAME ascending:YES];
+        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:FOLLOWERNAME ascending:YES selector:@selector(caseInsensitiveCompare:)];
     }
     
     [fetchRequest setPredicate:predicate];
