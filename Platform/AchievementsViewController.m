@@ -280,7 +280,8 @@
     }
     else
     {
-        [self.navigationController.navigationBar.layer setContents:(id)backgroundImage.CGImage];
+        //[self.navigationController.navigationBar.layer setContents:(id)backgroundImage.CGImage];
+        [self.navigationController.navigationBar insertSubview:[[[UIImageView alloc] initWithImage:backgroundImage] autorelease] atIndex:1];
     }
     
     // Add custom styled Done button to nav bar
