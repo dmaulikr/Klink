@@ -846,7 +846,9 @@
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC]==NO) {
+    if ([userDefaults boolForKey:setting_HASVIEWEDPROFILEVC]==NO) 
+    {
+        [self onInfoButtonPressed:nil];
         [userDefaults setBool:YES forKey:setting_HASVIEWEDPROFILEVC];
         [userDefaults synchronize];
     }

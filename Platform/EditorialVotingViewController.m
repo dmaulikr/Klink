@@ -23,6 +23,7 @@
 #import "UIStrings.h"
 #import "FullScreenPhotoViewController.h"
 #import "FlurryAnalytics.h"
+#import "UITutorialView.h"
 
 @implementation EditorialVotingViewController
 @synthesize poll            = m_poll;
@@ -259,14 +260,14 @@
     }
     
     //if its the first time the user has opened the production log, we display a welcome message
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Editorial Board" message:ui_WELCOME_EDITORIAL delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-        
-        [alert show];
-        [alert release];
-    }
+//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC] == NO) {
+//        //this is the first time opening, so we show a welcome message
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Editorial Board" message:ui_WELCOME_EDITORIAL delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+//        
+//        [alert show];
+//        [alert release];
+//    }
     
     // Rotate the view to landscape orientation
     [self shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight];
@@ -401,6 +402,7 @@
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults boolForKey:setting_HASVIEWEDEDITORIALVC]==NO) {
+        [self onInfoButtonPressed:nil];
         [userDefaults setBool:YES forKey:setting_HASVIEWEDEDITORIALVC];
         [userDefaults synchronize];
     }
@@ -566,6 +568,14 @@
 }
 
 #pragma mark - UIButton handlers
+- (IBAction) onInfoButtonPressed:(id)sender
+{
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewEditorial"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
+
+
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
     UIEditorialPageView* currentDraftView = (UIEditorialPageView *)self.ic_coverFlowView.currentItemView;
     

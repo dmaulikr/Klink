@@ -806,18 +806,19 @@
     [FlurryAnalytics logEvent:@"VIEWING_PRODUCTIONLOG" timed:YES];
     
     //if its the first time the user has opened the production log, we display a welcome message
-//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-//    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
-//        //this is the first time opening, so we show a welcome message
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDPRODUCTIONLOGVC] == NO) {
+        //this is the first time opening, so we show a welcome message
 //        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Production Log" message:ui_WELCOME_PRODUCTIONLOG delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
 //        
 //        [alert show];
 //        [alert release];
-//        
-//        //we mark that the user has viewed this viewcontroller at least once
-//        [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
-//        [userDefaults synchronize];
-//    }
+
+        [self onInfoButtonPressed:nil];
+        //we mark that the user has viewed this viewcontroller at least once
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
+        [userDefaults synchronize];
+    }
     
     if (self.shouldOpenBookCover) {
         self.shouldOpenBookCover = NO;

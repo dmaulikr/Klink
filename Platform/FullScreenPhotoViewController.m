@@ -641,14 +641,7 @@
                                              selector:@selector(didRotate)
                                                  name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     
-//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-//    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC] == NO) {
-//        //this is the first time opening, so we show a welcome message
-//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Exploring Drafts..." message:ui_WELCOME_FULLSCREEN delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-//        
-//        [alert show];
-//        [alert release];
-//    }
+
     [self commonInit];
     
     // we update the toolbar items each time the view controller is shown
@@ -769,7 +762,9 @@
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC]==NO) {
+    if ([userDefaults boolForKey:setting_HASVIEWEDFULLSCREENVC]==NO) 
+    {
+        [self onInfoButtonPressed:nil];
         [userDefaults setBool:YES forKey:setting_HASVIEWEDFULLSCREENVC];
         [userDefaults synchronize];
     }

@@ -46,6 +46,7 @@
 
 - (IBAction)voteButtonPressed:(id)sender;
 - (IBAction)cancelVoteButtonPressed:(id)sender;
+- (IBAction)onInfoButtonPressed:(id)sender;
 
 + (EditorialVotingViewController*) createInstanceForPoll:(NSNumber*)pollID;
 
