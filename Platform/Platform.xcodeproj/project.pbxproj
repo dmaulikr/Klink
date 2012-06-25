@@ -333,6 +333,7 @@
 		C55EC769145FA58400BA66FA /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55EC74A145FA23200BA66FA /* MainWindow.xib */; };
 		C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C568388A1543365C00D3EAD2 /* SignUpViewController.m */; };
 		C568388D1543365C00D3EAD2 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C568388B1543365C00D3EAD2 /* SignUpViewController.xib */; };
+		C56B1FC91598FE390001994E /* UITutorialViewEditorial.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */; };
 		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
@@ -879,6 +880,7 @@
 		C56838891543365C00D3EAD2 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		C568388A1543365C00D3EAD2 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		C568388B1543365C00D3EAD2 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
+		C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewEditorial.xib; sourceTree = "<group>"; };
 		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
 		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
 		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
@@ -2133,6 +2135,7 @@
 				C5D4F3531593D33B00B36FCD /* UITutorialViewFullScreen.xib */,
 				C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */,
 				C52B62B51595379C0029F379 /* UITutorialViewPage.xib */,
+				C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2706,6 +2709,7 @@
 				52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */,
 				C58D617A15952C3700B6C77D /* UITutorialViewContributeFirstTime.xib in Resources */,
 				C52B62B61595379C0029F379 /* UITutorialViewPage.xib in Resources */,
+				C56B1FC91598FE390001994E /* UITutorialViewEditorial.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
