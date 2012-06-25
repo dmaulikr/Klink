@@ -221,13 +221,30 @@
     self.navigationItem.leftBarButtonItem = leftButton;
     [leftButton release];
     
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
-                                    initWithImage:[UIImage imageNamed:@"icon-globe.png"]
-                                    style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(onGlobeButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    [rightButton release];
+//    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+//                                    initWithImage:[UIImage imageNamed:@"icon-globe.png"]
+//                                    style:UIBarButtonItemStylePlain
+//                                    target:self
+//                                    action:@selector(onGlobeButtonPressed:)];
+//    self.navigationItem.rightBarButtonItem = rightButton;
+//    [rightButton release];
+    
+    // Add custom styled Done button to nav bar
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightButton addTarget:self action:@selector(onInfoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];  
+    rightButton.frame = CGRectMake(0, 0, 30, 30);
+    rightButton.contentMode = UIViewContentModeCenter;
+    
+    rightButton.titleLabel.font = [UIFont fontWithName:@"Baskerville-BoldItalic" size:18.0];
+    rightButton.titleLabel.textAlignment = UITextAlignmentCenter;
+    rightButton.titleLabel.textColor = [UIColor whiteColor];
+    rightButton.titleLabel.shadowOffset = CGSizeMake(0,-1);
+    rightButton.titleLabel.shadowColor = [UIColor darkGrayColor];
+    [rightButton setTitle:@"i" forState:UIControlStateNormal];
+    
+//    UIImage* buttonImage = [[UIImage imageNamed:@"bookshelf_button.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+//    [rightButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightButton] autorelease];
 
 }
 

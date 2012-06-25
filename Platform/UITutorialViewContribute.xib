@@ -42,13 +42,13 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="737909777"/>
+						<reference key="NSNextKeyView" ref="988853645"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
 						</object>
-						<float key="IBUIAlpha">0.60000002384185791</float>
+						<float key="IBUIAlpha">0.69999998807907104</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<object class="IBUILabel" id="931667996">
@@ -231,7 +231,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIButton" id="737909777">
+					<object class="IBUIButton" id="988853645">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{290, 0}, {30, 30}}</string>
@@ -311,7 +311,7 @@
 							<reference ref="78667001"/>
 							<reference ref="1035834740"/>
 							<reference ref="241223764"/>
-							<reference ref="737909777"/>
+							<reference ref="988853645"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -368,7 +368,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">30</int>
-						<reference key="object" ref="737909777"/>
+						<reference key="object" ref="988853645"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">

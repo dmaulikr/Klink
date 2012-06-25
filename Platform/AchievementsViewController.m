@@ -11,10 +11,12 @@
 #import "Macros.h"
 #import "Achievement.h"
 #import "ImageManager.h"
+#import "ImageDownloadResponse.h"
 #import "UIAchievementView.h"
 #import "FlurryAnalytics.h"
 
 #define kIMAGEVIEW @"imageview"
+#define kUSERID    @"userid"
 
 @interface AchievementsViewController ()
 
@@ -26,6 +28,7 @@
 @synthesize loadedAchievementID     = m_loadedAchievementID;
 @synthesize achievementCloudEnumerator = m_achivementCloudEnumerator;
 @synthesize sv_scrollView           = m_sv_scrollView;
+@synthesize iv_profilePicture       = m_iv_profilePicture;
 
 
 //this NSFetchedResultsController will query for all draft pages
@@ -77,6 +80,33 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void) showProfilePicture {
+    //Show profile picture
+    ImageManager* imageManager = [ImageManager instance];
+    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
+    
+    
+    self.iv_profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 30, 30)];
+    ResourceContext* resourceContext = [ResourceContext instance];
+    User* user = (User*)[resourceContext resourceWithType:USER withID:self.userID];
+    
+    if (user.imageurl != nil && ![user.imageurl isEqualToString:@""]) {
+        Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onProfilePictureImageDownloadComplete:) withContext:userInfo];
+        UIImage* image = [imageManager downloadImage:user.imageurl withUserInfo:nil atCallback:callback];
+        [callback release];
+        if (image != nil) {
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            self.iv_profilePicture.image = image;
+        }
+    }
+    else {
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+    }
+    
+    [self.navigationController.navigationBar addSubview:self.iv_profilePicture];
 }
 
 - (void)showHUDForAchievementsDownload {
@@ -291,6 +321,7 @@
     btn_rightButton.contentMode = UIViewContentModeCenter;
     
     btn_rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+    btn_rightButton.titleLabel.textAlignment = UITextAlignmentCenter;
     btn_rightButton.titleLabel.textColor = [UIColor whiteColor];
     btn_rightButton.titleLabel.shadowOffset = CGSizeMake(0,-1);
     btn_rightButton.titleLabel.shadowColor = [UIColor darkGrayColor];
@@ -319,6 +350,9 @@
     self.navigationItem.titleView = titleLabel;
     [titleLabel release];
     
+    // Add user profile pic to nav bar
+    [self showProfilePicture];
+    
     // Set up cloud enumerator for achievments
     self.achievementCloudEnumerator = [CloudEnumerator enumeratorForAchievements:self.userID];
     self.achievementCloudEnumerator.delegate = self;
@@ -332,6 +366,7 @@
     // e.g. self.myOutlet = nil;
     
     self.sv_scrollView = nil;
+    self.iv_profilePicture = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -445,26 +480,57 @@
 //    }
 }
 
-#pragma mark - ImageManager call back
+#pragma mark - ImageManager Callbacks
 - (void) onAchievementImageDownloaded:(CallbackResult*)callbackResult
 {
     //the image for the achievement has been downloaded
     NSDictionary* userInfo = callbackResult.context;
     NSNumber* objectID = [userInfo valueForKey:OBJECTID];
     UIImageView* iv_achievement = (UIImageView *)[userInfo valueForKey:kIMAGEVIEW];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)callbackResult.response;
     
-    ResourceContext* resourceContext = [ResourceContext instance];
-    
-    if (objectID != nil) {
-        Achievement* achievementObject = (Achievement*)[resourceContext resourceWithType:ACHIEVEMENT withID:objectID];
-        if (achievementObject != nil)
-        {
-            ImageManager* imageManager = [ImageManager instance];
-            UIImage* image = [imageManager downloadImage:achievementObject.imageurl withUserInfo:nil atCallback:nil];
-            iv_achievement.image = image;
-            
-            [self.view setNeedsDisplay];
+    if ([response.didSucceed boolValue] == YES) {
+        ResourceContext* resourceContext = [ResourceContext instance];
+        
+        if (objectID != nil) {
+            Achievement* achievementObject = (Achievement*)[resourceContext resourceWithType:ACHIEVEMENT withID:objectID];
+            if (achievementObject != nil)
+            {
+                ImageManager* imageManager = [ImageManager instance];
+                UIImage* image = [imageManager downloadImage:achievementObject.imageurl withUserInfo:nil atCallback:nil];
+                iv_achievement.image = image;
+            }
         }
+    }
+    else {
+        // show the placeholder image
+        iv_achievement.image = [UIImage imageNamed:@"mallard-original-disabled.png"];
+    }
+    
+    [self.view setNeedsDisplay];
+    
+}
+
+- (void)onProfilePictureImageDownloadComplete:(CallbackResult*)result {
+    NSDictionary* userInfo = result.context;
+    NSNumber* userID = [userInfo valueForKey:kUSERID];
+    ImageDownloadResponse* response = (ImageDownloadResponse*)result.response;
+    
+    if ([response.didSucceed boolValue] == YES) {
+        if ([userID isEqualToNumber:self.userID]) {
+            //we only draw the image if this view hasnt been repurposed for another user
+            self.iv_profilePicture.backgroundColor = [UIColor whiteColor];
+            [self.iv_profilePicture performSelectorOnMainThread:@selector(setImage:) withObject:response.image waitUntilDone:NO];
+        }
+        
+        [self.view setNeedsDisplay];
+    }
+    else {
+        // show the photo placeholder icon
+        self.iv_profilePicture.backgroundColor = [UIColor darkGrayColor];
+        self.iv_profilePicture.image = [UIImage imageNamed:@"icon-profile-large-highlighted.png"];
+        
+        [self.view setNeedsDisplay];
     }
 }
 

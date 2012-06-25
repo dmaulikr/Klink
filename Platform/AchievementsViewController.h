@@ -17,6 +17,8 @@
     CloudEnumerator* m_achivementCloudEnumerator;
     
     UIScrollView*   m_sv_scrollView;
+    
+    UIImageView*    m_iv_profilePicture;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController* frc_achievements;
@@ -24,7 +26,9 @@
 @property (atomic, retain) NSNumber* loadedAchievementID;
 @property (nonatomic, retain) CloudEnumerator* achievementCloudEnumerator;
 
-@property (nonatomic, retain) IBOutlet UIScrollView* sv_scrollView;
+@property (nonatomic, retain) IBOutlet UIScrollView*    sv_scrollView;
+
+@property (nonatomic, retain)          UIImageView*     iv_profilePicture;
 
 + (AchievementsViewController*)createInstance;
 + (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID;

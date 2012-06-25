@@ -37,18 +37,18 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIView" id="70932540">
+					<object class="IBUIView" id="861398230">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="515492681"/>
+						<reference key="NSNextKeyView" ref="843423109"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MAA</bytes>
 						</object>
-						<float key="IBUIAlpha">0.60000002384185791</float>
+						<float key="IBUIAlpha">0.69999998807907104</float>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<object class="IBUIImageView" id="797981933">
@@ -109,7 +109,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{133, 339}, {174, 46}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -130,15 +129,15 @@
 						<int key="IBUINumberOfLines">0</int>
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="817539754">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="652352922">
 							<string key="name">Chalkduster</string>
 							<string key="family">Chalkduster</string>
 							<int key="traits">0</int>
-							<double key="pointSize">13</double>
+							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="664388101">
+						<object class="NSFont" key="IBUIFont" id="535597503">
 							<string key="NSName">Chalkduster</string>
-							<double key="NSSize">13</double>
+							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
@@ -166,8 +165,17 @@
 						<int key="IBUINumberOfLines">0</int>
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
-						<reference key="IBUIFontDescription" ref="817539754"/>
-						<reference key="IBUIFont" ref="664388101"/>
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="817539754">
+							<string key="name">Chalkduster</string>
+							<string key="family">Chalkduster</string>
+							<int key="traits">0</int>
+							<double key="pointSize">13</double>
+						</object>
+						<object class="NSFont" key="IBUIFont" id="59512474">
+							<string key="NSName">Chalkduster</string>
+							<double key="NSSize">13</double>
+							<int key="NSfFlags">16</int>
+						</object>
 					</object>
 					<object class="IBUILabel" id="808832117">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -194,7 +202,7 @@
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
 						<reference key="IBUIFontDescription" ref="817539754"/>
-						<reference key="IBUIFont" ref="664388101"/>
+						<reference key="IBUIFont" ref="59512474"/>
 					</object>
 					<object class="IBUILabel" id="201191001">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -220,8 +228,8 @@
 						<int key="IBUINumberOfLines">0</int>
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
-						<reference key="IBUIFontDescription" ref="817539754"/>
-						<reference key="IBUIFont" ref="664388101"/>
+						<reference key="IBUIFontDescription" ref="652352922"/>
+						<reference key="IBUIFont" ref="535597503"/>
 					</object>
 					<object class="IBUILabel" id="724083346">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -248,7 +256,7 @@
 						<int key="IBUITextAlignment">1</int>
 						<int key="IBUILineBreakMode">0</int>
 						<reference key="IBUIFontDescription" ref="817539754"/>
-						<reference key="IBUIFont" ref="664388101"/>
+						<reference key="IBUIFont" ref="59512474"/>
 					</object>
 					<object class="IBUIImageView" id="808152576">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -264,7 +272,7 @@
 							<string key="NSResourceName">arrow-rightDown-scetched.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="515492681">
+					<object class="IBUIButton" id="843423109">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{290, 0}, {30, 30}}</string>
@@ -304,7 +312,7 @@
 				</array>
 				<string key="NSFrameSize">{320, 460}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="70932540"/>
+				<reference key="NSNextKeyView" ref="861398230"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MCAwAA</bytes>
@@ -345,8 +353,8 @@
 							<reference ref="99277047"/>
 							<reference ref="1025268032"/>
 							<reference ref="724083346"/>
-							<reference ref="70932540"/>
-							<reference ref="515492681"/>
+							<reference ref="861398230"/>
+							<reference ref="843423109"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -413,13 +421,13 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="70932540"/>
+						<reference key="object" ref="861398230"/>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">View - background</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">15</int>
-						<reference key="object" ref="515492681"/>
+						<reference key="object" ref="843423109"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
