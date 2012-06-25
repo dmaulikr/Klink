@@ -1072,6 +1072,11 @@
 - (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
     
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version < 5.0) {
+        [self updateVisibleCells];
+    }
+    
     // reset the content inset of the tableview so bottom is not covered by toolbar
     //[self.tbl_productionTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 63.0f, 0.0f)];
 }
