@@ -57,6 +57,8 @@
     UIButton*       m_btn_facebookButton;
     UIButton*       m_btn_twitterButton;
     
+    UIButton*       m_btn_pageInfoButton;
+    
 }
 
 @property (assign) id<BookPageViewControllerDelegate>    delegate;
@@ -87,6 +89,8 @@
 @property (nonatomic,retain) IBOutlet UIButton*     btn_zoomOutPhoto;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_facebookButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_twitterButton;
+
+@property (strong, nonatomic) IBOutlet UIButton*    btn_pageInfoButton;
 
 
 - (IBAction) onLinkButtonClicked:(id)sender;

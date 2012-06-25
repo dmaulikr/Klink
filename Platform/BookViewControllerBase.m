@@ -283,9 +283,9 @@
                 [self.view sendSubviewToBack:self.iv_bookCover];
                 
                 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-                if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+                if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
                     //we mark that the user has viewed this viewcontroller at least once
-                    [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
+                    [userDefaults setBool:YES forKey:setting_ISFIRSTRUN];
                     [userDefaults synchronize];
                     
                     //this is the first time opening, so we show a intro screen
@@ -685,7 +685,7 @@
     [self.navigationController setToolbarHidden:YES animated:NO];
     
 //    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-////    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+////    if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
 ////        [self showHUDForBookDownload];
 ////        
 ////        //this is the first time opening, so we show a welcome message
@@ -694,7 +694,7 @@
 ////        [alert show];
 ////        [alert release];
 ////    }
-//    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+//    if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
 //        [self showHUDForBookDownload];
 //        
 //        //this is the first time opening, so we show a intro screen

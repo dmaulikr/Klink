@@ -22,6 +22,7 @@
 #import "BookViewControllerLeaves.h"
 #import "BookTableOfContentsViewController.h"
 #import "FlurryAnalytics.h"
+#import "UserDefaultSettings.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -51,6 +52,8 @@
 @synthesize btn_zoomOutPhoto    = m_btn_zoomOutPhoto;
 @synthesize btn_facebookButton  = m_btn_facebookButton;
 @synthesize btn_twitterButton   = m_btn_twitterButton;
+
+@synthesize btn_pageInfoButton  = m_btn_pageInfoButton;
 
 
 #pragma mark - Property Definitions
@@ -89,6 +92,7 @@
     [self.btn_zoomOutPhoto setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
+    [self.btn_pageInfoButton setAlpha:hidden ? 0 : 0.5];
     
 	[UIView commitAnimations];
 	
@@ -290,6 +294,7 @@
     self.btn_zoomOutPhoto = nil;
     self.btn_facebookButton = nil;
     self.btn_twitterButton = nil;
+    self.btn_pageInfoButton = nil;
     
     if (self.controlVisibilityTimer) {
 		[self.controlVisibilityTimer invalidate];
@@ -312,6 +317,14 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [FlurryAnalytics logEvent:@"VIEWING_BOOKPAGEVIEW" timed:YES];
+    
     // Setup table of contents button
     UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"button_roundrect_brown.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
     UIImage* tableOfContentButtonHighlightedBackground = [[UIImage imageNamed:@"button_roundrect_brown_highlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
@@ -324,14 +337,18 @@
     [self.btn_zoomOutPhoto setHidden:NO];
     [self.btn_facebookButton setHidden:NO];
     [self.btn_twitterButton setHidden:NO];
+    [self.btn_pageInfoButton setHidden:NO];
     
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [FlurryAnalytics logEvent:@"VIEWING_BOOKPAGEVIEW" timed:YES];
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+        //we mark that the user has viewed this viewcontroller at least once
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
+        [userDefaults synchronize];
+        
+        //this is the first time opening, so we show a tutorial screen
+        [self onPageInfoButtonPressed:nil];
+        
+    }
     
 //    [self hideControlsAfterDelay:2.5];
     

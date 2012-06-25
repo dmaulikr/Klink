@@ -106,7 +106,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{40, 209}, {240, 42}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="861234851"/>
+						<reference key="NSNextKeyView" ref="418843988"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -309,6 +309,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{110, 427}, {100, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView" ref="861234851"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -511,10 +512,10 @@
 					</object>
 					<object class="IBUIButton" id="861234851">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">-2147483356</int>
 						<string key="NSFrame">{{278, 436}, {24, 24}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView" ref="418843988"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="934666109">
 							<int key="NSColorSpace">3</int>
@@ -698,6 +699,14 @@
 						<reference key="destination" ref="106778975"/>
 					</object>
 					<int key="connectionID">75</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btn_pageInfoButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="861234851"/>
+					</object>
+					<int key="connectionID">78</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -912,7 +921,7 @@
 						<int key="objectID">76</int>
 						<reference key="object" ref="861234851"/>
 						<reference key="parent" ref="191373211"/>
-						<string key="objectName">Button - infoButton</string>
+						<string key="objectName">Button - pageInfoButton</string>
 					</object>
 				</array>
 			</object>
@@ -954,7 +963,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">77</int>
+			<int key="maxID">78</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>

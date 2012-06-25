@@ -42,6 +42,8 @@
     UIButton*       m_btn_userWritersLogButton;
     UILabel*        m_lbl_userWritersLogSubtext;
     
+    UIButton*       m_btn_homeInfoButton;
+    
     UILabel*        m_lbl_numContributors;
     
 }
@@ -65,6 +67,8 @@
 @property (nonatomic,retain) IBOutlet UIButton*     btn_userReadButton;
 @property (nonatomic,retain) IBOutlet UIButton*     btn_userWritersLogButton;
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_userWritersLogSubtext;
+
+@property (strong, nonatomic) IBOutlet UIButton*    btn_homeInfoButton;
 
 @property (nonatomic,retain) IBOutlet UILabel*      lbl_numContributors;
 

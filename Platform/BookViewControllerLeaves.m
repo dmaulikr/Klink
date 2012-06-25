@@ -40,6 +40,9 @@
 @synthesize btn_facebookButton      = m_btn_facebookButton;
 @synthesize btn_twitterButton       = m_btn_twitterButton;
 
+@synthesize btn_homeInfoButton      = m_btn_homeInfoButton;
+@synthesize btn_pageInfoButton      = m_btn_pageInfoButton;
+
 
 #pragma mark - Frames
 - (CGRect) frameForBookPageViewController {
@@ -76,6 +79,7 @@
     [self.btn_zoomOutPhoto setAlpha:hidden ? 0 : 1];
     [self.btn_facebookButton setAlpha:hidden ? 0 : 1];
     [self.btn_twitterButton setAlpha:hidden ? 0 : 1];
+    [self.btn_pageInfoButton setAlpha:hidden ? 0 : 0.5];
     
 	[UIView commitAnimations];
 	
@@ -110,6 +114,7 @@
     [self.view bringSubviewToFront:self.btn_zoomOutPhoto];
     [self.view bringSubviewToFront:self.btn_facebookButton];
     [self.view bringSubviewToFront:self.btn_twitterButton];
+    [self.view bringSubviewToFront:self.btn_pageInfoButton];
 }
 
 - (void) sendBookPageButtonsToBack {
@@ -118,6 +123,7 @@
     [self.view sendSubviewToBack:self.btn_zoomOutPhoto];
     [self.view sendSubviewToBack:self.btn_facebookButton];
     [self.view sendSubviewToBack:self.btn_twitterButton];
+    [self.view sendSubviewToBack:self.btn_pageInfoButton];
 }
 
 - (void) bringHomePageButtonsToFront {
@@ -130,6 +136,7 @@
         [self.view bringSubviewToFront:self.btn_readButton];
         [self.view bringSubviewToFront:self.btn_productionLogButton];
         [self.view bringSubviewToFront:self.btn_writersLogButton];
+        [self.view bringSubviewToFront:self.btn_homeInfoButton];
     }
 }
 
@@ -143,6 +150,7 @@
         [self.view sendSubviewToBack:self.btn_readButton];
         [self.view sendSubviewToBack:self.btn_productionLogButton];
         [self.view sendSubviewToBack:self.btn_writersLogButton];
+        [self.view sendSubviewToBack:self.btn_homeInfoButton];
     }
 }
 
@@ -417,6 +425,17 @@
         [self sendLastPageButtonsToBack];
         [self bringBookPageButtonsToFront];
         
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+            //we mark that the user has viewed this viewcontroller at least once
+            [userDefaults setBool:YES forKey:setting_HASVIEWEDBOOKVC];
+            [userDefaults synchronize];
+            
+            //this is the first time opening, so we show a tutorial screen
+            [self onPageInfoButtonPressed:nil];
+            
+        }
+        
 //        [self hideControlsAfterDelay:2.5];
     }
     
@@ -600,8 +619,10 @@
     self.btn_homeButton = nil;
     self.btn_tableOfContentsButton = nil;
     self.btn_zoomOutPhoto = nil;
-    self.btn_facebookButton = nil;
+    self.btn_facebookButton = nil;    
     self.btn_twitterButton = nil;
+    self.btn_pageInfoButton = nil;
+    self.btn_homeInfoButton = nil;
     
     if (self.controlVisibilityTimer) {
 		[self.controlVisibilityTimer invalidate];
@@ -718,6 +739,11 @@
     [super onZoomOutPhotoButtonPressed:sender];
 }
 
+- (IBAction)onPageInfoButtonPressed:(id)sender {    
+    //called when the info button is pressed on the home/title view
+    [super onPageInfoButtonPressed:sender];
+}
+
 - (void) showNotificationViewController 
 {
     [super showNotificationViewController];
@@ -747,6 +773,24 @@
 - (IBAction) onUserWritersLogButtonClicked:(id)sender {
     //called when the writer's log button is pressed from the user specific book
     [super onUserWritersLogButtonClicked:sender];
+}
+
+- (IBAction)onHomeInfoButtonPressed:(id)sender {    
+    //called when the info button is pressed on the home/title view
+    [super onHomeInfoButtonPressed:sender];
+}
+
+#pragma mark - IntroViewControllerDelegate methods
+- (void) introReadButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+    
+    [self onReadButtonClicked:nil];
+}
+
+- (void) introWriteButtonPressed {
+    [self dismissModalViewControllerAnimated:YES];
+    
+    [super onProductionLogButtonClicked:nil];
 }
 
 

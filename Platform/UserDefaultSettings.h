@@ -12,6 +12,7 @@
 extern NSString* const setting_HASDOWNLOADEDBOOK;
 extern NSString* const setting_LASTVIEWEDPUBLISHEDPAGEINDEX;
 extern NSString* const setting_HASVIEWEDLATESTPUBLISHEDPAGE;
+extern NSString* const setting_ISFIRSTRUN;
 extern NSString* const setting_HASVIEWEDBOOKVC;
 extern NSString* const setting_HASVIEWEDDRAFTVC;
 extern NSString* const setting_HASVIEWEDPRODUCTIONLOGVC;

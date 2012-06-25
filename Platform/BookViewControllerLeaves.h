@@ -14,8 +14,9 @@
 #import "LeavesViewController.h"
 #import "UIResourceLinkButton.h"
 #import "BookLastPageViewController.h"
+#import "IntroViewController.h"
 
-@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate, UIProgressHUDViewDelegate > {
+@interface BookViewControllerLeaves : LeavesViewController < BookPageViewControllerDelegate, HomeViewControllerDelegate, LeavesViewDataSource, LeavesViewDelegate, BookLastPageViewControllerDelegate, BookTableOfContentsViewControllerDelegate, UIProgressHUDViewDelegate, IntroViewControllerDelegate > {
     
     NSTimer*        m_controlVisibilityTimer;
     BOOL            m_controlsHidden;
@@ -36,6 +37,9 @@
     UIButton*   m_btn_zoomOutPhoto;
     UIButton*   m_btn_facebookButton;
     UIButton*   m_btn_twitterButton;
+    
+    UIButton*   m_btn_homeInfoButton;
+    UIButton*   m_btn_pageInfoButton;
 }
 
 @property (nonatomic,retain) NSTimer*               controlVisibilityTimer;
@@ -56,6 +60,9 @@
 @property (strong, nonatomic) IBOutlet UIButton*    btn_zoomOutPhoto;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_facebookButton;
 @property (strong, nonatomic) IBOutlet UIButton*    btn_twitterButton;
+
+@property (strong, nonatomic) IBOutlet UIButton*    btn_homeInfoButton;
+@property (strong, nonatomic) IBOutlet UIButton*    btn_pageInfoButton;
 
 - (void) showNotificationViewController;
 

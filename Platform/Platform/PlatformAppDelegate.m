@@ -191,7 +191,7 @@ void uncaughtExceptionHandler(NSException *exception) {
         BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
         
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+        if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
             //this is the first time opening, so we show a welcome message
             bookViewController.shouldOpenToLastPage = NO;
             bookViewController.shouldOpenToTitlePage = YES;
@@ -209,7 +209,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
 //    
 //    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-//    if ([userDefaults boolForKey:setting_HASVIEWEDBOOKVC] == NO) {
+//    if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
 //        //this is the first time opening, so we show a welcome message
 //        bookViewController.shouldOpenToLastPage = NO;
 //        bookViewController.shouldOpenToTitlePage = YES;

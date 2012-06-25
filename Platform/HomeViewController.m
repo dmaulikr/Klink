@@ -19,7 +19,6 @@
 #import "User.h"
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
-#import "IntroViewController.h"
 
 #define kUSERID                    @"userid"
 
@@ -43,6 +42,8 @@
 @synthesize btn_userReadButton      = m_btn_userReadButton;
 @synthesize btn_userWritersLogButton = m_btn_userWritersLogButton;
 @synthesize lbl_userWritersLogSubtext = m_lbl_userWritersLogSubtext;
+
+@synthesize btn_homeInfoButton      = m_btn_homeInfoButton;
 
 
 #pragma mark - Properties
@@ -252,6 +253,7 @@
     if (self.userID != nil) {
         [self.v_defaultBookContainer setHidden:YES];
         [self.v_userBookContainer setHidden:NO];
+        //[self.btn_homeInfoButton setHidden:YES];
         
         // update all the labels of the title page for the user book case
         [self updateUserBookContainerView];
@@ -259,6 +261,7 @@
     else {
         [self.v_userBookContainer setHidden:YES];
         [self.v_defaultBookContainer setHidden:NO];
+        //[self.btn_homeInfoButton setHidden:NO];
         
         // update all the labels of the title page for the default book case
         [self updateDefaultBookContainerView];
@@ -335,6 +338,8 @@
     self.btn_userWritersLogButton = nil;
     self.lbl_userWritersLogSubtext = nil;
     
+    self.btn_homeInfoButton = nil;
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -371,6 +376,13 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (self.userID != nil) {
+        [self.btn_homeInfoButton setHidden:YES];
+    }
+    else {
+        [self.btn_homeInfoButton setHidden:NO];
+    }
     
 }
 
@@ -465,18 +477,6 @@
 {
    
 }
-
-//#pragma mark - IntroViewControllerDelegate methods
-//- (void) introReadButtonPressed {
-//    [self dismissModalViewControllerAnimated:YES];
-//}
-//
-//- (void) introWriteButtonPressed {
-//    [self dismissModalViewControllerAnimated:YES];
-//    
-//    [self onProductionLogButtonClicked:nil];
-//}
-
 
 #pragma mark - Static Initializer
 + (HomeViewController*)createInstance {
