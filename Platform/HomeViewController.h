@@ -19,7 +19,7 @@
 - (IBAction) onProductionLogButtonClicked:(id)sender;
 - (IBAction) onWritersLogButtonClicked:(id)sender;
 - (IBAction) onUserWritersLogButtonClicked:(id)sender;
-- (IBAction) onHomeInfoButtonClicked:(id)sender;
+- (IBAction) onHomeInfoButtonPressed:(id)sender;
 @end
 
 @interface HomeViewController : BaseViewController < NSFetchedResultsControllerDelegate, CloudEnumeratorDelegate > {

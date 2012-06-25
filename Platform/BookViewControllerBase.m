@@ -28,24 +28,25 @@
 #import "FullScreenPhotoViewController.h"
 #import "Attributes.h"
 #import "UITutorialView.h"
+#import "FlurryAnalytics.h"
 
 @implementation BookViewControllerBase
-@synthesize pageID              = m_pageID;
-@synthesize userID              = m_userID;
-@synthesize topVotedPhotoID     = m_topVotedPhotoID;
-@synthesize topVotedCaptionID   = m_topVotedCaptionID;
-@synthesize frc_published_pages = __frc_published_pages;
-@synthesize pageCloudEnumerator = m_pageCloudEnumerator;
-@synthesize iv_background          = m_iv_background;
-@synthesize iv_bookCover           = m_iv_bookCover;
-@synthesize captionCloudEnumerator = m_captionCloudEnumerator;
-@synthesize shouldOpenBookCover    = m_shouldOpenBookCover;
-@synthesize shouldCloseBookCover   = m_shouldCloseBookCover;
-@synthesize shouldOpenToTitlePage  = m_shouldOpenToTitlePage;
+@synthesize pageID                  = m_pageID;
+@synthesize userID                  = m_userID;
+@synthesize topVotedPhotoID         = m_topVotedPhotoID;
+@synthesize topVotedCaptionID       = m_topVotedCaptionID;
+@synthesize frc_published_pages     = __frc_published_pages;
+@synthesize pageCloudEnumerator     = m_pageCloudEnumerator;
+@synthesize iv_background           = m_iv_background;
+@synthesize iv_bookCover            = m_iv_bookCover;
+@synthesize captionCloudEnumerator  = m_captionCloudEnumerator;
+@synthesize shouldOpenBookCover     = m_shouldOpenBookCover;
+@synthesize shouldCloseBookCover    = m_shouldCloseBookCover;
+@synthesize shouldOpenToTitlePage   = m_shouldOpenToTitlePage;
 @synthesize shouldOpenToSpecificPage = m_shouldOpenToSpecificPage;
-@synthesize shouldOpenToLastPage   = m_shouldOpenToLastPage;
-@synthesize shouldAnimatePageTurn  = m_shouldAnimatePageTurn;
-@synthesize tempLastViewedPage     = m_tempLastViewedPage;
+@synthesize shouldOpenToLastPage    = m_shouldOpenToLastPage;
+@synthesize shouldAnimatePageTurn   = m_shouldAnimatePageTurn;
+@synthesize tempLastViewedPage      = m_tempLastViewedPage;
 
 #define kENUMERATIONTHRESHOLD   0
 
@@ -730,6 +731,8 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_BOOKBASEVIEW" timed:YES];
+    
     if (self.shouldOpenBookCover) {
         [self openBook];
     }
@@ -738,6 +741,8 @@
 
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_BOOKBASEVIEW " withParameters:nil];
     
     __frc_published_pages = nil;
     self.frc_published_pages = nil;

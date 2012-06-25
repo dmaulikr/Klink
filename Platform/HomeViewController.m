@@ -397,19 +397,7 @@
     [self.delegate onUserWritersLogButtonClicked:sender];
 }
 
-- (IBAction)onHomeInfoButtonPressed:(id)sender {    
-//    IntroViewController* introViewController = [IntroViewController createInstance];
-//    introViewController.delegate = self;
-//    
-////    UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:introViewController];
-////    navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-////    navigationController.navigationBarHidden = YES;
-//    
-//    [self.navigationController presentModalViewController:introViewController animated:YES];
-//    
-////    [navigationController release];
-//    [introViewController release];
-    
+- (IBAction)onHomeInfoButtonPressed:(id)sender {
     [self.delegate onHomeInfoButtonPressed:sender];
 }
 

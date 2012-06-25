@@ -40,7 +40,7 @@
     PlatformAppDelegate* app = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ACHIEVEMENT inManagedObjectContext:app.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
     
     //add predicate to gather only achievements for a specific userID
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", USERID, self.userID];
@@ -300,12 +300,12 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:btn_rightButton] autorelease];
     
     // Set Navigation bar title style with typewriter font
-    CGSize labelSize = [@"Awards" sizeWithFont:[UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0]];
+    CGSize labelSize = [@"~ Awards ~" sizeWithFont:[UIFont fontWithName:@"SnellRoundhand-Bold" size:28.0]];
     //CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"Copperplate-Bold" size:24.0]];
     //CGSize labelSize = [@"Mallard & Co." sizeWithFont:[UIFont fontWithName:@"Baskerville-Bold" size:20.0]];
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, 44)];
-    titleLabel.text = @"Awards";
-    titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:20.0];
+    titleLabel.text = @"~ Awards ~";
+    titleLabel.font = [UIFont fontWithName:@"SnellRoundhand-Bold" size:28.0];
     //titleLabel.font = [UIFont fontWithName:@"Copperplate-Bold" size:24.0];
     //titleLabel.font = [UIFont fontWithName:@"Baskerville-Bold" size:20.0];
     titleLabel.textAlignment = UITextAlignmentCenter;

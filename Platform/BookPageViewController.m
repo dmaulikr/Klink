@@ -21,6 +21,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerLeaves.h"
 #import "BookTableOfContentsViewController.h"
+#import "FlurryAnalytics.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -330,7 +331,17 @@
 {
     [super viewDidAppear:animated];
     
+    [FlurryAnalytics logEvent:@"VIEWING_BOOKPAGEVIEW" timed:YES];
+    
 //    [self hideControlsAfterDelay:2.5];
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [FlurryAnalytics endTimedEvent:@"VIEWING_BOOKPAGEVIEW " withParameters:nil];
     
 }
 
@@ -363,11 +374,6 @@
 
 - (IBAction) onZoomOutPhotoButtonPressed:(id)sender {
     [self.delegate onZoomOutPhotoButtonPressed:sender];
-    
-    /*FullScreenPhotoViewController* fullScreenController = [FullScreenPhotoViewController createInstanceWithPageID:self.pageID withPhotoID:self.topVotedPhotoID withCaptionID:self.topVotedCaptionID];
-    //[[self.navigationController navigationBar] setHidden:NO];
-    //[[self.navigationController toolbar] setHidden:NO];
-    [self.navigationController pushViewController:fullScreenController animated:YES];*/
 }
 
 - (IBAction)onPageInfoButtonPressed:(id)sender {    
