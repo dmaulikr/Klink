@@ -30,6 +30,7 @@
 
 @property (nonatomic, retain)          UIImageView*     iv_profilePicture;
 
+- (IBAction)onInfoButtonPressed:(id)sender;
 + (AchievementsViewController*)createInstance;
 + (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID;
 + (AchievementsViewController*)createInstanceForUserWithID:(NSNumber *)userID preloadedWithAchievementIDorNil:(NSNumber *)achievementID;

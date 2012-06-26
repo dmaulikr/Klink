@@ -118,7 +118,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Share photos and trade witty captions about the funny sights of everyday life.</string>
+						<string key="IBUIText">Share photos, trade witty captions and celebrate the funny in everyday life.</string>
 						<reference key="IBUITextColor" ref="573017424"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="321657383"/>
@@ -370,7 +370,6 @@
 						<string key="NSFrame">{{163, 403}, {138, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="108970802"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>

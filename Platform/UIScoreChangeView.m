@@ -93,7 +93,7 @@
     //if the user earned no points we need to adjust the text and such
     if (totalPointsEarned == 0) {
         //no points earned
-        self.lbl_topMessage.text = @"Good post, but you didn't earn any coins.";
+        self.lbl_topMessage.text = @"Nice try, but you didn't earn any coins.";
         self.iv_coin.hidden = YES;
     }
     else {
