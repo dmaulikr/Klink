@@ -131,6 +131,7 @@
 
     //now we have all the other people's score changes
     self.otherPeoplesScoreJustifications = [UIScoreChangeView reformatOtherPeoplesScoreJustifications:otherPeoplesScoreChanges];
+    [otherPeoplesScoreChanges release];
     [self.tbl_scoreChanges reloadData];
 }
 
