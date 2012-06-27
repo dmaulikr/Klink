@@ -61,14 +61,24 @@
 #pragma mark - UIWebView Delegate Methods
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 	
-	//Capture user link-click.
-	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-		[self.wv_webView setScalesPageToFit:YES];
+//	//Capture user link-click.
+//	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+//		[self.wv_webView setScalesPageToFit:YES];
+//        
+//        NSURL *URL = [request URL];	
+//		NSLog(@"url is: %@s ", URL);
+//	}	
+//	return YES;  
+    
+    NSURL *requestURL =[[request URL] retain ]; 
+    if (([[requestURL scheme] isEqualToString:@"http"] || [[requestURL scheme] isEqualToString:@"https"] || [[requestURL scheme]isEqualToString:@"mailto"]) 
+        && (navigationType == UIWebViewNavigationTypeLinkClicked)) {
         
-        NSURL *URL = [request URL];	
-		NSLog(@"url is: %@s ", URL);
-	}	
-	return YES;   
+        NSLog(@"url is: %@s ", requestURL);
+        return ![[UIApplication sharedApplication] openURL:[requestURL autorelease]]; 
+    } 
+    [requestURL release]; 
+    return YES; 
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

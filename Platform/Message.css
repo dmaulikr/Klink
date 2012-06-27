@@ -34,7 +34,7 @@ h1,h2,h3,h4,h5,h6,p {
      
 }
 
-ul {
+ul,ol,li {
     /* Sets the font size in lists slightly smaller than the default for the page */
     font-size:0.8em;
      
