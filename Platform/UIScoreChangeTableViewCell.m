@@ -61,7 +61,9 @@
 //    newFrame.size.width = expectedLabelSize.width;
 //    self.lbl_description.frame = newFrame;
     
-   
+    // reset the label text
+    self.lbl_description.text = nil;
+    self.lbl_score.text = nil;
    
     NSString *text = scoreJustification.justification;
     UIFont *font = [UIFont fontWithName:@"American Typewriter" size:kFontSize];

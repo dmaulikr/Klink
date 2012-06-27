@@ -27,6 +27,8 @@
     UIButton*       m_btn_cancelVote;
     UIButton*       m_btn_confirmVote;
     
+    BOOL            m_tutorialIsVisible;
+    
 }
 
 @property (nonatomic, retain) NSFetchedResultsController*   frc_pollData;
@@ -43,6 +45,8 @@
 @property (nonatomic, retain) IBOutlet UIImageView*         iv_votingDraftView;
 @property (nonatomic, retain) IBOutlet UIButton*            btn_cancelVote;
 @property (nonatomic, retain) IBOutlet UIButton*            btn_confirmVote;
+
+@property                              BOOL                 tutorialIsVisible;
 
 - (IBAction)voteButtonPressed:(id)sender;
 - (IBAction)cancelVoteButtonPressed:(id)sender;

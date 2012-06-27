@@ -297,6 +297,17 @@
             if ([animationKey isEqualToString:animationKeyClosed]) {
                 // typewriter was closed
                 
+                //we check to see if the user has been to this viewcontroller before
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
+                    //this is the first time opening, so we show a welcome message
+                    
+                    [self onInfoButtonPressed:nil];
+                    //we mark that the user has viewed this viewcontroller at least once
+                    [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
+                    [userDefaults synchronize];
+                }
+                
                 self.v_typewriter.userInteractionEnabled = YES;
                 
             }
@@ -536,21 +547,6 @@
     [super viewDidAppear:animated];
     
     [FlurryAnalytics logEvent:@"VIEWING_DRAFTVIEW" timed:YES];
-    
-    //we check to see if the user has been to this viewcontroller before
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:setting_HASVIEWEDDRAFTVC] == NO) {
-        //this is the first time opening, so we show a welcome message
-//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Concering Drafts..." message:ui_WELCOME_DRAFT delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-//        
-//        [alert show];
-//        [alert release];
-        
-        [self onInfoButtonPressed:nil];
-        //we mark that the user has viewed this viewcontroller at least once
-        [userDefaults setBool:YES forKey:setting_HASVIEWEDDRAFTVC];
-        [userDefaults synchronize];
-    }
     
     /*//we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];

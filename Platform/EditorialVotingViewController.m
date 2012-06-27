@@ -37,6 +37,7 @@
 @synthesize iv_votingDraftView      = m_iv_votingDraftView;
 @synthesize btn_cancelVote          = m_btn_cancelVote;
 @synthesize btn_confirmVote         = m_btn_confirmVote;
+@synthesize tutorialIsVisible       = m_tutorialIsVisible;
 
 #define ITEM_SPACING 313
 //#define INCLUDE_PLACEHOLDERS YES
@@ -212,39 +213,6 @@
     
     self.ic_coverFlowView.type = iCarouselTypeCoverFlow2;
     self.ic_coverFlowView.contentOffset = CGSizeMake(0, 10);
-    
-    // Navigation Bar Buttons
-    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
-                                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                   target:self
-                                   action:@selector(onCancelButtonPressed:)];
-    self.navigationItem.leftBarButtonItem = leftButton;
-    [leftButton release];
-    
-//    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
-//                                    initWithImage:[UIImage imageNamed:@"icon-globe.png"]
-//                                    style:UIBarButtonItemStylePlain
-//                                    target:self
-//                                    action:@selector(onGlobeButtonPressed:)];
-//    self.navigationItem.rightBarButtonItem = rightButton;
-//    [rightButton release];
-    
-    // Add custom styled Done button to nav bar
-    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightButton addTarget:self action:@selector(onInfoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];  
-    rightButton.frame = CGRectMake(0, 0, 30, 30);
-    rightButton.contentMode = UIViewContentModeCenter;
-    
-    rightButton.titleLabel.font = [UIFont fontWithName:@"Baskerville-BoldItalic" size:18.0];
-    rightButton.titleLabel.textAlignment = UITextAlignmentCenter;
-    rightButton.titleLabel.textColor = [UIColor whiteColor];
-    rightButton.titleLabel.shadowOffset = CGSizeMake(0,-1);
-    rightButton.titleLabel.shadowColor = [UIColor darkGrayColor];
-    [rightButton setTitle:@"i" forState:UIControlStateNormal];
-    
-//    UIImage* buttonImage = [[UIImage imageNamed:@"bookshelf_button.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-//    [rightButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightButton] autorelease];
 
 }
 
@@ -306,6 +274,36 @@
     
     // Set the navigationbar title
     self.navigationItem.title = @"Editorial Review Board";
+    
+    // Navigation Bar Buttons
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]
+                                   initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                   target:self
+                                   action:@selector(onCancelButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = leftButton;
+    [leftButton release];
+    
+    if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+        self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        
+        // Add custom styled info button to nav bar
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [rightButton addTarget:self action:@selector(onInfoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];  
+        rightButton.frame = CGRectMake(0, 0, 30, 30);
+        rightButton.contentMode = UIViewContentModeCenter;
+        
+        rightButton.titleLabel.font = [UIFont fontWithName:@"Baskerville-BoldItalic" size:18.0];
+        rightButton.titleLabel.textAlignment = UITextAlignmentCenter;
+        rightButton.titleLabel.textColor = [UIColor whiteColor];
+        rightButton.titleLabel.shadowOffset = CGSizeMake(0,-1);
+        rightButton.titleLabel.shadowColor = [UIColor darkGrayColor];
+        [rightButton setTitle:@"i" forState:UIControlStateNormal];
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightButton] autorelease];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     
     //self.userJustVoted = NO;
     self.deadline = [DateTimeHelper parseWebServiceDateDouble:self.poll.dateexpires];
@@ -442,6 +440,28 @@
 - (void) didRotate {
     // Hide status bar
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    
+    if (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft ||
+        self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+        
+        // Add custom styled info button to nav bar
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [rightButton addTarget:self action:@selector(onInfoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];  
+        rightButton.frame = CGRectMake(0, 0, 30, 30);
+        rightButton.contentMode = UIViewContentModeCenter;
+        
+        rightButton.titleLabel.font = [UIFont fontWithName:@"Baskerville-BoldItalic" size:18.0];
+        rightButton.titleLabel.textAlignment = UITextAlignmentCenter;
+        rightButton.titleLabel.textColor = [UIColor whiteColor];
+        rightButton.titleLabel.shadowOffset = CGSizeMake(0,-1);
+        rightButton.titleLabel.shadowColor = [UIColor darkGrayColor];
+        [rightButton setTitle:@"i" forState:UIControlStateNormal];
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightButton] autorelease];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Image from view object creator
@@ -587,9 +607,32 @@
 #pragma mark - UIButton handlers
 - (IBAction) onInfoButtonPressed:(id)sender
 {
-    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewEditorial"];
-    [self.view addSubview:infoView];
-    [infoView release];
+    UIView* checkView;
+    
+    // Check if the tutorial view is already displayed
+    for (checkView in [self.view subviews]) {
+        if ([checkView isKindOfClass:[UITutorialView class]]) {
+            self.tutorialIsVisible = YES;
+            break;
+        }
+        else {
+            self.tutorialIsVisible = NO;
+        }
+    }
+    
+    if (self.tutorialIsVisible == NO) {
+        // If the turotial view is not already visible, show it
+        UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewEditorial"];
+        
+        [self.view addSubview:infoView];
+        [infoView release];
+        
+        self.tutorialIsVisible = YES;
+    }
+    else {
+        [checkView removeFromSuperview];
+        self.tutorialIsVisible = NO;
+    }
 }
 
 
@@ -772,14 +815,6 @@
     }
     
     [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)onGlobeButtonPressed:(id)sender {    
-    // Here we should show the message with instructions
-    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Editorial Board" message:ui_WELCOME_EDITORIAL delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-    
-    [alert show];
-    [alert release];
 }
 
 #pragma mark - Async Callback Handlers
