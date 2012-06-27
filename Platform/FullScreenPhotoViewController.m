@@ -698,6 +698,17 @@
         [self disableCaptionButton];
         [self disableVoteButton];
     }
+    else {
+        if (self.isSinglePhotoAndCaption == NO) {
+            // The draft is still active. Add flag for review button to navigation bar
+            UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
+                                            initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                            target:self
+                                            action:@selector(onFlagButtonPressed:)];
+            self.navigationItem.rightBarButtonItem = rightButton;
+            [rightButton release];
+        }
+    }
     
     [self cancelControlHiding];
     
@@ -810,17 +821,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-    [super viewDidLoad];    
-    
-    if (self.isSinglePhotoAndCaption == NO) {
-        // The draft is still active. Add flag for review button to navigation bar
-        UIBarButtonItem* rightButton = [[UIBarButtonItem alloc]
-                                        initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                        target:self
-                                        action:@selector(onFlagButtonPressed:)];
-        self.navigationItem.rightBarButtonItem = rightButton;
-        [rightButton release];
-    }
+    [super viewDidLoad];
     
 }
 
