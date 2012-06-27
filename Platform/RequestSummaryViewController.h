@@ -73,5 +73,6 @@
 
 - (void) onDoneButtonPressed:(id)sender;
 - (IBAction) onLeaderboardButtonPressed:(id)sender;
+- (IBAction) onInfoButtonPressed:(id)sender;
 + (id) createForRequests:(NSArray*)requests;
 @end

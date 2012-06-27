@@ -93,7 +93,7 @@
     //if the user earned no points we need to adjust the text and such
     if (totalPointsEarned == 0) {
         //no points earned
-        self.lbl_topMessage.text = @"Good post, but you didn't earn any coins.";
+        self.lbl_topMessage.text = @"Nice try, but you didn't earn any coins.";
         self.iv_coin.hidden = YES;
     }
     else {
@@ -131,6 +131,7 @@
 
     //now we have all the other people's score changes
     self.otherPeoplesScoreJustifications = [UIScoreChangeView reformatOtherPeoplesScoreJustifications:otherPeoplesScoreChanges];
+    [otherPeoplesScoreChanges release];
     [self.tbl_scoreChanges reloadData];
 }
 
@@ -227,21 +228,28 @@
         //we iterate through each 
         for (ScoreJustification* sj in scoreJustifications)
         {
+            
             //we create a new justification string by concatenating the amount with the string
-            //and then we 0 out the score 
-            
-            //is it more than 1 point
-            NSString* coinString = @"coin";
-            if ([sj.points intValue] > 1) 
-            {
-                coinString = @"coins";
+            //and then we 0 out the score. We do this because the server returns the score in a JSON object
+            //which matches what is sent for the requestors score changes. However for the UIScoreView we want to display other people's
+            //score changes in a different modified way. Instead of modifying the server generation code, we simply do some jiggery-pokery
+            //ont he strings on the rendering end.
+            if ([sj.points intValue] > 0) {
+                //we only do adjustment if the score hasnt been adjusted already (which would indicate a sj.points == 0)
+                //is it more than 1 point
+                NSString* coinString = @"coin";
+                if ([sj.points intValue] > 1) 
+                {
+                    coinString = @"coins";
+                    
+                }
                 
+                NSString* modifiedDescription = [NSString stringWithFormat:@"%@ %@ %@",sj.justification,sj.points,coinString];
+                sj.justification = modifiedDescription;
+                sj.points = 0;
+               
             }
-            
-            NSString* modifiedDescription = [NSString stringWithFormat:@"%@ %@ %@",sj.justification,sj.points,coinString];
-            sj.justification = modifiedDescription;
-            sj.points = 0;
-            [retVal addObject:sj];
+             [retVal addObject:sj];
         }
     }
     

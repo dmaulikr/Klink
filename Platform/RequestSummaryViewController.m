@@ -16,6 +16,8 @@
 #import "ImageManager.h"
 #import "AchievementsViewController.h"
 #import "FlurryAnalytics.h"
+#import "UITutorialView.h"
+#import "UserDefaultSettings.h"
 
 @implementation RequestSummaryViewController
 @synthesize user                        = m_user;
@@ -311,6 +313,16 @@
     [super viewDidAppear:animated];
     
     [FlurryAnalytics logEvent:@"VIEWING_REQUESTSUMMARYVIEW" timed:YES];
+    
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDREQUESTSUMMARYVC]==NO) 
+    {
+        [self onInfoButtonPressed:nil];
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDREQUESTSUMMARYVC];
+        [userDefaults synchronize];
+    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -333,6 +345,12 @@
 
 - (void) onDoneButtonPressed: (id) sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)onInfoButtonPressed:(id)sender {
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewRequestSummary"];
+    [self.view addSubview:infoView];
+    [infoView release];
 }
 
 

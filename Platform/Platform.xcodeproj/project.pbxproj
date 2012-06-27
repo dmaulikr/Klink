@@ -454,6 +454,8 @@
 		C5C9E2CF14689F6B00838934 /* UIProgressHUDView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E2CE14689F6B00838934 /* UIProgressHUDView.xib */; };
 		C5C9E2D214689F7C00838934 /* UIProgressHUDView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2D114689F7C00838934 /* UIProgressHUDView.m */; };
 		C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */; };
+		C5D352AB159A6D4E00586581 /* UITutorialViewRequestSummary.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */; };
+		C5D352AE159A73F400586581 /* UITutorialViewAwardCabinet.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */; };
 		C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */; };
 		C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */; };
 		C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */; };
@@ -1132,6 +1134,8 @@
 		C5CBA6B014B38E8B006FA4E3 /* UserDefaultSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultSettings.h; sourceTree = "<group>"; };
 		C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultSettings.m; sourceTree = "<group>"; };
 		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
+		C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewRequestSummary.xib; sourceTree = "<group>"; };
+		C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewAwardCabinet.xib; sourceTree = "<group>"; };
 		C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProductionLog.xib; sourceTree = "<group>"; };
 		C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewDraft.xib; sourceTree = "<group>"; };
 		C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProfile.xib; sourceTree = "<group>"; };
@@ -2136,6 +2140,8 @@
 				C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */,
 				C52B62B51595379C0029F379 /* UITutorialViewPage.xib */,
 				C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */,
+				C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */,
+				C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */,
 			);
 			name = Bonobo;
 			sourceTree = "<group>";
@@ -2710,6 +2716,8 @@
 				C58D617A15952C3700B6C77D /* UITutorialViewContributeFirstTime.xib in Resources */,
 				C52B62B61595379C0029F379 /* UITutorialViewPage.xib in Resources */,
 				C56B1FC91598FE390001994E /* UITutorialViewEditorial.xib in Resources */,
+				C5D352AB159A6D4E00586581 /* UITutorialViewRequestSummary.xib in Resources */,
+				C5D352AE159A73F400586581 /* UITutorialViewAwardCabinet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

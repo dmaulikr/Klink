@@ -14,6 +14,8 @@
 #import "ImageDownloadResponse.h"
 #import "UIAchievementView.h"
 #import "FlurryAnalytics.h"
+#import "UITutorialView.h"
+#import "UserDefaultSettings.h"
 
 #define kIMAGEVIEW @"imageview"
 #define kUSERID    @"userid"
@@ -386,6 +388,15 @@
     if (self.loadedAchievementID != nil) {
         [self showAchievementWithID:self.loadedAchievementID];
     }
+    
+    //we mark that the user has viewed this viewcontroller at least once
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults boolForKey:setting_HASVIEWEDAWARDCABINETVC]==NO) 
+    {
+        [self onInfoButtonPressed:nil];
+        [userDefaults setBool:YES forKey:setting_HASVIEWEDAWARDCABINETVC];
+        [userDefaults synchronize];
+    }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -567,6 +578,13 @@
     }
 }
 
+#pragma mark - UIButton handlers
+- (IBAction) onInfoButtonPressed:(id)sender
+{
+    UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewAwardCabinet"];
+    [self.view addSubview:infoView];
+    [infoView release];
+}
 #pragma mark - Static Initializers
 + (AchievementsViewController*)createInstance {
     AchievementsViewController* instance = [[[AchievementsViewController alloc]initWithNibName:@"AchievementsViewController" bundle:nil] autorelease];
