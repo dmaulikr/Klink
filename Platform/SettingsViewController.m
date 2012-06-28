@@ -272,7 +272,7 @@ machineNameSettings()
     // Set the email subject
     [picker setSubject:[NSString stringWithFormat:@"Start %@ing with me!", appName]];
     
-    NSString *messageHeader = [NSString stringWithFormat:@"I've just started using this new app called %@. I think you'll find it interesting. You should download it and start %@ing with me.<br><br><a href='http://bit.ly/yzgdw3'>Download Bahndr from the AppStore</a><br><br>%@", appName, appName, self.user.displayname];
+    NSString *messageHeader = [NSString stringWithFormat:@"I've just started playing this new game called %@. We share photos, trade witty captions and celebrate the funny in everyday life to win votes and earn awards. You should download it and start %@ing with me.<br><br><a href='http://bit.ly/yzgdw3'>Download Bahndr from the AppStore</a><br><br>%@", appName, appName, self.user.displayname];
     [picker setMessageBody:messageHeader isHTML:YES];
     
     // Present the mail composition interface
@@ -390,7 +390,7 @@ machineNameSettings()
 {
     if (section == 2) {
         // Facebook section
-        return @"Toggle seamless sharing to automatically post all photos, captions and drafts you create to your Facebook wall.";
+        return @"Earn bonus coins! Turn on seamless sharing to automatically share all photos, captions and drafts you create to your Facebook activity feed.";
     }
     else {
         return nil;
@@ -637,9 +637,9 @@ machineNameSettings()
     }
     
     UILabel *label = [[[UILabel alloc] init] autorelease];
-    label.frame = CGRectMake(20, 8, 280, 63);
+    label.frame = CGRectMake(20, 8, 280, 83);
     label.font = [UIFont fontWithName:@"AmericanTypewriter" size:14.0];
-    label.numberOfLines = 3;
+    label.numberOfLines = 4;
     label.lineBreakMode = UILineBreakModeWordWrap;
     label.textAlignment = UITextAlignmentCenter;
     label.backgroundColor = [UIColor clearColor];

@@ -31,7 +31,7 @@
     UIButton* m_btn_followersLabel;
     UIButton* m_btn_followingLabel;
     
-    UILabel* m_lbl_submissionsLast7DaysLabel;
+    /*UILabel* m_lbl_submissionsLast7DaysLabel;
     UILabel* m_lbl_editorMinimumLabel;
     UILabel* m_lbl_userBestLabel;
     UILabel* m_lbl_draftsLast7Days;
@@ -42,15 +42,15 @@
     UILabel* m_lbl_photosLabel;
     UILabel* m_lbl_captionsLabel;
     UILabel* m_lbl_totalLabel;
-    UILabel* m_lbl_pointsLast7Days;
+    UILabel* m_lbl_pointsLast7Days;*/
     
-    UIImageView* m_iv_progressBarContainer;
+    /*UIImageView* m_iv_progressBarContainer;
     UIImageView* m_iv_progressDrafts;
     UIImageView* m_iv_progressPhotos;
     UIImageView* m_iv_progressCaptions;
     UIImageView* m_iv_progressPoints;
     UIImageView* m_iv_editorMinimumLine;
-    UIImageView* m_iv_userBestLine;
+    UIImageView* m_iv_userBestLine;*/
     
     UIPointsProgressBar* m_v_pointsProgressBar;
     
@@ -89,7 +89,7 @@
 @property (nonatomic, retain) IBOutlet UIButton* btn_followingLabel;
 
 
-@property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLast7DaysLabel;
+/*@property (nonatomic, retain) IBOutlet UILabel* lbl_submissionsLast7DaysLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_editorMinimumLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_userBestLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_draftsLast7Days;
@@ -100,18 +100,18 @@
 @property (nonatomic, retain) IBOutlet UILabel* lbl_photosLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_captionsLabel;
 @property (nonatomic, retain) IBOutlet UILabel* lbl_totalLabel;
-@property (nonatomic, retain) IBOutlet UILabel* lbl_pointsLast7Days;
+@property (nonatomic, retain) IBOutlet UILabel* lbl_pointsLast7Days;*/
 
 @property (atomic, retain) User* user;
 @property (atomic, retain) NSNumber* userID;
 
-@property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
+/*@property (nonatomic, retain) IBOutlet UIImageView* iv_progressBarContainer;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressDrafts;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPhotos;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressCaptions;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_progressPoints;
 @property (nonatomic, retain) IBOutlet UIImageView* iv_editorMinimumLine;
-@property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;
+@property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;*/
 
 @property (nonatomic, retain) IBOutlet UIPointsProgressBar* v_pointsProgressBar;
 
@@ -139,7 +139,7 @@
 - (IBAction)onInfoButtonPressed:(id)sender;
 
 
-- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;
+//- (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl;
 
 + (ProfileViewController*)createInstance;
 + (ProfileViewController*)createInstanceForUser:(NSNumber*)userID;

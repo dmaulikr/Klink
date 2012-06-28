@@ -46,7 +46,7 @@
 @synthesize btn_followersLabel      = m_btn_followersLabel;
 @synthesize btn_followingLabel      = m_btn_followingLabel;
 
-@synthesize lbl_submissionsLast7DaysLabel = m_lbl_submissionsLast7DaysLabel;
+/*@synthesize lbl_submissionsLast7DaysLabel = m_lbl_submissionsLast7DaysLabel;
 @synthesize lbl_editorMinimumLabel  = m_lbl_editorMinimumLabel;
 @synthesize lbl_userBestLabel       = m_lbl_userBestLabel;
 @synthesize lbl_draftsLast7Days     = m_lbl_draftsLast7Days;
@@ -57,18 +57,18 @@
 @synthesize lbl_photosLabel         = m_lbl_photosLabel;
 @synthesize lbl_captionsLabel       = m_lbl_captionsLabel;
 @synthesize lbl_totalLabel          = m_lbl_totalLabel;
-@synthesize lbl_pointsLast7Days     = m_lbl_pointsLast7Days;
+@synthesize lbl_pointsLast7Days     = m_lbl_pointsLast7Days;*/
 
 @synthesize user                    = m_user;
 @synthesize userID                  = m_userID;
 
-@synthesize iv_progressBarContainer = m_iv_progressBarContainer;
+/*@synthesize iv_progressBarContainer = m_iv_progressBarContainer;
 @synthesize iv_progressDrafts       = m_iv_progressDrafts;
 @synthesize iv_progressPhotos       = m_iv_progressPhotos;
 @synthesize iv_progressCaptions     = m_iv_progressCaptions;
 @synthesize iv_progressPoints       = m_iv_progressPoints;
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
-@synthesize iv_userBestLine         = m_iv_userBestLine;
+@synthesize iv_userBestLine         = m_iv_userBestLine;*/
 
 @synthesize v_pointsProgressBar          = m_v_pointsProgressBar;
 
@@ -96,7 +96,7 @@
 #define kPROGRESSBARCONTAINERINSETPOINTSLABEL 40.0
 
 
-#pragma mark - Progress Bar methods 
+/*#pragma mark - Progress Bar methods 
 - (void)drawProgressBar {
     
     int pointsLast7Days = [self.user.numberofpointslw intValue];
@@ -170,7 +170,7 @@
     self.iv_progressPoints.frame = CGRectMake(kPROGRESSBARCONTAINERXORIGINOFFSET, self.iv_progressPoints.frame.origin.y,(progressPoints * progressBarContainerWidth), self.iv_progressPoints.frame.size.height);
     [self.iv_progressPoints setHidden:NO];
     
-}
+}*/
 
 /*- (void)drawProgressBar {
     
@@ -372,7 +372,8 @@
     self.btn_pagesLabel = nil;
     self.btn_followersLabel = nil;
     self.btn_followingLabel = nil;
-    self.lbl_submissionsLast7DaysLabel = nil;
+    
+    /*self.lbl_submissionsLast7DaysLabel = nil;
     self.lbl_editorMinimumLabel = nil;
     self.lbl_userBestLabel = nil;
     self.lbl_draftsLast7Days = nil;
@@ -383,14 +384,15 @@
     self.lbl_photosLabel = nil;
     self.lbl_captionsLabel = nil;
     self.lbl_totalLabel = nil;
-    self.lbl_pointsLast7Days = nil;
-    self.iv_progressDrafts = nil;
+    self.lbl_pointsLast7Days = nil;*/
+    /*self.iv_progressDrafts = nil;
     self.iv_progressPhotos = nil;
     self.iv_progressCaptions = nil;
     self.iv_progressPoints = nil;
     self.iv_editorMinimumLine = nil;
     self.iv_userBestLine = nil;
-    self.iv_progressBarContainer = nil;
+    self.iv_progressBarContainer = nil;*/
+    
     self.v_leaderboardContainer = nil;
     self.v_leaderboard3Up = nil;
     self.btn_follow = nil;
@@ -746,41 +748,6 @@
         [self enumerateLeaderboards:self.userID];
     }
     
-    
-    /*if (self.loggedInUser)
-    {
-        if (![self.userID isEqualToNumber:self.loggedInUser.objectid])
-        {
-            //not the current user we are looking at, show a pairs leaderboard
-            [self enumeratePairsLeaderboard];
-        }
-        else
-        {
-            //it is the currently logged on user, show normal leaderboard
-            [self enumerateLeaderboards:self.userID];
-        }
-    }
-    else
-    {
-        //no user logged in, we show the normal leaderboard
-        [self enumerateLeaderboards:self.userID];
-    }
-    
-    
-    
-    
-    
-    if (self.loggedInUser &&
-        [self.userID isEqualToNumber:self.loggedInUser.objectid])
-    {
-        [self enumerateLeaderboards:self.userID];
-    }
-    else if (self.loggedInUser)
-    {
-        //user is not the logged in user, so we display a pairs leaderboard
-        [self enumeratePairsLeaderboard];
-    }*/
-    
     // Render the profile view
     if (self.user != nil) {
         [self render];             
@@ -887,7 +854,7 @@
     [navigationController release];
 }
 
-#pragma mark - Segmented Control management
+/*#pragma mark - Segmented Control management
 - (IBAction)indexDidChangeForSegmentedControl:(UISegmentedControl*)segmentedControl {
     NSUInteger index = segmentedControl.selectedSegmentIndex;
     
@@ -897,7 +864,7 @@
     else if (index == 2) {
         [self showLeaderBoardOfType:kALL];
     }
-}
+}*/
 
 #pragma mark - UIButton Handlers
 - (IBAction) onLeaderboardButtonPressed:(id)sender
