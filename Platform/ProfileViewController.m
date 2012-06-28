@@ -400,10 +400,10 @@
 
 - (void) showProfilePicture {
     //Show profile picture
-    ImageManager* imageManager = [ImageManager instance];
-    NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
-    
     if (self.user.imageurl != nil && ![self.user.imageurl isEqualToString:@""]) {
+        ImageManager* imageManager = [ImageManager instance];
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:self.userID forKey:kUSERID];
+        
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         UIImage* image = [imageManager downloadImage:self.user.imageurl withUserInfo:nil atCallback:callback];
         [callback release];

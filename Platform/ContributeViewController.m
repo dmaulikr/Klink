@@ -75,7 +75,9 @@
 @synthesize nPageObjectID     = m_newPageObjectID;
 @synthesize nPhotoObjectID    = m_newPhotoObjectID;
 @synthesize nCaptionObjectID  = m_newCaptionObjectID;
+
 @synthesize isDone                      = m_isDone;
+@synthesize didLaunchImagePicker        = m_didLaunchImagePicker;
 
 #pragma mark - Deadline Date Timers
 - (void) updateDeadlineDate:(NSTimer *)timer {
@@ -479,8 +481,10 @@
         self.lbl_captionOptional.hidden = NO;
         self.lbl_captionRequired.hidden = YES;
         
-        if (!self.img_photo) {
+//        if (!self.img_photo) {
+        if (self.didLaunchImagePicker == NO) {
             // ContributeViewController was just lanuched from user pressing the camera button from the draft view, immidiately launch cameraActionSheet
+            self.didLaunchImagePicker = YES;
             [self onCameraButtonPressed:nil];
         }
     }

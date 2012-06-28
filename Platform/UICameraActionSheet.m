@@ -133,6 +133,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
         chosenImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
     
+    id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
+    
+    // We have the image dismiss the picker
+    [self.picker dismissModalViewControllerAnimated:YES];
+    
     CGFloat scale = kScale;
     
     CGSize chosenImageSize = chosenImage.size;
@@ -183,13 +188,15 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     CGImageRef croppedThumbnailImage = CGImageCreateWithImageInRect([thumbnailImage CGImage], thumbnailCropRect);
     thumbnailImage = [UIImage imageWithCGImage:croppedThumbnailImage];
     
-    id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
+//    id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
     
     CGImageRelease(croppedThumbnailImage);
+  
+//    [self.picker dismissModalViewControllerAnimated:YES];
     
     [del onPhotoTakenWithThumbnailImage:thumbnailImage withFullImage:fullscreenImage];
     
-    [self.picker dismissModalViewControllerAnimated:YES];
+//    [self.picker dismissModalViewControllerAnimated:YES];
 }
 
 
