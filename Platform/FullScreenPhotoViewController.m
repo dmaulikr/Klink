@@ -1394,16 +1394,17 @@
             
             self.iv_photo = (UIImageView*)existingCell;
             
-            ImageManager* imageManager = [ImageManager instance];
-            NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.iv_photo forKey:kIMAGEVIEW];
-            
-            //add the photo id to the context
-            [userInfo setValue:photo.objectid forKey:kPHOTOID];
-            
             if (photo.imageurl != nil && ![photo.imageurl isEqualToString:@""]) {
+                ImageManager* imageManager = [ImageManager instance];
+                NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.iv_photo forKey:kIMAGEVIEW];
+                
+                //add the photo id to the context
+                [userInfo setValue:photo.objectid forKey:kPHOTOID];
+                
                 Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
                 UIImage* image = [imageManager downloadImage:photo.imageurl withUserInfo:nil atCallback:callback];
                 [callback release];
+                
                 if (image != nil) {
                     [self.iv_photo setContentMode:UIViewContentModeScaleAspectFit];
                     self.iv_photo.image = image;

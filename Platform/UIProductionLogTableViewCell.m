@@ -170,19 +170,19 @@
 }
 
 - (void) renderPhoto:(Photo*)photo {
-    ImageManager* imageManager = [ImageManager instance];
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
-    
-    //add the photo id to the context
-    [userInfo setValue:photo.objectid forKey:kPHOTOID];
-    
-    if (photo.thumbnailurl != nil && 
-        ![photo.thumbnailurl isEqualToString:@""]) 
-    {
+    if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
+        ImageManager* imageManager = [ImageManager instance];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
+        
+        //add the photo id to the context
+        [userInfo setValue:photo.objectid forKey:kPHOTOID];
+        
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         callback.fireOnMainThread = YES;
+        
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
         [callback release];
+        
         if (image != nil) {
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             self.iv_photo.image = image;
@@ -203,19 +203,19 @@
     self.topVotedPhotoID = photo.objectid;
     //[self renderPhoto:topPhoto];
     
-    ImageManager* imageManager = [ImageManager instance];
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
-    
-    //add the photo id to the context
-    [userInfo setValue:photo.objectid forKey:kPHOTOID];
-    
-    if (photo.thumbnailurl != nil && 
-        ![photo.thumbnailurl isEqualToString:@""]) 
-    {
+    if (photo.thumbnailurl != nil && ![photo.thumbnailurl isEqualToString:@""]) {
+        ImageManager* imageManager = [ImageManager instance];
+        NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithObject:self.pageID forKey:kPAGEID];
+        
+        //add the photo id to the context
+        [userInfo setValue:photo.objectid forKey:kPHOTOID];
+        
         Callback* callback = [[Callback alloc]initWithTarget:self withSelector:@selector(onImageDownloadComplete:) withContext:userInfo];
         callback.fireOnMainThread = YES;
+        
         UIImage* image = [imageManager downloadImage:photo.thumbnailurl withUserInfo:nil atCallback:callback];
         [callback release];
+        
         if (image != nil) {
             self.iv_photo.contentMode = UIViewContentModeScaleAspectFit;
             self.iv_photo.image = image;

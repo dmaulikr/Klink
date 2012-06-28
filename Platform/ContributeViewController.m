@@ -878,6 +878,7 @@
     self.navigationItem.rightBarButtonItem.enabled = [self okToSubmit];
     
     [self.view setNeedsDisplay];
+    
 }
 
 - (void) onCancel {

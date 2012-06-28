@@ -55,8 +55,13 @@
     if ([UIImagePickerController isSourceTypeAvailable:sourceType] && [mediaTypes count] > 0) 
     {
         NSArray *mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        //UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        self.picker = [[[UIImagePickerController alloc] init] autorelease];
+        
+        if (self.picker == nil) {
+            // Allocate a new picker if we don't already have one
+            //UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            self.picker = [[[UIImagePickerController alloc] init] autorelease];
+        }
+        
         self.picker.mediaTypes = mediaTypes;
         self.picker.delegate = self;
         self.picker.allowsEditing = self.allowsEditing;
@@ -66,6 +71,7 @@
             self.picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
             self.picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
         }
+        
         id<UICameraActionSheetDelegate> del = (id<UICameraActionSheetDelegate>)self.a_delegate;
 
         [del displayPicker:self.picker];
