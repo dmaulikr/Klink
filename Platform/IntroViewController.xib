@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1296</int>
+		<int key="IBDocument.SystemTarget">1280</int>
 		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
 		<string key="IBDocument.AppKitVersion">1138.47</string>
@@ -152,7 +152,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Upload photos</string>
+						<string key="IBUIText">See it</string>
 						<reference key="IBUITextColor" ref="573017424"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="321657383"/>
@@ -174,7 +174,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon-camera2.png</string>
+							<string key="NSResourceName">icon-bulb2@2x.png</string>
 						</object>
 					</object>
 					<object class="IBUILabel" id="382234266">
@@ -190,7 +190,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Add captions</string>
+						<string key="IBUIText">Bahndr it</string>
 						<reference key="IBUITextColor" ref="573017424"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="321657383"/>
@@ -243,7 +243,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Cast votes</string>
+						<string key="IBUIText">Win votes</string>
 						<reference key="IBUITextColor" ref="573017424"/>
 						<nil key="IBUIHighlightedColor"/>
 						<reference key="IBUIShadowColor" ref="321657383"/>
@@ -469,11 +469,11 @@
 							<reference ref="1047553429"/>
 							<reference ref="573398955"/>
 							<reference ref="853924917"/>
-							<reference ref="382234266"/>
 							<reference ref="803620978"/>
 							<reference ref="445355617"/>
 							<reference ref="434939400"/>
 							<reference ref="701714976"/>
+							<reference ref="382234266"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -651,15 +651,11 @@
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1296" key="NS.object.0"/>
-		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="doubleline_bottom.png">{1, 11}</string>
-			<string key="icon-camera2.png">{30, 30}</string>
+			<string key="icon-bulb2@2x.png">{41, 48}</string>
 			<string key="icon-compose.png">{30, 30}</string>
 			<string key="icon-ribbon1.png">{30, 30}</string>
 			<string key="icon-thumbUp.png">{30, 30}</string>
