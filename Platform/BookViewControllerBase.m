@@ -335,10 +335,14 @@
 - (IBAction) onFacebookButtonPressed:(id)sender {   
     //we check to ensure the user is logged in to Facebook first
     if (![self.authenticationManager isUserAuthenticated]) {
+        [FlurryAnalytics logEvent:@"LOGIN_SHARE_FACEBOOK_BOOKBASEVIEW"];
+        
         //user is not logged in, must log in first
         [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        [FlurryAnalytics logEvent:@"SHARE_FACEBOOK_BOOKBASEVIEW"];
+        
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -362,10 +366,15 @@
     //we check to ensure the user is logged in to Twitter first
     if (![self.authenticationManager isUserAuthenticated] ||
         ![[self.authenticationManager contextForLoggedInUser]hasTwitter]) {
+
+        [FlurryAnalytics logEvent:@"LOGIN_SHARE_TWITTER_BOOKBASEVIEW"];
+        
         //user is not logged in, must log in first
         [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
     }
     else {
+        [FlurryAnalytics logEvent:@"SHARE_TWITTER_BOOKBASEVIEW"];
+        
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -742,7 +751,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_BOOKBASEVIEW " withParameters:nil];
+    [FlurryAnalytics endTimedEvent:@"VIEWING_BOOKBASEVIEW" withParameters:nil];
     
     __frc_published_pages = nil;
     self.frc_published_pages = nil;

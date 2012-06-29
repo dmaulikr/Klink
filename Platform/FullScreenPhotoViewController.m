@@ -1053,12 +1053,16 @@
     if (loggedInContext == nil ||
         loggedInContext.hasFacebook == NO) 
     {
+        [FlurryAnalytics logEvent:@"LOGIN_SHARE_FACEBOOK_FULLSCREENVIEW"];
+        
         //user is not logged in, must log in first and also ensure they have a facebook account
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onFacebookButtonPressed:)  fireOnMainThread:YES];
         [self authenticateAndGetFacebook:YES getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
 
     }
     else {
+        [FlurryAnalytics logEvent:@"SHARE_FACEBOOK_FULLSCREENVIEW"];
+        
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
@@ -1084,6 +1088,7 @@
     [self.view addSubview:infoView];
     [infoView release];
 }
+
 - (void) onTwitterButtonPressed:(id)sender {
     //we check to ensure the user is logged in to Twitter first
     AuthenticationContext* loggedInContext = [[AuthenticationManager instance]contextForLoggedInUser];
@@ -1091,6 +1096,8 @@
     if (loggedInContext == nil ||
         loggedInContext.hasTwitter == NO) 
     {
+        [FlurryAnalytics logEvent:@"LOGIN_SHARE_TWITTER_FULLSCREENVIEW"];
+        
         //user is not logged in, must log in first
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onTwitterButtonPressed:)  fireOnMainThread:YES];
      
@@ -1098,6 +1105,8 @@
     
     }
     else {
+        [FlurryAnalytics logEvent:@"SHARE_TWITTER_FULLSCREENVIEW"];
+        
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
         progressView.delegate = self;
