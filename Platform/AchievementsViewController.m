@@ -45,7 +45,7 @@
     PlatformAppDelegate* app = (PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ACHIEVEMENT inManagedObjectContext:app.managedObjectContext];
     
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:NO];
+    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to gather only achievements for a specific userID
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", USERID, self.userID];
