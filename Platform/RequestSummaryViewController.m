@@ -41,6 +41,7 @@
 @synthesize v_noNewAchievementContainer = m_v_noNewAchievementContainer;
 @synthesize lbl_achievementTitle        = m_lbl_achievementTitle;
 @synthesize iv_achievementImage         = m_iv_achievementImage;
+@synthesize userCloudEnumerator      = m_userCloudEnumerator;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -116,6 +117,20 @@
     self.v_achievementsContainer = nil;
     self.v_newAchievementContainer = nil;
     self.v_noNewAchievementContainer = nil;
+}
+
+- (void) enumerateUser:(NSNumber*)userid 
+{
+    if (self.userCloudEnumerator != nil) {
+        [self.userCloudEnumerator enumerateUntilEnd:nil];
+    }
+    else 
+    {
+        self.userCloudEnumerator = nil;
+        self.userCloudEnumerator = [CloudEnumerator enumeratorForUser:userid];
+        self.userCloudEnumerator.delegate = self;
+        [self.userCloudEnumerator enumerateUntilEnd:nil];
+    }
 }
 
 - (void) enumerateLeaderboards:(NSNumber*)userid 
@@ -259,6 +274,19 @@
     
 }
 
+- (void) render {
+    //we then need to render the score change view
+    CGRect frame = self.v_scoreChangeView.frame;
+    UIScoreChangeView* scoreChangeView = [[UIScoreChangeView alloc]initWithFrame:frame];
+    self.v_scoreChangeView = scoreChangeView;
+    [scoreChangeView release];
+    [scoreChangeView renderCompletedRequest:self.request];
+    [self.v_scoreChangeContainer addSubview:self.v_scoreChangeView];
+    
+    //we then need to render the achievements view
+    [self renderAchievements];
+}
+
 - (void) viewWillAppear:(BOOL)animated
 {
     
@@ -294,18 +322,12 @@
     
     [self.btn_leaderboard3UpButton setBackgroundImage:lightGreyImg forState:UIControlStateHighlighted];
     
+    // Ensure we have the latest data for this user
+    [self enumerateUser:self.userID];
+    
     [self enumerateLeaderboards:self.userID];
     
-    //we then need to render the score change view
-    CGRect frame = self.v_scoreChangeView.frame;
-    UIScoreChangeView* scoreChangeView = [[UIScoreChangeView alloc]initWithFrame:frame];
-    self.v_scoreChangeView = scoreChangeView;
-    [scoreChangeView release];
-    [scoreChangeView renderCompletedRequest:self.request];
-    [self.v_scoreChangeContainer addSubview:self.v_scoreChangeView];
-    
-    //we then need to render the achievements view
-    [self renderAchievements];
+    //[self render];
    
 }
 
@@ -377,6 +399,7 @@
                     int j = i + 1;
                     LeaderboardEntry* entry1 = nil;
                     LeaderboardEntry* entry2 = nil;
+                    LeaderboardEntry* entry3 = nil;
                     
                     
                     if (k >= 0) {
@@ -390,6 +413,12 @@
                     {
                         entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
                         [threeUpEntryArray addObject:entry2];
+                    }
+                    
+                    if (i == 0) {
+                        // User is the leader
+                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
+                        [threeUpEntryArray addObject:entry3];
                     }
                     
                     [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.loggedInUser.objectid];
@@ -404,6 +433,7 @@
                     int j = i + 1;
                     LeaderboardEntry* entry1 = nil;
                     LeaderboardEntry* entry2 = nil;
+                    LeaderboardEntry* entry3 = nil;
                     
                     
                     if (k >= 0) {
@@ -417,6 +447,12 @@
                     {
                         entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
                         [threeUpEntryArray addObject:entry2];
+                    }
+                    
+                    if (i == 0) {
+                        // User is the leader
+                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
+                        [threeUpEntryArray addObject:entry3];
                     }
                     
                     [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.userID];
@@ -507,7 +543,10 @@
                 withUserInfo:(NSDictionary *)userInfo
 {
     ResourceContext* resourceContext = [ResourceContext instance];
-    if (self.friendsLeaderboardCloudEnumerator == enumerator)
+    if (enumerator == self.userCloudEnumerator) {
+        [self render];
+    }
+    else if (enumerator == self.friendsLeaderboardCloudEnumerator)
     {
         // Get the leaderboad object from the resource context
         NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:DATECREATED ascending:NO];

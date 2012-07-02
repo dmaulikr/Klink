@@ -737,10 +737,10 @@
     [self.navigationController setToolbarHidden:YES animated:YES];
     
     // Ensure we have the user object for this profile
-    if (self.user == nil) {
+    //if (self.user == nil) {
         // Enumerate the User object for this profile
         [self enumerateUser:self.userID];
-    }
+    //}
     
     // Enumerate the leaderboards for this user
     if ([self.authenticationManager isUserAuthenticated] && self.loggedInUser && self.userID)
@@ -762,10 +762,10 @@
         [self enumerateLeaderboards:self.userID];
     }
     
-    // Render the profile view
+    /*// Render the profile view
     if (self.user != nil) {
         [self render];             
-    }
+    }*/
     
     // Setup appropriate Navbar buttons
     if (self.userID && self.loggedInUser.objectid && [self.userID isEqualToNumber:self.loggedInUser.objectid]) {

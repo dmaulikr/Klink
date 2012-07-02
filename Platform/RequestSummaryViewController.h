@@ -41,6 +41,7 @@
     UILabel* m_lbl_achievementTitle;
     UIImageView* m_iv_achievementImage;
     
+    CloudEnumerator* m_userCloudEnumerator;
     CloudEnumerator* m_friendsLeaderboardCloudEnumerator;
     Leaderboard*    m_friendsLeaderboard;
 }
@@ -67,6 +68,7 @@
 @property (nonatomic, retain) IBOutlet UIView* v_newAchievementContainer;
 @property (nonatomic, retain) IBOutlet UIView* v_noNewAchievementContainer;
 
+@property (nonatomic, retain) CloudEnumerator*      userCloudEnumerator;
 @property (nonatomic, retain) CloudEnumerator*      friendsLeaderboardCloudEnumerator;
 @property (nonatomic, retain) Leaderboard*          friendsLeaderboard;
 
