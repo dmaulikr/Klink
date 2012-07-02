@@ -70,7 +70,8 @@
 @synthesize iv_editorMinimumLine    = m_iv_editorMinimumLine;
 @synthesize iv_userBestLine         = m_iv_userBestLine;*/
 
-@synthesize v_pointsProgressBar          = m_v_pointsProgressBar;
+@synthesize v_pointsProgressBar     = m_v_pointsProgressBar;
+@synthesize lbl_pbUpdating          = m_lbl_pbUpdating;
 
 @synthesize v_leaderboardContainer  = m_v_leaderboardContainer;
 @synthesize v_leaderboard3Up        = m_v_leaderboard3Up;
@@ -395,8 +396,11 @@
     
     self.v_leaderboardContainer = nil;
     self.v_leaderboard3Up = nil;
+    
     self.btn_follow = nil;
+    
     self.v_pointsProgressBar = nil;
+    self.lbl_pbUpdating = nil;
     
 }
 
@@ -635,6 +639,7 @@
     
     // Show the progress bar
     //[self drawProgressBar];
+    [self.lbl_pbUpdating setHidden:YES];
     CGRect frame = self.v_pointsProgressBar.frame;
     UIPointsProgressBar* progressBar = [[UIPointsProgressBar alloc] initWithFrame:frame];
     [progressBar renderProgressBarForUserWithID:self.userID];

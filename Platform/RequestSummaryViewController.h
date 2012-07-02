@@ -22,10 +22,11 @@
     UIView* m_v_newAchievementContainer;
     UIView* m_v_noNewAchievementContainer;
     
-    UILeaderboard3Up* m_v_leaderboard3Up;
-    UIButton* m_btn_leaderboard3UpButton;
-    UIPointsProgressBar* m_v_pointsProgressBar;
-    UIScoreChangeView*  m_v_scoreChangeView;
+    UILeaderboard3Up*       m_v_leaderboard3Up;
+    UIButton*               m_btn_leaderboard3UpButton;
+    UIPointsProgressBar*    m_v_pointsProgressBar;
+    UILabel*                m_lbl_pbUpdating;
+    UIScoreChangeView*      m_v_scoreChangeView;
     
     User*       m_user;
     NSNumber*   m_userID;
@@ -51,6 +52,7 @@
 @property (nonatomic,retain) Request* request;
 
 @property (nonatomic, retain) IBOutlet UIPointsProgressBar* v_pointsProgressBar;
+@property (nonatomic, retain) IBOutlet UILabel*             lbl_pbUpdating;
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
 @property (nonatomic, retain) IBOutlet UIScoreChangeView*   v_scoreChangeView;

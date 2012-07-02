@@ -23,6 +23,7 @@
 @synthesize user                        = m_user;
 @synthesize userID                      = m_userID;
 @synthesize v_pointsProgressBar         = m_v_pointsProgressBar;
+@synthesize lbl_pbUpdating              = m_lbl_pbUpdating;
 @synthesize v_leaderboard3Up            = m_v_leaderboard3Up;
 @synthesize btn_leaderboard3UpButton    = m_btn_leaderboard3UpButton;
 @synthesize v_leaderboardContainer      = m_v_leaderboardContainer;
@@ -102,6 +103,7 @@
     // e.g. self.myOutlet = nil;
     
     self.v_pointsProgressBar = nil;
+    self.lbl_pbUpdating = nil;
     self.v_leaderboardContainer = nil;
     self.v_leaderboard3Up = nil;
     self.v_scoreChangeView = nil;
@@ -192,6 +194,7 @@
 
 //this method will analyze the request and display any achievement related information to the user
 - (void) renderAchievements {
+    [self.lbl_pbUpdating setHidden:YES];
     
     //we first see if the user has gained any achievements at all
     

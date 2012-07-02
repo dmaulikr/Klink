@@ -52,7 +52,8 @@
     UIImageView* m_iv_editorMinimumLine;
     UIImageView* m_iv_userBestLine;*/
     
-    UIPointsProgressBar* m_v_pointsProgressBar;
+    UIPointsProgressBar*    m_v_pointsProgressBar;
+    UILabel*                m_lbl_pbUpdating;
     
     UIView* m_v_leaderboardContainer;
     UILeaderboard3Up* m_v_leaderboard3Up;
@@ -114,6 +115,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView* iv_userBestLine;*/
 
 @property (nonatomic, retain) IBOutlet UIPointsProgressBar* v_pointsProgressBar;
+@property (nonatomic, retain) IBOutlet UILabel*             lbl_pbUpdating;
 
 @property (nonatomic, retain) IBOutlet UIView*              v_leaderboardContainer;
 @property (nonatomic, retain) IBOutlet UILeaderboard3Up*    v_leaderboard3Up;
