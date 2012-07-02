@@ -500,12 +500,12 @@
                         entry2 = [self.friendsLeaderboard.entries objectAtIndex:j];
                         [threeUpEntryArray addObject:entry2];
                     }
-                    
-                    if (i == 0) {
-                        // User is the leader
-                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
-                        [threeUpEntryArray addObject:entry3];
-                    }
+                    //Bobbyg: this causes ana rray exception, you can do i+2 without testing bounds
+//                    if (i == 0) {
+//                        // User is the leader
+//                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
+//                        [threeUpEntryArray addObject:entry3];
+//                    }
                     
                     [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.loggedInUser.objectid];
                     
@@ -535,11 +535,11 @@
                         [threeUpEntryArray addObject:entry2];
                     }
                     
-                    if (i == 0) {
-                        // User is the leader
-                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
-                        [threeUpEntryArray addObject:entry3];
-                    }
+//                    if (i == 0) {
+//                        // User is the leader
+//                        entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
+//                        [threeUpEntryArray addObject:entry3];
+//                    }
                     
                     [self.v_leaderboard3Up renderLeaderboardWithEntries:threeUpEntryArray forLeaderboard:self.friendsLeaderboard.objectid forUserWithID:self.userID];
                     
