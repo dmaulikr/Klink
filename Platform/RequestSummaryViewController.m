@@ -255,6 +255,7 @@
         
         //let us render the progress bar
         CGRect frame = self.v_pointsProgressBar.frame;
+        [self.v_pointsProgressBar removeFromSuperview]; // remove any previously displayed progress bar views
         UIPointsProgressBar* progressBar = [[UIPointsProgressBar alloc] initWithFrame:frame];
         [progressBar renderProgressBarForUserWithID:self.userID];
         self.v_pointsProgressBar = progressBar;
@@ -280,6 +281,7 @@
 - (void) render {
     //we then need to render the score change view
     CGRect frame = self.v_scoreChangeView.frame;
+    [self.v_scoreChangeView removeFromSuperview]; // remove any previously displayed views
     UIScoreChangeView* scoreChangeView = [[UIScoreChangeView alloc]initWithFrame:frame];
     self.v_scoreChangeView = scoreChangeView;
     [scoreChangeView release];
@@ -330,7 +332,7 @@
     
     [self enumerateLeaderboards:self.userID];
     
-    //[self render];
+    [self render];
    
 }
 
@@ -390,7 +392,10 @@
         // We need to build the array of leaderboard entries for the 3upLeaderboard on the profile
         NSMutableArray *threeUpEntryArray = [[NSMutableArray alloc]init];
         
+        int count = [self.friendsLeaderboard.entries count];
+        
         LeaderboardEntry *entry;
+        
         for (int i = 0; i < self.friendsLeaderboard.entries.count; i++) {
             
             entry = [self.friendsLeaderboard.entries objectAtIndex:i];
@@ -418,7 +423,7 @@
                         [threeUpEntryArray addObject:entry2];
                     }
                     
-                    if (i == 0) {
+                    if (i == 0 && count >= 3) {
                         // User is the leader
                         entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
                         [threeUpEntryArray addObject:entry3];
@@ -452,7 +457,7 @@
                         [threeUpEntryArray addObject:entry2];
                     }
                     
-                    if (i == 0) {
+                    if (i == 0 && count >= 3) {
                         // User is the leader
                         entry3 = [self.friendsLeaderboard.entries objectAtIndex:i + 2];
                         [threeUpEntryArray addObject:entry3];
