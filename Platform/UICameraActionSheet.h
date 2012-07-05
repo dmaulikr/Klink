@@ -11,10 +11,10 @@
 
 @protocol UICameraActionSheetDelegate <NSObject>
 
-- (void) displayPicker:(UIImagePickerController*) picker;
-- (void) onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
+- (void)displayPicker:(UIImagePickerController*) picker;
+- (void)onPhotoTakenWithThumbnailImage:(UIImage*)thumbnailImage 
                           withFullImage:(UIImage*)image;
-- (void) onCancel;
+- (void)onCancel;
 
 @end
 
@@ -33,7 +33,7 @@
 
 @property (nonatomic)                 BOOL                      allowsEditing;
 
-+ (UICameraActionSheet*) createCameraActionSheet;
++ (UICameraActionSheet*)createCameraActionSheet;
 + (UICameraActionSheet*)createCameraActionSheetWithTitle:(NSString*)title allowsEditing:(BOOL)editing;
 
 @end

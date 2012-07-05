@@ -19,6 +19,7 @@
 
 #define kIMAGEVIEW @"imageview"
 #define kUSERID    @"userid"
+#define kEDITOR    1
 
 @interface AchievementsViewController ()
 
@@ -48,7 +49,7 @@
     NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DATECREATED ascending:YES];
     
     //add predicate to gather only achievements for a specific userID
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@", USERID, self.userID];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K=%@ AND %K!=%d", USERID, self.userID, TYPE, kEDITOR];
     
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];

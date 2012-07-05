@@ -54,8 +54,6 @@
 #define     kFACEBOOKAPPID  @"315632228463614"
 
 #pragma mark - Properties
-
-
 - (UIProgressHUDView*)progressView {
     if (__progressView != nil) {
         return __progressView;
@@ -66,6 +64,7 @@
     
     return __progressView;
 }
+
 - (ApplicationSettingsManager*)applicationSettingsManager {
     if (__applicationSettingsManager != nil) {
         return __applicationSettingsManager;
@@ -73,6 +72,7 @@
     __applicationSettingsManager = [ApplicationSettingsManager instance];
     return __applicationSettingsManager;
 }
+
 - (Facebook*) facebook {
     if (__facebook != nil) {
         return __facebook;
@@ -83,6 +83,7 @@
     return __facebook;
     
 }
+
 - (AuthenticationManager*) authenticationManager {
     if (__authenticationManager != nil) {
         return __authenticationManager;

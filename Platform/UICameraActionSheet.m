@@ -9,13 +9,13 @@
 #import "UICameraActionSheet.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "ImageManager.h"
-#import "Photo.h"
-#import "ResourceContext.h"
-#import "AuthenticationManager.h"
-#import "User.h"
-#import "Types.h"
-#import "Attributes.h"
-#import "Macros.h"
+//#import "Photo.h"
+//#import "ResourceContext.h"
+//#import "AuthenticationManager.h"
+//#import "User.h"
+//#import "Types.h"
+//#import "Attributes.h"
+//#import "Macros.h"
 
 #define kThumbnailWidth 75
 #define kThumbnailHeight 75
@@ -90,8 +90,6 @@
     }
 }
 
-
-
 #pragma mark - UIActionSheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet 
     didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -118,7 +116,6 @@
     [self.picker dismissModalViewControllerAnimated:YES];
 }
 
-#pragma mark - UINavigationControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
@@ -198,7 +195,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
 //    [self.picker dismissModalViewControllerAnimated:YES];
 }
-
 
 - (UIImage*)cropImage:(UIImage*)original toSize:(CGSize)thumbnailImageSize {
     // Crop the new shrunken thumbnail image to the fit the target frame size
