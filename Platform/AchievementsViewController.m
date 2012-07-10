@@ -34,7 +34,7 @@
 @synthesize iv_profilePicture       = m_iv_profilePicture;
 
 
-//this NSFetchedResultsController will query for all draft pages
+//this NSFetchedResultsController will query for all achievments for a particular user
 - (NSFetchedResultsController*) frc_achievements {
     NSString* activityName = @"AchievementsViewController.frc_achievements:";
     if (__frc_achievements != nil) {
