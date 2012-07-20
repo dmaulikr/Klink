@@ -343,7 +343,8 @@
             NSNumber* currNumberValue = (NSNumber*)currVal;
             NSNumber* otherNumberValue = (NSNumber*)value;
             
-            if (![currNumberValue isEqualToNumber:otherNumberValue] &&
+            if (otherNumberValue != nil &&
+                ![currNumberValue isEqualToNumber:otherNumberValue] &&
                 ![attributeMetadata.islocked boolValue]) {
                 //the values differ and the local value is not locked
                 retVal = YES;
@@ -360,8 +361,12 @@
         else if (attrType == NSStringAttributeType) {
             NSString* currStringValue = (NSString*)currVal;
             NSString* otherStringValue = (NSString*)value;
-                  
-            if (currStringValue == nil && otherStringValue != nil) {
+                 
+            if (otherStringValue == nil)
+            {
+                retVal = NO;
+            }
+            else if (currStringValue == nil && otherStringValue != nil) {
                 retVal = YES;
             }
             else if (![currStringValue isEqualToString:otherStringValue] &&
