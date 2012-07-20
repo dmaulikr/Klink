@@ -23,6 +23,7 @@
 #import "AchievementsViewController.h"
 #import "Achievement.h"
 #import "FlurryAnalytics.h"
+#import "UserDefaultSettings.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
 #define kUSERREGEX @"\\{.*?\\}"
@@ -471,6 +472,9 @@
     LOG_NOTIFICATIONVIEWCONTROLLER(0, @"%@Retrieved PageID:%@ that was published notification",activityName,pageID);
     
     // We launch the BookViewController and open it up to the page we specified
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE];
+    
     BookViewControllerBase* bookViewController = [BookViewControllerBase createInstanceWithPageID:pageID];
     
     // Modal naviation

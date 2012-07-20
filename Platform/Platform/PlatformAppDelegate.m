@@ -178,31 +178,44 @@ void uncaughtExceptionHandler(NSException *exception) {
     //CloudEnumerator* pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
     //[pageCloudEnumerator enumerateUntilEnd:nil];
     
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     
-    if ([userDefaults boolForKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE]) {
-        // User has already viewed the latest published page. Open to production log.
+    // Check launch options to determine if we've opened the app from a remote notification
+    if ([launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"]) {
+        // Yes, we opened the app from the user pressing a remote notification
+        // Open the production log then open to the notification log
         ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
         productionLogVC.shouldOpenBookCover = YES;
+        productionLogVC.shouldOpenNotifications = YES;
         
         self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
     }
     else {
-        // Launch the BookView to the last page
-        BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
-        
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
-            //this is the first time opening, so we show a welcome message
-            bookViewController.shouldOpenToLastPage = NO;
-            bookViewController.shouldOpenToTitlePage = YES;
+        
+        if ([userDefaults boolForKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE]) {
+            // User has already viewed the latest published page. Open to production log.
+            ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+            productionLogVC.shouldOpenBookCover = YES;
+            
+            self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
         }
         else {
-            bookViewController.shouldOpenToLastPage = YES;
-            bookViewController.shouldOpenToTitlePage = NO;
+            // Launch the BookView to the last page
+            BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
+            
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
+                //this is the first time opening, so we show a welcome message
+                bookViewController.shouldOpenToLastPage = NO;
+                bookViewController.shouldOpenToTitlePage = YES;
+            }
+            else {
+                bookViewController.shouldOpenToLastPage = YES;
+                bookViewController.shouldOpenToTitlePage = NO;
+            }
+            
+            self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
         }
-        
-        self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
     }
     
     
@@ -349,34 +362,56 @@ void uncaughtExceptionHandler(NSException *exception) {
         
 }
 
-- (void) application:(UIApplication*)application 
-    didReceiveRemoteNotification:(NSDictionary *)userInfo 
+- (void) application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary *)userInfo 
 {
-        NSString* activityName = @"application.didReceiveRemoteNotification:";
+    // app was already in the foreground
     
+    NSString* activityName = @"application.didReceiveRemoteNotification:";
     
     //we need to instruct the feedmanager to download notification with this particular id
     FeedManager* feedManager = [FeedManager instance];
     NSNumber* feedID = [userInfo objectForKey:OBJECTID];
-
     
-    
-    if ( application.applicationState == UIApplicationStateActive ) {
-        // app was already in the foreground
-        // do not move the view controller, just update all the notification feeds
-        LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
-        [feedManager refreshFeedOnFinish:nil];
-    }
-    else {
+//    if ( application.applicationState == UIApplicationStateActive ) {
+//        // app was already in the foreground
+//        // do not move the view controller, just update all the notification feeds
+//        LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
+//        [feedManager refreshFeedOnFinish:nil];
+//    }
+//    else {
         // app was just brought from background to foreground
         // move to the navigation view controller
         
-        // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
-        ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
-        productionLogVC.shouldOpenBookCover = YES;
-        productionLogVC.shouldOpenNotifications = YES;
+    
+//*** Jordan's new code ***//    
+        //check first to see if the active view controller is the log
+        UIViewController* topViewController = [self.navigationController topViewController];
         
-        self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
+        if ([topViewController isKindOfClass:ProductionLogViewController.class]) {
+            //the top view controller is already the production log
+            //we instruict the feed manager to enumerate and return result to the notification view controller
+            ProductionLogViewController* prodLogVC = (ProductionLogViewController*)topViewController;
+            
+            // Open the notification log
+            [prodLogVC onNotificationsButtonClicked:nil];
+            
+        }
+        else if ([topViewController isKindOfClass:ContributeViewController.class]) {
+            // app is in the contribute view controller
+            // do not move the notification view controller, just update all the notification feeds
+            LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
+            [feedManager refreshFeedOnFinish:nil];
+        }
+        else {
+            // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
+            ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+            productionLogVC.shouldOpenBookCover = YES;
+            productionLogVC.shouldOpenNotifications = YES;
+            
+//            self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
+            [self.navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
+        }
+//*** Jordan's new code ***//
         
 //        //check first to see if the active view controller is the log
 //        UIViewController* topViewController = [self.navigationController topViewController];
@@ -430,9 +465,9 @@ void uncaughtExceptionHandler(NSException *exception) {
 //            [self.navigationController pushViewController:nvc animated:YES];
 //            
 //        }
-        
-        
-    }
+//        
+//        
+//    }
     
     //on complete we should adjust the badge number to reflect the current nmber of unseen notification in the database
 }

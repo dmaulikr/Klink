@@ -175,6 +175,13 @@
                         [userDefaults setBool:YES forKey:setting_HASVIEWEDPRODUCTIONLOGVC];
                         [userDefaults synchronize];
                     }
+                    else {
+                        // Check to see if the app is opening from a remote notification and should immidiately go to the notification view
+                        if (self.shouldOpenNotifications == YES) {
+                            self.shouldOpenNotifications = NO;
+                            [self onNotificationsButtonClicked:nil];
+                        }
+                    }
                     
                     //self.view.userInteractionEnabled = YES;
                     self.v_typewriter.userInteractionEnabled = YES;
@@ -828,12 +835,6 @@
     //[self pageShowView:self.view duration:0.5];
     
     [self updateVisibleCells];
-    
-    // Check to see if the app is opening from a remote notification and should immidiately go to the notification view
-    if (self.shouldOpenNotifications == YES) {
-        self.shouldOpenNotifications = NO;
-        [self onNotificationsButtonClicked:nil];
-    }
     
 }
 

@@ -19,6 +19,7 @@
 #import "FeedTypes.h"
 #import "UIViewCategory.h"
 #import "Macros.h"
+#import "UserDefaultSettings.h"
 
 #define kNOTIFICATIONID             @"notificationid"
 #define kUSERREGEX                  @"\\{.*?\\}"
@@ -317,6 +318,9 @@
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-page4.png"];
         }
         else if ([notification.feedevent intValue] == kDRAFT_PUBLISHED) {
+            
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setBool:NO forKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE];
             
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
         }         
