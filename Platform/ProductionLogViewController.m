@@ -57,6 +57,7 @@
 @synthesize shouldOpenBookCover         = m_shouldOpenBookCover;
 @synthesize photos                      = m_photos;
 @synthesize captions                    = m_captions;
+@synthesize shouldOpenNotifications     = m_shouldOpenNotifications;
 
 
 //this NSFetchedResultsController will query for all draft pages
@@ -827,6 +828,12 @@
     //[self pageShowView:self.view duration:0.5];
     
     [self updateVisibleCells];
+    
+    // Check to see if the app is opening from a remote notification and should immidiately go to the notification view
+    if (self.shouldOpenNotifications == YES) {
+        self.shouldOpenNotifications = NO;
+        [self onNotificationsButtonClicked:nil];
+    }
     
 }
 

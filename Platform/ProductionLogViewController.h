@@ -39,6 +39,8 @@
     UIImageView*    m_iv_bookCover;
     BOOL            m_shouldOpenBookCover;
     
+    BOOL            m_shouldOpenNotifications;
+    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView*         tbl_productionTableView;
@@ -65,6 +67,8 @@
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_bookBackground;
 @property (nonatomic,retain) IBOutlet UIImageView*  iv_bookCover;
 @property (nonatomic)                 BOOL          shouldOpenBookCover;
+
+@property (nonatomic, assign)         BOOL          shouldOpenNotifications;
 
 
 - (IBAction) onHomeButtonPressed:(id)sender;

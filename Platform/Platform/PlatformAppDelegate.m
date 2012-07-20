@@ -368,61 +368,68 @@ void uncaughtExceptionHandler(NSException *exception) {
         [feedManager refreshFeedOnFinish:nil];
     }
     else {
-            // app was just brought from background to foreground
-        //move to the view controller
+        // app was just brought from background to foreground
+        // move to the navigation view controller
         
-        //check firs to see if the active view controller is the log
-        UIViewController* topViewController = [self.navigationController topViewController];
-        if ([topViewController isKindOfClass:NotificationsViewController.class]) {
-            //the top view controller is already the notification feed
-            //we instruict the feed manager to enumerate and return result to the notification view controller
-            NotificationsViewController* nvc = (NotificationsViewController*)topViewController;
-            Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
-            LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
-            [feedManager refreshFeedOnFinish:callback];
+        // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
+        ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+        productionLogVC.shouldOpenBookCover = YES;
+        productionLogVC.shouldOpenNotifications = YES;
         
-        }
-        else if ([topViewController isKindOfClass:BookViewControllerLeaves.class]) 
-        {
-            //the book view controller is open
-            BookViewControllerLeaves* leaves = (BookViewControllerLeaves*)topViewController;
-            
-            if ([leaves.modalViewController isKindOfClass:UINavigationController.class]) 
-            {
-                
-                UINavigationController* navigationController = (UINavigationController*)leaves.modalViewController;
-                topViewController = navigationController.topViewController;
-                
-                if ([topViewController isKindOfClass:NotificationsViewController.class])
-                {
-                    //the book view is showing the notification window
-                    NotificationsViewController* nvc = (NotificationsViewController*)leaves.modalViewController;
-                    Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
-                    LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
-                    [feedManager refreshFeedOnFinish:callback];
-                }
-                else 
-                {
-                    //its on a different view controller
-                    NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
-                    [navigationController pushViewController:nvc animated:YES];
-                    
-
-                }
-            }
-            else 
-            {
-                //its on a different view controller , then we need to push the notification view controller on it
-                
-                [leaves showNotificationViewController];
-            }
-        }
-        else {
-             LOG_SECURITY(0,@"%@ received new remote notification, pushing NotificationsViewController",activityName);
-            NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
-            [self.navigationController pushViewController:nvc animated:YES];
-            
-        }
+        self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
+        
+//        //check first to see if the active view controller is the log
+//        UIViewController* topViewController = [self.navigationController topViewController];
+//        if ([topViewController isKindOfClass:NotificationsViewController.class]) {
+//            //the top view controller is already the notification feed
+//            //we instruict the feed manager to enumerate and return result to the notification view controller
+//            NotificationsViewController* nvc = (NotificationsViewController*)topViewController;
+//            Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
+//            LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
+//            [feedManager refreshFeedOnFinish:callback];
+//        
+//        }
+//        else if ([topViewController isKindOfClass:BookViewControllerLeaves.class]) 
+//        {
+//            //the book view controller is open
+//            BookViewControllerLeaves* leaves = (BookViewControllerLeaves*)topViewController;
+//            
+//            if ([leaves.modalViewController isKindOfClass:UINavigationController.class]) 
+//            {
+//                
+//                UINavigationController* navigationController = (UINavigationController*)leaves.modalViewController;
+//                topViewController = navigationController.topViewController;
+//                
+//                if ([topViewController isKindOfClass:NotificationsViewController.class])
+//                {
+//                    //the book view is showing the notification window
+//                    NotificationsViewController* nvc = (NotificationsViewController*)leaves.modalViewController;
+//                    Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
+//                    LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
+//                    [feedManager refreshFeedOnFinish:callback];
+//                }
+//                else 
+//                {
+//                    //its on a different view controller
+//                    NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
+//                    [navigationController pushViewController:nvc animated:YES];
+//                    
+//
+//                }
+//            }
+//            else 
+//            {
+//                //its on a different view controller , then we need to push the notification view controller on it
+//                
+//                [leaves showNotificationViewController];
+//            }
+//        }
+//        else {
+//             LOG_SECURITY(0,@"%@ received new remote notification, pushing NotificationsViewController",activityName);
+//            NotificationsViewController*  nvc = [NotificationsViewController createInstanceAndRefreshFeedOnAppear];
+//            [self.navigationController pushViewController:nvc animated:YES];
+//            
+//        }
         
         
     }
