@@ -977,7 +977,7 @@
     
     UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:bookViewController];
     navigationController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self.navigationController presentModalViewController:navigationController animated:YES];
+    [self presentModalViewController:navigationController animated:YES];
     
     [navigationController release];
 
@@ -1003,7 +1003,7 @@
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:profileViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self.navigationController presentModalViewController:navigationController animated:YES];
+        [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
     }
@@ -1035,7 +1035,7 @@
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:contributeViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self.navigationController presentModalViewController:navigationController animated:YES];
+        [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
        
@@ -1063,7 +1063,7 @@
         
         UINavigationController* navigationController = [[UINavigationController alloc]initWithRootViewController:notificationsViewController];
         navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self.navigationController presentModalViewController:navigationController animated:YES];
+        [self presentModalViewController:navigationController animated:YES];
         
         [navigationController release];
     }
