@@ -394,41 +394,42 @@ void uncaughtExceptionHandler(NSException *exception) {
         // app was just brought from background to foreground
         // move to the navigation view controller
         // check first to see if the active view controller is the log
-        UIViewController* topViewController = [self.navigationController topViewController];
         
-        if ([topViewController isKindOfClass:ProductionLogViewController.class]) {
-            //the top view controller is already the production log
-            //we instruict the feed manager to enumerate and return result to the notification view controller
-            ProductionLogViewController* prodLogVC = (ProductionLogViewController*)topViewController;
-            
-            // Open the notification log
-            [prodLogVC onNotificationsButtonClicked:nil];
-            
-        }
-        else if ([topViewController isKindOfClass:NotificationsViewController.class]) {
-            //the top view controller is already the notification feed
-            //we instruict the feed manager to enumerate and return result to the notification view controller
-            NotificationsViewController* nvc = (NotificationsViewController*)topViewController;
-            Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
-            LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
-            [feedManager refreshFeedOnFinish:callback];
-            
-        }
-        else if ([topViewController isKindOfClass:ContributeViewController.class]) {
-            // app is in the contribute view controller
-            // do not move the notification view controller, just update all the notification feeds
-            LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
-            [feedManager refreshFeedOnFinish:nil];
-        }
-        else {
+//        UIViewController* topViewController = [self.navigationController topViewController];
+//        
+//        if ([topViewController isKindOfClass:ProductionLogViewController.class]) {
+//            //the top view controller is already the production log
+//            //we instruict the feed manager to enumerate and return result to the notification view controller
+//            ProductionLogViewController* prodLogVC = (ProductionLogViewController*)topViewController;
+//            
+//            // Open the notification log
+//            [prodLogVC onNotificationsButtonClicked:nil];
+//            
+//        }
+//        else if ([topViewController isKindOfClass:NotificationsViewController.class]) {
+//            //the top view controller is already the notification feed
+//            //we instruict the feed manager to enumerate and return result to the notification view controller
+//            NotificationsViewController* nvc = (NotificationsViewController*)topViewController;
+//            Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
+//            LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
+//            [feedManager refreshFeedOnFinish:callback];
+//            
+//        }
+//        else if ([topViewController isKindOfClass:ContributeViewController.class]) {
+//            // app is in the contribute view controller
+//            // do not move the notification view controller, just update all the notification feeds
+//            LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
+//            [feedManager refreshFeedOnFinish:nil];
+//        }
+//        else {
             // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
             ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
-            productionLogVC.shouldOpenBookCover = YES;
+            productionLogVC.shouldOpenBookCover = NO;
             productionLogVC.shouldOpenNotifications = YES;
             
 //            self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
             [self.navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
-        }
+//        }
     }
 //*** Jordan's new code ***//
         
