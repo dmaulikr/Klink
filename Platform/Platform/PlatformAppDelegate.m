@@ -563,6 +563,15 @@ void uncaughtExceptionHandler(NSException *exception) {
 //    
 //    Class classRootVC = [rootVC class];
 //    Class classTopVC = [topVC class];
+    
+//    if (application.applicationState == UIApplicationStateActive) {
+//        // app was already in the foreground
+//        NSLog(@"Active");
+//    }
+//    else {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"appDidReceiveRemoteNotification" object:nil];
+//         NSLog(@"appDidReceiveRemoteNotification");
+//    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

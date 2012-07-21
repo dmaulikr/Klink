@@ -75,11 +75,6 @@
 }
 
 - (void) commonInit {
-    // Add remote notification observer
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(didReceiveRemoteNotification)        
-                                                 name:@"appDidReceiveRemoteNotification" 
-                                               object:nil];
 
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -175,6 +170,12 @@
     //[pv release];
     
     //[self.view addSubview:self.progressView];
+    
+    // Add remote notification observer
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didReceiveRemoteNotification)        
+                                                 name:@"appDidReceiveRemoteNotification" 
+                                               object:nil];
     
 }
 
