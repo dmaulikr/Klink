@@ -427,8 +427,11 @@ void uncaughtExceptionHandler(NSException *exception) {
             productionLogVC.shouldOpenBookCover = NO;
             productionLogVC.shouldOpenNotifications = YES;
         
-            UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
-            self.window.rootViewController = navigationController;
+//            UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
+            UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+            [navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
+//            self.window.rootViewController = navigationController;
+        
 //        }
     }
 //*** Jordan's new code ***//
