@@ -384,6 +384,7 @@ void uncaughtExceptionHandler(NSException *exception) {
         
     
 //*** Jordan's new code ***//
+    
     if (application.applicationState == UIApplicationStateActive) {
         // app was already in the foreground
         // do not move the view controller, just update all the notification feeds
@@ -391,6 +392,8 @@ void uncaughtExceptionHandler(NSException *exception) {
         [feedManager refreshFeedOnFinish:nil];
     }
     else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"appDidReceiveRemoteNotification" object:nil];
+    }
         // app was just brought from background to foreground
         // move to the navigation view controller
         // check first to see if the active view controller is the log
@@ -422,18 +425,18 @@ void uncaughtExceptionHandler(NSException *exception) {
 //            [feedManager refreshFeedOnFinish:nil];
 //        }
 //        else {
-            // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
-            ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
-            productionLogVC.shouldOpenBookCover = NO;
-            productionLogVC.shouldOpenNotifications = YES;
-        
+//            // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
+//            ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+//            productionLogVC.shouldOpenBookCover = NO;
+//            productionLogVC.shouldOpenNotifications = YES;
+//        
 //            UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
-            UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-            [navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
+//            UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+//            [navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
 //            self.window.rootViewController = navigationController;
         
 //        }
-    }
+//    }
 //*** Jordan's new code ***//
         
 //        //check first to see if the active view controller is the log
@@ -492,7 +495,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //        
 //    }
     
-    //on complete we should adjust the badge number to reflect the current nmber of unseen notification in the database
+    //on complete we should adjust the badge number to reflect the current number of unseen notification in the database
 }
 
 - (void)onFeedFinishedRefreshing:(CallbackResult*)result {
@@ -552,6 +555,14 @@ void uncaughtExceptionHandler(NSException *exception) {
     //we need to raise the event
     EventManager *eventManager = [EventManager instance];
     [eventManager raiseApplicationDidBecomeActive];
+    
+//    UIViewController* rootVC = self.window.rootViewController;
+//    
+//    UINavigationController *navVC = (UINavigationController *)rootVC;
+//    UIViewController* topVC = [navVC topViewController];
+//    
+//    Class classRootVC = [rootVC class];
+//    Class classTopVC = [topVC class];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

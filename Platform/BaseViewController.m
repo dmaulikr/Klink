@@ -19,6 +19,7 @@
 #import "ProfileViewController.h"
 #import "UIStrings.h"
 #import "LoginViewController.h"
+#import "ProductionLogViewController.h"
 
 #define kSELECTOR   @"selector"
 #define kTARGETOBJECT   @"targetobject"
@@ -74,7 +75,11 @@
 }
 
 - (void) commonInit {
-    
+    // Add remote notification observer
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(didReceiveRemoteNotification)        
+                                                 name:@"appDidReceiveRemoteNotification" 
+                                               object:nil];
 
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -85,6 +90,7 @@
     }
     return self;
 }
+
 #pragma mark - Frames
 - (CGRect) frameForLoginView {
     return CGRectMake(0, 0, 320, 460);
@@ -212,6 +218,11 @@
     //we need to de-register from all events we may have subscribed too
     EventManager* eventManager = [EventManager instance];
     [eventManager unregisterFromAllEvents:self];
+    
+    // Remove remote notification observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:@"appDidReceiveRemoteNotification" 
+                                                  object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -591,6 +602,18 @@
 }
 
 #pragma mark - Async Handlers
+- (void) didReceiveRemoteNotification {
+    // App has become active due to remote notification being sent
+    
+    // We need to first load the productionLogVC as the root, and set the flag to notify that it should open the notification view immidiately
+    ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
+    productionLogVC.shouldOpenBookCover = NO;
+    productionLogVC.shouldOpenNotifications = YES;
+    
+    [self.navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
+}
+
+
 //this method handles a Login attempt that is either cancelled or returned unsuccessfully
 //any view controller subclass can use this as the target for their onFailCallback passed to the
 //UILoginView.h
