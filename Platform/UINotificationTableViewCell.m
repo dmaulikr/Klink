@@ -319,8 +319,10 @@
         }
         else if ([notification.feedevent intValue] == kDRAFT_PUBLISHED) {
             
-            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setBool:NO forKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE];
+            if ([notification.hasopened boolValue] == NO) {
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setBool:NO forKey:setting_HASVIEWEDLATESTPUBLISHEDPAGE];
+            }
             
             self.iv_notificationTypeImage.image = [UIImage imageNamed:@"icon-trophy.png"];
         }         

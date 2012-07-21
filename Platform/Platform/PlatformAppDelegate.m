@@ -379,12 +379,21 @@ void uncaughtExceptionHandler(NSException *exception) {
 //        [feedManager refreshFeedOnFinish:nil];
 //    }
 //    else {
-        // app was just brought from background to foreground
-        // move to the navigation view controller
+//        // app was just brought from background to foreground
+//        // move to the navigation view controller
         
     
-//*** Jordan's new code ***//    
-        //check first to see if the active view controller is the log
+//*** Jordan's new code ***//
+    if (application.applicationState == UIApplicationStateActive) {
+        // app was already in the foreground
+        // do not move the view controller, just update all the notification feeds
+        LOG_SECURITY(0, @"%@ received new remote notifcation, proceeding to download Feed ID: %@ from the cloud",activityName,feedID);
+        [feedManager refreshFeedOnFinish:nil];
+    }
+    else {
+        // app was just brought from background to foreground
+        // move to the navigation view controller
+        // check first to see if the active view controller is the log
         UIViewController* topViewController = [self.navigationController topViewController];
         
         if ([topViewController isKindOfClass:ProductionLogViewController.class]) {
@@ -394,6 +403,15 @@ void uncaughtExceptionHandler(NSException *exception) {
             
             // Open the notification log
             [prodLogVC onNotificationsButtonClicked:nil];
+            
+        }
+        else if ([topViewController isKindOfClass:NotificationsViewController.class]) {
+            //the top view controller is already the notification feed
+            //we instruict the feed manager to enumerate and return result to the notification view controller
+            NotificationsViewController* nvc = (NotificationsViewController*)topViewController;
+            Callback* callback = [Callback callbackForTarget:nvc selector:@selector(onFeedFinishedRefresh:) fireOnMainThread:YES];
+            LOG_SECURITY(0,@"%@ received new remote notification, querying for feeds",activityName);
+            [feedManager refreshFeedOnFinish:callback];
             
         }
         else if ([topViewController isKindOfClass:ContributeViewController.class]) {
@@ -411,6 +429,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 //            self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
             [self.navigationController setViewControllers:[NSArray arrayWithObject:productionLogVC] animated:NO];
         }
+    }
 //*** Jordan's new code ***//
         
 //        //check first to see if the active view controller is the log
