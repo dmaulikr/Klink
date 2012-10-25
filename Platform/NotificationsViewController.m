@@ -22,7 +22,7 @@
 #import "WebViewController.h"
 #import "AchievementsViewController.h"
 #import "Achievement.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UserDefaultSettings.h"
 
 #define kNOTIFICATIONTABLEVIEWCELLHEIGHT 73
@@ -244,7 +244,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_NOTIFICATIONSVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_NOTIFICATIONSVIEW" timed:YES];
     
     //if the user is not logged in, close the view immediately
     if (![self.authenticationManager isUserAuthenticated]) {
@@ -265,7 +265,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_NOTIFICATIONSVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_NOTIFICATIONSVIEW" withParameters:nil];
 }
 
 - (void) dealloc {

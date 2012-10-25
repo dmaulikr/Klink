@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="11E53" minimumToolsVersion="Xcode 4.2" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="achievement" representedClassName="Achievement" parentEntity="resource" syncable="YES">
+        <attribute name="dateexpires" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="descr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageurl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="applicationsettings" representedClassName="ApplicationSettings" parentEntity="resource">
+        <attribute name="base_url" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="caption_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="caption_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="delete_expired_objects" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="editor_minimum" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="fb_app_id" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="feed_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="feed_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="follow_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="follow_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="http_timeout_seconds" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="notification_level" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="num_users" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberoflinkedobjectstoreturn" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="page_draftexpiry_seconds" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="page_enumeration_timegap" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="page_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="pagesize" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="photo_maxnumtodownload" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="poll_expiry_seconds" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="poll_num_pages" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="progress_maxsecondstodisplay" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="twitter_consumerkey" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="twitter_consumersecret" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="version" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="attributechange" representedClassName="AttributeChange" syncable="YES">
+        <attribute name="attributename" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="datecreated" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="delta" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="hasbeenprocessed" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
+        <attribute name="justifications" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="newvalue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oldvalue" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="opcode" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjectid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="AttributeInstanceData" representedClassName="AttributeInstanceData">
+        <attribute name="attributename" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="iscounter" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="isdirty" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="islocal" optional="YES" attributeType="Boolean">
+            <userInfo/>
+        </attribute>
+        <attribute name="islocked" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="isurlattachment" optional="YES" attributeType="Boolean">
+            <userInfo/>
+        </attribute>
+        <relationship name="resource" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="resource" inverseName="attributeinstancedata" inverseEntity="resource" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="authenticationcontext" representedClassName="AuthenticationContext">
+        <attribute name="authenticator" optional="YES" attributeType="Binary">
+            <userInfo/>
+        </attribute>
+        <attribute name="expirydate" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="facebookuserid" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasfacebook" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="hastwitter" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="isfirsttime" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="bookmark" representedClassName="Bookmark" parentEntity="resource" syncable="YES">
+        <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="caption" representedClassName="Caption" parentEntity="resource">
+        <attribute name="caption1" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="creatorname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasseen" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasvoted" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofflags" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofvotes" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="pageid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="photoid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="feed" representedClassName="Feed" parentEntity="resource">
+        <attribute name="dateexpires" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="feeddatas" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="feedevent" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="hasopened" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="html" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="imageurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="message" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="points" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="rendertype" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="follow" representedClassName="Follow" parentEntity="resource" syncable="YES">
+        <attribute name="followerimageurl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="followername" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="followeruserid" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="userimageurl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="leaderboard" representedClassName="Leaderboard" parentEntity="resource" syncable="YES">
+        <attribute name="leaderboardentries" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="relativeto" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="objectchange" representedClassName="ObjectChange" syncable="YES">
+        <attribute name="datecreated" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="objectchange" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjectid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="page" representedClassName="Page" parentEntity="resource">
+        <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="creatorname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="datedraftexpires" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="datepublished" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="descr" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="displayname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="finishedcaptionid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="finishedillustratorid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="finishedphotoid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="finishedwriterid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="hashtags" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="imageurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofcaptions" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofflags" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofphotos" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofpublishvotes" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofunreadcaptions" optional="YES" attributeType="Integer 64" defaultValueString="-1" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnailurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="topvotedcaptionid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="photo" representedClassName="Photo" parentEntity="resource">
+        <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="creatorname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="descr" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="displayname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="imageurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofcaptions" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofflags" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofviews" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofvotes" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="themeid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnailurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="poll" representedClassName="Poll" parentEntity="resource" syncable="YES">
+        <attribute name="dateexpires" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="hasvoted" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="polldatas" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="state" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="winningobjectid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="winningobjecttype" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="request" representedClassName="Request">
+        <attribute name="changedattributes" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="errormessage" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="objectid" attributeType="Integer 64" defaultValueString="0" indexed="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="operationcode" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="statuscode" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="targetresourceid" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="targetresourcetype" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="url" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="resource" representedClassName="Resource" isAbstract="YES">
+        <attribute name="datecreated" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="datemodified" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="objectid" attributeType="Integer 64" defaultValueString="0" indexed="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="objecttype" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="attributeinstancedata" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AttributeInstanceData" inverseName="resource" inverseEntity="AttributeInstanceData" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <relationship name="typeinstancedata" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="TypeInstanceData" inverseName="resource" inverseEntity="TypeInstanceData" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="TypeInstanceData" representedClassName="TypeInstanceData">
+        <attribute name="iscloudtype" optional="YES" attributeType="Boolean">
+            <userInfo/>
+        </attribute>
+        <attribute name="issingleton" optional="YES" attributeType="Boolean">
+            <userInfo/>
+        </attribute>
+        <attribute name="typename" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="resource" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="resource" inverseName="typeinstancedata" inverseEntity="resource" indexed="YES">
+            <userInfo/>
+        </relationship>
+        <userInfo/>
+    </entity>
+    <entity name="user" representedClassName="User" parentEntity="resource">
+        <attribute name="achievementthreshold" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="app_version" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="datebecameeditor" optional="YES" attributeType="Double" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="displayname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="email" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="imageurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="iseditor" optional="YES" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="maxweeklyparticipation" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberfollowing" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofcaptions" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofcaptionslw" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofdraftscreated" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofdraftscreatedlw" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofdraftsparticipated" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberoffollowers" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofpagespublished" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofphotos" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofphotoslw" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofpoints" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="numberofpointslw" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberofpointssw" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberofvotes" optional="YES" attributeType="Integer 64" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="prevachievementthreshold" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="sharinglevel" optional="YES" attributeType="Boolean" defaultValueString="0">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnailurl" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="username" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
+    <entity name="vote" representedClassName="Vote" parentEntity="resource" syncable="YES">
+        <attribute name="creatorid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="pollid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="targetobjecttype" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="achievement" positionX="-378" positionY="-99" width="128" height="135"/>
+        <element name="applicationsettings" positionX="18" positionY="810" width="128" height="420"/>
+        <element name="attributechange" positionX="-207" positionY="1017" width="128" height="195"/>
+        <element name="AttributeInstanceData" positionX="-216" positionY="-141" width="128" height="150"/>
+        <element name="authenticationcontext" positionX="-198" positionY="336" width="128" height="150"/>
+        <element name="bookmark" positionX="189" positionY="27" width="128" height="90"/>
+        <element name="caption" positionX="-171" positionY="666" width="128" height="180"/>
+        <element name="feed" positionX="367" positionY="576" width="128" height="195"/>
+        <element name="follow" positionX="-216" positionY="-342" width="128" height="135"/>
+        <element name="leaderboard" positionX="-198" positionY="891" width="128" height="105"/>
+        <element name="objectchange" positionX="-389" positionY="1017" width="128" height="105"/>
+        <element name="page" positionX="259" positionY="-306" width="173" height="300"/>
+        <element name="photo" positionX="-216" positionY="72" width="128" height="240"/>
+        <element name="poll" positionX="-11" positionY="-180" width="128" height="135"/>
+        <element name="request" positionX="340" positionY="90" width="128" height="165"/>
+        <element name="resource" positionX="160" positionY="414" width="128" height="135"/>
+        <element name="TypeInstanceData" positionX="90" positionY="-342" width="128" height="105"/>
+        <element name="user" positionX="153" positionY="810" width="128" height="435"/>
+        <element name="vote" positionX="-153" positionY="507" width="128" height="105"/>
+    </elements>
+</model>

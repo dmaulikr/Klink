@@ -27,7 +27,7 @@
 #import "PageState.h"
 #import "ImageManager.h"
 #import "ProductionLogViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 @implementation PlatformAppDelegate
 
@@ -100,7 +100,7 @@
 }
 
 void uncaughtExceptionHandler(NSException *exception) {
-    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
+    [Flurry logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -110,9 +110,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     // Flurry Analytics Setup
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    [FlurryAnalytics startSession:@"9X2WMNNCMDH7HNM7J697"];
+    [Flurry startSession:@"9X2WMNNCMDH7HNM7J697"];
     // Enable Flurry agent to automatically detect and log page views on the root navigation controller
-    [FlurryAnalytics logAllPageViews:self.navigationController];
+    [Flurry logAllPageViews:self.navigationController];
     
     //we trigger the instantiation of the authentication manager 
     //and other singletons
@@ -342,6 +342,8 @@ void uncaughtExceptionHandler(NSException *exception) {
             [resourceContext delete:expiredFeedObjectToDelete.objectid withType:FEED];
         }
         [imageURLSToDelete release];
+        
+        LOG_APPLICATIONSETTINGSMANAGER(0,@"%@ finished cleaning up old objects",activityName);
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     }
 }
@@ -464,7 +466,7 @@ void uncaughtExceptionHandler(NSException *exception) {
         [self deleteExpiredObjectsOlderThan:number];
     };
     ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_objects_after intValue]];
+    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_expired_objects intValue]];
     
    // NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
     dispatch_async(backgroundQueue, ^{block(localThreshold);});
@@ -605,8 +607,13 @@ void uncaughtExceptionHandler(NSException *exception) {
     {
         return __managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"PlatformDataModel" withExtension:@"momd"];
-    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+//    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"PlatformDataModel" withExtension:@"momd"];
+//    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
+//    return __managedObjectModel;
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"PlatformDataModel" ofType:@"momd"];
+    NSURL *momURL = [NSURL fileURLWithPath:path];
+    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL];
     return __managedObjectModel;
 }
 
@@ -624,8 +631,14 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Platform.sqlite"];
     
     NSError *error = nil;
+    
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+
+    
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
     {
         /*
          Replace this implementation with code to handle the error appropriately.

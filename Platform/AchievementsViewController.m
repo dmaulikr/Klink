@@ -13,7 +13,7 @@
 #import "ImageManager.h"
 #import "ImageDownloadResponse.h"
 #import "UIAchievementView.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UITutorialView.h"
 #import "UserDefaultSettings.h"
 
@@ -383,7 +383,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_AWARDSVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_AWARDSVIEW" timed:YES];
     
     // Check if the controller should open with a specific achievement loaded
     if (self.loadedAchievementID != nil) {
@@ -403,7 +403,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_AWARDSVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_AWARDSVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -445,7 +445,7 @@
 
 #pragma mark - UI Gesture Handlers
 - (void)showAchievement:(UITapGestureRecognizer *)gestureRecognizer {
-    [FlurryAnalytics logEvent:@"AWARDSVIEW_MALLARDVIEWED"];
+    [Flurry logEvent:@"AWARDSVIEW_MALLARDVIEWED"];
     
     UIImageView* iv_achievement = (UIImageView *)gestureRecognizer.view;
     

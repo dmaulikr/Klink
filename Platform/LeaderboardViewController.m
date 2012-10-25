@@ -14,7 +14,7 @@
 #import "LeaderboardRelativeTo.h"
 #import "AuthenticationManager.h"
 #import "ProfileViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 
 #define kLEADERBOARDTABLEVIEWCELLHEIGHT 50
@@ -198,14 +198,14 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_LEADERBOARDVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_LEADERBOARDVIEW" timed:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_LEADERBOARDVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_LEADERBOARDVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

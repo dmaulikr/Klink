@@ -28,7 +28,7 @@
 #import "UIStrings.h"
 #import "RequestSummaryViewController.h"
 #import "UITutorialView.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kPAGEID @"pageid"
 #define kPHOTOID @"photoid"
@@ -546,7 +546,7 @@
 
 - (void) viewDidAppear:(BOOL)animated 
 {
-    [FlurryAnalytics logEvent:@"VIEWING_CONTRIBUTEVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_CONTRIBUTEVIEW" timed:YES];
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -571,7 +571,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_CONTRIBUTEVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_CONTRIBUTEVIEW" withParameters:nil];
     
 }
 
@@ -1002,17 +1002,17 @@
     // Flurry Analytics
     if (self.configurationType == PAGE) 
     {
-        [FlurryAnalytics endTimedEvent:@"NEW_DRAFT_PRODUCTIONLOG" withParameters:nil];
+        [Flurry endTimedEvent:@"NEW_DRAFT_PRODUCTIONLOG" withParameters:nil];
     }
     else if (self.configurationType == PHOTO) 
     {
-        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_DRAFTVIEW" withParameters:nil];
-        [FlurryAnalytics endTimedEvent:@"NEW_PHOTO_FULLSCREENVIEW" withParameters:nil];
+        [Flurry endTimedEvent:@"NEW_PHOTO_DRAFTVIEW" withParameters:nil];
+        [Flurry endTimedEvent:@"NEW_PHOTO_FULLSCREENVIEW" withParameters:nil];
     }
     else 
     {
-        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_DRAFTVIEW" withParameters:nil];
-        [FlurryAnalytics endTimedEvent:@"NEW_CAPTION_FULLSCREENVIEW" withParameters:nil];
+        [Flurry endTimedEvent:@"NEW_CAPTION_DRAFTVIEW" withParameters:nil];
+        [Flurry endTimedEvent:@"NEW_CAPTION_FULLSCREENVIEW" withParameters:nil];
     }
     
     //Disable the Submit button
@@ -1048,7 +1048,7 @@
 
 - (void)onCancelButtonPressed:(id)sender {
     // Flurry Analytics
-    [FlurryAnalytics logEvent:@"DRAFT_CANCELED"];
+    [Flurry logEvent:@"DRAFT_CANCELED"];
     
     if (self.configurationType == PHOTO && !self.img_photo) {
         // User just pressed 'Cancel' button on cameraActionSheet right after they first pressed the camera button from the draft view

@@ -21,7 +21,7 @@
 #import "FullScreenPhotoViewController.h"
 #import "BookViewControllerLeaves.h"
 #import "BookTableOfContentsViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UserDefaultSettings.h"
 
 #define kPAGEID @"pageid"
@@ -323,7 +323,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_BOOKPAGEVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_BOOKPAGEVIEW" timed:YES];
     
     // Setup table of contents button
     UIImage* tableOfContentButtonBackground = [[UIImage imageNamed:@"button_roundrect_brown.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0];
@@ -358,7 +358,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_BOOKPAGEVIEW " withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_BOOKPAGEVIEW " withParameters:nil];
     
 }
 

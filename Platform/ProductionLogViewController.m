@@ -29,7 +29,7 @@
 #import "DateTimeHelper.h"
 #import "LoginViewController.h"
 #import "UITutorialView.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kPHOTOID @"photoid"
 #define kCELLID @"cellid"
@@ -822,7 +822,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_PRODUCTIONLOG" timed:YES];
+    [Flurry logEvent:@"VIEWING_PRODUCTIONLOG" timed:YES];
     
     if (self.shouldOpenBookCover) {
         self.shouldOpenBookCover = NO;
@@ -848,7 +848,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_PRODUCTIONLOG" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_PRODUCTIONLOG" withParameters:nil];
     
 }
 
@@ -1017,7 +1017,7 @@
     
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) {
-        [FlurryAnalytics logEvent:@"LOGIN_NEW_DRAFT_PRODUCTIONLOG"];
+        [Flurry logEvent:@"LOGIN_NEW_DRAFT_PRODUCTIONLOG"];
         
         Callback* onSucccessCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onPageButtonPressed:) withContext:nil];        
         Callback* onFailCallback = [[Callback alloc]initWithTarget:self withSelector:@selector(onLoginFailed:)];
@@ -1028,7 +1028,7 @@
 
     }
     else {
-        [FlurryAnalytics logEvent:@"NEW_DRAFT_PRODUCTIONLOG" timed:YES];
+        [Flurry logEvent:@"NEW_DRAFT_PRODUCTIONLOG" timed:YES];
         
         ContributeViewController* contributeViewController = [ContributeViewController createInstanceForNewDraft];
         contributeViewController.delegate = self;

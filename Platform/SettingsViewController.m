@@ -18,7 +18,7 @@
 #import "ImageManager.h"
 #import <sys/utsname.h>
 #import "Attributes.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 @interface SettingsViewController ()
 
@@ -130,14 +130,14 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_SETTINGSVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_SETTINGSVIEW" timed:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_SETTINGSVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_SETTINGSVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

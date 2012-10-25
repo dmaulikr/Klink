@@ -29,7 +29,7 @@
 #import "DateTimeHelper.h"
 #import "RequestSummaryViewController.h"
 #import "UITutorialView.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kPictureWidth               320
 #define kPictureHeight              480
@@ -769,7 +769,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_FULLSCREENVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_FULLSCREENVIEW" timed:YES];
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -814,7 +814,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_FULLSCREENVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_FULLSCREENVIEW" withParameters:nil];
     
 }
 
@@ -1053,7 +1053,7 @@
     if (loggedInContext == nil ||
         loggedInContext.hasFacebook == NO) 
     {
-        [FlurryAnalytics logEvent:@"LOGIN_SHARE_FACEBOOK_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LOGIN_SHARE_FACEBOOK_FULLSCREENVIEW"];
         
         //user is not logged in, must log in first and also ensure they have a facebook account
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onFacebookButtonPressed:)  fireOnMainThread:YES];
@@ -1061,7 +1061,7 @@
 
     }
     else {
-        [FlurryAnalytics logEvent:@"SHARE_FACEBOOK_FULLSCREENVIEW"];
+        [Flurry logEvent:@"SHARE_FACEBOOK_FULLSCREENVIEW"];
         
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
@@ -1096,7 +1096,7 @@
     if (loggedInContext == nil ||
         loggedInContext.hasTwitter == NO) 
     {
-        [FlurryAnalytics logEvent:@"LOGIN_SHARE_TWITTER_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LOGIN_SHARE_TWITTER_FULLSCREENVIEW"];
         
         //user is not logged in, must log in first
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onTwitterButtonPressed:)  fireOnMainThread:YES];
@@ -1105,7 +1105,7 @@
     
     }
     else {
-        [FlurryAnalytics logEvent:@"SHARE_TWITTER_FULLSCREENVIEW"];
+        [Flurry logEvent:@"SHARE_TWITTER_FULLSCREENVIEW"];
         
         PlatformAppDelegate* appDelegate =(PlatformAppDelegate*)[[UIApplication sharedApplication]delegate];
         UIProgressHUDView* progressView = appDelegate.progressView;
@@ -1133,7 +1133,7 @@
     //we check to ensure the user is logged in first
     if (![self.authenticationManager isUserAuthenticated]) 
     {
-        [FlurryAnalytics logEvent:@"LOGIN_NEW_PHOTO_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LOGIN_NEW_PHOTO_FULLSCREENVIEW"];
         
         //user is not logged in, must log in first
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
@@ -1141,7 +1141,7 @@
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
-        [FlurryAnalytics logEvent:@"NEW_PHOTO_FULLSCREENVIEW" timed:YES];
+        [Flurry logEvent:@"NEW_PHOTO_FULLSCREENVIEW" timed:YES];
         
         int index = [self.photoViewSlider getPageIndex];
         Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];
@@ -1213,7 +1213,7 @@
 //                              otherButtonTitles:@"Login", nil];
 //        [alert show];
 //        [alert release];
-        [FlurryAnalytics logEvent:@"LOGIN_LIKE_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LOGIN_LIKE_FULLSCREENVIEW"];
         
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onVoteButtonPressed:)  fireOnMainThread:YES];
         
@@ -1221,7 +1221,7 @@
     }
     else 
     {
-        [FlurryAnalytics logEvent:@"LIKE_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LIKE_FULLSCREENVIEW"];
         
         //display progress view on the submission of a vote
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
@@ -1254,14 +1254,14 @@
 //        [alert show];
 //        [alert release];
         
-        [FlurryAnalytics logEvent:@"LOGIN_NEW_CAPTION_FULLSCREENVIEW"];
+        [Flurry logEvent:@"LOGIN_NEW_CAPTION_FULLSCREENVIEW"];
         
         Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onCameraButtonPressed:)  fireOnMainThread:YES];
         
         [self authenticateAndGetFacebook:NO getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
     }
     else {
-        [FlurryAnalytics logEvent:@"NEW_CAPTION_FULLSCREENVIEW" timed:YES];
+        [Flurry logEvent:@"NEW_CAPTION_FULLSCREENVIEW" timed:YES];
         
         int index = [self.photoViewSlider getPageIndex];
         Photo* photo = [[self.frc_photos fetchedObjects]objectAtIndex:index];

@@ -24,7 +24,7 @@
 #import "LeaderboardViewController.h"
 #import "AchievementsViewController.h"
 #import "UITutorialView.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kUSERID                    @"userid"
 
@@ -831,7 +831,7 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_PROFILEVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_PROFILEVIEW" timed:YES];
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -846,7 +846,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_PROFILEVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_PROFILEVIEW" withParameters:nil];
     
     // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
     [self.v_pointsProgressBar removeFromSuperview];

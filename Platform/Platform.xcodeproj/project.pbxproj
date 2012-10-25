@@ -281,7 +281,6 @@
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
 		52E66B76148EC7F60079270A /* NotificationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B74148EC7F60079270A /* NotificationsViewController.xib */; };
 		52EE380C15940DB800D86F8B /* Chalkduster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52EE380B15940DB800D86F8B /* Chalkduster.ttf */; };
-		52EE3810159441CE00D86F8B /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */; };
 		52EEB62314A3AA810017152C /* BookViewControllerLeaves.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */; };
 		52EFF38515673C0000962F3A /* UIPointsProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EFF38415673C0000962F3A /* UIPointsProgressBar.m */; };
 		52EFF38815673C0D00962F3A /* UIPointsProgressBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EFF38715673C0D00962F3A /* UIPointsProgressBar.xib */; };
@@ -431,7 +430,6 @@
 		C5C9E2571466FDA100838934 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E2561466FDA100838934 /* MBProgressHUD.m */; };
 		C5C9E29A146700C300838934 /* jQueryInject.txt in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E260146700C300838934 /* jQueryInject.txt */; };
 		C5C9E29B146700C300838934 /* jQueryInjectLandscape.txt in Resources */ = {isa = PBXBuildFile; fileRef = C5C9E261146700C300838934 /* jQueryInjectLandscape.txt */; };
-		C5C9E29C146700C300838934 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C9E262146700C300838934 /* libOAuth.a */; };
 		C5C9E29D146700C400838934 /* MGTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E275146700C300838934 /* MGTwitterEngine.m */; };
 		C5C9E29E146700C400838934 /* MGTwitterHTTPURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E279146700C300838934 /* MGTwitterHTTPURLConnection.m */; };
 		C5C9E29F146700C400838934 /* MGTwitterLibXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C9E27B146700C300838934 /* MGTwitterLibXMLParser.m */; };
@@ -456,6 +454,8 @@
 		C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */; };
 		C5D352AB159A6D4E00586581 /* UITutorialViewRequestSummary.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */; };
 		C5D352AE159A73F400586581 /* UITutorialViewAwardCabinet.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */; };
+		C5D46DD21639980F00B077FF /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D46DD11639980F00B077FF /* libOAuth.a */; };
+		C5D46DD4163999D700B077FF /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D46DD3163999D700B077FF /* libFlurry.a */; };
 		C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */; };
 		C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */; };
 		C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */; };
@@ -800,8 +800,6 @@
 		52E66B73148EC7F50079270A /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		52E66B74148EC7F60079270A /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
 		52EE380B15940DB800D86F8B /* Chalkduster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chalkduster.ttf; sourceTree = "<group>"; };
-		52EE380E159441CE00D86F8B /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
-		52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
 		52EEB62214A3AA810017152C /* BookViewControllerLeaves.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookViewControllerLeaves.xib; sourceTree = "<group>"; };
 		52EFF38315673C0000962F3A /* UIPointsProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPointsProgressBar.h; sourceTree = "<group>"; };
 		52EFF38415673C0000962F3A /* UIPointsProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPointsProgressBar.m; sourceTree = "<group>"; };
@@ -1136,6 +1134,10 @@
 		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
 		C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewRequestSummary.xib; sourceTree = "<group>"; };
 		C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewAwardCabinet.xib; sourceTree = "<group>"; };
+		C5D46DD01639943100B077FF /* PlatformDataModel-2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlatformDataModel-2.0.3.xcdatamodel"; sourceTree = "<group>"; };
+		C5D46DD11639980F00B077FF /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers/libOAuth.a"; sourceTree = "<group>"; };
+		C5D46DD3163999D700B077FF /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry/libFlurry.a"; sourceTree = "<group>"; };
+		C5D46DD516399A5400B077FF /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = "../../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry/Flurry.h"; sourceTree = "<group>"; };
 		C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProductionLog.xib; sourceTree = "<group>"; };
 		C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewDraft.xib; sourceTree = "<group>"; };
 		C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProfile.xib; sourceTree = "<group>"; };
@@ -1194,6 +1196,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5D46DD4163999D700B077FF /* libFlurry.a in Frameworks */,
+				C5D46DD21639980F00B077FF /* libOAuth.a in Frameworks */,
 				528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */,
 				C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */,
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
@@ -1209,8 +1213,6 @@
 				C593F7C6143EB192008D25A7 /* Foundation.framework in Frameworks */,
 				C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */,
 				C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */,
-				C5C9E29C146700C300838934 /* libOAuth.a in Frameworks */,
-				52EE3810159441CE00D86F8B /* libFlurryAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,8 +1244,7 @@
 		52EE380D159441CE00D86F8B /* FlurryAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				52EE380E159441CE00D86F8B /* FlurryAnalytics.h */,
-				52EE380F159441CE00D86F8B /* libFlurryAnalytics.a */,
+				C5D46DD516399A5400B077FF /* Flurry.h */,
 			);
 			path = FlurryAnalytics;
 			sourceTree = "<group>";
@@ -1628,6 +1629,8 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				C5D46DD3163999D700B077FF /* libFlurry.a */,
+				C5D46DD11639980F00B077FF /* libOAuth.a */,
 				52A169F2159B994800F175BA /* Default@2x.png */,
 				52A169F0159B994500F175BA /* Default.png */,
 				5250E53214CF9CBB00C53383 /* Bahndr_appIcon-114.png */,
@@ -2999,7 +3002,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
@@ -3052,7 +3058,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = NO;
@@ -3119,7 +3128,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
@@ -3149,7 +3161,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Libraries & Headers\"",
 					"\"$(SRCROOT)/FlurryAnalytics\"",
+					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
+					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				VALIDATE_PRODUCT = YES;
@@ -3198,9 +3213,10 @@
 		C593F7FA143EB2CF008D25A7 /* PlatformDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C5D46DD01639943100B077FF /* PlatformDataModel-2.0.3.xcdatamodel */,
 				C593F7FB143EB2CF008D25A7 /* PlatformDataModel.xcdatamodel */,
 			);
-			currentVersion = C593F7FB143EB2CF008D25A7 /* PlatformDataModel.xcdatamodel */;
+			currentVersion = C5D46DD01639943100B077FF /* PlatformDataModel-2.0.3.xcdatamodel */;
 			path = PlatformDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

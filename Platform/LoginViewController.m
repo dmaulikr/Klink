@@ -17,7 +17,7 @@
 #import "Response.h"
 #import "NSStringGUIDCategory.h"
 #import "SignUpViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kMaximumBusyWaitTimeFacebookLogin       30
 #define kMaximumBusyWaitTimePutAuthenticator    30
@@ -263,7 +263,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_LOGINVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_LOGINVIEW" timed:YES];
     
     //we could be returning from the dismissing of modal view controller (create user)
     //we check if the user is authenticated, if so we begin out shut down procedure
@@ -274,7 +274,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_LOGINVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_LOGINVIEW" withParameters:nil];
 }
 
 

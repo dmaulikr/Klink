@@ -57,7 +57,7 @@
 @property (nonatomic,retain) NSNumber* follow_enumeration_timegap;
 
 
-@property (nonatomic,retain) NSNumber* delete_objects_after;
+@property (nonatomic,retain) NSNumber* delete_expired_objects;
 
 
 
