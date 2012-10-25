@@ -509,7 +509,8 @@
             if (achievementObject != nil)
             {
                 ImageManager* imageManager = [ImageManager instance];
-                UIImage* image = [imageManager downloadImage:achievementObject.imageurl withUserInfo:nil atCallback:nil];
+//                UIImage* image = [imageManager downloadImage:achievementObject.imageurl withUserInfo:nil atCallback:nil];
+                UIImage* image = response.image;
                 iv_achievement.image = image;
             }
         }

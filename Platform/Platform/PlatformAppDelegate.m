@@ -103,6 +103,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
 
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    return (UIInterfaceOrientationMaskAllButUpsideDown);
+    return (UIInterfaceOrientationMaskPortrait);
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSString* activityName = @"PlatformAppDelegate.applicationDidiFinishLoading:";
