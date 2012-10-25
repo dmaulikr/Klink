@@ -181,7 +181,7 @@ static ApplicationSettingsManager* instance;
     settings.follow_maxnumtodownload = [NSNumber numberWithInt:maxsize_FEEDDOWNLOAD];
     settings.follow_enumeration_timegap = [NSNumber numberWithInt:threshold_FOLLOW_ENUMERATION_TIME_GAP];
     
-     settings.delete_objects_after = [NSNumber numberWithInt:delete_expired_objects];
+     settings.delete_expired_objects = [NSNumber numberWithInt:delete_expired_objects];
     [context save:YES onFinishCallback:nil trackProgressWith:nil];
     
     return settings;

@@ -22,7 +22,7 @@
 #import "UserDefaultSettings.h"
 #import "UIStrings.h"
 #import "FullScreenPhotoViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UITutorialView.h"
 
 @implementation EditorialVotingViewController
@@ -412,7 +412,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_EDITORIALVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_EDITORIALVIEW" timed:YES];
     
     //we mark that the user has viewed this viewcontroller at least once
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -427,7 +427,7 @@
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_EDITORIALVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_EDITORIALVIEW" withParameters:nil];
     
 }
 
@@ -656,7 +656,7 @@
 
 #pragma mark - Vote view button handlers 
 - (IBAction)voteButtonPressed:(id)sender {
-    [FlurryAnalytics logEvent:@"VOTE_CAST_EDITORIALVIEW"];
+    [Flurry logEvent:@"VOTE_CAST_EDITORIALVIEW"];
     
     NSString* activityName = @"EditorialVotingViewController.voteButtonPressed:";
     
@@ -811,7 +811,7 @@
 - (void)onCancelButtonPressed:(id)sender {
     if (![self.poll.hasvoted boolValue]) {
         // user has not voted in this poll
-        [FlurryAnalytics logEvent:@"VOTE_CANCELED_EDITORIALVIEW"];
+        [Flurry logEvent:@"VOTE_CANCELED_EDITORIALVIEW"];
     }
     
     [self dismissModalViewControllerAnimated:YES];

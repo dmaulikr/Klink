@@ -15,7 +15,7 @@
 #import "Achievement.h"
 #import "ImageManager.h"
 #import "AchievementsViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UITutorialView.h"
 #import "UserDefaultSettings.h"
 
@@ -339,7 +339,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_REQUESTSUMMARYVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_REQUESTSUMMARYVIEW" timed:YES];
     
     
     //we mark that the user has viewed this viewcontroller at least once
@@ -355,7 +355,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_REQUESTSUMMARYVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_REQUESTSUMMARYVIEW" withParameters:nil];
     
     // Remove the subviews added in viewWillAppear because they will be rendered again when the view reappears
     [self.v_scoreChangeView removeFromSuperview];

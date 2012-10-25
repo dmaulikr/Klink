@@ -15,7 +15,7 @@
 #import "BookViewControllerPageView.h"
 #import "DateTimeHelper.h"
 #import "NSDictionary-MutableDeepCopy.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 #define kTOCTABLEVIEWCELLHEIGHT 55
 
@@ -312,7 +312,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_TABLEOFCONTENTSVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_TABLEOFCONTENTSVIEW" timed:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -323,7 +323,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_TABLEOFCONTENTSVIEW " withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_TABLEOFCONTENTSVIEW " withParameters:nil];
     
     __frc_published_pages = nil;
     self.frc_published_pages = nil;

@@ -12,7 +12,7 @@
 #import "ApplicationSettingsManager.h"
 #import "GetAuthenticatorResponse.h"
 #import "ErrorCodes.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 @implementation SignUpViewController
 @synthesize sv_scrollView   = m_sv_scrollView;
@@ -138,14 +138,14 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_SIGNUPVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_SIGNUPVIEW" timed:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_SIGNUPVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_SIGNUPVIEW" withParameters:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

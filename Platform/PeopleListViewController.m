@@ -15,7 +15,7 @@
 #import "ProfileViewController.h"
 #import "UIPeopleListTableViewCell.h"
 #import "AuthenticationManager.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 @interface PeopleListViewController ()
 
@@ -220,7 +220,7 @@
 {
     [super viewDidAppear:animated];
     
-    [FlurryAnalytics logEvent:@"VIEWING_PEOPLELISTVIEW" timed:YES];
+    [Flurry logEvent:@"VIEWING_PEOPLELISTVIEW" timed:YES];
     
     [self updateVisibleCells];
 }
@@ -228,7 +228,7 @@
 - (void) viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [FlurryAnalytics endTimedEvent:@"VIEWING_PEOPLELISTVIEW" withParameters:nil];
+    [Flurry endTimedEvent:@"VIEWING_PEOPLELISTVIEW" withParameters:nil];
     
     __frc_follows = nil;
     self.frc_follows = nil;
