@@ -228,9 +228,18 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
 #pragma mark - Progress bar management
 - (void) showDeterminateProgressBarWithMaximumDisplayTime: (NSNumber*)maximumTimeInSeconds
                       withHeartbeat:(NSNumber*)heartbeatInSeconds 

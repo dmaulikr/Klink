@@ -437,8 +437,16 @@
 {
     [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     
-    // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
 }
 
 #pragma mark - UIGestureRecognizer Delegates

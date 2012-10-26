@@ -276,6 +276,9 @@
 		52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */; };
 		52BC829C1582AD51009DC6C5 /* bookshelf_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */; };
 		52BC829D1582AD51009DC6C5 /* bookshelf_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */; };
+		52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DD46D6163A062B00FD26AB /* libOAuth.a */; };
+		52DD46DA163A063900FD26AB /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DD46D9163A063900FD26AB /* libFlurry.a */; };
+		52DD46E4163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
 		52E66B75148EC7F60079270A /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B73148EC7F50079270A /* NotificationsViewController.m */; };
@@ -454,8 +457,6 @@
 		C5CBA6B214B38E8B006FA4E3 /* UserDefaultSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CBA6B114B38E8B006FA4E3 /* UserDefaultSettings.m */; };
 		C5D352AB159A6D4E00586581 /* UITutorialViewRequestSummary.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */; };
 		C5D352AE159A73F400586581 /* UITutorialViewAwardCabinet.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */; };
-		C5D46DD21639980F00B077FF /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D46DD11639980F00B077FF /* libOAuth.a */; };
-		C5D46DD4163999D700B077FF /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D46DD3163999D700B077FF /* libFlurry.a */; };
 		C5D4F34D1593C2EC00B36FCD /* UITutorialViewProductionLog.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */; };
 		C5D4F3501593C7BB00B36FCD /* UITutorialViewDraft.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */; };
 		C5D4F3521593CFD300B36FCD /* UITutorialViewProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */; };
@@ -793,6 +794,11 @@
 		52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_button@2x.png"; sourceTree = "<group>"; };
 		52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_shadow.png; sourceTree = "<group>"; };
 		52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_shadow@2x.png"; sourceTree = "<group>"; };
+		52DD46D6163A062B00FD26AB /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libOAuth.a"; sourceTree = "<group>"; };
+		52DD46D9163A063900FD26AB /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libFlurry.a"; sourceTree = "<group>"; };
+		52DD46DE163A06A800FD26AB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		52DD46E2163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UINavigationControllerCategory.h"; sourceTree = "<group>"; };
+		52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UINavigationControllerCategory.m"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
 		52E66B6D148EA35B0079270A /* DraftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraftViewController.m; sourceTree = "<group>"; };
 		52E66B6E148EA35B0079270A /* DraftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DraftViewController.xib; sourceTree = "<group>"; };
@@ -1134,10 +1140,7 @@
 		C5CE03BB14A7C7F300F89241 /* SharingLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingLevel.h; sourceTree = "<group>"; };
 		C5D352AA159A6D4E00586581 /* UITutorialViewRequestSummary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewRequestSummary.xib; sourceTree = "<group>"; };
 		C5D352AD159A73F400586581 /* UITutorialViewAwardCabinet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewAwardCabinet.xib; sourceTree = "<group>"; };
-		C5D46DD01639943100B077FF /* PlatformDataModel-2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlatformDataModel-2.0.3.xcdatamodel"; sourceTree = "<group>"; };
-		C5D46DD11639980F00B077FF /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers/libOAuth.a"; sourceTree = "<group>"; };
-		C5D46DD3163999D700B077FF /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry/libFlurry.a"; sourceTree = "<group>"; };
-		C5D46DD516399A5400B077FF /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flurry.h; path = "../../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry/Flurry.h"; sourceTree = "<group>"; };
+		C5D46DD01639943100B077FF /* PlatformDataModel-2.0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PlatformDataModel-2.0.3.xcdatamodel"; sourceTree = "<group>"; };
 		C5D4F34C1593C2EC00B36FCD /* UITutorialViewProductionLog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProductionLog.xib; sourceTree = "<group>"; };
 		C5D4F34F1593C7BB00B36FCD /* UITutorialViewDraft.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewDraft.xib; sourceTree = "<group>"; };
 		C5D4F3511593CFD300B36FCD /* UITutorialViewProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewProfile.xib; sourceTree = "<group>"; };
@@ -1196,8 +1199,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5D46DD4163999D700B077FF /* libFlurry.a in Frameworks */,
-				C5D46DD21639980F00B077FF /* libOAuth.a in Frameworks */,
+				52DD46DA163A063900FD26AB /* libFlurry.a in Frameworks */,
+				52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */,
 				528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */,
 				C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */,
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
@@ -1241,12 +1244,12 @@
 			path = Leaves;
 			sourceTree = "<group>";
 		};
-		52EE380D159441CE00D86F8B /* FlurryAnalytics */ = {
+		52DD46DD163A069F00FD26AB /* FlurryAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				C5D46DD516399A5400B077FF /* Flurry.h */,
+				52DD46DE163A06A800FD26AB /* Flurry.h */,
 			);
-			path = FlurryAnalytics;
+			name = FlurryAnalytics;
 			sourceTree = "<group>";
 		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
@@ -1629,8 +1632,8 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
-				C5D46DD3163999D700B077FF /* libFlurry.a */,
-				C5D46DD11639980F00B077FF /* libOAuth.a */,
+				52DD46D9163A063900FD26AB /* libFlurry.a */,
+				52DD46D6163A062B00FD26AB /* libOAuth.a */,
 				52A169F2159B994800F175BA /* Default@2x.png */,
 				52A169F0159B994500F175BA /* Default.png */,
 				5250E53214CF9CBB00C53383 /* Bahndr_appIcon-114.png */,
@@ -1722,7 +1725,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				52EE380D159441CE00D86F8B /* FlurryAnalytics */,
+				52DD46DD163A069F00FD26AB /* FlurryAnalytics */,
 				5236457E14A26D0F007BD882 /* Leaves */,
 				52323F19149A6DFA0055A933 /* iCarousel */,
 				C58C6CA314973AAC0068CCD6 /* Airbrake */,
@@ -2201,6 +2204,8 @@
 				525362901499581F001F1EB6 /* UIImageView+UIImageViewCategory.m */,
 				527A754814ED7EDE0012B229 /* NSDictionary-MutableDeepCopy.h */,
 				527A754A14ED7EF20012B229 /* NSDictionary-MutableDeepCopy.m */,
+				52DD46E2163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.h */,
+				52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2920,6 +2925,7 @@
 				522FD66F1586F3B900EEA2BD /* UIAchievementView.m in Sources */,
 				52F640EA158AA51A00AD61D0 /* UITutorialView.m in Sources */,
 				5291892C1592C5EE006DCD32 /* IntroViewController.m in Sources */,
+				52DD46E4163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3004,6 +3010,7 @@
 					"\"$(SRCROOT)/FlurryAnalytics\"",
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
+					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -3060,6 +3067,7 @@
 					"\"$(SRCROOT)/FlurryAnalytics\"",
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
+					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -3130,6 +3138,7 @@
 					"\"$(SRCROOT)/FlurryAnalytics\"",
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
+					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -3163,6 +3172,7 @@
 					"\"$(SRCROOT)/FlurryAnalytics\"",
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
+					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;

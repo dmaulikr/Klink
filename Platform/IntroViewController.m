@@ -132,6 +132,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 #pragma mark - UIButton Handlers
 - (IBAction) onReadButtonPressed:(id)sender {
     [Flurry logEvent:@"INTROVIEW_EXPLORE_PRESSED"];

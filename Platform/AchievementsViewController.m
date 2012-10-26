@@ -411,6 +411,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 #pragma mark - Subview Handlers
 - (void)showAchievementWithID:(NSNumber *)achievementID {
     //CGRect frame = CGRectMake(20, 20, 280, 356);

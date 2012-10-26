@@ -145,6 +145,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 
 #pragma mark -  MBProgressHUD Delegate
 -(void)hudWasHidden:(MBProgressHUD *)hud {

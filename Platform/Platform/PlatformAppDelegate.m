@@ -104,8 +104,8 @@ void uncaughtExceptionHandler(NSException *exception) {
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-//    return (UIInterfaceOrientationMaskAllButUpsideDown);
-    return (UIInterfaceOrientationMaskPortrait);
+    return (UIInterfaceOrientationMaskAllButUpsideDown);
+//    return (UIInterfaceOrientationMaskPortrait);
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
