@@ -15,6 +15,7 @@
 
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate, ABNotifierDelegate> {
     NSString* m_deviceToken;
+    BOOL m_isCleaningUpStore;
     
     //we use this queue for delete operations
     dispatch_queue_t backgroundQueue;
@@ -28,6 +29,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) ApplicationSettingsManager*   applicationSettingsManager;
+
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 - (NSString*) getImageCacheStorageDirectory;
@@ -35,5 +37,5 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain)           Facebook    *facebook;
 @property (nonatomic, retain) UIProgressHUDView*    progressView;
-
+@property BOOL isCleaningUpStore;
 @end

@@ -113,6 +113,8 @@ void uncaughtExceptionHandler(NSException *exception) {
     NSString* activityName = @"PlatformAppDelegate.applicationDidiFinishLoading:";
     // Override point for customization after application launch.
     
+    self.isCleaningUpStore = NO;
+    
     // Flurry Analytics Setup
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     [Flurry startSession:@"9X2WMNNCMDH7HNM7J697"];
@@ -275,6 +277,7 @@ void uncaughtExceptionHandler(NSException *exception) {
 - (void) deleteExpiredObjectsOlderThan:(NSNumber*)daysAfterExpiry 
 {
     NSString* activityName = @"PlatformAppDelegate.deleteExpiredObjectsOlderThan:";
+    self.isCleaningUpStore = YES;
     if ([daysAfterExpiry intValue] > 0) 
     {
         //we need to calculate the date to query expired objects by
@@ -351,6 +354,7 @@ void uncaughtExceptionHandler(NSException *exception) {
         LOG_APPLICATIONSETTINGSMANAGER(0,@"%@ finished cleaning up old objects",activityName);
         [resourceContext save:NO onFinishCallback:nil trackProgressWith:nil];
     }
+      self.isCleaningUpStore = NO;
 }
 
 
@@ -460,24 +464,31 @@ void uncaughtExceptionHandler(NSException *exception) {
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    NSString* activityName = @"PlatformAppDelegate.applicationDidEnterBackground:";
     /*
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      
      */
     
-    
-    void (^block)(NSNumber*) = ^(NSNumber* number) {
-        [self deleteExpiredObjectsOlderThan:number];
-    };
-    ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
-    NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_expired_objects intValue]];
-    
-   // NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
-    dispatch_async(backgroundQueue, ^{block(localThreshold);});
-    
-    
+    //we check if a store clean is underway, if not, we execute a store clean
+    if (self.isCleaningUpStore == NO)
+    {
+        void (^block)(NSNumber*) = ^(NSNumber* number) {
+            [self deleteExpiredObjectsOlderThan:number];
+        };
+        ApplicationSettings* settings = [[ApplicationSettingsManager instance]settings];
+        NSNumber* localThreshold = [[NSNumber alloc]initWithInt:[settings.delete_expired_objects intValue]];
         
+        // NSAutoreleasePool* autorelease = [[NSAutoreleasePool alloc]init];
+        dispatch_async(backgroundQueue, ^{block(localThreshold);});
+    }
+    else
+    {
+        LOG_APPLICATIONSETTINGSMANAGER(0,@"%@ Skipping cleanup of store as one is already running",activityName);
+    }
+    
+    
     
 //    [self performSelectorInBackground:@selector(deleteExpiredObjectsOlderThan:) withObject:settings.delete_expired_objects];
  //   [autorelease drain];
