@@ -28,6 +28,7 @@
 #import "ImageManager.h"
 #import "ProductionLogViewController.h"
 #import "Flurry.h"
+#import "Appirater.h"
 
 @implementation PlatformAppDelegate
 
@@ -52,6 +53,7 @@
 @synthesize facebook = __facebook;
 
 #define     kFACEBOOKAPPID  @"315632228463614"
+#define     kITUNESAPPID    @"498363309"
 
 #pragma mark - Properties
 - (UIProgressHUDView*)progressView {
@@ -114,6 +116,10 @@ void uncaughtExceptionHandler(NSException *exception) {
     // Override point for customization after application launch.
     
     self.isCleaningUpStore = NO;
+    
+    //Appirater setup below
+    [Appirater setAppId:kITUNESAPPID];
+
     
     // Flurry Analytics Setup
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
@@ -269,6 +275,8 @@ void uncaughtExceptionHandler(NSException *exception) {
     [ABNotifier startNotifierWithAPIKey:@"4293ede2b3ea7ae6cede2af848a57a1a" environmentName:ABNotifierDevelopmentEnvironment useSSL:NO delegate:self];
     
     
+    //appirater call
+    [Appirater appLaunched:YES];
      
     return YES;
 }
@@ -504,6 +512,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     /*
      Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
      */
+    
+    //Appirater call
+    [Appirater appEnteredForeground:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
