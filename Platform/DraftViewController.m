@@ -1112,7 +1112,7 @@
         
         //display progress view on the submission of a vote
         ApplicationSettings* settings = [[ApplicationSettingsManager instance] settings];
-        NSString* message = @"Casting thy approval...";
+        NSString* message = @"Liking post...";
         [self showProgressBar:message withCustomView:nil withMaximumDisplayTime:settings.http_timeout_seconds];
         
         [self performSelector:@selector(processOnVotePressed:) withObject:captionID afterDelay:1];

@@ -776,11 +776,19 @@
         [self resetRefreshTableHeaderToNormalPosition];
     }
     
-    if ([self.cloudDraftEnumerator canEnumerate]) 
+    if (![self.cloudDraftEnumerator isLoading])
     {
+        //enumerator is not loading
         LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+        [self.cloudDraftEnumerator reset];
         [self.cloudDraftEnumerator enumerateUntilEnd:nil];
     }
+    
+//    if ([self.cloudDraftEnumerator canEnumerate]) 
+//    {
+//        LOG_PRODUCTIONLOGVIEWCONTROLLER(0, @"%@Refreshing production log from cloud",activityName);
+//        [self.cloudDraftEnumerator enumerateUntilEnd:nil];
+//    }
     
     // refresh the notification feed
     Callback* callback = [Callback callbackForTarget:self selector:@selector(onFeedRefreshComplete:) fireOnMainThread:YES];

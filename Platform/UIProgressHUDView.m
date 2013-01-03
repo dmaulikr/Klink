@@ -156,7 +156,7 @@
 //    [rv release];
     
     self.mode = MBProgressHUDModeCustomView;
-    self.labelText = self.onSuccessMessage;
+    //self.labelText = self.onSuccessMessage;
     self.didSucceed = YES;
     [self addSubview:self.customView];
 
@@ -245,7 +245,7 @@
         
         //[self.customView removeFromSuperview];
         [self renderComplete];
-        [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 
 
     }
@@ -349,7 +349,7 @@
         
         //[self renderComplete];
         
-        [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimerExpireHide) userInfo:nil repeats:NO];
 
 
     }
