@@ -337,8 +337,9 @@
     if (![self.authenticationManager isUserAuthenticated]) {
         [Flurry logEvent:@"LOGIN_SHARE_FACEBOOK_BOOKBASEVIEW"];
         
-        //user is not logged in, must log in first
-        [self authenticate:YES withTwitter:NO onFinishSelector:@selector(onFacebookButtonPressed:) onTargetObject:self withObject:sender];
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onFacebookButtonPressed:)  fireOnMainThread:YES];
+      [self authenticateAndGetFacebook:NO getTwitter:YES onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+       
     }
     else {
         [Flurry logEvent:@"SHARE_FACEBOOK_BOOKBASEVIEW"];
@@ -369,8 +370,12 @@
 
         [Flurry logEvent:@"LOGIN_SHARE_TWITTER_BOOKBASEVIEW"];
         
+        Callback* onSuccessCallback = [Callback callbackForTarget:self selector:@selector(onTwitterButtonPressed:)  fireOnMainThread:YES];
+        
         //user is not logged in, must log in first
-        [self authenticate:NO withTwitter:YES onFinishSelector:@selector(onTwitterButtonPressed:) onTargetObject:self withObject:sender];
+        [self authenticateAndGetFacebook:NO getTwitter:YES onSuccessCallback:onSuccessCallback onFailureCallback:nil];
+        
+        
     }
     else {
         [Flurry logEvent:@"SHARE_TWITTER_BOOKBASEVIEW"];
@@ -778,7 +783,10 @@
     if (buttonIndex == 1 && alertView.delegate == self) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
-            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
+//            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
+            
+             Callback* onSuccessCallback = [Callback callbackForTarget:self selector:alertView.onFinishSelector  fireOnMainThread:YES];
+            [self authenticateAndGetFacebook:YES getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
         }
     }
 }

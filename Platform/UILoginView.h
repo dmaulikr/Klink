@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Callback.h"
-#import "SA_OAuthTwitterController.h"
-#import "SA_OAuthTwitterEngine.h"
+
 #import "FBConnect.h"
 @class BaseViewController;
 

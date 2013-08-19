@@ -29,6 +29,8 @@
 #import "ProductionLogViewController.h"
 #import "Flurry.h"
 #import "Appirater.h"
+#import <Crashlytics/Crashlytics.h>
+#import "FHSTwitterEngine.h"
 
 @implementation PlatformAppDelegate
 
@@ -52,6 +54,8 @@
 
 @synthesize facebook = __facebook;
 
+@synthesize accountStore = __accountStore;
+
 #define     kFACEBOOKAPPID  @"315632228463614"
 #define     kITUNESAPPID    @"498363309"
 
@@ -65,6 +69,18 @@
     
     
     return __progressView;
+}
+
+
+- (ACAccountStore*) accountStore
+{
+    if (__accountStore != nil)
+    {
+        return __accountStore;
+        
+    }
+    __accountStore = [[ACAccountStore alloc]init];
+    return __accountStore;
 }
 
 - (ApplicationSettingsManager*)applicationSettingsManager {
@@ -117,6 +133,8 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     self.isCleaningUpStore = NO;
     
+    [Crashlytics startWithAPIKey:@"b53fcf08df9b183b382153735d57a10862fc5348"];
+    
     //Appirater setup below
     [Appirater setAppId:kITUNESAPPID];
 
@@ -143,15 +161,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     
     backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0);
-    /*// Launch the BookView home page
-    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
-    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
-    
-    self.window.rootViewController = self.navigationController;
- 
-    self.window.backgroundColor = [UIColor blackColor];
-    
-    [self.window makeKeyAndVisible];*/
+
     
     
     //let us make some checks beginning with the user object
@@ -187,9 +197,7 @@ void uncaughtExceptionHandler(NSException *exception) {
         }
 
     }
-    
-    //CloudEnumerator* pageCloudEnumerator = [[CloudEnumeratorFactory instance]enumeratorForPages];
-    //[pageCloudEnumerator enumerateUntilEnd:nil];
+
     
     
     // Check launch options to determine if we've opened the app from a remote notification
@@ -231,26 +239,13 @@ void uncaughtExceptionHandler(NSException *exception) {
         }
     }
     
+
+    //lets setup the twitter engine
+    ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance] settings];
     
-//    // Launch the BookView to the last page
-//    BookViewControllerBase* bookViewController = [BookViewControllerBase createInstance];
-//    
-//    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-//    if ([userDefaults boolForKey:setting_ISFIRSTRUN] == NO) {
-//        //this is the first time opening, so we show a welcome message
-//        bookViewController.shouldOpenToLastPage = NO;
-//        bookViewController.shouldOpenToTitlePage = YES;
-//    }
-//    else {
-//        bookViewController.shouldOpenToLastPage = YES;
-//        bookViewController.shouldOpenToTitlePage = NO;
-//    }
-//    
-//    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:bookViewController] autorelease];
-//    
-//    ProductionLogViewController* productionLogVC = [ProductionLogViewController createInstance];
-//    
-//    self.navigationController = [[[UINavigationController alloc]initWithRootViewController:productionLogVC] autorelease];
+    NSString* consumerKey = settingsObjects.twitter_consumerkey;
+    NSString* consumerSecret = settingsObjects.twitter_consumersecret;
+    [[FHSTwitterEngine sharedEngine]permanentlySetConsumerKey:consumerKey andSecret:consumerSecret];
     
     self.window.rootViewController = self.navigationController;
     
@@ -258,21 +253,9 @@ void uncaughtExceptionHandler(NSException *exception) {
     
     [self.window makeKeyAndVisible];
     
-    //check if the application is launching with notifications queued up
-    //if so need to move to the notification window
-    if (launchOptions != nil) {
-        LOG_SECURITY(0, @"%@Application launching with remote notification queued up, moving to download screen",activityName);
-       
-        
-        //need to instruct the feedmanager to download
-        
-        //need to move to the view controller
-    }
-    
-    
 
     
-    [ABNotifier startNotifierWithAPIKey:@"4293ede2b3ea7ae6cede2af848a57a1a" environmentName:ABNotifierDevelopmentEnvironment useSSL:NO delegate:self];
+
     
     
     //appirater call

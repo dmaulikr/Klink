@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+ <key>files</key>
+ <array>
+  <string>/Users/bobby/Documents/Klink/Platform/ResourceContext.m</string>
+ </array>
+ <key>diagnostics</key>
+ <array>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>136</integer>
+      <key>col</key><integer>9</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>136</integer>
+         <key>col</key><integer>9</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>136</integer>
+         <key>col</key><integer>19</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>136</integer>
+         <key>col</key><integer>23</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>136</integer>
+         <key>col</key><integer>56</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;threadCount&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;threadCount&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;threadCount&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>onThreadDidExit:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>136</integer>
+   <key>col</key><integer>9</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>155</integer>
+      <key>col</key><integer>33</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>155</integer>
+         <key>col</key><integer>33</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>155</integer>
+         <key>col</key><integer>45</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>155</integer>
+         <key>col</key><integer>49</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>155</integer>
+         <key>col</key><integer>80</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;appDelContext&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;appDelContext&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;appDelContext&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>onContextDidSave:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>155</integer>
+   <key>col</key><integer>33</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>control</string>
+     <key>edges</key>
+      <array>
+       <dict>
+        <key>start</key>
+         <array>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>5</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>11</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+         </array>
+        <key>end</key>
+         <array>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>24</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>24</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+         </array>
+       </dict>
+      </array>
+    </dict>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>198</integer>
+      <key>col</key><integer>24</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>198</integer>
+         <key>col</key><integer>24</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>198</integer>
+         <key>col</key><integer>56</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Method returns an Objective-C object with a +0 retain count</string>
+     <key>message</key>
+<string>Method returns an Objective-C object with a +0 retain count</string>
+    </dict>
+    <dict>
+     <key>kind</key><string>control</string>
+     <key>edges</key>
+      <array>
+       <dict>
+        <key>start</key>
+         <array>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>24</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+          <dict>
+           <key>line</key><integer>198</integer>
+           <key>col</key><integer>24</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+         </array>
+        <key>end</key>
+         <array>
+          <dict>
+           <key>line</key><integer>199</integer>
+           <key>col</key><integer>5</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+          <dict>
+           <key>line</key><integer>199</integer>
+           <key>col</key><integer>5</integer>
+           <key>file</key><integer>0</integer>
+          </dict>
+         </array>
+       </dict>
+      </array>
+    </dict>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>199</integer>
+      <key>col</key><integer>5</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>199</integer>
+         <key>col</key><integer>6</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>199</integer>
+         <key>col</key><integer>12</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Incorrect decrement of the reference count of an object that is not owned at this point by the caller</string>
+     <key>message</key>
+<string>Incorrect decrement of the reference count of an object that is not owned at this point by the caller</string>
+    </dict>
+   </array>
+   <key>description</key><string>Incorrect decrement of the reference count of an object that is not owned at this point by the caller</string>
+   <key>category</key><string>Memory (Core Foundation/Objective-C)</string>
+   <key>type</key><string>Bad release</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>requestFor:forOperation:withChangedAttributes:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>199</integer>
+   <key>col</key><integer>5</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>439</integer>
+      <key>col</key><integer>27</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>439</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>439</integer>
+         <key>col</key><integer>39</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>439</integer>
+         <key>col</key><integer>43</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>439</integer>
+         <key>col</key><integer>59</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;attributeName&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;attributeName&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;attributeName&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>save:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>439</integer>
+   <key>col</key><integer>27</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>445</integer>
+      <key>col</key><integer>27</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>445</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>445</integer>
+         <key>col</key><integer>40</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>445</integer>
+         <key>col</key><integer>44</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>445</integer>
+         <key>col</key><integer>55</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;objectTypeName&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;objectTypeName&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;objectTypeName&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>save:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>445</integer>
+   <key>col</key><integer>27</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>449</integer>
+      <key>col</key><integer>27</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>449</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>449</integer>
+         <key>col</key><integer>34</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>449</integer>
+         <key>col</key><integer>38</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>449</integer>
+         <key>col</key><integer>65</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;resource&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;resource&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;resource&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>save:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>449</integer>
+   <key>col</key><integer>27</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>458</integer>
+      <key>col</key><integer>17</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>458</integer>
+         <key>col</key><integer>17</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>458</integer>
+         <key>col</key><integer>31</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>458</integer>
+         <key>col</key><integer>35</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>458</integer>
+         <key>col</key><integer>66</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;numberOfCreates&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;numberOfCreates&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;numberOfCreates&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>save:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>458</integer>
+   <key>col</key><integer>17</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>459</integer>
+      <key>col</key><integer>17</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>459</integer>
+         <key>col</key><integer>17</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>459</integer>
+         <key>col</key><integer>31</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+       <array>
+        <dict>
+         <key>line</key><integer>459</integer>
+         <key>col</key><integer>35</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>459</integer>
+         <key>col</key><integer>53</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;numberOfUpdates&apos; during its initialization is never read</string>
+     <key>message</key>
+<string>Value stored to &apos;numberOfUpdates&apos; during its initialization is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;numberOfUpdates&apos; during its initialization is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead initialization</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>save:onFinishCallback:trackProgressWith:</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>459</integer>
+   <key>col</key><integer>17</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+ </array>
+</dict>
+</plist>

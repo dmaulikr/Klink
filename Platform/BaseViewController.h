@@ -13,7 +13,6 @@
 
 #import "AuthenticationManager.h"
 #import "User.h"
-#import "UILoginView.h"
 #import "FeedManager.h"
 #import "EventManager.h"
 #import "CallbackResult.h"
@@ -30,7 +29,7 @@
 
 @end
 @interface BaseViewController : UIViewController < ContributeViewControllerDelegate, UIAlertViewDelegate > {
-    UILoginView*            m_loginView;
+
 }
 
 @property (nonatomic, retain) FeedManager*              feedManager;
@@ -39,7 +38,7 @@
 
 
 @property (nonatomic, retain) User*                     loggedInUser;
-@property (nonatomic, retain) UILoginView*              loginView;
+
 
 - (void) authenticate:(BOOL)facebook 
           withTwitter:(BOOL)twitter 

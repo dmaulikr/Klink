@@ -1,0 +1,19 @@
+dependencies: \
+  /Users/bobby/Documents/Klink/Platform/UIProductionLogTableViewCell.m \
+  /Users/bobby/Documents/Klink/Platform/UIProductionLogTableViewCell.h \
+  /Users/bobby/Documents/Klink/Platform/EventManager.h \
+  /Users/bobby/Documents/Klink/Platform/Page.h \
+  /Users/bobby/Documents/Klink/Platform/Photo.h \
+  /Users/bobby/Documents/Klink/Platform/Caption.h \
+  /Users/bobby/Documents/Klink/Platform/ImageManager.h \
+  /Users/bobby/Documents/Klink/Platform/ASIHTTPRequest.h \
+  /Users/bobby/Documents/Klink/Platform/ASIHTTPRequestConfig.h \
+  /Users/bobby/Documents/Klink/Platform/ASIHTTPRequestDelegate.h \
+  /Users/bobby/Documents/Klink/Platform/ASIProgressDelegate.h \
+  /Users/bobby/Documents/Klink/Platform/ASICacheDelegate.h \
+  /Users/bobby/Documents/Klink/Platform/ASIDownloadCache.h \
+  /Users/bobby/Documents/Klink/Platform/NSURLCategory.h \
+  /Users/bobby/Documents/Klink/Platform/ImageDownloadResponse.h \
+  /Users/bobby/Documents/Klink/Platform/CallbackResult.h \
+  /Users/bobby/Documents/Klink/Platform/Platform/Macros.h \
+  /Users/bobby/Documents/Klink/Platform/DateTimeHelper.h

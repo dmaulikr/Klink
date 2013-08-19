@@ -1,0 +1,41 @@
+/*
+ Message.css
+ Platform
+ 
+ Created by Jordan Gurrieri on 2/11/12.
+ Copyright 2011 Blue Label Solutions LLC. All rights reserved.
+ 
+ Description:	Default style for the Message HTML doc of a Feed object
+                of type "Message"
+ 
+*/
+
+body {
+    /* Default size of the page should fit the phone screen */
+    width:300px;
+    padding:10px;
+    border:0px;
+    margin:0px;
+    
+    /* Default background should be the page_pattern image found in the app bundle */
+    /*background-image:url('page.png');*/
+    background-image:url('page_pattern.png');
+    background-repeat:repeat;
+    
+    /* Default font styling for all text elements */
+    font-family:'American Typewriter';
+    text-shadow:0px 1px white;
+    
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    /* Make sure long headers wrap to fit the phone screen */
+    word-wrap:break-word;
+     
+}
+
+ul,ol,li {
+    /* Sets the font size in lists slightly smaller than the default for the page */
+    font-size:0.8em;
+     
+}

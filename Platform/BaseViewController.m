@@ -33,8 +33,7 @@
 //@synthesize managedObjectContext    =__managedObjectContext;
 @synthesize eventManager          = __eventManager;
 
-//@synthesize progressView          = m_progressView;
-@synthesize loginView             = m_loginView;
+
 
 #pragma mark - Properties
 
@@ -160,10 +159,10 @@
     [applicationDidBecomeActiveCallback release];
     [applicationWentToBackgroundCallback release];
 
-    CGRect frameForLoginView = [self frameForLoginView];
-    UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
-    self.loginView = lv;
-    [lv release];
+//    CGRect frameForLoginView = [self frameForLoginView];
+//    UILoginView* lv = [[UILoginView alloc] initWithFrame:frameForLoginView withParent:self];
+//    self.loginView = lv;
+//    [lv release];
     
     //UIProgressHUDView* pv  = [[UIProgressHUDView alloc]initWithView:self.view];
     //self.progressView = pv;
@@ -214,7 +213,7 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    self.loginView = nil;
+//    self.loginView = nil;
     
     //we need to de-register from all events we may have subscribed too
     EventManager* eventManager = [EventManager instance];
@@ -356,15 +355,15 @@
 - (void) clearDisplayedLoginView {
     NSString* activityName = @"BaseViewController.clearDisplayedLoginView:";
     //if the login view is showing, we remove it from the super view so we dont lock the screen potentially.
-    if (self.loginView.superview != nil &&
-        self.loginView.superview == self.view) {
-        
-        LOG_BASEVIEWCONTROLLER(0,@"%@Detected login view controller is still showing, clearing the loginview",activityName);
-        //remove from superview
-        [self.loginView removeFromSuperview];
-        
-
-    }
+//    if (self.loginView.superview != nil &&
+//        self.loginView.superview == self.view) {
+//        
+//        LOG_BASEVIEWCONTROLLER(0,@"%@Detected login view controller is still showing, clearing the loginview",activityName);
+//        //remove from superview
+//        [self.loginView removeFromSuperview];
+//        
+//
+//    }
 }
 
 
@@ -406,8 +405,8 @@
     
     [userInfo release];
     
-    [self.view addSubview:self.loginView];
-    [self.loginView authenticate:facebook withTwitter:twitter onSuccessCallback:onSucccessCallback onFailCallback:onFailCallback];
+//    [self.view addSubview:self.loginView];
+//    [self.loginView authenticate:facebook withTwitter:twitter onSuccessCallback:onSucccessCallback onFailCallback:onFailCallback];
     [onSucccessCallback release];
     [onFailCallback release];
 }

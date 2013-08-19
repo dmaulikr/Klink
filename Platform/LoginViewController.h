@@ -7,8 +7,8 @@
 //
 
 #import "BaseViewController.h"
-
-@interface LoginViewController : BaseViewController <SA_OAuthTwitterControllerDelegate, SA_OAuthTwitterEngineDelegate, FBSessionDelegate, FBRequestDelegate, UITextFieldDelegate>
+#import "FHSTwitterEngine.h"
+@interface LoginViewController : BaseViewController  <FHSTwitterEngineAccessTokenDelegate, FBSessionDelegate, FBRequestDelegate, UITextFieldDelegate>
 {
     UIScrollView    *m_sv_scrollView;
     
@@ -36,7 +36,7 @@
 @property (nonatomic,retain) IBOutlet UIScrollView      *sv_scrollView;
 @property (nonatomic, retain)   FBRequest*              fbProfileRequest;
 @property (nonatomic, retain)   FBRequest*              fbPictureRequest;
-@property (nonatomic,retain)    SA_OAuthTwitterEngine*  twitterEngine;
+
 @property (nonatomic,retain) IBOutlet UIButton* btn_login;
 @property (nonatomic,retain) IBOutlet UIButton* btn_loginFacebook;
 @property (nonatomic,retain) IBOutlet UIButton* btn_loginTwitter;
@@ -45,6 +45,7 @@
 @property (nonatomic,retain) IBOutlet UITextField* tf_password;
 @property (nonatomic,retain) IBOutlet UILabel* lbl_error;
 @property (nonatomic,retain) IBOutlet UIButton *btn_forgotPW;
+
 
 @property (nonatomic,retain)  UITextField* tf_active;
 @property (nonatomic,retain) Callback* onSuccessCallback;

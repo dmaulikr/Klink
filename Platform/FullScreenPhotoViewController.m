@@ -976,7 +976,9 @@
     if (buttonIndex == 1 && alertView.delegate == self) {
         if (![self.authenticationManager isUserAuthenticated]) {
             // user is not logged in
-            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
+//            [self authenticate:YES withTwitter:NO onFinishSelector:alertView.onFinishSelector onTargetObject:self withObject:nil];
+            Callback* onSuccessCallback = [Callback callbackForTarget:self selector:alertView.onFinishSelector  fireOnMainThread:YES];
+            [self authenticateAndGetFacebook:YES getTwitter:NO onSuccessCallback:onSuccessCallback onFailureCallback:nil];
         }
     }
 }

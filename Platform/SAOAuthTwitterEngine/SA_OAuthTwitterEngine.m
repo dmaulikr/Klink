@@ -62,9 +62,14 @@
 
 - (SA_OAuthTwitterEngine *) initOAuthWithDelegate: (NSObject *) delegate {
     if (self = (id) [super initWithDelegate: delegate]) {
-		self.requestTokenURL = [NSURL URLWithString: @"https://twitter.com/oauth/request_token"];
-		self.accessTokenURL = [NSURL URLWithString: @"https://twitter.com/oauth/access_token"];
-		self.authorizeURL = [NSURL URLWithString: @"https://twitter.com/oauth/authorize"];
+//		self.requestTokenURL = [NSURL URLWithString: @"https://twitter.com/oauth/request_token"];
+//		self.accessTokenURL = [NSURL URLWithString: @"https://twitter.com/oauth/access_token"];
+//		self.authorizeURL = [NSURL URLWithString: @"https://twitter.com/oauth/authorize"];
+        
+        self.requestTokenURL = [NSURL URLWithString: @"https://api.twitter.com/oauth/request_token"];
+		self.accessTokenURL = [NSURL URLWithString: @"https://api.twitter.com/oauth/access_token"];
+		self.authorizeURL = [NSURL URLWithString: @"https://api.twitter.com/oauth/authorize"];
+
 	}
     return self;
 }
@@ -151,7 +156,8 @@
 	if (self.pin.length) token.pin = self.pin;
     [request setHTTPMethod: @"POST"];
 	
-    OADataFetcher				*fetcher = [[[OADataFetcher alloc] init] autorelease];	
+    OADataFetcher				*fetcher = [[[OADataFetcher alloc] init] autorelease];
+    NSLog(@"Submitting URL: %@",[url absoluteString]);
     [fetcher fetchDataWithRequest: request delegate: self didFinishSelector: success didFailSelector: fail];
 }
 

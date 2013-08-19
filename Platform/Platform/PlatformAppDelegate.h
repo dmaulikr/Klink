@@ -10,10 +10,12 @@
 #import "ResourceContext.h"
 #import "AuthenticationManager.h"
 #import "ApplicationSettingsManager.h"
-#import "ABNotifier.h"
-#import "UIProgressHUDView.h"
 
-@interface PlatformAppDelegate : NSObject <UIApplicationDelegate, ABNotifierDelegate> {
+
+#import "UIProgressHUDView.h"
+#import <Accounts/Accounts.h>
+
+@interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
     NSString* m_deviceToken;
     BOOL m_isCleaningUpStore;
     
@@ -29,6 +31,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) ApplicationSettingsManager*   applicationSettingsManager;
+@property (nonatomic, retain) ACAccountStore*   accountStore;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

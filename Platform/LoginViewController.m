@@ -18,6 +18,9 @@
 #import "NSStringGUIDCategory.h"
 #import "SignUpViewController.h"
 #import "Flurry.h"
+#import <Accounts/Accounts.h>
+#import "FHSTwitterEngine.h"
+#import "OAToken.h"
 
 #define kMaximumBusyWaitTimeFacebookLogin       30
 #define kMaximumBusyWaitTimePutAuthenticator    30
@@ -39,29 +42,31 @@
 @synthesize onFailureCallback   = m_onFailCallback;
 @synthesize onSuccessCallback   = m_onSuccessCallback;
 @synthesize tf_active           = m_tf_active;
-@synthesize twitterEngine       = __twitterEngine;
+//@synthesize twitterEngine       = __twitterEngine;
+
 
 #pragma mark - Properties
-- (SA_OAuthTwitterEngine*) twitterEngine {
-    if (__twitterEngine != nil) {
-        return __twitterEngine;
-    }
-    ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance] settings];
-    
-        NSString* consumerKey = settingsObjects.twitter_consumerkey;
-        NSString* consumerSecret = settingsObjects.twitter_consumersecret;
-    
-    if (consumerKey != nil && 
-        consumerSecret != nil)
-    {
-        __twitterEngine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
-        __twitterEngine.consumerKey = consumerKey;
-        __twitterEngine.consumerSecret = consumerSecret;
-    }
+//- (SA_OAuthTwitterEngine*) twitterEngine {
+//    if (__twitterEngine != nil) {
+//        return __twitterEngine;
+//    }
+//    ApplicationSettings* settingsObjects = [[ApplicationSettingsManager instance] settings];
+//    
+//        NSString* consumerKey = settingsObjects.twitter_consumerkey;
+//        NSString* consumerSecret = settingsObjects.twitter_consumersecret;
+//    
+//    if (consumerKey != nil && 
+//        consumerSecret != nil)
+//    {
+//        __twitterEngine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate: self];
+//        __twitterEngine.consumerKey = consumerKey;
+//        __twitterEngine.consumerSecret = consumerSecret;
+//    }
+//
+//    return __twitterEngine;
+//    
+//}
 
-    return __twitterEngine;
-    
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -300,26 +305,86 @@
 }
 
 
--(void) beginTwitterAuthentication {
+-(void) beginTwitterAuthentication
+{
+    
+    NSString* activityName = @"UILoginView.beginTwitterAuthentication:";
+    
+    
+    //08/18/2013 - Due to the deprecation of the SAOTwitter library, I am switching the login sequence to use
+    //the built in ios twitter integration
+//    
+//    ACAccountStore* accountStore = [[ACAccountStore alloc]init];
+//    ACAccountType* twitterType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+//    
+//    [accountStore requestAccessToAccountsWithType:twitterType options:nil completion:^(BOOL granted, NSError* error)
+//    {
+//        
+//            if (granted)
+//            {
+//                // Remember that twitterType was instantiated above
+//                NSArray *twitterAccounts = [accountStore accountsWithType:twitterType];
+//                
+//                // If there are no accounts, we need to pop up an alert
+//                if(twitterAccounts != nil && [twitterAccounts count] == 0) {
+//                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Twitter Accounts"
+//                                                                    message:@"There are no Twitter accounts configured. You can add or create a Twitter account in Settings."
+//                                                                   delegate:nil
+//                                                          cancelButtonTitle:@"OK"
+//                                                          otherButtonTitles:nil];
+//                    [alert show];
+//                    [alert release];
+//                } else
+//                {
+//                    ACAccount *account = [twitterAccounts objectAtIndex:0];
+//                    // Do something with their Twitter account
+//                    ACAccountCredential* accountCredential = account.credential;
+//                }
+//            }
+//            else
+//            {
+//              
+//            }
+//       
+//    }];
+//    
+    
+    
+    //Since the built in twitter authentication built into ios didnt work
+    //im switching to FHSTwitterEngine
+    [[FHSTwitterEngine sharedEngine]setDelegate:self];
+    
+    
+    //now we login via oauth
+    [[FHSTwitterEngine sharedEngine]showOAuthLoginControllerFromViewController:self withCompletion:^(BOOL success)
+    {
+        if (success)
+        {
+          //on success
+        }
+        else
+        {
+            
+        }
+    }];
+
     //we check to see if the user has supplied their Twitter accessToken, if not, then we move to the next page
     //and display a twitter authn screen
-    NSString* activityName = @"UILoginView.beginTwitterAuthentication:";
-   
     
-        NSString* message = [NSString stringWithFormat:@"Beginning twitter authentication"];
-        LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
-        
-        UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine: self.twitterEngine delegate: self];
-        
-        if (controller) 
-            //display twitter view controller for authentication
-            [self presentModalViewController: controller animated: YES];
-        else {
-            //user is already authenticated with Twitter
-            [self.twitterEngine sendUpdate: [NSString stringWithFormat: @"Already Updated. %@", [NSDate date]]];
-            LOG_LOGINVIEWCONTROLLER(0, @"%@ user already logged into twitter, skipping authentication",activityName);
-            [self dismissWithResult:YES];
-        }
+//        NSString* message = [NSString stringWithFormat:@"Beginning twitter authentication"];
+//        LOG_LOGINVIEWCONTROLLER(0,@"%@%@",activityName,message);
+//        
+//        UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine: self.twitterEngine delegate: self];
+//
+//        if (controller) 
+//            //display twitter view controller for authentication
+//            [self presentModalViewController: controller animated: YES];
+//        else {
+//            //user is already authenticated with Twitter
+//            [self.twitterEngine sendUpdate: [NSString stringWithFormat: @"Already Updated. %@", [NSDate date]]];
+//            LOG_LOGINVIEWCONTROLLER(0, @"%@ user already logged into twitter, skipping authentication",activityName);
+//            [self dismissWithResult:YES];
+//        }
 }
 
 -(void) beginFacebookAuthentication {
@@ -468,6 +533,96 @@
         self.lbl_error.hidden = NO;
     }
     
+}
+
+#pragma mark FHSTwitterEngineAccessTokenDelegate
+- (void) storeAccessToken:(NSString *)accessToken
+{
+    NSString* activityName = @"UILoginView.storeAccessToken:";
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setObject:accessToken forKey:@"fhsAuthData"];
+    
+    [defaults synchronize];
+    
+    LOG_LOGINVIEWCONTROLLER(0,@"%@Stored accessToken: %@ in NSUserDefaults key 'fhsAuthData",activityName,accessToken);
+    
+    //now we process the access token and save the response locally and to the cloud
+    ResourceContext* resourceContext = [ResourceContext instance];
+    
+    NSArray* components = [accessToken componentsSeparatedByString:@"&"];
+    if ([components count] == 4)
+    {
+        NSString* oAuthToken = [[[components objectAtIndex:0]componentsSeparatedByString:@"="]objectAtIndex:1];
+        
+        NSString* oAuthTokenSecret = [[[components objectAtIndex:1]componentsSeparatedByString:@"="]objectAtIndex:1];
+        
+        NSString* twitterUserName = [[[components objectAtIndex:3]componentsSeparatedByString:@"="]objectAtIndex:1];
+        
+        NSString* tID = [[[components objectAtIndex:2]componentsSeparatedByString:@"="]objectAtIndex:1];
+        NSNumber* twitterID = [tID numberValue];
+        
+        AuthenticationContext* authenticationContext = [[AuthenticationManager instance]contextForLoggedInUser];
+        
+        if (authenticationContext == nil)
+        {
+            //user is not logged in
+            [self showProgressBar:@"Logging in..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimePutAuthenticator]];
+            Callback* callback = [[Callback alloc] initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+            
+            PlatformAppDelegate* appDelegate = (PlatformAppDelegate*)[UIApplication sharedApplication].delegate;
+            NSString* deviceToken = appDelegate.deviceToken;
+            
+            [resourceContext getAuthenticatorTokenWithTwitter:twitterID
+                                              withTwitterName:twitterUserName
+                                              withAccessToken:oAuthToken
+                                        withAccessTokenSecret:oAuthTokenSecret
+                                               withExpiryDate:@""
+                                              withDeviceToken:deviceToken
+                                               onFinishNotify:callback];
+            [callback release];
+        }
+        else
+        {
+            //user logged in
+            //display progress indicator
+            [self showProgressBar:@"Communicating with Twitter..." withCustomView:nil withMaximumDisplayTime:[NSNumber numberWithInt:kMaximumBusyWaitTimePutAuthenticator]];
+            
+            Callback* callback = [[Callback alloc] initWithTarget:self withSelector:@selector(onGetAuthenticationContextDownloaded:)];
+            
+            [resourceContext updateAuthenticatorWithTwitter:twitterUserName
+                                            withAccessToken:oAuthToken
+                                      withAccessTokenSecret:oAuthTokenSecret
+                                             withExpiryDate:@""
+                                             onFinishNotify:callback];
+            [callback release];
+            
+        }
+
+
+        
+    }
+    else
+    {
+        //error condition
+     
+        LOG_LOGINVIEWCONTROLLER(1, @"%@Twitter login view controller returned the wrong number of result components: %d",activityName,[components count]);
+      
+        [self dismissWithResult:NO];
+    }
+
+    
+}
+
+
+- (NSString*)loadAccessToken
+{
+    NSString* activityName = "@UILoginView.loadAccessToken:";
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString* storedAccessToken = [userDefaults objectForKey:@"fhsAuthData"];
+    return storedAccessToken;
 }
 
 #pragma mark SA_OAuthTwitterEngineDelegate

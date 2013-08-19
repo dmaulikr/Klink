@@ -1,0 +1,25 @@
+dependencies: \
+  /Users/bobby/Documents/Klink/Platform/ApplicationSettingsManager.m \
+  /Users/bobby/Documents/Klink/Platform/ApplicationSettingsManager.h \
+  /Users/bobby/Documents/Klink/Platform/ApplicationSettings.h \
+  /Users/bobby/Documents/Klink/Platform/CloudEnumerator.h \
+  /Users/bobby/Documents/Klink/Platform/Query.h \
+  /Users/bobby/Documents/Klink/Platform/QueryOptions.h \
+  /Users/bobby/Documents/Klink/Platform/LeaderboardRelativeTo.h \
+  /Users/bobby/Documents/Klink/Platform/LeaderboardTypes.h \
+  /Users/bobby/Documents/Klink/Platform/EnumerationContext.h \
+  /Users/bobby/Documents/Klink/Platform/ApplicationSettingsDefaults.h \
+  /Users/bobby/Documents/Klink/Platform/Platform/Macros.h \
+  /Users/bobby/Documents/Klink/Platform/EventManager.h \
+  /Users/bobby/Documents/Klink/Platform/AuthenticationManager.h \
+  /Users/bobby/Documents/Klink/Platform/AuthenticationContext.h \
+  /Users/bobby/Documents/Klink/Platform/FBConnect.h \
+  /Users/bobby/Documents/Klink/Platform/Facebook.h \
+  /Users/bobby/Documents/Klink/Platform/FBLoginDialog.h \
+  /Users/bobby/Documents/Klink/Platform/FBDialog.h \
+  /Users/bobby/Documents/Klink/Platform/FBRequest.h \
+  /Users/bobby/Documents/Klink/Platform/JSON/SBJSON.h \
+  /Users/bobby/Documents/Klink/Platform/JSON/SBJsonParser.h \
+  /Users/bobby/Documents/Klink/Platform/JSON/SBJsonBase.h \
+  /Users/bobby/Documents/Klink/Platform/JSON/SBJsonWriter.h \
+  /Users/bobby/Documents/Klink/Platform/User.h
