@@ -131,6 +131,7 @@
 		52680C7C14CD2E0B0050BCBB /* voted_stamp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52680C7A14CD2E0B0050BCBB /* voted_stamp@2x.png */; };
 		526A5AFC14A0F469000DAF58 /* progress_threshold.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFA14A0F469000DAF58 /* progress_threshold.png */; };
 		526A5AFD14A0F469000DAF58 /* progress_threshold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */; };
+		526E0230173E121B007A00A8 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 526E022F173E121B007A00A8 /* libFlurry.a */; };
 		5270A1C014C2372D00BE60FE /* icon-book.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19A14C2372C00BE60FE /* icon-book.png */; };
 		5270A1C114C2372D00BE60FE /* icon-book@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19B14C2372C00BE60FE /* icon-book@2x.png */; };
 		5270A1C214C2372D00BE60FE /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19C14C2372C00BE60FE /* icon-camera2.png */; };
@@ -621,6 +622,8 @@
 		52680C7A14CD2E0B0050BCBB /* voted_stamp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voted_stamp@2x.png"; sourceTree = "<group>"; };
 		526A5AFA14A0F469000DAF58 /* progress_threshold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_threshold.png; sourceTree = "<group>"; };
 		526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_threshold@2x.png"; sourceTree = "<group>"; };
+		526E022E173E121B007A00A8 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		526E022F173E121B007A00A8 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		5270A19A14C2372C00BE60FE /* icon-book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-book.png"; sourceTree = "<group>"; };
 		5270A19B14C2372C00BE60FE /* icon-book@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-book@2x.png"; sourceTree = "<group>"; };
 		5270A19C14C2372C00BE60FE /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
@@ -779,7 +782,6 @@
 		52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_shadow@2x.png"; sourceTree = "<group>"; };
 		52DD46D6163A062B00FD26AB /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libOAuth.a"; sourceTree = "<group>"; };
 		52DD46D9163A063900FD26AB /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libFlurry.a"; sourceTree = "<group>"; };
-		52DD46DE163A06A800FD26AB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		52DD46E2163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UINavigationControllerCategory.h"; sourceTree = "<group>"; };
 		52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UINavigationControllerCategory.m"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
@@ -1148,6 +1150,8 @@
 				C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */,
 				C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */,
 				C5DA141D17C1BA5A0099820A /* Crashlytics.framework in Frameworks */,
+				526E0230173E121B007A00A8 /* libFlurry.a in Frameworks */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,12 +1180,13 @@
 			path = Leaves;
 			sourceTree = "<group>";
 		};
-		52DD46DD163A069F00FD26AB /* FlurryAnalytics */ = {
+		526E022D173E121B007A00A8 /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
-				52DD46DE163A06A800FD26AB /* Flurry.h */,
+				526E022E173E121B007A00A8 /* Flurry.h */,
+				526E022F173E121B007A00A8 /* libFlurry.a */,
 			);
-			name = FlurryAnalytics;
+			path = Flurry;
 			sourceTree = "<group>";
 		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
@@ -1583,8 +1588,8 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				526E022D173E121B007A00A8 /* Flurry */,
 				C5D3E0751652855400C796A3 /* Appirater */,
-				52DD46DD163A069F00FD26AB /* FlurryAnalytics */,
 				5236457E14A26D0F007BD882 /* Leaves */,
 				52323F19149A6DFA0055A933 /* iCarousel */,
 				C5C9E25E1467003000838934 /* Twitter */,
@@ -2832,6 +2837,7 @@
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
+					"\"$(SRCROOT)/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -2894,6 +2900,7 @@
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
+					"\"$(SRCROOT)/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -2974,6 +2981,7 @@
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
+					"\"$(SRCROOT)/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -3017,6 +3025,7 @@
 					"\"$(SRCROOT)/../../dev/Twitter-OAuth-iPhone/Twitter+OAuth/Libraries & Headers\"",
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
+					"\"$(SRCROOT)/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
