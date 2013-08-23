@@ -54,7 +54,7 @@
 
 @synthesize facebook = __facebook;
 
-@synthesize accountStore = __accountStore;
+
 
 #define     kFACEBOOKAPPID  @"315632228463614"
 #define     kITUNESAPPID    @"498363309"
@@ -72,16 +72,7 @@
 }
 
 
-- (ACAccountStore*) accountStore
-{
-    if (__accountStore != nil)
-    {
-        return __accountStore;
-        
-    }
-    __accountStore = [[ACAccountStore alloc]init];
-    return __accountStore;
-}
+
 
 - (ApplicationSettingsManager*)applicationSettingsManager {
     if (__applicationSettingsManager != nil) {

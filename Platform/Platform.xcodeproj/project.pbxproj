@@ -131,7 +131,6 @@
 		52680C7C14CD2E0B0050BCBB /* voted_stamp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52680C7A14CD2E0B0050BCBB /* voted_stamp@2x.png */; };
 		526A5AFC14A0F469000DAF58 /* progress_threshold.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFA14A0F469000DAF58 /* progress_threshold.png */; };
 		526A5AFD14A0F469000DAF58 /* progress_threshold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */; };
-		526E0230173E121B007A00A8 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 526E022F173E121B007A00A8 /* libFlurry.a */; };
 		5270A1C014C2372D00BE60FE /* icon-book.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19A14C2372C00BE60FE /* icon-book.png */; };
 		5270A1C114C2372D00BE60FE /* icon-book@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19B14C2372C00BE60FE /* icon-book@2x.png */; };
 		5270A1C214C2372D00BE60FE /* icon-camera2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5270A19C14C2372C00BE60FE /* icon-camera2.png */; };
@@ -278,7 +277,6 @@
 		52BC829C1582AD51009DC6C5 /* bookshelf_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */; };
 		52BC829D1582AD51009DC6C5 /* bookshelf_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */; };
 		52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DD46D6163A062B00FD26AB /* libOAuth.a */; };
-		52DD46DA163A063900FD26AB /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DD46D9163A063900FD26AB /* libFlurry.a */; };
 		52DD46E4163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
@@ -336,7 +334,8 @@
 		C568388C1543365C00D3EAD2 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C568388A1543365C00D3EAD2 /* SignUpViewController.m */; };
 		C568388D1543365C00D3EAD2 /* SignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C568388B1543365C00D3EAD2 /* SignUpViewController.xib */; };
 		C56B1FC91598FE390001994E /* UITutorialViewEditorial.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */; };
-		C56F896114620EFB00E14199 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F884714620EFB00E14199 /* LoggerClient.m */; };
+		C56F024717C6D7D700B6A5B1 /* libFlurry_4.2.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C56F024617C6D7D700B6A5B1 /* libFlurry_4.2.3.a */; };
+		C56F024B17C70DDA00B6A5B1 /* LoggerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F024917C70DDA00B6A5B1 /* LoggerClient.m */; };
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
@@ -451,8 +450,6 @@
 		C5D9AA671466EB6C009AA3D8 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA5E1466EB6C009AA3D8 /* grayArrow@2x.png */; };
 		C5D9AA681466EB6C009AA3D8 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA5F1466EB6C009AA3D8 /* whiteArrow.png */; };
 		C5D9AA691466EB6C009AA3D8 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5D9AA601466EB6C009AA3D8 /* whiteArrow@2x.png */; };
-		C5DA141817C1B0EC0099820A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA141717C1B0EC0099820A /* Twitter.framework */; };
-		C5DA141A17C1B1020099820A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA141917C1B1020099820A /* Accounts.framework */; };
 		C5DA141D17C1BA5A0099820A /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DA141C17C1BA5A0099820A /* Crashlytics.framework */; };
 		C5DB5A4F144F3D9C00D6D6AE /* OperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A4E144F3D9C00D6D6AE /* OperationQueue.m */; };
 		C5DB5A52144F4AD300D6D6AE /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DB5A51144F4AD300D6D6AE /* Photo.m */; };
@@ -622,8 +619,6 @@
 		52680C7A14CD2E0B0050BCBB /* voted_stamp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "voted_stamp@2x.png"; sourceTree = "<group>"; };
 		526A5AFA14A0F469000DAF58 /* progress_threshold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progress_threshold.png; sourceTree = "<group>"; };
 		526A5AFB14A0F469000DAF58 /* progress_threshold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "progress_threshold@2x.png"; sourceTree = "<group>"; };
-		526E022E173E121B007A00A8 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		526E022F173E121B007A00A8 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		5270A19A14C2372C00BE60FE /* icon-book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-book.png"; sourceTree = "<group>"; };
 		5270A19B14C2372C00BE60FE /* icon-book@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-book@2x.png"; sourceTree = "<group>"; };
 		5270A19C14C2372C00BE60FE /* icon-camera2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-camera2.png"; sourceTree = "<group>"; };
@@ -781,7 +776,6 @@
 		52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_shadow.png; sourceTree = "<group>"; };
 		52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_shadow@2x.png"; sourceTree = "<group>"; };
 		52DD46D6163A062B00FD26AB /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libOAuth.a"; sourceTree = "<group>"; };
-		52DD46D9163A063900FD26AB /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libFlurry.a"; sourceTree = "<group>"; };
 		52DD46E2163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UINavigationControllerCategory.h"; sourceTree = "<group>"; };
 		52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UINavigationControllerCategory.m"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
@@ -870,9 +864,11 @@
 		C568388A1543365C00D3EAD2 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		C568388B1543365C00D3EAD2 /* SignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpViewController.xib; sourceTree = "<group>"; };
 		C56B1FC81598FE390001994E /* UITutorialViewEditorial.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewEditorial.xib; sourceTree = "<group>"; };
-		C56F884614620EFB00E14199 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
-		C56F884714620EFB00E14199 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
-		C56F884814620EFB00E14199 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
+		C56F024517C6D7D700B6A5B1 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		C56F024617C6D7D700B6A5B1 /* libFlurry_4.2.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_4.2.3.a; sourceTree = "<group>"; };
+		C56F024817C70DDA00B6A5B1 /* LoggerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerClient.h; sourceTree = "<group>"; };
+		C56F024917C70DDA00B6A5B1 /* LoggerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerClient.m; sourceTree = "<group>"; };
+		C56F024A17C70DDA00B6A5B1 /* LoggerCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerCommon.h; sourceTree = "<group>"; };
 		C56F8A1F14632D6D00E14199 /* UINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINotificationTableViewCell.h; sourceTree = "<group>"; };
 		C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINotificationTableViewCell.m; sourceTree = "<group>"; };
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
@@ -1083,8 +1079,6 @@
 		C5D9AA5E1466EB6C009AA3D8 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
 		C5D9AA5F1466EB6C009AA3D8 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
 		C5D9AA601466EB6C009AA3D8 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
-		C5DA141717C1B0EC0099820A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
-		C5DA141917C1B1020099820A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		C5DA141C17C1BA5A0099820A /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C5DB5A4D144F3D9C00D6D6AE /* OperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationQueue.h; sourceTree = "<group>"; };
 		C5DB5A4E144F3D9C00D6D6AE /* OperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationQueue.m; sourceTree = "<group>"; };
@@ -1130,9 +1124,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5DA141A17C1B1020099820A /* Accounts.framework in Frameworks */,
-				C5DA141817C1B0EC0099820A /* Twitter.framework in Frameworks */,
-				52DD46DA163A063900FD26AB /* libFlurry.a in Frameworks */,
 				52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */,
 				528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */,
 				C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */,
@@ -1150,8 +1141,7 @@
 				C593F7C8143EB192008D25A7 /* CoreGraphics.framework in Frameworks */,
 				C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */,
 				C5DA141D17C1BA5A0099820A /* Crashlytics.framework in Frameworks */,
-				526E0230173E121B007A00A8 /* libFlurry.a in Frameworks */,
-
+				C56F024717C6D7D700B6A5B1 /* libFlurry_4.2.3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1178,15 +1168,6 @@
 				5236458414A26D0F007BD882 /* LeavesViewController.m */,
 			);
 			path = Leaves;
-			sourceTree = "<group>";
-		};
-		526E022D173E121B007A00A8 /* Flurry */ = {
-			isa = PBXGroup;
-			children = (
-				526E022E173E121B007A00A8 /* Flurry.h */,
-				526E022F173E121B007A00A8 /* libFlurry.a */,
-			);
-			path = Flurry;
 			sourceTree = "<group>";
 		};
 		C507BC7114597F7D004D9359 /* Generic */ = {
@@ -1240,6 +1221,15 @@
 			name = Application;
 			sourceTree = "<group>";
 		};
+		C56F024417C6D7C300B6A5B1 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				C56F024517C6D7D700B6A5B1 /* Flurry.h */,
+				C56F024617C6D7D700B6A5B1 /* libFlurry_4.2.3.a */,
+			);
+			name = Flurry;
+			sourceTree = "<group>";
+		};
 		C56F880114620EFB00E14199 /* NSLogger */ = {
 			isa = PBXGroup;
 			children = (
@@ -1259,9 +1249,9 @@
 		C56F883714620EFB00E14199 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				C56F884614620EFB00E14199 /* LoggerClient.h */,
-				C56F884714620EFB00E14199 /* LoggerClient.m */,
-				C56F884814620EFB00E14199 /* LoggerCommon.h */,
+				C56F024817C70DDA00B6A5B1 /* LoggerClient.h */,
+				C56F024917C70DDA00B6A5B1 /* LoggerClient.m */,
+				C56F024A17C70DDA00B6A5B1 /* LoggerCommon.h */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -1492,9 +1482,6 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
-				C5DA141917C1B1020099820A /* Accounts.framework */,
-				C5DA141717C1B0EC0099820A /* Twitter.framework */,
-				52DD46D9163A063900FD26AB /* libFlurry.a */,
 				52DD46D6163A062B00FD26AB /* libOAuth.a */,
 				52A169F2159B994800F175BA /* Default@2x.png */,
 				52A169F0159B994500F175BA /* Default.png */,
@@ -1588,7 +1575,7 @@
 		C593F7E9143EB1C2008D25A7 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				526E022D173E121B007A00A8 /* Flurry */,
+				C56F024417C6D7C300B6A5B1 /* Flurry */,
 				C5D3E0751652855400C796A3 /* Appirater */,
 				5236457E14A26D0F007BD882 /* Leaves */,
 				52323F19149A6DFA0055A933 /* iCarousel */,
@@ -2671,7 +2658,6 @@
 				C55EC740145FA0E600BA66FA /* UIViewCategory.m in Sources */,
 				C55EC744145FA1C900BA66FA /* PlatformAppDelegate.m in Sources */,
 				C55EC75D145FA50800BA66FA /* main.m in Sources */,
-				C56F896114620EFB00E14199 /* LoggerClient.m in Sources */,
 				C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */,
 				C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */,
 				3DCFE8D814645EEC00D6587D /* UIDraftTableViewCell.m in Sources */,
@@ -2755,6 +2741,7 @@
 				C5CB419D17C2C91200FA6C2C /* OARequestParameter.m in Sources */,
 				C5CB419E17C2C91200FA6C2C /* OAServiceTicket.m in Sources */,
 				C5CB419F17C2C91200FA6C2C /* OAToken.m in Sources */,
+				C56F024B17C70DDA00B6A5B1 /* LoggerClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2800,7 +2787,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-			
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 			};
@@ -2838,6 +2824,7 @@
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 					"\"$(SRCROOT)/Flurry\"",
+					"\"$(SRCROOT)\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -2901,6 +2888,7 @@
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 					"\"$(SRCROOT)/Flurry\"",
+					"\"$(SRCROOT)\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -2982,6 +2970,7 @@
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 					"\"$(SRCROOT)/Flurry\"",
+					"\"$(SRCROOT)\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;
@@ -3026,6 +3015,7 @@
 					"\"$(SRCROOT)/../../dev/Flurry iPhone SDK/Flurry iPhone SDK v4.0.6/Flurry\"",
 					"\"$(SRCROOT)/../../../../../../Dropbox/Blue Label/Bahndr\"",
 					"\"$(SRCROOT)/Flurry\"",
+					"\"$(SRCROOT)\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Bahndr;

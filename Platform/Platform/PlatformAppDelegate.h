@@ -13,7 +13,7 @@
 
 
 #import "UIProgressHUDView.h"
-#import <Accounts/Accounts.h>
+
 
 @interface PlatformAppDelegate : NSObject <UIApplicationDelegate> {
     NSString* m_deviceToken;
@@ -31,7 +31,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) AuthenticationManager*    authenticationManager;
 @property (nonatomic, retain) ApplicationSettingsManager*   applicationSettingsManager;
-@property (nonatomic, retain) ACAccountStore*   accountStore;
+
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
