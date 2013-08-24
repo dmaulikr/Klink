@@ -339,6 +339,7 @@
 		C56F8A2114632D6E00E14199 /* UINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A2014632D6D00E14199 /* UINotificationTableViewCell.m */; };
 		C56F8A2314632DAE00E14199 /* UINotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */; };
 		C56F8A261463447B00E14199 /* RegisteredEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C56F8A251463447B00E14199 /* RegisteredEventHandler.m */; };
+		C586625C17C8D352003C850F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C586625B17C8D352003C850F /* Default-568h@2x.png */; };
 		C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C58C6CD214973B130068CCD6 /* libicucore.dylib */; };
 		C58D617A15952C3700B6C77D /* UITutorialViewContributeFirstTime.xib in Resources */ = {isa = PBXBuildFile; fileRef = C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */; };
 		C58E348D151A325D003CD1EC /* Follow.m in Sources */ = {isa = PBXBuildFile; fileRef = C58E348C151A325D003CD1EC /* Follow.m */; };
@@ -874,6 +875,7 @@
 		C56F8A2214632DAE00E14199 /* UINotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UINotificationTableViewCell.xib; sourceTree = "<group>"; };
 		C56F8A241463447B00E14199 /* RegisteredEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteredEventHandler.h; sourceTree = "<group>"; };
 		C56F8A251463447B00E14199 /* RegisteredEventHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteredEventHandler.m; sourceTree = "<group>"; };
+		C586625B17C8D352003C850F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C58C6CD214973B130068CCD6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		C58D617915952C3700B6C77D /* UITutorialViewContributeFirstTime.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UITutorialViewContributeFirstTime.xib; sourceTree = "<group>"; };
 		C58E348B151A325D003CD1EC /* Follow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Follow.h; sourceTree = "<group>"; };
@@ -1482,6 +1484,7 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				C586625B17C8D352003C850F /* Default-568h@2x.png */,
 				52DD46D6163A062B00FD26AB /* libOAuth.a */,
 				52A169F2159B994800F175BA /* Default@2x.png */,
 				52A169F0159B994500F175BA /* Default.png */,
@@ -2545,6 +2548,7 @@
 				52A169F3159B994800F175BA /* Default@2x.png in Resources */,
 				52A169F6159B999300F175BA /* book_cover.png in Resources */,
 				52A169F7159B999300F175BA /* book_cover@2x.png in Resources */,
+				C586625C17C8D352003C850F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
