@@ -556,6 +556,7 @@
         
         //this is the first time opening, so we show the tutorail view
         UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContributeFirstTime"];
+        infoView.view.frame = self.view.frame;
         [self.view addSubview:infoView];
         [infoView release];
     }
@@ -858,6 +859,7 @@
 #pragma mark - Button Handlers
 - (IBAction)onInfoButtonPressed:(id)sender {
     UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewContribute"];
+    infoView.view.frame = self.view.frame;
     [self.view addSubview:infoView];
     [infoView release];
 }

@@ -12,7 +12,7 @@
 @synthesize view = m_view;
 
 - (id)initWithFrame:(CGRect)frame withNibNamed:(NSString *)nibName
-{
+{    
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -53,7 +53,6 @@
 #pragma mark - UI Gesture Handlers
 - (void)dismissView:(UITapGestureRecognizer *)gestureRecognizer {
     [self removeFromSuperview];
-    
 }
 
 @end

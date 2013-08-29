@@ -384,6 +384,7 @@
 
 - (IBAction)onInfoButtonPressed:(id)sender {
     UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewRequestSummary"];
+    infoView.view.frame = self.view.frame;
     [self.view addSubview:infoView];
     [infoView release];
 }

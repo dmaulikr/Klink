@@ -23,6 +23,8 @@
 		520AF5B5154F242F00A82555 /* icon-twitter-t-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */; };
 		520FCBE21593980F00441C75 /* typewriter_key-bahndrB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 520FCBE01593980F00441C75 /* typewriter_key-bahndrB@2x.png */; };
 		520FCBE515939BC600441C75 /* typewriter_key-bahndrB.png in Resources */ = {isa = PBXBuildFile; fileRef = 520FCBE415939BC600441C75 /* typewriter_key-bahndrB.png */; };
+		52109EA217CEB34E00ADC899 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52109EA117CEB34E00ADC899 /* libOAuth.a */; };
+		52109EA817CEC34B00ADC899 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52109EA717CEC34A00ADC899 /* Default@2x.png */; };
 		521232CA1491437600CC9F93 /* arrow_left_scetched.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C81491437600CC9F93 /* arrow_left_scetched.png */; };
 		521232CB1491437600CC9F93 /* arrow_left_scetched@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */; };
 		521D6DC914D347CF00FA08E3 /* BookTableOfContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 521D6DC714D347CE00FA08E3 /* BookTableOfContentsViewController.m */; };
@@ -226,7 +228,6 @@
 		529F0CC814BEE8B80063E4AC /* published_stamp.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC614BEE8B80063E4AC /* published_stamp.png */; };
 		529F0CC914BEE8B80063E4AC /* published_stamp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */; };
 		52A169F1159B994500F175BA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A169F0159B994500F175BA /* Default.png */; };
-		52A169F3159B994800F175BA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A169F2159B994800F175BA /* Default@2x.png */; };
 		52A169F6159B999300F175BA /* book_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A169F4159B999300F175BA /* book_cover.png */; };
 		52A169F7159B999300F175BA /* book_cover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52A169F5159B999300F175BA /* book_cover@2x.png */; };
 		52AAB0CE14C60F3400497FC7 /* arrow_left_scetched_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */; };
@@ -276,7 +277,6 @@
 		52BC82891581B755009DC6C5 /* bookshelf_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */; };
 		52BC829C1582AD51009DC6C5 /* bookshelf_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */; };
 		52BC829D1582AD51009DC6C5 /* bookshelf_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */; };
-		52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DD46D6163A062B00FD26AB /* libOAuth.a */; };
 		52DD46E4163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */; };
 		52E66B6F148EA35B0079270A /* DraftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E66B6D148EA35B0079270A /* DraftViewController.m */; };
 		52E66B70148EA35B0079270A /* DraftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E66B6E148EA35B0079270A /* DraftViewController.xib */; };
@@ -493,6 +493,8 @@
 		520AF5B1154F242F00A82555 /* icon-twitter-t-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-twitter-t-white@2x.png"; sourceTree = "<group>"; };
 		520FCBE01593980F00441C75 /* typewriter_key-bahndrB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-bahndrB@2x.png"; sourceTree = "<group>"; };
 		520FCBE415939BC600441C75 /* typewriter_key-bahndrB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typewriter_key-bahndrB.png"; sourceTree = "<group>"; };
+		52109EA117CEB34E00ADC899 /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOAuth.a; sourceTree = "<group>"; };
+		52109EA717CEC34A00ADC899 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		521232C81491437600CC9F93 /* arrow_left_scetched.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched.png; sourceTree = "<group>"; };
 		521232C91491437600CC9F93 /* arrow_left_scetched@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_left_scetched@2x.png"; sourceTree = "<group>"; };
 		521D6DC614D347CE00FA08E3 /* BookTableOfContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookTableOfContentsViewController.h; sourceTree = "<group>"; };
@@ -720,7 +722,6 @@
 		529F0CC614BEE8B80063E4AC /* published_stamp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = published_stamp.png; sourceTree = "<group>"; };
 		529F0CC714BEE8B80063E4AC /* published_stamp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "published_stamp@2x.png"; sourceTree = "<group>"; };
 		52A169F0159B994500F175BA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		52A169F2159B994800F175BA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		52A169F4159B999300F175BA /* book_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_cover.png; sourceTree = "<group>"; };
 		52A169F5159B999300F175BA /* book_cover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "book_cover@2x.png"; sourceTree = "<group>"; };
 		52AAB0CA14C60F3400497FC7 /* arrow_left_scetched_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left_scetched_highlighted.png; sourceTree = "<group>"; };
@@ -776,7 +777,6 @@
 		52BC82871581B755009DC6C5 /* bookshelf_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_button@2x.png"; sourceTree = "<group>"; };
 		52BC829A1582AD51009DC6C5 /* bookshelf_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookshelf_shadow.png; sourceTree = "<group>"; };
 		52BC829B1582AD51009DC6C5 /* bookshelf_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookshelf_shadow@2x.png"; sourceTree = "<group>"; };
-		52DD46D6163A062B00FD26AB /* libOAuth.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOAuth.a; path = "../../../../../../Dropbox/Blue Label/Bahndr/libOAuth.a"; sourceTree = "<group>"; };
 		52DD46E2163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UINavigationControllerCategory.h"; sourceTree = "<group>"; };
 		52DD46E3163A0AA800FD26AB /* UINavigationController+UINavigationControllerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UINavigationControllerCategory.m"; sourceTree = "<group>"; };
 		52E66B6C148EA35B0079270A /* DraftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraftViewController.h; sourceTree = "<group>"; };
@@ -1126,7 +1126,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52DD46D7163A062B00FD26AB /* libOAuth.a in Frameworks */,
 				528A49B914AD01F000881A99 /* MessageUI.framework in Frameworks */,
 				C58C6CD314973B130068CCD6 /* libicucore.dylib in Frameworks */,
 				C5C9D2FA14712942008E3B51 /* libz.1.1.3.dylib in Frameworks */,
@@ -1144,6 +1143,7 @@
 				C593F7CA143EB192008D25A7 /* CoreData.framework in Frameworks */,
 				C5DA141D17C1BA5A0099820A /* Crashlytics.framework in Frameworks */,
 				C56F024717C6D7D700B6A5B1 /* libFlurry_4.2.3.a in Frameworks */,
+				52109EA217CEB34E00ADC899 /* libOAuth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,10 +1484,10 @@
 		C593F7B4143EB191008D25A7 = {
 			isa = PBXGroup;
 			children = (
+				52109EA717CEC34A00ADC899 /* Default@2x.png */,
 				C586625B17C8D352003C850F /* Default-568h@2x.png */,
-				52DD46D6163A062B00FD26AB /* libOAuth.a */,
-				52A169F2159B994800F175BA /* Default@2x.png */,
 				52A169F0159B994500F175BA /* Default.png */,
+				52109EA117CEB34E00ADC899 /* libOAuth.a */,
 				5250E53214CF9CBB00C53383 /* Bahndr_appIcon-114.png */,
 				5250E53014CF9CB600C53383 /* Bahndr_appIcon-57.png */,
 				528A49B814AD01F000881A99 /* MessageUI.framework */,
@@ -2545,10 +2545,10 @@
 				C5D352AB159A6D4E00586581 /* UITutorialViewRequestSummary.xib in Resources */,
 				C5D352AE159A73F400586581 /* UITutorialViewAwardCabinet.xib in Resources */,
 				52A169F1159B994500F175BA /* Default.png in Resources */,
-				52A169F3159B994800F175BA /* Default@2x.png in Resources */,
 				52A169F6159B999300F175BA /* book_cover.png in Resources */,
 				52A169F7159B999300F175BA /* book_cover@2x.png in Resources */,
 				C586625C17C8D352003C850F /* Default-568h@2x.png in Resources */,
+				52109EA817CEC34B00ADC899 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -633,7 +633,7 @@
     if (self.tutorialIsVisible == NO) {
         // If the turotial view is not already visible, show it
         UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewEditorial"];
-        
+        infoView.view.frame = self.view.frame;
         [self.view addSubview:infoView];
         [infoView release];
         

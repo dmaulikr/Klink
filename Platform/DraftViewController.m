@@ -370,6 +370,7 @@
 
 - (IBAction)onInfoButtonPressed:(id)sender {
     UITutorialView* infoView = [[UITutorialView alloc] initWithFrame:self.view.bounds withNibNamed:@"UITutorialViewDraft"];
+    infoView.view.frame = self.view.frame;
     [self.view addSubview:infoView];
     [infoView release];
 }
